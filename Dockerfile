@@ -47,9 +47,9 @@ FROM node:20-alpine AS node_builder
 
 WORKDIR /var/www
 
-COPY package.json package-lock.json ./
+COPY package.json ./
 
-RUN npm ci
+RUN npm install --no-audit --no-fund
 
 COPY resources ./resources
 COPY public ./public

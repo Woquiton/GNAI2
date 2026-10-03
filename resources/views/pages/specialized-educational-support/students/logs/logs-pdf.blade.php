@@ -58,7 +58,6 @@
                 'student_deficiency' => \App\Models\SpecializedEducationalSupport\StudentDeficiencies::class,
                 'student_document' => \App\Models\SpecializedEducationalSupport\StudentDocument::class,
                 'student_course' => \App\Models\SpecializedEducationalSupport\StudentCourse::class,
-                'student_context' => \App\Models\SpecializedEducationalSupport\StudentContext::class,
             ];
 
             $logTypeKey = $log->auditable_type;
@@ -67,7 +66,7 @@
             // Campos que normalmente ignoramos (comum)
             $ignoredCommon = ['updated_at', 'created_at', 'deleted_at', 'uploaded_by', 'file_path'];
             // Em casos de submodels queremos preservar student_id e person_id para contexto
-            if (in_array($logTypeKey, ['student_deficiency','student_document','student_course','student_context'])) {
+            if (in_array($logTypeKey, ['student_deficiency','student_document','student_course'])) {
                 $ignored = $ignoredCommon; // NÃO incluir student_id/person_id
             } else {
                 // para student / person, continua ignorando id técnico

@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
 use Throwable;
 use App\Models\SpecializedEducationalSupport\StudentDeficiencies;
 use App\Models\SpecializedEducationalSupport\StudentDocument;
 use App\Models\SpecializedEducationalSupport\StudentCourse;
-use App\Models\SpecializedEducationalSupport\StudentContext;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Em producao, sempre gera URLs publicas a partir do dominio configurado.
+        $this->configurePublicUrl();
+
         Paginator::useBootstrapFive();
         Relation::enforceMorphMap([
             'student'            => Student::class,
@@ -39,7 +42,6 @@ class AppServiceProvider extends ServiceProvider
             'student_deficiency' => StudentDeficiencies::class,
             'student_document'   => StudentDocument::class,
             'student_course'     => StudentCourse::class,
-            'student_context'    => StudentContext::class,
             'assistive_technology'            => AssistiveTechnology::class,
             'accessible_educational_material' => AccessibleEducationalMaterial::class,
             'barrier'                         => Barrier::class,
@@ -103,6 +105,29 @@ class AppServiceProvider extends ServiceProvider
             return Schema::hasTable($table);
         } catch (Throwable) {
             return false;
+        }
+    }
+
+    /**
+     * RF: evita que rotas e assets saiam com host interno quando a aplicacao roda atras de proxy.
+     * Uso: ambiente de producao publicado com HTTPS e dominio proprio definido no APP_URL.
+     */
+    private function configurePublicUrl(): void
+    {
+        if (! app()->isProduction()) {
+            return;
+        }
+
+        $urlPublica = config('app.url');
+
+        if (! is_string($urlPublica) || $urlPublica === '') {
+            return;
+        }
+
+        URL::useOrigin($urlPublica);
+
+        if (str_starts_with($urlPublica, 'https://')) {
+            URL::forceScheme('https');
         }
     }
 }

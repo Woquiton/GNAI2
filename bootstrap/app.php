@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Confia nos headers do proxy para que host e protocolo publico cheguem corretamente ao Laravel.
+        $middleware->trustProxies(at: '*');
+
         $middleware->redirectTo(
             guests: 'auth/login',
             users: 'auth/dashboard'

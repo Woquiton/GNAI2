@@ -4,7 +4,7 @@ namespace App\Enums\SpecializedEducationalSupport;
 
 use App\Enums\HasEnumHelper;
 
-enum EvaluationType: string
+enum ContextType: string
 {
     use HasEnumHelper;
 

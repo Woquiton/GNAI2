@@ -152,18 +152,28 @@ class Student extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Contexto Educacional
+    | Estudo de Caso e PAEE
     |--------------------------------------------------------------------------
     */
 
-    public function contexts()
+    public function caseStudies()
     {
-        return $this->hasMany(StudentContext::class);
+        return $this->hasMany(CaseStudy::class);
     }
 
-    public function currentContext()
+    public function currentCaseStudy()
     {
-        return $this->hasOne(StudentContext::class)->where('is_current', true);
+        return $this->hasOne(CaseStudy::class)->where('is_current', true);
+    }
+
+    public function paees()
+    {
+        return $this->hasMany(Paee::class);
+    }
+
+    public function currentPaee()
+    {
+        return $this->hasOne(Paee::class)->where('is_current', true);
     }
 
 

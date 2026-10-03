@@ -45,7 +45,8 @@ class StudentService
         return $student->load([
             'person',
             'guardians',
-            'currentContext',
+            'currentCaseStudy',
+            'currentPaee',
             'deficiencies',
             'peis',
             'studentCourses',
@@ -162,17 +163,16 @@ class StudentService
             // responsáveis
             'guardians',
 
-            // contexto atual
-            'currentContext',
-            'currentContext.semester',
-            'currentContext.evaluator.person',
+            // estudo de caso e PAEE atuais
+            'currentCaseStudy',
+            'currentPaee',
 
             'peis' => function ($query) {
                 $query->where('is_current', true)
                 ->with([
                     'semester',
                     'course',
-                    'studentContext',
+                    'paee',
                     'creator',
                     'peiDisciplines' => function ($q) {
                         $q->with([

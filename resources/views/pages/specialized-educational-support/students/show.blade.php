@@ -72,11 +72,16 @@
             @include('pages.specialized-educational-support.students.record.guardians')
         @endcan
 
-        {{-- Seção de Contextos --}}
-        @can('student-context.view')
-            @include('pages.specialized-educational-support.students.record.contexts')
+        {{-- Seção de Estudos de Caso (módulo novo) --}}
+        @can('case-study.view')
+            @include('pages.specialized-educational-support.students.record.case-studies')
         @endcan
-            
+
+        {{-- Seção de PAEE (módulo novo) --}}
+        @can('paee.view')
+            @include('pages.specialized-educational-support.students.record.paees')
+        @endcan
+
         {{-- Seção de PEIs --}}
         @can('pei.view')
             @include('pages.specialized-educational-support.students.record.peis')

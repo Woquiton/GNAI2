@@ -39,7 +39,6 @@
                 class="{{ request()->routeIs([
                     'specialized-educational-support.students.*',
                     'specialized-educational-support.guardians.*',
-                    'specialized-educational-support.student-context.*',
                     'specialized-educational-support.student-deficiencies.*'
                 ]) ? 'active' : '' }}">
                 <span class="icon"><i class="bi bi-people"></i></span>
@@ -64,6 +63,26 @@
             class="{{ request()->routeIs('specialized-educational-support.teachers.*') ? 'active' : '' }}">
                 <span class="icon"><i class="bi bi-mortarboard"></i></span>
                 <span class="text">Professores</span>
+            </a>
+        </li>
+        @endcan
+
+        @can('case-study.view')
+        <li class="gnai-new-tab">
+            <a href="{{ route('specialized-educational-support.case-study.all') }}"
+            class="{{ request()->routeIs('specialized-educational-support.case-study.*') ? 'active' : '' }}">
+                <span class="icon"><i class="bi bi-journal-medical"></i></span>
+                <span class="text">Estudos de Caso <span class="badge gnai-new-badge">Novo</span></span>
+            </a>
+        </li>
+        @endcan
+
+        @can('paee.view')
+        <li class="gnai-new-tab">
+            <a href="{{ route('specialized-educational-support.paee.all') }}"
+            class="{{ request()->routeIs('specialized-educational-support.paee.*') ? 'active' : '' }}">
+                <span class="icon"><i class="bi bi-clipboard2-pulse"></i></span>
+                <span class="text">PAEEs <span class="badge gnai-new-badge">Novo</span></span>
             </a>
         </li>
         @endcan

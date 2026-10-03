@@ -20,7 +20,7 @@ class Pei extends Model
         'creator_id',
         'semester_id',
         'course_id',
-        'student_context_id',
+        'paee_id',
         'is_finished',
         'version',
         'is_current',
@@ -92,9 +92,9 @@ class Pei extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function studentContext(): BelongsTo
+    public function paee(): BelongsTo
     {
-        return $this->belongsTo(StudentContext::class);
+        return $this->belongsTo(Paee::class);
     }
 
     public function peiDisciplines(): \Illuminate\Database\Eloquent\Relations\HasMany

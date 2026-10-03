@@ -164,7 +164,7 @@ services:
       - NPM_CONFIG_FUND=false
       - NPM_CONFIG_AUDIT=false
       - NPM_CONFIG_LOGLEVEL=error
-    command: sh -c "if [ ! -d node_modules/vite ]; then npm ci --no-audit --no-fund --loglevel=error; fi && npm run dev -- --host 0.0.0.0"
+    command: sh -c "if [ ! -d node_modules/vite ]; then npm install --no-package-lock --no-audit --no-fund --loglevel=error; fi && npm run dev -- --host 0.0.0.0"
     deploy:
       resources:
         limits:

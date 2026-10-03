@@ -78,10 +78,6 @@ class PermissionSeeder extends Seeder
             ['name' => 'Excluir Professor',    'slug' => 'teacher.delete'],
 
             // Contexto do Aluno (Prontuário/Versões)
-            ['name' => 'Visualizar Contexto do Aluno', 'slug' => 'student-context.view'],
-            ['name' => 'Criar Contexto do Aluno',      'slug' => 'student-context.create'],
-            ['name' => 'Editar Contexto do Aluno',     'slug' => 'student-context.update'],
-            ['name' => 'Excluir Contexto do Aluno',    'slug' => 'student-context.delete'],
 
             // Deficiências do Aluno (Vínculo)
             ['name' => 'Visualizar Perfis de Atendimento do Aluno', 'slug' => 'student-deficiency.view'],
@@ -128,6 +124,20 @@ class PermissionSeeder extends Seeder
             ['name' => 'Criar Adaptação do PEI',      'slug' => 'pei-discipline.create'],
             ['name' => 'Editar Adaptação do PEI',     'slug' => 'pei-discipline.update'],
             ['name' => 'Excluir Adaptação do PEI',    'slug' => 'pei-discipline.delete'],
+
+            // Estudo de Caso
+            ['name' => 'Visualizar Estudo de Caso', 'slug' => 'case-study.view'],
+            ['name' => 'Criar Estudo de Caso',      'slug' => 'case-study.create'],
+            ['name' => 'Editar Estudo de Caso',     'slug' => 'case-study.update'],
+            ['name' => 'Excluir Estudo de Caso',    'slug' => 'case-study.delete'],
+            ['name' => 'Adicionar Contribuição ao Estudo de Caso', 'slug' => 'case-study-contribution.create'],
+
+            // PAEE (Programa de Atendimento Educacional Especializado)
+            ['name' => 'Visualizar PAEE', 'slug' => 'paee.view'],
+            ['name' => 'Criar PAEE',      'slug' => 'paee.create'],
+            ['name' => 'Editar PAEE',     'slug' => 'paee.update'],
+            ['name' => 'Excluir PAEE',    'slug' => 'paee.delete'],
+            ['name' => 'Registrar Revisão do PAEE', 'slug' => 'paee-review.create'],
 
             // Documentos do Aluno
             ['name' => 'Visualizar Documentos', 'slug' => 'student-document.view'],

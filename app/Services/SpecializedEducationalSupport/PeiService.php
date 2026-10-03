@@ -10,17 +10,20 @@ use App\Models\SpecializedEducationalSupport\ContentProgrammatic;
 use App\Models\SpecializedEducationalSupport\Methodology;
 use Illuminate\Support\Facades\DB;
 use App\Services\SpecializedEducationalSupport\SemesterService;
+use App\Services\SpecializedEducationalSupport\PaeeService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class PeiService
 {
     protected $semesterService;
+    protected $paeeService;
 
-    public function __construct(SemesterService $semesterService)
+    public function __construct(SemesterService $semesterService, PaeeService $paeeService)
     {
         $this->semesterService = $semesterService;
+        $this->paeeService = $paeeService;
     }
 
 
@@ -108,20 +111,20 @@ class PeiService
                 throw new \Exception('O sistema não possui semestre atual cadastrado');
             }
 
-            $currentContext = $student->contexts()->where('is_current', true)->first();
-            if (!$currentContext) {
-                throw new \Exception('Este aluno não possui um contexto atual');
+            $currentPaee = $this->paeeService->getCurrent($student);
+            if (!$currentPaee) {
+                throw new \Exception('É necessário ter um PAEE ativo para criar o PEI.');
             }
 
             return Pei::create([
-                'student_id'         => $student->id,
-                'creator_id'         => Auth::id(),
-                'semester_id'        => $semesterId,
-                'course_id'          => $course->id,
-                'student_context_id' => $currentContext->id,
-                'is_finished'        => false,
-                'version'            => 1,
-                'is_current'         => true,
+                'student_id'  => $student->id,
+                'creator_id'  => Auth::id(),
+                'semester_id' => $semesterId,
+                'course_id'   => $course->id,
+                'paee_id'     => $currentPaee->id,
+                'is_finished' => false,
+                'version'     => 1,
+                'is_current'  => true,
             ]);
         });
     }
@@ -148,9 +151,9 @@ class PeiService
                 throw new \DomainException('O sistema não possui semestre atual cadastrado');
             }
 
-            $studentContext = $student->contexts()->where('is_current', true)->first();
-            if (!$studentContext) {
-                throw new \Exception('Este aluno não possui um Contexto atual definido.');
+            $currentPaee = $this->paeeService->getCurrent($student);
+            if (!$currentPaee) {
+                throw new \Exception('É necessário ter um PAEE ativo para criar uma nova versão do PEI.');
             }
 
             // Remove o flag de 'atual' do antigo
@@ -158,14 +161,14 @@ class PeiService
 
             // Cria o novo PEI (apenas cabeçalho, sem replicar disciplinas)
             return Pei::create([
-                'creator_id'         => Auth::id(),
-                'student_id'         => $student->id,
-                'semester_id'        => $semesterId,
-                'course_id'          => $pei->course_id,
-                'student_context_id' => $studentContext->id,
-                'is_finished'        => false,
-                'version'            => ($pei->version ?? 1) + 1,
-                'is_current'         => true,
+                'creator_id'  => Auth::id(),
+                'student_id'  => $student->id,
+                'semester_id' => $semesterId,
+                'course_id'   => $pei->course_id,
+                'paee_id'     => $currentPaee->id,
+                'is_finished' => false,
+                'version'     => ($pei->version ?? 1) + 1,
+                'is_current'  => true,
             ]);
         });
     }

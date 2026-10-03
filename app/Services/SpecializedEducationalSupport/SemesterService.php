@@ -4,7 +4,6 @@ namespace App\Services\SpecializedEducationalSupport;
 
 use App\Models\SpecializedEducationalSupport\Pei;
 use App\Models\SpecializedEducationalSupport\Semester;
-use App\Models\SpecializedEducationalSupport\StudentContext;
 use App\Models\SpecializedEducationalSupport\StudentDocument;
 use DomainException;
 use Illuminate\Support\Facades\DB;
@@ -118,7 +117,6 @@ class SemesterService
     private function getLinkedRecordsCount(Semester $semester): array
     {
         return [
-            'contextos de aluno' => StudentContext::where('semester_id', $semester->id)->count(),
             'documentos de aluno' => StudentDocument::where('semester_id', $semester->id)->count(),
             'PEIs' => Pei::where('semester_id', $semester->id)->count(),
         ];

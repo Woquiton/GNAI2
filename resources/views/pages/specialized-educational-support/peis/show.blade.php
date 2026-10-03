@@ -177,13 +177,13 @@
 
         </div>
 
-        @can('student-context.view')
-        {{-- ================= CONTEXTO COMPLETO ================= --}}
-        <x-forms.section title="Contexto do Estudante" />
+        @can('paee.view')
+        {{-- ================= PAEE VINCULADO ================= --}}
+        <x-forms.section title="PAEE Vinculado" />
 
         <div class="px-4 pb-4">
-            @include('pages.specialized-educational-support.peis.partials.student-context', [
-                'context' => $studentContext
+            @include('pages.specialized-educational-support.peis.partials.paee-summary', [
+                'paee' => $paee
             ])
         </div>
         @endcan

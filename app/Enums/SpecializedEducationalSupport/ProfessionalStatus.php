@@ -3,7 +3,7 @@
 namespace App\Enums\SpecializedEducationalSupport;
 use App\Enums\HasEnumHelper;
 
-enum StudentStatus: string
+enum ProfessionalStatus: string
 {
     use HasEnumHelper;
 

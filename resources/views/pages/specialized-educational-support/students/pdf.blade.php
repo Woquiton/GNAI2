@@ -275,181 +275,65 @@ $relationshipMap = [
         </table>
     @endif
 
-    <div class="category-header">2. Contexto do Aluno</div>
+    <div class="category-header">2. Estudo de Caso e PAEE</div>
 
-        {{-- ================= CONTEXTO ATUAL ================= --}}
-    <div class="section-title">Identificação</div>
-
-    @if($student->currentContext)
-        @php
-            $context = $student->currentContext;
-        @endphp
-
+    <div class="section-title">Estudo de Caso Atual</div>
+    @if($student->currentCaseStudy)
+        @php $caseStudy = $student->currentCaseStudy; @endphp
         <table class="pdf-table">
             <tr>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Tipo de Avaliação:</strong>
-                    {{ $map['eval'][$context->evaluation_type] ?? e($context->evaluation_type ?? '---') }}
+                    <strong>Versão:</strong> {{ $caseStudy->version }}
                 </td>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Semestre:</strong> {{ $context->semester->label ?? $context->semester->name ?? '---' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Avaliado por:</strong> {{ $context->evaluator->person->name ?? '---' }}
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Registro Atual:</strong> {{ $boolLabel($context->is_current) }}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Versão:</strong> {{ $context->version ?? '---' }}
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Última Atualização:</strong> {{ optional($context->updated_at)->format('d/m/Y H:i') ?? '---' }}
-                </td>
-            </tr>
-        </table>
-
-        <div class="section-title">Histórico e Necessidades Educacionais</div>
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Histórico do Aluno</strong>
-                    <div class="long-text">{!! $renderHtml($context->history) !!}</div>
+                    <strong>Status:</strong> {{ $caseStudy->status->label() }}
                 </td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="4">
-                    <strong>Necessidades Educacionais Específicas</strong>
-                    <div class="long-text">{!! $renderHtml($context->specific_educational_needs) !!}</div>
-                </td>
-            </tr>
-        </table>
-
-        <div class="section-title">Síntese Avaliativa</div>
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Conhecimentos e Interesses</strong>
-                    <div class="long-text">{!! $renderHtml($context->knowledge) !!}</div>
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Dificuldades</strong>
-                    <div class="long-text">{!! $renderHtml($context->difficulties) !!}</div>
-                </td>
-            </tr>
-        </table>
-
-        <div class="section-title">Aprendizagem e Cognição</div>
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Nível de Aprendizagem:</strong> {{ $map['levels'][$context->learning_level] ?? '---' }}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Nível de Atenção:</strong> {{ $map['levels'][$context->attention_level] ?? '---' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Nível de Memória:</strong> {{ $map['levels'][$context->memory_level] ?? '---' }}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Nível de Raciocínio:</strong> {{ $map['reason'][$context->reasoning_level] ?? '---' }}
+                    <strong>Origem da Demanda:</strong> {{ $caseStudy->demand_origin?->label() ?? '---' }}
                 </td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="4">
-                    <strong>Observações de Aprendizagem</strong>
-                    <div class="long-text">{!! $renderHtml($context->learning_observations) !!}</div>
-                </td>
-            </tr>
-        </table>
-
-        <div class="section-title">Comunicação e Comportamento</div>
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Tipo de Comunicação:</strong> {{ $map['comm'][$context->communication_type] ?? '---' }}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Nível de Interação:</strong> {{ $map['levels'][$context->interaction_level] ?? '---' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Nível de Socialização:</strong> {{ $map['social'][$context->socialization_level] ?? '---' }}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Comportamento Agressivo:</strong> {!! $boolStrong($context->shows_aggressive_behavior) !!}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Comportamento Retraído:</strong> {!! $boolStrong($context->shows_withdrawn_behavior) !!}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Intercorrências:</strong>
-                    {{ (!$context->shows_aggressive_behavior && !$context->shows_withdrawn_behavior) ? 'Nenhuma' : 'Ver notas' }}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Notas Comportamentais</strong>
-                    <div class="long-text">{!! $renderHtml($context->behavior_notes) !!}</div>
-                </td>
-            </tr>
-        </table>
-
-        <div class="section-title">Autonomia e Apoios</div>
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Nível de Autonomia:</strong> {{ $map['auto'][$context->autonomy_level] ?? '---' }}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Apoio de Mobilidade:</strong> {!! $boolStrong($context->needs_mobility_support) !!}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Apoio de Comunicação:</strong> {!! $boolStrong($context->needs_communication_support) !!}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Adaptação Pedagógica:</strong> {!! $boolStrong($context->needs_pedagogical_adaptation) !!}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Tecnologia Assistiva:</strong> {!! $boolStrong($context->uses_assistive_technology) !!}
-                </td>
-            </tr>
-        </table>
-
-        <div class="section-title">Saúde</div>
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Possui Laudo Médico:</strong> {!! $boolStrong($context->has_medical_report) !!}
-                </td>
-                <td class="pdf-cell">
-                    <strong>Usa Medicação:</strong> {!! $boolStrong($context->uses_medication) !!}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Observações Médicas</strong>
-                    <div class="long-text">{!! $renderHtml($context->medical_notes) !!}</div>
+                    <strong>Potencialidades e Interesses</strong>
+                    <div class="long-text">{!! $renderHtml($caseStudy->potentials_interests) !!}</div>
                 </td>
             </tr>
         </table>
     @else
         <table class="pdf-table">
             <tr>
-                <td class="pdf-cell">Nenhum contexto atual encontrado para este aluno.</td>
+                <td class="pdf-cell">Nenhum Estudo de Caso encontrado para este aluno.</td>
+            </tr>
+        </table>
+    @endif
+
+    <div class="section-title">PAEE Atual</div>
+    @if($student->currentPaee)
+        @php $paee = $student->currentPaee; @endphp
+        <table class="pdf-table">
+            <tr>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Versão:</strong> {{ $paee->version }}
+                </td>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Status:</strong> {{ $paee->status->label() }}
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Frequência Semanal:</strong> {{ $paee->attendance_frequency_per_week }}x
+                </td>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Formato do Atendimento:</strong> {{ $paee->attendance_format?->label() ?? '---' }}
+                </td>
+            </tr>
+        </table>
+    @else
+        <table class="pdf-table">
+            <tr>
+                <td class="pdf-cell">Nenhum PAEE encontrado para este aluno.</td>
             </tr>
         </table>
     @endif
@@ -505,43 +389,39 @@ $relationshipMap = [
         </table>
 
         {{-- ========================= --}}
-        {{-- INFORMAÇÕES DO NAPNE (UMA VEZ) --}}
+        {{-- INFORMAÇÕES DO PAEE VINCULADO --}}
         {{-- ========================= --}}
-        <div class="section-title">Informações de Apoio Pedagógico (NAPNE)</div>
+        <div class="section-title">Informações de Apoio Pedagógico (PAEE)</div>
 
         <table class="pdf-table">
             <tr>
                 <td class="pdf-cell">
-                    <strong>Histórico (Trajetória do Estudante):</strong>
+                    <strong>Frequência de Atendimento:</strong>
+                    {{ $pei->paee->attendance_frequency_per_week ?? '---' }}x/semana
+                </td>
+            </tr>
+
+            <tr>
+                <td class="pdf-cell">
+                    <strong>Formato do Atendimento:</strong>
+                    {{ $pei->paee->attendance_format?->label() ?? '---' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="pdf-cell">
+                    <strong>Tecnologia Assistiva:</strong>
                     <div class="long-text">
-                        {!! $renderHtml($pei->studentContext->history) !!}
+                        {!! $renderHtml($pei->paee->assistive_technology_notes) !!}
                     </div>
                 </td>
             </tr>
 
             <tr>
                 <td class="pdf-cell">
-                    <strong>Necessidades Educacionais Específicas:</strong>
+                    <strong>Demandas de Formação:</strong>
                     <div class="long-text">
-                        {!! $renderHtml($pei->studentContext->specific_educational_needs) !!}
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Conhecimentos e Interesses:</strong>
-                    <div class="long-text">
-                        {!! $renderHtml($pei->studentContext->knowledge) !!}
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Dificuldades Apresentadas:</strong>
-                    <div class="long-text">
-                        {!! $renderHtml($pei->studentContext->difficulties) !!}
+                        {!! $renderHtml($pei->paee->training_demands) !!}
                     </div>
                 </td>
             </tr>

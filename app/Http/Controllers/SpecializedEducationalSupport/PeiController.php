@@ -90,11 +90,11 @@ class PeiController extends Controller
         $pei->load([
             'student.person',
             'student.deficiencies',
-            'studentContext'
+            'paee'
         ]);
 
         $student = $pei->student;
-        $studentContext = $pei->studentContext;
+        $paee = $pei->paee;
 
         $peiDisciplines = $pei->peiDisciplines()
             ->with(['discipline', 'teacher.person', 'creator'])
@@ -102,7 +102,7 @@ class PeiController extends Controller
             ->paginate(5);
 
         return view('pages.specialized-educational-support.peis.show', compact(
-            'pei', 'student', 'studentContext', 'peiDisciplines'
+            'pei', 'student', 'paee', 'peiDisciplines'
         ));
     }
 
@@ -117,9 +117,9 @@ class PeiController extends Controller
         
         $course = $studentCourse->course;
 
-        $currentContext = $student->contexts()->where('is_current', true)->first();
-        if (!$currentContext) {
-            return redirect()->back()->with('error', 'Este aluno não possui um contexto atual');
+        $currentPaee = app(\App\Services\SpecializedEducationalSupport\PaeeService::class)->getCurrent($student);
+        if (!$currentPaee) {
+            return redirect()->back()->with('error', 'É necessário ter um PAEE ativo para criar o PEI.');
         }
 
         $semester = Semester::current();
@@ -128,7 +128,7 @@ class PeiController extends Controller
         }
 
         return view('pages.specialized-educational-support.peis.create', compact(
-            'student', 'studentCourse', 'course', 'currentContext', 'semester'
+            'student', 'studentCourse', 'course', 'currentPaee', 'semester'
         ));
     }
 
@@ -179,18 +179,18 @@ class PeiController extends Controller
         } 
     }
 
-    // public function createVersion(Student $student)
-    // {
-    //     try {
-    //         $new = $this->service->createVersion($student);
+    public function createVersion(Student $student)
+    {
+        try {
+            $new = $this->service->createVersion($student);
 
-    //         return redirect()
-    //             ->route('specialized-educational-support.pei.show', $new)
-    //             ->with('success', 'Nova versão criada com sucesso.');
-    //     } catch (\Exception $e) {
-    //         return back()->with('error', $e->getMessage());
-    //     }
-    // }
+            return redirect()
+                ->route('specialized-educational-support.pei.show', $new)
+                ->with('success', 'Nova versão criada com sucesso.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
 
    public function generateDisciplinePdf(Pei $pei, PeiDiscipline $peiDiscipline)
     {
@@ -202,7 +202,7 @@ class PeiController extends Controller
         $pei->load([
             'student.person',
             'student.deficiencies',
-            'studentContext',
+            'paee',
             'course',
             'semester'
         ]);
@@ -223,7 +223,7 @@ class PeiController extends Controller
         $pei->load([
             'student.person',
             'student.deficiencies',
-            'studentContext',
+            'paee',
             'course',
             'semester'
         ]);

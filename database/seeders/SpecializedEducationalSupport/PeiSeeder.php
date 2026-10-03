@@ -17,7 +17,7 @@ class PeiSeeder extends Seeder
      */
     public function run(): void
     {
-        $students = Student::with(['currentCourse.course.disciplines', 'currentContext'])->get();
+        $students = Student::with(['currentCourse.course.disciplines', 'currentPaee'])->get();
         $semester = Semester::where('is_current', true)->first();
         $creator = User::whereNotNull('professional_id')->first();
 
@@ -26,11 +26,13 @@ class PeiSeeder extends Seeder
             return;
         }
 
+        $this->command->warn('PeiSeeder: pula alunos sem PAEE ativo (Estudo de Caso -> PAEE -> PEI). Rode os seeders/fluxo de CaseStudy e Paee antes, se quiser PEIs de teste.');
+
         foreach ($students as $student) {
             $currentCourseRelation = $student->currentCourse;
-            $currentContext = $student->currentContext;
+            $currentPaee = $student->currentPaee;
 
-            if (!$currentCourseRelation || !$currentContext) {
+            if (!$currentCourseRelation || !$currentPaee) {
                 continue;
             }
 
@@ -42,14 +44,14 @@ class PeiSeeder extends Seeder
 
             // PEI principal
             $pei = Pei::create([
-                'student_id'         => $student->id,
-                'creator_id'         => $creator->id,
-                'semester_id'        => $semester->id,
-                'course_id'          => $course->id,
-                'student_context_id' => $currentContext->id,
-                'is_finished'        => true,
-                'version'            => 1,
-                'is_current'         => true,
+                'student_id'  => $student->id,
+                'creator_id'  => $creator->id,
+                'semester_id' => $semester->id,
+                'course_id'   => $course->id,
+                'paee_id'     => $currentPaee->id,
+                'is_finished' => true,
+                'version'     => 1,
+                'is_current'  => true,
             ]);
 
             // Pega apenas disciplinas que possuem professor vinculado neste curso

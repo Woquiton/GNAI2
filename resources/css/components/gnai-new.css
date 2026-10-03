@@ -1,0 +1,67 @@
+/*
+ * gnai-new.css
+ * Classe utilitária para marcar visualmente, com destaque rosa,
+ * elementos de UI totalmente novos (seções, campos, abas, cards)
+ * introduzidos pelos módulos de Estudo de Caso e PAEE.
+ */
+
+:root {
+    --gnai-new-color: #ff4fa3;
+    --gnai-new-bg: #fff0f8;
+}
+
+.gnai-new {
+    position: relative;
+    border: 2px solid var(--gnai-new-color) !important;
+    border-radius: 0.5rem;
+    background-color: var(--gnai-new-bg);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.gnai-new::before {
+    content: "";
+}
+
+.gnai-new-badge {
+    display: inline-block;
+    background-color: var(--gnai-new-color);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+}
+
+/* Variante leve: apenas um destaque de borda, sem padding extra,
+   útil para campos individuais dentro de um form-card já estilizado. */
+.gnai-new-field {
+    border: 2px solid var(--gnai-new-color) !important;
+    border-radius: 0.4rem;
+    padding: 0.5rem;
+    background-color: var(--gnai-new-bg);
+}
+
+/* Selo "Novo" inline, para uso em títulos de aba/seção que não podem
+   receber a borda completa (ex: dentro de um breadcrumb ou nav-tab). */
+.gnai-new-tab {
+    position: relative;
+}
+
+.gnai-new-tab::after {
+    content: "Novo";
+    display: inline-block;
+    background-color: var(--gnai-new-color);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+}

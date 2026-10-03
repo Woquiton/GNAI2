@@ -4,7 +4,7 @@ namespace App\Http\Controllers\SpecializedEducationalSupport\Logs;
 
 use App\Http\Controllers\Controller;
 use App\Models\SpecializedEducationalSupport\{
-    Student, Person, StudentDeficiencies, StudentDocument, StudentCourse, StudentContext
+    Student, Person, StudentDeficiencies, StudentDocument, StudentCourse
 };
 use App\Models\AuditLog;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -73,8 +73,7 @@ class StudentLogController extends Controller
             Person::getAuditLabels(),
             StudentDeficiencies::getAuditLabels(),
             StudentDocument::getAuditLabels(),
-            StudentCourse::getAuditLabels(),
-            StudentContext::getAuditLabels()
+            StudentCourse::getAuditLabels()
         );
     }
 }
