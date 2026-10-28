@@ -15,7 +15,7 @@ final class TeacherDisciplinesFormQuery
      */
     public function execute(Teacher $teacher): array
     {
-        $teacher->load(['person', 'courses', 'courseDisciplines.discipline']);
+        $teacher->load(['person', 'courseDisciplines.discipline']);
 
         $selectedByCourse = $teacher->courseDisciplines
             ->groupBy('course_id')

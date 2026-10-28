@@ -12,7 +12,6 @@ final class ShowTeacherQuery
     {
         return $teacher->load([
             'person',
-            'courses',
             'courseDisciplines.discipline',
             'courseDisciplines.course',
         ]);
