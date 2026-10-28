@@ -7,6 +7,7 @@ namespace App\Domains\SpecializedEducationalSupport\Application\Queries\StudentC
 use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidStudent;
 use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidStudentCourse;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Course;
+use App\Domains\SpecializedEducationalSupport\Domain\Models\Semester;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Student;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\StudentCourse;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,6 +28,7 @@ final class StudentCourseFormQuery
         return [
             'student' => $student,
             'courses' => $this->activeCourses(),
+            'semesters' => $this->semesters(),
             'mustBeCurrent' => $mustBeCurrent,
         ];
     }
@@ -38,7 +40,7 @@ final class StudentCourseFormQuery
      */
     public function forUpdate(StudentCourse $studentCourse): array
     {
-        $studentCourse->loadMissing(['student.person', 'course.disciplines', 'failedDisciplines', 'atRiskDisciplines']);
+        $studentCourse->loadMissing(['student.person', 'course.disciplines', 'semester', 'failedDisciplines', 'atRiskDisciplines']);
         $studentCourse->student->ensureIsActive();
         if (! $studentCourse->is_current) {
             throw new InvalidStudentCourse('Cursos anteriores são históricos e não podem mais ser editados.');
@@ -47,6 +49,7 @@ final class StudentCourseFormQuery
         return [
             'studentCourse' => $studentCourse,
             'courses' => $this->activeCourses(),
+            'semesters' => $this->semesters(),
         ];
     }
 
@@ -59,6 +62,17 @@ final class StudentCourseFormQuery
             ->with(['disciplines' => static fn ($query) => $query->orderBy('name')])
             ->where('is_active', true)
             ->orderBy('name')
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, Semester>
+     */
+    private function semesters(): Collection
+    {
+        return Semester::query()
+            ->orderByDesc('year')
+            ->orderByDesc('term')
             ->get();
     }
 }

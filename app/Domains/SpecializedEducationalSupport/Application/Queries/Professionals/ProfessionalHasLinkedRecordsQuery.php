@@ -16,7 +16,6 @@ final class ProfessionalHasLinkedRecordsQuery
 
         return DB::table('attendance_sessions')->where('professional_id', $professionalId)->exists()
             || DB::table('pendencies')->where('assigned_to', $professionalId)->exists()
-            || DB::table('student_contexts')->where('evaluated_by_professional_id', $professionalId)->exists()
             || DB::table('loans')->where('professional_id', $professionalId)->exists()
             || DB::table('waitlists')->where('professional_id', $professionalId)->exists()
             || DB::table('barriers')->where('affected_professional_id', $professionalId)->exists()

@@ -72,6 +72,10 @@
                 {{ $studentCourse->academic_year }}
             </x-show.info-item>
 
+            <x-show.info-item label="Semestre" column="col-md-6" isBox="true">
+                {{ $studentCourse->semester->label ?? 'Não informado' }}
+            </x-show.info-item>
+
             <x-show.info-item label="Situação" column="col-md-6" isBox="true">
                 @if($studentCourse->is_current)
                     <span class="text-success fw-bold" aria-label="Curso atual">ATUAL</span>

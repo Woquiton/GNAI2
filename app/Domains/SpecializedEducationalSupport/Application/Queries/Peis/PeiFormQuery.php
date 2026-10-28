@@ -23,7 +23,7 @@ final readonly class PeiFormQuery
      */
     public function forCreation(Student $student): array
     {
-        $student = $student->loadMissing(['person', 'currentCourse.course', 'currentContext']);
+        $student = $student->loadMissing(['person', 'currentCourse.course', 'currentPaee']);
         $student->ensureIsActive();
 
         $studentCourse = $student->currentCourse;
@@ -31,9 +31,9 @@ final readonly class PeiFormQuery
             throw new InvalidPei('Este aluno não possui matrícula vigente');
         }
 
-        $currentContext = $student->currentContext;
-        if ($currentContext === null) {
-            throw new InvalidPei('Este aluno não possui um contexto atual');
+        $currentPaee = $student->currentPaee;
+        if ($currentPaee === null) {
+            throw new InvalidPei('É necessário ter um PAEE ativo para criar o PEI.');
         }
 
         $semester = $this->currentSemesterQuery->execute();
@@ -45,7 +45,7 @@ final readonly class PeiFormQuery
             'student' => $student,
             'studentCourse' => $studentCourse,
             'course' => $studentCourse->course,
-            'currentContext' => $currentContext,
+            'currentPaee' => $currentPaee,
             'semester' => $semester,
         ];
     }

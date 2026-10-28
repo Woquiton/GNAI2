@@ -9,6 +9,7 @@ final readonly class AeeStudentEvaluationDTO
     public function __construct(
         public int $studentId,
         public bool $isPresent,
+        public bool $withGuardians,
         public ?string $absenceReason,
         public ?string $adaptationsMade,
         public ?string $studentParticipation,

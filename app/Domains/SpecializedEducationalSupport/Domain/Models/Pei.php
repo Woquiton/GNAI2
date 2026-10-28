@@ -23,11 +23,19 @@ final class Pei extends Model
         'creator_id',
         'semester_id',
         'course_id',
-        'student_context_id',
+        'paee_id',
         'is_finished',
         'version',
         'is_current',
+        'other_relevant_info',
     ];
+
+    /** @throws InvalidPei */
+    public function updateOtherRelevantInfo(?string $value): void
+    {
+        $value = trim((string) $value);
+        $this->other_relevant_info = $value === '' ? null : $value;
+    }
 
     protected $casts = [
         'is_finished' => 'boolean',
@@ -42,17 +50,17 @@ final class Pei extends Model
         Student $student,
         Semester $semester,
         Course $course,
-        StudentContext $studentContext,
+        Paee $paee,
         CreatePeiDTO $data,
     ): self {
-        self::ensurePersisted($student, $semester, $course, $studentContext);
+        self::ensurePersisted($student, $semester, $course, $paee);
 
         return new self([
             'student_id' => $student->getKey(),
             'creator_id' => $data->creatorId,
             'semester_id' => $semester->getKey(),
             'course_id' => $course->getKey(),
-            'student_context_id' => $studentContext->getKey(),
+            'paee_id' => $paee->getKey(),
             'is_finished' => $data->isFinished,
             'version' => $data->version,
             'is_current' => $data->isCurrent,
@@ -98,9 +106,12 @@ final class Pei extends Model
             'opinion' => 'parecer',
         ];
 
-        $incompleteDiscipline = $this->peiDisciplines->first(function (PeiDiscipline $peiDiscipline) use ($requiredFields): bool {
+        $isIncomplete = fn (PeiDiscipline $peiDiscipline, string $field): bool => blank($peiDiscipline->{$field})
+            || $peiDiscipline->{$field} === PeiDiscipline::PLACEHOLDER_TEXT;
+
+        $incompleteDiscipline = $this->peiDisciplines->first(function (PeiDiscipline $peiDiscipline) use ($requiredFields, $isIncomplete): bool {
             foreach (array_keys($requiredFields) as $field) {
-                if (blank($peiDiscipline->{$field})) {
+                if ($isIncomplete($peiDiscipline, $field)) {
                     return true;
                 }
             }
@@ -110,7 +121,7 @@ final class Pei extends Model
 
         if ($incompleteDiscipline instanceof PeiDiscipline) {
             $missingFields = collect($requiredFields)
-                ->filter(fn (string $label, string $field): bool => blank($incompleteDiscipline->{$field}))
+                ->filter(fn (string $label, string $field): bool => $isIncomplete($incompleteDiscipline, $field))
                 ->values()
                 ->implode(', ');
 
@@ -153,9 +164,9 @@ final class Pei extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function studentContext(): BelongsTo
+    public function paee(): BelongsTo
     {
-        return $this->belongsTo(StudentContext::class);
+        return $this->belongsTo(Paee::class);
     }
 
     public function peiDisciplines(): HasMany
@@ -166,11 +177,11 @@ final class Pei extends Model
     /**
      * @throws InvalidPei
      */
-    private static function ensurePersisted(Student $student, Semester $semester, Course $course, StudentContext $studentContext): void
+    private static function ensurePersisted(Student $student, Semester $semester, Course $course, Paee $paee): void
     {
-        if (! $student->exists || ! $semester->exists || ! $course->exists || ! $studentContext->exists) {
+        if (! $student->exists || ! $semester->exists || ! $course->exists || ! $paee->exists) {
             throw new InvalidPei(
-                'O PEI deve ser vinculado a aluno, semestre, curso e contexto persistidos.'
+                'O PEI deve ser vinculado a aluno, semestre, curso e PAEE persistidos.'
             );
         }
     }

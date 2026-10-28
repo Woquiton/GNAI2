@@ -16,6 +16,7 @@ final class CreateStudentCourseData extends Data
     public function __construct(
         public int $courseId,
         public int $academicYear,
+        public ?int $semesterId = null,
         public bool $isCurrent = false,
         public ?string $schoolAttendanceStatus = null,
         public array $failedDisciplineIds = [],
@@ -36,6 +37,7 @@ final class CreateStudentCourseData extends Data
                     ->where('student_id', $studentId),
             ],
             'academic_year' => ['required', 'digits:4'],
+            'semester_id' => ['nullable', 'integer', Rule::exists('semesters', 'id')],
             'is_current' => ['sometimes', 'boolean'],
             'school_attendance_status' => ['nullable', 'string', 'max:100000'],
             'failed_discipline_ids' => ['nullable', 'array'],

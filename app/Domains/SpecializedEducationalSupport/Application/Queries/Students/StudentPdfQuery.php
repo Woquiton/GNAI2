@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\SpecializedEducationalSupport\Application\Queries\Students;
 
+use App\Domains\SpecializedEducationalSupport\Domain\Enums\StudentDocumentType;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Student;
 
 final class StudentPdfQuery
@@ -15,15 +16,28 @@ final class StudentPdfQuery
             'deficiencies',
             'currentCourse.course',
             'guardians.person',
-            'currentContext.semester',
-            'currentContext.evaluator.person',
+            'documents' => function ($query): void {
+                $query->with('semester')->orderByDesc('created_at');
+            },
+            'currentCaseStudy.semester',
+            'currentCaseStudy.creator',
+            'currentCaseStudy.barriers',
+            'currentCaseStudy.strategies.linkedBarrier',
+            'currentCaseStudy.contributions.author',
+            'currentPaee.semester',
+            'currentPaee.creator',
+            'currentPaee.objectives.linkedBarrier',
+            'currentPaee.resources.assistiveTechnology',
+            'currentPaee.reviews' => function ($query): void {
+                $query->with('reviewer')->orderByDesc('reviewed_at');
+            },
             'peis' => function ($query): void {
                 $query
                     ->where('is_current', true)
                     ->with([
                         'semester',
                         'course',
-                        'studentContext',
+                        'paee',
                         'creator',
                         'peiDisciplines' => function ($disciplineQuery): void {
                             $disciplineQuery
@@ -31,6 +45,9 @@ final class StudentPdfQuery
                                     'discipline',
                                     'teacher.person',
                                     'creator',
+                                    'revisions' => function ($revisionQuery): void {
+                                        $revisionQuery->with('reviewer')->orderByDesc('reviewed_at');
+                                    },
                                 ])
                                 ->orderBy('id');
                         },
@@ -38,5 +55,11 @@ final class StudentPdfQuery
                     ->orderBy('version');
             },
         ]);
+    }
+
+    public function hasLaudo(Student $student): bool
+    {
+        return $student->documents
+            ->contains(fn ($document) => $document->type === StudentDocumentType::TECHNICAL_REPORT);
     }
 }

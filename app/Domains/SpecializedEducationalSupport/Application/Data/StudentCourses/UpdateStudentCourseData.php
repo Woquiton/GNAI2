@@ -16,6 +16,7 @@ final class UpdateStudentCourseData extends Data
     public function __construct(
         public int $courseId,
         public int $academicYear,
+        public ?int $semesterId = null,
         public ?string $schoolAttendanceStatus = null,
         public array $failedDisciplineIds = [],
         public array $atRiskDisciplineIds = [],
@@ -41,6 +42,7 @@ final class UpdateStudentCourseData extends Data
                     ->ignore($studentCourseId),
             ],
             'academic_year' => ['required', 'digits:4'],
+            'semester_id' => ['nullable', 'integer', Rule::exists('semesters', 'id')],
             'school_attendance_status' => ['nullable', 'string', 'max:100000'],
             'failed_discipline_ids' => ['nullable', 'array'],
             'failed_discipline_ids.*' => ['integer', 'distinct', 'exists:disciplines,id'],

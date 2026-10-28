@@ -10,8 +10,7 @@ final class SemesterHasLinkedRecordsQuery
 {
     public function execute(Semester $semester): bool
     {
-        return $semester->studentContexts()->exists()
-            || $semester->studentDocuments()->exists()
+        return $semester->studentDocuments()->exists()
             || $semester->peis()->exists();
     }
 }

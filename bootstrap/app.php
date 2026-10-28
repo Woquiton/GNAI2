@@ -3,6 +3,7 @@
 use App\Domains\Auth\UI\Middleware\EnsureUserIsAdmin;
 use App\Shared\Application\Exceptions\AccessDeniedException;
 use App\Shared\Domain\Exceptions\BusinessRuleException;
+use App\Shared\Infrastructure\Http\Middleware\EnsureTeacherPortalAccess;
 use App\Shared\Infrastructure\Http\Middleware\SanitizeRichTextInput;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,8 +24,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR
-                | Request::HEADER_X_FORWARDED_HOST
-                | Request::HEADER_X_FORWARDED_PORT
                 | Request::HEADER_X_FORWARDED_PROTO
                 | Request::HEADER_X_FORWARDED_PREFIX
         );
@@ -39,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
         );
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
+            'teacher-portal' => EnsureTeacherPortalAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

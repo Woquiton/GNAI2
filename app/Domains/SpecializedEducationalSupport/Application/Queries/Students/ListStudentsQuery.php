@@ -23,10 +23,10 @@ final class ListStudentsQuery
 
         if ($teacherId !== null) {
             $query->whereHas('courses', function (Builder $courseQuery) use ($teacherId): void {
-                $courseQuery->whereIn('courses.id', function ($teacherCoursesQuery) use ($teacherId): void {
-                    $teacherCoursesQuery
+                $courseQuery->whereIn('courses.id', function ($teacherCourseDisciplinesQuery) use ($teacherId): void {
+                    $teacherCourseDisciplinesQuery
                         ->select('course_id')
-                        ->from('teacher_courses')
+                        ->from('teacher_course_disciplines')
                         ->where('teacher_id', $teacherId);
                 });
             });

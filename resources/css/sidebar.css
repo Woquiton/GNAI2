@@ -106,7 +106,7 @@
 }
 
 .sidebar-menu a.active {
-    background-color: #322b75;
+    background-color: var(--primary-color, #6c63ff);
     border-radius: 20px 0 0 20px;
     margin-left: 1rem;
     width: auto;
@@ -269,4 +269,25 @@ body.sidebar-collapsed .sidebar .icon {
     body.sidebar-collapsed .sidebar .icon {
         margin-right: 10px;
     }
+}
+
+/* ===== DESTAQUE MODULOS NOVOS (Estudo de Caso / PAEE) ===== */
+.sidebar-menu li.gnai-new > a {
+    border-left: 3px solid var(--primary-color, #6c63ff);
+}
+
+.gnai-new-badge {
+    background-color: var(--primary-color, #6c63ff);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    margin-left: auto;
+}
+
+.sidebar.collapsed .gnai-new-badge {
+    display: none;
 }

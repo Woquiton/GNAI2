@@ -47,16 +47,28 @@
     <x-forms.section title="Adaptações Razoáveis e/ou Acessibilidades Curriculares" />
 
     <div class="row g-3 px-4 pb-3">
-        <x-show.info-textarea label="Objetivos Específicos" column="col-md-12" isBox="true">
+        <x-show.info-textarea label="Objetivos Específicos" column="col-md-9" isBox="true">
             {!! $peiDiscipline->specific_objectives !!}
         </x-show.info-textarea>
 
-        <x-show.info-textarea label="Conteúdo Programático" column="col-md-12" isBox="true">
+        <x-show.info-textarea label="Prazo das metas/objetivos" column="col-md-3" isBox="true">
+            {!! $peiDiscipline->objectives_deadline ?? '—' !!}
+        </x-show.info-textarea>
+
+        <x-show.info-textarea label="Conteúdo Programático" column="col-md-6" isBox="true">
             {!! $peiDiscipline->content_programmatic !!}
         </x-show.info-textarea>
 
-        <x-show.info-textarea label="Metodologias e Estratégias" column="col-md-12" isBox="true">
+        <x-show.info-textarea label="Referência curricular" column="col-md-6" isBox="true">
+            {!! $peiDiscipline->curricular_reference ?? '—' !!}
+        </x-show.info-textarea>
+
+        <x-show.info-textarea label="Metodologias e Estratégias" column="col-md-6" isBox="true">
             {!! $peiDiscipline->methodologies !!}
+        </x-show.info-textarea>
+
+        <x-show.info-textarea label="Recursos didáticos e tecnologia assistiva" column="col-md-6" isBox="true">
+            {!! $peiDiscipline->materials_and_assistive_technology ?? '—' !!}
         </x-show.info-textarea>
 
         <x-show.info-textarea label="Processo de Avaliação" column="col-md-12" isBox="true">
@@ -74,6 +86,42 @@
         
     </div>
 
+
+    {{-- ================= REVISÕES DA ADAPTAÇÃO ================= --}}
+    <x-forms.section title="Revisões desta Adaptação" />
+
+    <div class="row g-3 px-4 pb-3">
+        <div class="col-12">
+            @forelse($peiDiscipline->revisions as $revision)
+                <div class="border-bottom pb-2 mb-2">
+                    <strong>{{ $revision->reviewed_at?->format('d/m/Y') }}</strong> — {{ $revision->reviewer?->name }}
+                    <p class="mb-0">{{ $revision->what_changed }}</p>
+                    <small class="text-muted">{{ $revision->why }}</small>
+                </div>
+            @empty
+                <p class="text-muted mb-0">Nenhuma revisão registrada para esta disciplina.</p>
+            @endforelse
+
+            @can('pei-discipline.update')
+                <form action="{{ route('specialized-educational-support.pei-discipline.revisions.store', [$pei, $peiDiscipline]) }}" method="POST" class="mt-3 no-print">
+                    @csrf
+                    <div class="row g-2">
+                        <div class="col-md-5">
+                            <x-forms.textarea name="what_changed" label="O que mudou" rows="2" placeholder="Ex.: Metodologia alterada para incluir apoio visual nas atividades." required />
+                        </div>
+                        <div class="col-md-5">
+                            <x-forms.textarea name="why" label="Por quê" rows="2" placeholder="Ex.: Professor observou melhor engajamento do aluno com recursos visuais." required />
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <x-buttons.submit-button type="submit" class="btn-action new submit w-100">
+                                <i class="fas fa-plus"></i> Registrar
+                            </x-buttons.submit-button>
+                        </div>
+                    </div>
+                </form>
+            @endcan
+        </div>
+    </div>
 
     {{-- ================= RODAPÉ ================= --}}
     <div class="col-12 border-top p-4 d-flex flex-wrap justify-content-end gap-2 bg-light rounded-bottom no-print">

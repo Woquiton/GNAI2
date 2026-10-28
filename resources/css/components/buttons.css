@@ -7,7 +7,7 @@
     --btn-font-size: .85rem;
     --btn-transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 
-    --btn-primary: #3d35a5;
+    --btn-primary: #6c63ff;
     --btn-info: #2e5cb8;
     --btn-dark: #212529;
     --btn-warning: #ffc107;
@@ -67,7 +67,7 @@
 }
 
 .btn-action.primary:hover {
-    background-color: #332e8c;
+    background-color: #564fcc;
 }
 
 .btn-action.info {

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GNAI — Fluxo do Atendimento Educacional Especializado</title>
+<style>
+    :root {
+        --purple: #322b75;
+        --purple-mid: #5a51b8;
+        --accent: #6c63ff;
+        --accent-2: #e8557a;
+        --accent-3: #27b899;
+        --warn: #c98a00;
+        --ink: #212529;
+        --ink-soft: #495057;
+        --ink-muted: #6c757d;
+        --surface: #f8f9fb;
+        --white: #ffffff;
+        --border: #e4e6ef;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--surface);
+        color: var(--ink);
+        line-height: 1.5;
+        padding: 40px 20px 80px;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 48px; }
+    header .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--accent);
+    }
+    header h1 {
+        font-size: 28px;
+        margin: 8px 0 12px;
+        color: var(--purple);
+    }
+    header p {
+        color: var(--ink-muted);
+        max-width: 620px;
+        margin: 0 auto;
+        font-size: 14.5px;
+    }
+
+    .legend {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        margin: 28px 0 44px;
+        font-size: 12.5px;
+        color: var(--ink-soft);
+    }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+    .flow { position: relative; }
+    .flow::before {
+        content: "";
+        position: absolute;
+        left: 29px;
+        top: 10px;
+        bottom: 10px;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--border), var(--border));
+        z-index: 0;
+    }
+
+    .step {
+        position: relative;
+        display: flex;
+        gap: 20px;
+        margin-bottom: 14px;
+        z-index: 1;
+    }
+    .step-marker {
+        flex-shrink: 0;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--white);
+        border: 2px solid var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 18px;
+        color: var(--accent);
+    }
+    .step.branch .step-marker { border-color: var(--accent-2); color: var(--accent-2); }
+    .step.gate .step-marker { border-color: var(--accent-3); color: var(--accent-3); background: #eafbf5; }
+
+    .card {
+        flex: 1;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 22px;
+        box-shadow: 0 2px 8px rgba(50,43,117,0.04);
+        cursor: pointer;
+        transition: box-shadow .15s ease, transform .15s ease;
+    }
+    .card:hover { box-shadow: 0 6px 18px rgba(50,43,117,0.10); transform: translateY(-1px); }
+
+    .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    .card-head h3 { font-size: 16.5px; color: var(--ink); }
+    .card-head .tag {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+    .tag.module { background: #eef0ff; color: var(--accent); }
+    .tag.alt { background: #fdeaf0; color: var(--accent-2); }
+    .tag.gate { background: #e6f9f3; color: var(--accent-3); }
+
+    .card-sub { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+
+    .chevron {
+        width: 20px; height: 20px;
+        flex-shrink: 0;
+        transition: transform .15s ease;
+        color: var(--ink-muted);
+    }
+    .card.open .chevron { transform: rotate(180deg); }
+
+    .card-body {
+        display: none;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px dashed var(--border);
+        font-size: 13.5px;
+        color: var(--ink-soft);
+    }
+    .card.open .card-body { display: block; }
+
+    .card-body h4 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        color: var(--ink-muted);
+        margin: 10px 0 4px;
+    }
+    .card-body h4:first-child { margin-top: 0; }
+    .card-body ul { margin: 0 0 0 18px; }
+    .card-body li { margin-bottom: 3px; }
+    .card-body .who {
+        display: inline-block;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px 8px;
+        font-size: 12px;
+        margin: 2px 4px 2px 0;
+    }
+
+    .branch-wrap {
+        position: relative;
+        margin-left: 80px;
+        padding-left: 20px;
+        border-left: 2px dashed var(--accent-2);
+    }
+    .branch-label {
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--accent-2);
+        margin: 18px 0 10px 80px;
+    }
+    .or-divider {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--ink-muted);
+        margin: 6px 0 6px 80px;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 60px;
+        font-size: 12px;
+        color: var(--ink-muted);
+    }
+
+    @media print {
+        body { background: #fff; padding: 0; }
+        .card-body { display: block !important; }
+        .chevron { display: none; }
+        .card { break-inside: avoid; }
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <header>
+        <div class="eyebrow">Manual de Fluxo — GNAI</div>
+        <h1>Da matrícula ao acompanhamento do AEE</h1>
+        <p>Passo a passo de como um aluno entra no sistema, como o apoio especializado é liberado e documentado, e como o acompanhamento continua ao longo do(s) semestre(s). Clique em cada etapa para ver detalhes, regras e responsáveis.</p>
+    </header>
+
+    <div class="legend">
+        <span><i class="dot" style="background:var(--accent)"></i> Etapa principal</span>
+        <span><i class="dot" style="background:var(--accent-2)"></i> Caminho alternativo</span>
+        <span><i class="dot" style="background:var(--accent-3)"></i> Ponto de decisão / liberação</span>
+    </div>
+
+    <div class="flow">
+
+        <!-- 1 -->
+        <div class="step" onclick="toggle(this)">
+            <div class="step-marker">1</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Cadastro do Aluno</h3>
+                    <span class="tag module">Cadastro</span>
+                </div>
+                <div class="card-sub">Dados pessoais, matrícula e vínculo a um curso.</div>
+                <div class="card-body">
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Dados pessoais (Person): nome, nascimento, documento, contato.</li>
+                        <li>Matrícula do aluno (Student) com status ativo.</li>
+                        <li>Vínculo a um curso (Técnico integrado ou Superior) via Curso do Aluno, com ano letivo.</li>
+                    </ul>
+                    <h4>Responsável</h4>
+                    <span class="who">Secretaria / Coordenação</span>
+                    <span class="who">permissão: student.create</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="step" onclick="toggle(this)">
+            <div class="step-marker">2</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Identificação do Perfil de Atendimento</h3>
+                    <span class="tag module">Perfil AEE</span>
+                </div>
+                <div class="card-sub">Vínculo do aluno a um ou mais tipos de deficiência/condição.</div>
+                <div class="card-body">
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Tipo de deficiência/condição (visual, auditiva, TEA, TDAH, etc.).</li>
+                        <li>Severidade (leve, moderada, severa) e observações.</li>
+                    </ul>
+                    <h4>Por que importa</h4>
+                    <p>Esse vínculo é o que caracteriza o aluno como público-alvo do AEE e contextualiza as próximas etapas (Laudo/Estudo de Caso).</p>
+                    <h4>Responsável</h4>
+                    <span class="who">NAPNE / Professor AEE</span>
+                    <span class="who">permissão: student-deficiency.create</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bifurcação -->
+        <div class="branch-label">⚡ Ponto de decisão — como liberar o PAEE?</div>
+
+        <div class="step branch" onclick="toggle(this)">
+            <div class="step-marker">3a</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Caminho A — Laudo Técnico</h3>
+                    <span class="tag alt">Alternativa 1</span>
+                </div>
+                <div class="card-sub">A família/aluno já possui laudo médico ou relatório técnico.</div>
+                <div class="card-body">
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Upload do documento (PDF) como "Laudo" nos Documentos do Aluno.</li>
+                        <li>Ainda é necessário um Estudo de Caso de vínculo (pode ficar em rascunho/andamento), pois o PAEE sempre referencia um Estudo de Caso no sistema — mas não precisa estar concluído neste caminho.</li>
+                    </ul>
+                    <h4>Responsável</h4>
+                    <span class="who">Família / Secretaria</span>
+                    <span class="who">permissão: student-document.create</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="or-divider">— OU —</div>
+
+        <div class="step branch" onclick="toggle(this)">
+            <div class="step-marker">3b</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Caminho B — Estudo de Caso completo</h3>
+                    <span class="tag alt">Alternativa 2</span>
+                </div>
+                <div class="card-sub">Sem laudo médico formal — a escola instrui o processo por observação.</div>
+                <div class="card-body">
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Origem da demanda, escuta do aluno, da família e dos professores.</li>
+                        <li>Barreiras enfrentadas (arquitetônicas, comunicacionais, metodológicas, atitudinais...).</li>
+                        <li>Estratégias já tentadas e vinculadas às barreiras identificadas.</li>
+                        <li>Aspectos favoráveis, potenciais/interesses do aluno.</li>
+                        <li>Apoios necessários e aceite da família.</li>
+                        <li>Conclusão formal (status "concluído") — <strong>obrigatória</strong> para liberar o PAEE por este caminho.</li>
+                    </ul>
+                    <h4>Responsável</h4>
+                    <span class="who">NAPNE / Professor AEE / Psicopedagogia</span>
+                    <span class="who">permissão: case-study.create / case-study.update</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="step gate" onclick="toggle(this)">
+            <div class="step-marker">4</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>PAEE liberado</h3>
+                    <span class="tag gate">Liberação</span>
+                </div>
+                <div class="card-sub">Plano de Atendimento Educacional Especializado — só é criado se o Caminho A ou B foi cumprido.</div>
+                <div class="card-body">
+                    <h4>Regra de elegibilidade</h4>
+                    <p>O sistema libera a criação do PAEE quando: <strong>Estudo de Caso está concluído</strong> OU <strong>existe um Laudo técnico anexado</strong> ao aluno. Essa é uma regra permanente, não apenas de período de adaptação.</p>
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Frequência e duração do atendimento semanal.</li>
+                        <li>Formato (individual/coletivo) e local (SRM, centro de acessibilidade, sala comum...).</li>
+                        <li>Necessidade de tecnologia assistiva e de profissional de apoio.</li>
+                        <li>Orientações aos profissionais da escola, articulação com professores, família e rede intersetorial.</li>
+                        <li>Objetivos (curto/médio/longo prazo), vinculáveis a barreiras do Estudo de Caso.</li>
+                        <li>Recursos necessários (produzir, acessibilizar ou adquirir).</li>
+                        <li>Revisões periódicas (o que mudou, por quê, quando).</li>
+                    </ul>
+                    <h4>Responsável</h4>
+                    <span class="who">Professor AEE / NAPNE</span>
+                    <span class="who">permissão: paee.create</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="step" onclick="toggle(this)">
+            <div class="step-marker">5</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>PEI — Plano Educacional Individualizado</h3>
+                    <span class="tag module">Planejamento</span>
+                </div>
+                <div class="card-sub">Depende de um PAEE ativo do aluno.</div>
+                <div class="card-body">
+                    <h4>Regra de elegibilidade</h4>
+                    <p>Só pode ser criado um PEI se o aluno tiver um <strong>PAEE vigente (is_current = true)</strong>. O PEI fica vinculado a esse PAEE.</p>
+                    <h4>O que é registrado (por disciplina)</h4>
+                    <ul>
+                        <li>Professor responsável pela disciplina.</li>
+                        <li>Objetivos específicos, conteúdo programático, metodologias e estratégias.</li>
+                        <li>Processo de avaliação adaptado e parecer do professor.</li>
+                        <li>Registros complementares (observações livres).</li>
+                    </ul>
+                    <h4>Finalização</h4>
+                    <p>O PEI só pode ser marcado como "finalizado" quando <strong>todas</strong> as disciplinas cadastradas tiverem os campos obrigatórios preenchidos. Enquanto incompleto, fica "em preenchimento".</p>
+                    <h4>Responsável</h4>
+                    <span class="who">Professor AEE (coordena)</span>
+                    <span class="who">Professores das disciplinas (preenchem adaptações)</span>
+                    <span class="who">permissão: pei.create</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="step" onclick="toggle(this)">
+            <div class="step-marker">6</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Agendamento do Atendimento</h3>
+                    <span class="tag module">Agenda</span>
+                </div>
+                <div class="card-sub">Sessão marcada na agenda do profissional, com data/hora/local.</div>
+                <div class="card-body">
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Data, horário de início/fim, tipo (individual/coletivo) e local do atendimento.</li>
+                        <li>Objetivo da sessão e aluno(s) vinculado(s).</li>
+                        <li>Status (Agendada, Realizada, Cancelada...).</li>
+                    </ul>
+                    <h4>Responsável</h4>
+                    <span class="who">Professor AEE / Pedagógico</span>
+                    <span class="who">tela: Agenda Semanal / Agendamentos</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bifurcação 2 -->
+        <div class="branch-label">⚡ Após o atendimento acontecer — qual registro preencher?</div>
+
+        <div class="step branch" onclick="toggle(this)">
+            <div class="step-marker">7a</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Atendimento Especializado (AEE)</h3>
+                    <span class="tag alt">Registro técnico</span>
+                </div>
+                <div class="card-sub">Preenchido pelo profissional do AEE, a partir do agendamento.</div>
+                <div class="card-body">
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Duração real do atendimento.</li>
+                        <li>Atividades realizadas, estratégias e recursos usados.</li>
+                        <li>Observações gerais por aluno atendido na sessão.</li>
+                    </ul>
+                    <h4>Responsável</h4>
+                    <span class="who">Professor AEE</span>
+                    <span class="who">permissão: aee-record.create</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="or-divider">— OU —</div>
+
+        <div class="step branch" onclick="toggle(this)">
+            <div class="step-marker">7b</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Atendimento Pedagógico</h3>
+                    <span class="tag alt">Registro pedagógico</span>
+                </div>
+                <div class="card-sub">Preenchido pelo pedagógico/professor comum, a partir do agendamento.</div>
+                <div class="card-body">
+                    <h4>O que é registrado</h4>
+                    <ul>
+                        <li>Motivo do acompanhamento e presença/falta (com justificativa).</li>
+                        <li>Acompanhamento pedagógico sistemático.</li>
+                        <li>Estratégias e recursos adotados, encaminhamentos feitos.</li>
+                    </ul>
+                    <h4>Responsável</h4>
+                    <span class="who">Pedagógico / Professor da disciplina</span>
+                    <span class="who">permissão: pedagogical-record.create</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="step" onclick="toggle(this)">
+            <div class="step-marker">8</div>
+            <div class="card">
+                <div class="card-head">
+                    <h3>Acompanhamento e Revisão</h3>
+                    <span class="tag module">Continuidade</span>
+                </div>
+                <div class="card-sub">O ciclo se repete e os planos são revisados ao longo do tempo.</div>
+                <div class="card-body">
+                    <h4>O que acontece ao longo do semestre/ano</h4>
+                    <ul>
+                        <li>Novos atendimentos são agendados e registrados continuamente (volta à etapa 6).</li>
+                        <li>O PAEE recebe revisões periódicas (o que mudou e por quê), com data prevista para a próxima revisão.</li>
+                        <li>Um novo PEI (nova versão) pode ser criado quando o PEI atual é finalizado e o plano precisa ser atualizado para um novo período letivo.</li>
+                        <li>O card de status no perfil do aluno (Laudo / Estudo de Caso / PAEE / PEI) mostra de relance em que ponto do fluxo o aluno está.</li>
+                    </ul>
+                    <h4>Visão consolidada</h4>
+                    <p>O perfil do aluno reúne todo esse histórico: documentos, estudo de caso, PAEE, PEI e atendimentos — permitindo que qualquer profissional autorizado entenda rapidamente a trajetória de apoio do aluno.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        GNAI — Sistema de Atendimento Educacional Especializado · IFBaiano Campus Guanambi<br>
+        Documento de apoio gerado para orientação interna da equipe.
+    </footer>
+
+</div>
+
+<script>
+function toggle(el) {
+    el.querySelector('.card').classList.toggle('open');
+}
+</script>
+</body>
+</html>

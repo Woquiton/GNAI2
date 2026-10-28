@@ -53,6 +53,7 @@ final readonly class UpdateStudentCourseAction
 
             $studentCourseDTO = new UpdateStudentCourseDTO(
                 academicYear: $data->academicYear,
+                semesterId: $data->semesterId,
                 schoolAttendanceStatus: $data->schoolAttendanceStatus,
             );
 

@@ -17,7 +17,7 @@ final class ListTeachersData extends Data
         public ?string $name = null,
         public ?string $email = null,
         public ?string $registration = null,
-        public int $perPage = 10,
+        public int $perPage = 25,
     ) {}
 
     public static function rules(): array

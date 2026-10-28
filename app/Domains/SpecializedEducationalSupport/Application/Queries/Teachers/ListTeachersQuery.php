@@ -18,6 +18,8 @@ final class ListTeachersQuery
     {
         return Teacher::query()
             ->with('person')
+            ->join('people', 'people.id', '=', 'teachers.person_id')
+            ->select('teachers.*')
             ->when(
                 $filters->name,
                 fn (Builder $query, string $term): Builder => $query->whereHas(
@@ -36,7 +38,7 @@ final class ListTeachersQuery
                 $filters->registration,
                 fn (Builder $query, string $term): Builder => $query->where('registration', 'like', "%{$term}%"),
             )
-            ->orderByDesc('id')
+            ->orderBy('people.name')
             ->paginate($filters->perPage)
             ->withQueryString();
     }

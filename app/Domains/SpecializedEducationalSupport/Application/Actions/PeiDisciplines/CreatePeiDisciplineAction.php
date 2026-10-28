@@ -86,6 +86,9 @@ final readonly class CreatePeiDisciplineAction
                 evaluations: $data->evaluations,
                 opinion: $data->opinion,
                 complementaryRecords: $data->complementaryRecords,
+                curricularReference: $data->curricularReference,
+                materialsAndAssistiveTechnology: $data->materialsAndAssistiveTechnology,
+                objectivesDeadline: $data->objectivesDeadline,
             );
 
             $peiDiscipline = PeiDiscipline::register(

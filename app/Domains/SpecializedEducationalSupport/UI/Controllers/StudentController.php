@@ -48,17 +48,22 @@ final class StudentController
         );
     }
 
-    public function show(Student $student, ShowStudentQuery $showStudent, StudentAeeEvaluationsQuery $aeeEvaluationsQuery, StudentPedagogicalRecordsQuery $pedagogicalRecordsQuery, Request $request): View
+    public function show(Student $student, ShowStudentQuery $showStudent, StudentAeeEvaluationsQuery $aeeEvaluationsQuery, StudentPedagogicalRecordsQuery $pedagogicalRecordsQuery, \App\Domains\SpecializedEducationalSupport\Application\Queries\Students\StudentCaseStudiesQuery $caseStudiesQuery, \App\Domains\SpecializedEducationalSupport\Application\Queries\Students\StudentPaeesQuery $paeesQuery, Request $request): View
     {
         $user = $request->user();
         $authenticatedUser = $user instanceof User ? $user : null;
         $student = $showStudent->execute($student);
         $aeeEvaluations = $aeeEvaluationsQuery->execute($student, $authenticatedUser);
         $pedagogicalRecords = $pedagogicalRecordsQuery->execute($student, $authenticatedUser);
+        $caseStudies = $caseStudiesQuery->execute($student);
+        $paees = $paeesQuery->execute($student);
+        $hasLaudo = $student->documents()
+            ->where('type', \App\Domains\SpecializedEducationalSupport\Domain\Enums\StudentDocumentType::TECHNICAL_REPORT->value)
+            ->exists();
 
         return view(
             'pages.specialized-educational-support.students.show',
-            compact('student', 'aeeEvaluations', 'pedagogicalRecords'),
+            compact('student', 'aeeEvaluations', 'pedagogicalRecords', 'caseStudies', 'paees', 'hasLaudo'),
         );
     }
 
@@ -114,13 +119,22 @@ final class StudentController
             ->with('success', 'Aluno removido com sucesso.');
     }
 
-    public function pdf(Student $student, StudentPdfQuery $query): Response
-    {
+    public function pdf(
+        Student $student,
+        StudentPdfQuery $query,
+        StudentAeeEvaluationsQuery $aeeEvaluationsQuery,
+        StudentPedagogicalRecordsQuery $pedagogicalRecordsQuery,
+        Request $request,
+    ): Response {
         $student = $query->execute($student);
+
+        $user = $request->user();
+        $aeeEvaluations = $user instanceof User ? $aeeEvaluationsQuery->history($student, $user)->reverse()->values() : collect();
+        $pedagogicalRecords = $user instanceof User ? $pedagogicalRecordsQuery->history($student, $user)->reverse()->values() : collect();
 
         $pdf = Pdf::loadView(
             'pages.specialized-educational-support.students.pdf',
-            compact('student'),
+            compact('student', 'aeeEvaluations', 'pedagogicalRecords'),
         );
 
         PdfPageNumberer::apply($pdf);

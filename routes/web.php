@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\Notifications\UI\Controllers\NotificationController;
+use App\Domains\SpecializedEducationalSupport\UI\Controllers\TeacherPortalController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('web')->group(function () {
@@ -37,4 +38,17 @@ Route::middleware('web')->group(function () {
     });
 
     Route::get('/about-us', fn () => view('pages.about-us'))->name('about-us');
+
+    Route::middleware(['auth'])->get('/guia-de-uso', fn () => view('pages.user-guide'))->name('user-guide');
+
+    Route::middleware(['auth', 'teacher-portal'])
+        ->prefix('professor')
+        ->name('teacher-portal.')
+        ->group(function () {
+            Route::get('/', [TeacherPortalController::class, 'index'])->name('index');
+            Route::get('/alunos/{student}', [TeacherPortalController::class, 'showStudent'])->name('students.show');
+            Route::get('/documentos/{document}', [TeacherPortalController::class, 'viewDocument'])->name('documents.view');
+            Route::get('/adaptacoes/{peiDiscipline}/edit', [TeacherPortalController::class, 'editDiscipline'])->name('discipline.edit');
+            Route::put('/adaptacoes/{peiDiscipline}', [TeacherPortalController::class, 'updateDiscipline'])->name('discipline.update');
+        });
 });

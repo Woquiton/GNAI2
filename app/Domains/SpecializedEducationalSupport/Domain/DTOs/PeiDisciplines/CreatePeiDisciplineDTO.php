@@ -13,5 +13,8 @@ final readonly class CreatePeiDisciplineDTO
         public string $evaluations,
         public ?string $opinion = null,
         public ?string $complementaryRecords = null,
+        public ?string $curricularReference = null,
+        public ?string $materialsAndAssistiveTechnology = null,
+        public ?string $objectivesDeadline = null,
     ) {}
 }

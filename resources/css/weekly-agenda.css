@@ -1,24 +1,17 @@
-:root {
-  /* Paleta principal do sistema */
-  --primary-color: rgba(50, 43, 117, 0.9);
-  --primary-color-medium: #6c63ff;
-  --primary-color-light: #8a7fd4;
-  --primary-color-dark: #3d35a5;
-  --bg-soft-info: #eef0f3;
-
-  --bs-success: #198754;
-  --bs-warning: #ffc107;
-  --bs-danger: #dc3545;
-}
+/* Removido bloco :root duplicado que redefinia --primary-color (e outros
+   tokens globais) com os valores antigos — como este arquivo carrega depois
+   de variables.css, ele estava anulando a troca de paleta em todo o site.
+   Os tokens de marca já vêm de variables.css; aqui ficam só os específicos
+   da agenda semanal, escopados em .weekly-agenda. */
 
 /* Escopo exclusivo da agenda semanal */
 .weekly-agenda {
-  --agenda-border: rgba(61, 53, 165, 0.18);
+  --agenda-border: rgba(108, 99, 255, 0.18);
   --agenda-card-bg: #ffffff;
   --agenda-day-bg: linear-gradient(180deg, #ffffff 0%, #f7f7ff 100%);
   --agenda-session-bg: #fdfdff;
   --agenda-muted: #6c757d;
-  --agenda-shadow: 0 8px 24px rgba(50, 43, 117, 0.08);
+  --agenda-shadow: 0 8px 24px rgba(108, 99, 255, 0.08);
 }
 
 .weekly-agenda .weekly-day-card {
@@ -70,12 +63,12 @@
 }
 
 .weekly-agenda .weekly-sessions-list::-webkit-scrollbar-thumb {
-  background: rgba(50, 43, 117, 0.18);
+  background: rgba(108, 99, 255, 0.18);
   border-radius: 999px;
 }
 
 .weekly-agenda .weekly-sessions-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(50, 43, 117, 0.3);
+  background: rgba(108, 99, 255, 0.3);
 }
 
 .weekly-agenda .weekly-session-card {
@@ -83,13 +76,13 @@
   border: 1px solid rgba(108, 99, 255, 0.14) !important;
   border-left: 4px solid var(--primary-color-medium);
   border-radius: 0.9rem;
-  box-shadow: 0 4px 14px rgba(50, 43, 117, 0.05);
+  box-shadow: 0 4px 14px rgba(108, 99, 255, 0.05);
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .weekly-agenda .weekly-session-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(50, 43, 117, 0.09);
+  box-shadow: 0 8px 18px rgba(108, 99, 255, 0.09);
   border-color: rgba(108, 99, 255, 0.28) !important;
 }
 

@@ -14,6 +14,8 @@ final class UpdateAeeStudentEvaluationData extends Data
     public function __construct(
         public int $studentId,
         public bool $isPresent,
+        public bool $withGuardians = false,
+        public array $guardianIds = [],
         public ?string $absenceReason = null,
         public ?string $studentParticipation = null,
         public ?string $adaptationsMade = null,
@@ -26,6 +28,7 @@ final class UpdateAeeStudentEvaluationData extends Data
     public static function prepareForPipeline(array $properties): array
     {
         $properties['is_present'] = filter_var($properties['is_present'] ?? false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $properties['with_guardians'] = filter_var($properties['with_guardians'] ?? false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
         return $properties;
     }
@@ -35,6 +38,9 @@ final class UpdateAeeStudentEvaluationData extends Data
         return [
             'student_id' => ['required', 'integer', 'exists:students,id'],
             'is_present' => ['required', 'boolean'],
+            'with_guardians' => ['required', 'boolean'],
+            'guardian_ids' => ['required_if:with_guardians,1', 'nullable', 'array', 'min:1'],
+            'guardian_ids.*' => ['integer', 'distinct', 'exists:student_guardians,id'],
             'absence_reason' => ['required_if:is_present,0', 'nullable', 'string', 'max:100000'],
             'student_participation' => ['required_if:is_present,1', 'nullable', 'string', 'max:100000'],
             'development_evaluation' => ['required_if:is_present,1', 'nullable', 'string', 'max:100000'],

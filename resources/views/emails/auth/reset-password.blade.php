@@ -63,7 +63,7 @@
                 <tr>
                     <td style="padding: 22px 40px; background: #fbfbff; border-top: 1px solid #eeeeF8;">
                         <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #8a8a99;">
-                            GNAI &copy; {{ date('Y') }} | Gestão NAIs
+                            GNAI &copy; {{ date('Y') }} | Gestor de Núcleos de Acessibilidade e Inclusão
                         </p>
                     </td>
                 </tr>

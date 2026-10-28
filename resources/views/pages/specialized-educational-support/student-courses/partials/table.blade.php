@@ -3,6 +3,7 @@
         ['label' => 'Aluno',         'responsive' => false],
         ['label' => 'Curso / Série', 'responsive' => false],
         ['label' => 'Ano Letivo',    'responsive' => true],
+        ['label' => 'Semestre',      'responsive' => true],
         ['label' => 'Situação',      'responsive' => true],
         ['label' => 'Ações',         'responsive' => false],
     ]"
@@ -15,6 +16,8 @@
             <x-table.td :responsive="false">{{ $enrollment->course->name }}</x-table.td>
 
             <x-table.td>{{ $enrollment->academic_year }}</x-table.td>
+
+            <x-table.td>{{ $enrollment->semester->label ?? '—' }}</x-table.td>
 
             <x-table.td>
                 @php

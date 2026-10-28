@@ -27,7 +27,8 @@ final class UpdateAeeRecordAction
             $record->revise($dto);
             $record->save();
 
-            foreach ($dto->evaluations as $evaluationDTO) {
+            foreach ($data->evaluations as $index => $evaluationData) {
+                $evaluationDTO = $dto->evaluations[$index];
                 $evaluation = AeeStudentEvaluation::query()->where('aee_record_id', $record->getKey())->where('student_id', $evaluationDTO->studentId)->first();
 
                 if ($evaluation === null) {
@@ -38,6 +39,8 @@ final class UpdateAeeRecordAction
                 }
 
                 $evaluation->save();
+                $guardianIds = array_map('intval', $evaluationData['guardian_ids'] ?? []);
+                $evaluation->syncGuardians($evaluationDTO->withGuardians ? $guardianIds : []);
             }
 
             return $record->fresh([
@@ -79,6 +82,7 @@ final class UpdateAeeRecordAction
         return new AeeStudentEvaluationDTO(
             studentId: (int) $data['student_id'],
             isPresent: (bool) $data['is_present'],
+            withGuardians: (bool) ($data['with_guardians'] ?? false),
             absenceReason: $data['absence_reason'] ?? null,
             adaptationsMade: $data['adaptations_made'] ?? null,
             studentParticipation: $data['student_participation'] ?? null,

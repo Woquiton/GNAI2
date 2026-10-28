@@ -1,10 +1,12 @@
 <?php
 
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\AeeRecordController;
+use App\Domains\SpecializedEducationalSupport\UI\Controllers\CaseStudyController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\CourseController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\DeficiencyController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\DisciplineController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\GuardianController;
+use App\Domains\SpecializedEducationalSupport\UI\Controllers\PaeeController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\PedagogicalRecordController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\PeiController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\PendencyController;
@@ -12,7 +14,6 @@ use App\Domains\SpecializedEducationalSupport\UI\Controllers\PositionController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\ProfessionalController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\SemesterController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\SessionController;
-use App\Domains\SpecializedEducationalSupport\UI\Controllers\StudentContextController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\StudentController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\StudentCourseController;
 use App\Domains\SpecializedEducationalSupport\UI\Controllers\StudentDeficiencyController;
@@ -114,20 +115,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/teachers/{teacher}/disciplines', [TeacherController::class, 'disciplines'])->name('teachers.disciplines')->middleware('can:teacher.update');
     Route::put('/teachers/{teacher}/disciplines', [TeacherController::class, 'updateDisciplines'])->name('teachers.disciplines.update')->middleware('can:teacher.update');
 
-    /* 5. STUDENT CONTEXT */
-    Route::get('student-context/{student}/index', [StudentContextController::class, 'index'])->name('student-context.index')->middleware('can:student-context.view');
-    Route::get('student-context/{studentContext}/show', [StudentContextController::class, 'show'])->name('student-context.show')->middleware('can:student-context.view');
-    Route::get('student-context/{student}/show_current', [StudentContextController::class, 'showCurrent'])->name('student-context.show-current')->middleware('can:student-context.view');
-    Route::get('student-context/{student}/create', [StudentContextController::class, 'create'])->name('student-context.create')->middleware('can:student-context.create');
-    Route::post('student-context/{student}/store', [StudentContextController::class, 'store'])->name('student-context.store')->middleware('can:student-context.create');
-    Route::get('student-context/{studentContext}/edit', [StudentContextController::class, 'edit'])->name('student-context.edit')->middleware('can:student-context.update');
-    Route::put('student-context/{studentContext}', [StudentContextController::class, 'update'])->name('student-context.update')->middleware('can:student-context.update');
-    Route::delete('student-context/{studentContext}', [StudentContextController::class, 'destroy'])->name('student-context.destroy')->middleware('can:student-context.delete');
-    Route::get('student-context/{student}/new-version', [StudentContextController::class, 'makeNewVersion'])->name('student-context.new-version')->middleware('can:student-context.create');
-    Route::post('student-context/{student}/store-new-version', [StudentContextController::class, 'storeNewVersion'])->name('student-context.store-new-version')->middleware('can:student-context.create');
-    Route::post('student-context/{studentContext}/restore', [StudentContextController::class, 'restoreVersion'])->name('student-context.restore')->middleware('can:student-context.update');
-    Route::get('student-context/{studentContext}/pdf', [StudentContextController::class, 'generatePdf'])->name('student-context.pdf')->middleware('can:student-context.view');
-
     /* 6. STUDENT DEFICIENCIES */
     Route::get('students/{student}/deficiencies', [StudentDeficiencyController::class, 'index'])->name('student-deficiencies.index')->middleware('can:student-deficiency.view');
     Route::get('students/{student}/deficiencies/create', [StudentDeficiencyController::class, 'create'])->name('student-deficiencies.create')->middleware('can:student-deficiency.create');
@@ -205,6 +192,79 @@ Route::middleware(['auth'])->group(function () {
         ->name('students.pedagogical-records.pdf')
         ->middleware('can:pedagogical-record.view');
 
+    /* 8.2 CASE STUDIES (ESTUDO DE CASO) */
+    Route::get('case-studies', [CaseStudyController::class, 'all'])
+        ->name('case-study.all')
+        ->middleware('can:case-study.view');
+    Route::get('case-studies/{student}/create', [CaseStudyController::class, 'create'])
+        ->name('case-study.create')
+        ->middleware('can:case-study.create');
+    Route::post('case-studies/{student}/store', [CaseStudyController::class, 'store'])
+        ->name('case-study.store')
+        ->middleware('can:case-study.create');
+    Route::get('case-studies/{caseStudy}/show', [CaseStudyController::class, 'show'])
+        ->name('case-study.show')
+        ->middleware('can:case-study.view');
+    Route::get('case-studies/{caseStudy}/edit', [CaseStudyController::class, 'edit'])
+        ->name('case-study.edit')
+        ->middleware('can:case-study.update');
+    Route::put('case-studies/{caseStudy}', [CaseStudyController::class, 'update'])
+        ->name('case-study.update')
+        ->middleware('can:case-study.update');
+    Route::delete('case-studies/{caseStudy}', [CaseStudyController::class, 'destroy'])
+        ->name('case-study.destroy')
+        ->middleware('can:case-study.delete');
+    Route::patch('case-studies/{caseStudy}/complete', [CaseStudyController::class, 'complete'])
+        ->name('case-study.complete')
+        ->middleware('can:case-study.update');
+    Route::post('case-studies/{caseStudy}/contributions', [CaseStudyController::class, 'addContribution'])
+        ->name('case-study.contributions.store')
+        ->middleware('can:case-study.update');
+    Route::get('case-studies/{caseStudy}/pdf', [CaseStudyController::class, 'pdf'])
+        ->name('case-study.pdf')
+        ->middleware('can:case-study.view');
+    Route::get('students/{student}/case-studies', [CaseStudyController::class, 'index'])
+        ->name('students.case-studies.index')
+        ->middleware('can:case-study.view');
+    Route::get('students/{student}/case-studies/history', [CaseStudyController::class, 'studentHistory'])
+        ->name('students.case-studies.history')
+        ->middleware('can:case-study.view');
+
+    /* 8.3 PAEE */
+    Route::get('paees', [PaeeController::class, 'all'])
+        ->name('paee.all')
+        ->middleware('can:paee.view');
+    Route::get('paees/{caseStudy}/create', [PaeeController::class, 'create'])
+        ->name('paee.create')
+        ->middleware('can:paee.create');
+    Route::post('paees/store', [PaeeController::class, 'store'])
+        ->name('paee.store')
+        ->middleware('can:paee.create');
+    Route::get('paees/{paee}/show', [PaeeController::class, 'show'])
+        ->name('paee.show')
+        ->middleware('can:paee.view');
+    Route::get('paees/{paee}/edit', [PaeeController::class, 'edit'])
+        ->name('paee.edit')
+        ->middleware('can:paee.update');
+    Route::put('paees/{paee}', [PaeeController::class, 'update'])
+        ->name('paee.update')
+        ->middleware('can:paee.update');
+    Route::delete('paees/{paee}', [PaeeController::class, 'destroy'])
+        ->name('paee.destroy')
+        ->middleware('can:paee.delete');
+    Route::post('paees/{paee}/reviews', [PaeeController::class, 'addReview'])
+        ->name('paee.reviews.store')
+        ->middleware('can:paee.update');
+    Route::get('paees/{paee}/pdf', [PaeeController::class, 'pdf'])
+        ->name('paee.pdf')
+        ->middleware('can:paee.view');
+    Route::get('students/{student}/paees', [PaeeController::class, 'index'])
+        ->name('students.paees.index')
+        ->middleware('can:paee.view');
+    Route::get('students/{student}/paees/history', [PaeeController::class, 'studentHistory'])
+        ->name('students.paees.history')
+        ->middleware('can:paee.view');
+
     /* 9. STUDENT COURSES */
     Route::get('/student-courses/{student}/create', [StudentCourseController::class, 'create'])->name('student-courses.create')->middleware('can:student-course.create');
     Route::post('/student-courses/store/{student}', [StudentCourseController::class, 'store'])->name('student-courses.store')->middleware('can:student-course.create');
@@ -234,9 +294,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/peis/student/{student}/store', [PeiController::class, 'store'])->name('pei.store')->middleware('can:pei.create');
     Route::delete('/peis/{pei}', [PeiController::class, 'destroy'])->name('pei.destroy')->middleware('can:pei.delete');
     Route::patch('/peis/{pei}/finish', [PeiController::class, 'finish'])->name('pei.finish')->middleware('can:pei.update');
+    Route::patch('/peis/{pei}/other-info', [PeiController::class, 'updateOtherInfo'])->name('pei.other-info.update')->middleware('can:pei.update');
     Route::post('peis/{student}/version', [PeiController::class, 'createVersion'])->name('pei.version.newVersion')->middleware('can:pei.create');
     Route::get('/peis/{pei}/disciplinas/{peiDiscipline}/pdf', [PeiController::class, 'generateDisciplinePdf'])->name('pei.discipline.pdf')->middleware('can:pei.view');
     Route::get('/peis/{pei}/pdf', [PeiController::class, 'generateCompletePdf'])->name('pei.pdf')->middleware('can:pei.view');
+    Route::get('/peis/{pei}/pdf-familia', [PeiController::class, 'generateFamilyPdf'])->name('pei.pdf-family')->middleware('can:pei.view');
 
     Route::get('/peis/{pei}/disciplines/create', [PeiController::class, 'createDiscipline'])->name('pei-discipline.create')->middleware('can:pei-discipline.create');
     Route::post('/peis/{pei}/disciplines/store', [PeiController::class, 'storeDiscipline'])->name('pei-discipline.store')->middleware('can:pei-discipline.create');
@@ -244,6 +306,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/peis/{pei}/disciplines/{peiDiscipline}/edit', [PeiController::class, 'editDiscipline'])->name('pei-discipline.edit')->middleware('can:pei-discipline.update')->scopeBindings();
     Route::put('/peis/{pei}/disciplines/{peiDiscipline}', [PeiController::class, 'updateDiscipline'])->name('pei-discipline.update')->middleware('can:pei-discipline.update')->scopeBindings();
     Route::delete('/peis/{pei}/disciplines/{peiDiscipline}', [PeiController::class, 'destroyDiscipline'])->name('pei-discipline.destroy')->middleware('can:pei-discipline.delete')->scopeBindings();
+    Route::post('/peis/{pei}/disciplines/{peiDiscipline}/revisions', [PeiController::class, 'addDisciplineRevision'])->name('pei-discipline.revisions.store')->middleware('can:pei-discipline.update')->scopeBindings();
     Route::get('/peis/{pei}/teacher-disciplines', [PeiController::class, 'teacherDisciplines'])->name('teacher-disciplines');
 
     /* 13. STUDENT DOCUMENTS */

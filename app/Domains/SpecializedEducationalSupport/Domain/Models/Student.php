@@ -101,17 +101,6 @@ final class Student extends Model
         return $this->hasMany(StudentDocument::class, 'student_id');
     }
 
-    public function contexts(): HasMany
-    {
-        return $this->hasMany(StudentContext::class, 'student_id');
-    }
-
-    public function currentContext(): HasOne
-    {
-        return $this->hasOne(StudentContext::class, 'student_id')
-            ->where('is_current', true);
-    }
-
     public function deficiencies(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -153,6 +142,18 @@ final class Student extends Model
         return $this->hasOne(StudentCourse::class, 'student_id')
             ->where('is_current', true)
             ->with('course');
+    }
+
+    public function currentCaseStudy(): HasOne
+    {
+        return $this->hasOne(CaseStudy::class, 'student_id')
+            ->where('is_current', true);
+    }
+
+    public function currentPaee(): HasOne
+    {
+        return $this->hasOne(Paee::class, 'student_id')
+            ->where('is_current', true);
     }
 
     public function sessions(): BelongsToMany

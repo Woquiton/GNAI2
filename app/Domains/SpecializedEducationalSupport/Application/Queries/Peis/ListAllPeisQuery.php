@@ -18,8 +18,9 @@ final class ListAllPeisQuery
 
         if ($user?->teacher_id !== null) {
             $teacherCourseIds = $user->teacher
-                ?->courses()
-                ->pluck('courses.id') ?? collect();
+                ?->courseDisciplines()
+                ->distinct()
+                ->pluck('course_id') ?? collect();
 
             $query->whereIn('course_id', $teacherCourseIds);
         }

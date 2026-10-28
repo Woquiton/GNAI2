@@ -63,6 +63,7 @@ final readonly class CreateStudentCourseAction
 
             $studentCourseDTO = new CreateStudentCourseDTO(
                 academicYear: $data->academicYear,
+                semesterId: $data->semesterId,
                 isCurrent: $isCurrent,
                 schoolAttendanceStatus: $isCurrent ? $data->schoolAttendanceStatus : null,
             );

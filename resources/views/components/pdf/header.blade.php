@@ -1,7 +1,7 @@
 @props([
     'title',
     'subtitle' => null,
-    'eyebrow' => 'Gestão do Núcleo de Acessibilidade e Inclusão',
+    'eyebrow' => 'Gestor de Núcleos de Acessibilidade e Inclusão',
     'meta' => [],
     'status' => null,
 ])

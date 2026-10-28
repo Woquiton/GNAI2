@@ -43,10 +43,17 @@
             </form>
         @endcan
         @endif
-        <x-buttons.pdf-button 
-            :href="route('specialized-educational-support.pei.pdf', $pei)" 
-            target="_blank" 
+        <x-buttons.pdf-button
+            :href="route('specialized-educational-support.pei.pdf', $pei)"
+            target="_blank"
         />
+        <x-buttons.link-button
+            :href="route('specialized-educational-support.pei.pdf-family', $pei)"
+            variant="outline-secondary"
+            target="_blank"
+        >
+            <i class="fas fa-file-pdf"></i> PDF para a Família
+        </x-buttons.link-button>
         @can('pei.delete')
         <x-buttons.submit-button
             type="button"
@@ -177,14 +184,23 @@
 
         </div>
 
-        @can('student-context.view')
-        {{-- ================= CONTEXTO COMPLETO ================= --}}
-        <x-forms.section title="Contexto do Estudante" />
+        @can('paee.view')
+        {{-- ================= PAEE VINCULADO ================= --}}
+        <x-forms.section title="PAEE Vinculado" />
 
         <div class="px-4 pb-4">
-            @include('pages.specialized-educational-support.peis.partials.student-context', [
-                'context' => $studentContext
-            ])
+            @if($paee)
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="{{ route('specialized-educational-support.paee.show', $paee) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-box-arrow-up-right"></i> Ver PAEE completo
+                    </a>
+                </div>
+                @include('pages.specialized-educational-support.peis.partials.paee-summary', [
+                    'paee' => $paee
+                ])
+            @else
+                <p class="text-muted mb-0">Nenhum PAEE vinculado a este PEI.</p>
+            @endif
         </div>
         @endcan
 
@@ -209,6 +225,87 @@
             ])
         </div>
         @endcan
+
+        {{-- ========== Portaria 421/2026, art. 11, I/III/IV: reunido automaticamente ========== --}}
+        <x-forms.section title="Atividades, Acompanhamento e Devolutivas do Semestre" />
+
+        <div class="px-4 pb-2">
+            <small class="text-muted d-block mb-3">
+                Reunido automaticamente a partir dos atendimentos AEE e pedagógicos deste aluno dentro do semestre do PEI — não exige preenchimento aqui.
+            </small>
+
+            <h6 class="text-purple-dark fw-bold mt-3">Atividades na SRM e em outros espaços do AEE</h6>
+            @forelse($attendanceSummary['aee'] as $evaluation)
+                <div class="border rounded p-2 mb-2 small">
+                    <strong>{{ optional($evaluation->aeeRecord->attendanceSession)->session_date?->format('d/m/Y') }}</strong>
+                    — {{ $evaluation->aeeRecord->attendanceSession->professional->person->name ?? '—' }}
+                    <p class="mb-0 text-muted">
+                        {{ $evaluation->is_present ? $evaluation->adaptations_made : 'Aluno ausente — '.$evaluation->absence_reason }}
+                    </p>
+                </div>
+            @empty
+                <p class="text-muted small">Nenhum atendimento AEE registrado neste semestre.</p>
+            @endforelse
+
+            <h6 class="text-purple-dark fw-bold mt-4">Acompanhamento e Monitoramento</h6>
+            @forelse($attendanceSummary['aee']->filter(fn($e) => $e->is_present) as $evaluation)
+                <div class="border rounded p-2 mb-2 small">
+                    <strong>{{ optional($evaluation->aeeRecord->attendanceSession)->session_date?->format('d/m/Y') }}</strong> (AEE)
+                    <p class="mb-0 text-muted">
+                        {{ $evaluation->development_evaluation }}
+                        @if($evaluation->progress_indicators) — Indicadores: {{ $evaluation->progress_indicators }} @endif
+                        @if($evaluation->next_session_adjustments) — Ajustes: {{ $evaluation->next_session_adjustments }} @endif
+                    </p>
+                </div>
+            @empty
+            @endforelse
+            @forelse($attendanceSummary['pedagogical'] as $record)
+                <div class="border rounded p-2 mb-2 small">
+                    <strong>{{ optional($record->attendanceSession)->session_date?->format('d/m/Y') }}</strong> (Pedagógico)
+                    <p class="mb-0 text-muted">{{ $record->systematic_pedagogical_follow_up_record }}</p>
+                </div>
+            @empty
+                @if($attendanceSummary['aee']->where('is_present', true)->isEmpty())
+                    <p class="text-muted small">Nenhum acompanhamento registrado neste semestre.</p>
+                @endif
+            @endforelse
+
+            <h6 class="text-purple-dark fw-bold mt-4">Devolutivas às Famílias</h6>
+            @forelse($attendanceSummary['returns'] as $return)
+                <div class="border rounded p-2 mb-2 small">
+                    <strong>{{ optional($return['date'])->format('d/m/Y') }}</strong>
+                    — {{ $return['source'] }} — {{ $return['professional'] ?? '—' }}
+                    <br><span class="text-muted">Responsáveis presentes: {{ $return['guardians'] ?: '—' }}</span>
+                    <p class="mb-0 text-muted">{{ $return['summary'] }}</p>
+                </div>
+            @empty
+                <p class="text-muted small">Nenhuma devolutiva à família registrada neste semestre.</p>
+            @endforelse
+        </div>
+
+        {{-- ========== Outras informações relevantes (Apêndice 4, item 16) ========== --}}
+        <x-forms.section title="Outras Informações Relevantes" />
+        <div class="px-4 pb-4">
+            @can('pei.update')
+                <form action="{{ route('specialized-educational-support.pei.other-info.update', $pei) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <x-forms.textarea
+                        name="other_relevant_info"
+                        label=""
+                        rows="3"
+                        :value="old('other_relevant_info', $pei->other_relevant_info)"
+                    />
+                    <div class="d-flex justify-content-end mt-2">
+                        <x-buttons.submit-button type="submit" class="btn-action new submit">
+                            <i class="fas fa-save"></i> Salvar
+                        </x-buttons.submit-button>
+                    </div>
+                </form>
+            @else
+                <p class="text-muted mb-0">{{ $pei->other_relevant_info ?? 'Nenhuma informação adicional registrada.' }}</p>
+            @endcan
+        </div>
     </div>
 </div>
 

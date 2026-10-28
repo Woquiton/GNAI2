@@ -107,6 +107,54 @@
                                     {{-- Bloco de Presença --}}
                                     <div class="col-md-12 evaluation-fields" id="eval_fields_{{ $index }}">
                                         <div class="row g-3">
+                                            @php
+                                                $studentGuardians = $evaluation->student->guardians->sortBy('person.name')->values();
+                                                $withGuardiansIdx = filter_var(old('evaluations.'.$index.'.with_guardians', $evaluation->with_guardians), FILTER_VALIDATE_BOOLEAN);
+                                                $selectedGuardianIdsIdx = array_map('intval', (array) old('evaluations.'.$index.'.guardian_ids', $evaluation->guardians->pluck('id')->all()));
+                                            @endphp
+
+                                            <div class="col-md-12">
+                                                <input type="hidden" name="evaluations[{{ $index }}][with_guardians]" value="0">
+                                                <x-forms.checkbox
+                                                    name="evaluations[{{ $index }}][with_guardians]"
+                                                    id="with_guardians_{{ $index }}"
+                                                    label="Atendimento realizado com participação de responsável"
+                                                    :checked="$withGuardiansIdx"
+                                                    :disabled="$studentGuardians->isEmpty()"
+                                                    :description="$studentGuardians->isEmpty()
+                                                        ? 'O aluno não possui responsáveis cadastrados no sistema.'
+                                                        : 'Esta conversa será exibida no PEI como devolutiva à família.'"
+                                                    class="guardian-participation-toggle"
+                                                />
+                                            </div>
+
+                                            <div class="col-md-12 {{ $withGuardiansIdx ? '' : 'd-none' }}" id="guardian_participants_fields_{{ $index }}">
+                                                <div class="border rounded p-3 mb-2">
+                                                    <label class="form-label fw-bold text-purple-dark d-block mb-3">Responsáveis participantes</label>
+                                                    <div class="row g-2">
+                                                        @foreach($studentGuardians as $guardian)
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input
+                                                                        class="form-check-input guardian-participant-input"
+                                                                        type="checkbox"
+                                                                        name="evaluations[{{ $index }}][guardian_ids][]"
+                                                                        value="{{ $guardian->id }}"
+                                                                        id="guardian_{{ $index }}_{{ $guardian->id }}"
+                                                                        {{ in_array((int) $guardian->id, $selectedGuardianIdsIdx, true) ? 'checked' : '' }}
+                                                                        {{ $withGuardiansIdx ? '' : 'disabled' }}
+                                                                    >
+                                                                    <label class="form-check-label" for="guardian_{{ $index }}_{{ $guardian->id }}">
+                                                                        <strong>{{ $guardian->person->name }}</strong>
+                                                                        <span class="text-muted">— {{ $guardian->relationshipLabel() }}</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-12">
                                                 <x-forms.textarea name="evaluations[{{ $index }}][student_participation]" required label="Participação" rows="3" :value="old('evaluations.'.$index.'.student_participation', $evaluation->student_participation)" />
                                             </div>
@@ -149,4 +197,21 @@
 
 @push('scripts')
     @vite(['resources/js/pages/specialized-educational-support/attendance-record-form.js'])
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[id^="with_guardians_"]').forEach(function (toggle) {
+                const index = toggle.id.replace('with_guardians_', '');
+                const fields = document.getElementById('guardian_participants_fields_' + index);
+                if (!fields) return;
+
+                toggle.addEventListener('change', function () {
+                    fields.classList.toggle('d-none', !toggle.checked);
+                    fields.querySelectorAll('.guardian-participant-input').forEach(function (input) {
+                        input.disabled = !toggle.checked;
+                        if (!toggle.checked) input.checked = false;
+                    });
+                });
+            });
+        });
+    </script>
 @endpush

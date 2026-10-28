@@ -17,7 +17,7 @@ class PeiSeeder extends Seeder
      */
     public function run(): void
     {
-        $students = Student::with(['currentCourse.course.disciplines', 'currentContext'])->get();
+        $students = Student::with(['currentCourse.course.disciplines', 'currentPaee'])->get();
         $semester = Semester::where('is_current', true)->first();
         $creator = User::whereNotNull('professional_id')->first();
 
@@ -29,9 +29,11 @@ class PeiSeeder extends Seeder
 
         foreach ($students as $student) {
             $currentCourseRelation = $student->currentCourse;
-            $currentContext = $student->currentContext;
+            $currentPaee = $student->currentPaee;
 
-            if (! $currentCourseRelation || ! $currentContext) {
+            if (! $currentCourseRelation || ! $currentPaee) {
+                $this->command->warn("Aluno {$student->id} pulado: sem matrícula vigente ou PAEE atual.");
+
                 continue;
             }
 
@@ -47,7 +49,7 @@ class PeiSeeder extends Seeder
                 'creator_id' => $creator->id,
                 'semester_id' => $semester->id,
                 'course_id' => $course->id,
-                'student_context_id' => $currentContext->id,
+                'paee_id' => $currentPaee->id,
                 'is_finished' => true,
                 'version' => 1,
                 'is_current' => true,

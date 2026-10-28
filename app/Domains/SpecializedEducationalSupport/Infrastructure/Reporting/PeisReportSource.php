@@ -7,7 +7,6 @@ namespace App\Domains\SpecializedEducationalSupport\Infrastructure\Reporting;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
 use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Pei;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\StudentContext;
 
 final class PeisReportSource extends EloquentReportSource
 {
@@ -53,10 +52,6 @@ final class PeisReportSource extends EloquentReportSource
 
     protected function relationPolicy(string $parentModel, string $relationName): array
     {
-        $excluded = $parentModel === StudentContext::class
-            ? ['student', 'registration', 'semester']
-            : [];
-
-        return ['exclude' => $excluded];
+        return ['exclude' => []];
     }
 }

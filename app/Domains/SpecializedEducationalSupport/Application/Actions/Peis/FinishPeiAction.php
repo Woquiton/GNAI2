@@ -26,7 +26,7 @@ final class FinishPeiAction
             $lockedPei->markAsFinished();
             $lockedPei->save();
 
-            return $lockedPei->load(['student.person', 'semester', 'course', 'studentContext']);
+            return $lockedPei->load(['student.person', 'semester', 'course', 'paee']);
         });
     }
 }

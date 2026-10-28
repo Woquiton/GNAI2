@@ -38,6 +38,16 @@
 @import "./components/filters.css";
 @import "./components/photo-upload.css";
 @import "./components/notification.css";
+
+/* ===== NOVO DESIGN SYSTEM =====
+   Desativado por completo por ora: mesmo após renomear as classes que colidiam
+   com o Bootstrap (.card/.btn/.content/.sidebar/etc) e remover o dark-mode
+   automático, o usuário ainda viu telas em branco ao navegar. Até isolarmos
+   a causa exata com certeza, carregamos só um arquivo mínimo e autocontido
+   (sem nenhuma variável/classe compartilhada com o resto do site) com os dois
+   componentes que já validamos funcionando: o selo "Novo" e o painel de
+   status do aluno (Laudo/Estudo de Caso/PAEE/PEI). */
+@import "./gnai-status.css";
 @import "./pages/attendance-records.css";
 @import "./pages/reports.css";
 @import "./components/modal.css";

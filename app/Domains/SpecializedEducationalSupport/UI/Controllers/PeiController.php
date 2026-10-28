@@ -6,13 +6,15 @@ namespace App\Domains\SpecializedEducationalSupport\UI\Controllers;
 
 use App\Domains\Auth\Application\Resolvers\AuthenticatedUserResolver;
 use App\Domains\Auth\Domain\Models\User;
-use App\Domains\SpecializedEducationalSupport\Application\Actions\PeiDisciplines\CreatePeiDisciplineAction;
+use App\Domains\SpecializedEducationalSupport\Application\Actions\PeiDisciplineRevisions\AddPeiDisciplineRevisionAction;
+use App\Domains\SpecializedEducationalSupport\Application\Actions\PeiDisciplines\BulkAssignPeiDisciplinesAction;
 use App\Domains\SpecializedEducationalSupport\Application\Actions\PeiDisciplines\DeletePeiDisciplineAction;
 use App\Domains\SpecializedEducationalSupport\Application\Actions\PeiDisciplines\UpdatePeiDisciplineAction;
 use App\Domains\SpecializedEducationalSupport\Application\Actions\Peis\CreatePeiAction;
 use App\Domains\SpecializedEducationalSupport\Application\Actions\Peis\DeletePeiAction;
 use App\Domains\SpecializedEducationalSupport\Application\Actions\Peis\FinishPeiAction;
-use App\Domains\SpecializedEducationalSupport\Application\Data\PeiDisciplines\CreatePeiDisciplineData;
+use App\Domains\SpecializedEducationalSupport\Application\Data\PeiDisciplineRevisions\AddPeiDisciplineRevisionData;
+use App\Domains\SpecializedEducationalSupport\Application\Data\PeiDisciplines\BulkAssignPeiDisciplinesData;
 use App\Domains\SpecializedEducationalSupport\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
 use App\Domains\SpecializedEducationalSupport\Application\Data\Peis\ListPeisData;
 use App\Domains\SpecializedEducationalSupport\Application\Queries\PeiDisciplines\PeiDisciplineFormQuery;
@@ -93,20 +95,24 @@ final class PeiController
         );
     }
 
-    public function show(Pei $pei, ShowPeiQuery $query): View
+    public function show(Pei $pei, ShowPeiQuery $query, \App\Domains\SpecializedEducationalSupport\Application\Queries\Peis\PeiAttendanceSummaryQuery $attendanceSummaryQuery): View
     {
         $pei = $query->execute($pei);
 
+        \App\Shared\Domain\Support\AuditLogger::logView($pei);
+
         $student = $pei->student;
-        $studentContext = $pei->studentContext;
+        $paee = $pei->paee;
 
         $peiDisciplines = $pei->peiDisciplines()
             ->with(['discipline', 'teacher.person', 'creator'])
             ->latest()
             ->paginate(5);
 
+        $attendanceSummary = $attendanceSummaryQuery->execute($pei);
+
         return view('pages.specialized-educational-support.peis.show', compact(
-            'pei', 'student', 'studentContext', 'peiDisciplines'
+            'pei', 'student', 'paee', 'peiDisciplines', 'attendanceSummary'
         ));
     }
 
@@ -169,6 +175,22 @@ final class PeiController
             ->with('success', 'PEI finalizado com sucesso.');
     }
 
+    public function updateOtherInfo(Pei $pei, Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'other_relevant_info' => ['nullable', 'string', 'max:100000'],
+        ]);
+
+        $pei->updateOtherRelevantInfo($validated['other_relevant_info'] ?? null);
+        $pei->save();
+
+        \App\Shared\Domain\Support\AuditLogger::logUpdated($pei, ['other_relevant_info' => ['from' => null, 'to' => $pei->other_relevant_info]]);
+
+        return redirect()
+            ->route('specialized-educational-support.pei.show', $pei)
+            ->with('success', 'Informações do PEI atualizadas com sucesso.');
+    }
+
     /**
      * @throws Throwable
      */
@@ -194,7 +216,7 @@ final class PeiController
         $pei->load([
             'student.person',
             'student.deficiencies',
-            'studentContext',
+            'paee',
             'course',
             'semester',
         ]);
@@ -218,7 +240,7 @@ final class PeiController
         $pei->load([
             'student.person',
             'student.deficiencies',
-            'studentContext',
+            'paee',
             'course',
             'semester',
         ]);
@@ -240,9 +262,34 @@ final class PeiController
         return $pdf->stream("PEI_COMPLETO_{$studentName}_v{$pei->version}.pdf");
     }
 
+    /** @throws Throwable */
+    public function generateFamilyPdf(Pei $pei, \App\Domains\SpecializedEducationalSupport\Application\Queries\Peis\PeiAttendanceSummaryQuery $attendanceSummaryQuery): Response
+    {
+        $pei->load(['student.person', 'paee', 'course', 'semester']);
+
+        $peiDisciplines = $pei->peiDisciplines()
+            ->with(['discipline', 'teacher.person'])
+            ->orderBy('id')
+            ->get();
+
+        $attendanceSummary = $attendanceSummaryQuery->execute($pei);
+
+        $pdf = Pdf::loadView('pages.specialized-educational-support.peis.pdf-family', [
+            'pei' => $pei,
+            'peiDisciplines' => $peiDisciplines,
+            'attendanceSummary' => $attendanceSummary,
+        ])->setPaper('a4', 'portrait');
+
+        $studentName = str_replace(' ', '_', $pei->student->person->name);
+
+        PdfPageNumberer::apply($pdf);
+
+        return $pdf->stream("PEI_FAMILIA_{$studentName}_v{$pei->version}.pdf");
+    }
+
     public function showDiscipline(Pei $pei, PeiDiscipline $peiDiscipline): View
     {
-        $peiDiscipline->load(['teacher.person', 'discipline', 'creator']);
+        $peiDiscipline->load(['teacher.person', 'discipline', 'creator', 'revisions.reviewer']);
         $student = $pei->student->load('person');
 
         return view('pages.specialized-educational-support.peis.disciplines.show', compact('pei', 'peiDiscipline', 'student'));
@@ -263,17 +310,36 @@ final class PeiController
      * @throws Throwable
      */
     public function storeDiscipline(
-        CreatePeiDisciplineData $data,
         Pei $pei,
-        CreatePeiDisciplineAction $action,
+        BulkAssignPeiDisciplinesAction $action,
         AuthenticatedUserResolver $authenticatedUser,
         Request $request,
     ): RedirectResponse {
-        $action->execute($pei, $authenticatedUser->fromRequest($request), $data);
+        $assignments = collect($request->input('teacher_ids', []))
+            ->filter(fn ($teacherId): bool => filled($teacherId))
+            ->map(fn ($teacherId, $disciplineId): array => [
+                'discipline_id' => (int) $disciplineId,
+                'teacher_id' => (int) $teacherId,
+            ])
+            ->values()
+            ->all();
+
+        $data = new BulkAssignPeiDisciplinesData(assignments: $assignments);
+        $result = $action->execute($pei, $authenticatedUser->fromRequest($request), $data);
+
+        if ($result['created'] === 0) {
+            return back()->with('error', 'Nenhuma adaptação foi criada. Selecione ao menos um professor.');
+        }
+
+        $message = "{$result['created']} adaptação(ões) criada(s) com sucesso. Preencha o conteúdo pedagógico de cada uma em seguida.";
+
+        if ($result['skipped'] !== []) {
+            $message .= ' Alguns itens foram ignorados: '.implode(' ', $result['skipped']);
+        }
 
         return redirect()
             ->route('specialized-educational-support.pei.show', $pei)
-            ->with('success', 'Adaptação de disciplina adicionada com sucesso.');
+            ->with('success', $message);
     }
 
     public function editDiscipline(
@@ -322,6 +388,24 @@ final class PeiController
         return redirect()
             ->route('specialized-educational-support.pei.show', $pei)
             ->with('success', 'Adaptação removida com sucesso.');
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function addDisciplineRevision(
+        Pei $pei,
+        PeiDiscipline $peiDiscipline,
+        AddPeiDisciplineRevisionData $data,
+        AddPeiDisciplineRevisionAction $action,
+        AuthenticatedUserResolver $authenticatedUser,
+        Request $request,
+    ): RedirectResponse {
+        $action->execute($peiDiscipline, $data, $authenticatedUser->fromRequest($request));
+
+        return redirect()
+            ->route('specialized-educational-support.pei-discipline.show', [$pei, $peiDiscipline])
+            ->with('success', 'Revisão da adaptação registrada com sucesso.');
     }
 
     public function teacherDisciplines(Request $request, Pei $pei, TeacherDisciplinesQuery $query): JsonResponse

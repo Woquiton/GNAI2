@@ -23,7 +23,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="mb-0 fw-bold ">{{ $courseRelation->course->name ?? 'Curso não identificado' }}</h6>
-                                <small class="text-muted">Ano Acadêmico: {{ $courseRelation->academic_year }}</small>
+                                <small class="text-muted">
+                                    Ano Acadêmico: {{ $courseRelation->academic_year }}
+                                    — Semestre: {{ $courseRelation->semester->label ?? 'Não informado' }}
+                                </small>
                             </div>
                             @if($courseRelation->is_current)
                                 <span class="badge bg-success">ATUAL</span>

@@ -6,14 +6,14 @@
    1. CORES PRIMÁRIAS
    ───────────────────────────────────────────── */
 :root {
-    --primary-color:          #322b75;
-    --primary-color-medium:   #6c63ff;
-    --primary-color-light:    #8a7fd4;
-    --primary-color-dark:     #3d35a5;
+    --primary-color:          #6c63ff;
+    --primary-color-medium:   #8b7fd6;
+    --primary-color-light:    #ede9fe;
+    --primary-color-dark:     #564fcc;
 
-    --color-primary:          #322b75;
-    --color-primary-hover:    #3d35a5;
-    --color-primary-rgb:      50, 43, 117;
+    --color-primary:          #6c63ff;
+    --color-primary-hover:    #564fcc;
+    --color-primary-rgb:      108, 99, 255;
 }
 
 /* ─────────────────────────────────────────────
@@ -60,7 +60,7 @@
    ───────────────────────────────────────────── */
 :root {
     --body-bg:               #ffffff;
-    --main-bg:               #e1ebf8;
+    --main-bg:               #f5f6f8;
 
     --bg-surface:            #ffffff;
     --bg-surface-secondary:  #f8f9fa;

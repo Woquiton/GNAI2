@@ -21,6 +21,9 @@ final class UpdatePeiDisciplineData extends Data
         public string $evaluations,
         public ?string $opinion = null,
         public ?string $complementaryRecords = null,
+        public ?string $curricularReference = null,
+        public ?string $materialsAndAssistiveTechnology = null,
+        public ?string $objectivesDeadline = null,
     ) {}
 
     public static function rules(): array
@@ -34,6 +37,9 @@ final class UpdatePeiDisciplineData extends Data
             'evaluations' => ['required', 'string'],
             'opinion' => ['nullable', 'string'],
             'complementary_records' => ['nullable', 'string'],
+            'curricular_reference' => ['nullable', 'string'],
+            'materials_and_assistive_technology' => ['nullable', 'string'],
+            'objectives_deadline' => ['nullable', 'string', 'max:255'],
         ];
     }
 

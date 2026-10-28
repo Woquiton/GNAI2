@@ -30,17 +30,40 @@ final class PeiDisciplineFormQuery
             throw new InvalidPei('Não é possível adicionar disciplinas a um PEI finalizado.');
         }
 
+        $alreadyAssignedDisciplineIds = PeiDiscipline::query()
+            ->where('pei_id', $pei->getKey())
+            ->pluck('discipline_id');
+
+        $disciplines = $pei->course->disciplines
+            ->reject(fn (Discipline $discipline): bool => $alreadyAssignedDisciplineIds->contains($discipline->getKey()))
+            ->values();
+
+        $teachers = $this->teachers($pei);
+
+        $teachersByDiscipline = $disciplines->mapWithKeys(function (Discipline $discipline) use ($pei): array {
+            $eligible = Teacher::query()
+                ->whereHas('courseDisciplines', function ($query) use ($pei, $discipline): void {
+                    $query->where('course_id', $pei->course_id)
+                        ->where('discipline_id', $discipline->getKey());
+                })
+                ->with('person')
+                ->orderBy('id')
+                ->get();
+
+            return [$discipline->getKey() => $eligible];
+        });
+
         return [
             'pei' => $pei,
-            'teachers' => $this->teachers($pei),
-            'disciplines' => $pei->course->disciplines,
+            'teachers' => $teachers,
+            'disciplines' => $disciplines,
+            'teachersByDiscipline' => $teachersByDiscipline,
         ];
     }
 
     /**
      * @return array<string, mixed>
      *
-     * @throws InvalidPei
      * @throws InvalidStudent
      */
     public function forUpdate(Pei $pei, PeiDiscipline $peiDiscipline, User $user): array
@@ -48,11 +71,11 @@ final class PeiDisciplineFormQuery
         $pei->loadMissing('student');
         $pei->student->ensureIsActive();
         $peiDiscipline->loadMissing(['teacher.person', 'discipline']);
-        $peiDiscipline->ensureCanBeManagedBy((int) $user->getKey());
+        $peiDiscipline->ensureCanBeEditedBy((int) $user->getKey(), $user->teacher_id);
 
-        if ($pei->is_finished) {
-            throw new InvalidPei('Não é possível editar disciplinas de um PEI finalizado.');
-        }
+        // Um PEI finalizado continua editável por disciplina (ver
+        // UpdatePeiDisciplineAction); apenas adicionar/remover disciplinas
+        // inteiras (mudança estrutural) permanece bloqueado após finalizado.
 
         return [
             'pei' => $pei,
@@ -67,9 +90,15 @@ final class PeiDisciplineFormQuery
      */
     private function teachers(Pei $pei): Collection
     {
+        // A fonte real de "professor dá aula nesse curso" é a matriz
+        // curricular (teacher_course_disciplines, mantida pela tela de
+        // Professores > Disciplinas). A tabela teacher_courses não tem
+        // nenhuma tela que a mantenha, então um professor pode estar
+        // corretamente cadastrado na matriz e ainda assim não aparecer
+        // aqui se ela for usada como fonte — por isso não é mais usada.
         return Teacher::query()
-            ->whereHas('courses', function ($query) use ($pei): void {
-                $query->where('courses.id', $pei->course_id);
+            ->whereHas('courseDisciplines', function ($query) use ($pei): void {
+                $query->where('course_id', $pei->course_id);
             })
             ->with('person')
             ->orderBy('id')

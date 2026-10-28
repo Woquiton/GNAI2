@@ -1,0 +1,17 @@
+# Override para deploy em host com Cloudflare Tunnel (sem porta 80 livre no host).
+# Uso: docker compose --env-file .env.prod -f docker-compose.prod.yml -f docker-compose.tunnel.yml up -d --build
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: gnai_nginx
+    restart: unless-stopped
+    volumes:
+      - .:/var/www:ro
+      - ./nginx/nginx.tunnel.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8082:80"
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - backend

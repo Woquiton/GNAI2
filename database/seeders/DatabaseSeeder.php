@@ -9,7 +9,6 @@ use Database\Seeders\InclusiveRadar\LocationSeeder;
 use Database\Seeders\InclusiveRadar\BarrierSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\SpecializedEducationalSupport\SemesterSeeder;
-use Database\Seeders\SpecializedEducationalSupport\StudentContextSeeder;
 use Database\Seeders\SpecializedEducationalSupport\StudentDeficiencySeeder;
 use Database\Seeders\SpecializedEducationalSupport\DeficiencySeeder;
 use Database\Seeders\SpecializedEducationalSupport\PositionSeeder;
@@ -46,7 +45,6 @@ class DatabaseSeeder extends Seeder
             AccessibleEducationalMaterialSeeder::class,
             PSPUSeeder::class,
             // StudentSeeder::class,
-            StudentContextSeeder::class,
             StudentDeficiencySeeder::class,
             CoursesSeeder::class,
             DisciplinesSeeder::class,

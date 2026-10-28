@@ -8,6 +8,7 @@ use App\Domains\SpecializedEducationalSupport\Domain\DTOs\AeeRecords\AeeStudentE
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class AeeStudentEvaluation extends Model
@@ -20,6 +21,7 @@ final class AeeStudentEvaluation extends Model
         'aee_record_id',
         'student_id',
         'is_present',
+        'with_guardians',
         'absence_reason',
         'adaptations_made',
         'student_participation',
@@ -29,7 +31,10 @@ final class AeeStudentEvaluation extends Model
         'next_session_adjustments',
     ];
 
-    protected $casts = ['is_present' => 'boolean'];
+    protected $casts = [
+        'is_present' => 'boolean',
+        'with_guardians' => 'boolean',
+    ];
 
     public static function register(AeeRecord $aeeRecord, Student $student, AeeStudentEvaluationDTO $data): self
     {
@@ -60,10 +65,27 @@ final class AeeStudentEvaluation extends Model
         return $query->where('student_id', $studentId);
     }
 
+    public function guardians(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Guardian::class,
+            'aee_student_evaluation_guardians',
+            'aee_student_evaluation_id',
+            'guardian_id',
+        )->withTimestamps();
+    }
+
+    /** @param list<int> $guardianIds */
+    public function syncGuardians(array $guardianIds): void
+    {
+        $this->guardians()->sync(array_values(array_unique($guardianIds)));
+    }
+
     private static function attributesFrom(AeeStudentEvaluationDTO $data): array
     {
         return [
             'is_present' => $data->isPresent,
+            'with_guardians' => $data->isPresent && $data->withGuardians,
             'absence_reason' => $data->isPresent ? null : self::nullableText($data->absenceReason),
             'adaptations_made' => $data->isPresent ? self::nullableText($data->adaptationsMade) : null,
             'student_participation' => $data->isPresent ? self::nullableText($data->studentParticipation) : null,

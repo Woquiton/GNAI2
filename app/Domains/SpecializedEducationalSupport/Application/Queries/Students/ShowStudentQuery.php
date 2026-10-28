@@ -14,16 +14,17 @@ final class ShowStudentQuery
             'person',
             'guardians.person',
             'documents' => fn ($query) => $query->latest('id')->limit(5),
-            'currentContext.semester',
-            'currentContext.evaluator.person',
             'deficiencies',
             'peis' => fn ($query) => $query->latest('id')->limit(5),
             'peis.semester',
             'peis.course',
             'peis.peiDisciplines.teacher.person',
             'studentCourses.course',
+            'studentCourses.semester',
             'courses',
             'currentCourse.course',
+            'currentCaseStudy',
+            'currentPaee',
         ]);
     }
 }

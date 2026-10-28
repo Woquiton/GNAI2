@@ -105,8 +105,14 @@
                     </button>
                 </form>
 
-                <div class="mt-5 text-center">
-                    <p class="footer-copy">GNAI &copy; {{ date('Y') }} | Gestão NAIs</p>
+                <div class="text-center mt-4">
+                    <a href="{{ route('teacher-access.request') }}" class="small text-muted">
+                        Sou professor(a) — entrar com e-mail institucional
+                    </a>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <p class="footer-copy">GNAI &copy; {{ date('Y') }} | Gestor de Núcleos de Acessibilidade e Inclusão</p>
                 </div>
             </div>
         </div>

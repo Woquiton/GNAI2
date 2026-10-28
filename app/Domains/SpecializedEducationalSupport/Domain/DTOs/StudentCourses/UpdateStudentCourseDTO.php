@@ -8,6 +8,7 @@ final readonly class UpdateStudentCourseDTO
 {
     public function __construct(
         public int $academicYear,
+        public ?int $semesterId = null,
         public ?string $schoolAttendanceStatus = null,
     ) {}
 }

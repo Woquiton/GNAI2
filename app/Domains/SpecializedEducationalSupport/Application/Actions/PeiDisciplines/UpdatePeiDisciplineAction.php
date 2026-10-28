@@ -8,7 +8,6 @@ use App\Domains\Auth\Domain\Models\User;
 use App\Domains\SpecializedEducationalSupport\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
 use App\Domains\SpecializedEducationalSupport\Domain\DTOs\PeiDisciplines\UpdatePeiDisciplineDTO;
 use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidDiscipline;
-use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidPei;
 use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidPeiDiscipline;
 use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidStudent;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Discipline;
@@ -25,7 +24,6 @@ final readonly class UpdatePeiDisciplineAction
 {
     /**
      * @throws InvalidDiscipline
-     * @throws InvalidPei
      * @throws InvalidPeiDiscipline
      * @throws InvalidStudent
      * @throws ModelNotFoundException
@@ -45,11 +43,12 @@ final readonly class UpdatePeiDisciplineAction
                 ->where('pei_id', $lockedPei->getKey())
                 ->findOrFail($peiDiscipline->getKey());
 
-            $lockedPeiDiscipline->ensureCanBeManagedBy((int) $user->getKey());
+            $lockedPeiDiscipline->ensureCanBeEditedBy((int) $user->getKey(), $user->teacher_id);
 
-            if ($lockedPei->is_finished) {
-                throw new InvalidPei('Este PEI já foi finalizado e não permite alterações.');
-            }
+            // Um PEI finalizado continua editável: finalização é um checkpoint de
+            // completude (todas as disciplinas preenchidas), não um bloqueio
+            // definitivo. O histórico de revisões (PeiDisciplineRevision) é quem
+            // registra o rastro de auditoria dessas mudanças pós-finalização.
 
             $teacher = Teacher::query()
                 ->findOrFail($data->teacherId);
@@ -88,6 +87,19 @@ final readonly class UpdatePeiDisciplineAction
                 throw new InvalidPeiDiscipline('O professor selecionado não está vinculado à disciplina neste curso.');
             }
 
+            $fieldLabels = [
+                'specific_objectives' => 'Objetivos específicos',
+                'content_programmatic' => 'Conteúdo programático',
+                'methodologies' => 'Metodologias e estratégias',
+                'evaluations' => 'Processo de avaliação',
+                'opinion' => 'Parecer',
+                'complementary_records' => 'Registros complementares',
+                'curricular_reference' => 'Referência curricular',
+                'materials_and_assistive_technology' => 'Recursos didáticos e tecnologia assistiva',
+                'objectives_deadline' => 'Prazo das metas/objetivos',
+            ];
+            $before = $lockedPeiDiscipline->only(array_keys($fieldLabels));
+
             $peiDisciplineDTO = new UpdatePeiDisciplineDTO(
                 specificObjectives: $data->specificObjectives,
                 contentProgrammatic: $data->contentProgrammatic,
@@ -95,6 +107,9 @@ final readonly class UpdatePeiDisciplineAction
                 evaluations: $data->evaluations,
                 opinion: $data->opinion,
                 complementaryRecords: $data->complementaryRecords,
+                curricularReference: $data->curricularReference,
+                materialsAndAssistiveTechnology: $data->materialsAndAssistiveTechnology,
+                objectivesDeadline: $data->objectivesDeadline,
             );
 
             $lockedPeiDiscipline->revise(
@@ -110,6 +125,18 @@ final readonly class UpdatePeiDisciplineAction
                     'Já existe uma adaptação para essa disciplina nesse PEI. Recarregue a página e tente novamente.',
                     previous: $exception,
                 );
+            }
+
+            $changedFieldsWithLabels = collect($fieldLabels)
+                ->filter(fn (string $label, string $field): bool => $before[$field] !== $lockedPeiDiscipline->{$field});
+
+            if ($changedFieldsWithLabels->isNotEmpty()) {
+                $lockedPeiDiscipline->revisions()->create([
+                    'reviewed_at' => now()->toDateString(),
+                    'what_changed' => 'Campo(s) alterado(s): '.$changedFieldsWithLabels->values()->implode(', ').'.',
+                    'why' => 'Revisão registrada automaticamente ao salvar a edição da adaptação.',
+                    'reviewer_id' => (int) $user->getKey(),
+                ]);
             }
 
             return $lockedPeiDiscipline->load(['pei.student.person', 'teacher.person', 'discipline', 'creator']);

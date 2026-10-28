@@ -1,0 +1,77 @@
+/* ==========================================================================
+   GNAI — componentes isolados (sem variáveis/classes compartilhadas com o
+   resto do site, para não colidir com Bootstrap nem com o CSS existente).
+   Contém só: selo "Novo" (.tag-new) e painel de status do aluno (.doc-status).
+   ========================================================================== */
+
+.tag-new {
+  background: #6c63ff;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.05rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  display: inline-block;
+}
+
+.doc-status {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.doc-item {
+  border: 1px solid #d5d9e4;
+  border-top-width: 5px;
+  border-radius: 10px;
+  padding: 1rem;
+  background: #ffffff;
+  display: grid;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.doc-item h3 {
+  font-size: 0.9375rem;
+  margin: 0;
+  color: #4b5167;
+  font-weight: 700;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.doc-item.is-ok { border-top-color: #11602f; }
+.doc-item.is-err { border-top-color: #9b1c1c; }
+
+.doc-status .badge-s {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  border: 1px solid;
+  white-space: nowrap;
+  width: fit-content;
+}
+.doc-status .s-ok { background: #e2f4e9; color: #11602f; border-color: #7cc79b; }
+.doc-status .s-err { background: #fde8e8; color: #9b1c1c; border-color: #ef9a9a; }
+
+.doc-status .doc-action {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: #3d3490;
+}
+
+@media (max-width: 1100px) {
+  .doc-status { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .doc-status { grid-template-columns: 1fr; }
+}

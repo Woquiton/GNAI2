@@ -82,11 +82,6 @@ final class Semester extends Model
         }
     }
 
-    public function studentContexts(): HasMany
-    {
-        return $this->hasMany(StudentContext::class, 'semester_id');
-    }
-
     public function studentDocuments(): HasMany
     {
         return $this->hasMany(StudentDocument::class, 'semester_id');

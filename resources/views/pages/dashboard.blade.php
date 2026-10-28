@@ -119,6 +119,33 @@
             </div>
         </div>
 
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="card card-custom border-0 shadow-sm p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <h5 class="text-title mb-0">Atividades recentes</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <select id="activity-feed-filter-model" class="form-select form-select-sm" style="width: auto;">
+                                <option value="">Todos os tipos</option>
+                                @foreach($activityFeedModels as $class => $config)
+                                    <option value="{{ $class }}">{{ $config['label'] }}</option>
+                                @endforeach
+                            </select>
+                            <select id="activity-feed-filter-period" class="form-select form-select-sm" style="width: auto;">
+                                <option value="">Qualquer período</option>
+                                <option value="today">Hoje</option>
+                                <option value="7days">Últimos 7 dias</option>
+                                <option value="30days">Últimos 30 dias</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="activity-feed-list">
+                        @include('pages.dashboard.partials.activity-feed-items', ['logs' => $activityFeedLogs])
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4">
             <div class="col-lg-8">
                 <div class="card card-custom border-0 shadow-sm p-4 h-100">
@@ -285,6 +312,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 @endsection
 
@@ -321,4 +349,43 @@
         };
     </script>
     @vite('resources/js/pages/dashboard.js')
+
+    <script>
+        (function () {
+            const list = document.getElementById('activity-feed-list');
+            const modelFilter = document.getElementById('activity-feed-filter-model');
+            const periodFilter = document.getElementById('activity-feed-filter-period');
+            const feedUrl = '{{ route('dashboard.activity-feed') }}';
+
+            function fetchFeed(page, append) {
+                const params = new URLSearchParams({
+                    page: page,
+                    model: modelFilter.value,
+                    period: periodFilter.value,
+                });
+
+                fetch(feedUrl + '?' + params.toString())
+                    .then((response) => response.text())
+                    .then((html) => {
+                        if (append) {
+                            list.insertAdjacentHTML('beforeend', html);
+                        } else {
+                            list.innerHTML = html;
+                        }
+                        bindLoadMore();
+                    });
+            }
+
+            function bindLoadMore() {
+                const button = document.getElementById('activity-feed-load-more');
+                if (button) {
+                    button.addEventListener('click', () => fetchFeed(button.dataset.nextPage, true));
+                }
+            }
+
+            modelFilter.addEventListener('change', () => fetchFeed(1, false));
+            periodFilter.addEventListener('change', () => fetchFeed(1, false));
+            bindLoadMore();
+        })();
+    </script>
 @endpush

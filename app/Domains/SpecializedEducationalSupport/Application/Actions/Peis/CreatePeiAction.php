@@ -8,9 +8,9 @@ use App\Domains\Auth\Domain\Models\User;
 use App\Domains\SpecializedEducationalSupport\Application\Queries\Semesters\CurrentSemesterQuery;
 use App\Domains\SpecializedEducationalSupport\Domain\DTOs\Peis\CreatePeiDTO;
 use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidPei;
+use App\Domains\SpecializedEducationalSupport\Domain\Models\Paee;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Pei;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Student;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\StudentContext;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\StudentCourse;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -64,13 +64,13 @@ final readonly class CreatePeiAction
                 throw new InvalidPei('O sistema não possui semestre atual cadastrado');
             }
 
-            $currentContext = StudentContext::query()
+            $currentPaee = Paee::query()
                 ->where('student_id', $lockedStudent->getKey())
                 ->where('is_current', true)
                 ->first();
 
-            if (! $currentContext instanceof StudentContext) {
-                throw new InvalidPei('Este aluno não possui um Contexto atual definido.');
+            if (! $currentPaee instanceof Paee) {
+                throw new InvalidPei('É necessário ter um PAEE ativo para criar o PEI.');
             }
 
             if ($currentPei instanceof Pei) {
@@ -87,12 +87,12 @@ final readonly class CreatePeiAction
                 student: $lockedStudent,
                 semester: $semester,
                 course: $course,
-                studentContext: $currentContext,
+                paee: $currentPaee,
                 data: $peiDTO,
             );
             $pei->save();
 
-            return $pei->load(['student.person', 'semester', 'course', 'studentContext']);
+            return $pei->load(['student.person', 'semester', 'course', 'paee']);
         });
     }
 }

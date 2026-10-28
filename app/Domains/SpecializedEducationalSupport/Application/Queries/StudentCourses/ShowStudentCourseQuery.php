@@ -13,6 +13,7 @@ final class ShowStudentCourseQuery
         return $studentCourse->load([
             'student.person',
             'course.disciplines',
+            'semester',
             'failedDisciplines',
             'atRiskDisciplines',
         ]);

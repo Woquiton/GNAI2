@@ -13,7 +13,7 @@ final class ShowPeiQuery
         return $pei->load([
             'student.person',
             'student.deficiencies',
-            'studentContext',
+            'paee',
             'course',
             'semester',
             'creator',

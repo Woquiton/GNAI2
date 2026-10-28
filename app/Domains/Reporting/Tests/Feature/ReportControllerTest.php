@@ -42,7 +42,7 @@ final class ReportControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonCount(33)
+            ->assertJsonCount(32)
             ->assertJsonFragment(['key' => 'auth.users'])
             ->assertJsonFragment(['key' => 'backup.backups'])
             ->assertJsonFragment(['key' => 'inclusive-radar.loans'])
@@ -212,14 +212,11 @@ final class ReportControllerTest extends TestCase
 
         $relations = collect($metadata['relations'])->keyBy('name');
 
-        self::assertSame('Contextos dos alunos', $relations['contexts']['label']);
         self::assertFalse($relations->has('person'));
-        self::assertFalse($relations->has('currentContext'));
-        self::assertContains('is_current', array_column($relations['contexts']['column_definitions'], 'key'));
-        self::assertSame('Matrículas em cursos', $relations['studentCourses']['label']);
         self::assertFalse($relations->has('currentCourse'));
-        self::assertArrayNotHasKey('student', $relations['contexts']['columns']);
-        self::assertArrayNotHasKey('registration', $relations['contexts']['columns']);
+        self::assertFalse($relations->has('currentCaseStudy'));
+        self::assertFalse($relations->has('currentPaee'));
+        self::assertSame('Matrículas em cursos', $relations['studentCourses']['label']);
         self::assertArrayNotHasKey('student', $relations['studentCourses']['columns']);
         self::assertArrayNotHasKey('registration', $relations['studentCourses']['columns']);
         self::assertContains('is_current', array_column($relations['studentCourses']['column_definitions'], 'key'));
@@ -310,32 +307,19 @@ final class ReportControllerTest extends TestCase
 
     public function test_student_contexts_and_peis_only_repeat_independent_version_fields(): void
     {
-        $contextMetadata = $this->actingAs($this->admin())->getJson(route('reports.metadata', [
-            'source' => 'specialized-support.student-contexts',
-        ]))->assertOk()->json();
-        $contextRelations = collect($contextMetadata['relations'])->keyBy('name');
-
-        self::assertArrayNotHasKey('student', $contextRelations['peis']['columns']);
-        self::assertArrayNotHasKey('registration', $contextRelations['peis']['columns']);
-        self::assertArrayNotHasKey('semester', $contextRelations['peis']['columns']);
-        self::assertSame('Versão do PEI', $contextRelations['peis']['columns']['version']);
-
         $peiMetadata = $this->actingAs($this->admin())->getJson(route('reports.metadata', [
             'source' => 'specialized-support.peis',
         ]))->assertOk()->json();
         $peiRelations = collect($peiMetadata['relations'])->keyBy('name');
 
-        self::assertArrayNotHasKey('student', $peiRelations['studentContext']['columns']);
-        self::assertArrayNotHasKey('registration', $peiRelations['studentContext']['columns']);
-        self::assertArrayNotHasKey('semester', $peiRelations['studentContext']['columns']);
-        self::assertSame('Versão do contexto', $peiRelations['studentContext']['columns']['version']);
+        self::assertArrayHasKey('status', $peiRelations['paee']['columns']);
+        self::assertSame('Versão', $peiRelations['paee']['columns']['version']);
     }
 
     public function test_semester_relations_do_not_repeat_period_parts_already_shown_by_the_parent(): void
     {
         foreach ([
             'specialized-support.student-documents',
-            'specialized-support.student-contexts',
             'specialized-support.peis',
         ] as $source) {
             $metadata = $this->actingAs($this->admin())->getJson(route('reports.metadata', [

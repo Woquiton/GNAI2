@@ -5,6 +5,7 @@ use App\Domains\Backup\Infrastructure\Providers\BackupServiceProvider;
 use App\Domains\InclusiveRadar\Infrastructure\Providers\InclusiveRadarServiceProvider;
 use App\Domains\Reporting\Infrastructure\Providers\ReportingServiceProvider;
 use App\Providers\AppServiceProvider;
+use App\Shared\Infrastructure\Providers\ActivityFeedServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -12,4 +13,5 @@ return [
     BackupServiceProvider::class,
     InclusiveRadarServiceProvider::class,
     ReportingServiceProvider::class,
+    ActivityFeedServiceProvider::class,
 ];

@@ -17,6 +17,9 @@ trait HasAeeRecordValidation
             'evaluations' => ['required', 'array', 'min:1'],
             'evaluations.*.student_id' => ['required', 'integer', 'distinct', 'exists:students,id'],
             'evaluations.*.is_present' => ['required', 'boolean'],
+            'evaluations.*.with_guardians' => ['required', 'boolean'],
+            'evaluations.*.guardian_ids' => ['required_if:evaluations.*.with_guardians,1', 'nullable', 'array', 'min:1'],
+            'evaluations.*.guardian_ids.*' => ['integer', 'exists:student_guardians,id'],
             'evaluations.*.absence_reason' => ['required_if:evaluations.*.is_present,0', 'nullable', 'string', 'max:100000'],
             'evaluations.*.student_participation' => ['required_if:evaluations.*.is_present,1', 'nullable', 'string', 'max:100000'],
             'evaluations.*.development_evaluation' => ['required_if:evaluations.*.is_present,1', 'nullable', 'string', 'max:100000'],
@@ -31,6 +34,7 @@ trait HasAeeRecordValidation
     {
         foreach (($properties['evaluations'] ?? []) as $index => $evaluation) {
             $properties['evaluations'][$index]['is_present'] = filter_var($evaluation['is_present'] ?? false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $properties['evaluations'][$index]['with_guardians'] = filter_var($evaluation['with_guardians'] ?? false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         }
 
         return $properties;

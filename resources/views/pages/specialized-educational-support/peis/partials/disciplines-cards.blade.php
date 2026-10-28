@@ -92,14 +92,15 @@
                                 {{-- ações --}}
                                 <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                                    
-                                    @if(!$pei->is_finished && auth()->id() == $item->creator_id)
+                                    @if(auth()->id() == $item->creator_id)
                                         @can('pei-discipline.update')
-                                        <x-buttons.link-button Dados do PEI
+                                        <x-buttons.link-button
                                            href="{{ route('specialized-educational-support.pei-discipline.edit', [$pei, $item]) }}"
                                             variant="warning">
                                             <i class="fas fa-edit"></i> Editar
                                         </x-buttons.link-button>
                                         @endcan
+                                        @if(!$pei->is_finished)
                                         @can('pei-discipline.delete')
                                         <x-buttons.submit-button
                                             type="button"
@@ -116,6 +117,7 @@
                                                 <i class="fas fa-trash-alt"></i> Excluir
                                             </x-buttons.submit-button>
                                         @endcan
+                                        @endif
                                     @endif
                                 </div>
                             </div>

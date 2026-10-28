@@ -58,6 +58,15 @@
                     :value="old('academic_year', $studentCourse->academic_year)" />
             </div>
 
+            <div class="col-md-6">
+                <x-forms.select
+                    name="semester_id"
+                    label="Semestre"
+                    aria-label="Selecionar semestre"
+                    :options="$semesters->pluck('label', 'id')->toArray()"
+                    :value="old('semester_id', $studentCourse->semester_id)" />
+            </div>
+
             <x-forms.section title="Acompanhamento Acadêmico do Curso Atual" />
 
             @php

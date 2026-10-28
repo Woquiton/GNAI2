@@ -18,9 +18,24 @@
 .cursor-pointer:hover, .cursor-pointer:focus {
     background-color: #f8f9fa;
     transform: scale(1.01);
-    outline: 2px solid #322B75E5;
+    outline: 2px solid #6c63ffE5;
 }
 
 .italic { font-style: italic; }
 
 /* repetidos já removidos: keep only one declaration for .sidebar-menu earlier (em base/sidebar) */
+
+/* ===== DESTAQUE MODULOS NOVOS (Estudo de Caso / PAEE) ===== */
+.gnai-new-section {
+    border: 1px solid var(--primary-color, #6c63ff);
+    border-radius: 0.5rem;
+    position: relative;
+}
+
+.gnai-new-section .gnai-new-tag,
+.gnai-new-section .tag-new {
+    position: absolute;
+    top: -0.65rem;
+    right: 1rem;
+    margin-left: 0;
+}

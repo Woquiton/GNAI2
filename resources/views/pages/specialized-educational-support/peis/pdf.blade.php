@@ -36,18 +36,18 @@
     </table>
 
     <div class="section-title">Informações de Apoio Pedagógico (NAPNE)</div>
-    
-    <span class="field-label">Histórico (Trajetória do Estudante):</span>
-    <div class="content-box">{{ $pei->studentContext->history }}</div>
 
-    <span class="field-label">Necessidades Educacionais Específicas:</span>
-    <div class="content-box">{{ $pei->studentContext->specific_educational_needs }}</div>
+    <span class="field-label">PAEE Vinculado (versão):</span>
+    <div class="content-box">{{ $pei->paee->version ?? 'Não informada' }}</div>
 
-    <span class="field-label">Conhecimentos e Interesses:</span>
-    <div class="content-box">{{ $pei->studentContext->knowledge }}</div>
+    <span class="field-label">Frequência de Atendimento:</span>
+    <div class="content-box">{{ $pei->paee->attendance_frequency_per_week ?? 'Não informada' }}</div>
 
-    <span class="field-label">Dificuldades Apresentadas:</span>
-    <div class="content-box">{{ $pei->studentContext->difficulties }}</div>
+    <span class="field-label">Formato de Atendimento:</span>
+    <div class="content-box">{{ $pei->paee ? \App\Shared\Domain\Support\AeeLabels::attendanceFormat($pei->paee->attendance_format) : 'Não informado' }}</div>
+
+    <span class="field-label">Status do PAEE:</span>
+    <div class="content-box">{{ $pei->paee ? match($pei->paee->status) { 'active' => 'Ativo', 'under_review' => 'Em revisão', default => 'Rascunho' } : 'Não informado' }}</div>
 
     <div class="section-title">Adaptações Razoáveis e/ou Acessibilidades Curriculares</div>
 

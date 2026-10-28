@@ -1,15 +1,9 @@
 @props([
     'title',
     'subtitle' => null,
-    'image' => 'images/page-header3.png',
 ])
 
-<div class="table-header" style="
-    background-image: url('{{ asset($image) }}');
-    background-size: auto;
-    background-position: top left;
-    background-repeat: repeat;
-">
+<div class="table-header" style="background: #f1f2f6;">
     <div class="table-header-overlay"></div>
 
     <div class="table-header-content">

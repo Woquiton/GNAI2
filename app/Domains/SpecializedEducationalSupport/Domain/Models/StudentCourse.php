@@ -27,6 +27,7 @@ final class StudentCourse extends Pivot
         'student_id',
         'course_id',
         'academic_year',
+        'semester_id',
         'is_current',
         'school_attendance_status',
     ];
@@ -47,6 +48,7 @@ final class StudentCourse extends Pivot
             'student_id' => $student->getKey(),
             'course_id' => $course->getKey(),
             'academic_year' => $data->academicYear,
+            'semester_id' => $data->semesterId,
             'is_current' => $data->isCurrent,
             'school_attendance_status' => self::nullableText($data->schoolAttendanceStatus),
         ]);
@@ -64,6 +66,7 @@ final class StudentCourse extends Pivot
         $this->fill([
             'course_id' => $course->getKey(),
             'academic_year' => $data->academicYear,
+            'semester_id' => $data->semesterId,
             'school_attendance_status' => self::nullableText($data->schoolAttendanceStatus),
         ]);
     }
@@ -86,6 +89,11 @@ final class StudentCourse extends Pivot
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function semester(): BelongsTo
+    {
+        return $this->belongsTo(Semester::class);
     }
 
     public function failedDisciplines(): BelongsToMany

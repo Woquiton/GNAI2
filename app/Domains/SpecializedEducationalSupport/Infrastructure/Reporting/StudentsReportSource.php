@@ -37,14 +37,13 @@ final class StudentsReportSource extends EloquentReportSource
     public function relationLabels(): array
     {
         return [
-            'contexts' => 'Contextos dos alunos',
             'studentCourses' => 'Matrículas em cursos',
         ];
     }
 
     public function excludedRelations(): array
     {
-        return ['person', 'currentContext', 'currentCourse'];
+        return ['person', 'currentCourse', 'currentCaseStudy', 'currentPaee'];
     }
 
     protected function definitions(): array

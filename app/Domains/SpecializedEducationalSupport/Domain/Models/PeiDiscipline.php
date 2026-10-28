@@ -11,10 +11,18 @@ use App\Domains\SpecializedEducationalSupport\Domain\Exceptions\InvalidPeiDiscip
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class PeiDiscipline extends Model
 {
     use HasFactory;
+
+    /**
+     * Texto provisório usado pela atribuição em lote (BulkAssignPeiDisciplinesAction)
+     * enquanto o conteúdo pedagógico de verdade não é preenchido. Um PEI não pode
+     * ser finalizado enquanto algum campo obrigatório ainda tiver esse valor.
+     */
+    public const PLACEHOLDER_TEXT = 'A preencher.';
 
     protected $table = 'pei_disciplines';
 
@@ -29,6 +37,9 @@ final class PeiDiscipline extends Model
         'evaluations',
         'opinion',
         'complementary_records',
+        'curricular_reference',
+        'materials_and_assistive_technology',
+        'objectives_deadline',
     ];
 
     /**
@@ -54,6 +65,9 @@ final class PeiDiscipline extends Model
             'evaluations' => self::normalizeText($data->evaluations),
             'opinion' => self::normalizeNullableText($data->opinion),
             'complementary_records' => self::normalizeNullableText($data->complementaryRecords),
+            'curricular_reference' => self::normalizeNullableText($data->curricularReference),
+            'materials_and_assistive_technology' => self::normalizeNullableText($data->materialsAndAssistiveTechnology),
+            'objectives_deadline' => self::normalizeNullableText($data->objectivesDeadline),
         ]);
     }
 
@@ -71,6 +85,9 @@ final class PeiDiscipline extends Model
             'evaluations' => self::normalizeText($data->evaluations),
             'opinion' => self::normalizeNullableText($data->opinion),
             'complementary_records' => self::normalizeNullableText($data->complementaryRecords),
+            'curricular_reference' => self::normalizeNullableText($data->curricularReference),
+            'materials_and_assistive_technology' => self::normalizeNullableText($data->materialsAndAssistiveTechnology),
+            'objectives_deadline' => self::normalizeNullableText($data->objectivesDeadline),
         ]);
     }
 
@@ -81,6 +98,23 @@ final class PeiDiscipline extends Model
     {
         if ($userId === null || (int) $this->creator_id !== $userId) {
             throw new InvalidPeiDiscipline('Apenas o criador desta adaptação pode editá-la ou removê-la.');
+        }
+    }
+
+    /**
+     * Permite edição (não exclusão) tanto por quem criou o registro quanto
+     * pelo próprio professor responsável pela disciplina — usado pelo acesso
+     * de professor via link único, que só pode ajustar a própria adaptação.
+     *
+     * @throws InvalidPeiDiscipline
+     */
+    public function ensureCanBeEditedBy(?int $userId, ?int $teacherId): void
+    {
+        $isCreator = $userId !== null && (int) $this->creator_id === $userId;
+        $isResponsibleTeacher = $teacherId !== null && (int) $this->teacher_id === $teacherId;
+
+        if (! $isCreator && ! $isResponsibleTeacher) {
+            throw new InvalidPeiDiscipline('Apenas o criador ou o professor responsável por esta adaptação pode editá-la.');
         }
     }
 
@@ -97,6 +131,11 @@ final class PeiDiscipline extends Model
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function revisions(): HasMany
+    {
+        return $this->hasMany(PeiDisciplineRevision::class)->latest('reviewed_at');
     }
 
     public function creator(): BelongsTo

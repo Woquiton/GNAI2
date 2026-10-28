@@ -28,6 +28,7 @@ final class UpdateAeeStudentEvaluationAction
             $locked->revise(new AeeStudentEvaluationDTO(
                 studentId: $data->studentId,
                 isPresent: $data->isPresent,
+                withGuardians: $data->withGuardians,
                 absenceReason: $data->absenceReason,
                 adaptationsMade: $data->adaptationsMade,
                 studentParticipation: $data->studentParticipation,
@@ -37,6 +38,7 @@ final class UpdateAeeStudentEvaluationAction
                 nextSessionAdjustments: $data->nextSessionAdjustments,
             ));
             $locked->save();
+            $locked->syncGuardians($data->withGuardians ? $data->guardianIds : []);
 
             return $locked->load([
                 'student.person',

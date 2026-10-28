@@ -3,7 +3,7 @@
    ============================================================ */
 
 .navbar-custom {
-    background-color: var(--navbar-bg, #322B75);
+    background-color: var(--navbar-bg, var(--primary-color));
     height: 80px;
     position: fixed;
     top: 0;

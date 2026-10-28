@@ -187,7 +187,7 @@
 }
 
 .btn-login-primary:hover {
-    background-color: #3d35a5;
+    background-color: #6c63ff;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(77, 68, 181, 0.2);
     color: white;

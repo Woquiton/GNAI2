@@ -57,10 +57,17 @@
             </div>
         </div>
 
+        @include('pages.specialized-educational-support.students.partials.status-panel')
+
         {{-- Dados básicos e Acadêmicos (Geralmente vinculados à view do estudante) --}}
         @include('pages.specialized-educational-support.students.record.personal-data')
         
         @include('pages.specialized-educational-support.students.record.academic-info')
+
+        {{-- Seção de Documentos --}}
+        @can('student-document.view')
+            @include('pages.specialized-educational-support.students.record.documents')
+        @endcan
 
         {{-- Seção de Perfis de Atendimento --}}
         @can('student-deficiency.view')
@@ -72,21 +79,21 @@
             @include('pages.specialized-educational-support.students.record.guardians')
         @endcan
 
-        {{-- Seção de Contextos --}}
-        @can('student-context.view')
-            @include('pages.specialized-educational-support.students.record.contexts')
+        {{-- Seção de Estudos de Caso --}}
+        @can('case-study.view')
+            @include('pages.specialized-educational-support.students.record.case-studies')
         @endcan
-            
+
+        {{-- Seção de PAEE --}}
+        @can('paee.view')
+            @include('pages.specialized-educational-support.students.record.paees')
+        @endcan
+
         {{-- Seção de PEIs --}}
         @can('pei.view')
             @include('pages.specialized-educational-support.students.record.peis')
         @endcan
-            
-        {{-- Seção de Documentos --}}
-        @can('student-document.view')
-            @include('pages.specialized-educational-support.students.record.documents')
-        @endcan
-            
+
         {{-- Seção de atendimentos AEE --}}
         @canany(['aee-record.view-all', 'aee-record.view-own', 'pedagogical-record.view-all', 'pedagogical-record.view-own'])
             @include('pages.specialized-educational-support.students.record.aee-records')

@@ -60,11 +60,6 @@ class Teacher extends Model
         return $this->hasMany(TeacherCourseDiscipline::class);
     }
 
-    public function courses(): BelongsToMany
-    {
-        return $this->belongsToMany(Course::class, 'teacher_courses')->withTimestamps();
-    }
-
     public function peiDisciplines(): HasMany
     {
         return $this->hasMany(PeiDiscipline::class, 'teacher_id');

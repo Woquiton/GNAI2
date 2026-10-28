@@ -8,7 +8,6 @@ use App\Domains\Reporting\Domain\Enums\ReportColumnType;
 use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Pei;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\Semester;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\StudentContext;
 use App\Domains\SpecializedEducationalSupport\Domain\Models\StudentDocument;
 
 final class SemestersReportSource extends EloquentReportSource
@@ -45,7 +44,7 @@ final class SemestersReportSource extends EloquentReportSource
 
     protected function relationPolicy(string $parentModel, string $relationName): array
     {
-        $excluded = in_array($parentModel, [StudentDocument::class, StudentContext::class, Pei::class], true)
+        $excluded = in_array($parentModel, [StudentDocument::class, Pei::class], true)
             ? ['label', 'year', 'term']
             : [];
 

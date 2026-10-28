@@ -49,24 +49,24 @@
 
     <div class="section-title">Informações de Apoio Pedagógico (NAPNE)</div>
 
-    <span class="field-label">Histórico (Trajetória do Estudante):</span>
+    <span class="field-label">PAEE Vinculado (versão):</span>
     <div class="content-box">
-        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($pei->studentContext->history ?? '')) !!}
+        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($pei->paee->version ?? '')) !!}
     </div>
 
-    <span class="field-label">Necessidades Educacionais Específicas:</span>
+    <span class="field-label">Frequência de Atendimento:</span>
     <div class="content-box">
-        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($pei->studentContext->specific_educational_needs ?? '')) !!}
+        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($pei->paee->attendance_frequency_per_week ?? '')) !!}
     </div>
 
-    <span class="field-label">Conhecimentos e Interesses:</span>
+    <span class="field-label">Formato de Atendimento:</span>
     <div class="content-box">
-        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($pei->studentContext->knowledge ?? '')) !!}
+        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize($pei->paee ? \App\Shared\Domain\Support\AeeLabels::attendanceFormat($pei->paee->attendance_format) : '') !!}
     </div>
 
-    <span class="field-label">Dificuldades Apresentadas:</span>
+    <span class="field-label">Status do PAEE:</span>
     <div class="content-box">
-        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($pei->studentContext->difficulties ?? '')) !!}
+        {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize($pei->paee ? match($pei->paee->status) { 'active' => 'Ativo', 'under_review' => 'Em revisão', default => 'Rascunho' } : '') !!}
     </div>
 
     <div class="section-title">Adaptações Razoáveis e/ou Acessibilidades Curriculares</div>

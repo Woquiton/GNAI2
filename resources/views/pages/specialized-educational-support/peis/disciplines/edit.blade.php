@@ -53,7 +53,7 @@
 
             <x-forms.section title="Planejamento Adaptado" />
 
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <x-forms.textarea
                     name="specific_objectives"
                     label="Objetivos Específicos"
@@ -63,7 +63,16 @@
                 />
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-4">
+                <x-forms.input
+                    name="objectives_deadline"
+                    label="Prazo das metas/objetivos"
+                    :value="old('objectives_deadline', $peiDiscipline->objectives_deadline)"
+                />
+                <small class="text-muted d-block mb-2">Opcional. Ex.: "até o fim do bimestre", "até dezembro/2026".</small>
+            </div>
+
+            <div class="col-md-6">
                 <x-forms.textarea
                     name="content_programmatic"
                     label="Conteúdo Programático"
@@ -73,7 +82,17 @@
                 />
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <x-forms.textarea
+                    name="curricular_reference"
+                    label="Referência curricular (BNCC ou ementa/unidade)"
+                    rows="4"
+                    :value="old('curricular_reference', $peiDiscipline->curricular_reference)"
+                />
+                <small class="text-muted d-block mb-2">Opcional. No superior, use a ementa ou unidade curricular correspondente.</small>
+            </div>
+
+            <div class="col-md-6">
                 <x-forms.textarea
                     name="methodologies"
                     label="Metodologias e Estratégias"
@@ -81,6 +100,16 @@
                     rows="4"
                     :value="old('methodologies', $peiDiscipline->methodologies)"
                 />
+            </div>
+
+            <div class="col-md-6">
+                <x-forms.textarea
+                    name="materials_and_assistive_technology"
+                    label="Recursos didáticos e tecnologia assistiva"
+                    rows="4"
+                    :value="old('materials_and_assistive_technology', $peiDiscipline->materials_and_assistive_technology)"
+                />
+                <small class="text-muted d-block mb-2">Opcional. Preencha quando a disciplina exigir recurso específico (quando indicado).</small>
             </div>
 
             <div class="col-md-12">

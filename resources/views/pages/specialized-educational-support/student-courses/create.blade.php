@@ -56,13 +56,22 @@
             </div>
 
             <div class="col-md-6">
-                <x-forms.input 
-                    name="academic_year" 
-                    label="Ano Letivo " 
-                    type="number" 
+                <x-forms.input
+                    name="academic_year"
+                    label="Ano Letivo "
+                    type="number"
                     required
                     aria-label="Ano letivo"
                     :value="old('academic_year', date('Y'))" />
+            </div>
+
+            <div class="col-md-6">
+                <x-forms.select
+                    name="semester_id"
+                    label="Semestre"
+                    aria-label="Selecionar semestre"
+                    :options="$semesters->pluck('label', 'id')->toArray()"
+                    :value="old('semester_id')" />
             </div>
 
             <div class="col-md-6">

@@ -28,9 +28,16 @@ final class CreateAeeRecordAction
             $record = AeeRecord::register($session, $dto);
             $record->save();
 
-            foreach ($dto->evaluations as $evaluationDTO) {
+            foreach ($data->evaluations as $index => $evaluationData) {
+                $evaluationDTO = $dto->evaluations[$index];
                 $student = $session->students->firstWhere('id', $evaluationDTO->studentId);
-                AeeStudentEvaluation::register($record, $student, $evaluationDTO)->save();
+                $evaluation = AeeStudentEvaluation::register($record, $student, $evaluationDTO);
+                $evaluation->save();
+
+                if ($evaluationDTO->withGuardians) {
+                    $guardianIds = array_map('intval', $evaluationData['guardian_ids'] ?? []);
+                    $evaluation->syncGuardians($guardianIds);
+                }
             }
 
             $session->update(['status' => SessionStatus::COMPLETED_DATABASE_VALUE]);
@@ -87,6 +94,7 @@ final class CreateAeeRecordAction
         return new AeeStudentEvaluationDTO(
             studentId: (int) $data['student_id'],
             isPresent: (bool) $data['is_present'],
+            withGuardians: (bool) ($data['with_guardians'] ?? false),
             absenceReason: $data['absence_reason'] ?? null,
             adaptationsMade: $data['adaptations_made'] ?? null,
             studentParticipation: $data['student_participation'] ?? null,
