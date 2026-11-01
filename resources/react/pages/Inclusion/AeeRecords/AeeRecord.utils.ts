@@ -30,6 +30,8 @@ export function emptyEvaluation(studentId: number): AeeEvaluationFormData {
     return {
         student_id: studentId,
         is_present: true,
+        with_guardians: false,
+        guardian_ids: [],
         absence_reason: "",
         student_participation: "",
         adaptations_made: "",
@@ -46,6 +48,8 @@ export function evaluationFromRecord(
     return {
         student_id: evaluation.student_id,
         is_present: Boolean(evaluation.is_present),
+        with_guardians: Boolean(evaluation.with_guardians),
+        guardian_ids: (evaluation.guardians ?? []).map((guardian) => Number(guardian.id)),
         absence_reason: evaluation.absence_reason ?? "",
         student_participation: evaluation.student_participation ?? "",
         adaptations_made: evaluation.adaptations_made ?? "",
@@ -62,9 +66,13 @@ export function evaluationFromRecord(
  */
 export function evaluationPayload(
     evaluation: AeeEvaluationFormData,
-): Record<string, string | number | boolean | null> {
-    const payload: Record<string, string | number | boolean | null> = {
+): Record<string, string | number | boolean | number[] | null> {
+    // A participação de responsáveis só existe com o aluno presente (como no Blade).
+    const withGuardians = evaluation.is_present && evaluation.with_guardians;
+    const payload: Record<string, string | number | boolean | number[] | null> = {
         ...evaluation,
+        with_guardians: withGuardians,
+        guardian_ids: withGuardians ? evaluation.guardian_ids : [],
     };
     const hidden = evaluation.is_present ? absenceFields : presenceFields;
 

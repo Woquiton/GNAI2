@@ -1,3 +1,5 @@
+import ChoiceControl from "@/components/Forms/ChoiceControl/ChoiceControl";
+import ChoiceGroup from "@/components/Forms/ChoiceGroup/ChoiceGroup";
 import FormField from "@/components/Forms/FormField/FormField";
 import FormGrid from "@/components/Forms/FormGrid/FormGrid";
 import { FormGridWide } from "@/components/Forms/FormGrid/FormGrid";
@@ -6,6 +8,7 @@ import ToggleControl from "@/components/Forms/ToggleControl/ToggleControl";
 import type {
     AeeEvaluationFormData,
     AeeEvaluationTextField,
+    AeeGuardianOption,
 } from "./AeeRecord.types";
 
 interface TextFieldDefinition {
@@ -64,17 +67,21 @@ export default function AeeEvaluationFields({
     idPrefix,
     namePrefix,
     values,
+    guardians,
     errorFor,
     disabled,
     onPresenceChange,
+    onGuardiansChange,
     onFieldChange,
 }: {
     idPrefix: string;
     namePrefix?: string;
     values: AeeEvaluationFormData;
-    errorFor: (field: keyof AeeEvaluationFormData) => string | undefined;
+    guardians: AeeGuardianOption[];
+    errorFor: (field: string) => string | undefined;
     disabled: boolean;
     onPresenceChange: (present: boolean) => void;
+    onGuardiansChange: (changes: Pick<AeeEvaluationFormData, "with_guardians" | "guardian_ids">) => void;
     onFieldChange: (field: AeeEvaluationTextField, value: string) => void;
 }): React.JSX.Element {
     const nameFor = (field: string): string => (
@@ -109,6 +116,77 @@ export default function AeeEvaluationFields({
     };
 
     const presenceError = errorFor("is_present");
+    const hasGuardians = guardians.length > 0;
+    const guardiansId = `${idPrefix}-guardians`;
+    const guardianError = errorFor("guardian_ids") ?? errorFor("guardian_ids.0");
+
+    const toggleGuardian = (id: number, checked: boolean): void => {
+        onGuardiansChange({
+            with_guardians: values.with_guardians,
+            guardian_ids: checked
+                ? [...values.guardian_ids.filter((item) => item !== id), id]
+                : values.guardian_ids.filter((item) => item !== id),
+        });
+    };
+
+    // Devolutiva à família: aparece no PEI como acompanhamento com responsáveis.
+    const guardianFields = (
+        <>
+            <FormGridWide>
+                <ToggleControl
+                    id={`${idPrefix}-with-guardians`}
+                    name={nameFor("with_guardians")}
+                    size="small"
+                    label="Atendimento realizado com participação de responsável"
+                    description={hasGuardians
+                        ? "Esta conversa será exibida no PEI como devolutiva à família."
+                        : "O aluno não possui responsáveis cadastrados no sistema."}
+                    checked={values.with_guardians}
+                    disabled={!hasGuardians || disabled}
+                    onChange={(checked) => onGuardiansChange({
+                        with_guardians: checked,
+                        guardian_ids: checked ? values.guardian_ids : [],
+                    })}
+                />
+            </FormGridWide>
+            {values.with_guardians ? (
+                <FormGridWide>
+                    <FormField
+                        id={guardiansId}
+                        label="Responsáveis participantes"
+                        error={guardianError}
+                    >
+                        <ChoiceGroup
+                            id={guardiansId}
+                            label="Responsáveis participantes"
+                            invalid={!!guardianError}
+                            describedBy={guardianError ? `${guardiansId}-error` : undefined}
+                        >
+                            {guardians.map((guardian) => (
+                                <ChoiceControl
+                                    key={guardian.id}
+                                    type="checkbox"
+                                    tone="purple"
+                                    id={`${guardiansId}-${guardian.id}`}
+                                    name={`${nameFor("guardian_ids")}[]`}
+                                    label={(
+                                        <>
+                                            <strong>{guardian.name}</strong>
+                                            {", "}{guardian.relationship_label}
+                                        </>
+                                    )}
+                                    aria-label={`${guardian.name}, ${guardian.relationship_label}`}
+                                    checked={values.guardian_ids.includes(guardian.id)}
+                                    disabled={disabled}
+                                    onChange={(checked) => toggleGuardian(guardian.id, checked)}
+                                />
+                            ))}
+                        </ChoiceGroup>
+                    </FormField>
+                </FormGridWide>
+            ) : null}
+        </>
+    );
 
     return (
         <FormGrid columns={2}>
@@ -124,6 +202,7 @@ export default function AeeEvaluationFields({
                     onChange={onPresenceChange}
                 />
             </FormGridWide>
+            {values.is_present ? guardianFields : null}
             {values.is_present ? (
                 presenceDefinitions.map((definition) => (
                     definition.half ? (

@@ -136,14 +136,17 @@ final class AeeRecordController
         return Inertia::render('Inclusion/Students/AeeRecords/Show', compact('student', 'evaluation', 'can'));
     }
 
-    public function studentEdit(Student $student, AeeStudentEvaluation $evaluation, ListStudentAeeEvaluationsQuery $query, Request $request): InertiaResponse
+    public function studentEdit(Student $student, AeeStudentEvaluation $evaluation, ListStudentAeeEvaluationsQuery $query, AeeRecordFormQuery $form, Request $request): InertiaResponse
     {
         $evaluation = $query->show($student, $evaluation, $this->user($request));
         if ((int) $evaluation->aeeRecord->attendanceSession->professional_id !== $this->professionalId($request)) {
             throw new AccessDeniedException('Apenas o profissional vinculado pode editar esta avaliação.');
         }
 
-        return Inertia::render('Inclusion/Students/AeeRecords/Edit', compact('student', 'evaluation'));
+        $evaluation->loadMissing('guardians');
+        $guardians = $form->guardiansByStudent([$student])[(int) $student->getKey()];
+
+        return Inertia::render('Inclusion/Students/AeeRecords/Edit', compact('student', 'evaluation', 'guardians'));
     }
 
     /** @throws Throwable */

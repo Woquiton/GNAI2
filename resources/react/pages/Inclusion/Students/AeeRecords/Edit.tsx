@@ -14,6 +14,7 @@ import AeeEvaluationFields from "@/pages/Inclusion/AeeRecords/AeeEvaluationField
 import type {
     AeeEvaluationFormData,
     AeeEvaluationTextField,
+    AeeGuardianOption,
     AeeRecordRecord,
     AeeStudentEvaluationRecord,
 } from "@/pages/Inclusion/AeeRecords/AeeRecord.types";
@@ -40,11 +41,13 @@ function TextValue({ value }: { value?: string | null }): React.JSX.Element {
 export default function InclusionStudentsAeeRecordsEditPage({
     student,
     evaluation,
+    guardians,
 }: {
     student: { id: number };
     evaluation: AeeStudentEvaluationRecord & {
         aee_record: AeeRecordRecord;
     };
+    guardians: AeeGuardianOption[];
 }): React.JSX.Element {
     const busy = useRef(false);
     const element = useRef<HTMLFormElement>(null);
@@ -163,9 +166,11 @@ export default function InclusionStudentsAeeRecordsEditPage({
                         <AeeEvaluationFields
                             idPrefix="student-aee-evaluation"
                             values={form.data}
+                            guardians={guardians}
                             errorFor={(field) => errors[field]}
                             disabled={form.processing}
                             onPresenceChange={(present) => form.setData("is_present", present)}
+                            onGuardiansChange={(changes) => form.setData((current) => ({ ...current, ...changes }))}
                             onFieldChange={(field: AeeEvaluationTextField, value) => form.setData(field, value)}
                         />
                     </FormSection>

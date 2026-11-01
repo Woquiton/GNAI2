@@ -18,6 +18,7 @@ import AeeEvaluationFields from "./AeeEvaluationFields";
 import type {
     AeeEvaluationFormData,
     AeeEvaluationTextField,
+    AeeGuardiansByStudent,
     AeeRecordRecord,
     AeeSession,
 } from "./AeeRecord.types";
@@ -57,9 +58,11 @@ interface StudentTab {
 export default function AeeRecordForm({
     session,
     aeeRecord,
+    guardiansByStudent,
 }: {
     session: AeeSession;
     aeeRecord?: AeeRecordRecord;
+    guardiansByStudent: AeeGuardiansByStudent;
 }): React.JSX.Element {
     const editing = Boolean(aeeRecord);
     const sessionId = aeeRecord?.attendance_session_id ?? session.id;
@@ -243,9 +246,11 @@ export default function AeeRecordForm({
                         idPrefix={`aee-evaluation-${index}`}
                         namePrefix={`evaluations[${index}]`}
                         values={evaluation}
+                        guardians={guardiansByStudent[student.studentId] ?? []}
                         errorFor={(field) => evaluationErrorFor(index, field)}
                         disabled={form.processing}
                         onPresenceChange={(present) => updateEvaluation(index, { is_present: present })}
+                        onGuardiansChange={(changes) => updateEvaluation(index, changes)}
                         onFieldChange={(field: AeeEvaluationTextField, value) => {
                             const changes: Partial<AeeEvaluationFormData> = {};
                             changes[field] = value;
