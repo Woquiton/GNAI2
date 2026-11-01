@@ -45,7 +45,7 @@ export default function InclusionPaeesHistoryPage({
             title="Histórico de PAEE"
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentRecordUrl(student.id, studentPaeesTab) },
                 { label: "Histórico de PAEE" },

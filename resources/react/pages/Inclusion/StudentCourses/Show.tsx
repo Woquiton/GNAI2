@@ -56,7 +56,7 @@ export default function InclusionStudentCoursesShowPage({
     const studentId = studentCourse.student?.id ?? studentCourse.student_id;
     const studentName = studentCourse.student?.person?.name ?? "";
     const courseName = studentCourse.course?.name ?? "Curso não identificado";
-    const itemUrl = `${aeeBase}/student-courses/${studentCourse.id}`;
+    const itemUrl = `${aeeBase}/cursos-do-aluno/${studentCourse.id}`;
     const curriculum = [...(studentCourse.course?.disciplines ?? [])].sort(
         (first, second) => first.name.localeCompare(second.name, "pt-BR"),
     );
@@ -98,7 +98,7 @@ export default function InclusionStudentCoursesShowPage({
         if (action === "delete") {
             router.delete(itemUrl, options);
         } else {
-            router.patch(`${itemUrl}/make-current`, {}, options);
+            router.patch(`${itemUrl}/definir-atual`, {}, options);
         }
     }
 
@@ -224,7 +224,7 @@ export default function InclusionStudentCoursesShowPage({
                 />
                 {can.update && studentCourse.is_current ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

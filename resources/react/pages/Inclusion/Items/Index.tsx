@@ -62,13 +62,13 @@ export default function InclusionItemsIndexPage({
             title="Itens"
             subtitle="Gestão de tecnologias assistivas e materiais pedagógicos acessíveis."
             breadcrumbItems={[
-                { label: 'Home', href: '/auth/dashboard' },
+                { label: 'Home', href: '/autenticacao/painel' },
                 { label: 'Itens' },
             ]}
             actions={
                 can.create ? (
                     <TableListCreateButton
-                        href={`${itemsBase}/create`}
+                        href={`${itemsBase}/criar`}
                         ariaLabel="Cadastrar item"
                     />
                 ) : undefined

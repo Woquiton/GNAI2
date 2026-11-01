@@ -15,7 +15,7 @@ import type {
 } from "./PedagogicalRecordShow.types";
 import "./Show.css";
 
-const recordsBase = `${aeeBase}/pedagogical-records`;
+const recordsBase = `${aeeBase}/atendimentos-pedagogicos`;
 
 function TextValue({
     value,
@@ -45,7 +45,7 @@ export default function InclusionPedagogicalRecordsShowPage({
     const studentId = returnStudentId && returnStudentId > 0 ? returnStudentId : undefined;
     const studentQuery = studentId ? `?student_id=${studentId}` : "";
     const recordUrl = `${recordsBase}/${record.id}`;
-    const sessionHref = `${aeeBase}/sessions/${session.id}/show`;
+    const sessionHref = `${aeeBase}/agendamentos/${session.id}/visualizar`;
     const backHref = studentId
         ? studentRecordUrl(studentId, "pedagogical-attendance")
         : sessionHref;
@@ -90,8 +90,8 @@ export default function InclusionPedagogicalRecordsShowPage({
             title="Atendimento Pedagógico"
             subtitle={subtitle}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Agendamentos", href: `${aeeBase}/sessions` },
+                { label: "Home", href: "/autenticacao/painel" },
+                { label: "Agendamentos", href: `${aeeBase}/agendamentos` },
                 { label: `Agendamento #${session.id}`, href: sessionHref },
                 { label: "Atendimento Pedagógico" },
             ]}
@@ -235,7 +235,7 @@ export default function InclusionPedagogicalRecordsShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={`${recordUrl}/edit${studentQuery}`}
+                        href={`${recordUrl}/editar${studentQuery}`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

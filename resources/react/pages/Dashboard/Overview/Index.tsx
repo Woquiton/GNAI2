@@ -9,17 +9,17 @@ import BarrierMap from './BarrierMap';
 import type { OverviewProps } from './Overview.types';
 import './Overview.css';
 
-const support = '/specialized-educational-support';
-const radar = '/inclusive-radar';
+const support = '/inclusao';
+const radar = '/inclusao';
 export default function Overview({ specializedEducationalSupport: s, inclusiveRadar: r, activityFeed }: OverviewProps): React.JSX.Element {
   const { auth } = usePage<{ auth: { user: { name?: string; email: string } | null } }>().props;
   const stats = [
-    { title: 'Alunos', value: s.totalStudents, href: `${support}/students`, icon: 'users', tone: 'info' },
-    { title: 'Equipe', value: s.totalProfessionals, href: `${support}/professionals`, icon: 'user-md', tone: 'purple' },
+    { title: 'Alunos', value: s.totalStudents, href: `${support}/alunos`, icon: 'users', tone: 'info' },
+    { title: 'Equipe', value: s.totalProfessionals, href: `${support}/profissionais`, icon: 'user-md', tone: 'purple' },
     { title: 'PEIs finalizados', value: s.totalPeisFinished, href: `${support}/peis?is_finished=1`, icon: 'check-square-o', tone: 'success' },
-    { title: 'Agendamentos', value: s.totalSessions, href: `${support}/sessions`, icon: 'calendar', tone: 'info' },
-    { title: 'Pendências', value: s.totalPendingPendencies, href: `${support}/pendencies?is_completed=0`, icon: 'exclamation-circle', tone: 'pink' },
-    { title: 'Atrasadas', value: s.totalOverduePendencies, href: `${support}/pendencies?is_completed=0`, icon: 'clock-o', tone: 'purple' },
+    { title: 'Agendamentos', value: s.totalSessions, href: `${support}/agendamentos`, icon: 'calendar', tone: 'info' },
+    { title: 'Pendências', value: s.totalPendingPendencies, href: `${support}/pendencias?is_completed=0`, icon: 'exclamation-circle', tone: 'pink' },
+    { title: 'Atrasadas', value: s.totalOverduePendencies, href: `${support}/pendencias?is_completed=0`, icon: 'clock-o', tone: 'purple' },
   ] as const;
   const radarStats = [
     { title: 'Tecnologias assistivas', value: r.totalAt, href: 'items?item_type=assistive_technology', icon: 'desktop', tone: 'purple' },

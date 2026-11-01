@@ -3,7 +3,7 @@ import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 import "./Positions.css";
 
-export const positionsBase = "/specialized-educational-support/positions";
+export const positionsBase = "/inclusao/cargos";
 
 export default function PositionPage({
     title,
@@ -21,14 +21,14 @@ export default function PositionPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Cargos", href: current || position ? positionsBase : undefined },
     ];
 
     if (position) {
         breadcrumbItems.push({
             label: position.name,
-            href: current ? `${positionsBase}/${position.id}/show` : undefined,
+            href: current ? `${positionsBase}/${position.id}/visualizar` : undefined,
         });
     }
 

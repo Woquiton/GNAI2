@@ -12,7 +12,7 @@ import TagPage from "./TagPage";
 import type { TagRecord } from "./Tag.types";
 import "./Tags.css";
 
-const base = "/inclusive-radar/tags";
+const base = "/inclusao/marcadores";
 
 export default function InclusionTagsShowPage({
     tag,
@@ -89,7 +89,7 @@ export default function InclusionTagsShowPage({
                 />
                 {can.edit ? (
                     <Button
-                        href={`${base}/${tag.id}/edit`}
+                        href={`${base}/${tag.id}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

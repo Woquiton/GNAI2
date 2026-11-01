@@ -61,7 +61,7 @@ const focusableSelector = [
     '[contenteditable="true"]',
 ].join(", ");
 
-const endpoint = "/website/builder";
+const endpoint = "/administracao-do-site/construtor";
 const fileIds = new WeakMap<File, number>();
 let nextFileId = 0;
 
@@ -459,7 +459,7 @@ export default function WebsiteBuilderEditPage({
             title="Site: página inicial"
             subtitle="Monte a página inicial do site e acompanhe o resultado em tempo real antes de salvar."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Site" },
                 { label: "Página inicial" },
             ]}

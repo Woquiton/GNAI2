@@ -16,7 +16,7 @@ export default function InclusionPaeesCreatePage({
             title="Novo PAEE"
             subtitle={`Aluno: ${student.name} • a partir do Estudo de Caso ${paeeVersionLabel(caseStudy.version)}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentUrl(student.id) },
                 { label: "Novo PAEE" },

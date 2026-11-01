@@ -44,7 +44,7 @@ type Props = {
     };
 };
 
-const base = "/backup/backups";
+const base = "/backups";
 const emptyFilters: BackupFilters = { name: "", status: "", user_id: "" };
 const statusOptions = [
     { value: "success", label: "Sucesso" },
@@ -120,7 +120,7 @@ export default function BackupIndexPage({
     function restore(target: BackupRecord): void {
         if (pending.current) return;
         pending.current = true;
-        restoreForm.post(`${base}/${target.id}/restore`, {
+        restoreForm.post(`${base}/${target.id}/restaurar`, {
             preserveScroll: true,
             onNetworkError: () => fail("Falha de conexão. Confira sua conexão e tente novamente."),
             onHttpException: () => fail("Não foi possível restaurar o backup. Tente novamente."),
@@ -133,7 +133,7 @@ export default function BackupIndexPage({
         if (pending.current || actionBusy) return;
         pending.current = true;
         setUploading(true);
-        router.post(`${base}/upload`, { backup_file: file }, {
+        router.post(`${base}/enviar`, { backup_file: file }, {
             forceFormData: true,
             preserveScroll: true,
             onNetworkError: () => fail("Falha de conexão. Confira sua conexão e tente novamente."),
@@ -148,7 +148,7 @@ export default function BackupIndexPage({
 
     function generate(): void {
         if (pending.current || actionBusy) return;
-        generation.submit("post", `${base}/store`);
+        generation.submit("post", `${base}/salvar`);
     }
 
     function openAction(target: BackupRecord, nextAction: "restore" | "delete"): void {
@@ -286,7 +286,7 @@ export default function BackupIndexPage({
                                         <TableActions>
                                             {can.download ? (
                                                 <Button
-                                                    href={`${base}/${backup.id}/download`}
+                                                    href={`${base}/${backup.id}/baixar`}
                                                     download
                                                     size="sm"
                                                     tone="success"

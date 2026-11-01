@@ -10,7 +10,7 @@ import DetailField from "@/components/UI/DetailField/DetailField";
 import { notify } from "@/components/UI/NotificationToast/notify";
 import "./PeiCreate.css";
 
-const aeeBase = "/specialized-educational-support";
+const aeeBase = "/inclusao";
 
 export default function InclusionPeisCreatePage({
     student,
@@ -24,15 +24,15 @@ export default function InclusionPeisCreatePage({
     const busy = useRef(false);
     const form = useForm({});
     const studentName = student.person?.name ?? "";
-    const studentHref = `${aeeBase}/students/${student.id}/show`;
-    const peisHref = `${aeeBase}/students/${student.id}/peis`;
+    const studentHref = `${aeeBase}/alunos/${student.id}/visualizar`;
+    const peisHref = `${aeeBase}/alunos/${student.id}/peis`;
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
         if (busy.current || form.processing) return;
 
         busy.current = true;
-        form.post(`${aeeBase}/peis/student/${student.id}/store`, {
+        form.post(`${aeeBase}/peis/aluno/${student.id}/salvar`, {
             preserveScroll: true,
             onNetworkError: () => {
                 notify({
@@ -61,8 +61,8 @@ export default function InclusionPeisCreatePage({
             title="Gerar Novo PEI"
             subtitle="Revise as informações abaixo. O sistema criará automaticamente o PEI com base nesses dados."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Alunos", href: `${aeeBase}/students` },
+                { label: "Home", href: "/autenticacao/painel" },
+                { label: "Alunos", href: `${aeeBase}/alunos` },
                 { label: studentName, href: studentHref },
                 { label: "PEIs", href: peisHref },
                 { label: "Gerar Novo" },

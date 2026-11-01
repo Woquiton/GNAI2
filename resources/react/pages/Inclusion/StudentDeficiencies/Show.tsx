@@ -29,7 +29,7 @@ export default function InclusionStudentDeficienciesShowPage({
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [failure, setFailure] = useState("");
-    const itemUrl = `${studentsBase}/${student.id}/deficiencies/${deficiency.id}`;
+    const itemUrl = `${studentsBase}/${student.id}/deficiencias/${deficiency.id}`;
     const profileName = deficiency.deficiency?.name ?? "Perfil não identificado";
 
     useEffect(() => {
@@ -108,7 +108,7 @@ export default function InclusionStudentDeficienciesShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

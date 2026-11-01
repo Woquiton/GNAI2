@@ -12,7 +12,7 @@ import Button from "@/components/UI/Button/Button";
 import CardBox from "@/components/UI/CardBox/CardBox";
 import { notify } from "@/components/UI/NotificationToast/notify";
 
-const aeeBase = "/specialized-educational-support";
+const aeeBase = "/inclusao";
 
 export interface PeiDisciplineRecord {
     id: number;
@@ -127,7 +127,7 @@ export default function PeiDisciplineForm({
 }): React.JSX.Element {
     const busy = useRef(false);
     const element = useRef<HTMLFormElement>(null);
-    const peiHref = `${aeeBase}/peis/${pei.id}/show?tab=disciplines`;
+    const peiHref = `${aeeBase}/peis/${pei.id}/visualizar?tab=disciplines`;
     const form = useForm<PeiDisciplineFormData>({
         teacher_id: String(peiDiscipline.teacher_id),
         discipline_id: String(peiDiscipline.discipline_id),
@@ -183,7 +183,7 @@ export default function PeiDisciplineForm({
             },
         };
 
-        form.put(`${aeeBase}/peis/${pei.id}/disciplines/${peiDiscipline.id}`, options);
+        form.put(`${aeeBase}/peis/${pei.id}/disciplinas/${peiDiscipline.id}`, options);
     }
 
     const disciplineName = peiDiscipline.discipline?.name ?? "";
@@ -193,8 +193,8 @@ export default function PeiDisciplineForm({
             title="Editar Adaptação Curricular"
             subtitle={`Atualize o planejamento pedagógico para a disciplina de ${disciplineName}.`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Alunos", href: `${aeeBase}/students` },
+                { label: "Home", href: "/autenticacao/painel" },
+                { label: "Alunos", href: `${aeeBase}/alunos` },
                 { label: "PEI", href: peiHref },
                 { label: "Editar Adaptação" },
             ]}

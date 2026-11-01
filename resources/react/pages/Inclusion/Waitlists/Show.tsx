@@ -21,7 +21,7 @@ type Props = {
     can: { edit: boolean; cancel: boolean; destroy: boolean; pdf: boolean };
 };
 
-const base = "/inclusive-radar/waitlists";
+const base = "/inclusao/fila-de-espera";
 
 export default function InclusionWaitlistsShowPage({
     waitlist,
@@ -46,7 +46,7 @@ export default function InclusionWaitlistsShowPage({
         setFailure("");
         setProcessing(true);
         if (action === "cancel") {
-            router.patch(`${url}/cancel`, {}, {
+            router.patch(`${url}/cancelar`, {}, {
                 preserveScroll: true,
                 onError: () => setFailure("Não foi possível cancelar a solicitação. Tente novamente."),
                 onSuccess: () => setAction(null),
@@ -129,7 +129,7 @@ export default function InclusionWaitlistsShowPage({
                 />
                 {can.edit ? (
                     <Button
-                        href={`${url}/edit`}
+                        href={`${url}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

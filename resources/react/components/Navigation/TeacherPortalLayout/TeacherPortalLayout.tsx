@@ -49,7 +49,7 @@ export default function TeacherPortalLayout({ children }: { children: ReactNode 
                             label="Minha conta"
                             title="Voltar para a minha conta"
                             aria-label="Voltar para a minha conta"
-                            onClick={() => router.post("/auth/impersonate/leave")}
+                            onClick={() => router.post("/autenticacao/acessar-como/encerrar")}
                         />
                     ) : null}
                     <Button
@@ -59,7 +59,7 @@ export default function TeacherPortalLayout({ children }: { children: ReactNode 
                         label="Sair"
                         title="Sair do Gnai"
                         aria-label="Sair do Gnai"
-                        onClick={() => router.post("/auth/logout")}
+                        onClick={() => router.post("/autenticacao/sair")}
                     />
                 </div>
             </header>

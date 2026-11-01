@@ -16,8 +16,8 @@ export default function BackupPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
-        { label: "Backups", href: currentFile ? "/backup/backups" : undefined },
+        { label: "Home", href: "/autenticacao/painel" },
+        { label: "Backups", href: currentFile ? "/backups" : undefined },
     ];
     if (currentFile) breadcrumbItems.push({ label: currentFile });
 

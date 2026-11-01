@@ -94,7 +94,7 @@ export default function InclusionStudentsAeeRecordsIndexPage({
             title="Histórico de Registros de Atendimento AEE"
             subtitle={`Aluno: ${studentName}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: studentName, href: studentRecordUrl(student.id, recordTab) },
                 { label: "Registros de atendimentos AEE" },
@@ -167,7 +167,7 @@ export default function InclusionStudentsAeeRecordsIndexPage({
                                                 ) : null}
                                                 {canUpdate ? (
                                                     <Button
-                                                        href={studentAeeEvaluationUrl(student.id, evaluation.id, "edit")}
+                                                        href={studentAeeEvaluationUrl(student.id, evaluation.id, "editar")}
                                                         size="sm"
                                                         tone="warning"
                                                         iconOnly

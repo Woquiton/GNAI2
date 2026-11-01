@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 
-export const courseBase = "/specialized-educational-support/courses";
+export const courseBase = "/inclusao/cursos";
 
 export default function CoursePage({
     title,
@@ -20,14 +20,14 @@ export default function CoursePage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Cursos", href: current || course ? courseBase : undefined },
     ];
 
     if (course) {
         breadcrumbItems.push({
             label: course.name,
-            href: current ? `${courseBase}/${course.id}/show` : undefined,
+            href: current ? `${courseBase}/${course.id}/visualizar` : undefined,
         });
     }
 

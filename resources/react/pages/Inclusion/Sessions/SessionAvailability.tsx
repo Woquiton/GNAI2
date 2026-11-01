@@ -50,7 +50,7 @@ export default function SessionAvailability({
         ids.forEach(id => params.append("student_ids[]", id));
         setState({ status: "loading" });
 
-        fetch(`${sessionsBase}/availability?${params.toString()}`, {
+        fetch(`${sessionsBase}/disponibilidade?${params.toString()}`, {
             credentials: "same-origin",
             headers: {
                 Accept: "application/json",

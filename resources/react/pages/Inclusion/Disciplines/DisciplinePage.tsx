@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 
-export const disciplineBase = "/specialized-educational-support/disciplines";
+export const disciplineBase = "/inclusao/disciplinas";
 
 export default function DisciplinePage({
     title,
@@ -20,14 +20,14 @@ export default function DisciplinePage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Disciplinas", href: current || discipline ? disciplineBase : undefined },
     ];
 
     if (discipline) {
         breadcrumbItems.push({
             label: discipline.name,
-            href: current ? `${disciplineBase}/${discipline.id}/show` : undefined,
+            href: current ? `${disciplineBase}/${discipline.id}/visualizar` : undefined,
         });
     }
 

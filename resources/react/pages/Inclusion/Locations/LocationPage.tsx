@@ -3,7 +3,7 @@ import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 import type { LocationRecord } from "./Location.types";
 
-const base = "/inclusive-radar/locations";
+const base = "/inclusao/locais";
 
 export default function LocationPage({
     title,
@@ -21,7 +21,7 @@ export default function LocationPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Pontos de Referência", href: current || location ? base : undefined },
     ];
 

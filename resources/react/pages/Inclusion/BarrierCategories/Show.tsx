@@ -13,7 +13,7 @@ import BarrierCategoryPage from "./BarrierCategoryPage";
 import type { BarrierCategoryRecord } from "./BarrierCategory.types";
 import "./BarrierCategories.css";
 
-const base = "/inclusive-radar/barrier-categories";
+const base = "/inclusao/categorias-de-barreira";
 
 export default function InclusionBarrierCategoriesShowPage({
     barrierCategory: category,
@@ -104,7 +104,7 @@ export default function InclusionBarrierCategoriesShowPage({
                 />
                 {can.edit ? (
                     <Button
-                        href={`${base}/${category.id}/edit`}
+                        href={`${base}/${category.id}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

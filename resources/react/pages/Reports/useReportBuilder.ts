@@ -63,7 +63,7 @@ export default function useReportBuilder(can: ReportPermissions) {
             delete next.source;
             return next;
         });
-        void http.get<{ key: string; label: string }[]>('/reports/sources', { signal: controller.signal })
+        void http.get<{ key: string; label: string }[]>('/relatorios/fontes', { signal: controller.signal })
             .then(({ data }) => {
                 if (!Array.isArray(data)) throw new Error('Resposta de assuntos inválida');
                 if (!controller.signal.aborted) setSources(data);
@@ -92,7 +92,7 @@ export default function useReportBuilder(can: ReportPermissions) {
         if (!source || !can.metadata) return;
         const controller = new AbortController();
         setLoadingMetadata(true);
-        void http.get<ReportMetadata>('/reports/metadata', { params: { source }, signal: controller.signal })
+        void http.get<ReportMetadata>('/relatorios/metadados', { params: { source }, signal: controller.signal })
             .then(({ data }) => {
                 if (!data || typeof data.key !== 'string' || !data.columns || !Array.isArray(data.filters) || !Array.isArray(data.relations)) {
                     throw new Error('Resposta de informações inválida');
@@ -187,11 +187,11 @@ export default function useReportBuilder(can: ReportPermissions) {
         if (kind === 'run') setResult(null);
         try {
             if (kind === 'run') {
-                const { data } = await http.post<ReportResult>('/reports/run', payload, { signal: controller.signal });
+                const { data } = await http.post<ReportResult>('/relatorios/consultar', payload, { signal: controller.signal });
                 if (!data?.headers || !Array.isArray(data.rows)) throw new Error('Resposta de relatório inválida');
                 if (mounted.current) setResult(data);
             } else {
-                const { data, headers } = await http.post<Blob>('/reports/export/pdf', payload, { responseType: 'blob', signal: controller.signal });
+                const { data, headers } = await http.post<Blob>('/relatorios/exportar/pdf', payload, { responseType: 'blob', signal: controller.signal });
                 if (!mounted.current) return;
                 if (!String(headers['content-type']).includes('application/pdf')) throw new Error('Resposta PDF inválida');
                 const url = URL.createObjectURL(data);

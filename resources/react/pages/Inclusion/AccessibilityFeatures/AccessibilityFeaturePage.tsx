@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 
-const base = "/inclusive-radar/accessibility-features";
+const base = "/inclusao/recursos-de-acessibilidade";
 
 export default function AccessibilityFeaturePage({
     title,
@@ -20,7 +20,7 @@ export default function AccessibilityFeaturePage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Recursos de Acessibilidade", href: current ? base : undefined },
     ];
 

@@ -15,7 +15,7 @@ export default function WaitlistResourceDetails({
         <dl className="waitlistShow__grid">
             <DetailField label="Recurso Solicitado">
                 <a
-                    href={`/inclusive-radar/items/${waitlistable_id}`}
+                    href={`/inclusao/itens/${waitlistable_id}`}
                     target="_blank"
                     rel="noreferrer"
                 >

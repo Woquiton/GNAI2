@@ -82,8 +82,8 @@ export default function GuardianForm(props: GuardianFormProps): React.JSX.Elemen
 
         form.post(
             guardian
-                ? `${studentsBase}/${student.id}/guardians/${guardian.id}`
-                : `${studentsBase}/${student.id}/guardians/store`,
+                ? `${studentsBase}/${student.id}/responsaveis/${guardian.id}`
+                : `${studentsBase}/${student.id}/responsaveis/salvar`,
             {
                 forceFormData: true,
                 preserveScroll: true,

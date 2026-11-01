@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 
-const base = "/inclusive-radar/waitlists";
+const base = "/inclusao/fila-de-espera";
 
 export default function WaitlistPage({
     title,
@@ -20,7 +20,7 @@ export default function WaitlistPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbs: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         {
             label: "Fila de Espera",
             href: current || waitlistId ? base : undefined,

@@ -64,7 +64,7 @@ export default function TeacherPortalIndexPage({
                                             aria-label={`Ver aluno ${item.student_name}`}
                                         />
                                         <Button
-                                            href={`${teacherPortalBase}/adaptacoes/${item.id}/edit`}
+                                            href={`${teacherPortalBase}/adaptacoes/${item.id}/editar`}
                                             size="sm"
                                             tone="warning"
                                             iconOnly

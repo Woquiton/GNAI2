@@ -43,7 +43,7 @@ export default function PeiPaeeDetails({
                     </dl>
                     <div className="peiShow__inlineFormActions">
                         <Button
-                            href={`${aeeBase}/paees/${paee.id}/show`}
+                            href={`${aeeBase}/paees/${paee.id}/visualizar`}
                             tone="info"
                             leftIconClass="fa fa-external-link"
                             label="Ver PAEE completo"

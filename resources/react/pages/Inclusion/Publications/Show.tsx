@@ -18,7 +18,7 @@ type Props = {
     can: { edit: boolean; destroy: boolean; pdf: boolean };
 };
 
-const base = "/inclusive-radar/publications";
+const base = "/inclusao/publicacoes";
 
 export default function InclusionPublicationsShowPage({
     publication,
@@ -213,7 +213,7 @@ export default function InclusionPublicationsShowPage({
                 />
                 {can.edit ? (
                     <Button
-                        href={`${url}/edit`}
+                        href={`${url}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

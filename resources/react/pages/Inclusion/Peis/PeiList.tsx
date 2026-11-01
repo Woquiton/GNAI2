@@ -32,7 +32,7 @@ import "./PeiList.css";
 
 export const peisBase = `${aeeBase}/peis`;
 export const studentPeisUrl = (studentId: number): string =>
-    `${aeeBase}/students/${studentId}/peis`;
+    `${aeeBase}/alunos/${studentId}/peis`;
 
 const emptyFilters: PeiListFilters = {
     student_id: "",
@@ -261,7 +261,7 @@ export default function PeiList({
                                         <TableActions>
                                             {can.view ? (
                                                 <Button
-                                                    href={`${peisBase}/${pei.id}/show`}
+                                                    href={`${peisBase}/${pei.id}/visualizar`}
                                                     size="sm"
                                                     tone="dark-blue"
                                                     iconOnly

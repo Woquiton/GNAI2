@@ -55,7 +55,7 @@ export default function CourseForm({
     const visibleDisciplines = term
         ? disciplines.filter((discipline) => discipline.name.toLowerCase().includes(term))
         : disciplines;
-    const backHref = course ? `${courseBase}/${course.id}/show` : courseBase;
+    const backHref = course ? `${courseBase}/${course.id}/visualizar` : courseBase;
 
     function toggleDiscipline(id: number, checked: boolean): void {
         form.setData((data) => ({
@@ -110,7 +110,7 @@ export default function CourseForm({
         if (course) {
             form.put(`${courseBase}/${course.id}`, options);
         } else {
-            form.post(`${courseBase}/store`, options);
+            form.post(`${courseBase}/salvar`, options);
         }
     }
 

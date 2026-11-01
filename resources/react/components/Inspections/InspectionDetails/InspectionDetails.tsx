@@ -28,7 +28,7 @@ export default function InspectionDetails({
             title="Detalhes da Inspeção"
             subtitle="Visualize o estado de conservação, o tipo, o parecer técnico e as evidências da vistoria."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 collection,
                 { label: subject.name, href: subject.href },
                 { label: "Detalhes da Inspeção" },

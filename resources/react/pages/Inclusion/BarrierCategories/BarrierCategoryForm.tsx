@@ -15,7 +15,7 @@ import { notify } from "@/components/UI/NotificationToast/notify";
 import type { BarrierCategoryRecord } from "./BarrierCategory.types";
 import BarrierCategoryPage from "./BarrierCategoryPage";
 
-const base = "/inclusive-radar/barrier-categories";
+const base = "/inclusao/categorias-de-barreira";
 
 export default function BarrierCategoryForm({
     category,
@@ -51,7 +51,7 @@ export default function BarrierCategoryForm({
                 },
             });
         } else {
-            form.post(`${base}/store`, {
+            form.post(`${base}/salvar`, {
                 preserveScroll: true,
                 onNetworkError: () => {
                     notify({ tone: "error", title: "Falha de conexão", text: "Confira sua conexão e tente novamente." });

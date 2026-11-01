@@ -27,7 +27,7 @@ export default function InclusionCaseStudiesIndexPage({
         <BusinessPage
             title={`Estudos de Caso de ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentRecordUrl(student.id, caseStudiesTab) },
                 { label: "Estudos de Caso" },
@@ -39,7 +39,7 @@ export default function InclusionCaseStudiesIndexPage({
                         tab={caseStudiesTab}
                     />
                     <Button
-                        href={`${studentCaseStudiesUrl(student.id)}/history`}
+                        href={`${studentCaseStudiesUrl(student.id)}/historico`}
                         tone="white"
                         leftIconClass="fa fa-history"
                         label="Ver Histórico"

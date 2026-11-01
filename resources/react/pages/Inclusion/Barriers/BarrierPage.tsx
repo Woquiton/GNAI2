@@ -3,7 +3,7 @@ import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 import type { BarrierRecord } from "./Barrier.types";
 
-const base = "/inclusive-radar/barriers";
+const base = "/inclusao/barreiras";
 
 export default function BarrierPage({
     title,
@@ -21,7 +21,7 @@ export default function BarrierPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Barreiras", href: current || barrier ? base : undefined },
     ];
     if (barrier) {

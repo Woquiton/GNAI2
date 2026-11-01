@@ -108,7 +108,7 @@ export default function InclusionDisciplinesShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

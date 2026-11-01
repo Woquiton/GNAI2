@@ -213,7 +213,7 @@ export default function CaseStudyList({
                                                 ) : null}
                                                 {editable ? (
                                                     <Button
-                                                        href={caseStudyUrl(caseStudy.id, "edit")}
+                                                        href={caseStudyUrl(caseStudy.id, "editar")}
                                                         size="sm"
                                                         tone="warning"
                                                         iconOnly

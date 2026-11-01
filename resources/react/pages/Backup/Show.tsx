@@ -12,7 +12,7 @@ import BackupStatusLabel from "./BackupStatusLabel";
 import type { BackupRecord } from "./Backup.types";
 import "./Backup.css";
 
-const base = "/backup/backups";
+const base = "/backups";
 
 export default function BackupShowPage({
     backup,
@@ -94,7 +94,7 @@ export default function BackupShowPage({
             <FormActions
                 secondary={can.download ? (
                     <Button
-                        href={`${base}/${backup.id}/download`}
+                        href={`${base}/${backup.id}/baixar`}
                         download
                         tone="success"
                         leftIconClass="fa fa-download"

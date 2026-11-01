@@ -53,7 +53,7 @@ export default function PositionForm({
     const errors = form.errors as Record<string, string | undefined>;
     const element = useRef<HTMLFormElement>(null);
     const busy = useRef(false);
-    const cancelHref = position ? `${positionsBase}/${position.id}/show` : positionsBase;
+    const cancelHref = position ? `${positionsBase}/${position.id}/visualizar` : positionsBase;
     const groups = Object.entries(permissions);
     const permissionsError = errors.permissions
         ?? Object.entries(errors).find(([key]) => key.startsWith("permissions."))?.[1];
@@ -107,7 +107,7 @@ export default function PositionForm({
         if (position) {
             form.put(`${positionsBase}/${position.id}`, options);
         } else {
-            form.post(`${positionsBase}/store`, options);
+            form.post(`${positionsBase}/salvar`, options);
         }
     }
 

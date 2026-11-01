@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 
-const base = "/inclusive-radar/loans";
+const base = "/inclusao/emprestimos";
 
 export default function LoanPage({
     title,
@@ -22,7 +22,7 @@ export default function LoanPage({
     children: ReactNode;
 }): React.JSX.Element {
     const items: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Empréstimos", href: current || loan ? base : undefined },
     ];
 

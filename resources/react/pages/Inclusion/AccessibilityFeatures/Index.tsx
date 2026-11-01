@@ -37,7 +37,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/accessibility-features";
+const base = "/inclusao/recursos-de-acessibilidade";
 const emptyFilters: Filters = { name: "", is_active: "" };
 const columns: TableListColumn[] = [
     { id: "name", label: "Nome", width: "56%", minWidth: 150, fixed: "start" },
@@ -77,7 +77,7 @@ export default function InclusionAccessibilityFeaturesIndexPage({
             title="Recursos de Acessibilidade"
             subtitle="Gerencie as categorias de recursos de acessibilidade disponíveis."
             actions={can.create ? (
-                <TableListCreateButton href={`${base}/create`} ariaLabel="Cadastrar recurso de acessibilidade" />
+                <TableListCreateButton href={`${base}/criar`} ariaLabel="Cadastrar recurso de acessibilidade" />
             ) : undefined}
         >
             <TableListCard aria-label="Listagem de recursos de acessibilidade" aria-busy={list.loading} loading={list.loading} loadingLabel="Atualizando recursos de acessibilidade">

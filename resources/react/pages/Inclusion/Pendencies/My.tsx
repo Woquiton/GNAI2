@@ -11,7 +11,7 @@ export default function InclusionPendenciesMyPage(
             title="Minhas Pendências"
             subtitle="Pendências atribuídas a você como responsável."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Pendências", href: pendenciesBase },
                 { label: "Minhas Pendências" },
             ]}

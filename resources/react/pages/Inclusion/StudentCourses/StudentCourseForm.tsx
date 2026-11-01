@@ -179,9 +179,9 @@ export default function StudentCourseForm(props: StudentCourseFormProps): React.
         };
 
         if (studentCourse) {
-            form.put(`${aeeBase}/student-courses/${studentCourse.id}`, options);
+            form.put(`${aeeBase}/cursos-do-aluno/${studentCourse.id}`, options);
         } else {
-            form.post(`${aeeBase}/student-courses/store/${studentId}`, options);
+            form.post(`${aeeBase}/cursos-do-aluno/salvar/${studentId}`, options);
         }
     }
 

@@ -75,7 +75,7 @@ export default function InclusionDeficienciesIndexPage({
 
     function toggleActive(deficiency: DeficiencyRecord): void {
         cancelScheduled();
-        statusChange.submit("patch", `${deficiencyBase}/${deficiency.id}/deactivate`);
+        statusChange.submit("patch", `${deficiencyBase}/${deficiency.id}/desativar`);
     }
 
     return (
@@ -84,7 +84,7 @@ export default function InclusionDeficienciesIndexPage({
             subtitle="Cadastro das condições, características e necessidades educacionais dos estudantes, com a finalidade de apoiar o acompanhamento, os encaminhamentos e a oferta de atendimentos adequados, como deficiência, TEA, TDAH, altas habilidades/superdotação e dificuldades de aprendizagem."
             actions={can.create ? (
                 <TableListCreateButton
-                    href={`${deficiencyBase}/create`}
+                    href={`${deficiencyBase}/criar`}
                     ariaLabel="Cadastrar perfil de atendimento"
                 />
             ) : undefined}
@@ -181,7 +181,7 @@ export default function InclusionDeficienciesIndexPage({
                                     <TableActions>
                                         {can.view ? (
                                             <Button
-                                                href={`${deficiencyBase}/${deficiency.id}/show`}
+                                                href={`${deficiencyBase}/${deficiency.id}/visualizar`}
                                                 size="sm"
                                                 tone="dark-blue"
                                                 iconOnly

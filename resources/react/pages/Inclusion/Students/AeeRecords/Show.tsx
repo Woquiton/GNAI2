@@ -47,9 +47,9 @@ export default function InclusionStudentsAeeRecordsShowPage({
             title="Registro de atendimento AEE do Aluno"
             subtitle={`${studentName} • Agendamento #${aeeRecord.attendance_session_id} • Realizada em: ${dateLabel(session?.session_date)}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Alunos", href: `${aeeBase}/students` },
-                { label: "Aluno", href: `${aeeBase}/students/${student.id}/show` },
+                { label: "Home", href: "/autenticacao/painel" },
+                { label: "Alunos", href: `${aeeBase}/alunos` },
+                { label: "Aluno", href: `${aeeBase}/alunos/${student.id}/visualizar` },
                 { label: "Registros de Atendimentos AEE", href: studentAeeRecordsUrl(student.id) },
                 { label: "Visualizar" },
             ]}
@@ -109,7 +109,7 @@ export default function InclusionStudentsAeeRecordsShowPage({
                     />
                     {can.update ? (
                         <Button
-                            href={studentAeeEvaluationUrl(student.id, evaluation.id, "edit")}
+                            href={studentAeeEvaluationUrl(student.id, evaluation.id, "editar")}
                             tone="warning"
                             leftIconClass="fa fa-pencil"
                             label="Editar"

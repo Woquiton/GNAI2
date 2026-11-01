@@ -54,7 +54,7 @@ export default function ImpersonationAction({
 
         changeProcessing(true);
         router.post(
-            `/auth/impersonate/${userId}`,
+            `/autenticacao/acessar-como/${userId}`,
             { mode },
             {
                 onHttpException: () => {

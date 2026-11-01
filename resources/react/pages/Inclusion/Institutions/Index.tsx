@@ -33,7 +33,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/institutions";
+const base = "/inclusao/instituicoes";
 const emptyFilters: InstitutionFilters = { name: "", location: "", is_active: "" };
 const columns: TableListColumn[] = [
     { id: "name", label: "Nome", width: "39%", minWidth: 140, fixed: "start" },
@@ -68,7 +68,7 @@ export default function InclusionInstitutionsIndexPage({ institutions, filters: 
         <InstitutionPage
             title="Instituições Base"
             subtitle="Gerencie os locais centrais onde o radar de acessibilidade opera."
-            actions={can.create ? <TableListCreateButton href={`${base}/create`} ariaLabel="Cadastrar instituição" /> : undefined}
+            actions={can.create ? <TableListCreateButton href={`${base}/criar`} ariaLabel="Cadastrar instituição" /> : undefined}
         >
             <TableListCard aria-label="Listagem de instituições" aria-busy={list.loading} loading={list.loading} loadingLabel="Atualizando instituições">
                 <FormLayout onSubmit={(event) => { event.preventDefault(); submit(); }}>

@@ -24,7 +24,7 @@ export default function StudentPage({
   children,
 }: StudentPageProps): React.JSX.Element {
   const crumbs: PageBreadcrumbItem[] = [
-    { label: 'Home', href: '/auth/dashboard' },
+    { label: 'Home', href: '/autenticacao/painel' },
     { label: 'Alunos', href: current ? studentsBase : undefined },
   ];
 

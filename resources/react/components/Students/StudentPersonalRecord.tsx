@@ -126,7 +126,7 @@ function AcademicDetails({
         emptyMessage="Nenhum curso do aluno encontrado."
         actions={permissions['student-course.create'] ? (
           <TableListCreateButton
-            href={`${aeeBase}/student-courses/${student.id}/create`}
+            href={`${aeeBase}/cursos-do-aluno/${student.id}/criar`}
             ariaLabel="Cadastrar curso do aluno"
           />
         ) : undefined}
@@ -151,7 +151,7 @@ function AcademicDetails({
                 <TableActions>
                   {permissions['student-course.view'] ? (
                     <Button
-                      href={`${aeeBase}/student-courses/${relation.id}`}
+                      href={`${aeeBase}/cursos-do-aluno/${relation.id}`}
                       size="sm"
                       tone="dark-blue"
                       iconOnly
@@ -161,7 +161,7 @@ function AcademicDetails({
                   ) : null}
                   {permissions['student-course.delete'] ? (
                     <DeleteStudentRecord
-                      action={`${aeeBase}/student-courses/${relation.id}`}
+                      action={`${aeeBase}/cursos-do-aluno/${relation.id}`}
                       title="Excluir matrícula"
                       message="Excluir esta matrícula do histórico do aluno?"
                       ariaLabel={`Excluir matrícula no curso ${relation.course?.name ?? ''}`}

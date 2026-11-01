@@ -35,7 +35,7 @@ export default function DeficiencyForm({
     });
     const errors = form.errors as Record<string, string | undefined>;
     const backHref = deficiency
-        ? `${deficiencyBase}/${deficiency.id}/show`
+        ? `${deficiencyBase}/${deficiency.id}/visualizar`
         : deficiencyBase;
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
@@ -76,7 +76,7 @@ export default function DeficiencyForm({
         if (deficiency) {
             form.put(`${deficiencyBase}/${deficiency.id}`, options);
         } else {
-            form.post(`${deficiencyBase}/store`, options);
+            form.post(`${deficiencyBase}/salvar`, options);
         }
     }
 

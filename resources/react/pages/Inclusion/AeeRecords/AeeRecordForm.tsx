@@ -176,9 +176,9 @@ export default function AeeRecordForm({
         };
 
         if (aeeRecord) {
-            form.put(`${aeeBase}/aee-records/${aeeRecord.id}`, options);
+            form.put(`${aeeBase}/atendimentos-aee/${aeeRecord.id}`, options);
         } else {
-            form.post(`${aeeBase}/aee-records/store`, options);
+            form.post(`${aeeBase}/atendimentos-aee/salvar`, options);
         }
     }
 
@@ -263,8 +263,8 @@ export default function AeeRecordForm({
     });
 
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
-        { label: "Agendamentos", href: `${aeeBase}/sessions` },
+        { label: "Home", href: "/autenticacao/painel" },
+        { label: "Agendamentos", href: `${aeeBase}/agendamentos` },
         { label: "Agendamento", href: sessionShowUrl(sessionId) },
     ];
 

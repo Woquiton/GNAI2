@@ -18,7 +18,7 @@ export default function AuthTeacherAccessRequestPage(): React.JSX.Element {
         aria-busy={form.processing}
         onSubmit={(event) => {
           event.preventDefault();
-          if (!form.processing) form.post('/auth/acesso');
+          if (!form.processing) form.post('/autenticacao/acesso');
         }}
       >
         <InlineAlert variant="info">
@@ -46,7 +46,7 @@ export default function AuthTeacherAccessRequestPage(): React.JSX.Element {
           </p>
         ) : null}
         <p className="teacherAccessForm__alternative">
-          <Link href="/auth/login">
+          <Link href="/autenticacao/entrar">
             <i className="fa fa-lock" aria-hidden="true" />
             Sou administrador(a) ou profissional: fazer login com senha
           </Link>

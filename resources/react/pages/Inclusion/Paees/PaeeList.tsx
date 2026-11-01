@@ -214,7 +214,7 @@ export default function PaeeList({
                                             ) : null}
                                             {can.update ? (
                                                 <Button
-                                                    href={paeeUrl(paee.id, "edit")}
+                                                    href={paeeUrl(paee.id, "editar")}
                                                     size="sm"
                                                     tone="warning"
                                                     iconOnly

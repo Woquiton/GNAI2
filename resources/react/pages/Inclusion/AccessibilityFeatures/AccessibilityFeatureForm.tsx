@@ -16,7 +16,7 @@ import type { AccessibilityFeatureRecord } from "./AccessibilityFeature.types";
 import AccessibilityFeaturePage from "./AccessibilityFeaturePage";
 import "./AccessibilityFeatureForm.css";
 
-const base = "/inclusive-radar/accessibility-features";
+const base = "/inclusao/recursos-de-acessibilidade";
 
 export default function AccessibilityFeatureForm({
     feature,
@@ -51,7 +51,7 @@ export default function AccessibilityFeatureForm({
                 },
             });
         } else {
-            form.post(`${base}/store`, {
+            form.post(`${base}/salvar`, {
                 preserveScroll: true,
                 onNetworkError: () => {
                     notify({ tone: "error", title: "Falha de conexão", text: "Confira sua conexão e tente novamente." });

@@ -15,7 +15,7 @@ import type { TagRecord } from "./Tag.types";
 import TagPage from "./TagPage";
 import "./TagForm.css";
 
-const base = "/inclusive-radar/tags";
+const base = "/inclusao/marcadores";
 
 export default function TagForm({
     tag,
@@ -49,7 +49,7 @@ export default function TagForm({
                 },
             });
         } else {
-            form.post(`${base}/store`, {
+            form.post(`${base}/salvar`, {
                 preserveScroll: true,
                 onNetworkError: () => {
                     notify({ tone: "error", title: "Falha de conexão", text: "Confira sua conexão e tente novamente." });

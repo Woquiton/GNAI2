@@ -45,7 +45,7 @@ export default function SemesterForm({
     });
     const errors = form.errors as Record<string, string | undefined>;
     const backHref = semester
-        ? `${semesterBase}/${semester.id}/show`
+        ? `${semesterBase}/${semester.id}/visualizar`
         : semesterBase;
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
@@ -86,7 +86,7 @@ export default function SemesterForm({
         if (semester) {
             form.put(`${semesterBase}/${semester.id}`, options);
         } else {
-            form.post(`${semesterBase}/store`, options);
+            form.post(`${semesterBase}/salvar`, options);
         }
     }
 

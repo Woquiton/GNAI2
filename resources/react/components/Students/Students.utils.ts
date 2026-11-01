@@ -1,6 +1,6 @@
-export const aeeBase = '/specialized-educational-support';
-export const studentsBase = `${aeeBase}/students`;
-export const studentUrl = (id: number, action = 'show'): string => `${studentsBase}/${id}${action ? `/${action}` : ''}`;
+export const aeeBase = '/inclusao';
+export const studentsBase = `${aeeBase}/alunos`;
+export const studentUrl = (id: number, action = 'visualizar'): string => `${studentsBase}/${id}${action ? `/${action}` : ''}`;
 export const studentRecordUrl = (id: number, tab: string): string => {
   const query = new URLSearchParams({ tab });
   return `${studentUrl(id)}?${query.toString()}`;

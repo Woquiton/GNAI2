@@ -241,7 +241,7 @@ export default function PaeeForm({
             form.put(paeeUrl(paee.id, ""), options);
         } else {
             form.transform((data) => ({ ...data, case_study_id: caseStudyId }));
-            form.post(`${paeesBase}/store`, options);
+            form.post(`${paeesBase}/salvar`, options);
         }
     }
 

@@ -8,7 +8,7 @@ export default function ForgotPasswordForm(): React.JSX.Element {
   return <form className="forgotPasswordForm" noValidate aria-label="Recuperar acesso ao Gnai" aria-busy={form.processing}
     onSubmit={(event) => {
       event.preventDefault();
-      if (!form.processing) form.post('/auth/forgot-password');
+      if (!form.processing) form.post('/autenticacao/esqueci-a-senha');
     }}>
     <InlineAlert variant="info">
       Digite seu <b>e-mail institucional</b> para receber as instruções de recuperação de acesso ao Gnai.

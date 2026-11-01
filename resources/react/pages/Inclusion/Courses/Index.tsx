@@ -76,7 +76,7 @@ export default function InclusionCoursesIndexPage({
             subtitle="Gerencie cursos e suas respectivas séries."
             actions={can.create ? (
                 <TableListCreateButton
-                    href={`${courseBase}/create`}
+                    href={`${courseBase}/criar`}
                     ariaLabel="Cadastrar curso"
                 />
             ) : undefined}
@@ -153,7 +153,7 @@ export default function InclusionCoursesIndexPage({
                                     <TableActions>
                                         {can.view ? (
                                             <Button
-                                                href={`${courseBase}/${course.id}/show`}
+                                                href={`${courseBase}/${course.id}/visualizar`}
                                                 size="sm"
                                                 tone="dark-blue"
                                                 iconOnly

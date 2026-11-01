@@ -134,7 +134,7 @@ function StudentProfiles({
         emptyMessage="Nenhum perfil de atendimento do aluno encontrado."
         actions={permissions['student-deficiency.create'] ? (
           <TableListCreateButton
-            href={`${aeeBase}/students/${student.id}/deficiencies/create`}
+            href={`${aeeBase}/alunos/${student.id}/deficiencias/criar`}
             ariaLabel="Cadastrar perfil de atendimento do aluno"
           />
         ) : undefined}
@@ -155,7 +155,7 @@ function StudentProfiles({
                 <TableActions>
                   {permissions['student-deficiency.view'] ? (
                     <Button
-                      href={`${aeeBase}/students/${student.id}/deficiencies/${profile.student_deficiency_id}`}
+                      href={`${aeeBase}/alunos/${student.id}/deficiencias/${profile.student_deficiency_id}`}
                       size="sm"
                       tone="dark-blue"
                       iconOnly
@@ -165,7 +165,7 @@ function StudentProfiles({
                   ) : null}
                   {permissions['student-deficiency.delete'] ? (
                     <DeleteStudentRecord
-                      action={`${aeeBase}/students/${student.id}/deficiencies/${profile.student_deficiency_id}`}
+                      action={`${aeeBase}/alunos/${student.id}/deficiencias/${profile.student_deficiency_id}`}
                       title="Excluir perfil de atendimento"
                       message="Remover este perfil de atendimento do registro do aluno?"
                       ariaLabel={`Excluir perfil ${profile.name}`}
@@ -200,7 +200,7 @@ function StudentGuardians({
         emptyMessage="Nenhum responsável encontrado para este aluno."
         actions={permissions['guardian.create'] ? (
           <TableListCreateButton
-            href={`${aeeBase}/students/${student.id}/guardians/create`}
+            href={`${aeeBase}/alunos/${student.id}/responsaveis/criar`}
             ariaLabel="Cadastrar responsável do aluno"
           />
         ) : undefined}
@@ -229,7 +229,7 @@ function StudentGuardians({
                 <TableActions>
                   {permissions['guardian.view'] ? (
                     <Button
-                      href={`${aeeBase}/guardian/${guardian.id}/show`}
+                      href={`${aeeBase}/responsavel/${guardian.id}/visualizar`}
                       size="sm"
                       tone="dark-blue"
                       iconOnly
@@ -239,7 +239,7 @@ function StudentGuardians({
                   ) : null}
                   {permissions['guardian.delete'] ? (
                     <DeleteStudentRecord
-                      action={`${aeeBase}/students/${student.id}/guardians/${guardian.id}`}
+                      action={`${aeeBase}/alunos/${student.id}/responsaveis/${guardian.id}`}
                       title="Excluir responsável"
                       message={(
                         <>
@@ -281,7 +281,7 @@ function StudentCaseStudies({
         emptyMessage="Nenhum Estudo de Caso encontrado."
         actions={permissions['case-study.create'] ? (
           <TableListCreateButton
-            href={`${aeeBase}/case-studies/${student.id}/create`}
+            href={`${aeeBase}/estudos-de-caso/${student.id}/criar`}
             ariaLabel="Novo Estudo de Caso"
           />
         ) : undefined}
@@ -299,7 +299,7 @@ function StudentCaseStudies({
             <td>
               <TableActions>
                 <Button
-                  href={`${aeeBase}/case-studies/${caseStudy.id}/show`}
+                  href={`${aeeBase}/estudos-de-caso/${caseStudy.id}/visualizar`}
                   size="sm"
                   tone="dark-blue"
                   iconOnly
@@ -316,7 +316,7 @@ function StudentCaseStudies({
           São exibidas até 5 versões mais recentes. Para consultar o histórico completo, clique em "Ver Histórico".
         </small>
         <Button
-          href={`${aeeBase}/students/${student.id}/case-studies/history`}
+          href={`${aeeBase}/alunos/${student.id}/estudos-de-caso/historico`}
           tone="white"
           size="sm"
           leftIconClass="fa fa-history"
@@ -361,7 +361,7 @@ function StudentPaees({
             <td>
               <TableActions>
                 <Button
-                  href={`${aeeBase}/paees/${paee.id}/show`}
+                  href={`${aeeBase}/paees/${paee.id}/visualizar`}
                   size="sm"
                   tone="dark-blue"
                   iconOnly
@@ -378,7 +378,7 @@ function StudentPaees({
           São exibidas até 5 versões mais recentes. Para consultar o histórico completo, clique em "Gerenciar PAEE".
         </small>
         <Button
-          href={`${aeeBase}/students/${student.id}/paees`}
+          href={`${aeeBase}/alunos/${student.id}/paees`}
           tone="white"
           size="sm"
           leftIconClass="fa fa-folder-open"

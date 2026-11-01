@@ -54,7 +54,7 @@ export default function InclusionBarrierInspectionShowPage({
                 </FormSection>
             </CardBox>
             <FormActions>
-                <Button href={`/inclusive-radar/barriers/${barrier.id}`} tone="cancel" label="Voltar" />
+                <Button href={`/inclusao/barreiras/${barrier.id}`} tone="cancel" label="Voltar" />
             </FormActions>
         </BarrierPage>
     );

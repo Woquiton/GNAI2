@@ -51,7 +51,7 @@ export type ItemIndexProps = {
     can: ItemPermissions;
 };
 
-export const itemsBase = '/inclusive-radar/items';
+export const itemsBase = '/inclusao/itens';
 
 export const itemTypeLabels: Record<ItemType, string> = {
     assistive_technology: 'Tecnologia Assistiva',

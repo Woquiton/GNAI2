@@ -80,7 +80,7 @@ export default function InclusionSemestersIndexPage({
 
     function setCurrent(semester: SemesterRecord): void {
         cancelScheduled();
-        currentChange.submit("patch", `${semesterBase}/${semester.id}/set-current`);
+        currentChange.submit("patch", `${semesterBase}/${semester.id}/definir-atual`);
     }
 
     return (
@@ -89,7 +89,7 @@ export default function InclusionSemestersIndexPage({
             subtitle="Configuração de períodos para organização dos atendimentos e relatórios."
             actions={can.create ? (
                 <TableListCreateButton
-                    href={`${semesterBase}/create`}
+                    href={`${semesterBase}/criar`}
                     ariaLabel="Cadastrar semestre"
                 />
             ) : undefined}
@@ -215,7 +215,7 @@ export default function InclusionSemestersIndexPage({
                                         <TableActions>
                                             {can.view ? (
                                                 <Button
-                                                    href={`${semesterBase}/${semester.id}/show`}
+                                                    href={`${semesterBase}/${semester.id}/visualizar`}
                                                     size="sm"
                                                     tone="dark-blue"
                                                     iconOnly

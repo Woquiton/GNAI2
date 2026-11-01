@@ -29,7 +29,7 @@ export default function StudentDeficiencyPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Alunos", href: studentsBase },
         { label: student.person.name, href: studentUrl(student.id) },
         {
@@ -44,7 +44,7 @@ export default function StudentDeficiencyPage({
         breadcrumbItems.push({
             label: studentDeficiency.deficiency.name,
             href: current
-                ? `${studentsBase}/${student.id}/deficiencies/${studentDeficiency.id}`
+                ? `${studentsBase}/${student.id}/deficiencias/${studentDeficiency.id}`
                 : undefined,
         });
     }

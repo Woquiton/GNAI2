@@ -10,7 +10,7 @@ export default function InclusionCaseStudiesAllPage(
             title="Estudos de Caso"
             subtitle="Primeira etapa da cadeia Estudo de Caso → PAEE → PEI (Decreto 12.686/2025)."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Estudos de Caso" },
             ]}
             className="caseStudiesPage"

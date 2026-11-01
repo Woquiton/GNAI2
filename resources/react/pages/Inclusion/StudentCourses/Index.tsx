@@ -66,7 +66,7 @@ export default function InclusionStudentCoursesIndexPage({
     can,
 }: Props): React.JSX.Element {
     const pageErrors = usePage().props.errors as Record<string, string | undefined>;
-    const listUrl = `${aeeBase}/students/${student.id}/history`;
+    const listUrl = `${aeeBase}/alunos/${student.id}/historico`;
     const list = useTableListVisit({
         url: listUrl,
         failureText: "Não foi possível atualizar as matrículas. Tente novamente.",
@@ -100,7 +100,7 @@ export default function InclusionStudentCoursesIndexPage({
                     />
                     {can.create ? (
                         <TableListCreateButton
-                            href={`${aeeBase}/student-courses/${student.id}/create`}
+                            href={`${aeeBase}/cursos-do-aluno/${student.id}/criar`}
                             ariaLabel="Cadastrar nova matrícula"
                         />
                     ) : null}
@@ -200,7 +200,7 @@ export default function InclusionStudentCoursesIndexPage({
                                             <TableActions>
                                                 {can.view ? (
                                                     <Button
-                                                        href={`${aeeBase}/student-courses/${enrollment.id}`}
+                                                        href={`${aeeBase}/cursos-do-aluno/${enrollment.id}`}
                                                         size="sm"
                                                         tone="dark-blue"
                                                         iconOnly
@@ -262,7 +262,7 @@ export default function InclusionStudentCoursesIndexPage({
                     if (!removal.target) return;
                     cancelScheduled();
                     list.cancel();
-                    removal.submit("delete", `${aeeBase}/student-courses/${removal.target.id}`);
+                    removal.submit("delete", `${aeeBase}/cursos-do-aluno/${removal.target.id}`);
                 }}
             />
         </StudentCoursePage>

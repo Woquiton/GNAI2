@@ -18,7 +18,7 @@ import type {
 } from "./Waitlist.types";
 import "./Waitlists.css";
 
-const base = "/inclusive-radar/waitlists";
+const base = "/inclusao/fila-de-espera";
 
 function optionList(value: Record<string, string> | { id: number; name: string }[]): { value: string; label: string }[] {
     if (Array.isArray(value)) {
@@ -87,7 +87,7 @@ export default function WaitlistForm({
             form.transform((data) => ({ observation: data.observation }));
             form.put(`${base}/${waitlist.id}`);
         } else {
-            form.post(`${base}/store`);
+            form.post(`${base}/salvar`);
         }
     }
 

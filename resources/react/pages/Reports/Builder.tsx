@@ -32,7 +32,7 @@ export default function ReportsBuilderPage({ can }: { can: ReportPermissions }):
         <BusinessPage
             title="Gerador de Relatórios e Consultas"
             subtitle="Monte seu relatório escolhendo os dados, as informações e os filtros que deseja visualizar."
-            breadcrumbItems={[{ label: 'Home', href: '/auth/dashboard' }, { label: 'Relatórios' }]}
+            breadcrumbItems={[{ label: 'Home', href: '/autenticacao/painel' }, { label: 'Relatórios' }]}
             className="reportBuilder"
         >
             <FormLayout

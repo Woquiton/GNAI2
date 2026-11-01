@@ -54,7 +54,7 @@ export default function InclusionStudentsAeeRecordsEditPage({
     const aeeRecord = evaluation.aee_record;
     const session = aeeRecord.attendance_session;
     const studentName = evaluation.student?.person?.name ?? `Aluno #${student.id}`;
-    const studentAeeBase = `${aeeBase}/students/${student.id}/aee-records`;
+    const studentAeeBase = `${aeeBase}/alunos/${student.id}/atendimentos-aee`;
     const form = useForm<StudentEvaluationFormData>({
         evaluation_id: evaluation.id,
         ...evaluationFromRecord(evaluation),
@@ -99,11 +99,11 @@ export default function InclusionStudentsAeeRecordsEditPage({
     }
 
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
-        { label: "Alunos", href: `${aeeBase}/students` },
-        { label: "Aluno", href: `${aeeBase}/students/${student.id}/show` },
+        { label: "Home", href: "/autenticacao/painel" },
+        { label: "Alunos", href: `${aeeBase}/alunos` },
+        { label: "Aluno", href: `${aeeBase}/alunos/${student.id}/visualizar` },
         { label: "Registros de atendimento AEE", href: studentAeeBase },
-        { label: "Visualizar", href: `${studentAeeBase}/${evaluation.id}/show` },
+        { label: "Visualizar", href: `${studentAeeBase}/${evaluation.id}/visualizar` },
         { label: "Editar" },
     ];
 

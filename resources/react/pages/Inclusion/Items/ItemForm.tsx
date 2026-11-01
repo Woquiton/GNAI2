@@ -188,7 +188,7 @@ export default function ItemForm({
                 form.post(
                     mode === "edit" && item
                         ? `${base}/${item.id}`
-                        : `${base}/store`,
+                        : `${base}/salvar`,
                     {
                         forceFormData: true,
                         preserveScroll: true,

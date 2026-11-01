@@ -162,7 +162,7 @@ export default function AeeRecordListPage({
             title={title}
             subtitle={subtitle}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: breadcrumbLabel },
             ]}
             actions={actions}

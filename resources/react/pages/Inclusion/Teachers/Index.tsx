@@ -98,7 +98,7 @@ export default function InclusionTeachersIndexPage({
         <>
             {can.update ? (
                 <Button
-                    href={`${teachersBase}/permissions`}
+                    href={`${teachersBase}/permissoes`}
                     tone="default"
                     labelIconClass="fa fa-shield"
                     title="Permissões globais dos professores"
@@ -109,7 +109,7 @@ export default function InclusionTeachersIndexPage({
             ) : null}
             {can.create ? (
                 <TableListCreateButton
-                    href={`${teachersBase}/create`}
+                    href={`${teachersBase}/criar`}
                     ariaLabel="Cadastrar professor"
                 />
             ) : null}

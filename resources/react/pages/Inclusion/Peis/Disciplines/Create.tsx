@@ -37,7 +37,7 @@ export default function InclusionPeisDisciplinesCreatePage({
     disciplines: BulkDiscipline[];
 }): React.JSX.Element {
     const busy = useRef(false);
-    const peiHref = `${aeeBase}/peis/${pei.id}/show?tab=disciplines`;
+    const peiHref = `${aeeBase}/peis/${pei.id}/visualizar?tab=disciplines`;
     const form = useForm<BulkAssignForm>({ teacher_ids: {} });
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
@@ -45,7 +45,7 @@ export default function InclusionPeisDisciplinesCreatePage({
         if (busy.current || form.processing) return;
 
         busy.current = true;
-        form.post(`${aeeBase}/peis/${pei.id}/disciplines/store`, {
+        form.post(`${aeeBase}/peis/${pei.id}/disciplinas/salvar`, {
             preserveScroll: true,
             onNetworkError: () => {
                 notify({
@@ -74,7 +74,7 @@ export default function InclusionPeisDisciplinesCreatePage({
             title="Cadastrar Adaptação Curricular"
             subtitle="Para cada disciplina do curso, escolha o professor responsável. As adaptações são criadas de uma vez; o conteúdo pedagógico (objetivos, metodologias etc.) de cada uma é preenchido em seguida, individualmente."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: "PEI", href: peiHref },
                 { label: "Cadastrar Adaptação" },

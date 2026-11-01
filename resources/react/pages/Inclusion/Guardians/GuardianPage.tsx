@@ -28,7 +28,7 @@ export default function GuardianPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Alunos", href: studentsBase },
         { label: student.person.name, href: studentUrl(student.id) },
         {
@@ -40,7 +40,7 @@ export default function GuardianPage({
     if (guardian) {
         breadcrumbItems.push({
             label: guardian.person.name,
-            href: `${aeeBase}/guardian/${guardian.id}/show`,
+            href: `${aeeBase}/responsavel/${guardian.id}/visualizar`,
         });
     }
 

@@ -13,7 +13,7 @@ import AccessibilityFeaturePage from "./AccessibilityFeaturePage";
 import type { AccessibilityFeatureRecord } from "./AccessibilityFeature.types";
 import "./AccessibilityFeatures.css";
 
-const base = "/inclusive-radar/accessibility-features";
+const base = "/inclusao/recursos-de-acessibilidade";
 
 export default function InclusionAccessibilityFeaturesShowPage({
     feature,
@@ -97,7 +97,7 @@ export default function InclusionAccessibilityFeaturesShowPage({
                 />
                 {can.edit ? (
                     <Button
-                        href={`${base}/${feature.id}/edit`}
+                        href={`${base}/${feature.id}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

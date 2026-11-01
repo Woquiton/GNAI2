@@ -6,7 +6,7 @@ import type { SessionMySessionsProps } from "./SessionList.types";
 import SessionPage from "./SessionPage";
 import SessionWorkspace from "./SessionWorkspace";
 
-const mySessionsBase = `${aeeBase}/my-sessions`;
+const mySessionsBase = `${aeeBase}/meus-agendamentos`;
 
 export default function InclusionSessionsMySessionsPage({
     sessions,
@@ -29,7 +29,7 @@ export default function InclusionSessionsMySessionsPage({
             ) : null}
             {can.create ? (
                 <TableListCreateButton
-                    href={`${sessionsBase}/create`}
+                    href={`${sessionsBase}/criar`}
                     ariaLabel="Cadastrar agendamento"
                 />
             ) : null}
@@ -41,7 +41,7 @@ export default function InclusionSessionsMySessionsPage({
             title="Meus Agendamentos"
             subtitle="Acompanhe os seus atendimentos no calendário ou em formato de lista."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Agendamentos", href: can.viewAll ? sessionsBase : undefined },
                 { label: "Meus Agendamentos" },
             ]}

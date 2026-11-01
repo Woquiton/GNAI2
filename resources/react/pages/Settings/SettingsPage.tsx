@@ -5,22 +5,20 @@ import AppLayout from "@/components/Navigation/AppLayout/AppLayout";
 import PageTabs from "@/components/Navigation/PageTabs/PageTabs";
 import "./Settings.css";
 
-export const settingsBase = "/settings";
+export const settingsBase = "/configuracoes";
 
 // Novas categorias de configuração entram nesta lista, cada uma com sua página.
 const categories = [
     {
         key: "mail",
         component: "Settings/Mail",
-        subtitle: "Defina o serviço usado pelo Gnai para enviar e-mails, como links de redefinição de senha e notificações.",
         label: "E-mail",
-        href: `${settingsBase}/mail`,
+        href: `${settingsBase}/email`,
         iconClass: "fa fa-envelope",
     },
     {
         key: "backup",
         component: "Settings/Backup",
-        subtitle: "Defina por quanto tempo os backups são mantidos e em quais horários o backup automático é executado.",
         label: "Backups",
         href: `${settingsBase}/backups`,
         iconClass: "fa fa-database",
@@ -39,9 +37,8 @@ export default function SettingsPage({
     return (
         <BusinessPage
             title="Configurações"
-            subtitle={current.subtitle}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Configurações", href: settingsBase },
                 { label: current?.label ?? "" },
             ]}

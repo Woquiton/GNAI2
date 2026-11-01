@@ -37,7 +37,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/barrier-categories";
+const base = "/inclusao/categorias-de-barreira";
 const emptyFilters: Filters = { name: "", is_active: "" };
 const columns: TableListColumn[] = [
     { id: "name", label: "Nome", width: "42%", minWidth: 140, fixed: "start" },
@@ -79,7 +79,7 @@ export default function InclusionBarrierCategoriesIndexPage({
             title="Categorias de Barreiras"
             subtitle="Classificação para o mapeamento de acessibilidade e identificação de obstáculos."
             actions={can.create ? (
-                <TableListCreateButton href={`${base}/create`} ariaLabel="Cadastrar categoria de barreira" />
+                <TableListCreateButton href={`${base}/criar`} ariaLabel="Cadastrar categoria de barreira" />
             ) : undefined}
         >
             <TableListCard aria-label="Listagem de categorias de barreiras" aria-busy={list.loading} loading={list.loading} loadingLabel="Atualizando categorias de barreiras">

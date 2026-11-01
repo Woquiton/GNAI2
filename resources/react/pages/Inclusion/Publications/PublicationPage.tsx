@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 
-const base = "/inclusive-radar/publications";
+const base = "/inclusao/publicacoes";
 
 export default function PublicationPage({
     title,
@@ -24,7 +24,7 @@ export default function PublicationPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbs: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Site" },
         {
             label: "Publicações",

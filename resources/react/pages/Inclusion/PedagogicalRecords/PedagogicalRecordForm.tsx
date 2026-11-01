@@ -22,8 +22,8 @@ import type {
 } from "./PedagogicalRecordForm.types";
 import "./PedagogicalRecordForm.css";
 
-const aeeBase = "/specialized-educational-support";
-const recordsBase = `${aeeBase}/pedagogical-records`;
+const aeeBase = "/inclusao";
+const recordsBase = `${aeeBase}/atendimentos-pedagogicos`;
 
 type PedagogicalRecordFormData = {
     with_guardians: boolean;
@@ -76,8 +76,8 @@ export default function PedagogicalRecordForm({
     const element = useRef<HTMLFormElement>(null);
     const guardians = context.guardians;
     const hasGuardians = guardians.length > 0;
-    const sessionHref = `${aeeBase}/sessions/${context.session_id}/show`;
-    const recordHref = record ? `${recordsBase}/${record.id}/show` : undefined;
+    const sessionHref = `${aeeBase}/agendamentos/${context.session_id}/visualizar`;
+    const recordHref = record ? `${recordsBase}/${record.id}/visualizar` : undefined;
     const cancelHref = record
         ? `${recordHref}${returnStudentId ? `?student_id=${returnStudentId}` : ""}`
         : sessionHref;
@@ -103,8 +103,8 @@ export default function PedagogicalRecordForm({
         errors[name] ? `${id}-error` : undefined;
 
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
-        { label: "Agendamentos", href: `${aeeBase}/sessions` },
+        { label: "Home", href: "/autenticacao/painel" },
+        { label: "Agendamentos", href: `${aeeBase}/agendamentos` },
         { label: `Agendamento #${context.session_id}`, href: sessionHref },
         { label: "Atendimento Pedagógico", href: recordHref },
     ];
@@ -200,7 +200,7 @@ export default function PedagogicalRecordForm({
             // A origem no prontuário segue pela URL, para o redirect após salvar voltar a ela.
             form.put(`${recordsBase}/${record.id}${returnStudentId ? `?student_id=${returnStudentId}` : ""}`, options);
         } else {
-            form.post(`${recordsBase}/store`, options);
+            form.post(`${recordsBase}/salvar`, options);
         }
     }
 

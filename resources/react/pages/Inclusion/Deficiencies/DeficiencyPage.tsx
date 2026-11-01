@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 
-export const deficiencyBase = "/specialized-educational-support/deficiencies";
+export const deficiencyBase = "/inclusao/deficiencias";
 
 export default function DeficiencyPage({
     title,
@@ -20,14 +20,14 @@ export default function DeficiencyPage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Perfis de Atendimento", href: current || deficiency ? deficiencyBase : undefined },
     ];
 
     if (deficiency) {
         breadcrumbItems.push({
             label: deficiency.name,
-            href: current ? `${deficiencyBase}/${deficiency.id}/show` : undefined,
+            href: current ? `${deficiencyBase}/${deficiency.id}/visualizar` : undefined,
         });
     }
 

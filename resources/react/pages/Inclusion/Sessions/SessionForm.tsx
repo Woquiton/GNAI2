@@ -184,7 +184,7 @@ export default function SessionForm(props: SessionFormProps): React.JSX.Element 
         if (session) {
             form.put(`${sessionsBase}/${session.id}`, options);
         } else {
-            form.post(`${sessionsBase}/store`, options);
+            form.post(`${sessionsBase}/salvar`, options);
         }
     }
 
@@ -203,7 +203,7 @@ export default function SessionForm(props: SessionFormProps): React.JSX.Element 
     }
 
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Agendamentos", href: sessionsBase },
     ];
 

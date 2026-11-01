@@ -64,7 +64,7 @@ export default function InclusionGuardiansIndexPage({
     can,
 }: GuardianIndexProps): React.JSX.Element {
     const errors = usePage().props.errors as Record<string, string | undefined>;
-    const guardiansBase = `${studentsBase}/${student.id}/guardians`;
+    const guardiansBase = `${studentsBase}/${student.id}/responsaveis`;
     const list = useTableListVisit({
         url: guardiansBase,
         failureText: "Não foi possível atualizar a listagem de responsáveis. Tente novamente.",
@@ -123,7 +123,7 @@ export default function InclusionGuardiansIndexPage({
                     />
                     {can.create ? (
                         <TableListCreateButton
-                            href={`${guardiansBase}/create`}
+                            href={`${guardiansBase}/criar`}
                             ariaLabel="Cadastrar responsável do aluno"
                         />
                     ) : null}
@@ -204,7 +204,7 @@ export default function InclusionGuardiansIndexPage({
                                             <TableActions>
                                                 {can.view ? (
                                                     <Button
-                                                        href={`${aeeBase}/guardian/${guardian.id}/show`}
+                                                        href={`${aeeBase}/responsavel/${guardian.id}/visualizar`}
                                                         size="sm"
                                                         tone="dark-blue"
                                                         iconOnly

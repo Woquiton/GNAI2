@@ -129,7 +129,7 @@ export default function TeacherForm({ mode, teacher }: Props): React.JSX.Element
         });
 
         form.post(
-            teacher ? `${teachersBase}/${teacher.id}` : `${teachersBase}/store`,
+            teacher ? `${teachersBase}/${teacher.id}` : `${teachersBase}/salvar`,
             {
                 forceFormData: true,
                 preserveScroll: true,

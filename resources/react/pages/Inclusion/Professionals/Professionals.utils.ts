@@ -1,6 +1,6 @@
-export const professionalsBase = "/specialized-educational-support/professionals";
+export const professionalsBase = "/inclusao/profissionais";
 
-export const professionalShowUrl = (id: number): string => `${professionalsBase}/${id}/show`;
+export const professionalShowUrl = (id: number): string => `${professionalsBase}/${id}/visualizar`;
 
 export function cpfMask(value: string): string {
     return value

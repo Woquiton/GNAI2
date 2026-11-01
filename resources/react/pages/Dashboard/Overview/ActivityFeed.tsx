@@ -6,7 +6,7 @@ import CardBox from '@/components/UI/CardBox/CardBox';
 import { notify } from '@/components/UI/NotificationToast/notify';
 import type { ActivityFeedItem, ActivityFeedPage, ActivityFeedProps } from './Overview.types';
 
-const feedUrl = '/auth/dashboard/activity-feed';
+const feedUrl = '/autenticacao/painel/atividades';
 
 const periodOptions = [
   { value: 'today', label: 'Hoje' },

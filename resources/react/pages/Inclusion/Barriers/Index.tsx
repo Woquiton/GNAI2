@@ -32,7 +32,7 @@ type Props = {
     filters: Partial<BarrierFilters>;
     can: { create: boolean; show: boolean; destroy: boolean };
 };
-const base = "/inclusive-radar/barriers";
+const base = "/inclusao/barreiras";
 const emptyFilters: BarrierFilters = { name: "", category: "", priority: "", status: "" };
 const priorities = [
     { value: "low", label: "Baixa" },
@@ -81,7 +81,7 @@ export default function InclusionBarriersIndexPage({ barriers, filters: initialF
         <BarrierPage
             title="Mapa de Barreiras"
             subtitle="Contribuições da comunidade para uma instituição mais acessível."
-            actions={can.create ? <TableListCreateButton href={`${base}/create`} ariaLabel="Relatar barreira" /> : undefined}
+            actions={can.create ? <TableListCreateButton href={`${base}/criar`} ariaLabel="Relatar barreira" /> : undefined}
         >
             <TableListCard aria-label="Listagem de barreiras" aria-busy={list.loading} loading={list.loading} loadingLabel="Atualizando barreiras">
                 <FormLayout onSubmit={(event) => { event.preventDefault(); submit(); }}>

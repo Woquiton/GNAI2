@@ -33,7 +33,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/locations";
+const base = "/inclusao/locais";
 const emptyFilters: LocationFilters = { name: "", institution_name: "", is_active: "" };
 const columns: TableListColumn[] = [
     { id: "name", label: "Nome", width: "29%", minWidth: 120, fixed: "start" },
@@ -66,7 +66,7 @@ export default function InclusionLocationsIndexPage({ locations, filters: initia
         <LocationPage
             title="Pontos de Referência"
             subtitle="Gerencie os prédios, salas e locais específicos dentro de cada instituição."
-            actions={can.create ? <TableListCreateButton href={`${base}/create`} ariaLabel="Cadastrar ponto de referência" /> : undefined}
+            actions={can.create ? <TableListCreateButton href={`${base}/criar`} ariaLabel="Cadastrar ponto de referência" /> : undefined}
         >
             <TableListCard aria-label="Listagem de pontos de referência" aria-busy={list.loading} loading={list.loading} loadingLabel="Atualizando pontos de referência">
                 <FormLayout onSubmit={(event) => { event.preventDefault(); submit(); }}>

@@ -12,12 +12,12 @@ export default function InclusionPedagogicalRecordsMyRecordsPage(
             title="Meus Atendimentos Pedagógicos"
             subtitle="Histórico dos seus atendimentos pedagógicos."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Atendimentos Pedagógicos" },
             ]}
             actions={props.can.view_all ? (
                 <Button
-                    href={`${aeeBase}/pedagogical-records`}
+                    href={`${aeeBase}/atendimentos-pedagogicos`}
                     tone="cancel"
                     leftIconClass="fa fa-users"
                 >
@@ -27,7 +27,7 @@ export default function InclusionPedagogicalRecordsMyRecordsPage(
         >
             <PedagogicalRecordList
                 {...props}
-                url={`${aeeBase}/my-pedagogical-records`}
+                url={`${aeeBase}/meus-atendimentos-pedagogicos`}
                 variant="general"
                 primaryFilters={["student", "course_id", "is_present", "with_guardians"]}
             />

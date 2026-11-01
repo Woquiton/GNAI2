@@ -39,7 +39,7 @@ export default function InclusionSessionsStudentIndexPage({
             title={`Agendamentos de Atendimento, ${student.name}`}
             subtitle="Histórico de atendimentos realizados para o aluno."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentUrl(student.id) },
                 { label: "Agendamentos" },

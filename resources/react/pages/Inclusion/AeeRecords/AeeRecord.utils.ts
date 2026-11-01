@@ -3,17 +3,17 @@ import type {
     AeeStudentEvaluationRecord,
 } from "./AeeRecord.types";
 
-export const aeeBase = "/specialized-educational-support";
-export const sessionShowUrl = (id: number): string => `${aeeBase}/sessions/${id}/show`;
-export const aeeRecordShowUrl = (id: number): string => `${aeeBase}/aee-records/${id}/show`;
-export const aeeRecordPdfUrl = (id: number): string => `${aeeBase}/aee-records/${id}/pdf`;
-export const aeeRecordsIndexUrl = `${aeeBase}/aee-records`;
-export const myAeeRecordsUrl = `${aeeBase}/my-aee-records`;
-export const studentAeeRecordsUrl = (studentId: number): string => `${aeeBase}/students/${studentId}/aee-records`;
+export const aeeBase = "/inclusao";
+export const sessionShowUrl = (id: number): string => `${aeeBase}/agendamentos/${id}/visualizar`;
+export const aeeRecordShowUrl = (id: number): string => `${aeeBase}/atendimentos-aee/${id}/visualizar`;
+export const aeeRecordPdfUrl = (id: number): string => `${aeeBase}/atendimentos-aee/${id}/pdf`;
+export const aeeRecordsIndexUrl = `${aeeBase}/atendimentos-aee`;
+export const myAeeRecordsUrl = `${aeeBase}/meus-atendimentos-aee`;
+export const studentAeeRecordsUrl = (studentId: number): string => `${aeeBase}/alunos/${studentId}/atendimentos-aee`;
 export const studentAeeEvaluationUrl = (
     studentId: number,
     evaluationId: number,
-    action = "show",
+    action = "visualizar",
 ): string => `${studentAeeRecordsUrl(studentId)}/${evaluationId}${action ? `/${action}` : ""}`;
 
 export const absenceFields = ["absence_reason"] as const;

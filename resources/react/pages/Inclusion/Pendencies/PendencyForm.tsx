@@ -21,7 +21,7 @@ import type {
 } from "./PendencyForm.types";
 import "./PendencyForm.css";
 
-const pendenciesBase = "/specialized-educational-support/pendencies";
+const pendenciesBase = "/inclusao/pendencias";
 
 export default function PendencyForm({
     pendency,
@@ -84,19 +84,19 @@ export default function PendencyForm({
         if (pendency) {
             form.put(`${pendenciesBase}/${pendency.id}`, options);
         } else {
-            form.post(`${pendenciesBase}/store`, options);
+            form.post(`${pendenciesBase}/salvar`, options);
         }
     }
 
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Pendências", href: pendenciesBase },
     ];
 
     if (pendency) {
         breadcrumbItems.push({
             label: "Pendência",
-            href: `${pendenciesBase}/${pendency.id}/show`,
+            href: `${pendenciesBase}/${pendency.id}/visualizar`,
         });
     }
 

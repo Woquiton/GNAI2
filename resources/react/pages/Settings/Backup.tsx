@@ -1,10 +1,13 @@
 import { useRef } from "react";
 import { useForm } from "@inertiajs/react";
+import ClockPicker from "@/components/Forms/ClockPicker/ClockPicker";
 import FormActions from "@/components/Forms/FormActions/FormActions";
 import FormField from "@/components/Forms/FormField/FormField";
 import FormGrid from "@/components/Forms/FormGrid/FormGrid";
 import FormLayout from "@/components/Forms/FormLayout/FormLayout";
 import FormSection from "@/components/Forms/FormSection/FormSection";
+import RemovableField from "@/components/Forms/RemovableField/RemovableField";
+import InfoTooltip from "@/components/UI/InfoTooltip/InfoTooltip";
 import SelectField from "@/components/Forms/SelectField/SelectField";
 import TextInput from "@/components/Forms/TextInput/TextInput";
 import Button from "@/components/UI/Button/Button";
@@ -23,7 +26,6 @@ type FormData = {
 
 export default function SettingsBackup({
     backup,
-    defaults,
     retentionModes,
     timezone,
     canUpdate,
@@ -34,16 +36,23 @@ export default function SettingsBackup({
         times: backup.times.length ? backup.times : [""],
     });
     const busy = useRef(false);
+    const timeSequence = useRef(form.data.times.length);
+    const timeKeys = useRef(form.data.times.map((_, index) => index));
     const element = useRef<HTMLFormElement>(null);
     const errors = form.errors as Record<string, string | undefined>;
     const byDays = form.data.retention_mode === "days";
     const timeError = (index: number): string | undefined =>
         errors[`times.${index}`];
-    const describedBy = (id: string, error?: string, hint = false): string | undefined =>
-        [hint ? `${id}-hint` : null, error ? `${id}-error` : null]
+    const describedBy = (id: string, error?: string): string | undefined =>
+        [error ? `${id}-error` : null]
             .filter(Boolean)
             .join(" ") || undefined;
-    const updateTimes = (times: string[]): void => {
+    const updateTimes = (times: string[], removedIndex?: number): void => {
+        if (removedIndex !== undefined) {
+            timeKeys.current = timeKeys.current.filter((_, index) => index !== removedIndex);
+        } else if (times.length > timeKeys.current.length) {
+            timeKeys.current.push(timeSequence.current++);
+        }
         // Os erros dos horários são indexados; ao mudar a lista, deixam de corresponder.
         form.setData("times", times);
         form.clearErrors();
@@ -102,6 +111,8 @@ export default function SettingsBackup({
                             <FormField
                                 id="backup-retention-mode"
                                 label="Como manter os backups"
+                                hint="Escolha se deseja guardar as cópias por um número de dias ou manter uma quantidade de cópias recentes."
+                                hintLabel="Mais informações sobre a retenção de backups"
                                 error={form.errors.retention_mode}
                                 requiredIndicator
                             >
@@ -137,9 +148,10 @@ export default function SettingsBackup({
                                 }
                                 hint={
                                     byDays
-                                        ? "Backups com mais dias que o informado são removidos automaticamente; o mais recente é sempre mantido. Entre 1 e 365."
-                                        : `Os backups mais antigos além desta quantidade são removidos automaticamente. Entre 1 e 365; padrão: ${defaults.retention_value}.`
+                                        ? "Informe por quantos dias as cópias devem ser guardadas, de 1 a 365. As mais antigas serão removidas; a cópia mais recente será mantida."
+                                        : "Informe quantas cópias recentes deseja guardar, de 1 a 365. As cópias que excederem essa quantidade serão removidas."
                                 }
+                                hintLabel="Mais informações sobre quantos backups manter"
                                 error={form.errors.retention_value}
                                 requiredIndicator
                             >
@@ -156,7 +168,6 @@ export default function SettingsBackup({
                                     aria-describedby={describedBy(
                                         "backup-retention-value",
                                         form.errors.retention_value,
-                                        true,
                                     )}
                                     onChange={(event) =>
                                         form.setData(
@@ -173,66 +184,53 @@ export default function SettingsBackup({
                         title="Backup automático"
                         variant="inline"
                         iconClass="fa fa-clock-o"
-                        description={`Horários diários de execução, no fuso horário do sistema (${timezone}). Padrão: ${defaults.times.join(", ")}.`}
+                        titleAddon={
+                            <InfoTooltip
+                                text={`As cópias serão feitas todos os dias nos horários informados. Os horários seguem o fuso ${timezone}.`}
+                                label="Mais informações sobre os horários de backup"
+                            />
+                        }
                     >
                         <div className="settingsPage__times">
                             {form.data.times.map((time, index) => (
                                 <div
                                     className="settingsPage__time"
-                                    key={index}
+                                    key={timeKeys.current[index]}
                                 >
                                     <FormField
-                                        id={`backup-time-${index}`}
+                                        id={`backup-time-${timeKeys.current[index]}`}
                                         label={`Horário ${index + 1}`}
                                         error={timeError(index)}
                                         requiredIndicator
                                     >
-                                        <TextInput
-                                            id={`backup-time-${index}`}
-                                            name={`times[${index}]`}
-                                            type="time"
-                                            required
-                                            value={time}
-                                            invalid={!!timeError(index)}
-                                            aria-describedby={describedBy(
-                                                `backup-time-${index}`,
-                                                timeError(index),
-                                            )}
-                                            onChange={(event) =>
-                                                updateTimes(
-                                                    form.data.times.map(
-                                                        (current, position) =>
-                                                            position === index
-                                                                ? event.target.value
-                                                                : current,
-                                                    ),
-                                                )
-                                            }
-                                        />
+                                        <RemovableField
+                                            removeLabel={`Remover horário ${index + 1}`}
+                                            disabled={!canUpdate || form.processing || form.data.times.length <= 1}
+                                            onRemove={() => updateTimes(form.data.times.filter((_, position) => position !== index), index)}
+                                        >
+                                            <ClockPicker
+                                                id={`backup-time-${timeKeys.current[index]}`}
+                                                label={`Horário ${index + 1}`}
+                                                required
+                                                defaultValue={time}
+                                                invalid={!!timeError(index)}
+                                                describedBy={describedBy(
+                                                    `backup-time-${timeKeys.current[index]}`,
+                                                    timeError(index),
+                                                )}
+                                                onChange={(value) =>
+                                                    updateTimes(
+                                                        form.data.times.map(
+                                                            (current, position) =>
+                                                                position === index
+                                                                    ? value
+                                                                    : current,
+                                                        ),
+                                                    )
+                                                }
+                                            />
+                                        </RemovableField>
                                     </FormField>
-                                    {canUpdate ? (
-                                        <Button
-                                            type="button"
-                                            tone="cancel"
-                                            iconOnly
-                                            leftIconClass="fa fa-trash"
-                                            className="settingsPage__timeRemove"
-                                            title={`Remover horário ${index + 1}`}
-                                            aria-label={`Remover horário ${index + 1}`}
-                                            disabled={
-                                                form.processing ||
-                                                form.data.times.length === 1
-                                            }
-                                            onClick={() =>
-                                                updateTimes(
-                                                    form.data.times.filter(
-                                                        (_, position) =>
-                                                            position !== index,
-                                                    ),
-                                                )
-                                            }
-                                        />
-                                    ) : null}
                                 </div>
                             ))}
                         </div>
@@ -242,8 +240,9 @@ export default function SettingsBackup({
                         {canUpdate ? (
                             <Button
                                 type="button"
-                                tone="dark-blue"
-                                leftIconClass="fa fa-plus"
+                                tone="white"
+                                className="removableField__add"
+                                labelIconClass="fa fa-plus"
                                 label="Adicionar horário"
                                 title="Adicionar horário de backup"
                                 disabled={
@@ -266,7 +265,7 @@ export default function SettingsBackup({
                 }
             >
                 <Button
-                    href="/auth/dashboard"
+                    href="/autenticacao/painel"
                     tone="cancel"
                     label="Cancelar"
                     title="Cancelar e voltar ao início"

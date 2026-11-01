@@ -65,7 +65,7 @@ export default function InclusionStudentDeficienciesIndexPage({
     can,
 }: Props): React.JSX.Element {
     const pageErrors = usePage().props.errors as Record<string, string | undefined>;
-    const listUrl = `${studentsBase}/${student.id}/deficiencies`;
+    const listUrl = `${studentsBase}/${student.id}/deficiencias`;
     const list = useTableListVisit({
         url: listUrl,
         failureText: "Não foi possível atualizar os perfis de atendimento. Tente novamente.",
@@ -96,7 +96,7 @@ export default function InclusionStudentDeficienciesIndexPage({
                     />
                     {can.create ? (
                         <TableListCreateButton
-                            href={`${listUrl}/create`}
+                            href={`${listUrl}/criar`}
                             ariaLabel="Cadastrar perfil de atendimento do aluno"
                         />
                     ) : null}

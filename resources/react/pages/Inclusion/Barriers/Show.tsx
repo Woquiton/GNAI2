@@ -28,7 +28,7 @@ type Props = {
     can: { edit: boolean; destroy: boolean; pdf: boolean; inspectionShow: boolean };
 };
 
-const base = "/inclusive-radar/barriers";
+const base = "/inclusao/barreiras";
 const priorityLabels: Record<string, string> = { low: "Baixa", medium: "Média", high: "Alta", urgent: "Urgente" };
 
 function formatDate(value?: string | null): string {
@@ -211,7 +211,7 @@ export default function InclusionBarriersShowPage({ barrier, display, can }: Pro
                 <Button href={base} tone="cancel" label="Voltar" title="Voltar para barreiras" aria-label="Voltar para barreiras" disabled={deleting} />
                 {can.edit ? (
                     <Button
-                        href={`${barrierUrl}/edit`}
+                        href={`${barrierUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

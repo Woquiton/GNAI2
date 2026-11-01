@@ -71,7 +71,7 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
         />
         {permissions['student.update'] ? (
           <Button
-            href={studentUrl(student.id, 'edit')}
+            href={studentUrl(student.id, 'editar')}
             tone="warning"
             leftIconClass="fa fa-pencil"
             label="Editar"

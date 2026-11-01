@@ -1,10 +1,10 @@
 import type { SelectFieldOption } from "@/components/Forms/SelectField/SelectField.types";
 import type { SessionOptionMap, SessionPersonOption } from "./SessionForm.types";
 
-export const sessionsBase = "/specialized-educational-support/sessions";
+export const sessionsBase = "/inclusao/agendamentos";
 
 export function sessionShowUrl(id: number): string {
-    return `${sessionsBase}/${id}/show`;
+    return `${sessionsBase}/${id}/visualizar`;
 }
 
 export function mapOptions(options: SessionOptionMap): SelectFieldOption[] {

@@ -22,7 +22,7 @@ type Props = {
     };
 };
 
-const base = "/inclusive-radar/loans";
+const base = "/inclusao/emprestimos";
 
 export default function InclusionLoansShowPage({
     loan,
@@ -56,7 +56,7 @@ export default function InclusionLoansShowPage({
         setFailure("");
         setProcessing(true);
         router.patch(
-            `${itemUrl}/return`,
+            `${itemUrl}/devolver`,
             {
                 is_damaged: isDamaged,
             },
@@ -135,7 +135,7 @@ export default function InclusionLoansShowPage({
                 />
                 {can.edit ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

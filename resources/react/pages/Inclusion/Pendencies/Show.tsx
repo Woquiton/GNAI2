@@ -34,7 +34,7 @@ interface PendencyShowProps {
     };
 }
 
-const pendenciesBase = "/specialized-educational-support/pendencies";
+const pendenciesBase = "/inclusao/pendencias";
 
 const priorityTones: Record<string, string> = {
     info: "info",
@@ -85,7 +85,7 @@ export default function InclusionPendenciesShowPage({
         };
 
         if (action === "complete") {
-            router.put(`${pendencyUrl}/complete`, {}, options);
+            router.put(`${pendencyUrl}/concluir`, {}, options);
             return;
         }
 
@@ -97,7 +97,7 @@ export default function InclusionPendenciesShowPage({
             title={`Pendência, ${pendency.title}`}
             subtitle="Detalhes completos da pendência."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Pendências", href: pendenciesBase },
                 { label: pendency.title },
             ]}
@@ -179,7 +179,7 @@ export default function InclusionPendenciesShowPage({
                     />
                     {can.edit ? (
                         <Button
-                            href={`${pendencyUrl}/edit`}
+                            href={`${pendencyUrl}/editar`}
                             tone="warning"
                             leftIconClass="fa fa-pencil"
                             label="Editar"

@@ -208,7 +208,7 @@ export default function ProfessionalForm(props: Props): React.JSX.Element {
         });
 
         form.post(
-            professional ? `${professionalsBase}/${professional.id}` : `${professionalsBase}/store`,
+            professional ? `${professionalsBase}/${professional.id}` : `${professionalsBase}/salvar`,
             {
                 forceFormData: true,
                 preserveScroll: true,

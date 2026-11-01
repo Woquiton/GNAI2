@@ -74,7 +74,7 @@ export default function InclusionDisciplinesIndexPage({
             subtitle="Gerencie as disciplinas cadastradas no sistema."
             actions={can.create ? (
                 <TableListCreateButton
-                    href={`${disciplineBase}/create`}
+                    href={`${disciplineBase}/criar`}
                     ariaLabel="Cadastrar disciplina"
                 />
             ) : undefined}
@@ -151,7 +151,7 @@ export default function InclusionDisciplinesIndexPage({
                                     <TableActions>
                                         {can.view ? (
                                             <Button
-                                                href={`${disciplineBase}/${discipline.id}/show`}
+                                                href={`${disciplineBase}/${discipline.id}/visualizar`}
                                                 size="sm"
                                                 tone="dark-blue"
                                                 iconOnly

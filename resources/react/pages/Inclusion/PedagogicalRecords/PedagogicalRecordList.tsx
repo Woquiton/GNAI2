@@ -39,7 +39,7 @@ type Props = PedagogicalRecordListProps & {
     studentId?: number;
 };
 
-const recordsBase = `${aeeBase}/pedagogical-records`;
+const recordsBase = `${aeeBase}/atendimentos-pedagogicos`;
 const emptyFilters: PedagogicalRecordFilters = {
     student: "",
     professional_id: "",
@@ -204,7 +204,7 @@ export default function PedagogicalRecordList({
             <TableActions>
                 {can.view ? (
                     <Button
-                        href={`${recordsBase}/${record.id}/show${studentQuery}`}
+                        href={`${recordsBase}/${record.id}/visualizar${studentQuery}`}
                         size="sm"
                         tone="dark-blue"
                         iconOnly
@@ -226,7 +226,7 @@ export default function PedagogicalRecordList({
                 ) : null}
                 {canUpdate ? (
                     <Button
-                        href={`${recordsBase}/${record.id}/edit${studentQuery}`}
+                        href={`${recordsBase}/${record.id}/editar${studentQuery}`}
                         size="sm"
                         tone="warning"
                         iconOnly

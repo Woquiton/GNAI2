@@ -36,7 +36,7 @@ export default function DisciplineForm({
     });
     const errors = form.errors as Record<string, string | undefined>;
     const backHref = discipline
-        ? `${disciplineBase}/${discipline.id}/show`
+        ? `${disciplineBase}/${discipline.id}/visualizar`
         : disciplineBase;
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
@@ -77,7 +77,7 @@ export default function DisciplineForm({
         if (discipline) {
             form.put(`${disciplineBase}/${discipline.id}`, options);
         } else {
-            form.post(`${disciplineBase}/store`, options);
+            form.post(`${disciplineBase}/salvar`, options);
         }
     }
 

@@ -187,7 +187,7 @@ export default function SiteLayout({
                     </div>
                     <div className="siteLayout__container siteLayout__copyright">
                         <span>© {year} {site.name}. Todos os direitos reservados.</span>
-                        <span>Plataforma <SiteLink href="/about-us">Gnai</SiteLink></span>
+                        <span>Plataforma <SiteLink href="/sobre-nos">Gnai</SiteLink></span>
                     </div>
                 </footer>
             </div>

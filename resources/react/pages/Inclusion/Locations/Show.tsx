@@ -15,7 +15,7 @@ import LocationPage from "./LocationPage";
 import type { LocationRecord } from "./Location.types";
 import "./Locations.css";
 
-const base = "/inclusive-radar/locations";
+const base = "/inclusao/locais";
 
 export default function InclusionLocationsShowPage({
     location,
@@ -130,7 +130,7 @@ export default function InclusionLocationsShowPage({
                 <Button href={base} tone="cancel" label="Voltar" disabled={deleting} />
                 {can.edit ? (
                     <Button
-                        href={`${base}/${location.id}/edit`}
+                        href={`${base}/${location.id}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

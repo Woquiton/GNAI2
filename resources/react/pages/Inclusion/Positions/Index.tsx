@@ -73,7 +73,7 @@ export default function InclusionPositionsIndexPage({
 
     function toggleActive(position: PositionListRecord): void {
         cancelScheduled();
-        statusChange.submit("patch", `${positionsBase}/${position.id}/deactivate`);
+        statusChange.submit("patch", `${positionsBase}/${position.id}/desativar`);
     }
 
     return (
@@ -82,7 +82,7 @@ export default function InclusionPositionsIndexPage({
             subtitle="Gerenciamento de funções para o suporte especializado."
             actions={can.create ? (
                 <TableListCreateButton
-                    href={`${positionsBase}/create`}
+                    href={`${positionsBase}/criar`}
                     ariaLabel="Cadastrar cargo"
                 />
             ) : undefined}
@@ -174,7 +174,7 @@ export default function InclusionPositionsIndexPage({
                                     <TableActions>
                                         {can.view ? (
                                             <Button
-                                                href={`${positionsBase}/${position.id}/show`}
+                                                href={`${positionsBase}/${position.id}/visualizar`}
                                                 size="sm"
                                                 tone="dark-blue"
                                                 iconOnly

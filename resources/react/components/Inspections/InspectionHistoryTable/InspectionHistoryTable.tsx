@@ -96,7 +96,7 @@ export default function InspectionHistoryTable({
                 <td>
                   <TableActions>
                     <Button
-                      href={`${baseUrl}/inspection/${inspection.id}`}
+                      href={`${baseUrl}/vistoria/${inspection.id}`}
                       size="sm"
                       tone="dark-blue"
                       iconOnly

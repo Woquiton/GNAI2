@@ -168,7 +168,7 @@ export default function InclusionPeisDisciplinesShowPage({
     can,
 }: PeiDisciplineShowProps): React.JSX.Element {
     const peiUrl = `${aeeBase}/peis/${pei.id}`;
-    const disciplineUrl = `${peiUrl}/disciplines/${peiDiscipline.id}`;
+    const disciplineUrl = `${peiUrl}/disciplinas/${peiDiscipline.id}`;
     const disciplineName = peiDiscipline.discipline_name || "Não informado";
 
     return (
@@ -176,10 +176,10 @@ export default function InclusionPeisDisciplinesShowPage({
             title={`Planejamento da Disciplina ${disciplineName}`}
             subtitle={`Visualize a adaptação para a disciplina ${disciplineName}.`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentUrl(student.id) },
-                { label: `PEI #${pei.id}`, href: `${peiUrl}/show?tab=disciplines` },
+                { label: `PEI #${pei.id}`, href: `${peiUrl}/visualizar?tab=disciplines` },
                 { label: disciplineName },
             ]}
             className="studentsPage peiShow"
@@ -204,7 +204,7 @@ export default function InclusionPeisDisciplinesShowPage({
                     </dl>
                 </FormSection>
                 <DisciplineRevisions
-                    action={`${disciplineUrl}/revisions`}
+                    action={`${disciplineUrl}/revisoes`}
                     revisions={revisions}
                     canAdd={can.addRevision}
                 />
@@ -224,7 +224,7 @@ export default function InclusionPeisDisciplinesShowPage({
                 ) : undefined}
             >
                 <Button
-                    href={`${peiUrl}/show?tab=disciplines`}
+                    href={`${peiUrl}/visualizar?tab=disciplines`}
                     tone="cancel"
                     label="Voltar"
                     title="Voltar para o PEI"
@@ -232,7 +232,7 @@ export default function InclusionPeisDisciplinesShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={`${disciplineUrl}/edit`}
+                        href={`${disciplineUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

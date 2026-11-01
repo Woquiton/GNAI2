@@ -21,7 +21,7 @@ import PublicationMediaFields from "./PublicationMediaFields";
 import PublicationPublishingFields from "./PublicationPublishingFields";
 import "./Publications.css";
 
-const base = "/inclusive-radar/publications";
+const base = "/inclusao/publicacoes";
 
 export default function PublicationForm({
     publication,
@@ -111,7 +111,7 @@ export default function PublicationForm({
                 remove: image.remove,
             })),
         }));
-        form.post(editing && publication ? `${base}/${publication.id}` : `${base}/store`, {
+        form.post(editing && publication ? `${base}/${publication.id}` : `${base}/salvar`, {
             forceFormData: true,
             preserveScroll: true,
             onError: () => {

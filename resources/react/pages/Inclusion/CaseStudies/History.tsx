@@ -39,7 +39,7 @@ export default function InclusionCaseStudiesHistoryPage({
         <BusinessPage
             title={`Histórico de Estudos de Caso de ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentRecordUrl(student.id, caseStudiesTab) },
                 { label: "Histórico de Estudos de Caso" },

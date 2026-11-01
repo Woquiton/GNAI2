@@ -151,7 +151,7 @@ final class StudentPagePresenter
      */
     public function statusPanel(Student $student, bool $hasLaudo): array
     {
-        $base = '/specialized-educational-support';
+        $base = '/inclusao';
         $caseStudy = $student->currentCaseStudy;
         $paee = $student->currentPaee;
         $pei = $student->peis()->where('is_current', true)->first();
@@ -186,8 +186,8 @@ final class StudentPagePresenter
                     'status' => $caseStudyCompleted ? 'Concluído' : ($caseStudy ? 'Em andamento' : 'Não iniciado'),
                     'icon' => 'fa fa-stethoscope',
                     'href' => $caseStudy
-                        ? "{$base}/case-studies/{$caseStudy->getKey()}/show"
-                        : "{$base}/case-studies/{$student->getKey()}/create",
+                        ? "{$base}/estudos-de-caso/{$caseStudy->getKey()}/visualizar"
+                        : "{$base}/estudos-de-caso/{$student->getKey()}/criar",
                     'tab' => null,
                     'updated_at' => $caseStudy?->updated_at?->format('d/m/Y'),
                 ],
@@ -197,7 +197,7 @@ final class StudentPagePresenter
                     'ok' => $paee instanceof Paee,
                     'status' => $paee ? 'Ativo' : 'Não iniciado',
                     'icon' => 'fa fa-sitemap',
-                    'href' => $paee ? "{$base}/paees/{$paee->getKey()}/show" : null,
+                    'href' => $paee ? "{$base}/paees/{$paee->getKey()}/visualizar" : null,
                     'tab' => null,
                     'updated_at' => $paee?->updated_at?->format('d/m/Y'),
                 ],
@@ -207,7 +207,7 @@ final class StudentPagePresenter
                     'ok' => $pei !== null,
                     'status' => $pei ? 'Ativo' : 'Não iniciado',
                     'icon' => 'fa fa-file',
-                    'href' => $pei ? "{$base}/peis/{$pei->getKey()}/show" : null,
+                    'href' => $pei ? "{$base}/peis/{$pei->getKey()}/visualizar" : null,
                     'tab' => null,
                     'updated_at' => $pei?->updated_at?->format('d/m/Y'),
                 ],

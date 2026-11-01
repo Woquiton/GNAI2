@@ -17,7 +17,7 @@ export default function SessionPage({
     children: ReactNode;
 }): React.JSX.Element {
     const crumbs: PageBreadcrumbItem[] = breadcrumbItems ?? [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Agendamentos" },
     ];
 

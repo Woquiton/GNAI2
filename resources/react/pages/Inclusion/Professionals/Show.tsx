@@ -171,7 +171,7 @@ export default function InclusionProfessionalsShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

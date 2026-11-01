@@ -32,7 +32,7 @@ export default function InclusionAeeRecordsShowPage({
         delete: boolean;
     };
 }): React.JSX.Element {
-    const recordUrl = `${aeeBase}/aee-records/${aeeRecord.id}`;
+    const recordUrl = `${aeeBase}/atendimentos-aee/${aeeRecord.id}`;
     const sessionId = aeeRecord.attendance_session_id;
     const deletion = useAeeDeletion(recordUrl);
 
@@ -63,8 +63,8 @@ export default function InclusionAeeRecordsShowPage({
             title="Registro de Atendimento AEE"
             subtitle={`Agendamento #${sessionId} • Realizada em: ${dateLabel(session?.session_date)}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Agendamentos", href: `${aeeBase}/sessions` },
+                { label: "Home", href: "/autenticacao/painel" },
+                { label: "Agendamentos", href: `${aeeBase}/agendamentos` },
                 { label: `Agendamento #${sessionId}`, href: sessionShowUrl(sessionId) },
                 { label: "Registro" },
             ]}
@@ -121,7 +121,7 @@ export default function InclusionAeeRecordsShowPage({
                     />
                     {can.update ? (
                         <Button
-                            href={`${recordUrl}/edit`}
+                            href={`${recordUrl}/editar`}
                             tone="warning"
                             leftIconClass="fa fa-pencil"
                             label="Editar"

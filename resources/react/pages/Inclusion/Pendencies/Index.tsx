@@ -23,7 +23,7 @@ export default function InclusionPendenciesIndexPage(
             ) : null}
             {can.create ? (
                 <TableListCreateButton
-                    href={`${pendenciesBase}/create`}
+                    href={`${pendenciesBase}/criar`}
                     ariaLabel="Cadastrar pendência"
                 />
             ) : null}
@@ -35,7 +35,7 @@ export default function InclusionPendenciesIndexPage(
             title="Pendências"
             subtitle="Gerencie as pendências e seus responsáveis."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Pendências" },
             ]}
             actions={actions}

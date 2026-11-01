@@ -21,7 +21,7 @@ export default function AuthTeacherAccessConfirmPage({ token }: { token: string 
         aria-busy={form.processing}
         onSubmit={(event) => {
           event.preventDefault();
-          if (!form.processing) form.post(`/auth/acesso/${encodeURIComponent(token)}`);
+          if (!form.processing) form.post(`/autenticacao/acesso/${encodeURIComponent(token)}`);
         }}
       >
         <InlineAlert variant="info">

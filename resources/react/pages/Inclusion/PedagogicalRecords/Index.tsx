@@ -12,12 +12,12 @@ export default function InclusionPedagogicalRecordsIndexPage(
             title="Todos os Atendimentos Pedagógicos"
             subtitle="Visão geral dos registros pedagógicos dos profissionais permitidos."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Atendimentos Pedagógicos" },
             ]}
             actions={props.can.view_own ? (
                 <Button
-                    href={`${aeeBase}/my-pedagogical-records`}
+                    href={`${aeeBase}/meus-atendimentos-pedagogicos`}
                     tone="cancel"
                     leftIconClass="fa fa-user"
                 >
@@ -27,7 +27,7 @@ export default function InclusionPedagogicalRecordsIndexPage(
         >
             <PedagogicalRecordList
                 {...props}
-                url={`${aeeBase}/pedagogical-records`}
+                url={`${aeeBase}/atendimentos-pedagogicos`}
                 variant="general"
                 primaryFilters={["student", "professional_id", "course_id"]}
                 moreFilters={["is_present", "with_guardians"]}

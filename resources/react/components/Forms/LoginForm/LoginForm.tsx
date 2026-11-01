@@ -11,7 +11,7 @@ export default function LoginForm(): React.JSX.Element {
   return <form className="loginForm" noValidate aria-label="Acesse sua conta no Gnai" aria-busy={form.processing}
     onSubmit={(event) => {
       event.preventDefault();
-      if (!form.processing) form.post('/auth/login', {
+      if (!form.processing) form.post('/autenticacao/entrar', {
         onFinish: () => {
           form.reset('password');
           setPasswordVisible(false);
@@ -46,10 +46,10 @@ export default function LoginForm(): React.JSX.Element {
         className="loginForm__submitButton" />
     </div>
     <div className="loginForm__forgot">
-      <Link href="/auth/forgot-password"><i className="fa fa-lock" aria-hidden="true" /> Esqueceu sua senha?</Link>
+      <Link href="/autenticacao/esqueci-a-senha"><i className="fa fa-lock" aria-hidden="true" /> Esqueceu sua senha?</Link>
     </div>
     <div className="loginForm__teacherAccess">
-      <Link href="/auth/acesso"><i className="fa fa-graduation-cap" aria-hidden="true" /> Sou professor(a): entrar com e-mail institucional</Link>
+      <Link href="/autenticacao/acesso"><i className="fa fa-graduation-cap" aria-hidden="true" /> Sou professor(a): entrar com e-mail institucional</Link>
     </div>
   </form>;
 }

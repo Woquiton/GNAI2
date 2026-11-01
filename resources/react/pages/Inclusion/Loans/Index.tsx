@@ -41,7 +41,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/loans";
+const base = "/inclusao/emprestimos";
 const emptyFilters: Filters = {
     item: "",
     student: "",
@@ -106,7 +106,7 @@ export default function InclusionLoansIndexPage({
             actions={
                 can.create ? (
                     <TableListCreateButton
-                        href={`${base}/create`}
+                        href={`${base}/criar`}
                         ariaLabel="Cadastrar empréstimo"
                     />
                 ) : undefined
@@ -195,7 +195,7 @@ export default function InclusionLoansIndexPage({
                                 <tr key={loan.id}>
                                     <td>
                                         <a
-                                            href={`/inclusive-radar/items/${loan.loanable_id}`}
+                                            href={`/inclusao/itens/${loan.loanable_id}`}
                                             target="_blank"
                                             rel="noreferrer"
                                         >

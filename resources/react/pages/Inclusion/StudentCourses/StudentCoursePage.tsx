@@ -25,19 +25,19 @@ export default function StudentCoursePage({
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Alunos", href: studentsBase },
         { label: studentName, href: studentUrl(studentId) },
         {
             label: "Matrículas",
-            href: index ? undefined : `${aeeBase}/students/${studentId}/history`,
+            href: index ? undefined : `${aeeBase}/alunos/${studentId}/historico`,
         },
     ];
 
     if (!index && studentCourse) {
         breadcrumbItems.push({
             label: studentCourse.courseName,
-            href: current ? `${aeeBase}/student-courses/${studentCourse.id}` : undefined,
+            href: current ? `${aeeBase}/cursos-do-aluno/${studentCourse.id}` : undefined,
         });
 
         if (current) {

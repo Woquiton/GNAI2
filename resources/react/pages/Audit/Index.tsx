@@ -33,7 +33,7 @@ type Props = {
     options: AuditOptions;
 };
 
-const base = "/audit";
+const base = "/auditoria";
 const emptyFilters: AuditFilters = {
     date_from: "",
     date_to: "",
@@ -80,7 +80,7 @@ export default function AuditIndexPage({ records, filters: initialFilters, optio
             title="Histórico de Alterações"
             subtitle="Consulte quem criou, alterou, excluiu ou restaurou registros do sistema, e o que mudou em cada operação."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Auditoria" },
             ]}
             className="auditIndex"

@@ -18,7 +18,7 @@ export default function InclusionSessionsIndexPage({
         <>
             {can.mySessions ? (
                 <Button
-                    href={`${aeeBase}/my-sessions`}
+                    href={`${aeeBase}/meus-agendamentos`}
                     tone="inverse"
                     leftIconClass="fa fa-clock-o"
                     label="Meus agendamentos"
@@ -27,7 +27,7 @@ export default function InclusionSessionsIndexPage({
             ) : null}
             {can.create ? (
                 <TableListCreateButton
-                    href={`${sessionsBase}/create`}
+                    href={`${sessionsBase}/criar`}
                     ariaLabel="Cadastrar agendamento"
                 />
             ) : null}

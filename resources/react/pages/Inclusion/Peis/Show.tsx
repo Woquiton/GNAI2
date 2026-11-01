@@ -135,7 +135,7 @@ export default function InclusionPeisShowPage({
             icon: "fa fa-info-circle",
             content: (
                 <PeiOtherInfo
-                    action={`${peiUrl}/other-info`}
+                    action={`${peiUrl}/outras-informacoes`}
                     value={otherRelevantInfo}
                     canUpdate={can.updateOtherInfo}
                 />
@@ -156,7 +156,7 @@ export default function InclusionPeisShowPage({
                 pei.is_finished ? "Finalizado" : "Em preenchimento",
             ].filter(Boolean).join(" • ")}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentUrl(student.id) },
                 { label: "PEIs", href: studentRecordUrl(student.id, "peis") },
@@ -239,7 +239,7 @@ export default function InclusionPeisShowPage({
                 {can.finish ? (
                     <PeiConfirmAction
                         method="patch"
-                        action={`${peiUrl}/finish`}
+                        action={`${peiUrl}/finalizar`}
                         label="Finalizar"
                         ariaLabel="Finalizar PEI"
                         tone="success"

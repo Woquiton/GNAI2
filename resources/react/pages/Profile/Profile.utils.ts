@@ -1,5 +1,5 @@
-export const profileUrl = '/auth/perfil';
-export const dashboardUrl = '/auth/dashboard';
+export const profileUrl = '/autenticacao/perfil';
+export const dashboardUrl = '/autenticacao/painel';
 
 export const genderOptions = [
   { value: 'not_specified', label: 'Não informado' },

@@ -32,8 +32,8 @@ import type {
 } from "./PendencyList.types";
 import "./PendencyList.css";
 
-export const pendenciesBase = "/specialized-educational-support/pendencies";
-export const myPendenciesUrl = "/specialized-educational-support/my-pendencies";
+export const pendenciesBase = "/inclusao/pendencias";
+export const myPendenciesUrl = "/inclusao/minhas-pendencias";
 
 const emptyFilters: PendencyListFilters = {
     title: "",
@@ -283,7 +283,7 @@ export default function PendencyList({
                                         <TableActions>
                                             {canView ? (
                                                 <Button
-                                                    href={`${pendenciesBase}/${pendency.id}/show`}
+                                                    href={`${pendenciesBase}/${pendency.id}/visualizar`}
                                                     size="sm"
                                                     tone="dark-blue"
                                                     iconOnly

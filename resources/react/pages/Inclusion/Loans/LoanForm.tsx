@@ -23,7 +23,7 @@ import type {
 } from "./Loan.types";
 import "./Loan.css";
 
-const base = "/inclusive-radar/loans";
+const base = "/inclusao/emprestimos";
 
 type FormData = {
     item_type: string;
@@ -132,7 +132,7 @@ export default function LoanForm({
                 };
 
                 if (mode === "create") {
-                    form.post(`${base}/store`, options);
+                    form.post(`${base}/salvar`, options);
                 } else if (loan) {
                     form.transform((data) => ({
                         observation: data.observation,

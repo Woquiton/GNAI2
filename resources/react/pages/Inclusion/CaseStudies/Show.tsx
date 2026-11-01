@@ -42,7 +42,7 @@ export default function InclusionCaseStudiesShowPage({
             title={title}
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentRecordUrl(student.id, caseStudiesTab) },
                 { label: title },
@@ -280,7 +280,7 @@ export default function InclusionCaseStudiesShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={caseStudyUrl(caseStudy.id, "edit")}
+                        href={caseStudyUrl(caseStudy.id, "editar")}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"
@@ -290,7 +290,7 @@ export default function InclusionCaseStudiesShowPage({
                 {can.complete ? (
                     <CaseStudyConfirmAction
                         method="patch"
-                        action={caseStudyUrl(caseStudy.id, "complete")}
+                        action={caseStudyUrl(caseStudy.id, "concluir")}
                         label="Concluir"
                         ariaLabel="Concluir Estudo de Caso"
                         tone="success"

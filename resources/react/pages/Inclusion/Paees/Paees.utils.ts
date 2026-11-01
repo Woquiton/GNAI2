@@ -2,12 +2,12 @@ import { aeeBase } from "@/components/Students/Students.utils";
 import type { PaeeOption } from "./Paees.types";
 
 export const paeesBase = `${aeeBase}/paees`;
-export const paeeUrl = (id: number, action = "show"): string =>
+export const paeeUrl = (id: number, action = "visualizar"): string =>
     `${paeesBase}/${id}${action ? `/${action}` : ""}`;
 export const studentPaeesUrl = (studentId: number): string =>
-    `${aeeBase}/students/${studentId}/paees`;
+    `${aeeBase}/alunos/${studentId}/paees`;
 export const caseStudyUrl = (id: number): string =>
-    `${aeeBase}/case-studies/${id}/show`;
+    `${aeeBase}/estudos-de-caso/${id}/visualizar`;
 
 /** Aba do prontuário do aluno que reúne os PAEEs. */
 export const studentPaeesTab = "paees";

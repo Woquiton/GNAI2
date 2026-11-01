@@ -16,7 +16,7 @@ export default function StudentsIndex(props: StudentIndexProps): React.JSX.Eleme
   });
   const createAction = props.permissions['student.create'] ? (
     <TableListCreateButton
-      href={`${studentsBase}/create`}
+      href={`${studentsBase}/criar`}
       ariaLabel="Cadastrar aluno"
     />
   ) : undefined;

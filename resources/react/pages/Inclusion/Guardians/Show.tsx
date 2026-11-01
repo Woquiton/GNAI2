@@ -25,7 +25,7 @@ export default function InclusionGuardiansShowPage({
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const person = guardian.person;
-    const itemUrl = `${studentsBase}/${student.id}/guardians/${guardian.id}`;
+    const itemUrl = `${studentsBase}/${student.id}/responsaveis/${guardian.id}`;
     const relationship = display.relationshipLabel || "---";
 
     function failure(text: string): void {
@@ -142,7 +142,7 @@ export default function InclusionGuardiansShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

@@ -14,7 +14,7 @@ import InstitutionPage from "./InstitutionPage";
 import type { InstitutionRecord } from "./Institution.types";
 import "./Institutions.css";
 
-const base = "/inclusive-radar/institutions";
+const base = "/inclusao/instituicoes";
 
 export default function InclusionInstitutionsShowPage({
     institution,
@@ -113,7 +113,7 @@ export default function InclusionInstitutionsShowPage({
                 <Button href={base} tone="cancel" label="Voltar" disabled={deleting} />
                 {can.edit ? (
                     <Button
-                        href={`${base}/${institution.id}/edit`}
+                        href={`${base}/${institution.id}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

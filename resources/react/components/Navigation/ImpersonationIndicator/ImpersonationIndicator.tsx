@@ -24,7 +24,7 @@ export default function ImpersonationIndicator({
         <span className="impersonationIndicator__mode">{modeLabel}</span>
       </p>
       <Link
-        href="/auth/impersonate/leave"
+        href="/autenticacao/acessar-como/encerrar"
         method="post"
         as="button"
         className="topbar__navLink impersonationIndicator__leave"

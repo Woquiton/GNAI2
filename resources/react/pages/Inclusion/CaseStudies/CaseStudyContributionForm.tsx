@@ -21,7 +21,7 @@ export default function CaseStudyContributionForm({
         if (busy.current || form.processing) return;
 
         busy.current = true;
-        form.post(caseStudyUrl(caseStudyId, "contributions"), {
+        form.post(caseStudyUrl(caseStudyId, "contribuicoes"), {
             preserveScroll: true,
             preserveState: true,
             ...requestFailureHandlers("Não foi possível registrar a contribuição. Tente novamente."),

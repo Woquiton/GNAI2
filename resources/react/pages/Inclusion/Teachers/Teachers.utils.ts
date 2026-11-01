@@ -1,6 +1,6 @@
-export const teachersBase = "/specialized-educational-support/teachers";
+export const teachersBase = "/inclusao/professores";
 
-export const teacherShowUrl = (id: number): string => `${teachersBase}/${id}/show`;
+export const teacherShowUrl = (id: number): string => `${teachersBase}/${id}/visualizar`;
 
 export function cpfMask(value: string): string {
     return value

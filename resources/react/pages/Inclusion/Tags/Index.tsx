@@ -36,7 +36,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/tags";
+const base = "/inclusao/marcadores";
 const emptyFilters: Filters = { name: "", is_active: "" };
 const columns: TableListColumn[] = [
     { id: "name", label: "Nome", width: "60%", minWidth: 150, fixed: "start" },
@@ -75,7 +75,7 @@ export default function InclusionTagsIndexPage({
             title="Etiquetas"
             subtitle="Gerencie as etiquetas disponíveis para classificar as publicações."
             actions={can.create ? (
-                <TableListCreateButton href={`${base}/create`} ariaLabel="Cadastrar etiqueta" />
+                <TableListCreateButton href={`${base}/criar`} ariaLabel="Cadastrar etiqueta" />
             ) : undefined}
         >
             <TableListCard aria-label="Listagem de etiquetas" aria-busy={list.loading} loading={list.loading} loadingLabel="Atualizando etiquetas">

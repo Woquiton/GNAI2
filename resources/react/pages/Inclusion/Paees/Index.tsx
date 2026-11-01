@@ -22,7 +22,7 @@ export default function InclusionPaeesIndexPage({
             title={`PAEE de ${student.name}`}
             subtitle="Planos de Atendimento Educacional Especializado do aluno."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentRecordUrl(student.id, studentPaeesTab) },
                 { label: "PAEE" },

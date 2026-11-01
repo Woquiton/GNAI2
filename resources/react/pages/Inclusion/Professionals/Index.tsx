@@ -156,7 +156,7 @@ export default function InclusionProfessionalsIndexPage({
             actions={
                 can.create ? (
                     <TableListCreateButton
-                        href={`${professionalsBase}/create`}
+                        href={`${professionalsBase}/criar`}
                         ariaLabel="Cadastrar profissional"
                     />
                 ) : undefined

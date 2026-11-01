@@ -166,7 +166,7 @@ export default function CaseStudyForm({
         if (caseStudy) {
             form.put(`${caseStudiesBase}/${caseStudy.id}`, requestOptions);
         } else {
-            form.post(`${caseStudiesBase}/${student.id}/store`, requestOptions);
+            form.post(`${caseStudiesBase}/${student.id}/salvar`, requestOptions);
         }
     }
 
@@ -175,7 +175,7 @@ export default function CaseStudyForm({
             title={caseStudy ? `Editar Estudo de Caso (v${caseStudy.version})` : "Novo Estudo de Caso"}
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentHref },
                 ...(caseStudy

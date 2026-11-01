@@ -10,7 +10,7 @@ export default function InclusionPeisAllPage(
             title="Listagem Geral de PEIs"
             subtitle="Visualização consolidada de todos os planos e adaptações curriculares do campus."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "PEIs" },
             ]}
             className="peisPage"

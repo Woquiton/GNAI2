@@ -19,7 +19,7 @@ export default function ItemPage({
     children: ReactNode;
 }): React.JSX.Element {
     const items: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         {
             label: "Itens",
             href: current ? base : undefined,

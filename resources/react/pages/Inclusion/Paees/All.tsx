@@ -10,7 +10,7 @@ export default function InclusionPaeesAllPage(
             title="PAEE"
             subtitle="Plano de Atendimento Educacional Especializado, vinculado a um Estudo de Caso concluído."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "PAEEs" },
             ]}
             className="paeesPage"

@@ -24,13 +24,13 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
     }
 
     const profileItems: ProfileLink[] = [
-        { label: "Perfil", iconClass: "ti-user", href: "/auth/perfil" },
+        { label: "Perfil", iconClass: "ti-user", href: "/autenticacao/perfil" },
         ...(impersonating
             ? [
                   {
                       label: "Voltar para a minha conta",
                       iconClass: "ti-back-left",
-                      href: "/auth/impersonate/leave",
+                      href: "/autenticacao/acessar-como/encerrar",
                       method: "post" as const,
                   },
               ]
@@ -38,7 +38,7 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
         {
             label: "Sair",
             iconClass: "ti-power-off",
-            href: "/auth/logout",
+            href: "/autenticacao/sair",
             method: "post",
         },
     ];
@@ -51,14 +51,14 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
                 brand="Gnai"
                 compactLogoSrc="/images/logo2.png"
                 expandedLogoText="NAI"
-                homeHref="/auth/dashboard"
+                homeHref="/autenticacao/painel"
                 sidebarCollapsed={sidebar.collapsed}
                 onToggleSidebar={sidebar.toggle}
                 user={auth.user}
                 profileItems={profileItems}
                 notificationItems={topbar?.notifications ?? []}
                 unreadCount={topbar?.unreadCount ?? 0}
-                notificationsHref="/notifications"
+                notificationsHref="/notificacoes"
                 showSettings={false}
                 actionsContent={
                     impersonating ? (
@@ -75,7 +75,7 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
                             navigation.entries.some(
                                 (item) => item.key === "institutions",
                             )
-                                ? "/inclusive-radar/institutions"
+                                ? "/inclusao/instituicoes"
                                 : undefined
                         }
                     />
@@ -96,7 +96,7 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
             ) : null}
             <div className="app-content-placeholder">
                 <div className="app-content-placeholder__inner">
-                    <PageErrorBoundary resetKey={url} homeHref="/auth/dashboard">
+                    <PageErrorBoundary resetKey={url} homeHref="/autenticacao/painel">
                         {children}
                     </PageErrorBoundary>
                 </div>

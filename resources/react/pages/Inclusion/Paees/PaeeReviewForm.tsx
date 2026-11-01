@@ -42,7 +42,7 @@ export default function PaeeReviewForm({
         if (busy.current || form.processing || editorFailed) return;
 
         busy.current = true;
-        form.post(paeeUrl(paeeId, "reviews"), {
+        form.post(paeeUrl(paeeId, "revisoes"), {
             preserveScroll: true,
             onSuccess: () => {
                 form.reset();

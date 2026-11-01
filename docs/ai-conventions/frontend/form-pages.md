@@ -199,7 +199,7 @@ Para alunos, consulte estes arquivos reais; em outra tela, localize os equivalen
 | Normalização de entrada de pessoa | `app/Domains/Inclusion/Application/Data/People/Concerns/NormalizesPersonInput.php` |
 | Dados compartilhados e flash | `app/Shared/Infrastructure/Http/Middleware/HandleInertiaRequests.php` |
 
-A referência cria por POST em `/specialized-educational-support/students/store` e atualiza por PUT em `/specialized-educational-support/students/{id}`, via POST multipart com `_method`. O controller redireciona para o prontuário com mensagem de sucesso. Essas URLs e destinos são exemplos, não uma convenção de URLs obrigatória para novos módulos.
+A referência cria por POST em `/inclusao/alunos/salvar` e atualiza por PUT em `/inclusao/alunos/{id}`, via POST multipart com `_method`. O controller redireciona para o prontuário com mensagem de sucesso. Essas URLs e destinos são exemplos, não uma convenção de URLs obrigatória para novos módulos.
 
 Preserve nomes de campos, enums, formato das datas, arquivos e flags aceitos pelo backend. Não substitua validações, permissões, queries/actions ou regras de negócio por condições visuais. Os erros de validação chegam por Inertia em `form.errors`; os redirects e flash devem seguir os contratos existentes. Não acrescente capabilities ao usuário compartilhado nem invente permissões que o servidor não fornece.
 

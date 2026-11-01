@@ -3,7 +3,7 @@ import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import type { PageBreadcrumbItem } from "@/components/Navigation/PageBreadcrumb/PageBreadcrumb";
 import type { InstitutionRecord } from "./Institution.types";
 
-const base = "/inclusive-radar/institutions";
+const base = "/inclusao/instituicoes";
 
 export default function InstitutionPage({ title, subtitle, current, institution, actions, children }: {
     title: string;
@@ -14,7 +14,7 @@ export default function InstitutionPage({ title, subtitle, current, institution,
     children: ReactNode;
 }): React.JSX.Element {
     const breadcrumbItems: PageBreadcrumbItem[] = [
-        { label: "Home", href: "/auth/dashboard" },
+        { label: "Home", href: "/autenticacao/painel" },
         { label: "Instituições", href: current || institution ? base : undefined },
     ];
     if (institution) {

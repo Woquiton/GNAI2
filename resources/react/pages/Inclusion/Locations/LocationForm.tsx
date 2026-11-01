@@ -19,7 +19,7 @@ import LocationPage from "./LocationPage";
 import type { InstitutionMapData, InstitutionOption, LocationRecord } from "./Location.types";
 import "./Locations.css";
 
-const base = "/inclusive-radar/locations";
+const base = "/inclusao/locais";
 const defaultPoint: GeoPoint = { latitude: -14.235, longitude: -51.9253 };
 
 function parseCoordinate(value: string, fallback: number): number {
@@ -92,7 +92,7 @@ export default function LocationForm({
             },
         };
         if (location) form.put(`${base}/${location.id}`, options);
-        else form.post(`${base}/store`, options);
+        else form.post(`${base}/salvar`, options);
     }
 
     return (

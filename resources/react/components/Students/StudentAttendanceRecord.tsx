@@ -172,7 +172,7 @@ function AttendancePanel({
         emptyMessage={emptyMessage}
         actions={permissions[`${isAee ? 'aee' : 'pedagogical'}-record.view`] ? (
           <Button
-            href={studentUrl(studentId, `${id}/pdf`)}
+            href={studentUrl(studentId, `${isAee ? 'atendimentos-aee' : 'atendimentos-pedagogicos'}/pdf`)}
             target="_blank"
             rel="noopener noreferrer"
             tone="dark-red"
@@ -250,13 +250,13 @@ export function createStudentAttendanceTabs({
             canManage: item.can_manage ?? false,
             href: studentUrl(
               student.id,
-              `aee-records/${item.id}/show`,
+              `atendimentos-aee/${item.id}/visualizar`,
             ),
             editHref: studentUrl(
               student.id,
-              `aee-records/${item.id}/edit`,
+              `atendimentos-aee/${item.id}/editar`,
             ),
-            deleteHref: studentUrl(student.id, `aee-records/${item.id}`),
+            deleteHref: studentUrl(student.id, `atendimentos-aee/${item.id}`),
           }))}
         />
       ),
@@ -283,10 +283,10 @@ export function createStudentAttendanceTabs({
             present: item.is_present,
             guardians: item.guardians.length > 0,
             canManage: item.can_manage ?? false,
-            href: `${aeeBase}/pedagogical-records/${item.id}/show?student_id=${student.id}`,
-            editHref: `${aeeBase}/pedagogical-records/${item.id}/edit?student_id=${student.id}`,
-            deleteHref: `${aeeBase}/pedagogical-records/${item.id}?student_id=${student.id}`,
-            pdfHref: `${aeeBase}/pedagogical-records/${item.id}/pdf`,
+            href: `${aeeBase}/atendimentos-pedagogicos/${item.id}/visualizar?student_id=${student.id}`,
+            editHref: `${aeeBase}/atendimentos-pedagogicos/${item.id}/editar?student_id=${student.id}`,
+            deleteHref: `${aeeBase}/atendimentos-pedagogicos/${item.id}?student_id=${student.id}`,
+            pdfHref: `${aeeBase}/atendimentos-pedagogicos/${item.id}/pdf`,
           }))}
         />
       ),

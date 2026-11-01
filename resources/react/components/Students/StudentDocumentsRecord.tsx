@@ -83,7 +83,7 @@ function StudentPeis({
         emptyMessage="Nenhum PEI do aluno encontrado."
         actions={permissions['pei.create'] ? (
           <TableListCreateButton
-            href={`${aeeBase}/students/${student.id}/peis/create`}
+            href={`${aeeBase}/alunos/${student.id}/peis/criar`}
             ariaLabel="Cadastrar PEI do aluno"
           />
         ) : undefined}
@@ -109,7 +109,7 @@ function StudentPeis({
                 <TableActions>
                   {permissions['pei.view'] ? (
                     <Button
-                      href={`${aeeBase}/peis/${pei.id}/show`}
+                      href={`${aeeBase}/peis/${pei.id}/visualizar`}
                       size="sm"
                       tone="dark-blue"
                       iconOnly
@@ -154,7 +154,7 @@ function StudentDocuments({
         emptyMessage="Nenhum documento do aluno encontrado."
         actions={permissions['student-document.create'] ? (
           <TableListCreateButton
-            href={`${aeeBase}/students/${student.id}/documents/create`}
+            href={`${aeeBase}/alunos/${student.id}/documentos/criar`}
             ariaLabel="Cadastrar documento do aluno"
           />
         ) : undefined}
@@ -179,7 +179,7 @@ function StudentDocuments({
                   {permissions['student-document.view'] ? (
                     <>
                       <Button
-                        href={`${aeeBase}/student-documents/${document.id}/view`}
+                        href={`${aeeBase}/documentos-do-aluno/${document.id}/visualizar`}
                         target="_blank"
                         rel="noopener noreferrer"
                         size="sm"
@@ -189,7 +189,7 @@ function StudentDocuments({
                         aria-label={`Visualizar documento ${document.title}`}
                       />
                       <Button
-                        href={`${aeeBase}/student-documents/${document.id}/download`}
+                        href={`${aeeBase}/documentos-do-aluno/${document.id}/baixar`}
                         target="_blank"
                         rel="noopener noreferrer"
                         size="sm"
@@ -202,7 +202,7 @@ function StudentDocuments({
                   ) : null}
                   {permissions['student-document.update'] ? (
                     <Button
-                      href={`${aeeBase}/student-documents/${document.id}/edit`}
+                      href={`${aeeBase}/documentos-do-aluno/${document.id}/editar`}
                       size="sm"
                       tone="warning"
                       iconOnly
@@ -212,7 +212,7 @@ function StudentDocuments({
                   ) : null}
                   {permissions['student-document.delete'] ? (
                     <DeleteStudentRecord
-                      action={`${aeeBase}/student-documents/${document.id}`}
+                      action={`${aeeBase}/documentos-do-aluno/${document.id}`}
                       title="Excluir documento"
                       message={(
                         <>

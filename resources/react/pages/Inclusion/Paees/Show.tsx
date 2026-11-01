@@ -48,7 +48,7 @@ export default function InclusionPaeesShowPage({
             title={`PAEE ${version}`}
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentUrl(student.id) },
                 { label: `PAEE ${version}` },
@@ -312,7 +312,7 @@ export default function InclusionPaeesShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={paeeUrl(paee.id, "edit")}
+                        href={paeeUrl(paee.id, "editar")}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

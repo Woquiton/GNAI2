@@ -215,7 +215,7 @@ export default function InclusionTeachersShowPage({
                 />
                 {can.update ? (
                     <Button
-                        href={`${itemUrl}/disciplines`}
+                        href={`${itemUrl}/disciplinas`}
                         tone="info"
                         leftIconClass="fa fa-book"
                         label="Gerenciar Disciplinas"
@@ -226,7 +226,7 @@ export default function InclusionTeachersShowPage({
                 ) : null}
                 {can.update ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

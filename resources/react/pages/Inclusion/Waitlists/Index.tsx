@@ -42,7 +42,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/waitlists";
+const base = "/inclusao/fila-de-espera";
 const emptyFilters: Filters = { item: "", student: "", professional: "", status: "" };
 const statusOptions = [
     { value: "waiting", label: "Em espera" },
@@ -64,7 +64,7 @@ const columns: TableListColumn[] = [
 ];
 
 function itemHref(waitlist: WaitlistRecord): string {
-    return `/inclusive-radar/items/${waitlist.waitlistable_id}`;
+    return `/inclusao/itens/${waitlist.waitlistable_id}`;
 }
 
 export default function InclusionWaitlistsIndexPage({
@@ -102,7 +102,7 @@ export default function InclusionWaitlistsIndexPage({
             title="Fila de Espera"
             subtitle="Gerencie solicitações de recursos que estão indisponíveis para empréstimo."
             actions={can.create ? (
-                <TableListCreateButton href={`${base}/create`} ariaLabel="Cadastrar solicitação na fila de espera" />
+                <TableListCreateButton href={`${base}/criar`} ariaLabel="Cadastrar solicitação na fila de espera" />
             ) : undefined}
         >
             <TableListCard

@@ -52,7 +52,6 @@ const requestFeedback = {
 };
 
 export default function SettingsMail({
-    configured,
     mail,
     transports,
     encryptions,
@@ -78,8 +77,8 @@ export default function SettingsMail({
     const element = useRef<HTMLFormElement>(null);
     const usesSmtp = form.data.transport === "smtp";
     const testBlocked = form.isDirty || form.processing || testForm.processing;
-    const describedBy = (name: keyof FormData, hint = false): string | undefined =>
-        [hint ? `mail-${name}-hint` : null, form.errors[name] ? `mail-${name}-error` : null]
+    const describedBy = (name: keyof FormData): string | undefined =>
+        [form.errors[name] ? `mail-${name}-error` : null]
             .filter(Boolean)
             .join(" ") || undefined;
     const input = (
@@ -97,6 +96,7 @@ export default function SettingsMail({
             id={`mail-${name}`}
             label={label}
             hint={options.hint}
+            hintLabel={options.hint ? `Mais informações sobre ${label.toLowerCase()}` : undefined}
             error={form.errors[name]}
             requiredIndicator={options.required}
         >
@@ -112,7 +112,7 @@ export default function SettingsMail({
                 autoComplete={options.autoComplete ?? "off"}
                 value={form.data[name]}
                 invalid={!!form.errors[name]}
-                aria-describedby={describedBy(name, !!options.hint)}
+                aria-describedby={describedBy(name)}
                 onChange={(event) => form.setData(name, event.target.value)}
             />
         </FormField>
@@ -125,6 +125,10 @@ export default function SettingsMail({
         <FormField
             id={`mail-${name}`}
             label={label}
+            hint={name === "transport"
+                ? "SMTP envia as mensagens aos destinatários usando sua conta de e-mail. Registro em log serve para testes: registra as mensagens, mas não as envia."
+                : "São formas de proteger a conexão de envio. SSL/TLS (também chamado SMTPS) protege desde o início; STARTTLS ativa essa proteção ao conectar. Use a opção indicada pelo provedor ou preenchida ao escolher o serviço."}
+            hintLabel={`Mais informações sobre ${label.toLowerCase()}`}
             error={form.errors[name]}
             requiredIndicator
         >
@@ -188,6 +192,10 @@ export default function SettingsMail({
         <FormField
             id={id}
             label={label}
+            hint={name === "host"
+                ? "É o serviço que entrega os e-mails. Selecione o provedor da conta que será usada para enviar as mensagens. Para outro serviço, peça ao responsável pela conta o endereço de envio SMTP."
+                : "É o número usado para conectar ao serviço de e-mail. A escolha do provedor preenche uma opção sugerida. Se precisar informar outro número, consulte as configurações de envio do provedor ou peça ao responsável pela conta."}
+            hintLabel={`Mais informações sobre ${label.toLowerCase()}`}
             error={showError ? form.errors[name] : undefined}
             requiredIndicator
         >
@@ -207,7 +215,7 @@ export default function SettingsMail({
     );
     const sendTest = (): void => {
         if (testBlocked) return;
-        testForm.post(`${settingsBase}/mail/test`, {
+        testForm.post(`${settingsBase}/email/teste`, {
             ...requestFeedback,
             preserveScroll: true,
             onError: () =>
@@ -226,7 +234,7 @@ export default function SettingsMail({
                 event.preventDefault();
                 if (!canUpdate || busy.current || form.processing) return;
                 busy.current = true;
-                form.put(`${settingsBase}/mail`, {
+                form.put(`${settingsBase}/email`, {
                     ...requestFeedback,
                     preserveScroll: true,
                     onError: () =>
@@ -251,11 +259,6 @@ export default function SettingsMail({
                         variant="inline"
                         iconClass="fa fa-server"
                     >
-                        <p className="settingsPage__note">
-                            {configured
-                                ? "Estas configurações são usadas por todos os envios de e-mail do Gnai."
-                                : "Ainda não há configuração cadastrada: os envios usam os valores do arquivo .env do servidor. Os campos foram preenchidos com esses valores, exceto a senha. Ao salvar, estas configurações passam a ter prioridade."}
-                        </p>
                         <FormStack>
                             <FormGrid columns={usesSmtp ? 4 : 2}>
                                 {select("transport", "Tipo de envio", transports)}
@@ -302,6 +305,7 @@ export default function SettingsMail({
                                         ? input("host", "Endereço do servidor SMTP", {
                                             required: true,
                                             placeholder: "smtp.exemplo.com",
+                                            hint: "Copie o endereço SMTP informado pelo serviço de e-mail. Se não souber qual é, peça ao responsável pela conta.",
                                         })
                                         : null}
                                     {customPort
@@ -309,6 +313,7 @@ export default function SettingsMail({
                                             type: "number",
                                             required: true,
                                             placeholder: "587",
+                                            hint: "Informe a porta indicada nas configurações de envio do seu serviço de e-mail. Peça esse número ao responsável pela conta se necessário.",
                                         })
                                         : null}
                                 </FormGrid>
@@ -316,7 +321,7 @@ export default function SettingsMail({
                             {usesSmtp ? (
                                 <FormGrid>
                                     {input("username", "Usuário de autenticação", {
-                                        hint: "Geralmente o próprio e-mail da conta de envio.",
+                                        hint: "Informe o login da conta que enviará os e-mails. Na maioria dos serviços, é o endereço completo dessa conta, por exemplo: atendimento@escola.com.br.",
                                     })}
                                     {input("password", "Senha ou chave de aplicativo", {
                                         type: "password",
@@ -325,20 +330,17 @@ export default function SettingsMail({
                                             ? "••••••••"
                                             : undefined,
                                         hint: [
+                                            "Informe a senha de envio da conta. Se o serviço pedir uma senha de aplicativo, crie essa senha nas configurações de segurança do e-mail.",
                                             mail.has_password
-                                                ? "Há uma senha cadastrada. Deixe em branco para mantê-la."
-                                                : "A senha é armazenada criptografada e nunca é exibida.",
+                                                ? "Deixe em branco para manter a senha atual."
+                                                : null,
                                             provider?.passwordHint,
                                         ]
                                             .filter(Boolean)
                                             .join(" "),
                                     })}
                                 </FormGrid>
-                            ) : (
-                                <p className="settingsPage__note">
-                                    Com “Registro em log”, as mensagens são gravadas no log da aplicação e não são entregues aos destinatários.
-                                </p>
-                            )}
+                            ) : null}
                         </FormStack>
                     </FormSection>
                     <FormSection
@@ -351,10 +353,11 @@ export default function SettingsMail({
                             {input("from_address", "E-mail de envio", {
                                 type: "email",
                                 required: true,
-                                hint: "Endereço exibido como remetente. Em geral, deve pertencer à conta autenticada.",
+                                hint: "Informe o endereço que as pessoas verão como remetente das mensagens. Use a conta configurada acima ou um endereço que o serviço permita usar para envio.",
                             })}
                             {input("from_name", "Nome do remetente", {
                                 required: true,
+                                hint: "Informe o nome que aparecerá para quem receber os e-mails, por exemplo: Equipe Gnai ou o nome da instituição.",
                             })}
                         </FormGrid>
                     </FormSection>
@@ -369,11 +372,8 @@ export default function SettingsMail({
                                 <FormField
                                     id="mail-test-recipient"
                                     label="E-mail de destino"
-                                    hint={
-                                        form.isDirty
-                                            ? "Salve as alterações antes de enviar o teste."
-                                            : "O teste usa as configurações salvas."
-                                    }
+                                    hint="Informe o e-mail que receberá a mensagem de teste. Se alterou algum campo, salve antes de testar."
+                                    hintLabel="Mais informações sobre o e-mail de teste"
                                     error={testForm.errors.recipient}
                                 >
                                     <TextInput
@@ -386,7 +386,6 @@ export default function SettingsMail({
                                         disabled={testForm.processing}
                                         invalid={!!testForm.errors.recipient}
                                         aria-describedby={[
-                                            "mail-test-recipient-hint",
                                             testForm.errors.recipient
                                                 ? "mail-test-recipient-error"
                                                 : null,
@@ -439,7 +438,7 @@ export default function SettingsMail({
                 }
             >
                 <Button
-                    href="/auth/dashboard"
+                    href="/autenticacao/painel"
                     tone="cancel"
                     label="Cancelar"
                     title="Cancelar e voltar ao início"

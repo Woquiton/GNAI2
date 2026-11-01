@@ -39,7 +39,7 @@ type Props = {
     notifications: NotificationPaginator;
 };
 
-const base = "/notifications";
+const base = "/notificacoes";
 const columns: TableListColumn[] = [
     { id: "title", label: "Notificação", width: "26%", minWidth: 140, fixed: "start" },
     { id: "message", label: "Mensagem", width: "38%", minWidth: 160 },
@@ -63,12 +63,12 @@ export default function NotificationsIndexPage({ notifications }: Props): React.
 
     function markAllAsRead(): void {
         if (actionBusy) return;
-        readAll.submit("post", `${base}/read-all`);
+        readAll.submit("post", `${base}/ler-todas`);
     }
 
     function markAsRead(notification: NotificationRecord): void {
         if (actionBusy) return;
-        readOne.submit("post", `${base}/${encodeURIComponent(notification.id)}/read`);
+        readOne.submit("post", `${base}/${encodeURIComponent(notification.id)}/ler`);
     }
 
     return (
@@ -76,7 +76,7 @@ export default function NotificationsIndexPage({ notifications }: Props): React.
             title="Notificações"
             subtitle="Histórico completo das suas notificações do sistema."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Notificações" },
             ]}
             actions={(

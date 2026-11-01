@@ -25,7 +25,7 @@ export default function InclusionStudentsPedagogicalRecordsIndexPage({
             title="Histórico de Atendimentos Pedagógicos"
             subtitle={`Aluno: ${studentName}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: studentName, href: studentUrl(student.id) },
                 { label: "Atendimentos pedagógicos" },
@@ -39,7 +39,7 @@ export default function InclusionStudentsPedagogicalRecordsIndexPage({
         >
             <PedagogicalRecordList
                 {...props}
-                url={studentUrl(student.id, "pedagogical-records")}
+                url={studentUrl(student.id, "atendimentos-pedagogicos")}
                 variant="student"
                 primaryFilters={filters}
                 pageParam="pedagogical_page"

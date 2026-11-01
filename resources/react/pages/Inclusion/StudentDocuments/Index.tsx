@@ -45,7 +45,7 @@ type Props = {
     can: { create: boolean; view: boolean; update: boolean; delete: boolean };
 };
 
-const documentsBase = `${aeeBase}/student-documents`;
+const documentsBase = `${aeeBase}/documentos-do-aluno`;
 const emptyFilters: StudentDocumentFilters = {
     title: "",
     type: "",
@@ -70,7 +70,7 @@ export default function InclusionStudentDocumentsIndexPage({
     can,
 }: Props): React.JSX.Element {
     const pageErrors = usePage().props.errors as Record<string, string | undefined>;
-    const listUrl = `${studentsBase}/${student.id}/documents`;
+    const listUrl = `${studentsBase}/${student.id}/documentos`;
     const list = useTableListVisit({
         url: listUrl,
         failureText: "Não foi possível atualizar os documentos. Tente novamente.",
@@ -101,7 +101,7 @@ export default function InclusionStudentDocumentsIndexPage({
                     />
                     {can.create ? (
                         <TableListCreateButton
-                            href={`${listUrl}/create`}
+                            href={`${listUrl}/criar`}
                             ariaLabel="Cadastrar documento do aluno"
                         />
                     ) : null}
@@ -200,7 +200,7 @@ export default function InclusionStudentDocumentsIndexPage({
                                             {can.view ? (
                                                 <>
                                                     <Button
-                                                        href={`${documentsBase}/${document.id}/view`}
+                                                        href={`${documentsBase}/${document.id}/visualizar`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         size="sm"
@@ -210,7 +210,7 @@ export default function InclusionStudentDocumentsIndexPage({
                                                         aria-label={`Visualizar documento ${document.title}`}
                                                     />
                                                     <Button
-                                                        href={`${documentsBase}/${document.id}/download`}
+                                                        href={`${documentsBase}/${document.id}/baixar`}
                                                         download
                                                         size="sm"
                                                         tone="cancel"
@@ -222,7 +222,7 @@ export default function InclusionStudentDocumentsIndexPage({
                                             ) : null}
                                             {can.update ? (
                                                 <Button
-                                                    href={`${documentsBase}/${document.id}/edit`}
+                                                    href={`${documentsBase}/${document.id}/editar`}
                                                     size="sm"
                                                     tone="warning"
                                                     iconOnly

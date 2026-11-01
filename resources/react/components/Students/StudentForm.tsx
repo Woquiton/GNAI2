@@ -193,7 +193,7 @@ export default function StudentForm(props: Props): React.JSX.Element {
                 form.post(
                     student
                         ? studentUrl(student.id, "")
-                        : `${studentsBase}/store`,
+                        : `${studentsBase}/salvar`,
                     {
                         ...request.options,
                         forceFormData: true,

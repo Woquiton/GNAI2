@@ -85,8 +85,8 @@ export default function StudentDocumentForm({
         form.transform((data) => (editing ? { ...data, _method: "put" } : data));
         form.post(
             studentDocument
-                ? `${aeeBase}/student-documents/${studentDocument.id}`
-                : `${studentsBase}/${student.id}/documents`,
+                ? `${aeeBase}/documentos-do-aluno/${studentDocument.id}`
+                : `${studentsBase}/${student.id}/documentos`,
             {
                 forceFormData: true,
                 preserveScroll: true,

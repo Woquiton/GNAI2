@@ -22,7 +22,7 @@ export default function InclusionPeisIndexPage({
             title="Histórico de PEIs"
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentRecordUrl(student.id, "peis") },
                 { label: "PEIs" },
@@ -35,7 +35,7 @@ export default function InclusionPeisIndexPage({
                     />
                     {props.can.create ? (
                         <TableListCreateButton
-                            href={`${studentPeisUrl(student.id)}/create`}
+                            href={`${studentPeisUrl(student.id)}/criar`}
                             ariaLabel="Cadastrar PEI do aluno"
                         />
                     ) : null}

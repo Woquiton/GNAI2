@@ -71,7 +71,7 @@ export default function InclusionSessionsShowPage({
             ...data,
             send_notification: data.send_notification ? 1 : 0,
         }));
-        cancelForm.post(`${sessionUrl}/cancel`, {
+        cancelForm.post(`${sessionUrl}/cancelar`, {
             preserveScroll: true,
             onNetworkError: networkFailure,
             onHttpException: () => {
@@ -114,7 +114,7 @@ export default function InclusionSessionsShowPage({
             title="Detalhes do Agendamento"
             subtitle="Informações detalhadas do atendimento especializado."
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Agendamentos", href: sessionsBase },
                 { label: `Agendamento #${session.id}` },
             ]}
@@ -221,7 +221,7 @@ export default function InclusionSessionsShowPage({
                     />
                     {can.edit ? (
                         <Button
-                            href={`${sessionUrl}/edit`}
+                            href={`${sessionUrl}/editar`}
                             tone="warning"
                             leftIconClass="fa fa-pencil"
                             label="Editar"

@@ -22,7 +22,7 @@ import BarrierPage from "./BarrierPage";
 import type { BarrierCategory, BarrierDeficiency, BarrierInstitution, BarrierOption, BarrierRecord } from "./Barrier.types";
 import "./Barriers.css";
 
-const base = "/inclusive-radar/barriers";
+const base = "/inclusao/barreiras";
 const defaultPoint: GeoPoint = { latitude: -14.235, longitude: -51.9253 };
 const localToday = (() => {
     const now = new Date();
@@ -144,7 +144,7 @@ export default function BarrierForm({
             },
         };
         if (barrier) form.put(`${base}/${barrier.id}`, options);
-        else form.post(`${base}/store`, options);
+        else form.post(`${base}/salvar`, options);
     }
 
     function editorLoadError(field: "description" | "location_specific_details", label: string): void {

@@ -42,10 +42,10 @@ export default function PeiDisciplineTable({
     canCreate: boolean;
     canPdf: boolean;
 }): React.JSX.Element {
-    const disciplinesUrl = `${aeeBase}/peis/${peiId}/disciplines`;
+    const disciplinesUrl = `${aeeBase}/peis/${peiId}/disciplinas`;
     const createButton = canCreate ? (
         <TableListCreateButton
-            href={`${disciplinesUrl}/create`}
+            href={`${disciplinesUrl}/criar`}
             ariaLabel="Cadastrar adaptação curricular"
         />
     ) : undefined;
@@ -79,7 +79,7 @@ export default function PeiDisciplineTable({
                                 <td>
                                     <TableActions>
                                         <Button
-                                            href={`${disciplinesUrl}/${item.id}/show`}
+                                            href={`${disciplinesUrl}/${item.id}/visualizar`}
                                             size="sm"
                                             tone="dark-blue"
                                             iconOnly
@@ -100,7 +100,7 @@ export default function PeiDisciplineTable({
                                         ) : null}
                                         {item.can_update ? (
                                             <Button
-                                                href={`${disciplinesUrl}/${item.id}/edit`}
+                                                href={`${disciplinesUrl}/${item.id}/editar`}
                                                 size="sm"
                                                 tone="warning"
                                                 iconOnly

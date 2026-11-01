@@ -46,7 +46,7 @@ export default function StudentDeficiencyForm(props: StudentDeficiencyFormProps)
     const busy = useRef(false);
     const errors = form.errors as Partial<Record<keyof StudentDeficiencyFormData, string>>;
     const cancelUrl = studentRecordUrl(student.id, "support-profiles");
-    const base = `${studentsBase}/${student.id}/deficiencies`;
+    const base = `${studentsBase}/${student.id}/deficiencias`;
     const describedBy = (field: keyof StudentDeficiencyFormData, id: string) =>
         errors[field] ? `${id}-error` : undefined;
 

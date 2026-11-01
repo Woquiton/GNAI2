@@ -127,7 +127,7 @@ export default function InclusionItemsShowPage({
             <nav aria-label="Localização">
                 <PageBreadcrumb
                     items={[
-                        { label: "Home", href: "/auth/dashboard" },
+                        { label: "Home", href: "/autenticacao/painel" },
                         {
                             label: "Itens",
                             href: base,
@@ -239,7 +239,7 @@ export default function InclusionItemsShowPage({
                 />
                 {can.clone ? (
                     <Button
-                        href={`${itemUrl}/clone`}
+                        href={`${itemUrl}/duplicar`}
                         tone="primary"
                         leftIconClass="fa fa-copy"
                         label="Clonar"
@@ -249,7 +249,7 @@ export default function InclusionItemsShowPage({
                 ) : null}
                 {can.edit ? (
                     <Button
-                        href={`${itemUrl}/edit`}
+                        href={`${itemUrl}/editar`}
                         tone="warning"
                         leftIconClass="fa fa-pencil"
                         label="Editar"

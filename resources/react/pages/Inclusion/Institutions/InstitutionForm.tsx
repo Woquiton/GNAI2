@@ -18,7 +18,7 @@ import InstitutionPage from "./InstitutionPage";
 import type { InstitutionRecord } from "./Institution.types";
 import "./Institutions.css";
 
-const base = "/inclusive-radar/institutions";
+const base = "/inclusao/instituicoes";
 const defaultPoint: GeoPoint = { latitude: -14.235, longitude: -51.9253 };
 
 function parseCoordinate(value: string, fallback: number): number {
@@ -162,7 +162,7 @@ export default function InstitutionForm({ institution, canSubmit }: { institutio
             },
         };
         if (institution) form.put(`${base}/${institution.id}`, options);
-        else form.post(`${base}/store`, options);
+        else form.post(`${base}/salvar`, options);
     }
 
     return (

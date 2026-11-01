@@ -25,7 +25,7 @@ export const MAIL_PROVIDERS: MailProvider[] = [
         host: "smtp-mail.outlook.com",
         port: 587,
         encryption: "tls",
-        passwordHint: "A Microsoft vem restringindo o envio SMTP com senha; se o teste falhar, confira se a conta permite SMTP autenticado.",
+        passwordHint: "Se o teste falhar, peça ao responsável pela conta que confira se ela permite o envio de e-mails pelo Gnai.",
     },
     {
         key: "office365",
@@ -33,7 +33,7 @@ export const MAIL_PROVIDERS: MailProvider[] = [
         host: "smtp.office365.com",
         port: 587,
         encryption: "tls",
-        passwordHint: "No Microsoft 365, o SMTP autenticado precisa estar habilitado para a conta pelo administrador.",
+        passwordHint: "No Microsoft 365, peça ao administrador da conta que autorize o envio de e-mails por aplicativos, como o Gnai.",
     },
     {
         key: "yahoo",

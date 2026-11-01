@@ -348,7 +348,7 @@ function Pei({ pei }: Pick<TeacherPortalStudentShowProps, "pei">): React.JSX.Ele
                                     {discipline.can_edit ? (
                                         <div className="teacherPortal__disciplineActions">
                                             <Button
-                                                href={`${teacherPortalBase}/adaptacoes/${discipline.id}/edit`}
+                                                href={`${teacherPortalBase}/adaptacoes/${discipline.id}/editar`}
                                                 tone="warning"
                                                 size="sm"
                                                 leftIconClass="fa fa-pencil"
@@ -402,7 +402,7 @@ export default function TeacherPortalStudentShowPage({
         >
             <InlineAlert variant="info" className="teacherPortal__notice">
                 Esta página mostra a situação atual do aluno. Se o Estudo de Caso, o PAEE ou o PEI
-                mudarem, é só <Link href="/auth/acesso">gerar um novo link de acesso</Link> a qualquer
+                mudarem, é só <Link href="/autenticacao/acesso">gerar um novo link de acesso</Link> a qualquer
                 momento para consultar as atualizações ou editar sua adaptação no PEI.
             </InlineAlert>
 

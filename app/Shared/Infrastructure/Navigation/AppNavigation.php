@@ -45,13 +45,6 @@ final class AppNavigation
             return null;
         }
 
-        // Endereços antigos ainda gravados em notificações → endereço atual.
-        foreach (['/inclusive-radar/institutional-events' => '/inclusive-radar/publications'] as $legacy => $current) {
-            if ($path === $legacy || str_starts_with($path, $legacy.'/')) {
-                $path = $current.substr($path, strlen($legacy));
-            }
-        }
-
         $best = null;
         $bestLength = 0;
 

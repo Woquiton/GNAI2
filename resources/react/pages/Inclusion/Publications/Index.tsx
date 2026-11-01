@@ -40,7 +40,7 @@ type Props = {
     can: { create: boolean; show: boolean; destroy: boolean };
 };
 
-const base = "/inclusive-radar/publications";
+const base = "/inclusao/publicacoes";
 const emptyFilters: Filters = { title: "", is_active: "", type: "" };
 const columns: TableListColumn[] = [
     { id: "title", label: "Título", width: "32%", minWidth: 140, fixed: "start" },
@@ -108,7 +108,7 @@ export default function InclusionPublicationsIndexPage({
             title="Publicações"
             subtitle="Notícias, eventos, comunicados e registros exibidos no site."
             actions={can.create ? (
-                <TableListCreateButton href={`${base}/create`} ariaLabel="Cadastrar publicação" />
+                <TableListCreateButton href={`${base}/criar`} ariaLabel="Cadastrar publicação" />
             ) : undefined}
         >
             <TableListCard

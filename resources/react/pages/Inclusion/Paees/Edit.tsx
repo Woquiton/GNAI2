@@ -16,7 +16,7 @@ export default function InclusionPaeesEditPage({
             title={`Editar PAEE (${paeeVersionLabel(paee.version)})`}
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
+                { label: "Home", href: "/autenticacao/painel" },
                 { label: "Alunos", href: studentsBase },
                 { label: student.name, href: studentUrl(student.id) },
                 { label: `PAEE ${paeeVersionLabel(paee.version)}`, href: paeeUrl(paee.id) },
