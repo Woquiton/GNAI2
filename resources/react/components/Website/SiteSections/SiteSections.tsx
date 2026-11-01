@@ -35,7 +35,7 @@ const renderers = {
     events: SitePublications,
     publications: SitePublications,
     contact: SiteContact,
-} satisfies Record<WebsiteSection["type"], (props: SectionProps) => React.JSX.Element>;
+} satisfies Record<WebsiteSection["type"], (props: SectionProps) => React.JSX.Element | null>;
 
 /**
  * Renderiza as seções habilitadas da página inicial, na ordem definida

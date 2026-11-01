@@ -10,7 +10,7 @@ export type BuilderSlide = HeroSlide & { image: File | null; remove_image: boole
 
 export type BuilderItem = WebsiteSectionItem & { editor_key?: string };
 
-export type BuilderSection = WebsiteSection & {
+export type BuilderSection = Omit<WebsiteSection, "items" | "slides"> & {
     items: BuilderItem[];
     slides: BuilderSlide[];
     image: File | null;
