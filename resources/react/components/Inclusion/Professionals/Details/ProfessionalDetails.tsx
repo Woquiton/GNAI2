@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import type { ProfessionalShowProps } from '../Professionals.types';
@@ -58,8 +59,12 @@ export default function ProfessionalDetails({
                     </DetailField>
                     <DetailField label="E-mail">{person.email || '---'}</DetailField>
                     <DetailField label="Telefone">{person.phone || '---'}</DetailField>
-                    <DetailField label="Endereço" wide preserveLineBreaks>
-                        {person.address || '---'}
+                    <DetailField label="Endereço" wide>
+                        {display.addressHtml ? (
+                            <RichTextContent html={display.addressHtml} />
+                        ) : (
+                            '---'
+                        )}
                     </DetailField>
                 </DetailGrid>
             </FormSection>

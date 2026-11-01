@@ -1,12 +1,14 @@
 import { useForm } from '@inertiajs/react';
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import { dateLabel } from '@/utils/formatters';
 import { AEE_EVALUATION_SAVE_FAILURE_TEXT, aeeTextValue } from '../AeeRecords.constants';
 import { aeeRecordUrls, studentAeeRecordUrls } from '../AeeRecords.routes';
@@ -29,6 +31,7 @@ export default function StudentAeeEvaluationForm({
         ...evaluationFromRecord(evaluation),
     });
     const submission = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
     const submitLabel = form.processing
         ? 'Salvando avaliação do aluno'
@@ -40,6 +43,7 @@ export default function StudentAeeEvaluationForm({
             url: urls.update(evaluation.id),
             method: 'put',
             failureText: AEE_EVALUATION_SAVE_FAILURE_TEXT,
+            blocked: editorFailed,
             transform: () => evaluationPayload(form.data),
         });
     }
@@ -66,20 +70,20 @@ export default function StudentAeeEvaluationForm({
                         </DetailField>
                     </DetailGrid>
                     <DetailGrid>
-                        <DetailField label="Objetivo do Atendimento" wide preserveLineBreaks>
-                            {aeeTextValue(session?.session_objective)}
+                        <DetailField label="Objetivo do Atendimento" wide>
+                            <RichTextContent html={aeeTextValue(session?.session_objective)} />
                         </DetailField>
-                        <DetailField label="Atividades Realizadas" wide preserveLineBreaks>
-                            {aeeTextValue(aeeRecord.activities_performed)}
+                        <DetailField label="Atividades Realizadas" wide>
+                            <RichTextContent html={aeeTextValue(aeeRecord.activities_performed)} />
                         </DetailField>
-                        <DetailField label="Estratégias Utilizadas" preserveLineBreaks>
-                            {aeeTextValue(aeeRecord.strategies_used)}
+                        <DetailField label="Estratégias Utilizadas">
+                            <RichTextContent html={aeeTextValue(aeeRecord.strategies_used)} />
                         </DetailField>
-                        <DetailField label="Recursos Utilizados" preserveLineBreaks>
-                            {aeeTextValue(aeeRecord.resources_used)}
+                        <DetailField label="Recursos Utilizados">
+                            <RichTextContent html={aeeTextValue(aeeRecord.resources_used)} />
                         </DetailField>
-                        <DetailField label="Observações Gerais" wide preserveLineBreaks>
-                            {aeeTextValue(aeeRecord.general_observations)}
+                        <DetailField label="Observações Gerais" wide>
+                            <RichTextContent html={aeeTextValue(aeeRecord.general_observations)} />
                         </DetailField>
                     </DetailGrid>
                 </FormSection>
@@ -102,6 +106,7 @@ export default function StudentAeeEvaluationForm({
                         onFieldChange={(field: AeeEvaluationTextField, value) =>
                             form.setData(field, value)
                         }
+                        onEditorFailure={reportEditorFailure}
                     />
                 </FormSection>
             </CardBox>
@@ -134,7 +139,7 @@ export default function StudentAeeEvaluationForm({
                     label="Salvar"
                     title="Salvar avaliação do aluno"
                     aria-label={submitLabel}
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

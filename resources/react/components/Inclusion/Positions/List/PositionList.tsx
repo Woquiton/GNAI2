@@ -6,7 +6,6 @@ import {
     TableListTable,
     type TableListColumn,
 } from '@/components/Tables/TableList/TableList';
-import Button from '@/components/UI/Button/Button';
 import { positionUrls } from '../Positions.routes';
 import type {
     PositionListPermissions,
@@ -20,9 +19,7 @@ interface PositionListProps {
     permissions: PositionListPermissions;
     loading: boolean;
     deleting: boolean;
-    togglingStatus: boolean;
     onDelete: (position: PositionSummary) => void;
-    onToggleActive: (position: PositionSummary) => void;
     onPageSelect: (page: number) => void;
 }
 
@@ -31,9 +28,7 @@ export default function PositionList({
     permissions,
     loading,
     deleting,
-    togglingStatus,
     onDelete,
-    onToggleActive,
     onPageSelect,
 }: PositionListProps): React.JSX.Element {
     const columns = useMemo<TableListColumn<PositionSummary>[]>(
@@ -60,33 +55,11 @@ export default function PositionList({
                                 onClick: () => onDelete(position),
                             }
                         }
-                    >
-                        {permissions.update ? (
-                            <Button
-                                size="sm"
-                                tone="inverse"
-                                iconOnly
-                                leftIconClass={
-                                    position.is_active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'
-                                }
-                                aria-label={`${position.is_active ? 'Desativar' : 'Ativar'} ${position.name}`}
-                                disabled={togglingStatus}
-                                onClick={() => onToggleActive(position)}
-                            />
-                        ) : null}
-                    </TableListRowActions>
+                    />
                 ),
             },
         ],
-        [
-            permissions.view,
-            permissions.update,
-            permissions.delete,
-            deleting,
-            togglingStatus,
-            onDelete,
-            onToggleActive,
-        ],
+        [permissions.view, permissions.delete, deleting, onDelete],
     );
 
     return (

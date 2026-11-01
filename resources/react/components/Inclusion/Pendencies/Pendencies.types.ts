@@ -62,6 +62,8 @@ export interface PendencyDetailsRecord {
     id: number;
     title: string;
     description: string | null;
+    /** Descrição já sanitizada pelo `RichTextSanitizer`. */
+    description_html: string;
     priority_label: string | null;
     priority_color: string | null;
     due_date: string;

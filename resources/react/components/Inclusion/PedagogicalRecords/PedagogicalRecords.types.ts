@@ -83,6 +83,10 @@ export interface PedagogicalRecordListProps {
     can: PedagogicalRecordListAbilities;
 }
 
+/**
+ * Visualização: os textos ricos chegam como HTML sanitizado pelo servidor
+ * (`PedagogicalRecordPagePresenter::show`), com `null` quando vazios.
+ */
 export type PedagogicalRecordShowRecord = Omit<PedagogicalRecordFormRecord, 'guardians'> & {
     has_guardians: boolean;
     guardian_names: string;

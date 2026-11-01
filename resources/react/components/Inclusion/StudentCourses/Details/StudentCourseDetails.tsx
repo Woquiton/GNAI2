@@ -1,17 +1,20 @@
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { formatTableListText } from '@/components/Tables/TableList/TableList';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import TagList from '@/components/UI/TagList/TagList';
 import { dateTimeLabel } from '@/utils/formatters';
 import { sortDisciplines } from '../StudentCourses.constants';
-import type { StudentCourseShowRecord } from '../StudentCourses.types';
+import type { StudentCourseShowDisplay, StudentCourseShowRecord } from '../StudentCourses.types';
 
 interface StudentCourseDetailsProps {
     studentCourse: StudentCourseShowRecord;
     studentName: string;
     courseName: string;
+    display: StudentCourseShowDisplay;
 }
 
 /** Dados da matrícula, acompanhamento acadêmico, matriz curricular e informações do sistema. */
@@ -19,10 +22,22 @@ export default function StudentCourseDetails({
     studentCourse,
     studentName,
     courseName,
+    display,
 }: StudentCourseDetailsProps): React.JSX.Element {
     const curriculum = sortDisciplines(studentCourse.course?.disciplines).map((discipline) => ({
         id: discipline.id,
-        name: <span title={discipline.description ?? undefined}>{discipline.name}</span>,
+        // A descrição da disciplina é texto rico: o `title` recebe somente o texto, sem marcação.
+        name: (
+            <span
+                title={
+                    discipline.description
+                        ? formatTableListText(discipline.description)
+                        : undefined
+                }
+            >
+                {discipline.name}
+            </span>
+        ),
     }));
 
     return (
@@ -49,8 +64,8 @@ export default function StudentCourseDetails({
                             {studentCourse.is_current ? 'Atual' : 'Histórico'}
                         </TableLabel>
                     </DetailField>
-                    <DetailField label="Descrição do Curso" wide preserveLineBreaks>
-                        {studentCourse.course?.description || 'Não informado'}
+                    <DetailField label="Descrição do Curso" wide>
+                        <RichTextContent html={display.courseDescriptionHtml} />
                     </DetailField>
                 </DetailGrid>
             </FormSection>
@@ -61,8 +76,8 @@ export default function StudentCourseDetails({
                 iconClass="fa fa-line-chart"
             >
                 <DetailGrid>
-                    <DetailField label="Situação da Frequência Escolar" wide preserveLineBreaks>
-                        {studentCourse.school_attendance_status || 'Não informada.'}
+                    <DetailField label="Situação da Frequência Escolar" wide>
+                        <RichTextContent html={display.schoolAttendanceStatusHtml} />
                     </DetailField>
                     <DetailField label="Disciplinas com Reprovação">
                         <TagList

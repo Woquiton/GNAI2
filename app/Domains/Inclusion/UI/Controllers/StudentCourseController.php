@@ -17,6 +17,7 @@ use App\Domains\Inclusion\Application\Queries\StudentCourses\StudentCourseFilter
 use App\Domains\Inclusion\Application\Queries\StudentCourses\StudentCourseFormQuery;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\StudentCourse;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -64,6 +65,14 @@ final class StudentCourseController
 
         return Inertia::render('Inclusion/StudentCourses/Show', [
             'studentCourse' => $studentCourse,
+            'display' => [
+                'courseDescriptionHtml' => RichTextSanitizer::sanitize(
+                    (string) ($studentCourse->course?->description ?: 'Não informado'),
+                ),
+                'schoolAttendanceStatusHtml' => RichTextSanitizer::sanitize(
+                    (string) ($studentCourse->school_attendance_status ?: 'Não informada.'),
+                ),
+            ],
             'can' => [
                 'update' => $user?->can('student-course.update') ?? false,
                 'delete' => $user?->can('student-course.delete') ?? false,

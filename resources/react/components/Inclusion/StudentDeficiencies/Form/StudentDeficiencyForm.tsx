@@ -1,7 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import {
+    RichTextField,
     SelectInputField,
-    TextAreaField,
     TextInputField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
@@ -30,7 +30,8 @@ export default function StudentDeficiencyForm({
     deficiencies,
     studentDeficiency,
 }: StudentDeficiencyFormProps): React.JSX.Element {
-    const { form, errors, formRef, save } = useStudentDeficiencyForm(student.id, studentDeficiency);
+    const { form, errors, formRef, save, editorFailed, reportEditorFailure } =
+        useStudentDeficiencyForm(student.id, studentDeficiency);
     const editing = mode === 'edit';
     // O perfil vinculado não muda na edição: o campo aparece somente para leitura e não é enviado.
     const profileField = deficiencies ? (
@@ -97,20 +98,15 @@ export default function StudentDeficiencyForm({
                                 onChange={(value) => form.setData('severity', value)}
                             />
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="student-deficiency-notes"
-                                    name="notes"
                                     label="Observações"
-                                    rows={4}
-                                    maxLength={1000}
-                                    placeholder={
-                                        editing
-                                            ? undefined
-                                            : 'Detalhes adicionais sobre o perfil de atendimento do aluno...'
-                                    }
-                                    value={form.data.notes}
+                                    defaultValue={form.data.notes}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.notes}
-                                    onChange={(value) => form.setData('notes', value)}
+                                    onLoadError={() => reportEditorFailure('notes', 'observações')}
+                                    onChange={(html) => form.setData('notes', html)}
                                 />
                             </FormGridWide>
                         </FormGrid>
@@ -136,7 +132,7 @@ export default function StudentDeficiencyForm({
                             ? 'Salvando perfil de atendimento'
                             : 'Salvar perfil de atendimento'
                     }
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

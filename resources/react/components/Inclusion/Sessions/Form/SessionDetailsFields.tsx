@@ -1,10 +1,11 @@
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SessionFormSectionProps } from './SessionForm.types';
 
 interface SessionDetailsFieldsProps extends SessionFormSectionProps {
     editing: boolean;
+    onEditorFailure: () => void;
 }
 
 /** Local e objetivo do agendamento. */
@@ -13,6 +14,7 @@ export default function SessionDetailsFields({
     errors,
     disabled,
     editing,
+    onEditorFailure,
 }: SessionDetailsFieldsProps): React.JSX.Element {
     return (
         <FormSection
@@ -35,16 +37,16 @@ export default function SessionDetailsFields({
                     onChange={(value) => form.setData('location', value)}
                 />
                 <FormGridWide>
-                    <TextAreaField
+                    <RichTextField
                         id="session-objective"
-                        name="session_objective"
                         label="Objetivo do Agendamento"
                         required
-                        rows={3}
+                        defaultValue={form.data.session_objective}
+                        height={120}
                         disabled={disabled}
-                        value={form.data.session_objective}
                         error={errors.session_objective}
-                        onChange={(value) => form.setData('session_objective', value)}
+                        onLoadError={onEditorFailure}
+                        onChange={(html) => form.setData('session_objective', html)}
                     />
                 </FormGridWide>
             </FormGrid>

@@ -27,6 +27,8 @@ export type StudentDeficiencyListRecord = StudentDeficiencyRecord & {
 
 export type StudentDeficiencyShowRecord = StudentDeficiencyListRecord & {
     created_at: string | null;
+    /** Observações já sanitizadas pelo `RichTextSanitizer`. */
+    notes_html: string;
 };
 
 export interface StudentDeficiencyPaginator extends TableListPage {

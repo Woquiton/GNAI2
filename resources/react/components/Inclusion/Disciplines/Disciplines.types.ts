@@ -45,5 +45,7 @@ export interface DisciplineDetailsPermissions {
 
 export interface DisciplineShowProps {
     discipline: DisciplineDetailsRecord;
+    /** Descrição já sanitizada pelo `RichTextSanitizer` (`DisciplineController@show`). */
+    display: { descriptionHtml: string };
     can: DisciplineDetailsPermissions;
 }

@@ -2,8 +2,8 @@ import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import {
     DateInputField,
+    RichTextField,
     SelectInputField,
-    TextAreaField,
     TextInputField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
@@ -39,7 +39,10 @@ export default function PendencyForm({
     professionals,
     priorities,
 }: PendencyFormProps): React.JSX.Element {
-    const { form, errors, formRef, save } = usePendencyForm({ pendency, dueDate });
+    const { form, errors, formRef, save, editorFailed, reportEditorFailure } = usePendencyForm({
+        pendency,
+        dueDate,
+    });
     const submitLabel = form.processing ? 'Salvando pendência' : 'Salvar pendência';
 
     return (
@@ -74,14 +77,17 @@ export default function PendencyForm({
                                 />
                             </FormGridWide>
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="pendency-description"
-                                    name="description"
                                     label="Descrição"
-                                    rows={4}
-                                    value={form.data.description}
+                                    defaultValue={form.data.description}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.description}
-                                    onChange={(value) => form.setData('description', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('description', 'descrição')
+                                    }
+                                    onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
                             <SelectInputField
@@ -136,7 +142,7 @@ export default function PendencyForm({
                     label="Salvar"
                     title="Salvar pendência"
                     aria-label={submitLabel}
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

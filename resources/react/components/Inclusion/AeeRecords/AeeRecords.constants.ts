@@ -58,7 +58,10 @@ export function aeeStudentName(student: AeeStudent | null | undefined, studentId
     return student?.person?.name ?? `Aluno #${studentId}`;
 }
 
-/** Textos de textarea vazios aparecem com o mesmo substituto do legado. */
+/**
+ * Textos ricos vazios aparecem com o mesmo substituto do legado. Nas visualizações, o valor já
+ * chega como HTML sanitizado pelo `AeeRecordPagePresenter`.
+ */
 export function aeeTextValue(value: string | null | undefined, fallback = 'N/A'): string {
     return value?.trim() ? value : fallback;
 }

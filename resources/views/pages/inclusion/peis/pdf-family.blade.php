@@ -24,11 +24,11 @@
     @foreach($peiDisciplines as $item)
         <div class="box">
             <strong>{{ $item->discipline->name }}</strong> — Professor(a): {{ $item->teacher->person->name ?? '—' }}<br>
-            <strong>Objetivos:</strong> {{ $item->specific_objectives }}<br>
+            <strong>Objetivos:</strong> {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($item->specific_objectives ?? '')) !!}<br>
             @if($item->curricular_reference)
                 <strong>Referência curricular:</strong> {{ $item->curricular_reference }}<br>
             @endif
-            <strong>Metodologias:</strong> {{ $item->methodologies }}
+            <strong>Metodologias:</strong> {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($item->methodologies ?? '')) !!}
         </div>
     @endforeach
 

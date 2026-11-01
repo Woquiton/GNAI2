@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { cpfMask, phoneMask } from '@/utils/masks';
 import { professionalUrls } from '../Professionals.routes';
@@ -47,6 +48,7 @@ export function useProfessionalForm({ mode, options, professional }: UseProfessi
     const form = useForm<ProfessionalFormData>(initialData(options, professional));
     const errors = form.errors as Record<string, string | undefined>;
     const [photoValidating, setPhotoValidating] = useState(false);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
 
     /**
      * Payload de `Create/UpdateProfessionalData`: status e remoção da foto só na edição, senha
@@ -79,7 +81,7 @@ export function useProfessionalForm({ mode, options, professional }: UseProfessi
             failureText: editing
                 ? 'Não foi possível salvar o profissional. Tente novamente.'
                 : 'Não foi possível cadastrar o profissional. Tente novamente.',
-            blocked: photoValidating,
+            blocked: photoValidating || editorFailed,
             options: {
                 // A senha nunca permanece no formulário depois de uma tentativa de envio.
                 onFinish: () =>
@@ -88,5 +90,15 @@ export function useProfessionalForm({ mode, options, professional }: UseProfessi
         });
     }
 
-    return { form, errors, formRef, canManageAdmin, photoValidating, setPhotoValidating, save };
+    return {
+        form,
+        errors,
+        formRef,
+        canManageAdmin,
+        photoValidating,
+        setPhotoValidating,
+        editorFailed,
+        reportEditorFailure,
+        save,
+    };
 }

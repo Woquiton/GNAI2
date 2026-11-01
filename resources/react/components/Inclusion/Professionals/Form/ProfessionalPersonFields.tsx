@@ -1,8 +1,8 @@
 import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import {
     DateInputField,
+    RichTextField,
     SelectInputField,
-    TextAreaField,
     TextInputField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
@@ -17,6 +17,7 @@ interface ProfessionalPersonFieldsProps extends ProfessionalFormSectionProps {
     person?: ProfessionalPerson;
     genders: Record<string, string>;
     onPhotoValidatingChange: (validating: boolean) => void;
+    onEditorFailure: () => void;
 }
 
 /** Foto, nome, e-mail, CPF, nascimento, gênero, telefone e endereço. */
@@ -28,6 +29,7 @@ export default function ProfessionalPersonFields({
     person,
     genders,
     onPhotoValidatingChange,
+    onEditorFailure,
 }: ProfessionalPersonFieldsProps): React.JSX.Element {
     return (
         <FormSection
@@ -138,15 +140,15 @@ export default function ProfessionalPersonFields({
             </div>
             <FormGrid>
                 <FormGridWide>
-                    <TextAreaField
+                    <RichTextField
                         id="professional-address"
-                        name="address"
                         label="Endereço"
-                        rows={2}
-                        maxLength={500}
-                        value={form.data.address}
+                        defaultValue={form.data.address}
+                        height={100}
+                        disabled={disabled}
                         error={errors.address}
-                        onChange={(value) => form.setData('address', value)}
+                        onLoadError={onEditorFailure}
+                        onChange={(html) => form.setData('address', html)}
                     />
                 </FormGridWide>
             </FormGrid>

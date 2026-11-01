@@ -1,4 +1,4 @@
-import { TextAreaField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import type { AeeGuardianOption } from '../AeeRecords.types';
@@ -12,8 +12,8 @@ import type {
 interface TextFieldDefinition {
     field: AeeEvaluationTextField;
     label: string;
-    placeholder: string;
-    rows: number;
+    /** Rótulo em minúsculas usado na mensagem de falha do editor. */
+    failureLabel: string;
     required?: boolean;
     /** Ocupa meia linha; os demais textos ocupam a largura toda. */
     half?: boolean;
@@ -23,41 +23,35 @@ const presenceDefinitions: TextFieldDefinition[] = [
     {
         field: 'student_participation',
         label: 'Participação',
-        placeholder: 'Descreva o nível de participação do aluno...',
-        rows: 3,
+        failureLabel: 'participação',
         required: true,
     },
     {
         field: 'adaptations_made',
         label: 'Adaptações para este Aluno',
-        placeholder: 'Adaptações realizadas durante o atendimento AEE...',
-        rows: 3,
+        failureLabel: 'adaptações para este aluno',
     },
     {
         field: 'development_evaluation',
         label: 'Avaliação do Desenvolvimento',
-        placeholder: 'Avaliação do desempenho e evolução do aluno...',
-        rows: 3,
+        failureLabel: 'avaliação do desenvolvimento',
         required: true,
     },
     {
         field: 'progress_indicators',
         label: 'Indicadores de Progresso',
-        placeholder: 'Evidências observáveis de progresso...',
-        rows: 3,
+        failureLabel: 'indicadores de progresso',
     },
     {
         field: 'recommendations',
         label: 'Recomendações',
-        placeholder: 'Sugestões para continuidade do trabalho...',
-        rows: 3,
+        failureLabel: 'recomendações',
         half: true,
     },
     {
         field: 'next_session_adjustments',
         label: 'Ajustes para Próximo atendimento AEE',
-        placeholder: 'O que ajustar ou manter para o próximo atendimento AEE...',
-        rows: 3,
+        failureLabel: 'ajustes para o próximo atendimento AEE',
         half: true,
     },
 ];
@@ -66,8 +60,7 @@ const absenceDefinitions: TextFieldDefinition[] = [
     {
         field: 'absence_reason',
         label: 'Motivo da Ausência',
-        placeholder: 'Informe o motivo da ausência do aluno...',
-        rows: 2,
+        failureLabel: 'motivo da ausência',
         required: true,
     },
 ];
@@ -83,11 +76,14 @@ interface AeeEvaluationFieldsProps {
     onPresenceChange: (present: boolean) => void;
     onGuardiansChange: (changes: AeeEvaluationGuardianChanges) => void;
     onFieldChange: (field: AeeEvaluationTextField, value: string) => void;
+    onEditorFailure: (field: AeeEvaluationTextField, label: string) => void;
 }
 
 /**
  * Avaliação individual de um aluno: presença, participação de responsáveis e os textos do
- * desempenho (presente) ou o motivo da ausência. Textos simples, sem editor rico, como no legado.
+ * desempenho (presente) ou o motivo da ausência, em editores ricos como no legado. Os editores
+ * leem o valor só ao montar: os da presença e o da ausência remontam ao alternar a presença e
+ * partem do valor atual; o consumidor deve dar a este componente uma `key` por aluno.
  */
 export default function AeeEvaluationFields({
     idPrefix,
@@ -99,23 +95,23 @@ export default function AeeEvaluationFields({
     onPresenceChange,
     onGuardiansChange,
     onFieldChange,
+    onEditorFailure,
 }: AeeEvaluationFieldsProps): React.JSX.Element {
     const nameFor = (field: string): string => (namePrefix ? `${namePrefix}[${field}]` : field);
     const definitions = values.is_present ? presenceDefinitions : absenceDefinitions;
 
-    function renderTextArea(definition: TextFieldDefinition): React.JSX.Element {
+    function renderEditor(definition: TextFieldDefinition): React.JSX.Element {
         const field = (
-            <TextAreaField
+            <RichTextField
                 id={`${idPrefix}-${definition.field.replace(/_/g, '-')}`}
-                name={nameFor(definition.field)}
                 label={definition.label}
-                rows={definition.rows}
                 required={definition.required}
-                placeholder={definition.placeholder}
-                value={values[definition.field]}
-                error={errorFor(definition.field)}
+                defaultValue={values[definition.field]}
+                height={120}
                 disabled={disabled}
-                onChange={(value) => onFieldChange(definition.field, value)}
+                error={errorFor(definition.field)}
+                onLoadError={() => onEditorFailure(definition.field, definition.failureLabel)}
+                onChange={(html) => onFieldChange(definition.field, html)}
             />
         );
 
@@ -151,7 +147,7 @@ export default function AeeEvaluationFields({
                     onChange={onGuardiansChange}
                 />
             ) : null}
-            {definitions.map(renderTextArea)}
+            {definitions.map(renderEditor)}
         </FormGrid>
     );
 }

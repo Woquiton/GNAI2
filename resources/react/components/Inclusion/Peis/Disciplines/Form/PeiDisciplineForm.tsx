@@ -1,8 +1,13 @@
 import { useForm } from '@inertiajs/react';
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import {
+    RichTextField,
+    TextAreaField,
+    TextInputField,
+} from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import Button from '@/components/UI/Button/Button';
@@ -28,6 +33,7 @@ export default function PeiDisciplineForm({
 }: PeiDisciplineEditProps): React.JSX.Element {
     const form = useForm<PeiDisciplineFormData>(peiDisciplineFormData(peiDiscipline));
     const submission = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Partial<Record<keyof PeiDisciplineFormData, string>>;
     const status = form.processing ? 'Salvando alterações…' : undefined;
 
@@ -37,6 +43,7 @@ export default function PeiDisciplineForm({
             url: peiDisciplineUrls.update(pei.id, peiDiscipline.id),
             method: 'put',
             failureText: PEI_DISCIPLINE_UPDATE_FAILURE_TEXT,
+            blocked: editorFailed,
         });
     }
 
@@ -52,11 +59,29 @@ export default function PeiDisciplineForm({
             error: errors[field.name],
             onChange: (next: string) => form.setData(field.name, next),
         };
-        const control = field.singleLine ? (
-            <TextInputField key={field.name} {...common} maxLength={255} />
-        ) : (
-            <TextAreaField key={field.name} {...common} rows={4} />
-        );
+        let control: React.JSX.Element;
+
+        if (field.rich) {
+            control = (
+                <RichTextField
+                    key={field.name}
+                    id={id}
+                    label={field.label}
+                    hint={field.hint}
+                    required={field.required}
+                    defaultValue={form.data[field.name]}
+                    height={120}
+                    disabled={form.processing}
+                    error={errors[field.name]}
+                    onLoadError={() => reportEditorFailure(field.name, field.label.toLowerCase())}
+                    onChange={(html) => form.setData(field.name, html)}
+                />
+            );
+        } else if (field.singleLine) {
+            control = <TextInputField key={field.name} {...common} maxLength={255} />;
+        } else {
+            control = <TextAreaField key={field.name} {...common} rows={4} />;
+        }
 
         return field.wide === false ? (
             control
@@ -129,7 +154,7 @@ export default function PeiDisciplineForm({
                     label="Salvar"
                     title="Atualizar adaptação"
                     aria-label="Atualizar adaptação"
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

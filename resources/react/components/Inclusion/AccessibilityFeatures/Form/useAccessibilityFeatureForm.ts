@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { accessibilityFeatureUrls } from '../AccessibilityFeatures.routes';
 import type { AccessibilityFeatureRecord } from '../AccessibilityFeatures.types';
@@ -26,6 +27,7 @@ export function useAccessibilityFeatureForm({
         is_active: feature?.is_active ?? true,
     });
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
 
     function save(): void {
@@ -37,9 +39,9 @@ export function useAccessibilityFeatureForm({
             failureText: feature
                 ? 'Não foi possível salvar o recurso. Tente novamente.'
                 : 'Não foi possível cadastrar o recurso. Tente novamente.',
-            blocked: !canSubmit,
+            blocked: !canSubmit || editorFailed,
         });
     }
 
-    return { form, errors, formRef, save };
+    return { form, errors, formRef, save, editorFailed, reportEditorFailure };
 }

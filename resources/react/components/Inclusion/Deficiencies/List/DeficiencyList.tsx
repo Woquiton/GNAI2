@@ -6,7 +6,6 @@ import {
     TableListTable,
     type TableListColumn,
 } from '@/components/Tables/TableList/TableList';
-import Button from '@/components/UI/Button/Button';
 import { deficiencyUrls } from '../Deficiencies.routes';
 import type {
     DeficiencyListPermissions,
@@ -21,20 +20,16 @@ interface DeficiencyListProps {
     permissions: DeficiencyListPermissions;
     loading: boolean;
     deleting: boolean;
-    togglingStatus: boolean;
-    onToggleActive: (deficiency: DeficiencyRecord) => void;
     onDelete: (deficiency: DeficiencyRecord) => void;
     onPageSelect: (page: number) => void;
 }
 
-/** Tabela de perfis com visualizar, ativar/desativar (sem confirmação) e excluir. */
+/** Tabela de perfis com visualizar e excluir; ativar/desativar fica na visualização. */
 export default function DeficiencyList({
     deficiencies,
     permissions,
     loading,
     deleting,
-    togglingStatus,
-    onToggleActive,
     onDelete,
     onPageSelect,
 }: DeficiencyListProps): React.JSX.Element {
@@ -62,33 +57,11 @@ export default function DeficiencyList({
                                 onClick: () => onDelete(deficiency),
                             }
                         }
-                    >
-                        {permissions.update ? (
-                            <Button
-                                size="sm"
-                                tone="inverse"
-                                iconOnly
-                                leftIconClass={
-                                    deficiency.is_active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'
-                                }
-                                aria-label={`${deficiency.is_active ? 'Desativar' : 'Ativar'} ${deficiency.name}`}
-                                disabled={togglingStatus}
-                                onClick={() => onToggleActive(deficiency)}
-                            />
-                        ) : null}
-                    </TableListRowActions>
+                    />
                 ),
             },
         ],
-        [
-            permissions.view,
-            permissions.update,
-            permissions.delete,
-            deleting,
-            togglingStatus,
-            onToggleActive,
-            onDelete,
-        ],
+        [permissions.view, permissions.delete, deleting, onDelete],
     );
 
     return (

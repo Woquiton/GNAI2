@@ -1,6 +1,6 @@
 import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import FormField from '@/components/Forms/FormField/FormField';
-import { SelectInputField, TextAreaField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, SelectInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide, FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -25,6 +25,8 @@ export default function WaitlistCreateForm(props: WaitlistCreateProps): React.JS
         changeStudent,
         changeProfessional,
         save,
+        editorFailed,
+        reportEditorFailure,
     } = useWaitlistCreateForm(props);
     const resourcePlaceholder = form.data.item_type
         ? 'Selecione o item'
@@ -108,15 +110,15 @@ export default function WaitlistCreateForm(props: WaitlistCreateProps): React.JS
                         <p className="waitlistForm__hint">
                             Selecione um aluno ou um profissional como beneficiário, nunca ambos.
                         </p>
-                        <TextAreaField
+                        <RichTextField
                             id="waitlist-observation-field"
-                            name="observation"
                             label="Observações"
-                            rows={3}
-                            placeholder="Relate o motivo da urgência ou detalhes da solicitação..."
-                            value={form.data.observation}
+                            defaultValue={form.data.observation}
+                            height={120}
+                            disabled={form.processing}
                             error={errors.observation}
-                            onChange={(value) => form.setData('observation', value)}
+                            onLoadError={() => reportEditorFailure('observation', 'observações')}
+                            onChange={(html) => form.setData('observation', html)}
                         />
                     </FormStack>
                 </FormSection>
@@ -126,6 +128,7 @@ export default function WaitlistCreateForm(props: WaitlistCreateProps): React.JS
                 cancelHref={waitlistUrls.index}
                 canSubmit={props.can.submit}
                 processing={form.processing}
+                blocked={editorFailed}
             />
         </FormLayout>
     );

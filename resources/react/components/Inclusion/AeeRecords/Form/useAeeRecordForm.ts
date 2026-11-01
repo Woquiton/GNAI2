@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { AEE_RECORD_SAVE_FAILURE_TEXT, aeeStudentName } from '../AeeRecords.constants';
 import { aeeRecordUrls } from '../AeeRecords.routes';
@@ -56,6 +57,7 @@ export function useAeeRecordForm({ session, aeeRecord }: UseAeeRecordFormOptions
     const students = useMemo(() => evaluationTabs(session, aeeRecord), [session, aeeRecord]);
     const form = useForm<AeeRecordFormData>(initialData(session, aeeRecord));
     const submission = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
     const [tabFocus, setTabFocus] = useState<{ id?: string; version: number }>({
         id: students[0]?.key,
@@ -111,6 +113,7 @@ export function useAeeRecordForm({ session, aeeRecord }: UseAeeRecordFormOptions
             url: aeeRecord ? aeeRecordUrls.update(aeeRecord.id) : aeeRecordUrls.store,
             method: aeeRecord ? 'put' : 'post',
             failureText: AEE_RECORD_SAVE_FAILURE_TEXT,
+            blocked: editorFailed,
             transform: () => {
                 const data = form.data;
                 return {
@@ -134,6 +137,8 @@ export function useAeeRecordForm({ session, aeeRecord }: UseAeeRecordFormOptions
         evaluationErrorFor,
         evaluationHasErrors,
         updateEvaluation,
+        editorFailed,
+        reportEditorFailure,
         save,
     };
 }

@@ -17,6 +17,7 @@ use App\Domains\Inclusion\Application\Queries\StudentDeficiencies\StudentDeficie
 use App\Domains\Inclusion\Domain\Enums\DeficiencySeverity;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\StudentDeficiency;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -80,6 +81,7 @@ final class StudentDeficiencyController
                 ...$deficiency->toArray(),
                 'severity_label' => $severity?->label(),
                 'severity_color' => $severity?->color(),
+                'notes_html' => RichTextSanitizer::sanitize((string) ($deficiency->notes ?: 'Nenhuma observação registrada.')),
             ],
             'student' => $student->loadMissing('person'),
             'can' => [

@@ -5,27 +5,35 @@ import type { PositionDetailsPermissions } from '../Positions.types';
 
 interface PositionDetailsActionsProps {
     positionId: number;
+    active: boolean;
     permissions: PositionDetailsPermissions;
-    deleting: boolean;
+    /** Exclusão ou troca de status em andamento. */
+    busy: boolean;
+    /** Texto de processamento exibido no rodapé. */
+    status?: string;
+    onToggleActive: () => void;
     onDelete: () => void;
 }
 
-/** Rodapé fixo da visualização: voltar, editar e excluir. */
+/** Rodapé fixo da visualização: voltar, editar, ativar/desativar (sem confirmação) e excluir. */
 export default function PositionDetailsActions({
     positionId,
+    active,
     permissions,
-    deleting,
+    busy,
+    status,
+    onToggleActive,
     onDelete,
 }: PositionDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions status={status}>
             <Button
                 href={positionUrls.index}
                 tone="cancel"
                 label="Voltar"
                 title="Voltar para cargos"
                 aria-label="Voltar para cargos"
-                disabled={deleting}
+                disabled={busy}
             />
             {permissions.update ? (
                 <Button
@@ -35,7 +43,18 @@ export default function PositionDetailsActions({
                     label="Editar"
                     title="Editar cargo"
                     aria-label="Editar cargo"
-                    disabled={deleting}
+                    disabled={busy}
+                />
+            ) : null}
+            {permissions.update ? (
+                <Button
+                    tone="inverse"
+                    leftIconClass={active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'}
+                    label={active ? 'Desativar' : 'Ativar'}
+                    title={`${active ? 'Desativar' : 'Ativar'} cargo`}
+                    aria-label={`${active ? 'Desativar' : 'Ativar'} cargo`}
+                    disabled={busy}
+                    onClick={onToggleActive}
                 />
             ) : null}
             {permissions.delete ? (
@@ -45,7 +64,7 @@ export default function PositionDetailsActions({
                     label="Excluir"
                     title="Excluir cargo"
                     aria-label="Excluir cargo"
-                    disabled={deleting}
+                    disabled={busy}
                     onClick={onDelete}
                 />
             ) : null}

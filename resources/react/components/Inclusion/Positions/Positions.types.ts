@@ -70,5 +70,7 @@ export interface PositionDetailsPermissions {
 
 export interface PositionShowProps {
     position: PositionDetailsRecord;
+    /** Descrição sanitizada pelo `RichTextSanitizer`, com o texto padrão quando vazia. */
+    descriptionHtml: string;
     can: PositionDetailsPermissions;
 }

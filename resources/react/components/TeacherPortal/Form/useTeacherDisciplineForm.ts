@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { TEACHER_DISCIPLINE_FAILURE_TEXT } from '../TeacherPortal.constants';
 import { teacherPortalUrls } from '../TeacherPortal.routes';
@@ -23,6 +24,7 @@ function initialData(peiDiscipline: TeacherPortalDisciplineRecord): TeacherDisci
 export function useTeacherDisciplineForm(peiDiscipline: TeacherPortalDisciplineRecord) {
     const form = useForm<TeacherDisciplineFormData>(initialData(peiDiscipline));
     const submission = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Partial<Record<keyof TeacherDisciplineFormData, string>>;
 
     function save(): void {
@@ -30,8 +32,16 @@ export function useTeacherDisciplineForm(peiDiscipline: TeacherPortalDisciplineR
             url: teacherPortalUrls.updateDiscipline(peiDiscipline.id),
             method: 'put',
             failureText: TEACHER_DISCIPLINE_FAILURE_TEXT,
+            blocked: editorFailed,
         });
     }
 
-    return { form, errors, formRef: submission.formRef, save };
+    return {
+        form,
+        errors,
+        formRef: submission.formRef,
+        save,
+        editorFailed,
+        reportEditorFailure,
+    };
 }

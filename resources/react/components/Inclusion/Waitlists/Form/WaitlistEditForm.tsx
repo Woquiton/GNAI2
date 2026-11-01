@@ -1,7 +1,8 @@
 import { useForm } from '@inertiajs/react';
-import { TextAreaField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField } from '@/components/Forms/FormFields/FormFields';
 import { FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
@@ -32,6 +33,7 @@ export default function WaitlistEditForm({
 }: WaitlistEditFormProps): React.JSX.Element {
     const form = useForm<WaitlistEditFormData>({ observation: waitlist.observation ?? '' });
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const student = waitlist.student ? waitlistStudentLabel(waitlist.student) : NOT_INFORMED;
 
     function save(): void {
@@ -39,7 +41,7 @@ export default function WaitlistEditForm({
             url: waitlistUrls.update(waitlist.id),
             method: 'put',
             failureText: 'Não foi possível concluir a operação. Tente novamente.',
-            blocked: !canSubmit,
+            blocked: !canSubmit || editorFailed,
         });
     }
 
@@ -72,15 +74,15 @@ export default function WaitlistEditForm({
                                 {statusLabel ?? waitlist.status_label}
                             </DetailField>
                         </DetailGrid>
-                        <TextAreaField
+                        <RichTextField
                             id="waitlist-observation-field"
-                            name="observation"
                             label="Observações"
-                            rows={3}
-                            placeholder="Adicione informações relevantes sobre esta solicitação..."
-                            value={form.data.observation}
+                            defaultValue={form.data.observation}
+                            height={120}
+                            disabled={form.processing}
                             error={form.errors.observation}
-                            onChange={(value) => form.setData('observation', value)}
+                            onLoadError={() => reportEditorFailure('observation', 'observações')}
+                            onChange={(html) => form.setData('observation', html)}
                         />
                     </FormStack>
                 </FormSection>
@@ -90,6 +92,7 @@ export default function WaitlistEditForm({
                 cancelHref={waitlistUrls.show(waitlist.id)}
                 canSubmit={canSubmit}
                 processing={form.processing}
+                blocked={editorFailed}
             />
         </FormLayout>
     );

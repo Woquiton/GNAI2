@@ -6,6 +6,8 @@ interface WaitlistFormActionsProps {
     cancelHref: string;
     canSubmit: boolean;
     processing: boolean;
+    /** Impede o envio sem estar processando (por exemplo, editor indisponível). */
+    blocked?: boolean;
 }
 
 /** Rodapé fixo do cadastro e da edição de solicitações: cancelar e salvar. */
@@ -14,6 +16,7 @@ export default function WaitlistFormActions({
     cancelHref,
     canSubmit,
     processing,
+    blocked = false,
 }: WaitlistFormActionsProps): React.JSX.Element {
     const cancelLabel = editing
         ? 'Cancelar e voltar à solicitação'
@@ -37,7 +40,7 @@ export default function WaitlistFormActions({
                     label={editing ? 'Salvar' : 'Cadastrar'}
                     title={submitTitle}
                     aria-label={submitTitle}
-                    disabled={processing}
+                    disabled={processing || blocked}
                 />
             ) : null}
         </FormActions>

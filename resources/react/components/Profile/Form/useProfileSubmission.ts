@@ -1,6 +1,7 @@
 import type { FormDataKeys, FormDataType } from '@inertiajs/core';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 
 interface ProfilePhotoData {
@@ -17,7 +18,8 @@ interface UseProfileSubmissionOptions<T> {
 
 /**
  * Estado e envio dos formulários de perfil: multipart com `_method=put`, foto controlada pelo
- * formulário (`photo`/`remove_photo`) e bloqueio do envio enquanto a foto é lida.
+ * formulário (`photo`/`remove_photo`) e bloqueio do envio enquanto a foto é lida ou quando um
+ * editor rico não carrega.
  */
 export function useProfileSubmission<T extends FormDataType<T> & ProfilePhotoData>({
     initialData,
@@ -27,6 +29,7 @@ export function useProfileSubmission<T extends FormDataType<T> & ProfilePhotoDat
     const form = useForm<T>(initialData);
     const { formRef, submit } = useFormSubmission(form);
     const [photoValidating, setPhotoValidating] = useState(false);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Partial<Record<keyof T, string>>;
     // O tipo genérico do Inertia não resolve as chaves da foto a partir de `ProfilePhotoData`.
     const photoKey = 'photo' as FormDataKeys<T>;
@@ -38,7 +41,7 @@ export function useProfileSubmission<T extends FormDataType<T> & ProfilePhotoDat
             method: 'put',
             files: true,
             failureText: 'Não foi possível salvar o perfil. Atualize a página e tente novamente.',
-            blocked: photoValidating,
+            blocked: photoValidating || editorFailed,
             options: {
                 onSuccess: (page) => {
                     const flash = (page.props as { flash?: { error?: string | null } }).flash;
@@ -68,5 +71,14 @@ export function useProfileSubmission<T extends FormDataType<T> & ProfilePhotoDat
         onError: (message: string) => form.setError(photoKey, message),
     };
 
-    return { form, errors, formRef, photoValidating, photo, save };
+    return {
+        form,
+        errors,
+        formRef,
+        photoValidating,
+        editorFailed,
+        reportEditorFailure,
+        photo,
+        save,
+    };
 }

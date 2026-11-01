@@ -48,6 +48,8 @@ export default function GuardianForm({
         formRef,
         photoValidating,
         setPhotoValidating,
+        editorFailed,
+        reportEditorFailure,
         selectPhoto,
         removePhoto,
         save,
@@ -75,7 +77,11 @@ export default function GuardianForm({
                         onPhotoRemove={removePhoto}
                         onPhotoValidatingChange={setPhotoValidating}
                     />
-                    <GuardianContactFields {...sectionProps} relationships={relationships} />
+                    <GuardianContactFields
+                        {...sectionProps}
+                        relationships={relationships}
+                        onEditorFailure={() => reportEditorFailure('address', 'endereço')}
+                    />
                 </fieldset>
             </CardBox>
             <FormActions
@@ -99,7 +105,7 @@ export default function GuardianForm({
                     label="Salvar"
                     title="Salvar responsável"
                     aria-label={form.processing ? 'Salvando responsável' : 'Salvar responsável'}
-                    disabled={form.processing || photoValidating}
+                    disabled={form.processing || photoValidating || editorFailed}
                 />
             </FormActions>
         </FormLayout>

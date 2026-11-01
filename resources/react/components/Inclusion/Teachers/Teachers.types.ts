@@ -77,7 +77,7 @@ export interface TeacherShowProps {
     teacher: TeacherRecord & {
         course_disciplines: TeacherCourseDiscipline[];
     };
-    display: { createdAt: string | null };
+    display: { createdAt: string | null; addressHtml: string };
     impersonationUserId: number | null;
     can: TeacherDetailsPermissions;
 }

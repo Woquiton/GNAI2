@@ -32,15 +32,6 @@ export default function InclusionDeficienciesIndexPage({
     const removal = useConfirmedAction<DeficiencyRecord>({
         failureText: 'Não foi possível excluir o perfil de atendimento. Tente novamente.',
     });
-    const statusChange = useConfirmedAction<DeficiencyRecord>({
-        failureText: 'Não foi possível alterar o status do perfil de atendimento. Tente novamente.',
-    });
-
-    function toggleActive(deficiency: DeficiencyRecord): void {
-        filters.cancelScheduled();
-        statusChange.submit('patch', deficiencyUrls.toggleActive(deficiency.id));
-    }
-
     function confirmRemoval(): void {
         if (removal.target) {
             filters.cancelScheduled();
@@ -86,8 +77,6 @@ export default function InclusionDeficienciesIndexPage({
                 permissions={can}
                 loading={filters.loading}
                 deleting={removal.processing}
-                togglingStatus={statusChange.processing}
-                onToggleActive={toggleActive}
                 onDelete={removal.open}
                 onPageSelect={filters.selectPage}
             />

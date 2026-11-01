@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import TagList from '@/components/UI/TagList/TagList';
 import type { PositionDetailsRecord } from '../Positions.types';
@@ -9,8 +10,10 @@ import type { PositionDetailsRecord } from '../Positions.types';
 /** Informações, atribuições e permissões vinculadas de um cargo. */
 export default function PositionDetails({
     position,
+    descriptionHtml,
 }: {
     position: PositionDetailsRecord;
+    descriptionHtml: string;
 }): React.JSX.Element {
     return (
         <CardBox>
@@ -42,9 +45,8 @@ export default function PositionDetails({
                 iconClass="fa fa-file-text-o"
             >
                 <DetailGrid>
-                    <DetailField label="Descrição da Função" wide preserveLineBreaks>
-                        {position.description ||
-                            'Nenhuma descrição detalhada foi fornecida para este cargo.'}
+                    <DetailField label="Descrição da Função" wide>
+                        <RichTextContent html={descriptionHtml} />
                     </DetailField>
                 </DetailGrid>
             </FormSection>

@@ -60,7 +60,11 @@ export default function SessionForm(props: SessionFormProps): React.JSX.Element 
                                 onSelect={state.changeStartTime}
                             />
                         </FormSection>
-                        <SessionDetailsFields {...sectionProps} editing={editing} />
+                        <SessionDetailsFields
+                            {...sectionProps}
+                            editing={editing}
+                            onEditorFailure={state.reportObjectiveEditorFailure}
+                        />
                     </fieldset>
                 </CardBox>
                 <FormActions status={form.processing ? 'Salvando agendamento...' : undefined}>
@@ -79,7 +83,7 @@ export default function SessionForm(props: SessionFormProps): React.JSX.Element 
                         label="Salvar"
                         title="Salvar agendamento"
                         aria-label={form.processing ? 'Salvando agendamento' : 'Salvar agendamento'}
-                        disabled={form.processing}
+                        disabled={form.processing || state.editorFailed}
                     />
                 </FormActions>
             </FormLayout>

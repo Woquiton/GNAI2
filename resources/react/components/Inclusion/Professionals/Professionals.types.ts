@@ -90,6 +90,7 @@ export interface ProfessionalShowProps {
         statusLabel: string | null;
         statusColor: string | null;
         serviceTime: string | null;
+        addressHtml: string;
     };
     impersonationUserId: number | null;
     can: ProfessionalDetailsPermissions;

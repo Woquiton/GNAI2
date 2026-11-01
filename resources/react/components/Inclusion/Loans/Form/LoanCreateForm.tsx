@@ -3,8 +3,8 @@ import FormField from '@/components/Forms/FormField/FormField';
 import ClockPicker from '@/components/Forms/ClockPicker/ClockPicker';
 import {
     DateInputField,
+    RichTextField,
     SelectInputField,
-    TextAreaField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
@@ -30,6 +30,8 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
         changeItem,
         changeLoanDay,
         changeLoanTime,
+        editorFailed,
+        reportEditorFailure,
         save,
     } = useLoanCreateForm(props);
     const itemPlaceholder = form.data.item_type ? 'Selecione' : 'Selecione o tipo primeiro';
@@ -129,15 +131,17 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
                             onChange={(date) => form.setData('due_date', date)}
                         />
                         <FormGridWide>
-                            <TextAreaField
+                            <RichTextField
                                 id="loan-observation"
-                                name="observation"
                                 label="Observações / Estado do Item"
-                                rows={4}
-                                placeholder="Anote detalhes sobre o estado de conservação no momento da entrega..."
-                                value={form.data.observation}
+                                defaultValue={form.data.observation}
+                                height={120}
+                                disabled={form.processing}
                                 error={errors.observation}
-                                onChange={(value) => form.setData('observation', value)}
+                                onLoadError={() =>
+                                    reportEditorFailure('observation', 'observações')
+                                }
+                                onChange={(html) => form.setData('observation', html)}
                             />
                         </FormGridWide>
                     </FormGrid>
@@ -148,6 +152,7 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
                 submitLabel="Cadastrar"
                 canSubmit={props.can.submit}
                 processing={form.processing}
+                blocked={editorFailed}
             />
         </FormLayout>
     );

@@ -1,7 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import {
+    RichTextField,
     SelectInputField,
-    TextAreaField,
     TextInputField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
@@ -30,7 +30,8 @@ function submissionStatus(processing: boolean, editing: boolean): string | undef
 
 /** Cadastro e edição de cursos: dados básicos, status (na edição) e matriz curricular. */
 export default function CourseForm({ disciplines, course }: CourseFormProps): React.JSX.Element {
-    const { form, errors, disciplinesError, formRef, save } = useCourseForm(disciplines, course);
+    const { form, errors, disciplinesError, formRef, save, editorFailed, reportEditorFailure } =
+        useCourseForm(disciplines, course);
     const editing = Boolean(course);
 
     return (
@@ -65,14 +66,17 @@ export default function CourseForm({ disciplines, course }: CourseFormProps): Re
                                 />
                             </FormGridWide>
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="course-description"
-                                    name="description"
                                     label="Descrição"
-                                    rows={4}
-                                    value={form.data.description}
+                                    defaultValue={form.data.description}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.description}
-                                    onChange={(value) => form.setData('description', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('description', 'descrição')
+                                    }
+                                    onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
                             {editing ? (
@@ -108,7 +112,12 @@ export default function CourseForm({ disciplines, course }: CourseFormProps): Re
                     aria-label="Cancelar e voltar"
                     disabled={form.processing}
                 />
-                <Button type="submit" tone="save" label="Salvar" disabled={form.processing} />
+                <Button
+                    type="submit"
+                    tone="save"
+                    label="Salvar"
+                    disabled={form.processing || editorFailed}
+                />
             </FormActions>
         </FormLayout>
     );

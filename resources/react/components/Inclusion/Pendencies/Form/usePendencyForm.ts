@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { pendencyUrls } from '../Pendencies.routes';
 import type { PendencyRecord } from '../Pendencies.types';
@@ -20,15 +21,17 @@ export function usePendencyForm({ pendency, dueDate = '' }: UsePendencyFormOptio
         due_date: dueDate,
     });
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
 
     function save(): void {
         submit({
             url: pendency ? pendencyUrls.update(pendency.id) : pendencyUrls.store,
             method: pendency ? 'put' : 'post',
+            blocked: editorFailed,
             failureText:
                 'Não foi possível salvar a pendência. Atualize a página e tente novamente.',
         });
     }
 
-    return { form, errors: form.errors, formRef, save };
+    return { form, errors: form.errors, formRef, save, editorFailed, reportEditorFailure };
 }

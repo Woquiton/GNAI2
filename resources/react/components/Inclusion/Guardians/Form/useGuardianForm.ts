@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { guardianUrls } from '../Guardians.routes';
 import type { GuardianRecord, GuardianStudent } from '../Guardians.types';
@@ -43,6 +44,7 @@ export function useGuardianForm({
 }: UseGuardianFormOptions) {
     const form = useForm<GuardianFormData>(initialData(mode, guardian, defaultGender));
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const [photoValidating, setPhotoValidating] = useState(false);
     const errors = form.errors as Partial<Record<keyof GuardianFormData, string>>;
     const urls = guardianUrls(student.id);
@@ -74,7 +76,7 @@ export function useGuardianForm({
             failureText: editing
                 ? 'Não foi possível atualizar o responsável. Atualize a página e tente novamente.'
                 : 'Não foi possível cadastrar o responsável. Atualize a página e tente novamente.',
-            blocked: photoValidating,
+            blocked: photoValidating || editorFailed,
         });
     }
 
@@ -84,6 +86,8 @@ export function useGuardianForm({
         formRef,
         photoValidating,
         setPhotoValidating,
+        editorFailed,
+        reportEditorFailure,
         selectPhoto,
         removePhoto,
         save,

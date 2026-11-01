@@ -8,7 +8,16 @@ import { useProfileForm } from './useProfileForm';
 
 /** Perfil de profissionais e professores: dados pessoais, foto e senha. */
 export default function ProfileForm(props: ProfileEditProps): React.JSX.Element {
-    const { form, errors, formRef, photoValidating, photo, save } = useProfileForm(props);
+    const {
+        form,
+        errors,
+        formRef,
+        photoValidating,
+        editorFailed,
+        reportEditorFailure,
+        photo,
+        save,
+    } = useProfileForm(props);
 
     return (
         <FormLayout
@@ -30,6 +39,7 @@ export default function ProfileForm(props: ProfileEditProps): React.JSX.Element 
                         photo={photo}
                         person={props.person}
                         professional={props.professional}
+                        onEditorFailure={() => reportEditorFailure('address', 'endereço')}
                     />
                     <ProfilePasswordFields form={form} errors={errors} />
                 </fieldset>
@@ -37,6 +47,7 @@ export default function ProfileForm(props: ProfileEditProps): React.JSX.Element 
             <ProfileFormActions
                 processing={form.processing}
                 photoValidating={photoValidating}
+                editorFailed={editorFailed}
                 uploadPercentage={form.progress?.percentage}
             />
         </FormLayout>

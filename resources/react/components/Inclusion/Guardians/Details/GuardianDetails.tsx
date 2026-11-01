@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import type { GuardianShowProps } from '../Guardians.types';
@@ -75,8 +76,12 @@ export default function GuardianDetails({
                         {person.phone || NOT_INFORMED}
                     </DetailField>
                     <DetailField label="E-mail">{person.email || NOT_INFORMED}</DetailField>
-                    <DetailField label="Endereço Residencial" wide preserveLineBreaks>
-                        {person.address || 'Endereço não cadastrado.'}
+                    <DetailField label="Endereço Residencial" wide>
+                        {display.addressHtml ? (
+                            <RichTextContent html={display.addressHtml} />
+                        ) : (
+                            'Endereço não cadastrado.'
+                        )}
                     </DetailField>
                 </DetailGrid>
             </FormSection>

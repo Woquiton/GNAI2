@@ -1,5 +1,9 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import {
+    RichTextField,
+    TextAreaField,
+    TextInputField,
+} from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -15,12 +19,32 @@ import { useTeacherDisciplineForm } from './useTeacherDisciplineForm';
 export default function TeacherDisciplineForm({
     peiDiscipline,
 }: TeacherPortalDisciplineEditProps): React.JSX.Element {
-    const { form, errors, formRef, save } = useTeacherDisciplineForm(peiDiscipline);
+    const { form, errors, formRef, save, editorFailed, reportEditorFailure } =
+        useTeacherDisciplineForm(peiDiscipline);
     const disciplineName = peiDiscipline.discipline_name ?? 'Disciplina';
 
     function renderField(field: TeacherDisciplineField): React.JSX.Element {
+        const id = `teacher-portal-${field.name.replace(/_/g, '-')}`;
+
+        if (field.rich) {
+            return (
+                <RichTextField
+                    id={id}
+                    label={field.label}
+                    hint={field.hint}
+                    required={field.required}
+                    defaultValue={form.data[field.name]}
+                    height={120}
+                    disabled={form.processing}
+                    error={errors[field.name]}
+                    onLoadError={() => reportEditorFailure(field.name, field.label.toLowerCase())}
+                    onChange={(html) => form.setData(field.name, html)}
+                />
+            );
+        }
+
         const common = {
-            id: `teacher-portal-${field.name.replace(/_/g, '-')}`,
+            id,
             name: field.name,
             label: field.label,
             hint: field.hint,
@@ -78,7 +102,7 @@ export default function TeacherDisciplineForm({
                     label="Salvar"
                     title="Salvar adaptação"
                     aria-label="Salvar adaptação"
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

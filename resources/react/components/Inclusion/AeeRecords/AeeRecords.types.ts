@@ -49,11 +49,16 @@ export interface AeeStudentEvaluationRecord {
     student?: AeeStudent | null;
 }
 
+/**
+ * Registro do atendimento. Nas visualizações (e no contexto da edição pelo prontuário), os textos
+ * ricos chegam como HTML sanitizado pelo `AeeRecordPagePresenter`, com `null` quando vazios; nos
+ * formulários, chegam crus para o editor.
+ */
 export interface AeeRecordRecord {
     id: number;
     attendance_session_id: number;
     duration: string;
-    activities_performed: string;
+    activities_performed: string | null;
     strategies_used: string | null;
     resources_used: string | null;
     general_observations: string | null;

@@ -82,6 +82,7 @@ export default function BarrierForm({ options, barrier }: BarrierFormProps): Rea
                             {...sectionProps}
                             editing={editing}
                             barrierStatuses={options.barrierStatuses}
+                            onEditorFailure={reportEditorFailure}
                         />
                     </MapSplitAside>
                 </MapSplit>

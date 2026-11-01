@@ -26,7 +26,10 @@ export type BarrierFormData = {
 };
 
 /** Editores ricos cuja falha de carregamento bloqueia o envio. */
-export type BarrierEditorField = 'description' | 'location_specific_details';
+export type BarrierEditorField =
+    | 'description'
+    | 'location_specific_details'
+    | 'inspection.description';
 
 /** Estado compartilhado pelas seções do formulário. */
 export interface BarrierFormSectionProps {

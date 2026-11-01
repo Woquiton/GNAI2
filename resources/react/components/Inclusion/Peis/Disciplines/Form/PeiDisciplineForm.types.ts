@@ -25,6 +25,8 @@ export interface PeiDisciplineTextFieldConfig {
     hint?: string;
     /** Campo curto em uma linha (`TextInput`) no lugar da área de texto. */
     singleLine?: boolean;
+    /** Texto formatado no editor rico (Summernote), como no Blade. */
+    rich?: boolean;
     /** `false` coloca o campo em meia linha, ao lado do seguinte, como no Blade. */
     wide?: boolean;
 }

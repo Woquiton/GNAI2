@@ -1,5 +1,6 @@
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { aeeTextValue } from '../AeeRecords.constants';
 import type { AeeStudentEvaluationRecord } from '../AeeRecords.types';
@@ -10,7 +11,12 @@ interface AeeEvaluationDetailsProps {
     studentName: string;
 }
 
-/** Desempenho do aluno presente ou motivo da ausência, como textos simples. */
+/** Texto rico já sanitizado pelo servidor, com o substituto do legado quando vazio. */
+function richText(value: string | null, fallback?: string): React.JSX.Element {
+    return <RichTextContent html={aeeTextValue(value, fallback)} />;
+}
+
+/** Desempenho do aluno presente ou motivo da ausência, em HTML sanitizado pelo servidor. */
 export default function AeeEvaluationDetails({
     evaluation,
     studentName,
@@ -27,34 +33,28 @@ export default function AeeEvaluationDetails({
                 </DetailField>
                 {present ? (
                     <>
-                        <DetailField label="Participação" wide preserveLineBreaks>
-                            {aeeTextValue(evaluation.student_participation)}
+                        <DetailField label="Participação" wide>
+                            {richText(evaluation.student_participation)}
                         </DetailField>
-                        <DetailField label="Adaptações Realizadas" wide preserveLineBreaks>
-                            {aeeTextValue(
-                                evaluation.adaptations_made,
-                                'Nenhuma adaptação informada.',
-                            )}
+                        <DetailField label="Adaptações Realizadas" wide>
+                            {richText(evaluation.adaptations_made, 'Nenhuma adaptação informada.')}
                         </DetailField>
-                        <DetailField label="Avaliação do Desenvolvimento" wide preserveLineBreaks>
-                            {aeeTextValue(evaluation.development_evaluation)}
+                        <DetailField label="Avaliação do Desenvolvimento" wide>
+                            {richText(evaluation.development_evaluation)}
                         </DetailField>
-                        <DetailField label="Indicadores de Progresso" wide preserveLineBreaks>
-                            {aeeTextValue(evaluation.progress_indicators)}
+                        <DetailField label="Indicadores de Progresso" wide>
+                            {richText(evaluation.progress_indicators)}
                         </DetailField>
-                        <DetailField label="Recomendações" preserveLineBreaks>
-                            {aeeTextValue(evaluation.recommendations, 'Nenhuma recomendação.')}
+                        <DetailField label="Recomendações">
+                            {richText(evaluation.recommendations, 'Nenhuma recomendação.')}
                         </DetailField>
-                        <DetailField
-                            label="Ajustes para Próximo atendimento AEE"
-                            preserveLineBreaks
-                        >
-                            {aeeTextValue(evaluation.next_session_adjustments)}
+                        <DetailField label="Ajustes para Próximo atendimento AEE">
+                            {richText(evaluation.next_session_adjustments)}
                         </DetailField>
                     </>
                 ) : (
-                    <DetailField label="Motivo" wide preserveLineBreaks>
-                        {aeeTextValue(evaluation.absence_reason, 'Não justificado.')}
+                    <DetailField label="Motivo" wide>
+                        {richText(evaluation.absence_reason, 'Não justificado.')}
                     </DetailField>
                 )}
             </DetailGrid>

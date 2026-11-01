@@ -13,6 +13,7 @@ use App\Domains\Inclusion\Application\Data\Disciplines\UpdateDisciplineData;
 use App\Domains\Inclusion\Application\Queries\Disciplines\ListDisciplinesQuery;
 use App\Domains\Inclusion\Application\Queries\Disciplines\ShowDisciplineQuery;
 use App\Domains\Inclusion\Domain\Models\Discipline;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -50,6 +51,9 @@ final class DisciplineController
             'Inclusion/Disciplines/Show',
             [
                 'discipline' => $discipline,
+                'display' => [
+                    'descriptionHtml' => RichTextSanitizer::sanitize($discipline->description ?: 'Nenhuma descrição informada.'),
+                ],
                 'can' => [
                     'update' => $request->user()?->can('discipline.update') ?? false,
                     'delete' => $request->user()?->can('discipline.delete') ?? false,

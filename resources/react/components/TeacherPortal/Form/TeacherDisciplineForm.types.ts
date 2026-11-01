@@ -20,4 +20,6 @@ export interface TeacherDisciplineField {
     rows?: number;
     /** Texto curto em `input`; os demais campos são texto livre em `textarea`. */
     input?: boolean;
+    /** Texto formatado no editor rico (Summernote), como no Blade. */
+    rich?: boolean;
 }

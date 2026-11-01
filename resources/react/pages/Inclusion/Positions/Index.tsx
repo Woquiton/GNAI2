@@ -29,18 +29,10 @@ export default function InclusionPositionsIndexPage({
     const removal = useConfirmedAction<PositionSummary>({
         failureText: 'Não foi possível excluir o cargo. Tente novamente.',
     });
-    const statusChange = useConfirmedAction<PositionSummary>({
-        failureText: 'Não foi possível alterar o status do cargo. Tente novamente.',
-    });
 
     function openRemoval(position: PositionSummary): void {
         filters.cancelScheduled();
         removal.open(position);
-    }
-
-    function toggleActive(position: PositionSummary): void {
-        filters.cancelScheduled();
-        statusChange.submit('patch', positionUrls.toggleActive(position.id));
     }
 
     function confirmRemoval(): void {
@@ -81,9 +73,7 @@ export default function InclusionPositionsIndexPage({
                 permissions={can}
                 loading={filters.loading}
                 deleting={removal.processing}
-                togglingStatus={statusChange.processing}
                 onDelete={openRemoval}
-                onToggleActive={toggleActive}
                 onPageSelect={filters.selectPage}
             />
         </TableListLayout>

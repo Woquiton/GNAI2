@@ -1,7 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import {
+    RichTextField,
     SelectInputField,
-    TextAreaField,
     TextInputField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
@@ -28,7 +28,8 @@ export default function DisciplineForm({
 }: {
     discipline?: DisciplineRecord;
 }): React.JSX.Element {
-    const { form, errors, formRef, save } = useDisciplineForm(discipline);
+    const { form, errors, formRef, save, editorFailed, reportEditorFailure } =
+        useDisciplineForm(discipline);
     const editing = Boolean(discipline);
 
     return (
@@ -63,14 +64,17 @@ export default function DisciplineForm({
                                 />
                             </FormGridWide>
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="discipline-description"
-                                    name="description"
                                     label="Descrição"
-                                    rows={3}
-                                    value={form.data.description}
+                                    defaultValue={form.data.description}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.description}
-                                    onChange={(value) => form.setData('description', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('description', 'descrição')
+                                    }
+                                    onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
                             <SelectInputField
@@ -96,7 +100,12 @@ export default function DisciplineForm({
                     aria-label="Cancelar e voltar"
                     disabled={form.processing}
                 />
-                <Button type="submit" tone="save" label="Salvar" disabled={form.processing} />
+                <Button
+                    type="submit"
+                    tone="save"
+                    label="Salvar"
+                    disabled={form.processing || editorFailed}
+                />
             </FormActions>
         </FormLayout>
     );

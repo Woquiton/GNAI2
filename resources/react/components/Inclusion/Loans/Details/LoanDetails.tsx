@@ -1,6 +1,7 @@
 import { studentUrls } from '@/components/Inclusion/Students/Students.routes';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { loanUrls } from '../Loans.routes';
 import type { LoanRecord } from '../Loans.types';
@@ -58,8 +59,12 @@ export default function LoanDetails({
                 {loan.return_date_label ?? 'Não devolvido'}
             </DetailField>
             {showObservation ? (
-                <DetailField label="Observações / Estado do Item" wide preserveLineBreaks>
-                    {loan.observation || 'Nenhuma observação registrada.'}
+                <DetailField label="Observações / Estado do Item" wide>
+                    {loan.observation_html ? (
+                        <RichTextContent html={loan.observation_html} />
+                    ) : (
+                        'Nenhuma observação registrada.'
+                    )}
                 </DetailField>
             ) : null}
         </DetailGrid>

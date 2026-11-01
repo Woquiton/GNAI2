@@ -38,8 +38,18 @@ export default function StudentCourseForm({
     mustBeCurrent = false,
     studentCourse,
 }: StudentCourseFormProps): React.JSX.Element {
-    const { form, errors, formRef, isCurrent, showFollowUp, selectedCourse, disciplines, save } =
-        useStudentCourseForm({ mode, studentId, studentCourse, courses, mustBeCurrent });
+    const {
+        form,
+        errors,
+        formRef,
+        isCurrent,
+        showFollowUp,
+        selectedCourse,
+        disciplines,
+        save,
+        editorFailed,
+        reportEditorFailure,
+    } = useStudentCourseForm({ mode, studentId, studentCourse, courses, mustBeCurrent });
     const editing = mode === 'edit';
     const sectionProps = { form, errors, disabled: form.processing };
     const courseOptions = courses.map((course) => ({
@@ -84,6 +94,12 @@ export default function StudentCourseForm({
                         <StudentCourseFollowUpFields
                             {...sectionProps}
                             disciplines={selectedCourse ? disciplines : null}
+                            onEditorFailure={() =>
+                                reportEditorFailure(
+                                    'school_attendance_status',
+                                    'situação de frequência',
+                                )
+                            }
                         />
                     ) : null}
                 </fieldset>
@@ -104,7 +120,7 @@ export default function StudentCourseForm({
                     label="Salvar"
                     title={saveLabel}
                     aria-label={saveLabel}
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

@@ -46,10 +46,16 @@ function submitLabel(processing: boolean, editing: boolean): string {
 
 /** Cadastro e edição de professores, com foto e senha inicial opcional. */
 export default function TeacherForm({ mode, teacher }: TeacherFormProps): React.JSX.Element {
-    const { form, errors, formRef, photoValidating, setPhotoValidating, save } = useTeacherForm(
-        mode,
-        teacher,
-    );
+    const {
+        form,
+        errors,
+        formRef,
+        photoValidating,
+        setPhotoValidating,
+        editorFailed,
+        reportEditorFailure,
+        save,
+    } = useTeacherForm(mode, teacher);
     const editing = mode === 'edit';
 
     return (
@@ -72,6 +78,7 @@ export default function TeacherForm({ mode, teacher }: TeacherFormProps): React.
                         mode={mode}
                         person={teacher?.person}
                         onPhotoValidatingChange={setPhotoValidating}
+                        onEditorFailure={() => reportEditorFailure('address', 'endereço')}
                     />
                     <FormSection
                         id="teacher-teaching"
@@ -132,7 +139,7 @@ export default function TeacherForm({ mode, teacher }: TeacherFormProps): React.
                     label="Salvar"
                     title={editing ? 'Atualizar professor' : 'Salvar professor'}
                     aria-label={submitLabel(form.processing, editing)}
-                    disabled={form.processing || photoValidating}
+                    disabled={form.processing || photoValidating || editorFailed}
                 />
             </FormActions>
         </FormLayout>

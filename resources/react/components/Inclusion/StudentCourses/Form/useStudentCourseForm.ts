@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { sortDisciplines } from '../StudentCourses.constants';
 import { studentCourseUrls } from '../StudentCourses.routes';
@@ -72,6 +73,7 @@ export function useStudentCourseForm({
     }
 
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
 
     function save(): void {
         submit({
@@ -80,6 +82,7 @@ export function useStudentCourseForm({
                     ? studentCourseUrls.update(studentCourse.id)
                     : studentCourseUrls.store(studentId),
             method: editing ? 'put' : 'post',
+            blocked: editorFailed,
             transform: (data) => payload(data as StudentCourseFormData),
             failureText: editing
                 ? 'Não foi possível salvar a matrícula. Tente novamente.'
@@ -87,5 +90,16 @@ export function useStudentCourseForm({
         });
     }
 
-    return { form, errors, formRef, isCurrent, showFollowUp, selectedCourse, disciplines, save };
+    return {
+        form,
+        errors,
+        formRef,
+        isCurrent,
+        showFollowUp,
+        selectedCourse,
+        disciplines,
+        save,
+        editorFailed,
+        reportEditorFailure,
+    };
 }

@@ -11,6 +11,7 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 
 export default function InclusionDisciplinesShowPage({
     discipline,
+    display,
     can,
 }: DisciplineShowProps): React.JSX.Element {
     const removal = useConfirmedAction<typeof discipline>({
@@ -25,7 +26,7 @@ export default function InclusionDisciplinesShowPage({
             breadcrumbItems={disciplineBreadcrumb({ discipline })}
             busy={removal.processing}
         >
-            <DisciplineDetails discipline={discipline} />
+            <DisciplineDetails discipline={discipline} descriptionHtml={display.descriptionHtml} />
             <DisciplineDetailsActions
                 disciplineId={discipline.id}
                 permissions={can}

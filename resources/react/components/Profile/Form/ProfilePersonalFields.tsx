@@ -1,4 +1,9 @@
-import { DateInputField, SelectInputField, TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import {
+    DateInputField,
+    RichTextField,
+    SelectInputField,
+    TextInputField,
+} from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import { cpfMask, phoneMask } from '@/utils/masks';
@@ -8,7 +13,9 @@ import ProfileIdentity from './ProfileIdentity';
 import type { ProfileFormState } from './useProfileForm';
 
 type ProfilePersonalFieldsProps = Pick<ProfileFormState, 'form' | 'errors' | 'photo'> &
-    Pick<ProfileEditProps, 'person' | 'professional'>;
+    Pick<ProfileEditProps, 'person' | 'professional'> & {
+        onEditorFailure: () => void;
+    };
 
 /** Foto e dados pessoais de quem tem vínculo com a equipe. */
 export default function ProfilePersonalFields({
@@ -17,6 +24,7 @@ export default function ProfilePersonalFields({
     photo,
     person,
     professional,
+    onEditorFailure,
 }: ProfilePersonalFieldsProps): React.JSX.Element {
     const position = professional ? (professional.position?.name ?? '---') : 'Professor(a)';
     const bond = professional ? 'Profissional Apoio' : 'Corpo Docente';
@@ -124,16 +132,15 @@ export default function ProfilePersonalFields({
                             onChange={(value) => form.setData('registration', value)}
                         />
                         <FormGridWide>
-                            <TextAreaField
+                            <RichTextField
                                 id="profile-address"
-                                name="address"
                                 label="Endereço"
-                                rows={2}
-                                maxLength={500}
-                                autoComplete="street-address"
-                                value={form.data.address}
+                                defaultValue={form.data.address}
+                                height={100}
+                                disabled={form.processing}
                                 error={errors.address}
-                                onChange={(value) => form.setData('address', value)}
+                                onLoadError={onEditorFailure}
+                                onChange={(html) => form.setData('address', html)}
                             />
                         </FormGridWide>
                     </FormGrid>

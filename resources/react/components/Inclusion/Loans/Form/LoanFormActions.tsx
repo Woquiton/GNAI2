@@ -6,6 +6,8 @@ interface LoanFormActionsProps {
     submitLabel: string;
     canSubmit: boolean;
     processing: boolean;
+    /** Impede o envio, por exemplo quando o editor das observações não carrega. */
+    blocked?: boolean;
 }
 
 /** Rodapé fixo do cadastro e da edição: cancelar e salvar, com o status do envio. */
@@ -14,12 +16,18 @@ export default function LoanFormActions({
     submitLabel,
     canSubmit,
     processing,
+    blocked = false,
 }: LoanFormActionsProps): React.JSX.Element {
     return (
         <FormActions status={processing ? 'Salvando empréstimo...' : undefined}>
             <Button href={cancelHref} tone="cancel" label="Cancelar" disabled={processing} />
             {canSubmit ? (
-                <Button type="submit" tone="save" label={submitLabel} disabled={processing} />
+                <Button
+                    type="submit"
+                    tone="save"
+                    label={submitLabel}
+                    disabled={processing || blocked}
+                />
             ) : null}
         </FormActions>
     );

@@ -20,6 +20,7 @@ use App\Domains\Inclusion\Application\Queries\Teachers\TeacherDisciplinesFormQue
 use App\Domains\Inclusion\Application\Queries\Teachers\TeacherFormQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\TeacherPermissionsFormQuery;
 use App\Domains\Inclusion\Domain\Models\Teacher;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -68,6 +69,7 @@ final class TeacherController
                 'teacher' => $teacher,
                 'display' => [
                     'createdAt' => $teacher->created_at?->format('d/m/Y'),
+                    'addressHtml' => RichTextSanitizer::sanitize($teacher->person?->address ?? '', decodeEntities: false),
                 ],
                 'impersonationUserId' => $isSuperAdmin
                     ? $teacher->user()->where('is_super_admin', false)->value('id')

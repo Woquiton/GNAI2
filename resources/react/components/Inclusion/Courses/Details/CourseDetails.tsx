@@ -7,6 +7,7 @@ import {
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { CourseDisciplineOption, CourseRecord } from '../Courses.types';
 
@@ -32,7 +33,16 @@ function disciplineCount(total: number): string {
 }
 
 /** Informações gerais e matriz curricular de um curso. */
-export default function CourseDetails({ course }: { course: CourseRecord }): React.JSX.Element {
+interface CourseDetailsProps {
+    course: CourseRecord;
+    /** Descrição sanitizada no servidor. */
+    descriptionHtml: string;
+}
+
+export default function CourseDetails({
+    course,
+    descriptionHtml,
+}: CourseDetailsProps): React.JSX.Element {
     const disciplines = course.disciplines ?? [];
 
     return (
@@ -52,8 +62,8 @@ export default function CourseDetails({ course }: { course: CourseRecord }): Rea
                             {course.is_active ? 'Ativo' : 'Inativo'}
                         </TableLabel>
                     </DetailField>
-                    <DetailField label="Descrição / Observações" wide preserveLineBreaks>
-                        {course.description || 'Nenhuma descrição informada.'}
+                    <DetailField label="Descrição / Observações" wide>
+                        <RichTextContent html={descriptionHtml} />
                     </DetailField>
                 </DetailGrid>
             </FormSection>

@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { deficiencyUrls } from '../Deficiencies.routes';
 import type { DeficiencyRecord } from '../Deficiencies.types';
@@ -18,6 +19,7 @@ export function useDeficiencyForm(deficiency?: DeficiencyRecord) {
         description: deficiency?.description ?? '',
     });
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
 
     function save(): void {
@@ -27,8 +29,9 @@ export function useDeficiencyForm(deficiency?: DeficiencyRecord) {
             failureText: deficiency
                 ? 'Não foi possível salvar o perfil de atendimento. Tente novamente.'
                 : 'Não foi possível cadastrar o perfil de atendimento. Tente novamente.',
+            blocked: editorFailed,
         });
     }
 
-    return { form, errors, formRef, save };
+    return { form, errors, formRef, editorFailed, reportEditorFailure, save };
 }

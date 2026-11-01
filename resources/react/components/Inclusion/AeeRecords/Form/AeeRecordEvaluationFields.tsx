@@ -24,6 +24,8 @@ interface AeeRecordEvaluationFieldsProps {
     errorFor: (index: number, field: string) => string | undefined;
     hasErrors: (index: number) => boolean;
     onChange: (index: number, changes: Partial<AeeEvaluationFormData>) => void;
+    /** Recebe a chave aninhada do campo (`evaluations.0.recommendations`) e seu rótulo. */
+    onEditorFailure: (field: string, label: string) => void;
 }
 
 /** Uma aba por aluno, sinalizando ausência e avaliações com campos a corrigir. */
@@ -38,6 +40,7 @@ export default function AeeRecordEvaluationFields({
     errorFor,
     hasErrors,
     onChange,
+    onEditorFailure,
 }: AeeRecordEvaluationFieldsProps): React.JSX.Element {
     const title = editing ? 'Editar Avaliação Individual' : 'Avaliação Individual por Aluno';
 
@@ -61,7 +64,9 @@ export default function AeeRecordEvaluationFields({
             content: evaluation ? (
                 <>
                     <AeeEvaluationTitle studentName={student.name} />
+                    {/* As abas reutilizam o painel: a `key` remonta os editores por aluno. */}
                     <AeeEvaluationFields
+                        key={student.key}
                         idPrefix={`aee-evaluation-${index}`}
                         namePrefix={`evaluations[${index}]`}
                         values={evaluation}
@@ -75,6 +80,9 @@ export default function AeeRecordEvaluationFields({
                             changes[field] = value;
                             onChange(index, changes);
                         }}
+                        onEditorFailure={(field, label) =>
+                            onEditorFailure(`evaluations.${index}.${field}`, label)
+                        }
                     />
                 </>
             ) : null,

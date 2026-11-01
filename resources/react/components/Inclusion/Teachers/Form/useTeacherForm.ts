@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { cpfMask, phoneMask } from '@/utils/masks';
 import { teacherUrls } from '../Teachers.routes';
@@ -31,6 +32,7 @@ export function useTeacherForm(mode: TeacherFormMode, teacher?: TeacherRecord) {
     const form = useForm<TeacherFormData>(initialData(teacher));
     const errors = form.errors as Record<string, string | undefined>;
     const [photoValidating, setPhotoValidating] = useState(false);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
 
     /** Payload de `Create/UpdateTeacherData`: a senha inicial é opcional e só existe no cadastro. */
     function payload(data: TeacherFormData): Record<string, unknown> {
@@ -57,7 +59,7 @@ export function useTeacherForm(mode: TeacherFormMode, teacher?: TeacherRecord) {
             failureText: editing
                 ? 'Não foi possível atualizar o professor. Tente novamente.'
                 : 'Não foi possível cadastrar o professor. Tente novamente.',
-            blocked: photoValidating,
+            blocked: photoValidating || editorFailed,
             options: {
                 // A senha nunca permanece no formulário depois de uma tentativa de envio.
                 onFinish: () =>
@@ -66,5 +68,14 @@ export function useTeacherForm(mode: TeacherFormMode, teacher?: TeacherRecord) {
         });
     }
 
-    return { form, errors, formRef, photoValidating, setPhotoValidating, save };
+    return {
+        form,
+        errors,
+        formRef,
+        photoValidating,
+        setPhotoValidating,
+        editorFailed,
+        reportEditorFailure,
+        save,
+    };
 }

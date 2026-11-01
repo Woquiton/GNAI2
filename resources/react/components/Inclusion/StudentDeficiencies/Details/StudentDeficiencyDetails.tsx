@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateTimeLabel } from '@/utils/formatters';
 import type { StudentDeficiencyShowRecord } from '../StudentDeficiencies.types';
@@ -38,8 +39,8 @@ export default function StudentDeficiencyDetails({
                     <DetailField label="Data do Registro">
                         {dateTimeLabel(deficiency.created_at)}
                     </DetailField>
-                    <DetailField label="Observações Técnicas" wide preserveLineBreaks>
-                        {deficiency.notes || 'Nenhuma observação registrada.'}
+                    <DetailField label="Observações Técnicas" wide>
+                        <RichTextContent html={deficiency.notes_html} />
                     </DetailField>
                 </DetailGrid>
             </FormSection>

@@ -43,5 +43,7 @@ export interface DeficiencyDetailsPermissions {
 
 export interface DeficiencyShowProps {
     deficiency: DeficiencyRecord;
+    /** Descrição sanitizada pelo `RichTextSanitizer`, com o texto padrão quando vazia. */
+    descriptionHtml: string;
     can: DeficiencyDetailsPermissions;
 }

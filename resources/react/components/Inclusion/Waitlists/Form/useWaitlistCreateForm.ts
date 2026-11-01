@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import type { FieldOption } from '@/components/Forms/FormFields/FormFields';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { waitlistUrls } from '../Waitlists.routes';
 import type { WaitlistCreateProps, WaitlistResource } from '../Waitlists.types';
@@ -39,6 +40,7 @@ export function useWaitlistCreateForm({
 }: Pick<WaitlistCreateProps, 'students' | 'professionals' | 'items' | 'can'>) {
     const form = useForm<WaitlistCreateFormData>(initialData);
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
     const resourceOptions = items
         .filter((item) => item.item_type === form.data.item_type)
@@ -70,7 +72,7 @@ export function useWaitlistCreateForm({
         submit({
             url: waitlistUrls.store,
             failureText: 'Não foi possível concluir a operação. Tente novamente.',
-            blocked: !can.submit,
+            blocked: !can.submit || editorFailed,
         });
     }
 
@@ -85,5 +87,7 @@ export function useWaitlistCreateForm({
         changeStudent,
         changeProfessional,
         save,
+        editorFailed,
+        reportEditorFailure,
     };
 }

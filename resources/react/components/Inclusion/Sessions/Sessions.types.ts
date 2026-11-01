@@ -121,6 +121,7 @@ export interface SessionDetailsRecord {
     attendance_type_label: string;
     type_label: string;
     session_objective: string | null;
+    session_objective_html: string;
     cancellation_reason: string | null;
 }
 

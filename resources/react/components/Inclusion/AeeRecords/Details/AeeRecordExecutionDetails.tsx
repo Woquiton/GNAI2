@@ -1,6 +1,7 @@
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import { aeeTextValue } from '../AeeRecords.constants';
 import type { AeeRecordRecord } from '../AeeRecords.types';
 
@@ -25,17 +26,17 @@ export default function AeeRecordExecutionDetails({
                 <DetailField label="Duração">{aeeRecord.duration || 'N/A'}</DetailField>
             </DetailGrid>
             <DetailGrid>
-                <DetailField label="Atividades Realizadas" wide preserveLineBreaks>
-                    {aeeTextValue(aeeRecord.activities_performed)}
+                <DetailField label="Atividades Realizadas" wide>
+                    <RichTextContent html={aeeTextValue(aeeRecord.activities_performed)} />
                 </DetailField>
-                <DetailField label="Estratégias Utilizadas" preserveLineBreaks>
-                    {aeeTextValue(aeeRecord.strategies_used)}
+                <DetailField label="Estratégias Utilizadas">
+                    <RichTextContent html={aeeTextValue(aeeRecord.strategies_used)} />
                 </DetailField>
-                <DetailField label="Recursos Utilizados" preserveLineBreaks>
-                    {aeeTextValue(aeeRecord.resources_used)}
+                <DetailField label="Recursos Utilizados">
+                    <RichTextContent html={aeeTextValue(aeeRecord.resources_used)} />
                 </DetailField>
-                <DetailField label="Observações Gerais" wide preserveLineBreaks>
-                    {aeeTextValue(aeeRecord.general_observations)}
+                <DetailField label="Observações Gerais" wide>
+                    <RichTextContent html={aeeTextValue(aeeRecord.general_observations)} />
                 </DetailField>
             </DetailGrid>
         </FormSection>

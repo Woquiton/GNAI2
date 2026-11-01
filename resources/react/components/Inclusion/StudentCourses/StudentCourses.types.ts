@@ -101,7 +101,14 @@ export interface StudentCourseDetailsPermissions {
     delete: boolean;
 }
 
+/** Textos ricos já sanitizados pelo `RichTextSanitizer` (`StudentCourseController@show`). */
+export interface StudentCourseShowDisplay {
+    courseDescriptionHtml: string;
+    schoolAttendanceStatusHtml: string;
+}
+
 export interface StudentCourseShowProps {
     studentCourse: StudentCourseShowRecord;
+    display: StudentCourseShowDisplay;
     can: StudentCourseDetailsPermissions;
 }

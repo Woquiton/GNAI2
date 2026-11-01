@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import {
     GROUP_SESSION,
@@ -56,6 +57,7 @@ export function useSessionForm(props: SessionFormProps) {
     const [confirmOpen, setConfirmOpen] = useState(false);
     const form = useForm<SessionFormData>(initialData(props));
     const submission = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
     const isPedagogical = form.data.attendance_type === PEDAGOGICAL_ATTENDANCE;
     const canAddStudents = !editing && !isPedagogical && form.data.type === GROUP_SESSION;
@@ -119,6 +121,7 @@ export function useSessionForm(props: SessionFormProps) {
             url: session ? sessionUrls.update(session.id) : sessionUrls.store,
             method: session ? 'put' : 'post',
             failureText: sessionSaveFailureText,
+            blocked: editorFailed,
             transform: () => {
                 const data = form.data;
                 const payload: Record<string, unknown> = {
@@ -146,7 +149,7 @@ export function useSessionForm(props: SessionFormProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
 
-        if (form.processing) {
+        if (form.processing || editorFailed) {
             return;
         }
 
@@ -165,6 +168,10 @@ export function useSessionForm(props: SessionFormProps) {
         save(sendNotification);
     }
 
+    function reportObjectiveEditorFailure(): void {
+        reportEditorFailure('session_objective', 'objetivo do agendamento');
+    }
+
     function closeConfirmation(): void {
         setConfirmOpen(false);
     }
@@ -179,6 +186,8 @@ export function useSessionForm(props: SessionFormProps) {
         isPedagogical,
         canAddStudents,
         confirmOpen,
+        editorFailed,
+        reportObjectiveEditorFailure,
         changeAttendanceType,
         changeStudent,
         addStudent,

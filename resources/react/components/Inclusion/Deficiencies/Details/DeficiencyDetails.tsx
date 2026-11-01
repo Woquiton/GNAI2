@@ -2,14 +2,17 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { DeficiencyRecord } from '../Deficiencies.types';
 
 /** Identificação clínica e descrição técnica de um perfil de atendimento. */
 export default function DeficiencyDetails({
     deficiency,
+    descriptionHtml,
 }: {
     deficiency: DeficiencyRecord;
+    descriptionHtml: string;
 }): React.JSX.Element {
     return (
         <CardBox>
@@ -40,9 +43,8 @@ export default function DeficiencyDetails({
                 iconClass="fa fa-file-text-o"
             >
                 <DetailGrid>
-                    <DetailField label="Descrição Detalhada" wide preserveLineBreaks>
-                        {deficiency.description ||
-                            'Nenhuma descrição técnica foi cadastrada para este perfil.'}
+                    <DetailField label="Descrição Detalhada" wide>
+                        <RichTextContent html={descriptionHtml} />
                     </DetailField>
                 </DetailGrid>
             </FormSection>

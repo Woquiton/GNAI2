@@ -15,6 +15,7 @@ use App\Domains\Inclusion\Application\Queries\Guardians\ListGuardiansQuery;
 use App\Domains\Inclusion\Application\Queries\Guardians\ShowGuardianQuery;
 use App\Domains\Inclusion\Domain\Models\Guardian;
 use App\Domains\Inclusion\Domain\Models\Student;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -66,6 +67,7 @@ final class GuardianController
                     'relationshipLabel' => $guardian->relationship?->label(),
                     'genderLabel' => $guardian->person?->gender?->label(),
                     'age' => $guardian->person?->birth_date?->age,
+                    'addressHtml' => RichTextSanitizer::sanitize($guardian->person?->address ?? '', decodeEntities: false),
                 ],
                 'can' => [
                     'update' => $request->user()?->can('guardian.update') ?? false,

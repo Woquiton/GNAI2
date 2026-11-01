@@ -5,27 +5,35 @@ import type { DeficiencyDetailsPermissions } from '../Deficiencies.types';
 
 interface DeficiencyDetailsActionsProps {
     deficiencyId: number;
+    active: boolean;
     permissions: DeficiencyDetailsPermissions;
-    deleting: boolean;
+    /** Exclusão ou troca de status em andamento. */
+    busy: boolean;
+    /** Texto de processamento exibido no rodapé. */
+    status?: string;
+    onToggleActive: () => void;
     onDelete: () => void;
 }
 
-/** Rodapé fixo da visualização: voltar, editar e excluir. */
+/** Rodapé fixo da visualização: voltar, editar, ativar/desativar (sem confirmação) e excluir. */
 export default function DeficiencyDetailsActions({
     deficiencyId,
+    active,
     permissions,
-    deleting,
+    busy,
+    status,
+    onToggleActive,
     onDelete,
 }: DeficiencyDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions status={status}>
             <Button
                 href={deficiencyUrls.index}
                 tone="cancel"
                 label="Voltar"
                 title="Voltar para perfis de atendimento"
                 aria-label="Voltar para perfis de atendimento"
-                disabled={deleting}
+                disabled={busy}
             />
             {permissions.update ? (
                 <Button
@@ -35,7 +43,18 @@ export default function DeficiencyDetailsActions({
                     label="Editar"
                     title="Editar perfil de atendimento"
                     aria-label="Editar perfil de atendimento"
-                    disabled={deleting}
+                    disabled={busy}
+                />
+            ) : null}
+            {permissions.update ? (
+                <Button
+                    tone="inverse"
+                    leftIconClass={active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'}
+                    label={active ? 'Desativar' : 'Ativar'}
+                    title={`${active ? 'Desativar' : 'Ativar'} perfil de atendimento`}
+                    aria-label={`${active ? 'Desativar' : 'Ativar'} perfil de atendimento`}
+                    disabled={busy}
+                    onClick={onToggleActive}
                 />
             ) : null}
             {permissions.delete ? (
@@ -45,7 +64,7 @@ export default function DeficiencyDetailsActions({
                     label="Excluir"
                     title="Excluir perfil de atendimento"
                     aria-label="Excluir perfil de atendimento"
-                    disabled={deleting}
+                    disabled={busy}
                     onClick={onDelete}
                 />
             ) : null}

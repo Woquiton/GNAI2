@@ -8,6 +8,7 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 
 export default function InclusionCoursesShowPage({
     course,
+    display,
     can,
 }: CourseShowProps): React.JSX.Element {
     const removal = useConfirmedAction<typeof course>({
@@ -22,7 +23,7 @@ export default function InclusionCoursesShowPage({
             breadcrumbItems={courseBreadcrumb({ course })}
             busy={removal.processing}
         >
-            <CourseDetails course={course} />
+            <CourseDetails course={course} descriptionHtml={display.descriptionHtml} />
             <CourseDetailsActions
                 courseId={course.id}
                 permissions={can}

@@ -5,6 +5,8 @@ import { profileUrls } from '../Profile.routes';
 interface ProfileFormActionsProps {
     processing: boolean;
     photoValidating: boolean;
+    /** Editor rico que não carregou: o envio fica bloqueado. */
+    editorFailed?: boolean;
     uploadPercentage?: number;
 }
 
@@ -28,7 +30,7 @@ function submissionStatus({
 
 /** Rodapé fixo dos formulários de perfil: cancelar volta ao painel; salvar envia o perfil. */
 export default function ProfileFormActions(props: ProfileFormActionsProps): React.JSX.Element {
-    const { processing, photoValidating } = props;
+    const { processing, photoValidating, editorFailed = false } = props;
 
     return (
         <FormActions status={submissionStatus(props)}>
@@ -46,7 +48,7 @@ export default function ProfileFormActions(props: ProfileFormActionsProps): Reac
                 label="Salvar"
                 title="Salvar alterações"
                 aria-label={processing ? 'Salvando alterações' : 'Salvar alterações'}
-                disabled={processing || photoValidating}
+                disabled={processing || photoValidating || editorFailed}
             />
         </FormActions>
     );

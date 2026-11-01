@@ -11,11 +11,16 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 
 export default function InclusionDeficienciesShowPage({
     deficiency,
+    descriptionHtml,
     can,
 }: DeficiencyShowProps): React.JSX.Element {
     const removal = useConfirmedAction<typeof deficiency>({
         failureText: 'Não foi possível excluir o perfil de atendimento. Tente novamente.',
     });
+    const statusChange = useConfirmedAction<typeof deficiency>({
+        failureText: 'Não foi possível alterar o status do perfil de atendimento. Tente novamente.',
+    });
+    const busy = removal.processing || statusChange.processing;
 
     return (
         <BusinessPage
@@ -23,13 +28,18 @@ export default function InclusionDeficienciesShowPage({
             subtitle="Informações sobre o perfil para acompanhamento e encaminhamentos pedagógicos."
             documentTitle={deficiency.name}
             breadcrumbItems={deficiencyBreadcrumb({ deficiency })}
-            busy={removal.processing}
+            busy={busy}
         >
-            <DeficiencyDetails deficiency={deficiency} />
+            <DeficiencyDetails deficiency={deficiency} descriptionHtml={descriptionHtml} />
             <DeficiencyDetailsActions
                 deficiencyId={deficiency.id}
+                active={deficiency.is_active}
                 permissions={can}
-                deleting={removal.processing}
+                busy={busy}
+                status={statusChange.processing ? 'Alterando status…' : undefined}
+                onToggleActive={() =>
+                    statusChange.submit('patch', deficiencyUrls.toggleActive(deficiency.id))
+                }
                 onDelete={() => removal.open(deficiency)}
             />
             <DeficiencyDeleteModal

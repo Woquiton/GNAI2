@@ -42,8 +42,17 @@ export default function ProfessionalForm({
     options,
     professional,
 }: ProfessionalFormProps): React.JSX.Element {
-    const { form, errors, formRef, canManageAdmin, photoValidating, setPhotoValidating, save } =
-        useProfessionalForm({ mode, options, professional });
+    const {
+        form,
+        errors,
+        formRef,
+        canManageAdmin,
+        photoValidating,
+        setPhotoValidating,
+        editorFailed,
+        reportEditorFailure,
+        save,
+    } = useProfessionalForm({ mode, options, professional });
     const editing = mode === 'edit';
     const sectionProps = { form, errors, disabled: form.processing };
 
@@ -66,6 +75,7 @@ export default function ProfessionalForm({
                         person={professional?.person}
                         genders={options.genders}
                         onPhotoValidatingChange={setPhotoValidating}
+                        onEditorFailure={() => reportEditorFailure('address', 'endereço')}
                     />
                     <ProfessionalWorkFields
                         {...sectionProps}
@@ -118,7 +128,7 @@ export default function ProfessionalForm({
                     label="Salvar"
                     title="Salvar profissional"
                     aria-label={form.processing ? 'Salvando profissional' : 'Salvar profissional'}
-                    disabled={form.processing || photoValidating}
+                    disabled={form.processing || photoValidating || editorFailed}
                 />
             </FormActions>
         </FormLayout>

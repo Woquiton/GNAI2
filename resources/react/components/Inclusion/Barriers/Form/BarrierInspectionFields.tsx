@@ -1,17 +1,22 @@
 import EvidenceUpload from '@/components/Forms/EvidenceUpload/EvidenceUpload';
 import {
     DateInputField,
+    RichTextField,
     SelectInputField,
-    TextAreaField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { BarrierOption } from '../Barriers.types';
-import type { BarrierFormData, BarrierFormSectionProps } from './BarrierForm.types';
+import type {
+    BarrierEditorField,
+    BarrierFormData,
+    BarrierFormSectionProps,
+} from './BarrierForm.types';
 
 interface BarrierInspectionFieldsProps extends BarrierFormSectionProps {
     editing: boolean;
     barrierStatuses: BarrierOption[];
+    onEditorFailure: (field: BarrierEditorField) => void;
 }
 
 /** Primeiro erro das evidências (`inspection.evidences` ou `inspection.evidences.N`). */
@@ -26,6 +31,7 @@ export default function BarrierInspectionFields({
     disabled,
     editing,
     barrierStatuses,
+    onEditorFailure,
 }: BarrierInspectionFieldsProps): React.JSX.Element {
     function updateInspection(patch: Partial<BarrierFormData['inspection']>): void {
         form.setData((current) => ({
@@ -73,18 +79,16 @@ export default function BarrierInspectionFields({
                     disabled={disabled}
                     onChange={(evidences) => updateInspection({ evidences })}
                 />
-                <TextAreaField
+                <RichTextField
                     id="barrier-inspection-description"
-                    name="inspection[description]"
                     label={
                         editing ? 'Parecer Técnico / Notas' : 'Parecer Técnico / Notas da Vistoria'
                     }
-                    rows={3}
-                    maxLength={1000}
-                    placeholder="Descreva detalhes técnicos sobre a obstrução ou estado do local..."
+                    defaultValue={form.data.inspection.description}
+                    height={120}
                     disabled={disabled}
-                    value={form.data.inspection.description}
                     error={errors['inspection.description']}
+                    onLoadError={() => onEditorFailure('inspection.description')}
                     onChange={(description) => updateInspection({ description })}
                 />
             </FormStack>

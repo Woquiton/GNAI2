@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { barrierCategoryUrls } from '../BarrierCategories.routes';
 import type { BarrierCategoryRecord } from '../BarrierCategories.types';
@@ -25,6 +26,7 @@ export function useBarrierCategoryForm({ category, canSubmit }: UseBarrierCatego
         blocks_map: category?.blocks_map ?? true,
     });
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
 
     function save(): void {
@@ -34,9 +36,9 @@ export function useBarrierCategoryForm({ category, canSubmit }: UseBarrierCatego
             failureText: category
                 ? 'Não foi possível salvar a categoria. Tente novamente.'
                 : 'Não foi possível cadastrar a categoria. Tente novamente.',
-            blocked: !canSubmit,
+            blocked: !canSubmit || editorFailed,
         });
     }
 
-    return { form, errors, formRef, save };
+    return { form, errors, formRef, save, editorFailed, reportEditorFailure };
 }

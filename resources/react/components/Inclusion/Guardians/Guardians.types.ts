@@ -65,6 +65,7 @@ export interface GuardianShowProps {
         relationshipLabel: string | null;
         genderLabel: string | null;
         age: number | null;
+        addressHtml: string;
     };
     can: { update: boolean; delete: boolean };
 }

@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import { dateLabel } from '@/utils/formatters';
 import type { TeacherShowProps } from '../Teachers.types';
 import TeacherAssignments from './TeacherAssignments';
@@ -43,8 +44,12 @@ export default function TeacherDetails({
                     </DetailField>
                     <DetailField label="E-mail de Contato">{person.email || '---'}</DetailField>
                     <DetailField label="Telefone">{person.phone || '---'}</DetailField>
-                    <DetailField label="Endereço" wide preserveLineBreaks>
-                        {person.address || '---'}
+                    <DetailField label="Endereço" wide>
+                        {display.addressHtml ? (
+                            <RichTextContent html={display.addressHtml} />
+                        ) : (
+                            '---'
+                        )}
                     </DetailField>
                 </DetailGrid>
             </FormSection>

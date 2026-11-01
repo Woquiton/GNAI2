@@ -1,7 +1,7 @@
 import {
     CheckboxListField,
     optionsFromNamed,
-    TextAreaField,
+    RichTextField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -24,6 +24,7 @@ function groupError(
 interface StudentCourseFollowUpFieldsProps extends StudentCourseFormSectionProps {
     /** Disciplinas do curso selecionado; `null` enquanto nenhum curso foi escolhido. */
     disciplines: StudentCourseDiscipline[] | null;
+    onEditorFailure: () => void;
 }
 
 /** Frequência escolar e disciplinas com reprovação ou risco no curso atual. */
@@ -32,6 +33,7 @@ export default function StudentCourseFollowUpFields({
     errors,
     disabled,
     disciplines,
+    onEditorFailure,
 }: StudentCourseFollowUpFieldsProps): React.JSX.Element {
     const disciplineOptions = optionsFromNamed(disciplines ?? []);
     const emptyMessage =
@@ -48,15 +50,15 @@ export default function StudentCourseFollowUpFields({
         >
             <FormGrid>
                 <FormGridWide>
-                    <TextAreaField
+                    <RichTextField
                         id="student-course-attendance"
-                        name="school_attendance_status"
                         label="Situação da Frequência Escolar"
-                        rows={3}
-                        placeholder="Descreva como está a frequência escolar do aluno neste curso..."
-                        value={form.data.school_attendance_status}
+                        defaultValue={form.data.school_attendance_status}
+                        height={120}
+                        disabled={disabled}
                         error={errors.school_attendance_status}
-                        onChange={(value) => form.setData('school_attendance_status', value)}
+                        onLoadError={onEditorFailure}
+                        onChange={(html) => form.setData('school_attendance_status', html)}
                     />
                 </FormGridWide>
                 {disciplines

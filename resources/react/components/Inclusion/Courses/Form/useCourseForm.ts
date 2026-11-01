@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { courseUrls } from '../Courses.routes';
 import type { CourseDisciplineOption, CourseRecord } from '../Courses.types';
@@ -30,17 +31,27 @@ function disciplinesError(errors: Record<string, string | undefined>): string | 
 export function useCourseForm(disciplines: CourseDisciplineOption[], course?: CourseRecord) {
     const form = useForm<CourseFormData>(initialData(disciplines, course));
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
 
     function save(): void {
         submit({
             url: course ? courseUrls.update(course.id) : courseUrls.store,
             method: course ? 'put' : 'post',
+            blocked: editorFailed,
             failureText: course
                 ? 'Não foi possível salvar o curso. Tente novamente.'
                 : 'Não foi possível cadastrar o curso. Tente novamente.',
         });
     }
 
-    return { form, errors, disciplinesError: disciplinesError(errors), formRef, save };
+    return {
+        form,
+        errors,
+        disciplinesError: disciplinesError(errors),
+        formRef,
+        save,
+        editorFailed,
+        reportEditorFailure,
+    };
 }

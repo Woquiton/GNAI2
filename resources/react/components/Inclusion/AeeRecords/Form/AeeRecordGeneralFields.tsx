@@ -1,13 +1,15 @@
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { AeeRecordFormSectionProps, AeeRecordGeneralField } from './AeeRecordForm.types';
 
+type GeneralTextField = Exclude<AeeRecordGeneralField, 'duration'>;
+
 interface GeneralTextDefinition {
-    field: Exclude<AeeRecordGeneralField, 'duration'>;
+    field: GeneralTextField;
     label: string;
-    placeholder: string;
-    rows: number;
+    /** Rótulo em minúsculas usado na mensagem de falha do editor. */
+    failureLabel: string;
     required?: boolean;
     /** Ocupa a largura toda; os demais textos dividem a linha. */
     wide?: boolean;
@@ -17,51 +19,51 @@ const textDefinitions: GeneralTextDefinition[] = [
     {
         field: 'activities_performed',
         label: 'Atividades Planejadas/Realizadas',
-        placeholder: 'Descreva as atividades realizadas durante o atendimento AEE...',
-        rows: 3,
+        failureLabel: 'atividades planejadas/realizadas',
         required: true,
         wide: true,
     },
     {
         field: 'strategies_used',
         label: 'Estratégias Planejadas/Utilizadas',
-        placeholder: 'Métodos, abordagens pedagógicas ou intervenções utilizadas...',
-        rows: 2,
+        failureLabel: 'estratégias planejadas/utilizadas',
     },
     {
         field: 'resources_used',
         label: 'Recursos Planejados/Utilizados',
-        placeholder: 'Materiais, tecnologias ou instrumentos utilizados...',
-        rows: 2,
+        failureLabel: 'recursos planejados/utilizados',
     },
     {
         field: 'general_observations',
         label: 'Observações Gerais',
-        placeholder: 'Observações relevantes sobre o atendimento AEE...',
-        rows: 2,
+        failureLabel: 'observações gerais',
         wide: true,
     },
 ];
 
-/** Duração, atividades, estratégias, recursos e observações gerais da execução. */
+interface AeeRecordGeneralFieldsProps extends AeeRecordFormSectionProps {
+    onEditorFailure: (field: GeneralTextField, label: string) => void;
+}
+
+/** Duração e, em editores ricos, atividades, estratégias, recursos e observações gerais. */
 export default function AeeRecordGeneralFields({
     form,
     errors,
     disabled,
-}: AeeRecordFormSectionProps): React.JSX.Element {
-    function renderTextArea(definition: GeneralTextDefinition): React.JSX.Element {
+    onEditorFailure,
+}: AeeRecordGeneralFieldsProps): React.JSX.Element {
+    function renderEditor(definition: GeneralTextDefinition): React.JSX.Element {
         const field = (
-            <TextAreaField
+            <RichTextField
                 id={`aee-record-${definition.field.replace(/_/g, '-')}`}
-                name={definition.field}
                 label={definition.label}
-                rows={definition.rows}
                 required={definition.required}
-                placeholder={definition.placeholder}
-                value={form.data[definition.field]}
-                error={errors[definition.field]}
+                defaultValue={form.data[definition.field]}
+                height={120}
                 disabled={disabled}
-                onChange={(value) => form.setData(definition.field, value)}
+                error={errors[definition.field]}
+                onLoadError={() => onEditorFailure(definition.field, definition.failureLabel)}
+                onChange={(html) => form.setData(definition.field, html)}
             />
         );
 
@@ -92,7 +94,7 @@ export default function AeeRecordGeneralFields({
                     disabled={disabled}
                     onChange={(value) => form.setData('duration', value)}
                 />
-                {textDefinitions.map(renderTextArea)}
+                {textDefinitions.map(renderEditor)}
             </FormGrid>
         </FormSection>
     );

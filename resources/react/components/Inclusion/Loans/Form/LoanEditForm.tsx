@@ -1,7 +1,8 @@
 import { useForm } from '@inertiajs/react';
-import { TextAreaField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
@@ -21,13 +22,14 @@ interface LoanEditFormProps {
 export default function LoanEditForm({ loan, canSubmit }: LoanEditFormProps): React.JSX.Element {
     const form = useForm<LoanEditFormData>({ observation: loan.observation ?? '' });
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
 
     function save(): void {
         submit({
             url: loanUrls.update(loan.id),
             method: 'put',
             failureText: 'Não foi possível concluir a operação. Tente novamente.',
-            blocked: !canSubmit,
+            blocked: !canSubmit || editorFailed,
         });
     }
 
@@ -66,15 +68,17 @@ export default function LoanEditForm({ loan, canSubmit }: LoanEditFormProps): Re
                                 <LoanDetails loan={loan} showObservation={false} />
                             </FormGridWide>
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="loan-observation"
-                                    name="observation"
                                     label="Observações / Estado do Item"
-                                    rows={4}
-                                    placeholder="Relate o estado do item..."
-                                    value={form.data.observation}
+                                    defaultValue={form.data.observation}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={form.errors.observation}
-                                    onChange={(value) => form.setData('observation', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('observation', 'observações')
+                                    }
+                                    onChange={(html) => form.setData('observation', html)}
                                 />
                             </FormGridWide>
                         </FormGrid>
@@ -85,6 +89,7 @@ export default function LoanEditForm({ loan, canSubmit }: LoanEditFormProps): Re
                     submitLabel="Salvar observações"
                     canSubmit={canSubmit}
                     processing={form.processing}
+                    blocked={editorFailed}
                 />
             </FormLayout>
         </>

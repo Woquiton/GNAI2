@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { positionUrls } from '../Positions.routes';
 import type { PositionRecord } from '../Positions.types';
@@ -20,6 +21,7 @@ export function usePositionForm(position?: PositionRecord) {
         permissions: position?.permissions?.map((permission) => permission.id) ?? [],
     });
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
 
     function togglePermissions(ids: number[], checked: boolean): void {
@@ -38,6 +40,7 @@ export function usePositionForm(position?: PositionRecord) {
             failureText: position
                 ? 'Não foi possível salvar o cargo. Tente novamente.'
                 : 'Não foi possível cadastrar o cargo. Tente novamente.',
+            blocked: editorFailed,
         });
     }
 
@@ -46,6 +49,8 @@ export function usePositionForm(position?: PositionRecord) {
         errors,
         permissionsError: permissionsError(errors),
         formRef,
+        editorFailed,
+        reportEditorFailure,
         togglePermissions,
         save,
     };

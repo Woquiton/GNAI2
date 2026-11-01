@@ -1,5 +1,5 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -23,7 +23,8 @@ export default function DeficiencyForm({
 }: {
     deficiency?: DeficiencyRecord;
 }): React.JSX.Element {
-    const { form, errors, formRef, save } = useDeficiencyForm(deficiency);
+    const { form, errors, formRef, editorFailed, reportEditorFailure, save } =
+        useDeficiencyForm(deficiency);
     const editing = Boolean(deficiency);
 
     return (
@@ -69,14 +70,17 @@ export default function DeficiencyForm({
                                 onChange={(value) => form.setData('cid_code', value)}
                             />
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="deficiency-description"
-                                    name="description"
                                     label="Descrição / Detalhes"
-                                    rows={3}
-                                    value={form.data.description}
+                                    defaultValue={form.data.description}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.description}
-                                    onChange={(value) => form.setData('description', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('description', 'descrição')
+                                    }
+                                    onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
                         </FormGrid>
@@ -91,7 +95,12 @@ export default function DeficiencyForm({
                     aria-label="Cancelar e voltar"
                     disabled={form.processing}
                 />
-                <Button type="submit" tone="save" label="Salvar" disabled={form.processing} />
+                <Button
+                    type="submit"
+                    tone="save"
+                    label="Salvar"
+                    disabled={form.processing || editorFailed}
+                />
             </FormActions>
         </FormLayout>
     );

@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { PedagogicalRecordShowProps } from '../PedagogicalRecords.types';
 
@@ -10,9 +11,9 @@ type PedagogicalRecordDetailsProps = Pick<
     'pedagogicalRecord' | 'session'
 >;
 
-/** Texto livre do registro; espaços em branco contam como não informado. */
-function textOrFallback(value: string | null, fallback: string): string {
-    return value?.trim() || fallback;
+/** Texto rico já sanitizado pelo servidor; conteúdo vazio aparece como não informado. */
+function richTextOrFallback(html: string | null, fallback: string): React.JSX.Element {
+    return <RichTextContent html={html?.trim() || fallback} />;
 }
 
 /** Identificação da sessão e conteúdo do acompanhamento pedagógico registrado. */
@@ -60,8 +61,8 @@ export default function PedagogicalRecordDetails({
                 iconClass="fa fa-book"
             >
                 <DetailGrid>
-                    <DetailField label="Motivo do Acompanhamento" wide preserveLineBreaks>
-                        {textOrFallback(record.follow_up_reason, 'Não informado.')}
+                    <DetailField label="Motivo do Acompanhamento" wide>
+                        {richTextOrFallback(record.follow_up_reason, 'Não informado.')}
                     </DetailField>
                     <DetailField label="Período/Duração do Acompanhamento">
                         {record.duration || 'Não informado'}
@@ -73,8 +74,8 @@ export default function PedagogicalRecordDetails({
                         </TableLabel>
                     </DetailField>
                     {!record.is_present ? (
-                        <DetailField label="Motivo da Ausência" wide preserveLineBreaks>
-                            {textOrFallback(record.absence_reason, 'Não informado.')}
+                        <DetailField label="Motivo da Ausência" wide>
+                            {richTextOrFallback(record.absence_reason, 'Não informado.')}
                         </DetailField>
                     ) : null}
                     {showPedagogicalContent ? (
@@ -82,9 +83,8 @@ export default function PedagogicalRecordDetails({
                             <DetailField
                                 label="Registro do Acompanhamento Pedagógico Sistemático"
                                 wide
-                                preserveLineBreaks
                             >
-                                {textOrFallback(
+                                {richTextOrFallback(
                                     record.systematic_pedagogical_follow_up_record,
                                     'Não informado',
                                 )}
@@ -92,15 +92,14 @@ export default function PedagogicalRecordDetails({
                             <DetailField
                                 label="Estratégias e Recursos Adotados (quando necessário)"
                                 wide
-                                preserveLineBreaks
                             >
-                                {textOrFallback(record.strategies_and_resources_adopted, 'N/A')}
+                                {richTextOrFallback(record.strategies_and_resources_adopted, 'N/A')}
                             </DetailField>
-                            <DetailField label="Encaminhamentos Realizados" wide preserveLineBreaks>
-                                {textOrFallback(record.referrals_made, 'N/A')}
+                            <DetailField label="Encaminhamentos Realizados" wide>
+                                {richTextOrFallback(record.referrals_made, 'N/A')}
                             </DetailField>
-                            <DetailField label="Observações Complementares" wide preserveLineBreaks>
-                                {textOrFallback(record.complementary_observations, 'N/A')}
+                            <DetailField label="Observações Complementares" wide>
+                                {richTextOrFallback(record.complementary_observations, 'N/A')}
                             </DetailField>
                         </>
                     ) : null}

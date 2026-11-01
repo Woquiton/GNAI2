@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { pedagogicalRecordFailureTexts } from '../PedagogicalRecords.constants';
 import { pedagogicalRecordUrls } from '../PedagogicalRecords.routes';
@@ -91,6 +92,7 @@ export function usePedagogicalRecordForm({
 }: UsePedagogicalRecordFormOptions) {
     const form = useForm<PedagogicalRecordFormData>(initialData(context, record));
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
     const guardianError =
         errors.guardian_ids ??
@@ -130,6 +132,7 @@ export function usePedagogicalRecordForm({
                 : pedagogicalRecordUrls.store,
             method: record ? 'put' : 'post',
             failureText: pedagogicalRecordFailureTexts.save,
+            blocked: editorFailed,
             transform: () => payload(form.data, record ? undefined : context.session_id),
         });
     }
@@ -139,6 +142,8 @@ export function usePedagogicalRecordForm({
         errors,
         guardianError,
         formRef,
+        editorFailed,
+        reportEditorFailure,
         updatePresence,
         updateWithGuardians,
         toggleGuardian,

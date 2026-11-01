@@ -55,5 +55,7 @@ export interface CourseDetailsPermissions {
 
 export interface CourseShowProps {
     course: CourseRecord;
+    /** Descrição já sanitizada pelo `RichTextSanitizer` (`CourseController@show`). */
+    display: { descriptionHtml: string };
     can: CourseDetailsPermissions;
 }

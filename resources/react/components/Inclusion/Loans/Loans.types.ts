@@ -32,6 +32,8 @@ export type LoanRecord = {
     status_label: string;
     status_color: string;
     observation: string | null;
+    /** Observações sanitizadas, presentes somente na visualização. */
+    observation_html?: string;
     is_active: boolean;
     is_returned: boolean;
     is_overdue: boolean;

@@ -1,5 +1,5 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -28,8 +28,16 @@ export default function PositionForm({
     permissions,
     position,
 }: PositionFormProps): React.JSX.Element {
-    const { form, errors, permissionsError, formRef, togglePermissions, save } =
-        usePositionForm(position);
+    const {
+        form,
+        errors,
+        permissionsError,
+        formRef,
+        editorFailed,
+        reportEditorFailure,
+        togglePermissions,
+        save,
+    } = usePositionForm(position);
     const editing = Boolean(position);
 
     return (
@@ -63,15 +71,17 @@ export default function PositionForm({
                                 onChange={(value) => form.setData('name', value)}
                             />
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="position-description"
-                                    name="description"
                                     label="Descrição"
-                                    rows={3}
-                                    placeholder="Breve descrição das responsabilidades..."
-                                    value={form.data.description}
+                                    defaultValue={form.data.description}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.description}
-                                    onChange={(value) => form.setData('description', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('description', 'descrição')
+                                    }
+                                    onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
                         </FormGrid>
@@ -101,7 +111,7 @@ export default function PositionForm({
                     label="Salvar"
                     title="Salvar cargo"
                     aria-label={form.processing ? 'Salvando cargo' : 'Salvar cargo'}
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

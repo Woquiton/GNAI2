@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { loanUrls } from '../Loans.routes';
 import type { LoanCreateOptions, LoanFormOptions, LoanableItem } from '../Loans.types';
@@ -39,6 +40,7 @@ function initialData(options: LoanCreateOptions): LoanCreateFormData {
 export function useLoanCreateForm(options: LoanFormOptions & LoanCreateOptions) {
     const form = useForm<LoanCreateFormData>(initialData(options));
     const { formRef, submit } = useFormSubmission(form);
+    const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     // O horário inicial alimenta o relógio na montagem; depois ele é mantido à parte da data.
     const [initialTime] = useState(() => form.data.loan_date.split('T')[1] ?? '');
     const [loanTime, setLoanTime] = useState(initialTime);
@@ -72,7 +74,7 @@ export function useLoanCreateForm(options: LoanFormOptions & LoanCreateOptions) 
         submit({
             url: loanUrls.store,
             failureText: 'Não foi possível concluir a operação. Tente novamente.',
-            blocked: !options.can.submit,
+            blocked: !options.can.submit || editorFailed,
         });
     }
 
@@ -87,6 +89,8 @@ export function useLoanCreateForm(options: LoanFormOptions & LoanCreateOptions) 
         changeItem,
         changeLoanDay,
         changeLoanTime,
+        editorFailed,
+        reportEditorFailure,
         save,
     };
 }

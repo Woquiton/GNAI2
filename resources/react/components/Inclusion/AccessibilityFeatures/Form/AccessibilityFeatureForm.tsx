@@ -1,5 +1,5 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -29,7 +29,8 @@ export default function AccessibilityFeatureForm({
     feature,
     canSubmit,
 }: AccessibilityFeatureFormProps): React.JSX.Element {
-    const { form, errors, formRef, save } = useAccessibilityFeatureForm({ feature, canSubmit });
+    const { form, errors, formRef, save, editorFailed, reportEditorFailure } =
+        useAccessibilityFeatureForm({ feature, canSubmit });
     const editing = Boolean(feature);
     const submitLabel = editing ? 'Salvar' : 'Cadastrar';
 
@@ -68,16 +69,17 @@ export default function AccessibilityFeatureForm({
                                 />
                             </FormGridWide>
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="accessibility-feature-description"
-                                    name="description"
                                     label="Descrição Detalhada"
-                                    rows={4}
-                                    maxLength={1000}
-                                    placeholder="Descreva a finalidade e aplicação deste recurso de acessibilidade"
-                                    value={form.data.description}
+                                    defaultValue={form.data.description}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.description}
-                                    onChange={(value) => form.setData('description', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('description', 'descrição')
+                                    }
+                                    onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
                             <ToggleControl
@@ -116,7 +118,7 @@ export default function AccessibilityFeatureForm({
                         type="submit"
                         tone="save"
                         label={submitLabel}
-                        disabled={form.processing}
+                        disabled={form.processing || editorFailed}
                     />
                 ) : null}
             </FormActions>

@@ -1,7 +1,7 @@
 import {
     DateInputField,
+    RichTextField,
     SelectInputField,
-    TextAreaField,
     TextInputField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
@@ -16,6 +16,7 @@ interface TeacherPersonFieldsProps extends TeacherFormSectionProps {
     mode: TeacherFormMode;
     person?: TeacherPerson;
     onPhotoValidatingChange: (validating: boolean) => void;
+    onEditorFailure: () => void;
 }
 
 /** Foto, nome, e-mail, CPF, nascimento, gênero, telefone e endereço do professor. */
@@ -26,6 +27,7 @@ export default function TeacherPersonFields({
     mode,
     person,
     onPhotoValidatingChange,
+    onEditorFailure,
 }: TeacherPersonFieldsProps): React.JSX.Element {
     const editing = mode === 'edit';
 
@@ -133,14 +135,15 @@ export default function TeacherPersonFields({
             </div>
             <FormGrid>
                 <FormGridWide>
-                    <TextAreaField
+                    <RichTextField
                         id="teacher-address"
-                        name="address"
                         label={editing ? 'Endereço' : 'Endereço Residencial'}
-                        rows={2}
-                        value={form.data.address}
+                        defaultValue={form.data.address}
+                        height={100}
+                        disabled={disabled}
                         error={errors.address}
-                        onChange={(value) => form.setData('address', value)}
+                        onLoadError={onEditorFailure}
+                        onChange={(html) => form.setData('address', html)}
                     />
                 </FormGridWide>
             </FormGrid>

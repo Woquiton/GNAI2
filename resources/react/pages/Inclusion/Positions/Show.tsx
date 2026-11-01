@@ -11,11 +11,16 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 
 export default function InclusionPositionsShowPage({
     position,
+    descriptionHtml,
     can,
 }: PositionShowProps): React.JSX.Element {
     const removal = useConfirmedAction<typeof position>({
         failureText: 'Não foi possível excluir o cargo. Tente novamente.',
     });
+    const statusChange = useConfirmedAction<typeof position>({
+        failureText: 'Não foi possível alterar o status do cargo. Tente novamente.',
+    });
+    const busy = removal.processing || statusChange.processing;
 
     return (
         <BusinessPage
@@ -23,13 +28,18 @@ export default function InclusionPositionsShowPage({
             subtitle="Gerenciamento de funções e atribuições do suporte especializado."
             documentTitle={position.name}
             breadcrumbItems={positionBreadcrumb({ position })}
-            busy={removal.processing}
+            busy={busy}
         >
-            <PositionDetails position={position} />
+            <PositionDetails position={position} descriptionHtml={descriptionHtml} />
             <PositionDetailsActions
                 positionId={position.id}
+                active={position.is_active}
                 permissions={can}
-                deleting={removal.processing}
+                busy={busy}
+                status={statusChange.processing ? 'Alterando status…' : undefined}
+                onToggleActive={() =>
+                    statusChange.submit('patch', positionUrls.toggleActive(position.id))
+                }
                 onDelete={() => removal.open(position)}
             />
             <PositionDeleteModal

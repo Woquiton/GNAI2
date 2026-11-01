@@ -61,6 +61,7 @@ function initialData(options: BarrierFormOptions, barrier?: BarrierRecord): Barr
 const editorLabels: Record<BarrierEditorField, string> = {
     description: 'descrição',
     location_specific_details: 'complemento',
+    'inspection.description': 'parecer técnico',
 };
 
 /**

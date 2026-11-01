@@ -13,6 +13,7 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 
 export default function InclusionStudentCoursesShowPage({
     studentCourse,
+    display,
     can,
 }: StudentCourseShowProps): React.JSX.Element {
     const studentId = studentCourse.student?.id ?? studentCourse.student_id;
@@ -40,6 +41,7 @@ export default function InclusionStudentCoursesShowPage({
                 studentCourse={studentCourse}
                 studentName={studentName}
                 courseName={courseName}
+                display={display}
             />
             <StudentCourseDetailsActions
                 studentId={studentId}

@@ -1,4 +1,4 @@
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide, FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
@@ -16,56 +16,67 @@ interface PedagogicalRecordFollowUpFieldsProps {
     disabled: boolean;
     onChange: (name: TextFieldName, value: string) => void;
     onPresenceChange: (isPresent: boolean) => void;
+    onEditorFailure: (name: TextFieldName, label: string) => void;
 }
 
-interface TextAreaConfig {
+interface RichTextConfig {
     name: TextFieldName;
     id: string;
     label: string;
-    rows: number;
-    placeholder: string;
+    /** Rótulo em minúsculas usado na mensagem de falha do editor. */
+    failureLabel: string;
+    height: number;
     required?: boolean;
 }
 
-const absenceField: TextAreaConfig = {
+const followUpReasonField: RichTextConfig = {
+    name: 'follow_up_reason',
+    id: 'pedagogical-record-follow-up-reason',
+    label: 'Motivo do Acompanhamento',
+    failureLabel: 'motivo do acompanhamento',
+    height: 120,
+    required: true,
+};
+
+const absenceField: RichTextConfig = {
     name: 'absence_reason',
     id: 'pedagogical-record-absence-reason',
     label: 'Motivo da Ausência',
-    rows: 2,
-    placeholder: 'Informe o motivo da ausência do aluno...',
+    failureLabel: 'motivo da ausência',
+    height: 120,
     required: true,
 };
 
 /** Conteúdo exigido quando o aluno esteve presente ou houve responsáveis participantes. */
-const pedagogicalContentFields: TextAreaConfig[] = [
+const pedagogicalContentFields: RichTextConfig[] = [
     {
         name: 'systematic_pedagogical_follow_up_record',
         id: 'pedagogical-record-systematic-follow-up',
         label: 'Registro do Acompanhamento Pedagógico Sistemático',
-        rows: 4,
-        placeholder: 'Registre o acompanhamento pedagógico sistemático realizado...',
+        failureLabel: 'registro do acompanhamento pedagógico sistemático',
+        height: 160,
         required: true,
     },
     {
         name: 'strategies_and_resources_adopted',
         id: 'pedagogical-record-strategies',
         label: 'Estratégias e Recursos Adotados (quando necessário)',
-        rows: 3,
-        placeholder: 'Descreva as estratégias e os recursos adotados, quando necessário...',
+        failureLabel: 'estratégias e recursos adotados',
+        height: 120,
     },
     {
         name: 'referrals_made',
         id: 'pedagogical-record-referrals',
         label: 'Encaminhamentos Realizados',
-        rows: 3,
-        placeholder: 'Informe os encaminhamentos realizados...',
+        failureLabel: 'encaminhamentos realizados',
+        height: 120,
     },
     {
         name: 'complementary_observations',
         id: 'pedagogical-record-observations',
         label: 'Observações Complementares',
-        rows: 3,
-        placeholder: 'Registre informações complementares relevantes...',
+        failureLabel: 'observações complementares',
+        height: 120,
     },
 ];
 
@@ -76,24 +87,29 @@ export default function PedagogicalRecordFollowUpFields({
     disabled,
     onChange,
     onPresenceChange,
+    onEditorFailure,
 }: PedagogicalRecordFollowUpFieldsProps): React.JSX.Element {
     const showAbsence = !data.is_present;
     const showPedagogicalContent = data.is_present || data.with_guardians;
-    const visibleTextAreas = showPedagogicalContent ? pedagogicalContentFields : [];
+    const visibleEditors = showPedagogicalContent ? pedagogicalContentFields : [];
 
-    function renderTextArea(field: TextAreaConfig): React.JSX.Element {
+    /**
+     * O editor lê o valor só ao montar; os campos condicionais remontam ao reaparecer e partem
+     * do valor atual do formulário.
+     */
+    function renderEditor(field: RichTextConfig): React.JSX.Element {
         return (
             <FormGridWide key={field.name}>
-                <TextAreaField
+                <RichTextField
                     id={field.id}
-                    name={field.name}
                     label={field.label}
-                    rows={field.rows}
                     required={field.required}
-                    placeholder={field.placeholder}
-                    value={data[field.name]}
+                    defaultValue={data[field.name]}
+                    height={field.height}
+                    disabled={disabled}
                     error={errors[field.name]}
-                    onChange={(value) => onChange(field.name, value)}
+                    onLoadError={() => onEditorFailure(field.name, field.failureLabel)}
+                    onChange={(html) => onChange(field.name, html)}
                 />
             </FormGridWide>
         );
@@ -107,14 +123,7 @@ export default function PedagogicalRecordFollowUpFields({
             iconClass="fa fa-book"
         >
             <FormGrid columns={2}>
-                {renderTextArea({
-                    name: 'follow_up_reason',
-                    id: 'pedagogical-record-follow-up-reason',
-                    label: 'Motivo do Acompanhamento',
-                    rows: 3,
-                    placeholder: 'Informe o motivo do acompanhamento pedagógico...',
-                    required: true,
-                })}
+                {renderEditor(followUpReasonField)}
                 <FormGridWide>
                     <TextInputField
                         id="pedagogical-record-duration"
@@ -141,8 +150,8 @@ export default function PedagogicalRecordFollowUpFields({
                         />
                     </FormStack>
                 </FormGridWide>
-                {showAbsence ? renderTextArea(absenceField) : null}
-                {visibleTextAreas.map(renderTextArea)}
+                {showAbsence ? renderEditor(absenceField) : null}
+                {visibleEditors.map(renderEditor)}
             </FormGrid>
         </FormSection>
     );

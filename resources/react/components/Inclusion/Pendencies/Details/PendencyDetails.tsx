@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { priorityTone } from '../Pendencies.constants';
 import type { PendencyDetailsRecord } from '../Pendencies.types';
@@ -47,8 +48,8 @@ export default function PendencyDetails({
                             {pendency.is_completed ? 'Sim' : 'Não'}
                         </TableLabel>
                     </DetailField>
-                    <DetailField label="Descrição" wide preserveLineBreaks>
-                        {pendency.description || NOT_INFORMED}
+                    <DetailField label="Descrição" wide>
+                        <RichTextContent html={pendency.description_html} />
                     </DetailField>
                 </DetailGrid>
             </FormSection>

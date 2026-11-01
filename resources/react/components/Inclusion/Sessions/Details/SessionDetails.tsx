@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import SessionStudentNames from '../SessionStudentNames';
@@ -61,8 +62,12 @@ export default function SessionDetails({ session }: SessionDetailsProps): React.
                 iconClass="fa fa-file-text-o"
             >
                 <DetailGrid>
-                    <DetailField label="Objetivo do Agendamento" wide preserveLineBreaks>
-                        {session.session_objective || '---'}
+                    <DetailField label="Objetivo do Agendamento" wide>
+                        {session.session_objective_html ? (
+                            <RichTextContent html={session.session_objective_html} />
+                        ) : (
+                            '---'
+                        )}
                     </DetailField>
                     {session.cancellation_reason ? (
                         <DetailField label="Motivo do Cancelamento" wide preserveLineBreaks>

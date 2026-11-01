@@ -10,6 +10,7 @@ export const peiDisciplineTextFields: PeiDisciplineTextFieldConfig[] = [
         name: 'specific_objectives',
         label: 'Objetivos Específicos',
         required: true,
+        rich: true,
         wide: false,
     },
     {
@@ -24,6 +25,7 @@ export const peiDisciplineTextFields: PeiDisciplineTextFieldConfig[] = [
         name: 'content_programmatic',
         label: 'Conteúdo Programático',
         required: true,
+        rich: true,
         wide: false,
     },
     {
@@ -37,6 +39,7 @@ export const peiDisciplineTextFields: PeiDisciplineTextFieldConfig[] = [
         name: 'methodologies',
         label: 'Metodologias e Estratégias',
         required: true,
+        rich: true,
         wide: false,
     },
     {
@@ -50,17 +53,20 @@ export const peiDisciplineTextFields: PeiDisciplineTextFieldConfig[] = [
         name: 'evaluations',
         label: 'Processo de Avaliação',
         required: true,
+        rich: true,
     },
     {
         name: 'complementary_records',
         label: 'Registros Complementares',
         required: false,
+        rich: true,
         hint: 'Espaço opcional destinado ao registro de informações relevantes que contribuam para o acompanhamento pedagógico do estudante e que não estejam contempladas nos campos anteriores.',
     },
     {
         name: 'opinion',
         label: 'Parecer',
         required: false,
+        rich: true,
     },
 ];
 

@@ -1,5 +1,5 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide, FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -29,7 +29,8 @@ export default function BarrierCategoryForm({
     category,
     canSubmit,
 }: BarrierCategoryFormProps): React.JSX.Element {
-    const { form, errors, formRef, save } = useBarrierCategoryForm({ category, canSubmit });
+    const { form, errors, formRef, save, editorFailed, reportEditorFailure } =
+        useBarrierCategoryForm({ category, canSubmit });
     const editing = Boolean(category);
 
     return (
@@ -67,15 +68,17 @@ export default function BarrierCategoryForm({
                                 />
                             </FormGridWide>
                             <FormGridWide>
-                                <TextAreaField
+                                <RichTextField
                                     id="barrier-category-description"
-                                    name="description"
                                     label="Descrição Detalhada"
-                                    rows={4}
-                                    placeholder="Descreva o que este tipo de barreira engloba..."
-                                    value={form.data.description}
+                                    defaultValue={form.data.description}
+                                    height={120}
+                                    disabled={form.processing}
                                     error={errors.description}
-                                    onChange={(value) => form.setData('description', value)}
+                                    onLoadError={() =>
+                                        reportEditorFailure('description', 'descrição')
+                                    }
+                                    onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
                         </FormGrid>
@@ -123,7 +126,12 @@ export default function BarrierCategoryForm({
                     disabled={form.processing}
                 />
                 {canSubmit ? (
-                    <Button type="submit" tone="save" label="Salvar" disabled={form.processing} />
+                    <Button
+                        type="submit"
+                        tone="save"
+                        label="Salvar"
+                        disabled={form.processing || editorFailed}
+                    />
                 ) : null}
             </FormActions>
         </FormLayout>

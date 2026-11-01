@@ -30,6 +30,8 @@ export default function AeeRecordForm({
         evaluationErrorFor,
         evaluationHasErrors,
         updateEvaluation,
+        editorFailed,
+        reportEditorFailure,
         save,
     } = useAeeRecordForm({ session, aeeRecord });
     const editing = Boolean(aeeRecord);
@@ -54,7 +56,12 @@ export default function AeeRecordForm({
             }}
         >
             <CardBox>
-                <AeeRecordGeneralFields form={form} errors={errors} disabled={form.processing} />
+                <AeeRecordGeneralFields
+                    form={form}
+                    errors={errors}
+                    disabled={form.processing}
+                    onEditorFailure={reportEditorFailure}
+                />
                 <AeeRecordEvaluationFields
                     editing={editing}
                     students={students}
@@ -66,6 +73,7 @@ export default function AeeRecordForm({
                     errorFor={evaluationErrorFor}
                     hasErrors={evaluationHasErrors}
                     onChange={updateEvaluation}
+                    onEditorFailure={reportEditorFailure}
                 />
             </CardBox>
             <FormActions
@@ -86,7 +94,7 @@ export default function AeeRecordForm({
                     label="Salvar"
                     title="Salvar registro do atendimento AEE"
                     aria-label={submitLabel}
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

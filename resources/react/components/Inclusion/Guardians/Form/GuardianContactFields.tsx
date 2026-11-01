@@ -1,7 +1,7 @@
 import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import {
+    RichTextField,
     SelectInputField,
-    TextAreaField,
     TextInputField,
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
@@ -11,6 +11,7 @@ import type { GuardianFormSectionProps } from './GuardianForm.types';
 
 interface GuardianContactFieldsProps extends GuardianFormSectionProps {
     relationships: Record<string, string>;
+    onEditorFailure: () => void;
 }
 
 /** E-mail, telefone, parentesco e endereço do responsável. */
@@ -19,6 +20,7 @@ export default function GuardianContactFields({
     errors,
     disabled,
     relationships,
+    onEditorFailure,
 }: GuardianContactFieldsProps): React.JSX.Element {
     return (
         <FormSection
@@ -63,15 +65,15 @@ export default function GuardianContactFields({
                     onChange={(value) => form.setData('relationship', value)}
                 />
                 <FormGridWide>
-                    <TextAreaField
+                    <RichTextField
                         id="guardian-address"
-                        name="address"
                         label="Endereço Completo"
-                        rows={2}
-                        maxLength={500}
-                        value={form.data.address}
+                        defaultValue={form.data.address}
+                        height={100}
+                        disabled={disabled}
                         error={errors.address}
-                        onChange={(value) => form.setData('address', value)}
+                        onLoadError={onEditorFailure}
+                        onChange={(html) => form.setData('address', html)}
                     />
                 </FormGridWide>
             </FormGrid>

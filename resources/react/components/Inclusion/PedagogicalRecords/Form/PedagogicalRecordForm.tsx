@@ -38,6 +38,8 @@ export default function PedagogicalRecordForm({
         errors,
         guardianError,
         formRef,
+        editorFailed,
+        reportEditorFailure,
         updatePresence,
         updateWithGuardians,
         toggleGuardian,
@@ -78,6 +80,7 @@ export default function PedagogicalRecordForm({
                         disabled={form.processing}
                         onChange={(name, value) => form.setData(name, value)}
                         onPresenceChange={updatePresence}
+                        onEditorFailure={reportEditorFailure}
                     />
                 </fieldset>
             </CardBox>
@@ -95,7 +98,7 @@ export default function PedagogicalRecordForm({
                     label="Salvar"
                     title="Salvar atendimento pedagógico"
                     aria-label="Salvar atendimento pedagógico"
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>
