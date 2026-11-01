@@ -13,6 +13,9 @@ interface SidebarCollapsedFlyoutProps {
     onItemClick: (event: React.MouseEvent<HTMLAnchorElement>, item: SidebarItem) => void;
     onMouseEnter: () => void;
     onMouseLeave: () => void;
+    onFocus?: () => void;
+    onBlur?: (event: React.FocusEvent<HTMLDivElement>) => void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 function FlyoutItems({
@@ -81,6 +84,9 @@ export default function SidebarCollapsedFlyout({
     onItemClick,
     onMouseEnter,
     onMouseLeave,
+    onFocus,
+    onBlur,
+    onKeyDown,
 }: SidebarCollapsedFlyoutProps): React.JSX.Element {
     if (!item.children?.length) {
         return <></>;
@@ -98,6 +104,9 @@ export default function SidebarCollapsedFlyout({
             style={{ top: `${top}px` }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onKeyDown={onKeyDown}
         >
             <div ref={bodyRef} className="sidebarPrimary__collapsedFlyoutBody">
                 <ul className="list-unstyled sidebarPrimary__collapsedFlyoutMenu">

@@ -103,3 +103,9 @@
         left: 15px;
     }
 }
+
+/* Foco por teclado sobre o roxo da barra do portal: anel branco com halo claro. */
+.teacherPortalLayout__topbar {
+    --ui-focus-keyboard-color: var(--ui-color-surface);
+    --ui-focus-keyboard-gap-color: var(--ui-color-gnai-primary);
+}

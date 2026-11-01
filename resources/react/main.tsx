@@ -3,9 +3,15 @@ import type { ComponentType, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppLayout from '@/components/Navigation/AppLayout/AppLayout';
 import AppLoader from '@/components/UI/AppLoader/AppLoader';
+import {
+    applyHighContrast,
+    installFocusModality,
+    storedHighContrast,
+} from '@/utils/accessibilityPreferences';
 import './styles/reset.css';
 import './styles/tokens.css';
 import './styles/globals.css';
+import './styles/accessibility.css';
 
 type PageComponent = ComponentType & { layout?: (page: ReactNode) => ReactNode };
 
@@ -27,6 +33,10 @@ function usesAppLayout(name: string): boolean {
         !STANDALONE_PAGES.includes(name)
     );
 }
+
+// Preferências de acessibilidade valem antes da primeira renderização, inclusive no login.
+installFocusModality();
+applyHighContrast(storedHighContrast());
 
 void createInertiaApp({
     id: 'root',

@@ -1,0 +1,12 @@
+/* Reset sem especificidade: a classe recebida (ex.: `topbar__navLink`) define cor e espaçamento. */
+:where(.contrastToggle) {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+}
+
+.contrastToggle[aria-pressed='true'] {
+    background-color: rgba(255, 255, 255, 0.1);
+}

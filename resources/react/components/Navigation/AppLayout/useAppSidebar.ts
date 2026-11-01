@@ -23,6 +23,7 @@ export function useAppSidebar(url: string): {
     collapsed: boolean;
     toggle: () => void;
     closeOnMobile: () => void;
+    openOnMobile: () => void;
 } {
     const [preference, setPreference] = useState(savedPreference);
     const [collapsed, setCollapsed] = useState(() => initialCollapsed(preference));
@@ -41,6 +42,10 @@ export function useAppSidebar(url: string): {
 
     const closeOnMobile = (): void => {
         if (isMobile()) setCollapsed(true);
+    };
+    // No celular o menu recolhido fica oculto; o atalho "Menu" precisa abri-lo antes do foco.
+    const openOnMobile = (): void => {
+        if (isMobile()) setCollapsed(false);
     };
     useEffect(() => {
         closeOnMobile();
@@ -67,5 +72,5 @@ export function useAppSidebar(url: string): {
         }
     }
 
-    return { collapsed, toggle, closeOnMobile };
+    return { collapsed, toggle, closeOnMobile, openOnMobile };
 }

@@ -506,3 +506,36 @@
 .sidebarPrimary:not(.sidebarPrimary--collapsed) .sidebarPrimary__menu > ul > li:not(.is-open) > a {
     margin-bottom: 0;
 }
+
+/*
+ * Foco por teclado no fundo escuro: anel lilás por dentro do item (a rolagem do menu cortaria um
+ * anel externo) e realce de fundo, como no hover. O item ativo mantém o fundo roxo.
+ */
+.sidebarPrimary {
+    --ui-focus-keyboard-color: var(--ui-sidebar-accent);
+    --ui-focus-keyboard-offset: -4px;
+    --ui-focus-keyboard-shadow: none;
+}
+
+.sidebarPrimary__collapsedFlyout {
+    --ui-focus-keyboard-color: var(--ui-sidebar-flyout-accent);
+    --ui-focus-keyboard-offset: -3px;
+}
+
+html:root[data-focus-mode='keyboard'] .sidebarPrimary__menu a:focus-visible {
+    border-radius: var(--ui-radius-lg);
+    color: var(--ui-sidebar-accent);
+}
+
+html:root[data-focus-mode='keyboard']
+    .sidebarPrimary__menu
+    > ul
+    > li
+    > a:not(.active):not(.subdrop):focus-visible {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: var(--ui-sidebar-accent);
+}
+
+html:root[data-focus-mode='keyboard'] .sidebarPrimary__collapsedFlyoutMenu a:focus-visible {
+    border-radius: var(--ui-radius-md);
+}

@@ -12,6 +12,7 @@ interface SidebarMenuProps {
     openKeyList: string[];
     activeCollapsedFlyoutKey?: string;
     onItemClick: (event: React.MouseEvent<HTMLAnchorElement>, item: SidebarItem) => void;
+    onItemKeyDown?: (event: React.KeyboardEvent<HTMLAnchorElement>, item: SidebarItem) => void;
     onTopLevelHoverStart?: (item: SidebarItem, element: HTMLLIElement) => void;
     onTopLevelHoverEnd?: () => void;
     isSectionTitle: (entry: SidebarEntry) => entry is SidebarSectionTitle;
@@ -27,6 +28,7 @@ export default function SidebarMenu({
     openKeyList,
     activeCollapsedFlyoutKey,
     onItemClick,
+    onItemKeyDown,
     onTopLevelHoverStart,
     onTopLevelHoverEnd,
     isSectionTitle,
@@ -58,6 +60,7 @@ export default function SidebarMenu({
                             depth === 0 && activeCollapsedFlyoutKey === entry.key
                         }
                         onItemClick={onItemClick}
+                        onItemKeyDown={depth === 0 ? onItemKeyDown : undefined}
                         onTopLevelHoverStart={depth === 0 ? onTopLevelHoverStart : undefined}
                         onTopLevelHoverEnd={depth === 0 ? onTopLevelHoverEnd : undefined}
                     >

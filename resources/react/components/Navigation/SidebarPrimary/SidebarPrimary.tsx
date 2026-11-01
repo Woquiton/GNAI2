@@ -4,6 +4,7 @@ import './SidebarPrimary.css';
 import './SidebarPrimary.small.css';
 import SidebarUser from '@/components/Navigation/SidebarUser/SidebarUser';
 import type { SidebarUserDetails } from '@/components/Navigation/SidebarUser/SidebarUser.types';
+import { isKeyboardFocusMode } from '@/utils/accessibilityPreferences';
 import type { SidebarEntry, SidebarItem } from './SidebarPrimary.types';
 import { useSidebarBranches } from './useSidebarBranches';
 import { sidebarEntries } from './SidebarPrimary.data';
@@ -42,6 +43,10 @@ export default function SidebarPrimary({
     const collapsedFlyoutRef = useRef<HTMLDivElement | null>(null);
     const hideTimerRef = useRef<number | null>(null);
     const collapsedHoverHideTimerRef = useRef<number | null>(null);
+    /** Item recolhido que abriu o flyout; recebe o foco de volta ao sair dele pelo teclado. */
+    const collapsedTriggerRef = useRef<HTMLAnchorElement | null>(null);
+    /** Evita que o foco devolvido pelo Esc reabra o flyout que acabou de ser fechado. */
+    const suppressFocusOpenRef = useRef<boolean>(false);
 
     useEffect(() => {
         if (!collapsed) {
@@ -170,13 +175,21 @@ export default function SidebarPrimary({
     }, [thumbHeight]);
 
     function handleItemClick(event: React.MouseEvent<HTMLAnchorElement>, item: SidebarItem): void {
-        event.currentTarget.blur();
+        // Enter/Espaço geram clique com `detail` 0: o foco do teclado precisa continuar no item.
+        const fromKeyboard = event.detail === 0;
+
+        if (!fromKeyboard) {
+            event.currentTarget.blur();
+        }
 
         if (item.children?.length) {
             event.preventDefault();
 
             if (!collapsed) {
                 toggleItem(item);
+            } else if (fromKeyboard && event.currentTarget.parentElement instanceof HTMLLIElement) {
+                showCollapsedItem(item, event.currentTarget.parentElement);
+                focusFirstFlyoutLink();
             }
 
             return;
@@ -219,12 +232,13 @@ export default function SidebarPrimary({
     }
 
     function showCollapsedItem(item: SidebarItem, element: HTMLLIElement): void {
-        if (!collapsed) {
+        if (!collapsed || suppressFocusOpenRef.current) {
             return;
         }
 
         clearCollapsedHoverHideTimer();
 
+        collapsedTriggerRef.current = element.querySelector<HTMLAnchorElement>(':scope > a');
         const sidebarElement = sidebarRef.current;
 
         if (!sidebarElement) {
@@ -254,6 +268,97 @@ export default function SidebarPrimary({
         }, 120);
     }
 
+    function flyoutLinks(): HTMLAnchorElement[] {
+        return Array.from(
+            sidebarRef.current?.querySelectorAll<HTMLAnchorElement>(
+                '.sidebarPrimary__collapsedFlyout a[href]',
+            ) ?? [],
+        );
+    }
+
+    /** Move o foco para o primeiro link do flyout depois que ele é renderizado. */
+    function focusFirstFlyoutLink(): void {
+        window.requestAnimationFrame(() => flyoutLinks()[0]?.focus());
+    }
+
+    function handleCollapsedTriggerKeyDown(
+        event: React.KeyboardEvent<HTMLAnchorElement>,
+        item: SidebarItem,
+    ): void {
+        if (!collapsed || !item.children?.length || event.key !== 'ArrowRight') {
+            return;
+        }
+
+        event.preventDefault();
+
+        if (event.currentTarget.parentElement instanceof HTMLLIElement) {
+            showCollapsedItem(item, event.currentTarget.parentElement);
+            focusFirstFlyoutLink();
+        }
+    }
+
+    /**
+     * Teclado no flyout do menu recolhido: Esc ou seta à esquerda voltam ao item; Tab no último
+     * link segue para o próximo item do menu e Shift+Tab no primeiro volta ao item de origem.
+     */
+    function handleFlyoutKeyDown(event: React.KeyboardEvent<HTMLDivElement>): void {
+        const trigger = collapsedTriggerRef.current;
+
+        if (!trigger) {
+            return;
+        }
+
+        if (event.key === 'Escape' || event.key === 'ArrowLeft') {
+            event.preventDefault();
+            event.stopPropagation();
+            clearCollapsedHoverHideTimer();
+            setHoveredCollapsedItem(null);
+            suppressFocusOpenRef.current = true;
+            trigger.focus();
+            suppressFocusOpenRef.current = false;
+            return;
+        }
+
+        if (event.key !== 'Tab') {
+            return;
+        }
+
+        const links = flyoutLinks();
+        const active = document.activeElement;
+
+        if (event.shiftKey && active === links[0]) {
+            event.preventDefault();
+            trigger.focus();
+            return;
+        }
+
+        if (!event.shiftKey && active === links[links.length - 1]) {
+            const topLevelLinks = Array.from(
+                sidebarRef.current?.querySelectorAll<HTMLAnchorElement>(
+                    '.sidebarPrimary__menu > ul > li > a',
+                ) ?? [],
+            );
+            const next = topLevelLinks[topLevelLinks.indexOf(trigger) + 1];
+
+            if (next) {
+                event.preventDefault();
+                next.focus();
+            }
+        }
+    }
+
+    function handleFlyoutBlur(event: React.FocusEvent<HTMLDivElement>): void {
+        const next = event.relatedTarget;
+
+        if (!isKeyboardFocusMode()) {
+            return;
+        }
+
+        if (!(next instanceof Node) || !event.currentTarget.contains(next)) {
+            queueCollapsedHoverHide();
+        }
+    }
+
     return (
         <aside
             ref={sidebarRef}
@@ -262,7 +367,7 @@ export default function SidebarPrimary({
         >
             <div ref={innerRef} className="sidebarPrimary__inner sidebar-inner">
                 {user && !collapsed ? <SidebarUser user={user} /> : null}
-                <div id="sidebar-menu" className="sidebarPrimary__menu">
+                <nav id="sidebar-menu" className="sidebarPrimary__menu" aria-label="Menu principal">
                     <SidebarMenu
                         entries={entries}
                         collapsed={collapsed}
@@ -273,6 +378,7 @@ export default function SidebarPrimary({
                                 : undefined
                         }
                         onItemClick={handleItemClick}
+                        onItemKeyDown={handleCollapsedTriggerKeyDown}
                         onTopLevelHoverStart={showCollapsedItem}
                         onTopLevelHoverEnd={queueCollapsedHoverHide}
                         isSectionTitle={isSectionTitle}
@@ -281,7 +387,7 @@ export default function SidebarPrimary({
                         }
                     />
                     <div className="clearfix" />
-                </div>
+                </nav>
                 <div className="clearfix" />
             </div>
             {collapsed && hoveredCollapsedItem ? (
@@ -322,6 +428,9 @@ export default function SidebarPrimary({
                     onItemClick={handleItemClick}
                     onMouseEnter={clearCollapsedHoverHideTimer}
                     onMouseLeave={queueCollapsedHoverHide}
+                    onFocus={clearCollapsedHoverHideTimer}
+                    onBlur={handleFlyoutBlur}
+                    onKeyDown={handleFlyoutKeyDown}
                 />
             ) : null}
             <SidebarScrollbar

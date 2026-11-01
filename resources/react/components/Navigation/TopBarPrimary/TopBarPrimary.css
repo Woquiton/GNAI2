@@ -578,3 +578,15 @@
         transition: none;
     }
 }
+
+/* Foco por teclado sobre o roxo da barra: anel branco por dentro; menus suspensos voltam ao roxo. */
+.topbar {
+    --ui-focus-keyboard-color: var(--ui-color-surface);
+    --ui-focus-keyboard-offset: -4px;
+    --ui-focus-keyboard-shadow: none;
+}
+
+.topbarDropdown {
+    --ui-focus-keyboard-color: var(--ui-color-input-focus-border);
+    --ui-focus-keyboard-offset: -3px;
+}

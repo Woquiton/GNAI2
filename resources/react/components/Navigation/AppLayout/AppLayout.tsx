@@ -5,8 +5,10 @@ import AppFooter from '@/components/Navigation/AppFooter/AppFooter';
 import ImpersonationIndicator from '@/components/Navigation/ImpersonationIndicator/ImpersonationIndicator';
 import InstitutionBrand from '@/components/Navigation/InstitutionBrand/InstitutionBrand';
 import SidebarPrimary from '@/components/Navigation/SidebarPrimary/SidebarPrimary';
+import SkipLinks, { type SkipLinkItem } from '@/components/Navigation/SkipLinks/SkipLinks';
 import TopBarPrimary from '@/components/Navigation/TopBarPrimary/TopBarPrimary';
 import type { ProfileLink } from '@/components/Navigation/TopBarPrimary/TopBarPrimary.data';
+import ContrastToggle from '@/components/UI/ContrastToggle/ContrastToggle';
 import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
 import PageErrorBoundary from '@/components/UI/PageErrorBoundary/PageErrorBoundary';
 import PageScrollbar from '@/components/UI/PageScrollbar/PageScrollbar';
@@ -16,6 +18,8 @@ import { useAppSidebar } from './useAppSidebar';
 import './AppLayout.css';
 
 const HOME_HREF = '/autenticacao/painel';
+const CONTENT_ID = 'conteudo';
+const FOOTER_ID = 'rodape';
 
 export default function AppLayout({ children }: { children: ReactNode }): React.JSX.Element {
     const { props, url } = usePage<AppLayoutProps>();
@@ -46,9 +50,23 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
         },
     ];
 
+    // Atalhos na ordem e numeração do eMAG/gov.br; o Gnai não tem busca global.
+    const skipLinks: SkipLinkItem[] = [
+        { label: 'Conteúdo', accessKey: '1', targetId: CONTENT_ID },
+        { label: 'Página inicial', accessKey: '2', href: HOME_HREF },
+        {
+            label: 'Menu',
+            accessKey: '3',
+            targetId: 'sidebar-menu',
+            onBeforeFocus: sidebar.openOnMobile,
+        },
+        { label: 'Rodapé', accessKey: '4', targetId: FOOTER_ID },
+    ];
+
     // A falha de renderização troca o layout inteiro pela tela de erro avulsa.
     return (
         <PageErrorBoundary resetKey={url} fallback={<RenderErrorScreen homeHref={HOME_HREF} />}>
+            <SkipLinks items={skipLinks} />
             <div
                 className={`app-page gnaiApp${sidebar.collapsed ? ' app-page--sidebarCollapsed' : ''}`}
             >
@@ -66,12 +84,17 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
                     notificationsHref="/notificacoes"
                     showSettings={false}
                     actionsContent={
-                        impersonating ? (
-                            <ImpersonationIndicator
-                                name={auth.user.name}
-                                readOnly={impersonationReadOnly}
-                            />
-                        ) : undefined
+                        <>
+                            {impersonating ? (
+                                <ImpersonationIndicator
+                                    name={auth.user.name}
+                                    readOnly={impersonationReadOnly}
+                                />
+                            ) : null}
+                            <li className="topbar__navItem">
+                                <ContrastToggle className="topbar__navLink" />
+                            </li>
+                        </>
                     }
                     leadingContent={
                         <InstitutionBrand
@@ -98,8 +121,16 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
                     />
                 ) : null}
                 <div className="app-content-placeholder">
-                    <div className="app-content-placeholder__inner">{children}</div>
-                    <AppFooter>Gnai &copy; {new Date().getFullYear()} | Gestão NAIs</AppFooter>
+                    <div
+                        id={CONTENT_ID}
+                        className="app-content-placeholder__inner"
+                        tabIndex={-1}
+                    >
+                        {children}
+                    </div>
+                    <AppFooter id={FOOTER_ID}>
+                        Gnai &copy; {new Date().getFullYear()} | Gestão NAIs
+                    </AppFooter>
                 </div>
                 <FlashNotifications />
                 <PageScrollbar />

@@ -1,4 +1,5 @@
 import Label from '@/components/UI/Label/Label';
+import { isKeyboardFocusMode } from '@/utils/accessibilityPreferences';
 import type { SidebarItem } from './SidebarPrimary.types';
 import { joinClassNames } from '@/utils/joinClassNames';
 
@@ -10,6 +11,7 @@ interface SidebarMenuItemProps {
     isActive: boolean;
     isCollapsedFlyoutActive?: boolean;
     onItemClick: (event: React.MouseEvent<HTMLAnchorElement>, item: SidebarItem) => void;
+    onItemKeyDown?: (event: React.KeyboardEvent<HTMLAnchorElement>, item: SidebarItem) => void;
     onTopLevelHoverStart?: (item: SidebarItem, element: HTMLLIElement) => void;
     onTopLevelHoverEnd?: () => void;
     children?: React.ReactNode;
@@ -23,6 +25,7 @@ export default function SidebarMenuItem({
     isActive,
     isCollapsedFlyoutActive,
     onItemClick,
+    onItemKeyDown,
     onTopLevelHoverStart,
     onTopLevelHoverEnd,
     children,
@@ -44,6 +47,19 @@ export default function SidebarMenuItem({
             }}
             onMouseLeave={() => {
                 if (collapsed && depth === 0) {
+                    onTopLevelHoverEnd?.();
+                }
+            }}
+            // No menu recolhido, o foco pelo teclado tem o mesmo efeito do ponteiro sobre o item.
+            onFocus={(event: React.FocusEvent<HTMLLIElement>) => {
+                const ownLink = event.target.parentElement === event.currentTarget;
+
+                if (collapsed && depth === 0 && ownLink && isKeyboardFocusMode()) {
+                    onTopLevelHoverStart?.(item, event.currentTarget);
+                }
+            }}
+            onBlur={() => {
+                if (collapsed && depth === 0 && isKeyboardFocusMode()) {
                     onTopLevelHoverEnd?.();
                 }
             }}
@@ -71,6 +87,12 @@ export default function SidebarMenuItem({
                         : undefined
                 }
                 onClick={(event: React.MouseEvent<HTMLAnchorElement>) => onItemClick(event, item)}
+                onKeyDown={
+                    onItemKeyDown
+                        ? (event: React.KeyboardEvent<HTMLAnchorElement>) =>
+                              onItemKeyDown(event, item)
+                        : undefined
+                }
             >
                 {item.iconClass ? <i className={item.iconClass} aria-hidden="true" /> : null}
 
