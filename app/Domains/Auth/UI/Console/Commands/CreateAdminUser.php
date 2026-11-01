@@ -93,7 +93,7 @@ final class CreateAdminUser extends Command
 
         $password = $this->resolvePassword();
 
-        if (! $this->validatePassword($password)) {
+        if ($password === null) {
             return self::FAILURE;
         }
 
@@ -117,17 +117,20 @@ final class CreateAdminUser extends Command
         return self::SUCCESS;
     }
 
-    private function resolvePassword(): string
+    /**
+     * Senha validada; null quando a informada por --password é recusada.
+     */
+    private function resolvePassword(): ?string
     {
         $password = $this->option('password');
 
         if ($password !== null && $password !== '') {
             $this->warnPasswordOptionExposure();
 
-            return (string) $password;
+            return $this->validatePassword((string) $password) ? (string) $password : null;
         }
 
-        return $this->askForPassword();
+        return $this->askForValidPassword();
     }
 
     private function validateEmail(string $email): bool

@@ -31,6 +31,32 @@ trait HandlesAdminCredentials
         } while (true);
     }
 
+    /**
+     * Mostra os requisitos e pede a senha até ela ser válida, sem obrigar a
+     * executar o comando de novo quando a senha for recusada.
+     */
+    private function askForValidPassword(string $label = 'Senha'): string
+    {
+        $this->components->info('A senha do administrador precisa ter:');
+        $this->components->bulletList([
+            'pelo menos 12 caracteres;',
+            'letras maiúsculas e minúsculas;',
+            'pelo menos um número;',
+            'pelo menos um símbolo (ex.: ! @ # $ %);',
+            'não aparecer em vazamentos de senhas conhecidos.',
+        ]);
+
+        do {
+            $password = $this->askForPassword($label);
+
+            if ($this->validatePassword($password)) {
+                return $password;
+            }
+
+            $this->components->warn('Senha recusada. Tente novamente.');
+        } while (true);
+    }
+
     private function validatePassword(string $password): bool
     {
         $validator = Validator::make(

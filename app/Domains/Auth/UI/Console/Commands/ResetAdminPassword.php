@@ -51,11 +51,7 @@ final class ResetAdminPassword extends Command
             return self::FAILURE;
         }
 
-        $password = $this->askForPassword('Nova senha');
-
-        if (! $this->validatePassword($password)) {
-            return self::FAILURE;
-        }
+        $password = $this->askForValidPassword('Nova senha');
 
         $admin->forceFill([
             'password' => Hash::make($password),
