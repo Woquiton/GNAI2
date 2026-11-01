@@ -1,3 +1,5 @@
+import RichTextContent from "@/components/UI/RichTextContent/RichTextContent";
+import ExpandableContent from "@/components/UI/ExpandableContent/ExpandableContent";
 import type { ReactNode } from "react";
 import FormActions from "@/components/Forms/FormActions/FormActions";
 import FormSection from "@/components/Forms/FormSection/FormSection";
@@ -26,12 +28,6 @@ import {
 import "./Paees.css";
 
 const yesNo = (value: boolean): string => (value ? "Sim" : "Não");
-
-function Text({ children }: { children: string | null }): React.JSX.Element {
-    return children
-        ? <span className="paeeShow__text">{children}</span>
-        : <>Não informado</>;
-}
 
 function Empty({ children }: { children: ReactNode }): React.JSX.Element {
     return <p className="paeeShow__empty">{children}</p>;
@@ -122,17 +118,25 @@ export default function InclusionPaeesShowPage({
                             {yesNo(paee.is_assistive_technology_portable_digital_device)}
                         </DetailField>
                         <DetailField label="Observações TA">
-                            <Text>{paee.assistive_technology_notes}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.assistive_technology_notes || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                         <DetailField label="Observações CAA">
-                            <Text>{paee.caa_notes}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.caa_notes || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                         <DetailField label="Capacidade de disponibilização" wide>
-                            <Text>{paee.assistive_technology_availability_capacity}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.assistive_technology_availability_capacity || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                         {paee.is_assistive_technology_portable_digital_device ? (
                             <DetailField label="Parecer pedagógico (TA portátil)" wide>
-                                <Text>{paee.assistive_technology_pedagogical_opinion}</Text>
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.assistive_technology_pedagogical_opinion || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                     </dl>
@@ -156,17 +160,23 @@ export default function InclusionPaeesShowPage({
                         </DetailField>
                         {paee.support_professional_needed ? (
                             <DetailField label="Justificativa (apoio)" wide>
-                                <Text>{paee.support_professional_justification}</Text>
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.support_professional_justification || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                         {paee.libras_interpreter_needed ? (
                             <DetailField label="Justificativa (Libras)" wide>
-                                <Text>{paee.libras_interpreter_justification}</Text>
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.libras_interpreter_justification || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                         {paee.guide_interpreter_needed ? (
                             <DetailField label="Justificativa (guia-intérprete)" wide>
-                                <Text>{paee.guide_interpreter_justification}</Text>
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.guide_interpreter_justification || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                     </dl>
@@ -229,19 +239,29 @@ export default function InclusionPaeesShowPage({
                 >
                     <dl className="paeeShow__grid paeeShow__grid--2">
                         <DetailField label="Orientação aos profissionais da escola">
-                            <Text>{paee.school_professionals_orientation}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.school_professionals_orientation || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                         <DetailField label="Articulação com professores do ensino comum">
-                            <Text>{paee.common_teachers_articulation}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.common_teachers_articulation || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                         <DetailField label="Como a família será envolvida">
-                            <Text>{paee.family_articulation}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.family_articulation || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                         <DetailField label="Articulação intersetorial">
-                            <Text>{paee.intersectoral_articulation}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.intersectoral_articulation || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                         <DetailField label="Demandas de formação" wide>
-                            <Text>{paee.training_demands}</Text>
+                            <ExpandableContent>
+                                <RichTextContent html={paee.training_demands || "Não informado"} />
+                            </ExpandableContent>
                         </DetailField>
                     </dl>
                 </FormSection>
@@ -259,8 +279,12 @@ export default function InclusionPaeesShowPage({
                                     <strong>
                                         {`${dateLabel(review.reviewed_at)}, ${review.reviewer_name || "Não informado"}`}
                                     </strong>
-                                    <p>{review.what_changed}</p>
-                                    <small className="paeeShow__meta">{review.why}</small>
+                                    <ExpandableContent>
+                                        <RichTextContent html={review.what_changed || "Não informado"} />
+                                    </ExpandableContent>
+                                    <ExpandableContent>
+                                        <RichTextContent html={review.why || "Não informado"} />
+                                    </ExpandableContent>
                                 </li>
                             ))}
                         </ul>

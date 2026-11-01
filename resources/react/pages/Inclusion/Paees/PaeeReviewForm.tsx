@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import FormField from "@/components/Forms/FormField/FormField";
 import FormGrid from "@/components/Forms/FormGrid/FormGrid";
 import FormLayout from "@/components/Forms/FormLayout/FormLayout";
-import TextArea from "@/components/Forms/TextArea/TextArea";
+import SummernoteEditor from "@/components/Forms/SummernoteEditor/SummernoteEditor";
 import Button from "@/components/UI/Button/Button";
 import { notify } from "@/components/UI/NotificationToast/notify";
 import { paeeUrl } from "./Paees.utils";
@@ -30,6 +30,8 @@ export default function PaeeReviewForm({
     paeeId: number;
 }): React.JSX.Element {
     const busy = useRef(false);
+    const [editorFailed, setEditorFailed] = useState(false);
+    const [editorVersion, setEditorVersion] = useState(0);
     const form = useForm<Record<ReviewFields, string>>({
         what_changed: "",
         why: "",
@@ -37,12 +39,15 @@ export default function PaeeReviewForm({
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        if (busy.current || form.processing) return;
+        if (busy.current || form.processing || editorFailed) return;
 
         busy.current = true;
         form.post(paeeUrl(paeeId, "reviews"), {
             preserveScroll: true,
-            onSuccess: () => form.reset(),
+            onSuccess: () => {
+                form.reset();
+                setEditorVersion((version) => version + 1);
+            },
             onNetworkError: () => {
                 notify({
                     tone: "error",
@@ -80,21 +85,27 @@ export default function PaeeReviewForm({
                         return (
                             <FormField
                                 key={field.name}
-                                id={id}
+                                id={`${id}-input`}
                                 label={field.label}
+                                hint={field.placeholder}
+                                hintLabel={`Exemplo para ${field.label.toLowerCase()}`}
                                 requiredIndicator
                                 error={form.errors[field.name]}
                             >
-                                <TextArea
+                                <SummernoteEditor
+                                    key={`${field.name}-${editorVersion}`}
                                     id={id}
-                                    name={field.name}
-                                    rows={2}
-                                    required
-                                    placeholder={field.placeholder}
-                                    value={form.data[field.name]}
-                                    aria-invalid={Boolean(form.errors[field.name]) || undefined}
-                                    aria-describedby={form.errors[field.name] ? `${id}-error` : undefined}
-                                    onChange={(event) => form.setData(field.name, event.target.value)}
+                                    label={field.label}
+                                    height={120}
+                                    defaultValue={form.data[field.name]}
+                                    disabled={form.processing}
+                                    invalid={Boolean(form.errors[field.name])}
+                                    describedBy={form.errors[field.name] ? `${id}-input-error` : undefined}
+                                    onChange={(html) => form.setData(field.name, html)}
+                                    onLoadError={() => {
+                                        setEditorFailed(true);
+                                        form.setError(field.name, "Não foi possível carregar o editor. Atualize a página e tente novamente.");
+                                    }}
                                 />
                             </FormField>
                         );
@@ -108,7 +119,7 @@ export default function PaeeReviewForm({
                         label={form.processing ? "Registrando..." : "Registrar"}
                         title="Registrar revisão do PAEE"
                         aria-label="Registrar revisão do PAEE"
-                        disabled={form.processing}
+                        disabled={form.processing || editorFailed}
                     />
                 </div>
             </fieldset>

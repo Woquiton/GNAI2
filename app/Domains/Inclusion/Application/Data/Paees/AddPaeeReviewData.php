@@ -19,8 +19,16 @@ final class AddPaeeReviewData extends Data
     public static function rules(): array
     {
         return [
-            'what_changed' => ['required', 'string', 'max:100000'],
-            'why' => ['required', 'string', 'max:100000'],
+            'what_changed' => ['required', 'string'],
+            'why' => ['required', 'string'],
+        ];
+    }
+
+    public static function attributes(): array
+    {
+        return [
+            'what_changed' => 'o que mudou',
+            'why' => 'por quê',
         ];
     }
 }

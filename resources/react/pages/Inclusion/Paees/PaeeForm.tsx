@@ -1,16 +1,19 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import FormActions from "@/components/Forms/FormActions/FormActions";
 import FormField from "@/components/Forms/FormField/FormField";
 import FormGrid, { FormGridWide } from "@/components/Forms/FormGrid/FormGrid";
 import FormLayout from "@/components/Forms/FormLayout/FormLayout";
 import FormSection from "@/components/Forms/FormSection/FormSection";
+import RemovableField from "@/components/Forms/RemovableField/RemovableField";
 import RepeaterField from "@/components/Forms/RepeaterField/RepeaterField";
 import SelectField from "@/components/Forms/SelectField/SelectField";
+import SummernoteEditor from "@/components/Forms/SummernoteEditor/SummernoteEditor";
 import TextArea from "@/components/Forms/TextArea/TextArea";
 import TextInput from "@/components/Forms/TextInput/TextInput";
 import ToggleControl from "@/components/Forms/ToggleControl/ToggleControl";
 import Button from "@/components/UI/Button/Button";
+import InfoTooltip from "@/components/UI/InfoTooltip/InfoTooltip";
 import CardBox from "@/components/UI/CardBox/CardBox";
 import { notify } from "@/components/UI/NotificationToast/notify";
 import type {
@@ -131,6 +134,7 @@ export default function PaeeForm({
 }): React.JSX.Element {
     const editing = Boolean(paee);
     const busy = useRef(false);
+    const [editorFailed, setEditorFailed] = useState(false);
     const element = useRef<HTMLFormElement>(null);
     const form = useForm<PaeeFormData>(initialData(paee));
     const errors = form.errors as Record<string, string | undefined>;
@@ -141,25 +145,35 @@ export default function PaeeForm({
             .filter(Boolean)
             .join(" ") || undefined;
 
-    function textArea(name: TextField, label: string, options: { hint?: string; required?: boolean; rows?: number } = {}): React.JSX.Element {
+    function richText(name: TextField, label: string, options: { hint?: string; required?: boolean; rows?: number } = {}): React.JSX.Element {
         const id = fieldId(name);
+        const inputId = `${id}-input`;
+        const description = [errors[name] ? `${inputId}-error` : undefined]
+            .filter(Boolean)
+            .join(" ") || undefined;
 
         return (
             <FormField
-                id={id}
+                id={inputId}
                 label={label}
                 hint={options.hint}
+                hintLabel={options.hint ? `Mais informações sobre ${label.toLowerCase()}` : undefined}
                 requiredIndicator={options.required}
                 error={errors[name]}
             >
-                <TextArea
+                <SummernoteEditor
                     id={id}
-                    name={name}
-                    rows={options.rows ?? 2}
-                    value={form.data[name]}
-                    aria-invalid={Boolean(errors[name]) || undefined}
-                    aria-describedby={describedBy(name, Boolean(options.hint))}
-                    onChange={(event) => form.setData(name, event.target.value)}
+                    label={label}
+                    height={120}
+                    defaultValue={form.data[name]}
+                    disabled={disabled}
+                    invalid={Boolean(errors[name])}
+                    describedBy={description}
+                    onChange={(html) => form.setData(name, html)}
+                    onLoadError={() => {
+                        setEditorFailed(true);
+                        form.setError(name, "Não foi possível carregar o editor. Atualize a página e tente novamente.");
+                    }}
                 />
             </FormField>
         );
@@ -172,7 +186,13 @@ export default function PaeeForm({
                 name={name}
                 size="small"
                 label={label}
-                description={errors[name] ?? description}
+                labelAddon={description ? (
+                    <InfoTooltip
+                        text={description}
+                        label={`Mais informações sobre ${label.toLowerCase()}`}
+                    />
+                ) : undefined}
+                description={errors[name]}
                 checked={form.data[name]}
                 disabled={disabled}
                 onChange={(checked) => form.setData(name, checked)}
@@ -190,7 +210,7 @@ export default function PaeeForm({
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        if (busy.current || form.processing) return;
+        if (busy.current || form.processing || editorFailed) return;
 
         busy.current = true;
         const options = {
@@ -328,14 +348,14 @@ export default function PaeeForm({
                         <FormGrid columns={2}>
                             {toggle("assistive_technology_needed", "Necessita de tecnologia assistiva")}
                             {toggle("caa_needed", "Necessita de Comunicação Aumentativa e Alternativa (CAA)")}
-                            {textArea("assistive_technology_notes", "Observações sobre tecnologia assistiva", {
+                            {richText("assistive_technology_notes", "Observações sobre tecnologia assistiva", {
                                 required: form.data.assistive_technology_needed,
                             })}
-                            {textArea("caa_notes", "Observações sobre CAA", {
+                            {richText("caa_notes", "Observações sobre CAA", {
                                 required: form.data.caa_needed,
                             })}
                             <FormGridWide>
-                                {textArea("assistive_technology_availability_capacity", "Capacidade de disponibilização da TA", {
+                                {richText("assistive_technology_availability_capacity", "Capacidade de disponibilização da TA", {
                                     hint: "Avalie se a escola tem condições de disponibilizar a tecnologia assistiva indicada (equipamento próprio, empréstimo, aquisição etc.).",
                                 })}
                             </FormGridWide>
@@ -344,7 +364,7 @@ export default function PaeeForm({
                                 "A tecnologia assistiva é um dispositivo digital portátil",
                                 "Marque se a TA indicada for um dispositivo digital portátil (tablet, notebook etc.); exige parecer pedagógico ao lado.",
                             )}
-                            {textArea("assistive_technology_pedagogical_opinion", "Parecer pedagógico sobre a TA portátil", {
+                            {richText("assistive_technology_pedagogical_opinion", "Parecer pedagógico sobre a TA portátil", {
                                 required: form.data.is_assistive_technology_portable_digital_device,
                             })}
                         </FormGrid>
@@ -353,7 +373,12 @@ export default function PaeeForm({
                     <FormSection
                         id="paee-supports"
                         title="Apoios de Profissionais"
-                        description="A necessidade de cada apoio é avaliada a partir do Estudo de Caso, sem exigir laudo médico."
+                        titleAddon={
+                            <InfoTooltip
+                                text="A necessidade de cada apoio é avaliada a partir do Estudo de Caso, sem exigir laudo médico."
+                                label="Mais informações sobre apoios de profissionais"
+                            />
+                        }
                         variant="inline"
                         iconClass="fa fa-users"
                     >
@@ -365,7 +390,7 @@ export default function PaeeForm({
                             ))}
                             {supportFields.map((field) => (
                                 <div key={field.text}>
-                                    {textArea(field.text, field.textLabel, {
+                                    {richText(field.text, field.textLabel, {
                                         required: form.data[field.toggle],
                                     })}
                                 </div>
@@ -387,7 +412,8 @@ export default function PaeeForm({
                             addLabel="Objetivo"
                             emptyMessage="Nenhum objetivo adicionado."
                             disabled={disabled}
-                            renderItem={(objective, index, update) => {
+                            removePlacement="field"
+                            renderItem={(objective, index, update, remove) => {
                                 const description = `objectives.${index}.description`;
                                 const term = `objectives.${index}.term`;
 
@@ -417,18 +443,24 @@ export default function PaeeForm({
                                             requiredIndicator
                                             error={errors[term]}
                                         >
-                                            <SelectField
-                                                id={fieldId(term)}
-                                                name={`objectives[${index}][term]`}
-                                                label="Prazo"
-                                                required
-                                                value={objective.term}
-                                                options={objectiveTermOptions}
+                                            <RemovableField
+                                                removeLabel={`Remover objetivo ${index + 1}`}
                                                 disabled={disabled}
-                                                aria-invalid={Boolean(errors[term])}
-                                                aria-describedby={describedBy(term)}
-                                                onChange={(event) => update({ term: event.target.value })}
-                                            />
+                                                onRemove={remove}
+                                            >
+                                                <SelectField
+                                                    id={fieldId(term)}
+                                                    name={`objectives[${index}][term]`}
+                                                    label="Prazo"
+                                                    required
+                                                    value={objective.term}
+                                                    options={objectiveTermOptions}
+                                                    disabled={disabled}
+                                                    aria-invalid={Boolean(errors[term])}
+                                                    aria-describedby={describedBy(term)}
+                                                    onChange={(event) => update({ term: event.target.value })}
+                                                />
+                                            </RemovableField>
                                         </FormField>
                                     </div>
                                 );
@@ -439,7 +471,12 @@ export default function PaeeForm({
                     <FormSection
                         id="paee-resources"
                         title="Recursos"
-                        description="Se não houver necessidade de nenhum recurso ou material, deixe a lista vazia."
+                        titleAddon={
+                            <InfoTooltip
+                                text="Se não houver necessidade de nenhum recurso ou material, deixe a lista vazia."
+                                label="Mais informações sobre recursos"
+                            />
+                        }
                         variant="inline"
                         iconClass="fa fa-cubes"
                     >
@@ -451,7 +488,8 @@ export default function PaeeForm({
                             addLabel="Recurso"
                             emptyMessage="Nenhum recurso adicionado."
                             disabled={disabled}
-                            renderItem={(resource, index, update) => {
+                            removePlacement="field"
+                            renderItem={(resource, index, update, remove) => {
                                 const description = `resources.${index}.description`;
                                 const acquisition = `resources.${index}.acquisition_type`;
 
@@ -481,18 +519,24 @@ export default function PaeeForm({
                                             requiredIndicator
                                             error={errors[acquisition] ?? errors[`resources.${index}.assistive_technology_id`]}
                                         >
-                                            <SelectField
-                                                id={fieldId(acquisition)}
-                                                name={`resources[${index}][acquisition_type]`}
-                                                label="Tipo de aquisição"
-                                                required
-                                                value={resource.acquisition_type}
-                                                options={acquisitionTypeOptions}
+                                            <RemovableField
+                                                removeLabel={`Remover recurso ${index + 1}`}
                                                 disabled={disabled}
-                                                aria-invalid={Boolean(errors[acquisition])}
-                                                aria-describedby={describedBy(acquisition)}
-                                                onChange={(event) => update({ acquisition_type: event.target.value })}
-                                            />
+                                                onRemove={remove}
+                                            >
+                                                <SelectField
+                                                    id={fieldId(acquisition)}
+                                                    name={`resources[${index}][acquisition_type]`}
+                                                    label="Tipo de aquisição"
+                                                    required
+                                                    value={resource.acquisition_type}
+                                                    options={acquisitionTypeOptions}
+                                                    disabled={disabled}
+                                                    aria-invalid={Boolean(errors[acquisition])}
+                                                    aria-describedby={describedBy(acquisition)}
+                                                    onChange={(event) => update({ acquisition_type: event.target.value })}
+                                                />
+                                            </RemovableField>
                                         </FormField>
                                     </div>
                                 );
@@ -510,11 +554,11 @@ export default function PaeeForm({
                             {articulationFields.map((field) => (
                                 field.wide ? (
                                     <FormGridWide key={field.name}>
-                                        {textArea(field.name, field.label, { hint: field.hint })}
+                                        {richText(field.name, field.label, { hint: field.hint })}
                                     </FormGridWide>
                                 ) : (
                                     <div key={field.name}>
-                                        {textArea(field.name, field.label, { hint: field.hint })}
+                                        {richText(field.name, field.label, { hint: field.hint })}
                                     </div>
                                 )
                             ))}
@@ -540,7 +584,7 @@ export default function PaeeForm({
                     label="Salvar"
                     title={editing ? "Atualizar PAEE" : "Salvar PAEE"}
                     aria-label={editing ? "Atualizar PAEE" : "Salvar PAEE"}
-                    disabled={form.processing}
+                    disabled={form.processing || editorFailed}
                 />
             </FormActions>
         </FormLayout>

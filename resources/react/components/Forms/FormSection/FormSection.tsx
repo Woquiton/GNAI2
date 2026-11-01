@@ -5,18 +5,19 @@ import './FormSection.css';
 interface FormSectionProps {
   id?: string;
   title: string;
+  titleAddon?: ReactNode;
   description?: ReactNode;
   children: ReactNode;
   variant?: 'card' | 'inline';
   iconClass?: string;
 }
-export default function FormSection({ id, title, description, children, variant = 'card', iconClass = 'fa fa-list-alt' }: FormSectionProps): React.JSX.Element {
+export default function FormSection({ id, title, titleAddon, description, children, variant = 'card', iconClass = 'fa fa-list-alt' }: FormSectionProps): React.JSX.Element {
   const generatedId = useId();
   const titleId = `${id ?? generatedId}-title`;
   const Heading = variant === 'inline' ? 'h2' : 'h4';
   const content = <>
     <Heading id={titleId} className="formSection__title">
-      <i className={iconClass} aria-hidden="true" /><span>{title}</span>
+      <i className={iconClass} aria-hidden="true" /><span>{title}</span>{titleAddon}
     </Heading>
     {description ? <p className="formSection__description">{description}</p> : null}
     {children}

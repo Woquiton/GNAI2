@@ -1,3 +1,4 @@
+import ExpandableContent from "@/components/UI/ExpandableContent/ExpandableContent";
 import type { ReactNode } from "react";
 import { Link } from "@inertiajs/react";
 import FormActions from "@/components/Forms/FormActions/FormActions";
@@ -217,22 +218,30 @@ function Paee({ paee }: { paee: TeacherPortalPaee | null }): React.JSX.Element {
                         </DetailField>
                         {paee.assistive_technology_notes ? (
                             <DetailField label="Notas sobre tecnologia assistiva" wide>
-                                <Text value={paee.assistive_technology_notes} />
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.assistive_technology_notes || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                         {paee.school_professionals_orientation ? (
                             <DetailField label="Orientações aos profissionais da escola" wide>
-                                <Text value={paee.school_professionals_orientation} />
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.school_professionals_orientation || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                         {paee.common_teachers_articulation ? (
                             <DetailField label="Articulação com professores comuns" wide>
-                                <Text value={paee.common_teachers_articulation} />
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.common_teachers_articulation || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                         {paee.family_articulation ? (
                             <DetailField label="Articulação com a família" wide>
-                                <Text value={paee.family_articulation} />
+                                <ExpandableContent>
+                                    <RichTextContent html={paee.family_articulation || "Não informado"} />
+                                </ExpandableContent>
                             </DetailField>
                         ) : null}
                     </dl>
@@ -273,11 +282,15 @@ function Paee({ paee }: { paee: TeacherPortalPaee | null }): React.JSX.Element {
                                     <li key={review.id} className="teacherPortal__listItem">
                                         <strong>{review.reviewed_at ?? "---"}</strong>
                                         <span className="teacherPortal__meta">{review.reviewer_name ?? "---"}</span>
-                                        <Text value={review.what_changed} />
+                                        <ExpandableContent>
+                                            <RichTextContent html={review.what_changed || "Não informado"} />
+                                        </ExpandableContent>
                                         {review.why ? (
-                                            <span className="teacherPortal__meta">
-                                                <Text value={review.why} />
-                                            </span>
+                                            <div className="teacherPortal__meta">
+                                                <ExpandableContent>
+                                                    <RichTextContent html={review.why || "Não informado"} />
+                                                </ExpandableContent>
+                                            </div>
                                         ) : null}
                                     </li>
                                 ))}

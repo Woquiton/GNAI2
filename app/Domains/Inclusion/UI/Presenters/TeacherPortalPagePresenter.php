@@ -171,10 +171,10 @@ final class TeacherPortalPagePresenter
             'attendance_location_label' => AeeLabels::attendanceLocation($paee->attendance_location),
             'assistive_technology_needed' => (bool) $paee->assistive_technology_needed,
             'support_professional_needed' => (bool) $paee->support_professional_needed,
-            'assistive_technology_notes' => $paee->assistive_technology_notes,
-            'school_professionals_orientation' => $paee->school_professionals_orientation,
-            'common_teachers_articulation' => $paee->common_teachers_articulation,
-            'family_articulation' => $paee->family_articulation,
+            'assistive_technology_notes' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_notes),
+            'school_professionals_orientation' => RichTextSanitizer::sanitize((string) $paee->school_professionals_orientation),
+            'common_teachers_articulation' => RichTextSanitizer::sanitize((string) $paee->common_teachers_articulation),
+            'family_articulation' => RichTextSanitizer::sanitize((string) $paee->family_articulation),
             'objectives' => $paee->objectives
                 ->map(static fn (PaeeObjective $objective): array => [
                     'id' => (int) $objective->getKey(),
@@ -196,8 +196,8 @@ final class TeacherPortalPagePresenter
                     'id' => (int) $review->getKey(),
                     'reviewed_at' => $review->reviewed_at?->format('d/m/Y'),
                     'reviewer_name' => $review->reviewer?->name,
-                    'what_changed' => $review->what_changed,
-                    'why' => $review->why,
+                    'what_changed' => RichTextSanitizer::sanitize((string) $review->what_changed),
+                    'why' => RichTextSanitizer::sanitize((string) $review->why),
                 ])
                 ->values()
                 ->all(),
