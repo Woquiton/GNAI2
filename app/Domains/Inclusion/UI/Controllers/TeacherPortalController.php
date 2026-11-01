@@ -13,16 +13,19 @@ use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\StudentDocument;
 use App\Domains\Inclusion\Infrastructure\Storage\StudentDocumentStorage;
+use App\Domains\Inclusion\UI\Presenters\TeacherPortalPagePresenter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\Response;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
 final class TeacherPortalController
 {
-    public function index(Request $request): View
+    public function __construct(private readonly TeacherPortalPagePresenter $presenter) {}
+
+    public function index(Request $request): InertiaResponse
     {
         $teacherId = $this->teacherId($request);
 
@@ -33,29 +36,30 @@ final class TeacherPortalController
             ->get()
             ->sortBy(fn (PeiDiscipline $item): string => $item->pei->student->person->name ?? '');
 
-        return view('pages.teacher-portal.index', ['assignments' => $assignments]);
+        return Inertia::render('TeacherPortal/Index', $this->presenter->index($assignments));
     }
 
-    public function showStudent(Student $student, Request $request, StudentPdfQuery $query): View|Response
+    public function showStudent(Student $student, Request $request, StudentPdfQuery $query): InertiaResponse
     {
-        $this->ensureCanAccessStudent($student, $this->teacherId($request));
+        $teacherId = $this->teacherId($request);
+        $this->ensureCanAccessStudent($student, $teacherId);
 
         $student = $query->execute($student);
 
-        return view('pages.teacher-portal.student-show', ['student' => $student]);
+        return Inertia::render('TeacherPortal/StudentShow', $this->presenter->student($student, $teacherId));
     }
 
-    public function editDiscipline(PeiDiscipline $peiDiscipline, Request $request): View|Response
+    public function editDiscipline(PeiDiscipline $peiDiscipline, Request $request): InertiaResponse
     {
         $this->ensureOwnsDiscipline($peiDiscipline, $this->teacherId($request));
 
         $peiDiscipline->load(['discipline', 'pei.student.person']);
 
-        return view('pages.teacher-portal.discipline-edit', ['peiDiscipline' => $peiDiscipline]);
+        return Inertia::render('TeacherPortal/DisciplineEdit', $this->presenter->discipline($peiDiscipline));
     }
 
     /** @throws Throwable */
-    public function updateDiscipline(PeiDiscipline $peiDiscipline, Request $request, UpdatePeiDisciplineAction $action): RedirectResponse|Response
+    public function updateDiscipline(PeiDiscipline $peiDiscipline, Request $request, UpdatePeiDisciplineAction $action): RedirectResponse
     {
         $this->ensureOwnsDiscipline($peiDiscipline, $this->teacherId($request));
 
@@ -69,7 +73,7 @@ final class TeacherPortalController
             'curricular_reference' => ['nullable', 'string'],
             'materials_and_assistive_technology' => ['nullable', 'string'],
             'objectives_deadline' => ['nullable', 'string', 'max:255'],
-        ]);
+        ], UpdatePeiDisciplineData::messages());
 
         $data = new UpdatePeiDisciplineData(
             teacherId: $peiDiscipline->teacher_id,

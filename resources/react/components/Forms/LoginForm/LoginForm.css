@@ -20,4 +20,7 @@
 .loginForm__submitButton { text-transform: uppercase; }
 .loginForm__forgot { margin-top: 30px; }
 .loginForm__forgot a { color: var(--ui-color-legacy-text); }
-.loginForm__forgot i { margin-right: 5px; }
+.loginForm__forgot i,
+.loginForm__teacherAccess i { margin-right: 5px; }
+.loginForm__teacherAccess { margin-top: 12px; }
+.loginForm__teacherAccess a { color: var(--ui-color-legacy-text); }

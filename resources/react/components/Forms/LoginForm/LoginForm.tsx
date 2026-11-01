@@ -48,5 +48,8 @@ export default function LoginForm(): React.JSX.Element {
     <div className="loginForm__forgot">
       <Link href="/auth/forgot-password"><i className="fa fa-lock" aria-hidden="true" /> Esqueceu sua senha?</Link>
     </div>
+    <div className="loginForm__teacherAccess">
+      <Link href="/auth/acesso"><i className="fa fa-graduation-cap" aria-hidden="true" /> Sou professor(a): entrar com e-mail institucional</Link>
+    </div>
   </form>;
 }

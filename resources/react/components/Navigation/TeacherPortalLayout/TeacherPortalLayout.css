@@ -1,0 +1,95 @@
+.teacherPortalLayout {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: var(--ui-color-surface-alt);
+}
+
+.teacherPortalLayout__topbar {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+    display: flex;
+    min-height: var(--ui-topbar-height);
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 8px 20px;
+    background: var(--ui-color-gnai-primary);
+    color: var(--ui-color-surface);
+}
+
+.teacherPortalLayout__brand {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+    color: var(--ui-color-surface);
+    font: 600 1.15rem/1.2 var(--ui-font-gnai-heading);
+}
+
+.teacherPortalLayout__brand:hover,
+.teacherPortalLayout__brand:focus {
+    color: var(--ui-color-surface);
+    text-decoration: none;
+}
+
+.teacherPortalLayout__brand:focus-visible {
+    outline: 2px solid var(--ui-color-surface);
+    outline-offset: 3px;
+}
+
+.teacherPortalLayout__logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.teacherPortalLayout__session {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+}
+
+.teacherPortalLayout__userName,
+.teacherPortalLayout__impersonation {
+    min-width: 0;
+    margin: 0;
+    color: color-mix(in srgb, var(--ui-color-surface) 80%, transparent);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.teacherPortalLayout__impersonation i { margin-right: 6px; }
+.teacherPortalLayout__impersonation strong { color: var(--ui-color-surface); }
+
+.teacherPortalLayout__content {
+    flex: 1;
+    min-width: 0;
+    padding: 20px 20px 80px;
+}
+
+.teacherPortalLayout .appFooter {
+    position: static;
+    background: var(--ui-color-surface);
+}
+
+/* O rodapé sticky dos formulários desconta a sidebar do AppLayout; aqui não há sidebar. */
+.teacherPortalLayout .formActions__bar--fixed {
+    right: 20px;
+    left: 20px;
+}
+
+@media (max-width: 767px) {
+    .teacherPortalLayout__topbar { padding-inline: 15px; }
+    .teacherPortalLayout__content { padding: 20px 15px 80px; }
+    .teacherPortalLayout__userName { display: none; }
+
+    .teacherPortalLayout .formActions__bar--fixed {
+        right: 15px;
+        left: 15px;
+    }
+}

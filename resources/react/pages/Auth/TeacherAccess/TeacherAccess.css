@@ -1,0 +1,13 @@
+.teacherAccessForm { text-align: center; }
+.teacherAccessForm .inlineAlert--info {
+  border-color: color-mix(in srgb, var(--ui-color-gnai-primary) 18%, var(--ui-color-surface));
+  background-color: color-mix(in srgb, var(--ui-color-gnai-primary) 7%, var(--ui-color-surface));
+  color: var(--ui-color-text-muted);
+  text-align: left;
+}
+.teacherAccessForm__error { margin: 2px 0 0; color: var(--ui-color-danger); font-size: 12px; font-weight: 400; line-height: 1.42857143; text-align: left; }
+.teacherAccessForm__note { margin: 0 0 20px; color: var(--ui-color-text-muted); }
+.teacherAccessForm__submit { text-transform: uppercase; }
+.teacherAccessForm__alternative { margin: 24px 0 0; }
+.teacherAccessForm__alternative a { color: var(--ui-color-legacy-text); }
+.teacherAccessForm__alternative i { margin-right: 5px; }

@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Throwable;
 
 final class TeacherAccessController
@@ -24,9 +25,9 @@ final class TeacherAccessController
 
     private const DECAY_SECONDS = 3600;
 
-    public function showRequestForm(): View
+    public function showRequestForm(): InertiaResponse
     {
-        return view('auth.teacher-access.request');
+        return Inertia::render('Auth/TeacherAccess/Request');
     }
 
     public function sendLink(RequestTeacherAccessLinkData $data, RequestTeacherAccessLinkAction $action, Request $request): RedirectResponse
@@ -38,7 +39,7 @@ final class TeacherAccessController
         if (RateLimiter::tooManyAttempts($emailKey, self::MAX_ATTEMPTS_PER_EMAIL)
             || RateLimiter::tooManyAttempts($ipKey, self::MAX_ATTEMPTS_PER_IP)) {
             return back()->with(
-                'status',
+                'warning',
                 'Muitas tentativas. Aguarde um pouco antes de solicitar um novo link.',
             );
         }
@@ -59,11 +60,11 @@ final class TeacherAccessController
         );
     }
 
-    public function showConfirm(string $token, Request $request): View
+    public function showConfirm(string $token, Request $request): InertiaResponse
     {
         $this->logoutAnyExistingSession($request);
 
-        return view('auth.teacher-access.confirm', ['token' => $token]);
+        return Inertia::render('Auth/TeacherAccess/Confirm', ['token' => $token]);
     }
 
     public function confirm(string $token, ConfirmTeacherAccessTokenAction $action, Request $request): RedirectResponse
@@ -75,7 +76,7 @@ final class TeacherAccessController
         } catch (InvalidTeacherAccessToken $exception) {
             return redirect()
                 ->route('teacher-access.request')
-                ->with('status', $exception->getMessage());
+                ->with('error', $exception->getMessage());
         }
 
         Auth::login($user, remember: true);
