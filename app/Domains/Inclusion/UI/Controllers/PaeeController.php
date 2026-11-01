@@ -16,45 +16,50 @@ use App\Domains\Inclusion\Application\Data\Paees\UpdatePaeeData;
 use App\Domains\Inclusion\Application\Queries\Paees\ListPaeesQuery;
 use App\Domains\Inclusion\Application\Queries\Paees\PaeeFormQuery;
 use App\Domains\Inclusion\Application\Queries\Paees\ShowPaeeQuery;
+use App\Domains\Inclusion\Application\Queries\Peis\PeiFilterOptionsQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPaeesQuery;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Inclusion\Domain\Models\Student;
+use App\Domains\Inclusion\UI\Presenters\PaeePagePresenter;
 use App\Shared\Application\Exceptions\AccessDeniedException;
+use App\Shared\Domain\Support\AuditLogger;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Throwable;
 
 final class PaeeController
 {
-    public function all(ListPaeesData $filters, ListPaeesQuery $query, Request $request): View
-    {
-        $paees = $query->execute($filters);
-        if ($request->ajax()) {
-            return view('pages.specialized-educational-support.paees.partials.table', compact('paees'));
-        }
+    public function __construct(private readonly PaeePagePresenter $presenter) {}
 
-        return view('pages.specialized-educational-support.paees.all', compact('paees'));
+    public function all(ListPaeesData $filters, ListPaeesQuery $query, PeiFilterOptionsQuery $options, Request $request): InertiaResponse
+    {
+        return Inertia::render(
+            'Inclusion/Paees/All',
+            $this->presenter->list($query->execute($filters), $options->semesters(), $filters, $request),
+        );
     }
 
-    public function index(Student $student, ListPaeesData $filters, ListPaeesQuery $query, Request $request): View
+    public function index(Student $student, ListPaeesData $filters, ListPaeesQuery $query, PeiFilterOptionsQuery $options, Request $request): InertiaResponse
     {
         $student->loadMissing('person');
-        $paees = $query->execute($filters, $student);
-        if ($request->ajax()) {
-            return view('pages.specialized-educational-support.paees.partials.table', compact('paees', 'student'));
-        }
 
-        return view('pages.specialized-educational-support.paees.index', compact('student', 'paees'));
+        return Inertia::render(
+            'Inclusion/Paees/Index',
+            $this->presenter->list($query->execute($filters, $student), $options->semesters(), $filters, $request, $student),
+        );
     }
 
-    public function create(CaseStudy $caseStudy, PaeeFormQuery $form): View
+    public function create(CaseStudy $caseStudy, PaeeFormQuery $form): InertiaResponse
     {
-        return view('pages.specialized-educational-support.paees.create', $form->forCreation($caseStudy));
+        ['caseStudy' => $caseStudy] = $form->forCreation($caseStudy);
+
+        return Inertia::render('Inclusion/Paees/Create', $this->presenter->create($caseStudy));
     }
 
     /** @throws Throwable */
@@ -65,18 +70,20 @@ final class PaeeController
         return redirect()->route('specialized-educational-support.paee.show', $paee)->with('success', 'PAEE criado com sucesso.');
     }
 
-    public function show(Paee $paee, ShowPaeeQuery $query): View
+    public function show(Paee $paee, ShowPaeeQuery $query, Request $request): InertiaResponse
     {
         $paee = $query->execute($paee);
 
-        \App\Shared\Domain\Support\AuditLogger::logView($paee);
+        AuditLogger::logView($paee);
 
-        return view('pages.specialized-educational-support.paees.show', compact('paee'));
+        return Inertia::render('Inclusion/Paees/Show', $this->presenter->show($paee, $request));
     }
 
-    public function edit(Paee $paee, PaeeFormQuery $form): View
+    public function edit(Paee $paee, PaeeFormQuery $form): InertiaResponse
     {
-        return view('pages.specialized-educational-support.paees.edit', $form->forUpdate($paee));
+        ['paee' => $paee] = $form->forUpdate($paee);
+
+        return Inertia::render('Inclusion/Paees/Edit', $this->presenter->edit($paee));
     }
 
     /** @throws Throwable */
@@ -113,12 +120,14 @@ final class PaeeController
         return $pdf->stream("paee-{$paee->getKey()}.pdf");
     }
 
-    public function studentHistory(Student $student, StudentPaeesQuery $query): View
+    public function studentHistory(Student $student, StudentPaeesQuery $query, Request $request): InertiaResponse
     {
         $student->loadMissing('person');
-        $paees = $query->execute($student);
 
-        return view('pages.specialized-educational-support.students.paees.index', compact('student', 'paees'));
+        return Inertia::render(
+            'Inclusion/Paees/History',
+            $this->presenter->history($student, $query->execute($student), $request),
+        );
     }
 
     private function user(Request $request): User
