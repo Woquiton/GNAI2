@@ -495,14 +495,8 @@
 
 /* Quantidade por página: select compacto ao lado do intervalo exibido. */
 .tableListPageSize {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--ui-color-text-muted);
-}
-
-.tableListPageSize__control {
-    width: 5.5rem;
+    display: inline-block;
+    width: 4.25rem;
 }
 
 .tableListFooter .paginationControl {

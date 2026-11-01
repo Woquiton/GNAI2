@@ -65,21 +65,18 @@ export default function TableListPageSize({
     }
 
     return (
-        <span className="tableListPageSize">
-            <span className="tableListPageSize__control">
-                <SelectField
-                    id={`${id}-per-page`}
-                    name="per_page"
-                    label="Registros por página"
-                    placeholder={null}
-                    searchable={false}
-                    value={current}
-                    options={options}
-                    disabled={disabled}
-                    onChange={(event) => change(event.target.value)}
-                />
-            </span>
-            <span aria-hidden="true">por página</span>
+        <span className="tableListPageSize" title="Registros por página">
+            <SelectField
+                id={`${id}-per-page`}
+                name="per_page"
+                label="Registros por página"
+                placeholder={null}
+                searchable={false}
+                value={current}
+                options={options}
+                disabled={disabled}
+                onChange={(event) => change(event.target.value)}
+            />
         </span>
     );
 }
