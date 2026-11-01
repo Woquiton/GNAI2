@@ -4,13 +4,14 @@ import StatWidgetCard from '@/components/UI/StatWidgetCard/StatWidgetCard';
 import MetricsChart from './MetricsChart';
 import DistributionChart from './DistributionChart';
 import RevenueSummaryCard from '@/components/UI/RevenueSummaryCard/RevenueSummaryCard';
+import ActivityFeed from './ActivityFeed';
 import BarrierMap from './BarrierMap';
 import type { OverviewProps } from './Overview.types';
 import './Overview.css';
 
 const support = '/specialized-educational-support';
 const radar = '/inclusive-radar';
-export default function Overview({ specializedEducationalSupport: s, inclusiveRadar: r }: OverviewProps): React.JSX.Element {
+export default function Overview({ specializedEducationalSupport: s, inclusiveRadar: r, activityFeed }: OverviewProps): React.JSX.Element {
   const { auth } = usePage<{ auth: { user: { name?: string; email: string } | null } }>().props;
   const stats = [
     { title: 'Alunos', value: s.totalStudents, href: `${support}/students`, icon: 'users', tone: 'info' },
@@ -30,6 +31,7 @@ export default function Overview({ specializedEducationalSupport: s, inclusiveRa
     <Head title="Dashboard" />
     <PageHeader title="Dashboard" subtitle={`Bem-vindo(a) ao GNAI${auth.user ? `, ${auth.user.name || auth.user.email}` : ''}.`} />
     <div className="gnaiDashboard__stats">{stats.map(item => <Link key={item.title} href={item.href} aria-label={`${item.title}: ${item.value}`}><StatWidgetCard title={item.title} value={String(item.value)} tone={item.tone} iconClass={`fa fa-${item.icon} text-${item.tone}`} /></Link>)}</div>
+    <ActivityFeed feed={activityFeed} />
     <div className="gnaiDashboard__charts">
       <RevenueSummaryCard
         title="Status dos PEIs"

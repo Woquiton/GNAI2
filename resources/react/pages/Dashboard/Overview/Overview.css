@@ -21,3 +21,15 @@
 @media (max-width: 767px) { .gnaiDashboard__charts, .gnaiDashboard__stats { grid-template-columns: minmax(0, 1fr); } }
 
 .gnaiDashboard__charts > * { min-width: 0; }
+
+.gnaiDashboard__feed { margin-bottom: 20px; }
+.gnaiDashboard__feedHeader { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.gnaiDashboard__feedHeader .header-title { margin: 0; font-size: 16px; }
+.gnaiDashboard__feedFilters { display: grid; grid-template-columns: repeat(2, minmax(180px, 220px)); gap: 12px; }
+.gnaiDashboard__feedList { margin: 0; padding: 0; list-style: none; }
+.gnaiDashboard__feedList li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #ebeff2; }
+.gnaiDashboard__feedList li > i { margin-top: 3px; color: var(--ui-color-gnai-primary); }
+.gnaiDashboard__feedList small { display: block; color: #98a6ad; }
+.gnaiDashboard__feedEmpty { margin: 0; padding: 16px 0; color: #797979; text-align: center; }
+.gnaiDashboard__feedMore { display: flex; justify-content: center; margin-top: 16px; }
+@media (max-width: 575px) { .gnaiDashboard__feedFilters { grid-template-columns: minmax(0, 1fr); width: 100%; } }

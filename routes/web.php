@@ -61,7 +61,13 @@ Route::middleware('web')->group(function () {
         return view('pages.about-us');
     })->name('about-us');
 
-    Route::middleware(['auth'])->get('/guia-de-uso', fn () => view('pages.user-guide'))->name('user-guide');
+    Route::middleware(['auth'])->get('/guia-de-uso', function () {
+        if (request()->header('X-Inertia')) {
+            return Inertia::location(route('user-guide'));
+        }
+
+        return view('pages.user-guide');
+    })->name('user-guide');
 
     Route::middleware(['auth', 'teacher-portal'])
         ->prefix('professor')
