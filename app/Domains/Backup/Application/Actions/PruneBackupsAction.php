@@ -6,7 +6,9 @@ namespace App\Domains\Backup\Application\Actions;
 
 use App\Domains\Backup\Application\Contracts\BackupArchiveStorageContract;
 use App\Domains\Backup\Application\Contracts\PruneBackupsActionContract;
+use App\Domains\Backup\Application\Queries\ListRetainedBackupsQuery;
 use App\Domains\Backup\Domain\Models\Backup;
+use App\Domains\Settings\Application\Queries\GetBackupSettingsQuery;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,19 +16,15 @@ use Throwable;
 
 final readonly class PruneBackupsAction implements PruneBackupsActionContract
 {
-    public const int MAX_BACKUPS = 30;
-
     public function __construct(
         private BackupArchiveStorageContract $archives,
+        private GetBackupSettingsQuery $backupSettings,
+        private ListRetainedBackupsQuery $retainedBackups,
     ) {}
 
     public function execute(): int
     {
-        $keptBackups = Backup::query()
-            ->orderByDesc('created_at')
-            ->orderByDesc('id')
-            ->limit(self::MAX_BACKUPS)
-            ->get(['id', 'file_path']);
+        $keptBackups = $this->retainedBackups->execute($this->backupSettings->execute());
 
         $keptIds = $keptBackups
             ->pluck('id')

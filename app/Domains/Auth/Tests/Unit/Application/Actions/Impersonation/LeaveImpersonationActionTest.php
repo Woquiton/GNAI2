@@ -13,12 +13,13 @@ use Tests\TestCase;
 
 final class LeaveImpersonationActionTest extends TestCase
 {
-    public function test_it_leaves_impersonation_and_logs_original_admin_back_in(): void
+    public function test_it_leaves_impersonation_and_logs_original_super_admin_back_in(): void
     {
-        session(['impersonator_id' => 1]);
-        $admin = $this->user(id: 1, isAdmin: true);
+        session(['impersonator_id' => 1, 'impersonation_mode' => 'read_only']);
+        $admin = $this->user(id: 1, isSuperAdmin: true);
 
-        $this->app->instance(FindUserByIdQuery::class, new class($admin) extends FindUserByIdQuery {
+        $this->app->instance(FindUserByIdQuery::class, new class($admin) extends FindUserByIdQuery
+        {
             public function __construct(private readonly User $user) {}
 
             public function execute(int $id): ?User
@@ -33,13 +34,15 @@ final class LeaveImpersonationActionTest extends TestCase
 
         self::assertTrue($result->is($admin));
         self::assertFalse(session()->has('impersonator_id'));
+        self::assertFalse(session()->has('impersonation_mode'));
     }
 
     public function test_it_rejects_when_impersonation_is_not_active(): void
     {
         session()->forget('impersonator_id');
 
-        $this->app->instance(FindUserByIdQuery::class, new class extends FindUserByIdQuery {
+        $this->app->instance(FindUserByIdQuery::class, new class extends FindUserByIdQuery
+        {
             public function execute(int $id): ?User
             {
                 self::fail('User query should not be executed when impersonation is inactive.');
@@ -47,7 +50,7 @@ final class LeaveImpersonationActionTest extends TestCase
         });
 
         $this->expectException(InvalidImpersonation::class);
-        $this->expectExceptionMessage('Você não está em uma impersonação.');
+        $this->expectExceptionMessage('Você não está navegando como outro usuário.');
 
         app(LeaveImpersonationAction::class)->execute();
     }
@@ -56,7 +59,8 @@ final class LeaveImpersonationActionTest extends TestCase
     {
         session(['impersonator_id' => 1]);
 
-        $this->app->instance(FindUserByIdQuery::class, new class extends FindUserByIdQuery {
+        $this->app->instance(FindUserByIdQuery::class, new class extends FindUserByIdQuery
+        {
             public function execute(int $id): ?User
             {
                 return null;
@@ -75,12 +79,13 @@ final class LeaveImpersonationActionTest extends TestCase
         }
     }
 
-    public function test_it_clears_session_and_rejects_non_admin_original_user(): void
+    public function test_it_clears_session_and_rejects_common_admin_original_user(): void
     {
         session(['impersonator_id' => 1]);
-        $user = $this->user(id: 1);
+        $user = $this->user(id: 1, isAdmin: true);
 
-        $this->app->instance(FindUserByIdQuery::class, new class($user) extends FindUserByIdQuery {
+        $this->app->instance(FindUserByIdQuery::class, new class($user) extends FindUserByIdQuery
+        {
             public function __construct(private readonly User $user) {}
 
             public function execute(int $id): ?User
@@ -101,13 +106,14 @@ final class LeaveImpersonationActionTest extends TestCase
         }
     }
 
-    private function user(int $id, bool $isAdmin = false): User
+    private function user(int $id, bool $isAdmin = false, bool $isSuperAdmin = false): User
     {
         return (new User)->forceFill([
             'id' => $id,
             'name' => "User {$id}",
             'email' => "user{$id}@example.test",
             'is_admin' => $isAdmin,
+            'is_super_admin' => $isSuperAdmin,
         ]);
     }
 }

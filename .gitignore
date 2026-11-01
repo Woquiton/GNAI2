@@ -8,7 +8,7 @@
 .phpactor.json
 .phpunit.result.cache
 /.fleet
-/.idea
+**/.idea/
 /.nova
 /.phpunit.cache
 /.vscode
@@ -25,3 +25,4 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 coverage/
+comands.txt

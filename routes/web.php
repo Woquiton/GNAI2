@@ -1,24 +1,40 @@
 <?php
 
+use App\Domains\Inclusion\UI\Controllers\TeacherPortalController;
 use App\Domains\Notifications\UI\Controllers\NotificationController;
-use App\Domains\SpecializedEducationalSupport\UI\Controllers\TeacherPortalController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::middleware('web')->group(function () {
+    // Catálogo local para apoiar a migração das telas para React.
+    if (app()->environment('local', 'testing')) {
+        Route::redirect('/react', '/react/index.html');
+        Route::get('/react/{page}', fn () => Inertia::render('Catalog/Catalog'))
+            ->where('page', '[A-Za-z0-9_-]+\\.html')
+            ->name('react.catalog');
+    }
+
     Route::redirect('/', '/about-us');
 
-    Route::prefix('inclusive-radar')
-        ->name('inclusive-radar.')
-        ->group(base_path('routes/modules/inclusive-radar.php'));
-
-    Route::prefix('specialized-educational-support')
-        ->name('specialized-educational-support.')
-        ->group(base_path('routes/modules/specialized-educational-support.php'));
+    Route::group([], base_path('routes/modules/inclusion.php'));
 
     Route::middleware(['auth'])
         ->prefix('backup')
         ->name('backup.')
         ->group(base_path('routes/modules/backup.php'));
+
+    Route::middleware(['auth'])
+        ->prefix('audit')
+        ->name('audit.')
+        ->group(base_path('routes/modules/audit.php'));
+
+    Route::middleware(['auth'])
+        ->prefix('settings')
+        ->name('settings.')
+        ->group(base_path('routes/modules/settings.php'));
+
+    Route::name('website.')
+        ->group(base_path('routes/modules/website.php'));
 
     Route::prefix('reports')
         ->name('reports.')
@@ -37,7 +53,13 @@ Route::middleware('web')->group(function () {
             ->name('notifications.readAll');
     });
 
-    Route::get('/about-us', fn () => view('pages.about-us'))->name('about-us');
+    Route::get('/about-us', function () {
+        if (request()->header('X-Inertia')) {
+            return Inertia::location(route('about-us'));
+        }
+
+        return view('pages.about-us');
+    })->name('about-us');
 
     Route::middleware(['auth'])->get('/guia-de-uso', fn () => view('pages.user-guide'))->name('user-guide');
 

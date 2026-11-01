@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre o Sistema — GNAI</title>
+    <title>Sobre o Sistema, GNAI</title>
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="hero-badge-dot"></span>
-                Instituto Federal Baiano — Campus Guanambi · 2026
+                Instituto Federal Baiano, Campus Guanambi · 2026
             </div>
 
             <h1 class="hero-title">
@@ -202,7 +202,7 @@
                 </div>
                 <div class="feature-card" data-cat="radar">
                     <div class="feature-icon green"><i class="bi bi-calendar-day"></i></div>
-                    <div><div class="feature-name">Agenda Institucional</div><div class="feature-desc">Eventos e atividades planejadas da instituição.</div></div>
+                    <div><div class="feature-name">Publicações</div><div class="feature-desc">Notícias, eventos, comunicados, artigos e registros da instituição.</div></div>
                 </div>
                 <div class="feature-card" data-cat="radar">
                     <div class="feature-icon pink"><i class="bi bi-search"></i></div>
@@ -269,7 +269,7 @@
                         <li><i class="bi bi-check2"></i> Vistorias e evidências</li>
                         <li><i class="bi bi-check2"></i> Empréstimos de recursos</li>
                         <li><i class="bi bi-check2"></i> Fila de espera</li>
-                        <li><i class="bi bi-check2"></i> Agenda institucional</li>
+                        <li><i class="bi bi-check2"></i> Publicações</li>
                     </ul>
                 </div>
             </div>
@@ -282,7 +282,7 @@
             <h2 class="section-title">Quem construiu o GNAI</h2>
             <p class="section-desc">
                 Projeto desenvolvido por estudantes do curso de Análise e Desenvolvimento de Sistemas
-                do IF Baiano — Campus Guanambi, com orientação docente.
+                do IF Baiano, Campus Guanambi, com orientação docente.
             </p>
 
             <div class="team-grid">
@@ -340,7 +340,7 @@
 
     <footer class="about-footer">
         <div class="about-footer-logo">GNAI</div>
-        <div class="about-footer-inst">Instituto Federal Baiano — Campus Guanambi</div>
+        <div class="about-footer-inst">Instituto Federal Baiano, Campus Guanambi</div>
         <div class="about-footer-year">ADS · 2026 · Todos os direitos reservados</div>
     </footer>
     <script>

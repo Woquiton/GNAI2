@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Support;
 
-use App\Domains\SpecializedEducationalSupport\Domain\Models\PeiDiscipline;
+use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
+use App\Domains\Auth\Domain\Models\User;
 use App\Shared\Domain\Models\AuditLog;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 
 /**
@@ -16,6 +18,46 @@ use Illuminate\Support\Arr;
  */
 final class ActivityFeedPresenter
 {
+    /**
+     * Página do feed no formato consumido pela tela React do dashboard.
+     *
+     * @return array{items: list<array{id: int, sentence: string, href: string|null, createdAt: string|null}>, nextPage: int|null}
+     */
+    public static function page(LengthAwarePaginator $logs, User $user): array
+    {
+        $items = [];
+
+        foreach ($logs->items() as $log) {
+            $link = self::link($log);
+            $ability = self::ability($log);
+            $canOpen = $link !== null && $ability !== null && $user->can($ability);
+
+            $items[] = [
+                'id' => (int) $log->id,
+                'sentence' => self::sentence($log),
+                'href' => $canOpen ? route($link['name'], $link['params']) : null,
+                'createdAt' => $log->created_at?->format('d/m/Y H:i'),
+            ];
+        }
+
+        return [
+            'items' => $items,
+            'nextPage' => $logs->hasMorePages() ? $logs->currentPage() + 1 : null,
+        ];
+    }
+
+    /** @return list<array{value: string, label: string}> */
+    public static function modelOptions(): array
+    {
+        $options = [];
+
+        foreach (config('activity_feed.models', []) as $class => $map) {
+            $options[] = ['value' => $class, 'label' => $map['label']];
+        }
+
+        return $options;
+    }
+
     public static function sentence(AuditLog $log): string
     {
         $map = config('activity_feed.models.' . $log->auditable_type, []);

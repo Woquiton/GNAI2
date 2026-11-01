@@ -1,0 +1,227 @@
+# Convenção de telas de formulários React do Gnai
+
+Esta convenção documenta o padrão já implementado no cadastro e na edição de alunos. Consulte-a antes de criar, refatorar ou migrar formulários React, junto do `AGENTS.md` da raiz e de `resources/react/AGENTS.md`. Instruções explícitas do usuário prevalecem; uma experiência visual local não redefine automaticamente o padrão compartilhado.
+
+**Na migração, o Blade antigo (removido do repositório; consulte o histórico do git) é referência de dados, comportamentos e regras existentes; o formulário React de alunos é referência para a nova estrutura e identidade visual.** Quando os visuais divergirem, siga o React padronizado e preserve as funcionalidades, permissões e contratos do formulário de origem.
+
+## Referência principal e responsabilidades
+
+Os caminhos abaixo são referências da implementação atual, não uma obrigação de organizar todos os domínios como alunos. Releia o código antes de reutilizar suas APIs.
+
+| Responsabilidade | Arquivo de referência |
+| --- | --- |
+| Página de cadastro e título | [Create.tsx](../../../resources/react/pages/Inclusion/Students/Create.tsx) |
+| Página de edição, registro existente e identidade do formulário | [Edit.tsx](../../../resources/react/pages/Inclusion/Students/Edit.tsx) |
+| Composição da página, breadcrumbs, cabeçalho e feedback | [StudentPage.tsx](../../../resources/react/components/Students/StudentPage.tsx) |
+| Dados, campos, seções, submissão, upload e processamento | [StudentForm.tsx](../../../resources/react/components/Students/StudentForm.tsx) |
+| Layout dos campos e adaptações responsivas do exemplo | [Students.css](../../../resources/react/components/Students/Students.css) |
+| Tipos recebidos e auxiliares do domínio | `resources/react/components/Students/Students.types.ts` e `Students.utils.ts` |
+| Falhas de conexão e de resposta HTTP | `resources/react/components/Students/useStudentRequest.ts` |
+| Resolução Inertia e layout compartilhado | `resources/react/main.tsx` e `resources/react/components/Navigation/AppLayout/AppLayout.tsx` |
+
+A página compõe o cabeçalho e recebe as props reais do controller. O componente de formulário controla os dados, erros, envio e estados locais. Componentes compartilhados encapsulam controles, estilos e plugins. As ações principais ficam no rodapé sticky do formulário, sem repetição no cabeçalho.
+
+`StudentPage`, `StudentForm`, seus helpers e suas classes CSS pertencem a alunos. Em outro cadastro, componha os componentes compartilhados adequados; não importe componentes de alunos apenas para obter seu visual, nem faça componentes dependerem de páginas.
+
+## Classificação das orientações
+
+| Classe | O que significa | Exemplos |
+| --- | --- | --- |
+| Obrigatório | Padrão estrutural, visual ou de integração para novas telas de formulário, salvo instrução explícita diferente | Cabeçalho compartilhado, card único, rodapé sticky de ações, labels e erros associados, componentes existentes, contratos do backend |
+| Condicional | Aplica-se somente quando a funcionalidade existe no cadastro | Foto de pessoa, calendário, editor de texto rico, máscaras, progresso de upload, método de atualização |
+| Particularidade do exemplo | Referência de uma solução local, sem obrigatoriedade para outros cadastros | Campos de alunos, duas seções específicas, foto à esquerda, rotas de alunos, status apenas na edição |
+
+## Padrões obrigatórios
+
+### Estrutura e composição
+
+1. Use o layout compartilhado existente. `main.tsx` atribui `AppLayout` às páginas de negócio; ele monta topbar, sidebar e footer para usuários autenticados. Não duplique essa estrutura dentro do formulário.
+2. Defina o título do documento com `Head` do Inertia e componha o cabeçalho visual com `Navigation/PageTitle`. Ele recebe `title`, `subtitle` e `actions`, usa `h1` por padrão e oferece quebra responsiva. A referência visual é o título maior e roxo do antigo Blade de criar aluno. `Navigation/PageHeader` continua disponível nos exemplos Ubold, mas não é o padrão oficial desses cabeçalhos de negócio.
+3. Use `Navigation/PageBreadcrumb` dentro de uma navegação com nome acessível. Passe a cadeia de navegação real; o último item é apresentado como atual. Links permanecem azuis, com hover/foco azul escuro, conforme seu CSS compartilhado.
+4. Use `Forms/FormLayout` como o `<form>` semântico, com `onSubmit`, prevenção do submit nativo e indicação de processamento. Ele aplica `noValidate` para impedir os balões nativos do navegador: a requisição deve chegar ao backend e os erros retornados pelo Laravel/Inertia devem aparecer junto de todos os campos correspondentes. O componente também centraliza reset de `fieldset`, espaçamento base de campos, última seção e foco das ações. Dentro dele, reúna os campos em um único `UI/CardBox`.
+5. Divida o conteúdo com `Forms/FormSection`, usando `variant="inline"`, título pertinente e `iconClass` adequado. A variante padrão `card` cria outro card: não a use inadvertidamente para cada seção de um formulário que deve ter um só card.
+6. Coloque `Forms/FormActions` imediatamente depois do card, ainda dentro do `<form>`. Ele forma uma unidade contínua com o card, cria o rodapé sticky centralizado, apresenta o status de envio e reúne as ações principais sem repeti-las no cabeçalho. Preserve a navegação de Cancelar e bloqueie as ações durante o processamento.
+
+As seções atuais têm título em maiúsculas, ícone decorativo e divisor cinza claro de 2 px abaixo do título. O conteúdo e o início da linha ficam alinhados no padding do card. Não reproduza esse cabeçalho com markup e CSS próprios por tela.
+
+### Biblioteca interna de componentes
+
+Os caminhos desta tabela são relativos a `resources/react/components/`.
+
+| Necessidade | Componente e utilização |
+| --- | --- |
+| Título, subtítulo e ações no topo | `Navigation/PageTitle/PageTitle.tsx`; passe as ações por `actions` |
+| Breadcrumbs | `Navigation/PageBreadcrumb/PageBreadcrumb.tsx`; passe `items` com labels e destinos reais |
+| Estrutura semântica e visual comum | `Forms/FormLayout/FormLayout.tsx`; recebe os atributos nativos de `<form>` e encaminha `ref` |
+| Grades e pilhas recorrentes | `Forms/FormGrid/FormGrid.tsx`; use `FormGrid`, `FormGridWide` e `FormStack` sem recriar a mesma grade no CSS do domínio |
+| Card do formulário | `UI/CardBox/CardBox.tsx`, com contorno compartilhado por `--ui-color-card-border` |
+| Seções dentro do mesmo card | `Forms/FormSection/FormSection.tsx`; `variant="inline"`, `id`, `title`, `iconClass` |
+| Label, obrigatório, dica e erro | `Forms/FormField/FormField.tsx`; associe o controle ao mesmo `id` |
+| Texto e atributos nativos | `Forms/TextInput/TextInput.tsx`; valores controlados e `invalid` |
+| Texto simples com várias linhas | `Forms/TextArea/TextArea.tsx`, quando o contrato não requer texto rico |
+| Seleção | `Forms/SelectField/SelectField.tsx`; `options`, `value`, `onChange`, `label`, `id`, `name` |
+| Grupos de checkbox/radio | `Forms/ChoiceGroup/ChoiceGroup.tsx` envolvendo controles `ChoiceControl` e recebendo o estado inválido |
+| Alternância booleana | `Forms/ToggleControl/ToggleControl.tsx`; adaptador React do Switchery local, com estado controlado, tamanho e limpeza |
+| Valor numérico em faixa | `Forms/RangeSlider/RangeSlider.tsx`; adaptador controlado do Ion.RangeSlider do Ubold, com grade, cor roxa do Gnai, opção `live` para prévia durante o arraste, fallback nativo quando o plugin não carrega, trilha focável por teclado e `role="slider"` |
+| Linhas dinâmicas removíveis | `Forms/RemovableField/RemovableField.tsx`; campo com o X vermelho colado à direita (`input-group-btn` do Ubold), com nome acessível por linha e modo de desfazer (`removed`). Adicione linhas com `Button tone="white" className="removableField__add" labelIconClass="fa fa-plus"`, no formato "+ Atividade" do Ubold, como os participantes das publicações |
+| Data de calendário | `Forms/DatePicker/DatePicker.tsx`, quando aplicável ao formato de data esperado |
+| Foto de pessoa | `Forms/PersonPhotoUpload/PersonPhotoUpload.tsx`, quando o cadastro precisar dessa informação |
+| Imagem única que não é foto de pessoa (capa, logo, banner) | `Forms/ImageUploadField/ImageUploadField.tsx`; o pai controla arquivo, imagem atual e remoção, e pede texto alternativo quando a imagem for informativa |
+| Evidências anexadas | `Forms/EvidenceUpload/EvidenceUpload.tsx`; seleção múltipla, limites, prévia, lista e remoção controladas pelo formulário |
+| Texto rico | `Forms/SummernoteEditor/SummernoteEditor.tsx`, quando houver requisito de editor |
+| Ações finais e andamento | `Forms/FormActions/FormActions.tsx`; `children` para ações principais, `secondary` para ações de menor ênfase e `status` |
+| Botões e links de ação | `UI/Button/Button.tsx`; variantes `save`/`cancel`, ícones e `disabled` |
+| Feedback geral da operação | Toast global de `UI/FlashNotifications`; use flash do backend ou `UI/NotificationToast/notify` para falhas do cliente, sem criar card/alerta na página |
+
+Use imports diretos com `@/` entre pastas e `./` para arquivos locais. Leia os tipos reais antes de compor o controle. Estenda o componente existente quando houver uma necessidade comprovada; não crie um clone, uma biblioteca de formulário ou outro adaptador de plugin por página.
+
+### Identidade visual e organização dos campos
+
+As fontes e cores compartilhadas estão em `resources/react/styles/tokens.css`, que importa as variáveis de cores de `resources/css/variables.css`. O CSS de cada componente define sua aparência; o CSS do proprietário do formulário define apenas a composição necessária.
+
+| Elemento | Padrão atual a reutilizar |
+| --- | --- |
+| Título e subtítulo de página | `PageTitle`: `--ui-font-gnai-heading`, `--ui-font-gnai-body`, `--ui-color-page-title` e `--ui-color-page-subtitle` |
+| Labels | Roxo escuro de `--ui-color-form-label`; não usar o roxo claro do foco como cor permanente do label |
+| Títulos e ícones das seções | Cinza de `--ui-color-heading`, pelo CSS de `FormSection` |
+| Entradas | `TextInput`: borda de `--ui-color-input-border`, foco de `--ui-color-input-focus-border`, mesma espessura e transição do componente |
+| Select2 | Controle com borda/foco dos inputs; painel e busca com bordas cinza; opções destacadas em `--ui-color-gnai-primary` |
+| Calendário | Botão e seleção roxos, com os tokens Gnai e estilos do `DatePicker` |
+| Summernote | Toolbar neutra e estados ativos roxos, definidos no componente |
+| Erros de campo | `FormField`, controle com borda vermelha e mensagem logo abaixo em 12 px, peso 400 e vermelho do tema uBold; erro não pode depender somente de cor |
+| Salvar e cancelar | `Button` com `tone="save"`/`tone="cancel"`, ícone, texto visível, `title` e `aria-label`; confirmação no roxo institucional do Gnai com ícone de check e cancelamento cinza com X |
+
+`--ui-color-primary` e `--ui-color-custom` ainda representam cores do tema em outros componentes. Não use esses nomes como se já fossem os tokens oficiais roxos do Gnai, nem consolide toda a paleta durante uma migração de formulário.
+
+Organize campos relacionados com `FormGrid`, usando `FormGridWide` para campos longos e `FormStack` para controles empilhados. Mantenha CSS no domínio somente para composições particulares, como a foto ao lado dos dados pessoais. Preserve padding, bordas, foco e espaçamentos compartilhados; não copie dimensões locais de alunos como regra global.
+
+No `ToggleControl`, texto e controle ficam próximos na mesma linha, com o toggle imediatamente após o rótulo e sua eventual ajuda. Não distribua o rótulo e o controle pelas extremidades da coluna. Em telas estreitas, o texto pode quebrar dentro de sua área, mantendo o controle ao lado; preserve o texto de estado, a associação acessível e o foco do componente compartilhado.
+
+Botões devem ter ícone pertinente e texto, inclusive nos rodapés sticky de criar, editar e visualizar. Todo botão tem `title`; o componente compartilhado o infere de `aria-label`, `label` ou texto simples, enquanto conteúdos complexos devem informá-lo explicitamente. Use rótulos curtos conforme o contexto: `Salvar` e `Cancelar` em formulários; `Voltar`, `Editar`, `Excluir`, `Clonar` e `PDF` nas visualizações quando essas ações existirem. Ações somente com ícone também precisam de `aria-label`, pois `title` não substitui o nome acessível. Cancelar/voltar usa X cinza; salvar usa check no roxo institucional do Gnai. `Button` também admite `iconOnly` para exceções autorizadas, `leftIconClass`, outras posições de ícone e `showIcon={false}`. Não suponha que todas as variantes do tema já tenham as cores do Gnai.
+
+### Labels, validação e acessibilidade
+
+`FormField` gera o label e os IDs `${id}-hint`/`${id}-error`, mas não injeta esses atributos automaticamente no filho. Passe o mesmo `id` ao controle, indique o estado inválido e ligue o erro/dica por `aria-describedby` ou pela prop equivalente do componente. `requiredIndicator` apresenta o marcador visual. O atributo `required` pode permanecer no controle como informação semântica e de acessibilidade, conforme o contrato real, mas `FormLayout` desativa a validação visual nativa com `noValidate`; não bloqueie a submissão no cliente nem substitua as mensagens específicas retornadas pelo backend por `validationMessage` do navegador.
+
+Trecho do padrão usado em `StudentForm`, em um contexto com `form` inicializado por `useForm`:
+
+```tsx
+import FormField from '@/components/Forms/FormField/FormField';
+import TextInput from '@/components/Forms/TextInput/TextInput';
+
+<FormField id="student-name" label="Nome Completo" error={form.errors.name} requiredIndicator>
+  <TextInput id="student-name" name="name" required value={form.data.name}
+    invalid={!!form.errors.name}
+    aria-describedby={form.errors.name ? 'student-name-error' : undefined}
+    onChange={event => form.setData('name', event.target.value)} />
+</FormField>
+```
+
+O nome e o ID acima pertencem ao exemplo; adapte-os ao cadastro. Use hierarquia de headings, navegação nomeada, alternativas para imagens e foco visível. Erros de validação permanecem junto aos respectivos campos: não monte card ou `InlineAlert` como “Confira os campos indicados”. O consumidor global apresenta um único toast de erro vermelho orientando a conferir o formulário, e não um aviso roxo. O controle inválido recebe borda vermelha, a mensagem usa tipografia normal e discreta imediatamente abaixo, e o primeiro controle inválido recebe tentativa de foco após a resposta do backend.
+
+### Estado e submissão
+
+- Use `useForm` de `@inertiajs/react`, como na referência, com um tipo de dados próprio do cadastro. Inicialize campos vazios, valores padrão recebidos do backend e dados existentes de edição de maneira explícita. Não invente defaults de enums ou dados de negócio.
+- Atualize valores com `form.setData`; use a versão funcional para mudanças relacionadas, como arquivo e indicador de remoção. Não esconda o valor enviado em estado interno desconectado do formulário.
+- Apresente `form.errors` somente junto dos respectivos campos. `form.setError` registra também falhas locais de controles, e `form.clearErrors` limpa os erros pertinentes quando o usuário corrige ou remove o valor, conforme o comportamento existente. O conjunto de erros aciona apenas um toast geral pelo consumidor compartilhado; não o transforme em alerta ou card dentro do formulário.
+- Deixe o backend validar os campos obrigatórios e retornar o conjunto de erros pela integração Inertia. Não use a validação nativa do HTML como barreira de submissão; cada mensagem recebida deve ser apresentada pelo `FormField` ou pelo componente de controle equivalente, logo abaixo do campo e associada por `aria-describedby`.
+- Configure `form.transform` somente para diferenças reais de payload. Criação e edição podem ter contratos distintos: não envie automaticamente todos os campos do estado nos dois casos.
+- Use o método e o endpoint previstos nas rotas. O exemplo combina `form.post`, `forceFormData: true`, `preserveScroll: true` e `_method: 'put'` na edição porque contém upload. Multipart e method spoofing são condicionais; não obrigue formulários sem arquivos a adotá-los por cópia.
+- Durante o envio, sinalize `aria-busy`, bloqueie campos e ações apropriados e impeça submits duplicados. Alunos usam `fieldset disabled`, props `disabled` dos adaptadores e uma trava em `useRef`, liberada em `onFinish`. O Cancelar do rodapé recebe o estado de processamento. Não confie apenas no `fieldset` para widgets com elementos gerados fora dele.
+- Mantenha mensagens como “Salvando...” e status compreensíveis. `FormActions.status` anuncia o andamento; `form.progress` é usado quando houver upload. Falhas devem permitir corrigir e tentar novamente.
+
+As falhas de conexão e de resposta HTTP são apresentadas por `useStudentRequest` no toast global, por meio de `UI/NotificationToast/notify`. Esse hook é do domínio de alunos: não o copie nem o importe indiscriminadamente em outros cadastros. Reutilize o transporte de feedback compartilhado e, se houver necessidade real de outra abstração, trate-a no escopo autorizado.
+
+## Padrões condicionais
+
+### Selects
+
+Quando houver seleção de opções, use `SelectField` com Select2 habilitado por padrão. Passe `options` como `{ value, label }[]`, valores controlados e `onChange`, sem títulos de grupo ou repetição do label no menu. O placeholder padrão é “Selecione”; filtros podem exigir “Todos”, mas isso não define o placeholder de todo formulário. Preserve valores do backend, inclusive zero e string vazia quando tiverem significado distinto. Para escolher um ícone, informe `iconClass` em cada opção e use `iconOnly`: o menu vira uma grade de ícones (passe `iconSearch` para habilitar a busca em catálogos extensos), o valor escolhido aparece como ícone e o nome permanece como texto oculto para leitores de tela e dica ao passar o ponteiro; opções sem ícone, como “Sem ícone”, continuam em texto. Referência: ícones dos itens no construtor do site.
+
+O componente sincroniza seleção e desabilitação com os controles gerados pelo plugin, encaminha as alterações para o React e mantém associações de erro. Se o plugin não carregar, informa a falha e mantém a seleção nativa disponível. Não inicialize Select2 manualmente na página.
+
+### Datas e máscaras
+
+Quando o campo representar uma data compatível, use `DatePicker` com `id`, `name`, `label`, `value` e `onChange`. Ele exibe e mascara `DD/MM/AAAA`, filtra caracteres não numéricos, rejeita dias/meses fora da faixa e datas inexistentes (incluindo anos bissextos), e recebe/emite datas completas válidas em `AAAA-MM-DD`. Entradas incompletas continuam chegando à validação existente; o componente não aplica limites de idade nem regras de negócio. Associe o erro por `invalid` e `describedBy`. A falha no calendário mantém a digitação disponível e apresenta feedback.
+
+Para horário, reutilize `ClockPicker` ou `TimePicker`, conforme o controle visual exigido pelo Ubold. Ambos filtram letras e rejeitam horários fora da faixa configurada; `ClockPicker` usa `HH:mm` de 24 horas, enquanto `TimePicker` respeita `showMeridian`. Mantenha essas máscaras e faixas nos componentes compartilhados, não nas telas.
+
+O Date Picker não é um controle de hora ou de intervalo. Não aplique datas de nascimento, limites de idade ou relacionamento entre datas a outro cadastro por cópia do exemplo.
+
+CPF e telefone são mascarados por helpers locais de alunos. Só use máscaras quando o campo e o contrato exigirem; confira se o backend recebe o texto mascarado ou normaliza os dígitos. A máscara não substitui validação.
+
+### Foto de pessoa
+
+Use `PersonPhotoUpload` exclusivamente quando o cadastro precisar de foto de pessoa. A API real está em `PersonPhotoUpload.types.ts`: o pai controla `file`, `current`, `removed`, erros e envio, com callbacks `onChange`, `onRemove`, `onError` e, quando necessário, `onValidatingChange`.
+
+O componente preserva o círculo do Blade, aceita clique, arrastar/soltar e câmera (no celular abre a câmera nativa; no computador, a webcam em janela, que exige HTTPS ou localhost; desative com `allowCamera={false}`), apresenta preview de arquivo ou foto existente e ação de remoção. A validação local confere formato, tamanho e leitura da imagem; URLs temporárias e leituras pendentes são liberadas. Seleção e remoção não fazem upload automático.
+
+JPG/PNG e 2 MB são os defaults que atendem a alunos. `acceptedTypes` e `maxSizeBytes` devem corresponder ao backend do cadastro que o reutilizar; não universalize esses limites. O estado do pai determina se uma remoção significa apenas descartar um arquivo novo ou também remover a foto persistida. Bloqueie o envio enquanto a validação local da imagem estiver pendente.
+
+### Editor de texto rico
+
+Quando o requisito pedir editor, use `SummernoteEditor`; não transforme todo campo de texto em editor. Ele aceita HTML inicial por `defaultValue`, lido uma vez na montagem, e entrega HTML por `onChange`. Use o valor inicial seguro que o backend disponibiliza e atualize o campo correspondente em `form.setData`.
+
+O `RichTextSanitizer` preserva a apresentação oferecida pelo Summernote: negrito, itálico, sublinhado, tachado, sobrescrito/subscrito, títulos, fontes, tamanhos, cores, alinhamento, recuos, espaçamento, listas, tabelas, links e imagens (URLs HTTP(S)/relativas ou raster em base64). Estilos são validados por propriedade e valor; classes ficam restritas às de tabelas e imagens usadas pelo editor. Scripts, eventos, URLs executáveis, SVG, iframes e CSS arbitrário continuam bloqueados, inclusive no modo de código. Não restrinja o editor a tags sem estilos para contornar o sanitizador.
+
+No modo padrão com `id`, o conteúdo editável recebe `${id}-input`; o `FormField` do endereço de alunos usa esse ID. Passe `disabled`, `invalid`, `describedBy` e `onLoadError`, conforme necessário. Preserve a toolbar completa padrão, sem reduzi-la por iniciativa própria. A altura é uma decisão contextual, não um tamanho obrigatório para todos os editores.
+
+A referência bloqueia Salvar após falha de carregamento do editor e apresenta erro no campo. Não declare HTML recebido como seguro por ter vindo do editor: respeite o tratamento do backend. `StudentPagePresenter` disponibiliza `address_html` por `RichTextSanitizer`. A descrição dos itens usa `UI/RichTextContent` para exibir o HTML já sanitizado, preservando listas, tabelas, imagens e formatação sem depender do CSS do editor. As entidades do HTML sanitizado permanecem escapadas; nunca faça uma decodificação posterior antes de inserir o conteúdo no DOM.
+
+Plugins usam os assets locais de `public/assets/react/`, com adaptadores que carregam suas dependências e limpam listeners/instâncias ao desmontar. Não importe Bootstrap global, não reinicialize os plugins por tela e não instale bibliotecas equivalentes sem necessidade comprovada.
+
+### Mapas vinculados à instituição
+
+Use `Inclusion/GeoMap` com a instituição em `reference`, incluindo suas coordenadas e `default_zoom`. A sede e o zoom padrão definem o enquadramento inicial em cadastro, edição e visualização; `value` continua representando a posição real da barreira ou do ponto de referência. Não substitua o zoom cadastrado por valores fixos nas telas de edição. Ao trocar de instituição, o mapa atualiza o enquadramento e mantém os comportamentos existentes de seleção do marcador. Sem instituição selecionada/vinculada, preserve o fallback da funcionalidade. O zoom zero é válido e não deve ser tratado como ausência de configuração.
+
+Nos cadastros com mapa (barreiras, instituições e pontos de referência), o formulário e a visualização dividem o card com `Inclusion/MapSplit`: a seção de identificação fica em `MapSplitMain`, à esquerda, e o mapa com seus controles fica em `MapSplitAside`, uma coluna menor à direita. Abaixo de 1100 px as colunas se empilham. Nas barreiras, a coluna principal agrupa os campos curtos em três por linha e a vistoria segue abaixo do mapa. Em instituições e pontos de referência, a Configuração fica abaixo da Identificação, o mapa fica sozinho à direita e `MapSplit wideAside` alarga sua coluna; com menos espaço, os campos ficam em duas colunas. Coleções extensas, como o histórico de vistorias, ficam fora da divisão, na largura total do card.
+
+## Particularidades do formulário de alunos
+
+- “Dados Pessoais” e “Dados Acadêmicos”, seus ícones e campos são do domínio de alunos; outros cadastros devem definir seus próprios agrupamentos.
+- A foto ocupa uma coluna estreita à esquerda, e os seis campos pessoais ficam à direita: nome/e-mail na primeira linha e CPF/nascimento/gênero/telefone na seguinte, quando houver largura. O endereço ocupa toda a linha abaixo das duas colunas.
+- A composição e os respiros especiais dessa área estão em `Students.css`, com media queries e container queries. As medidas da coluna, distâncias e quantidade de campos não são uma grade obrigatória para outros formulários, especialmente os que não têm foto.
+- O status aparece apenas na edição. `StudentForm` não envia `status` nem `remove_photo` na criação. Os defaults de gênero/status vêm das props preparadas para cada operação.
+- `Create` cancela para a listagem; `Edit` cancela para o prontuário. Ambas mantêm Cancelar somente no rodapé sticky do formulário. Preserve o destino e as ações do cadastro de origem em vez de impor essas rotas a outros módulos.
+- A edição usa `key={student.id}` para reinicializar o formulário/editor quando o registro muda. Não espere que `SummernoteEditor.defaultValue` acompanhe cada alteração de props como um campo controlado.
+
+## Integração com o backend e feedback
+
+Para alunos, consulte estes arquivos reais; em outra tela, localize os equivalentes do respectivo domínio:
+
+| Contrato | Referência |
+| --- | --- |
+| Endpoints e middlewares `can:*` | `routes/modules/inclusion.php`, no grupo com prefixo `specialized-educational-support` |
+| Páginas Inertia, operações e redirects | `app/Domains/Inclusion/UI/Controllers/StudentController.php` |
+| Opções e defaults de criação/edição | `app/Domains/Inclusion/Application/Queries/Students/StudentFormQuery.php` |
+| Dados de apresentação e permissões | `app/Domains/Inclusion/UI/Presenters/StudentPagePresenter.php` |
+| Nomes, tipos e validações | `app/Domains/Inclusion/Application/Data/Students/CreateStudentData.php` e `UpdateStudentData.php` |
+| Normalização de entrada de pessoa | `app/Domains/Inclusion/Application/Data/People/Concerns/NormalizesPersonInput.php` |
+| Dados compartilhados e flash | `app/Shared/Infrastructure/Http/Middleware/HandleInertiaRequests.php` |
+
+A referência cria por POST em `/specialized-educational-support/students/store` e atualiza por PUT em `/specialized-educational-support/students/{id}`, via POST multipart com `_method`. O controller redireciona para o prontuário com mensagem de sucesso. Essas URLs e destinos são exemplos, não uma convenção de URLs obrigatória para novos módulos.
+
+Preserve nomes de campos, enums, formato das datas, arquivos e flags aceitos pelo backend. Não substitua validações, permissões, queries/actions ou regras de negócio por condições visuais. Os erros de validação chegam por Inertia em `form.errors`; os redirects e flash devem seguir os contratos existentes. Não acrescente capabilities ao usuário compartilhado nem invente permissões que o servidor não fornece.
+
+**Consumo de feedback:** `AppLayout` monta uma única instância de `UI/FlashNotifications/FlashNotifications.tsx` para as telas autenticadas, e `AccountLayout` faz o mesmo na autenticação. O consumidor converte flash do backend, erros de validação Inertia e mensagens emitidas por `UI/NotificationToast/notify` em toast. Páginas, wrappers de domínio e `BusinessPage` não devem montar outro consumidor das mesmas mensagens. A fila compartilhada preserva avisos emitidos durante transições entre layouts, enquanto `flash.response_id`, gerado pelo middleware, impede que a mesma resposta seja consumida novamente por uma renderização, remontagem ou restauração do histórico do Inertia.
+
+## Processo de criação ou migração
+
+1. Leia esta convenção e as instruções `AGENTS.md` aplicáveis antes de implementar.
+2. Releia `Create`, `Edit`, `StudentPage`, `StudentForm` e seus componentes compartilhados para verificar o padrão atual; não presuma que uma nota antiga sobre scaffolds descreve essas páginas hoje.
+3. Localize a biblioteca interna e confira as APIs, CSS e hooks dos controles necessários.
+4. Em migrações, inspecione o Blade de origem, partials, componentes, estilos e scripts. Inventarie campos, defaults, condições, máscaras, uploads, ações, erros, loading e mensagens.
+5. Rastreie rotas, controllers, Data/Rules, Queries/Presenters, permissões e redirects. Identifique diferenças entre criar e editar antes de definir o payload.
+6. Componha a nova página e o formulário seguindo os padrões obrigatórios desta convenção, aplicando os componentes condicionais somente quando o cadastro exigir.
+7. Reutilize os componentes compartilhados e mantenha tipos, hooks, utilitários e CSS específicos com seu proprietário. Use páginas `pages/Dominio/Recurso/Acao.tsx`, componentes `.tsx` e lógica/tipos sem markup em `.ts`.
+8. Preserve integração e regras de negócio. Aplique a apresentação React padronizada sem copiar mecanicamente o visual do Blade ou criar padrões paralelos.
+9. Compare o código com o inventário funcional, revise o diff e confirme campos, submissão, edição, remoção de foto quando aplicável, mensagens, foco e responsividade. Corrija divergências no escopo autorizado.
+10. Entregue um resumo curto dos arquivos e comportamentos implementados. A homologação visual/funcional é manual; não afirme que houve execução quando a revisão foi apenas estática.
+
+Siga os limites de execução do `AGENTS.md`: não crie ou execute testes, build, typecheck, scripts de homologação, servidores, navegador, banco temporário ou infraestrutura automaticamente. Essas ações dependem de solicitação explícita ou de uma tarefa cujo objetivo seja validar o ambiente.
+
+## Manutenção da convenção
+
+Quando uma alteração autorizada redefinir o padrão compartilhado de formulários, atualize este documento e os links do índice no `AGENTS.md`, se os caminhos mudarem. Verifique o código real antes de atualizar exemplos e APIs. Uma nova tela que segue o mesmo padrão não exige uma nova convenção.
+
+Outras convenções podem ser adicionadas a `docs/ai-conventions/` e indexadas no `AGENTS.md` conforme existirem. Não crie documentos vazios para planejar essa expansão. A documentação de domínio já existente em `Docs/` permanece separada; evite duplicar seus contratos nesta convenção.

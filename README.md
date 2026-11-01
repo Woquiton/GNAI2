@@ -18,6 +18,11 @@ Por baixo, é uma aplicação Laravel 12 (PHP 8.3) com MySQL 8, usando Docker
 Compose para rodar tudo de forma isolada — tanto no computador de
 desenvolvimento quanto no servidor de produção.
 
+O frontend é React/TypeScript com Inertia e fica em `resources/react`.
+Controllers de telas respondem com componentes React e props; os assets ficam
+em `public/assets/react`. O catálogo local de componentes está disponível em
+`http://localhost/react/index.html`. Consulte o [guia React](resources/react/README.md).
+
 ## O que você precisa ter instalado
 
 - Git;
@@ -198,9 +203,13 @@ DB_PASSWORD=troque_esta_senha
 MYSQL_ROOT_PASSWORD=troque_esta_senha
 ```
 
-Preencha também as configurações reais de e-mail (para o envio de links de
-acesso e notificações) e de backup. Gere a `APP_KEY` do mesmo jeito que no
-ambiente de desenvolvimento:
+Preencha também as configurações reais de backup. O e-mail (usado no envio de
+links de acesso e notificações) pode ser configurado pela interface, em
+Configurações > E-mail; os valores `MAIL_*` do `.env` são usados somente
+enquanto não houver configuração cadastrada. A senha de e-mail cadastrada é
+criptografada com a `APP_KEY`: se ela mudar, cadastre a senha novamente.
+Retenção e horários dos backups automáticos ficam em Configurações > Backups.
+Gere a `APP_KEY` do mesmo jeito que no ambiente de desenvolvimento:
 
 ```bash
 printf 'base64:%s\n' "$(openssl rand -base64 32)"
@@ -292,6 +301,21 @@ containers, roda as migrations pendentes e ajusta as permissões de
 arquivo.
 
 ## Conferindo se deu certo
+
+Na primeira implantação, crie o administrador superior do Gnai. Essa conta
+administra as unidades e é a única que concede ou retira o acesso de
+administrador interno; ela não aparece como membro da equipe:
+
+```bash
+make create-admin ENV=prod
+```
+
+Para redefinir a senha do administrador superior (a senha é solicitada de forma
+oculta e não fica no histórico do terminal):
+
+```bash
+make reset-admin-password ENV=prod
+```
 
 Depois de publicar (qualquer uma das duas opções):
 

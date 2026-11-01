@@ -12,14 +12,23 @@ use App\Domains\Reporting\Application\Queries\ListReportSourcesQuery;
 use App\Domains\Reporting\Domain\Exceptions\ReportingException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ReportController
 {
-    public function index(): View
+    public function index(Request $request): InertiaResponse
     {
-        return view('reports.builder');
+        return Inertia::render('Reports/Builder', [
+            'can' => [
+                'sources' => $request->user()?->can('report.available') ?? false,
+                'metadata' => $request->user()?->can('report.meta') ?? false,
+                'configureRelations' => $request->user()?->can('report.builder') ?? false,
+                'run' => $request->user()?->can('report.run') ?? false,
+                'pdf' => $request->user()?->can('report.pdf') ?? false,
+            ],
+        ]);
     }
 
     public function sources(ListReportSourcesQuery $query): JsonResponse

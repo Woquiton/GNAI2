@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Domains\SpecializedEducationalSupport\Domain\Models\AeeStudentEvaluation;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\CaseStudy;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\Paee;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\PedagogicalRecord;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\PeiDiscipline;
+use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
+use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use App\Domains\Inclusion\Domain\Models\Paee;
+use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
+use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
 
 /**
  * Mapa de configuração do feed de atividades (dashboard). Para incluir um

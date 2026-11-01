@@ -6,9 +6,9 @@ namespace App\Domains\Auth\Application\Queries\Profiles;
 
 use App\Domains\Auth\Domain\Exceptions\InvalidProfile;
 use App\Domains\Auth\Domain\Models\User;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\Person;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\Professional;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\Teacher;
+use App\Domains\Inclusion\Domain\Models\Person;
+use App\Domains\Inclusion\Domain\Models\Professional;
+use App\Domains\Inclusion\Domain\Models\Teacher;
 
 final readonly class EditProfileQuery
 {
@@ -28,6 +28,8 @@ final readonly class EditProfileQuery
         if (! $person instanceof Person) {
             throw new InvalidProfile('Vínculo de pessoa não encontrado para este usuário.');
         }
+
+        $person->append('photo_url');
 
         return [
             'person' => $person,

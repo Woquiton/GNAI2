@@ -22,7 +22,8 @@ use App\Domains\Backup\Domain\Exceptions\InvalidBackupRestoreConfirmation;
 use App\Domains\Backup\Domain\Models\Backup;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
@@ -34,17 +35,38 @@ final class BackupController
         ListBackupUsersQuery $usersQuery,
         SyncBackupsAction $syncBackups,
         Request $request,
-    ): View {
+    ): InertiaResponse {
         $syncBackups->execute();
 
         $backups = $backupsQuery->execute($filters);
-        $users = $usersQuery->execute();
+        $backups->getCollection()->each(
+            fn (Backup $backup) => $backup->setAttribute(
+                'created_at_label',
+                $backup->created_at?->format('d/m/Y H:i') ?? 'Não informado',
+            ),
+        );
+        $users = $usersQuery->execute()
+            ->map(fn ($user): array => ['id' => $user->id, 'name' => $user->name])
+            ->values();
 
-        if ($request->ajax()) {
-            return view('pages.backup.partials.table', compact('backups'));
-        }
-
-        return view('pages.backup.index', compact('backups', 'users'));
+        return Inertia::render('Backup/Index', [
+            'backups' => $backups,
+            'users' => $users,
+            'filters' => [
+                'name' => $filters->name ?? '',
+                'status' => $filters->status?->value ?? '',
+                'user_id' => $filters->userId === null ? '' : (string) $filters->userId,
+            ],
+            'backupDirectory' => config('backup.backup.name'),
+            'can' => [
+                'store' => $request->user()->can('backup.store'),
+                'upload' => $request->user()->can('backup.upload'),
+                'show' => $request->user()->can('backup.show'),
+                'download' => $request->user()->can('backup.download'),
+                'restore' => $request->user()->can('backup.restore'),
+                'destroy' => $request->user()->can('backup.destroy'),
+            ],
+        ]);
     }
 
     /**
@@ -59,11 +81,18 @@ final class BackupController
             ->with('success', 'Backup realizado com sucesso!');
     }
 
-    public function show(Backup $backup, ShowBackupQuery $query): View
+    public function show(Backup $backup, ShowBackupQuery $query, Request $request): InertiaResponse
     {
         $backup = $query->execute($backup);
+        $backup->setAttribute('created_at_label', $backup->created_at?->format('d/m/Y H:i') ?? 'Não informado');
 
-        return view('pages.backup.show', compact('backup'));
+        return Inertia::render('Backup/Show', [
+            'backup' => $backup,
+            'can' => [
+                'download' => $request->user()->can('backup.download'),
+                'destroy' => $request->user()->can('backup.destroy'),
+            ],
+        ]);
     }
 
     public function download(Backup $backup, DownloadBackupQuery $query): RedirectResponse|StreamedResponse
@@ -85,7 +114,7 @@ final class BackupController
         $data = UploadBackupData::validateAndCreate($request->all());
 
         if (! $data->backupFile->isValid()) {
-            return redirect()->back()->with('error', 'Erro no upload do PHP: ' . $data->backupFile->getErrorMessage());
+            return redirect()->back()->with('error', 'Erro no upload do PHP: '.$data->backupFile->getErrorMessage());
         }
 
         $action->execute($data);
@@ -115,8 +144,7 @@ final class BackupController
         RestoreBackupAction $action,
         BackupRestoreConfirmationPolicy $confirmationPolicy,
         Request $request,
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $validated = $request->validate([
             'password' => ['required', 'string'],
         ], [

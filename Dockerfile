@@ -55,6 +55,7 @@ RUN npm ci --no-audit --no-fund
 COPY resources ./resources
 COPY public ./public
 COPY vite.config.js ./
+COPY tsconfig.json ./
 
 RUN npm run build
 

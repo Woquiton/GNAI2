@@ -25,8 +25,7 @@ return [
         'pei-discipline' => 'Adaptações do PEI',
         'student-document' => 'Documentos do Aluno',
 
-        'assistive-technology' => 'Tecnologias Assistivas',
-        'material' => 'Materiais Pedagógicos Acessíveis',
+        'item' => 'Itens',
         'barrier' => 'Barreiras',
         'loan' => 'Empréstimos',
         'waitlist' => 'Lista de Espera',
@@ -39,6 +38,8 @@ return [
         'institution' => 'Instituições',
         'location' => 'Localizações',
         'accessibility-feature' => 'Recursos de Acessibilidade',
+        'tag' => 'Etiquetas',
+        'publication' => 'Publicações',
         'resource-status' => 'Status de Recurso',
     ],
 ];

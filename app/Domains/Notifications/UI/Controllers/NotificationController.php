@@ -10,10 +10,14 @@ use App\Domains\Notifications\Application\Actions\MarkNotificationAsReadAction;
 use App\Domains\Notifications\Application\Queries\CountUnreadNotificationsQuery;
 use App\Domains\Notifications\Application\Queries\ListNotificationsQuery;
 use App\Domains\Notifications\Application\Queries\ListRecentNotificationsQuery;
+use App\Domains\Notifications\UI\Presenters\NotificationDestination;
+use App\Shared\Infrastructure\Navigation\AppNavigation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Notifications\DatabaseNotification;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 final class NotificationController
 {
@@ -21,10 +25,22 @@ final class NotificationController
         ListNotificationsQuery $query,
         AuthenticatedUserResolver $authenticatedUser,
         Request $request,
-    ): View {
-        $notifications = $query->execute($authenticatedUser->fromRequest($request));
+        AppNavigation $navigation,
+    ): InertiaResponse {
+        $notifications = $query
+            ->execute($authenticatedUser->fromRequest($request))
+            ->through(fn (DatabaseNotification $notification): array => [
+                'id' => $notification->id,
+                'title' => $notification->data['title'] ?? 'Notificação',
+                'icon_class' => $navigation->iconForUrl($notification->data['url'] ?? null) ?? 'ti-bell',
+                'message' => $notification->data['message'] ?? '',
+                'url' => NotificationDestination::toLocalUrl($notification->data['url'] ?? null),
+                'is_unread' => $notification->read_at === null,
+                'created_at' => $notification->created_at?->toIso8601String(),
+                'created_at_human' => $notification->created_at?->diffForHumans(),
+            ]);
 
-        return view('pages.notifications.index', compact('notifications'));
+        return Inertia::render('Notifications/Index', compact('notifications'));
     }
 
     public function markAllAsRead(

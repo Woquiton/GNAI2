@@ -1,0 +1,85 @@
+.sitePillars {
+    padding: var(--pillars-padding) 0;
+}
+
+.sitePillars .sitePillars__title {
+    font-size: clamp(20px, 3.2cqi, var(--pillars-title-size));
+    overflow-wrap: anywhere;
+}
+
+.sitePillars .sitePillars__title::after {
+    background: var(--pillars-divider-color);
+}
+
+.sitePillars__title[data-title-align="center"]::after {
+    margin-inline: auto;
+}
+
+.sitePillars__title[data-title-align="right"]::after {
+    margin-left: auto;
+}
+
+.sitePillars--noDivider .sitePillars__title::after {
+    display: none;
+}
+
+.sitePillars .sitePillars__subtitle {
+    max-width: none;
+    font-size: clamp(14px, 2.5cqi, var(--pillars-subtitle-size));
+    overflow-wrap: anywhere;
+}
+
+.sitePillars__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--pillars-columns), minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--pillars-gap);
+    margin: 36px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sitePillars--list .sitePillars__grid,
+.sitePillars[data-columns="1"] .sitePillars__grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+@container site (max-width: 960px) {
+    .sitePillars--grid:not([data-columns="1"]) .sitePillars__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@container site (max-width: 600px) {
+    .sitePillars {
+        padding: min(var(--pillars-padding), 48px) 0;
+    }
+
+    .sitePillars--grid:not([data-columns="1"]) .sitePillars__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.sitePillars--type-faq .sitePillars__grid { align-items: start; }
+.sitePillars--type-faq .siteSections__question {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+.sitePillars--type-faq .siteSections__question summary {
+    padding: 0;
+    color: var(--pillar-title-color);
+    font-size: var(--pillar-title-size);
+    text-align: var(--pillar-title-align);
+    cursor: pointer;
+}
+.sitePillars--type-faq .siteSections__question[open] summary { margin-bottom: 12px; }
+.sitePillars--type-faq .siteSections__question p { padding: 0; }
+.sitePillars--type-faq .siteSections__question summary:focus-visible,
+.sitePillars--type-resources .siteSections__resourceLink:focus-visible {
+    outline: 2px solid var(--site-primary);
+    outline-offset: 4px;
+}
+.sitePillars--type-resources .siteSections__resourceLink { display: inline-flex; margin-top: 16px; }

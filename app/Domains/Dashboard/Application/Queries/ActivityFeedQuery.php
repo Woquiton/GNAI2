@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Dashboard\Application\Queries;
 
 use App\Domains\Auth\Domain\Models\User;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\PeiDiscipline;
+use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
 use App\Shared\Domain\Models\AuditLog;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;

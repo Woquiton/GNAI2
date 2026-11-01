@@ -8,7 +8,7 @@ use App\Domains\Auth\Application\Data\TeacherAccess\RequestTeacherAccessLinkData
 use App\Domains\Auth\Domain\Models\SentEmail;
 use App\Domains\Auth\Domain\Models\TeacherAccessToken;
 use App\Domains\Auth\Infrastructure\Notifications\TeacherAccessLinkNotification;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\Teacher;
+use App\Domains\Inclusion\Domain\Models\Teacher;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Domains\Auth\Domain\Models\User;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\AeeStudentEvaluation;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\CaseStudy;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\Paee;
-use App\Domains\SpecializedEducationalSupport\Domain\Models\PeiDiscipline;
+use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
+use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use App\Domains\Inclusion\Domain\Models\Paee;
+use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
 use App\Shared\Domain\Models\AuditLog;
 use Illuminate\Database\Seeder;
 
