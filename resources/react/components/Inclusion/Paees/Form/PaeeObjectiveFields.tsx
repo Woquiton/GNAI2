@@ -16,11 +16,12 @@ const newObjective = (): PaeeObjectiveInput => ({
     linked_barrier_id: null,
 });
 
-/** Objetivos do plano: descrição e prazo, com inclusão e remoção de blocos. */
+/** Objetivos do plano: descrição, barreira do Estudo de Caso e prazo, com inclusão e remoção. */
 export default function PaeeObjectiveFields({
     form,
     errors,
     disabled,
+    options,
 }: PaeeFormSectionProps): React.JSX.Element {
     return (
         <FormSection
@@ -42,6 +43,8 @@ export default function PaeeObjectiveFields({
                     const description = `objectives.${index}.description`;
                     const term = `objectives.${index}.term`;
                     const termId = paeeFieldId(term);
+                    const barrier = `objectives.${index}.linked_barrier_id`;
+                    const barrierId = paeeFieldId(barrier);
 
                     return (
                         <div className="paeeForm__item paeeForm__item--objective">
@@ -55,6 +58,32 @@ export default function PaeeObjectiveFields({
                                 error={errors[description]}
                                 onChange={(value) => update({ description: value })}
                             />
+                            <FormField
+                                id={barrierId}
+                                label="Barreira Vinculada"
+                                error={errors[barrier]}
+                            >
+                                <SelectField
+                                    id={barrierId}
+                                    name={`objectives[${index}][linked_barrier_id]`}
+                                    label="Barreira Vinculada"
+                                    placeholder="Nenhuma"
+                                    value={objective.linked_barrier_id?.toString() ?? ''}
+                                    options={options.barriers}
+                                    disabled={disabled}
+                                    invalid={Boolean(errors[barrier])}
+                                    aria-describedby={fieldDescribedBy(barrierId, {
+                                        error: errors[barrier],
+                                    })}
+                                    onChange={(event) =>
+                                        update({
+                                            linked_barrier_id: event.target.value
+                                                ? Number(event.target.value)
+                                                : null,
+                                        })
+                                    }
+                                />
+                            </FormField>
                             <FormField
                                 id={termId}
                                 label="Prazo"

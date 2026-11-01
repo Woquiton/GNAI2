@@ -17,7 +17,14 @@ import './PaeeForm.css';
 export default function PaeeForm(props: PaeeFormProps): React.JSX.Element {
     const { form, errors, formRef, editorFailed, richText, toggle, save } = usePaeeForm(props);
     const editing = props.mode === 'edit';
-    const sectionProps = { form, errors, disabled: form.processing, richText, toggle };
+    const sectionProps = {
+        form,
+        errors,
+        disabled: form.processing,
+        options: props.options,
+        richText,
+        toggle,
+    };
     const cancelHref =
         props.mode === 'edit'
             ? paeeUrls.show(props.paee.id)

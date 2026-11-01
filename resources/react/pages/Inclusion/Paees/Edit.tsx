@@ -7,6 +7,7 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 export default function InclusionPaeesEditPage({
     paee,
     student,
+    options,
 }: PaeeEditProps): React.JSX.Element {
     return (
         <BusinessPage
@@ -14,7 +15,7 @@ export default function InclusionPaeesEditPage({
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={paeeRecordBreadcrumb(student, paee, 'Editar PAEE')}
         >
-            <PaeeForm key={paee.id} mode="edit" paee={paee} />
+            <PaeeForm key={paee.id} mode="edit" paee={paee} options={options} />
         </BusinessPage>
     );
 }

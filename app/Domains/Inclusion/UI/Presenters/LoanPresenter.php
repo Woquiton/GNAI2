@@ -36,10 +36,12 @@ final class LoanPresenter
                 'asset_code' => $loan->loanable?->asset_code,
             ],
             'student' => $loan->student ? [
+                'id' => (int) $loan->student->getKey(),
                 'name' => $loan->student->person?->name ?? 'Sem nome',
                 'registration' => $loan->student->registration,
             ] : null,
             'professional' => $loan->professional ? [
+                'id' => (int) $loan->professional->getKey(),
                 'name' => $loan->professional->person?->name ?? 'Sem nome',
                 'registration' => $loan->professional->registration,
             ] : null,

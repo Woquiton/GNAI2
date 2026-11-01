@@ -23,7 +23,15 @@ export default function InclusionItemsShowPage({
             breadcrumbItems={itemBreadcrumb({ item })}
             busy={removal.processing}
         >
-            <ItemDetails {...details} showInspections={can.inspection} />
+            <ItemDetails
+                {...details}
+                showInspections={can.inspection}
+                loanPermissions={{
+                    list: can.loans,
+                    view: can.viewLoan,
+                    viewStudent: can.viewStudent,
+                }}
+            />
             <ItemDetailsActions
                 itemId={item.id}
                 permissions={can}

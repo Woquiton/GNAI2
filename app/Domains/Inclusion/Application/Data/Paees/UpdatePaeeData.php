@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Data\Paees;
 
 use App\Domains\Inclusion\Domain\Enums\ItemType;
+use App\Domains\Inclusion\Domain\Models\Paee;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
@@ -58,6 +59,9 @@ final class UpdatePaeeData extends Data
 
     public static function rules(): array
     {
+        $paee = request()->route('paee');
+        $caseStudyId = $paee instanceof Paee ? (int) $paee->case_study_id : 0;
+
         return [
             'attendance_frequency_per_week' => ['required', 'integer', 'min:1', 'max:7'],
             'attendance_duration_minutes' => ['required', 'integer', 'min:1'],
@@ -87,7 +91,12 @@ final class UpdatePaeeData extends Data
             'objectives' => ['nullable', 'array'],
             'objectives.*.description' => ['required_with:objectives', 'string', 'max:100000'],
             'objectives.*.term' => ['required_with:objectives', 'string', 'in:short,medium,long'],
-            'objectives.*.linked_barrier_id' => ['nullable', 'integer', 'exists:case_study_barriers,id'],
+            // Só barreiras do Estudo de Caso que fundamenta este PAEE.
+            'objectives.*.linked_barrier_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('case_study_barriers', 'id')->where('case_study_id', $caseStudyId),
+            ],
             'resources' => ['nullable', 'array'],
             'resources.*.description' => ['required_with:resources', 'string', 'max:100000'],
             'resources.*.acquisition_type' => ['required_with:resources', 'string', 'in:to_produce,to_accessibilize,to_acquire'],
@@ -128,7 +137,7 @@ final class UpdatePaeeData extends Data
             'objectives' => 'objetivos',
             'objectives.*.description' => 'descrição do objetivo',
             'objectives.*.term' => 'prazo do objetivo',
-            'objectives.*.linked_barrier_id' => 'barreira relacionada',
+            'objectives.*.linked_barrier_id' => 'barreira vinculada',
             'resources' => 'recursos',
             'resources.*.description' => 'descrição do recurso',
             'resources.*.acquisition_type' => 'tipo de aquisição',

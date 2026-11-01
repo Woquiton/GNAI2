@@ -94,14 +94,24 @@ export interface PaeeCaseStudyReference {
     version: number | null;
 }
 
+/** Opções dos vínculos do formulário (`PaeePagePresenter::formOptions`). */
+export interface PaeeFormOptions {
+    /** Barreiras registradas no Estudo de Caso que fundamenta o PAEE. */
+    barriers: FieldOption[];
+    /** Tecnologias assistivas do catálogo de itens. */
+    assistiveTechnologies: FieldOption[];
+}
+
 export interface PaeeCreateProps {
     caseStudy: PaeeCaseStudyReference;
     student: PaeeStudentSummary;
+    options: PaeeFormOptions;
 }
 
 export interface PaeeEditProps {
     paee: PaeeEditRecord;
     student: PaeeStudentSummary;
+    options: PaeeFormOptions;
 }
 
 /** Registro da visualização (`PaeePagePresenter::show`). */

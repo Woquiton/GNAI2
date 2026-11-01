@@ -26,7 +26,10 @@ export default function InclusionLoansShowPage({ loan, can }: LoanShowProps): Re
             busy={processing}
         >
             {loan.is_overdue ? <LoanOverdueNotice loan={loan} /> : null}
-            <LoanDetailsCard loan={loan} />
+            <LoanDetailsCard
+                loan={loan}
+                links={{ item: can.viewItem, student: can.viewStudent }}
+            />
             <LoanDetailsActions
                 loan={loan}
                 permissions={can}

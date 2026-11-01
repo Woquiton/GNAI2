@@ -6,6 +6,8 @@ namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Application\Data\Paees\ListPaeesData;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use App\Domains\Inclusion\Domain\Models\CaseStudyBarrier;
+use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Inclusion\Domain\Models\PaeeObjective;
 use App\Domains\Inclusion\Domain\Models\PaeeResource;
@@ -15,8 +17,10 @@ use App\Domains\Inclusion\Domain\Models\Student;
 use App\Shared\Domain\Support\AeeLabels;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 final class PaeePagePresenter
 {
@@ -68,9 +72,10 @@ final class PaeePagePresenter
     }
 
     /**
+     * @param  EloquentCollection<int, Item>  $assistiveTechnologies
      * @return array<string, mixed>
      */
-    public function create(CaseStudy $caseStudy): array
+    public function create(CaseStudy $caseStudy, EloquentCollection $assistiveTechnologies): array
     {
         return [
             'caseStudy' => [
@@ -78,13 +83,15 @@ final class PaeePagePresenter
                 'version' => $caseStudy->version,
             ],
             'student' => $this->studentSummary($caseStudy->student),
+            'options' => $this->formOptions($caseStudy, $assistiveTechnologies),
         ];
     }
 
     /**
+     * @param  EloquentCollection<int, Item>  $assistiveTechnologies
      * @return array<string, mixed>
      */
-    public function edit(Paee $paee): array
+    public function edit(Paee $paee, EloquentCollection $assistiveTechnologies): array
     {
         return [
             'paee' => [
@@ -112,8 +119,6 @@ final class PaeePagePresenter
                 'family_articulation' => RichTextSanitizer::sanitize((string) $paee->family_articulation),
                 'intersectoral_articulation' => RichTextSanitizer::sanitize((string) $paee->intersectoral_articulation),
                 'training_demands' => RichTextSanitizer::sanitize((string) $paee->training_demands),
-                // Barreira vinculada e tecnologia assistiva não aparecem no formulário,
-                // mas seguem no envio para a edição não apagar vínculos já gravados.
                 'objectives' => $paee->objectives
                     ->map(static fn (PaeeObjective $objective): array => [
                         'description' => $objective->description,
@@ -132,7 +137,45 @@ final class PaeePagePresenter
                     ->all(),
             ],
             'student' => $this->studentSummary($paee->student),
+            'options' => $this->formOptions($paee->caseStudy, $assistiveTechnologies),
         ];
+    }
+
+    /**
+     * Barreiras do Estudo de Caso que fundamenta o PAEE e tecnologias assistivas do catálogo de itens.
+     *
+     * @param  EloquentCollection<int, Item>  $assistiveTechnologies
+     * @return array{barriers: list<array{value: string, label: string}>, assistiveTechnologies: list<array{value: string, label: string}>}
+     */
+    private function formOptions(?CaseStudy $caseStudy, EloquentCollection $assistiveTechnologies): array
+    {
+        return [
+            'barriers' => ($caseStudy?->barriers ?? new EloquentCollection())
+                ->map(static fn (CaseStudyBarrier $barrier): array => [
+                    'value' => (string) $barrier->getKey(),
+                    'label' => self::barrierOptionLabel($barrier),
+                ])
+                ->values()
+                ->all(),
+            'assistiveTechnologies' => $assistiveTechnologies
+                ->map(static fn (Item $item): array => [
+                    'value' => (string) $item->getKey(),
+                    'label' => $item->asset_code ? "{$item->name} ({$item->asset_code})" : (string) $item->name,
+                ])
+                ->values()
+                ->all(),
+        ];
+    }
+
+    private static function barrierOptionLabel(CaseStudyBarrier $barrier): string
+    {
+        $situation = Str::limit(
+            trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $barrier->observed_situation))) ?? ''),
+            80,
+        );
+        $type = AeeLabels::barrierType($barrier->type);
+
+        return $situation === '' ? $type : "{$type}: {$situation}";
     }
 
     /**

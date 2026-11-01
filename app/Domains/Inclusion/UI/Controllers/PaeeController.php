@@ -57,9 +57,9 @@ final class PaeeController
 
     public function create(CaseStudy $caseStudy, PaeeFormQuery $form): InertiaResponse
     {
-        ['caseStudy' => $caseStudy] = $form->forCreation($caseStudy);
+        ['caseStudy' => $caseStudy, 'assistiveTechnologies' => $assistiveTechnologies] = $form->forCreation($caseStudy);
 
-        return Inertia::render('Inclusion/Paees/Create', $this->presenter->create($caseStudy));
+        return Inertia::render('Inclusion/Paees/Create', $this->presenter->create($caseStudy, $assistiveTechnologies));
     }
 
     /** @throws Throwable */
@@ -81,9 +81,9 @@ final class PaeeController
 
     public function edit(Paee $paee, PaeeFormQuery $form): InertiaResponse
     {
-        ['paee' => $paee] = $form->forUpdate($paee);
+        ['paee' => $paee, 'assistiveTechnologies' => $assistiveTechnologies] = $form->forUpdate($paee);
 
-        return Inertia::render('Inclusion/Paees/Edit', $this->presenter->edit($paee));
+        return Inertia::render('Inclusion/Paees/Edit', $this->presenter->edit($paee, $assistiveTechnologies));
     }
 
     /** @throws Throwable */

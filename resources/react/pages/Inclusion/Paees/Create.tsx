@@ -7,6 +7,7 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 export default function InclusionPaeesCreatePage({
     caseStudy,
     student,
+    options,
 }: PaeeCreateProps): React.JSX.Element {
     const subtitle = `Aluno: ${student.name} • a partir do Estudo de Caso ${paeeVersionLabel(caseStudy.version)}`;
 
@@ -16,7 +17,7 @@ export default function InclusionPaeesCreatePage({
             subtitle={subtitle}
             breadcrumbItems={paeeStudentBreadcrumb(student, { current: 'Novo PAEE' })}
         >
-            <PaeeForm mode="create" caseStudyId={caseStudy.id} />
+            <PaeeForm mode="create" caseStudyId={caseStudy.id} options={options} />
         </BusinessPage>
     );
 }

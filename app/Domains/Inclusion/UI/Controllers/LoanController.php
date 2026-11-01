@@ -99,6 +99,8 @@ final class LoanController
                     'return' => $request->user()?->can('loan.return') ?? false,
                     'destroy' => $request->user()?->can('loan.destroy') ?? false,
                     'pdf' => $request->user()?->can('loan.pdf') ?? false,
+                    'viewItem' => $request->user()?->can('item.show') ?? false,
+                    'viewStudent' => $request->user()?->can('student.view') ?? false,
                 ],
             ],
         );

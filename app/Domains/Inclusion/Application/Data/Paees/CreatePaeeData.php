@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
+use Spatie\LaravelData\Support\Validation\ValidationContext;
 
 #[MapInputName(SnakeCaseMapper::class)]
 final class CreatePaeeData extends Data
@@ -57,8 +58,10 @@ final class CreatePaeeData extends Data
         return $properties;
     }
 
-    public static function rules(): array
+    public static function rules(ValidationContext $context): array
     {
+        $caseStudyId = (int) ($context->fullPayload['case_study_id'] ?? 0);
+
         return [
             'case_study_id' => ['required', 'integer', 'exists:case_studies,id'],
             'attendance_frequency_per_week' => ['required', 'integer', 'min:1', 'max:7'],
@@ -89,7 +92,12 @@ final class CreatePaeeData extends Data
             'objectives' => ['nullable', 'array'],
             'objectives.*.description' => ['required_with:objectives', 'string', 'max:100000'],
             'objectives.*.term' => ['required_with:objectives', 'string', 'in:short,medium,long'],
-            'objectives.*.linked_barrier_id' => ['nullable', 'integer', 'exists:case_study_barriers,id'],
+            // Só barreiras do Estudo de Caso que fundamenta este PAEE.
+            'objectives.*.linked_barrier_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('case_study_barriers', 'id')->where('case_study_id', $caseStudyId),
+            ],
             'resources' => ['nullable', 'array'],
             'resources.*.description' => ['required_with:resources', 'string', 'max:100000'],
             'resources.*.acquisition_type' => ['required_with:resources', 'string', 'in:to_produce,to_accessibilize,to_acquire'],
@@ -130,7 +138,7 @@ final class CreatePaeeData extends Data
             'objectives' => 'objetivos',
             'objectives.*.description' => 'descrição do objetivo',
             'objectives.*.term' => 'prazo do objetivo',
-            'objectives.*.linked_barrier_id' => 'barreira relacionada',
+            'objectives.*.linked_barrier_id' => 'barreira vinculada',
             'resources' => 'recursos',
             'resources.*.description' => 'descrição do recurso',
             'resources.*.acquisition_type' => 'tipo de aquisição',

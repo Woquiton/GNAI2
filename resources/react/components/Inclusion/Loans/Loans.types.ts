@@ -20,8 +20,8 @@ export type LoanRecord = {
     item_type_label: string;
     loanable_icon: string;
     loanable: { name: string; asset_code: string | null };
-    student: { name: string; registration: string } | null;
-    professional: { name: string; registration: string } | null;
+    student: { id: number; name: string; registration: string } | null;
+    professional: { id: number; name: string; registration: string } | null;
     user: { name: string };
     loan_date: string | null;
     loan_date_label: string;
@@ -89,6 +89,9 @@ export interface LoanDetailsPermissions {
     return: boolean;
     destroy: boolean;
     pdf: boolean;
+    /** Liga o recurso e o aluno às respectivas visualizações. */
+    viewItem: boolean;
+    viewStudent: boolean;
 }
 
 export interface LoanShowProps {

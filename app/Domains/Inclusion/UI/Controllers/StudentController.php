@@ -17,11 +17,14 @@ use App\Domains\Inclusion\Application\Queries\Students\StudentAeeEvaluationsQuer
 use App\Domains\Inclusion\Application\Queries\Students\StudentCaseStudiesQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentFilterOptionsQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentFormQuery;
+use App\Domains\Inclusion\Application\Queries\Students\StudentLoansQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPaeesQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPdfQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPedagogicalRecordsQuery;
 use App\Domains\Inclusion\Domain\Enums\StudentDocumentType;
+use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Student;
+use App\Domains\Inclusion\UI\Presenters\LoanPresenter;
 use App\Domains\Inclusion\UI\Presenters\StudentPagePresenter;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -58,6 +61,8 @@ final class StudentController
         StudentPedagogicalRecordsQuery $pedagogicalRecordsQuery,
         StudentCaseStudiesQuery $caseStudiesQuery,
         StudentPaeesQuery $paeesQuery,
+        StudentLoansQuery $loansQuery,
+        LoanPresenter $loanPresenter,
         Request $request,
     ): InertiaResponse {
         $user = $request->user();
@@ -77,6 +82,10 @@ final class StudentController
         $this->presenter->markManageablePedagogicalRecords($pedagogicalRecords, $authenticatedUser);
         $caseStudies = $this->presenter->caseStudies($caseStudiesQuery->execute($student));
         $paees = $this->presenter->paees($paeesQuery->execute($student));
+        // Empréstimos do Radar só são serializados para quem pode consultá-los.
+        $loans = $authenticatedUser?->can('loan.index')
+            ? $loansQuery->execute($student)->map(fn (Loan $loan): array => $loanPresenter->loan($loan))->values()->all()
+            : [];
         $hasLaudo = $student->documents()
             ->where('type', StudentDocumentType::TECHNICAL_REPORT->value)
             ->exists();
@@ -85,7 +94,7 @@ final class StudentController
         return Inertia::render(
             'Inclusion/Students/Show',
             ['student' => $this->presenter->student($student, $request)]
-                + compact('aeeEvaluations', 'pedagogicalRecords', 'caseStudies', 'paees', 'activeTab')
+                + compact('aeeEvaluations', 'pedagogicalRecords', 'caseStudies', 'paees', 'loans', 'activeTab')
                 + ['statusPanel' => $this->presenter->statusPanel($student, $hasLaudo)]
                 + $this->presenter->shared($request),
         );

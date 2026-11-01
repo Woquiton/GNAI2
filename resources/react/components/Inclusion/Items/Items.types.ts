@@ -1,5 +1,6 @@
 import type { InspectionDetailsData } from '@/components/Inclusion/Inspections/InspectionDetails/InspectionDetails.types';
 import type { InspectionHistoryItem } from '@/components/Inclusion/Inspections/InspectionHistoryTable/InspectionHistoryTable.types';
+import type { LoanRecord } from '@/components/Inclusion/Loans/Loans.types';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
 
 export type ItemType = 'assistive_technology' | 'accessible_educational_material';
@@ -119,6 +120,10 @@ export interface ItemDetailsPermissions {
     inspection: boolean;
     pdf: boolean;
     destroy: boolean;
+    /** Histórico de empréstimos e links para o empréstimo e o aluno beneficiário. */
+    loans: boolean;
+    viewLoan: boolean;
+    viewStudent: boolean;
 }
 
 export interface ItemShowProps {
@@ -126,6 +131,8 @@ export interface ItemShowProps {
     deficiencies: NamedRecord[];
     features: NamedRecord[];
     display: ItemDetailsDisplay;
+    /** Vazio quando o usuário não pode listar empréstimos. */
+    loans: LoanRecord[];
     can: ItemDetailsPermissions;
 }
 

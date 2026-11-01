@@ -33,6 +33,7 @@ final class StudentPagePresenter
             'aee-record.view', 'aee-record.view-all', 'aee-record.view-own', 'aee-record.update', 'aee-record.delete',
             'pedagogical-record.view', 'pedagogical-record.view-all', 'pedagogical-record.view-own',
             'pedagogical-record.update', 'pedagogical-record.delete',
+            'loan.index', 'loan.show', 'loan.create',
         ];
 
         return [

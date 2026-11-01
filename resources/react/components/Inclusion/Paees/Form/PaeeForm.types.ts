@@ -2,7 +2,7 @@ import type { InertiaFormProps } from '@inertiajs/react';
 import type { ComponentProps } from 'react';
 import type { RichTextFieldProps } from '@/components/Forms/FormFields/RichTextField';
 import type ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
-import type { PaeeEditRecord } from '../Paees.types';
+import type { PaeeEditRecord, PaeeFormOptions } from '../Paees.types';
 
 export interface PaeeObjectiveInput {
     description: string;
@@ -45,9 +45,10 @@ export interface PaeeFormData {
 }
 
 /** Cadastro a partir do Estudo de Caso (`case_study_id`) ou edição de um PAEE existente. */
-export type PaeeFormProps =
+export type PaeeFormProps = (
     | { mode: 'create'; caseStudyId: number }
-    | { mode: 'edit'; paee: PaeeEditRecord };
+    | { mode: 'edit'; paee: PaeeEditRecord }
+) & { options: PaeeFormOptions };
 
 export type PaeeBooleanField =
     | 'assistive_technology_needed'
@@ -78,6 +79,7 @@ export interface PaeeFormSectionProps {
     form: InertiaFormProps<PaeeFormData>;
     errors: Record<string, string | undefined>;
     disabled: boolean;
+    options: PaeeFormOptions;
     richText: (name: PaeeTextField) => PaeeRichTextControl;
     toggle: (name: PaeeBooleanField) => PaeeToggleControl;
 }

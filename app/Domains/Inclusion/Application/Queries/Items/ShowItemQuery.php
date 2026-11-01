@@ -25,7 +25,19 @@ final class ShowItemQuery
                     ->orderByDesc('inspection_date')
                     ->orderByDesc('created_at');
             },
-            'loans',
+            // Histórico de empréstimos com os beneficiários, do mais recente ao mais antigo.
+            'loans' => static function (MorphMany $query): void {
+                $query
+                    ->with([
+                        'student:id,person_id,registration',
+                        'student.person:id,name',
+                        'professional:id,person_id,registration',
+                        'professional.person:id,name',
+                        'user:id,name',
+                    ])
+                    ->orderByDesc('loan_date')
+                    ->orderByDesc('id');
+            },
         ]);
     }
 }

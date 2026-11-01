@@ -1,3 +1,4 @@
+import type { LoanRecord } from '@/components/Inclusion/Loans/Loans.types';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
 
 export type Permissions = Record<string, boolean>;
@@ -150,6 +151,8 @@ export interface StudentShowProps extends StudentOptions {
     pedagogicalRecords: PedagogicalRecord[];
     caseStudies: StudentCaseStudySummary[];
     paees: StudentPaeeSummary[];
+    /** Empréstimos do Radar; vazio quando o usuário não pode listá-los. */
+    loans: LoanRecord[];
     statusPanel: StudentStatusPanelData;
     activeTab?: string;
 }

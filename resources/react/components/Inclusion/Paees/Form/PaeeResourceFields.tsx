@@ -17,11 +17,12 @@ const newResource = (): PaeeResourceInput => ({
     assistive_technology_id: null,
 });
 
-/** Recursos e materiais do plano: descrição e tipo de aquisição. */
+/** Recursos do plano: descrição, tecnologia assistiva do catálogo e tipo de aquisição. */
 export default function PaeeResourceFields({
     form,
     errors,
     disabled,
+    options,
 }: PaeeFormSectionProps): React.JSX.Element {
     return (
         <FormSection
@@ -49,9 +50,9 @@ export default function PaeeResourceFields({
                     const description = `resources.${index}.description`;
                     const acquisition = `resources.${index}.acquisition_type`;
                     const acquisitionId = paeeFieldId(acquisition);
-                    // A TA vinculada não tem controle próprio: seu erro aparece no tipo.
-                    const acquisitionError =
-                        errors[acquisition] ?? errors[`resources.${index}.assistive_technology_id`];
+                    const acquisitionError = errors[acquisition];
+                    const technology = `resources.${index}.assistive_technology_id`;
+                    const technologyId = paeeFieldId(technology);
 
                     return (
                         <div className="paeeForm__item paeeForm__item--resource">
@@ -65,6 +66,32 @@ export default function PaeeResourceFields({
                                 error={errors[description]}
                                 onChange={(value) => update({ description: value })}
                             />
+                            <FormField
+                                id={technologyId}
+                                label="Tecnologia Assistiva"
+                                error={errors[technology]}
+                            >
+                                <SelectField
+                                    id={technologyId}
+                                    name={`resources[${index}][assistive_technology_id]`}
+                                    label="Tecnologia Assistiva"
+                                    placeholder="Nenhuma"
+                                    value={resource.assistive_technology_id?.toString() ?? ''}
+                                    options={options.assistiveTechnologies}
+                                    disabled={disabled}
+                                    invalid={Boolean(errors[technology])}
+                                    aria-describedby={fieldDescribedBy(technologyId, {
+                                        error: errors[technology],
+                                    })}
+                                    onChange={(event) =>
+                                        update({
+                                            assistive_technology_id: event.target.value
+                                                ? Number(event.target.value)
+                                                : null,
+                                        })
+                                    }
+                                />
+                            </FormField>
                             <FormField
                                 id={acquisitionId}
                                 label="Tipo de aquisição"

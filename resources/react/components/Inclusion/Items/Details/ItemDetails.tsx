@@ -10,18 +10,24 @@ import TagList from '@/components/UI/TagList/TagList';
 import { resourceStatusTone } from '../Items.constants';
 import { itemUrls } from '../Items.routes';
 import type { ItemShowProps } from '../Items.types';
+import ItemLoanHistory from './ItemLoanHistory';
 
 const NOT_APPLICABLE = 'Não se aplica';
 
-type ItemDetailsProps = Omit<ItemShowProps, 'can'> & { showInspections: boolean };
+type ItemDetailsProps = Omit<ItemShowProps, 'can'> & {
+    showInspections: boolean;
+    loanPermissions: { list: boolean; view: boolean; viewStudent: boolean };
+};
 
-/** Identificação, gestão e histórico de vistorias de um item. */
+/** Identificação, gestão, histórico de empréstimos e de vistorias de um item. */
 export default function ItemDetails({
     item,
     deficiencies,
     features,
     display,
+    loans,
     showInspections,
+    loanPermissions,
 }: ItemDetailsProps): React.JSX.Element {
     return (
         <CardBox>
@@ -84,6 +90,13 @@ export default function ItemDetails({
                     </DetailField>
                 </DetailGrid>
             </FormSection>
+            {loanPermissions.list && (item.is_loanable || loans.length > 0) ? (
+                <ItemLoanHistory
+                    loans={loans}
+                    canViewLoan={loanPermissions.view}
+                    canViewStudent={loanPermissions.viewStudent}
+                />
+            ) : null}
             {showInspections ? (
                 <InspectionHistoryTable
                     id="item-inspections"
