@@ -25,7 +25,7 @@ final readonly class ExportReportPdfAction
      */
     public function execute(RunReportData $data): Response
     {
-        $result = $this->runReport->execute(data: $data, limit: 1000);
+        $result = $this->runReport->execute($data);
         $source = $this->catalog->get($data->source);
         $pdf = Pdf::loadView('reports.pdf', [
             'data' => $result->rows,
@@ -35,6 +35,6 @@ final readonly class ExportReportPdfAction
 
         PdfPageNumberer::apply($pdf);
 
-        return $pdf->download('relatorio-'.str($source->label())->slug().'.pdf');
+        return $pdf->stream('relatorio-'.str($source->label())->slug().'.pdf');
     }
 }

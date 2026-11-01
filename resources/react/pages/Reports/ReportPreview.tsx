@@ -9,7 +9,7 @@ export default function ReportPreview({ result, busy, onCopy }: {
     onCopy: () => void;
 }): React.JSX.Element {
     if (!result) {
-        return <p className="reportBuilder__empty">A prévia do relatório aparecerá aqui. Escolha as informações e clique em Gerar prévia.</p>;
+        return <p className="reportBuilder__empty">Nenhuma prévia gerada.</p>;
     }
     const headers = Object.entries(result.headers);
     const rows = reportCells(result);

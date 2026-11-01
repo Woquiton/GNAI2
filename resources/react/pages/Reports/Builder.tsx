@@ -7,6 +7,8 @@ import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import SelectField from '@/components/Forms/SelectField/SelectField';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import '@/components/Forms/RemovableField/RemovableField.css';
 import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
 import ReportColumns from './ReportColumns';
 import ReportFilters from './ReportFilters';
@@ -50,9 +52,14 @@ export default function ReportsBuilderPage({ can }: { can: ReportPermissions }):
                     <fieldset disabled={busy || unavailable} className="reportBuilder__fields">
                         <FormSection
                             variant="inline"
-                            title="1. Escolha o assunto do relatório"
+                            title="Assunto do relatório"
                             iconClass="fa fa-bar-chart"
-                            description="Primeiro, escolha sobre o que será o relatório. Depois, mostraremos as informações que você poderá incluir."
+                            titleAddon={
+                                <InfoTooltip
+                                    text="Primeiro, escolha sobre o que será o relatório. Depois, mostraremos as informações que você poderá incluir."
+                                    label="Mais informações sobre assunto do relatório"
+                                />
+                            }
                         >
                             <div className="reportBuilder__source">
                                 <FormField id="report-source" label="Assunto do relatório" requiredIndicator error={report.errors.source}>
@@ -85,47 +92,54 @@ export default function ReportsBuilderPage({ can }: { can: ReportPermissions }):
                         </FormSection>
                         <FormSection
                             variant="inline"
-                            title="2. Escolha as informações do relatório"
+                            title="Informações do relatório"
                             iconClass="fa fa-list"
-                            description="Marque somente o que deseja visualizar. É possível selecionar até 8 informações, incluindo as complementares."
+                            titleAddon={
+                                <InfoTooltip
+                                    text="Marque as informações principais e complementares que deseja visualizar."
+                                    label="Mais informações sobre informações do relatório"
+                                />
+                            }
                         >
                             {report.metadata ? (
-                                <>
-                                    <ReportColumns
-                                        id="report-columns"
-                                        label="Informações principais"
-                                        options={report.metadata.columns}
-                                        selected={report.columns}
-                                        errors={report.errors}
-                                        onChange={report.toggleColumn}
-                                    />
-                                    <p className="reportBuilder__hint">{report.columns.length} de 8 informações selecionadas.</p>
-                                    {relations.length ? (
-                                        <ReportRelations
-                                            key={report.metadata.key}
-                                            relations={relations}
-                                            added={report.addedRelations}
-                                            selected={report.columns}
-                                            canAdd={can.configureRelations}
-                                            onAdd={report.addRelation}
-                                            onRemove={report.removeRelation}
-                                            onToggle={report.toggleColumn}
-                                        />
-                                    ) : null}
-                                </>
+                                <ReportColumns
+                                    id="report-columns"
+                                    label="Informações principais"
+                                    options={report.metadata.columns}
+                                    selected={report.columns}
+                                    errors={report.errors}
+                                    onChange={report.toggleColumn}
+                                />
                             ) : (
                                 <p className="reportBuilder__hint">
                                     {report.loadingMetadata
                                         ? 'Carregando informações...'
-                                        : 'Escolha primeiro o assunto do relatório para ver as informações disponíveis.'}
+                                        : 'Nenhum assunto selecionado.'}
                                 </p>
                             )}
                         </FormSection>
+                        {report.metadata && relations.length ? (
+                            <ReportRelations
+                                key={report.metadata.key}
+                                relations={relations}
+                                added={report.addedRelations}
+                                selected={report.columns}
+                                canAdd={can.configureRelations}
+                                onAdd={report.addRelation}
+                                onRemove={report.removeRelation}
+                                onToggle={report.toggleColumn}
+                            />
+                        ) : null}
                         <FormSection
                             variant="inline"
-                            title="3. Mostre apenas o que você precisa"
+                            title="Critérios de busca"
                             iconClass="fa fa-filter"
-                            description="Esta etapa é opcional. Use critérios para encontrar informações específicas, como um nome, uma data ou uma situação."
+                            titleAddon={
+                                <InfoTooltip
+                                    text="Esta etapa é opcional. Use critérios para encontrar informações específicas, como um nome, uma data ou uma situação."
+                                    label="Mais informações sobre critérios de busca"
+                                />
+                            }
                         >
                             <ReportFilters
                                 filters={report.filters}
@@ -134,30 +148,41 @@ export default function ReportsBuilderPage({ can }: { can: ReportPermissions }):
                                 onChange={report.updateFilter}
                                 onRemove={report.removeFilter}
                             />
-                            <ChoiceControl
-                                type="checkbox"
-                                id="report-related-only"
-                                tone="primary"
-                                label="Nas informações complementares, mostrar somente os itens que correspondem à busca"
-                                checked={report.relatedOnly}
-                                onChange={report.setRelatedOnly}
-                            />
+                            <div className="reportBuilder__relatedOnly">
+                                <ChoiceControl
+                                    type="checkbox"
+                                    id="report-related-only"
+                                    tone="purple"
+                                    label="Mostrar somente vínculos correspondentes à busca"
+                                    checked={report.relatedOnly}
+                                    onChange={report.setRelatedOnly}
+                                />
+                                <InfoTooltip
+                                    text="Nas informações complementares, mostra somente os itens que correspondem aos critérios de busca aplicados."
+                                    label="Mais informações sobre a filtragem dos vínculos"
+                                />
+                            </div>
                             {report.errors.filter_related_values ? <p className="formField__error">{report.errors.filter_related_values}</p> : null}
                             <Button
                                 label="Adicionar critério de busca"
-                                tone="cancel"
-                                leftIconClass="fa fa-plus"
-                                disabled={!report.definitions.length || report.filters.length >= 12}
+                                tone="white"
+                                className="removableField__add"
+                                labelIconClass="fa fa-plus"
+                                disabled={!report.definitions.length}
                                 onClick={report.addFilter}
                             />
-                            <p className="reportBuilder__hint">Até 12 critérios de busca. A prévia exibe até 200 registros; o PDF, até 1.000.</p>
                         </FormSection>
                     </fieldset>
                     <FormSection
                         variant="inline"
-                        title="4. Prévia do relatório"
+                        title="Prévia do relatório"
                         iconClass="fa fa-table"
-                        description="Confira o conteúdo antes de seguir com a exportação."
+                        titleAddon={
+                            <InfoTooltip
+                                text="Escolha as informações e clique em Gerar prévia. Confira o conteúdo antes de exportar ou copiar a tabela."
+                                label="Mais informações sobre prévia do relatório"
+                            />
+                        }
                     >
                         <ReportPreview result={report.result} busy={busy} onCopy={() => void report.copy()} />
                     </FormSection>
@@ -167,9 +192,9 @@ export default function ReportsBuilderPage({ can }: { can: ReportPermissions }):
                     secondary={can.pdf ? (
                         <Button
                             label="PDF"
-                            tone="cancel"
+                            tone="dark-red"
                             leftIconClass="fa fa-file-pdf-o"
-                            title="Exportar relatório em PDF"
+                            title="Abrir relatório em PDF em uma nova aba"
                             disabled={busy || !report.metadata || unavailable}
                             onClick={() => void report.perform('pdf')}
                         />

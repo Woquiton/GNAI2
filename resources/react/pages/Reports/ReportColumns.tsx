@@ -20,7 +20,7 @@ export default function ReportColumns({ id, label, options, selected, errors, on
                         type="checkbox"
                         id={`${id}-${index}`}
                         label={text}
-                        tone="primary"
+                        tone="purple"
                         checked={selected.includes(key)}
                         onChange={checked => onChange(key, checked)}
                     />

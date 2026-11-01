@@ -26,17 +26,20 @@ export default function useReportBuilder(can: ReportPermissions) {
     const mounted = useRef(true);
     const request = useRef<AbortController | null>(null);
     const urls = useRef(new Set<string>());
-    const downloadTimers = useRef(new Set<number>());
+    const pendingPdfTab = useRef<Window | null>(null);
+    const pdfTimers = useRef(new Set<number>());
 
     useEffect(() => {
         mounted.current = true;
         return () => {
             mounted.current = false;
             request.current?.abort();
+            pendingPdfTab.current?.close();
+            pendingPdfTab.current = null;
             urls.current.forEach(url => URL.revokeObjectURL(url));
             urls.current.clear();
-            downloadTimers.current.forEach(timer => window.clearTimeout(timer));
-            downloadTimers.current.clear();
+            pdfTimers.current.forEach(timer => window.clearTimeout(timer));
+            pdfTimers.current.clear();
         };
     }, []);
 
@@ -122,10 +125,6 @@ export default function useReportBuilder(can: ReportPermissions) {
         notify({ tone: 'error', title: 'Confira o relatório', text: message });
     }
     function toggleColumn(key: string, checked: boolean): void {
-        if (checked && columns.length >= 8) {
-            validation('columns', 'Selecione no máximo 8 informações.');
-            return;
-        }
         changed();
         setColumns(current => checked ? [...current, key] : current.filter(column => column !== key));
     }
@@ -137,7 +136,7 @@ export default function useReportBuilder(can: ReportPermissions) {
     }
     function addFilter(): void {
         const definition = definitions[0];
-        if (!definition || filters.length >= 12) return;
+        if (!definition) return;
         changed();
         setFilters(current => [...current, {
             id: ++sequence.current, field: definition.key, operator: definition.operators[0],
@@ -162,9 +161,24 @@ export default function useReportBuilder(can: ReportPermissions) {
         if (!columns.length) { validation('columns', 'Marque pelo menos uma informação.'); return; }
         const included = filters.map((filter, index) => ({ filter, index })).filter(({ filter }) => filter.value !== '');
         const payload: ReportPayload = {
-            source: metadata.key, columns, limit: 200, filter_related_values: relatedOnly,
+            source: metadata.key, columns, filter_related_values: relatedOnly,
             filters: included.map(({ filter }) => ({ field: filter.field, operator: filter.operator, value: filter.value })),
         };
+        const pdfTab = kind === 'pdf' ? window.open('about:blank', '_blank') : null;
+        if (kind === 'pdf') {
+            if (!pdfTab) {
+                notify({
+                    tone: 'error',
+                    title: 'Não foi possível abrir o PDF',
+                    text: 'Permita a abertura de novas abas no navegador e tente novamente.',
+                });
+                return;
+            }
+            pdfTab.opener = null;
+            pdfTab.document.title = 'Gerando relatório';
+            pdfTab.document.body.textContent = 'Gerando PDF do relatório…';
+            pendingPdfTab.current = pdfTab;
+        }
         busy.current = true;
         setOperation(kind);
         setErrors({});
@@ -182,21 +196,24 @@ export default function useReportBuilder(can: ReportPermissions) {
                 if (!String(headers['content-type']).includes('application/pdf')) throw new Error('Resposta PDF inválida');
                 const url = URL.createObjectURL(data);
                 urls.current.add(url);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = /filename="?([^";]+)/i.exec(String(headers['content-disposition']))?.[1] ?? 'relatorio.pdf';
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
+                if (!pdfTab || pdfTab.closed) {
+                    URL.revokeObjectURL(url);
+                    urls.current.delete(url);
+                    throw new Error('A aba do PDF foi fechada antes da conclusão.');
+                }
+                pdfTab.location.replace(url);
+                pendingPdfTab.current = null;
                 const timer = window.setTimeout(() => {
                     URL.revokeObjectURL(url);
                     urls.current.delete(url);
-                    downloadTimers.current.delete(timer);
+                    pdfTimers.current.delete(timer);
                 }, 60000);
-                downloadTimers.current.add(timer);
-                notify({ tone: 'success', title: 'PDF gerado', text: 'O download do relatório foi iniciado.' });
+                pdfTimers.current.add(timer);
+                notify({ tone: 'success', title: 'PDF gerado', text: 'O relatório foi aberto em uma nova aba.' });
             }
         } catch (error) {
+            pdfTab?.close();
+            pendingPdfTab.current = null;
             if (!controller.signal.aborted) await showFailure(error, included.map(item => item.index));
         } finally {
             busy.current = false;

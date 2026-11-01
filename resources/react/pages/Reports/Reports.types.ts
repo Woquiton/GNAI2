@@ -36,7 +36,6 @@ export interface ReportPayload {
     source: string;
     columns: string[];
     filters: Omit<ReportFilter, 'id'>[];
-    limit: number;
     filter_related_values: boolean;
 }
 export interface ReportPermissions {

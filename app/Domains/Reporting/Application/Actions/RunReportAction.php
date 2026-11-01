@@ -33,7 +33,7 @@ final readonly class RunReportAction
     /**
      * @throws ReportingException
      */
-    public function execute(RunReportData $data, ?int $limit = null): ReportResultDTO
+    public function execute(RunReportData $data): ReportResultDTO
     {
         $filterDTOs = array_map(
             static fn (array $filter): ReportFilterDTO => new ReportFilterDTO(
@@ -48,7 +48,6 @@ final readonly class RunReportAction
             source: $data->source,
             columns: array_values($data->columns),
             filters: $filterDTOs,
-            limit: $limit ?? $data->limit,
             filterRelatedValues: $data->filterRelatedValues,
         );
 
@@ -202,7 +201,6 @@ final readonly class RunReportAction
         }
 
         $rows = $query
-            ->limit($reportDTO->limit)
             ->get()
             ->map(function (Model $model) use ($source, $relations, $reportDTO, $columns): array {
                 $row = [];

@@ -14,7 +14,6 @@ final readonly class ReportRequestDTO
         public string $source,
         public array $columns,
         public array $filters,
-        public int $limit = 200,
         public bool $filterRelatedValues = false,
     ) {}
 }

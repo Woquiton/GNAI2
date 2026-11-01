@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import FormSection from '@/components/Forms/FormSection/FormSection';
+import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import '@/components/Forms/RemovableField/RemovableField.css';
 import FormField from '@/components/Forms/FormField/FormField';
 import SelectField from '@/components/Forms/SelectField/SelectField';
 import Button from '@/components/UI/Button/Button';
@@ -17,11 +20,18 @@ export default function ReportRelations({ relations, added, selected, canAdd, on
     const [relation, setRelation] = useState('');
     const remaining = relations.filter(item => !added.some(value => value.name === item.name));
     return (
-        <div className="reportBuilder__relations">
-            <h3>Informações complementares <small>(opcional)</small></h3>
-            <p className="reportBuilder__hint">
-                Inclua informações associadas ao assunto escolhido, como responsáveis, documentos ou registros relacionados.
-            </p>
+        <FormSection
+            id="report-relations"
+            variant="inline"
+            title="Informações complementares"
+            iconClass="fa fa-link"
+            titleAddon={
+                <InfoTooltip
+                    text="Opcional. Inclua informações associadas ao assunto escolhido, como responsáveis, documentos ou registros relacionados."
+                    label="Mais informações sobre informações complementares"
+                />
+            }
+        >
             {canAdd ? (
                 <div className="reportBuilder__source">
                     <FormField id="report-relation" label="Adicionar informação complementar">
@@ -36,8 +46,9 @@ export default function ReportRelations({ relations, added, selected, canAdd, on
                     </FormField>
                     <Button
                         label="Adicionar"
-                        tone="save"
-                        leftIconClass="fa fa-plus"
+                        tone="white"
+                        className="removableField__add"
+                        labelIconClass="fa fa-plus"
                         disabled={!remaining.some(item => item.name === relation)}
                         onClick={() => {
                             onAdd(relation);
@@ -51,8 +62,10 @@ export default function ReportRelations({ relations, added, selected, canAdd, on
                     <div className="reportBuilder__relationHeader">
                         <h3>{item.label}</h3>
                         <Button
-                            label="Remover"
-                            tone="cancel"
+                            tone="dark-red"
+                            iconOnly
+                            leftIconClass="fa fa-times"
+                            aria-label={`Remover informações de ${item.label}`}
                             title={`Remover informações de ${item.label}`}
                             onClick={() => onRemove(item.name)}
                         />
@@ -67,7 +80,13 @@ export default function ReportRelations({ relations, added, selected, canAdd, on
                     />
                     {item.pivot && Object.keys(item.pivot.columns).length ? (
                         <>
-                            <p className="reportBuilder__hint">Informações adicionais do vínculo</p>
+                            <div className="reportBuilder__groupTitle">
+                                Informações do vínculo
+                                <InfoTooltip
+                                    text="Informações adicionais que pertencem ao vínculo entre os registros."
+                                    label={`Mais informações sobre o vínculo de ${item.label}`}
+                                />
+                            </div>
                             <ReportColumns
                                 id={`report-pivot-${item.name}`}
                                 label={`${item.label}: informações do vínculo`}
@@ -80,6 +99,6 @@ export default function ReportRelations({ relations, added, selected, canAdd, on
                     ) : null}
                 </section>
             ))}
-        </div>
+        </FormSection>
     );
 }
