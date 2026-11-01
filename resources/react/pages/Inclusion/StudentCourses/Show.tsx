@@ -128,6 +128,9 @@ export default function InclusionStudentCoursesShowPage({
                         <DetailField label="Ano Letivo">
                             {studentCourse.academic_year ?? "---"}
                         </DetailField>
+                        <DetailField label="Semestre">
+                            {studentCourse.semester?.label ?? "Não informado"}
+                        </DetailField>
                         <DetailField label="Situação">
                             <TableLabel tone={studentCourse.is_current ? "success" : "inverse"}>
                                 {studentCourse.is_current ? "Atual" : "Histórico"}

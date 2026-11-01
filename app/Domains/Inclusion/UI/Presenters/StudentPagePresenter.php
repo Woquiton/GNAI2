@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Auth\Domain\Models\User;
-use App\Domains\Inclusion\Domain\Enums\ContextEvaluationType;
 use App\Domains\Inclusion\Domain\Enums\DeficiencySeverity;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
+use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
 use App\Domains\Inclusion\Domain\Models\Person;
 use App\Domains\Inclusion\Domain\Models\Student;
+use App\Shared\Domain\Support\AeeLabels;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ final class StudentPagePresenter
             'student-course.view', 'student-course.create', 'student-course.update', 'student-course.delete',
             'student-deficiency.view', 'student-deficiency.create', 'student-deficiency.update', 'student-deficiency.delete',
             'guardian.view', 'guardian.create', 'guardian.update', 'guardian.delete',
-            'student-context.view', 'student-context.create', 'student-context.update', 'student-context.delete',
+            'case-study.view', 'case-study.create', 'paee.view', 'paee.create',
             'pei.view', 'pei.create', 'pei.update', 'pei.delete',
             'student-document.view', 'student-document.create', 'student-document.update', 'student-document.delete',
             'aee-record.view', 'aee-record.view-all', 'aee-record.view-own', 'aee-record.update', 'aee-record.delete',
@@ -56,8 +58,8 @@ final class StudentPagePresenter
         foreach ([
             'guardians' => 'guardian.view',
             'documents' => 'student-document.view',
-            'contexts' => 'student-context.view',
-            'current_context' => 'student-context.view',
+            'current_case_study' => 'case-study.view',
+            'current_paee' => 'paee.view',
             'deficiencies' => 'student-deficiency.view',
             'peis' => 'pei.view',
         ] as $key => $ability) {
@@ -80,23 +82,11 @@ final class StudentPagePresenter
                 'semester_label' => $document->semester?->label,
             ])->all();
         }
-        if (isset($data['contexts'])) {
-            $data['contexts'] = $student->contexts->map(function ($context): array {
-                $evaluationType = ContextEvaluationType::tryFrom(
-                    (string) $context->evaluation_type,
-                );
-
-                return [
-                    ...$context->toArray(),
-                    'semester_label' => $context->semester?->label,
-                    'evaluation_type_label' => $evaluationType?->label()
-                        ?? (string) $context->evaluation_type,
-                    'can_manage' => $context->canBeManagedByCurrentUser(),
-                ];
-            })->all();
-        }
-        if (isset($data['current_context'])) {
-            $data['current_context']['semester_label'] = $student->currentContext->semester?->label;
+        if (isset($data['student_courses'])) {
+            $data['student_courses'] = $student->studentCourses->map(fn ($studentCourse): array => [
+                ...$studentCourse->toArray(),
+                'semester_label' => $studentCourse->semester?->label,
+            ])->all();
         }
         if (isset($data['deficiencies'])) {
             $data['deficiencies'] = $student->deficiencies->map(fn ($deficiency): array => [
@@ -115,6 +105,115 @@ final class StudentPagePresenter
         }
 
         return $data;
+    }
+
+    /**
+     * Últimas versões do Estudo de Caso exibidas no prontuário.
+     *
+     * @param  Collection<int, CaseStudy>  $caseStudies
+     * @return list<array<string, mixed>>
+     */
+    public function caseStudies(Collection $caseStudies): array
+    {
+        return $caseStudies->map(fn (CaseStudy $caseStudy): array => [
+            'id' => (int) $caseStudy->getKey(),
+            'version' => $caseStudy->version,
+            'semester_label' => $caseStudy->semester?->label,
+            'status' => $caseStudy->status,
+            'status_label' => AeeLabels::caseStudyStatus($caseStudy->status),
+            'created_at' => $caseStudy->created_at?->toDateString(),
+        ])->values()->all();
+    }
+
+    /**
+     * Últimas versões do PAEE exibidas no prontuário.
+     *
+     * @param  Collection<int, Paee>  $paees
+     * @return list<array<string, mixed>>
+     */
+    public function paees(Collection $paees): array
+    {
+        return $paees->map(fn (Paee $paee): array => [
+            'id' => (int) $paee->getKey(),
+            'version' => $paee->version,
+            'semester_label' => $paee->semester?->label,
+            'status' => $paee->status,
+            'status_label' => AeeLabels::paeeStatus($paee->status),
+            'next_review_date' => $paee->next_review_date?->toDateString(),
+        ])->values()->all();
+    }
+
+    /**
+     * Painel "Status do atendimento": laudo, Estudo de Caso, PAEE e PEI
+     * vigentes, com os alertas de revisão e de vínculo do PAEE.
+     *
+     * @return array{boxes: list<array<string, mixed>>, alerts: list<string>}
+     */
+    public function statusPanel(Student $student, bool $hasLaudo): array
+    {
+        $base = '/specialized-educational-support';
+        $caseStudy = $student->currentCaseStudy;
+        $paee = $student->currentPaee;
+        $pei = $student->peis()->where('is_current', true)->first();
+        $caseStudyCompleted = $caseStudy instanceof CaseStudy && $caseStudy->status === CaseStudy::STATUS_COMPLETED;
+
+        $alerts = [];
+
+        if ($paee instanceof Paee && $paee->next_review_date !== null && $paee->next_review_date->isPast()) {
+            $alerts[] = 'O PAEE está com a revisão vencida desde '.$paee->next_review_date->format('d/m/Y').'.';
+        }
+
+        if ($paee instanceof Paee && ! $caseStudyCompleted) {
+            $alerts[] = 'O PAEE ativo não está vinculado a um Estudo de Caso concluído.';
+        }
+
+        return [
+            'boxes' => [
+                [
+                    'key' => 'laudo',
+                    'label' => 'Laudo',
+                    'ok' => $hasLaudo,
+                    'status' => $hasLaudo ? 'Anexado' : 'Não anexado',
+                    'icon' => 'fa fa-file-text-o',
+                    'href' => null,
+                    'tab' => 'documents',
+                    'updated_at' => null,
+                ],
+                [
+                    'key' => 'case-study',
+                    'label' => 'Estudo de Caso',
+                    'ok' => $caseStudyCompleted,
+                    'status' => $caseStudyCompleted ? 'Concluído' : ($caseStudy ? 'Em andamento' : 'Não iniciado'),
+                    'icon' => 'fa fa-stethoscope',
+                    'href' => $caseStudy
+                        ? "{$base}/case-studies/{$caseStudy->getKey()}/show"
+                        : "{$base}/case-studies/{$student->getKey()}/create",
+                    'tab' => null,
+                    'updated_at' => $caseStudy?->updated_at?->format('d/m/Y'),
+                ],
+                [
+                    'key' => 'paee',
+                    'label' => 'PAEE',
+                    'ok' => $paee instanceof Paee,
+                    'status' => $paee ? 'Ativo' : 'Não iniciado',
+                    'icon' => 'fa fa-sitemap',
+                    'href' => $paee ? "{$base}/paees/{$paee->getKey()}/show" : null,
+                    'tab' => null,
+                    'updated_at' => $paee?->updated_at?->format('d/m/Y'),
+                ],
+                [
+                    'key' => 'pei',
+                    'label' => 'PEI',
+                    'ok' => $pei !== null,
+                    'status' => $pei ? 'Ativo' : 'Não iniciado',
+                    'icon' => 'fa fa-file',
+                    'href' => $pei ? "{$base}/peis/{$pei->getKey()}/show" : null,
+                    'tab' => null,
+                    'updated_at' => $pei?->updated_at?->format('d/m/Y'),
+                ],
+            ],
+            'alerts' => $alerts,
+        ];
     }
 
     /** @param Collection<int, AeeStudentEvaluation> $evaluations */

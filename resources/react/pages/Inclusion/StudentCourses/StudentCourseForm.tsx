@@ -20,6 +20,7 @@ import type {
     StudentCourseCourse,
     StudentCourseDiscipline,
     StudentCourseRecord,
+    StudentCourseSemester,
     StudentCourseStudent,
 } from "./StudentCourse.types";
 import StudentCoursePage from "./StudentCoursePage";
@@ -30,6 +31,7 @@ type DisciplineGroupName = "failed_discipline_ids" | "at_risk_discipline_ids";
 type StudentCourseFormData = {
     course_id: string;
     academic_year: string;
+    semester_id: string;
     is_current: boolean;
     school_attendance_status: string;
     failed_discipline_ids: number[];
@@ -54,11 +56,13 @@ type StudentCourseFormProps =
         mode: "create";
         student: StudentCourseStudent;
         courses: StudentCourseCourse[];
+        semesters: StudentCourseSemester[];
         mustBeCurrent: boolean;
     }
     | {
         mode: "edit";
         studentCourse: StudentCourseRecord;
+        semesters: StudentCourseSemester[];
     };
 
 export default function StudentCourseForm(props: StudentCourseFormProps): React.JSX.Element {
@@ -76,6 +80,7 @@ export default function StudentCourseForm(props: StudentCourseFormProps): React.
         academic_year: studentCourse
             ? String(studentCourse.academic_year ?? "")
             : String(new Date().getFullYear()),
+        semester_id: studentCourse?.semester_id ? String(studentCourse.semester_id) : "",
         is_current: mustBeCurrent,
         school_attendance_status: studentCourse?.school_attendance_status ?? "",
         failed_discipline_ids: (studentCourse?.failed_disciplines ?? []).map((item) => Number(item.id)),
@@ -96,6 +101,10 @@ export default function StudentCourseForm(props: StudentCourseFormProps): React.
     const courseOptions = courses.map((course) => ({
         value: String(course.id),
         label: course.name,
+    }));
+    const semesterOptions = props.semesters.map((semester) => ({
+        value: String(semester.id),
+        label: semester.label,
     }));
 
     const groupError = (name: DisciplineGroupName): string | undefined => errors[name]
@@ -128,6 +137,7 @@ export default function StudentCourseForm(props: StudentCourseFormProps): React.
             const payload = {
                 course_id: data.course_id,
                 academic_year: data.academic_year,
+                semester_id: data.semester_id,
                 school_attendance_status: data.school_attendance_status,
                 failed_discipline_ids: failed,
                 at_risk_discipline_ids: atRisk,
@@ -260,6 +270,23 @@ export default function StudentCourseForm(props: StudentCourseFormProps): React.
                                         invalid={!!errors.academic_year}
                                         aria-describedby={errors.academic_year ? "student-course-academic-year-error" : undefined}
                                         onChange={(event) => form.setData("academic_year", event.target.value)}
+                                    />
+                                </FormField>
+                                <FormField
+                                    id="student-course-semester"
+                                    label="Semestre"
+                                    error={errors.semester_id}
+                                >
+                                    <SelectField
+                                        id="student-course-semester"
+                                        name="semester_id"
+                                        label="Selecionar semestre"
+                                        options={semesterOptions}
+                                        value={form.data.semester_id}
+                                        disabled={form.processing}
+                                        aria-invalid={!!errors.semester_id}
+                                        aria-describedby={errors.semester_id ? "student-course-semester-error" : undefined}
+                                        onChange={(event) => form.setData("semester_id", event.target.value)}
                                     />
                                 </FormField>
                                 {editing ? null : (

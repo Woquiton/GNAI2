@@ -1,13 +1,19 @@
 import StudentCourseForm from "./StudentCourseForm";
-import type { StudentCourseCourse, StudentCourseStudent } from "./StudentCourse.types";
+import type {
+    StudentCourseCourse,
+    StudentCourseSemester,
+    StudentCourseStudent,
+} from "./StudentCourse.types";
 
 export default function InclusionStudentCoursesCreatePage({
     student,
     courses,
+    semesters,
     mustBeCurrent,
 }: {
     student: StudentCourseStudent;
     courses: StudentCourseCourse[];
+    semesters: StudentCourseSemester[];
     mustBeCurrent: boolean;
 }): React.JSX.Element {
     return (
@@ -15,6 +21,7 @@ export default function InclusionStudentCoursesCreatePage({
             mode="create"
             student={student}
             courses={courses}
+            semesters={semesters}
             mustBeCurrent={mustBeCurrent}
         />
     );

@@ -29,6 +29,7 @@ export interface StudentRecord extends Student {
     id: number;
     course: { name: string } | null;
     academic_year: number;
+    semester_label?: string | null;
     is_current: boolean;
     created_at?: string | null;
   }>;
@@ -40,17 +41,6 @@ export interface StudentRecord extends Student {
     severity_label: string | null;
     severity_color: string | null;
   }>;
-  contexts?: Array<{
-    id: number;
-    created_at: string;
-    version: number;
-    evaluation_type: string;
-    evaluation_type_label: string;
-    is_current: boolean;
-    semester_label: string | null;
-    can_manage: boolean;
-  }>;
-  current_context?: { id: number; semester_label: string | null; evaluator: { person: { name: string } } | null } | null;
   documents?: Array<{
     id: number;
     title: string;
@@ -86,9 +76,42 @@ export interface PedagogicalRecord {
   id: number; duration: number | string; is_present: boolean; can_manage?: boolean;
   attendance_session: AttendanceSession | null; guardians: Array<{ id: number }>;
 }
+export interface StudentCaseStudySummary {
+  id: number;
+  version: number;
+  semester_label: string | null;
+  status: string;
+  status_label: string;
+  created_at: string | null;
+}
+export interface StudentPaeeSummary {
+  id: number;
+  version: number;
+  semester_label: string | null;
+  status: string;
+  status_label: string;
+  next_review_date: string | null;
+}
+export interface StudentStatusBox {
+  key: string;
+  label: string;
+  ok: boolean;
+  status: string;
+  icon: string;
+  href: string | null;
+  tab: string | null;
+  updated_at: string | null;
+}
+export interface StudentStatusPanelData {
+  boxes: StudentStatusBox[];
+  alerts: string[];
+}
 export interface StudentShowProps extends StudentOptions {
   student: StudentRecord;
   aeeEvaluations: AeeEvaluation[];
   pedagogicalRecords: PedagogicalRecord[];
+  caseStudies: StudentCaseStudySummary[];
+  paees: StudentPaeeSummary[];
+  statusPanel: StudentStatusPanelData;
   activeTab?: string;
 }

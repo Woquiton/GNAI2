@@ -50,10 +50,11 @@ const statusOptions = [
     { value: "0", label: "Histórico" },
 ];
 const columns: TableListColumn[] = [
-    { id: "student", label: "Aluno", width: "26%", minWidth: 120, fixed: "start" },
-    { id: "course", label: "Curso / Série", width: "28%", minWidth: 130 },
-    { id: "year", label: "Ano letivo", width: "14%", minWidth: 90 },
-    { id: "status", label: "Situação", width: "14%", minWidth: 90 },
+    { id: "student", label: "Aluno", width: "22%", minWidth: 120, fixed: "start" },
+    { id: "course", label: "Curso / Série", width: "24%", minWidth: 130 },
+    { id: "year", label: "Ano letivo", width: "12%", minWidth: 90 },
+    { id: "semester", label: "Semestre", width: "12%", minWidth: 90 },
+    { id: "status", label: "Situação", width: "12%", minWidth: 90 },
     { id: "actions", label: "Ações", width: "18%", minWidth: 104, fixed: "end" },
 ];
 
@@ -188,6 +189,7 @@ export default function InclusionStudentCoursesIndexPage({
                                     <td>{studentName}</td>
                                     <td>{courseName}</td>
                                     <td>{enrollment.academic_year}</td>
+                                    <td>{enrollment.semester?.label ?? "—"}</td>
                                     <td>
                                         <TableLabel tone={enrollment.is_current ? "success" : "inverse"}>
                                             {enrollment.is_current ? "Atual" : "Histórico"}

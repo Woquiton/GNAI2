@@ -11,6 +11,11 @@ export interface StudentCourseCourse {
     disciplines?: StudentCourseDiscipline[];
 }
 
+export interface StudentCourseSemester {
+    id: number;
+    label: string;
+}
+
 export interface StudentCourseStudent {
     id: number;
     registration: string | null;
@@ -22,6 +27,8 @@ export interface StudentCourseRecord {
     student_id: number;
     course_id: number;
     academic_year: number | string | null;
+    semester_id: number | null;
+    semester?: StudentCourseSemester | null;
     is_current: boolean;
     school_attendance_status: string | null;
     student: StudentCourseStudent;
@@ -43,6 +50,7 @@ export type StudentCourseShowRecord = Omit<
 export interface StudentCourseListRecord {
     id: number;
     academic_year: number | string | null;
+    semester?: StudentCourseSemester | null;
     is_current: boolean;
     course: { id: number; name: string } | null;
 }

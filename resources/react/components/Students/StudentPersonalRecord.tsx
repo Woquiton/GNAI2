@@ -19,12 +19,13 @@ const courseColumns: TableListColumn[] = [
   {
     id: 'course',
     label: 'Curso / Série',
-    width: '38%',
+    width: '34%',
     minWidth: 140,
     fixed: 'start',
   },
-  { id: 'year', label: 'Ano letivo', width: '22%', minWidth: 90 },
-  { id: 'status', label: 'Situação', width: '18%', minWidth: 90 },
+  { id: 'year', label: 'Ano letivo', width: '14%', minWidth: 80 },
+  { id: 'semester', label: 'Semestre', width: '16%', minWidth: 90 },
+  { id: 'status', label: 'Situação', width: '14%', minWidth: 90 },
   {
     id: 'actions',
     label: 'Ações',
@@ -138,6 +139,7 @@ function AcademicDetails({
               </strong>
             </td>
             <td>{relation.academic_year}</td>
+            <td>{relation.semester_label ?? 'Não informado'}</td>
             <td>
               <TableLabel tone={relation.is_current ? 'success' : 'inverse'}>
                 {relation.is_current ? 'Atual' : 'Histórico'}

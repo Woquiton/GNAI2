@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Button from '@/components/UI/Button/Button';
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Tabs, {
@@ -17,14 +18,16 @@ import {
   createStudentAttendanceTabs,
 } from '@/components/Students/StudentAttendanceRecord';
 import DeleteStudent from '@/components/Students/DeleteStudent';
+import StudentStatusPanel from '@/components/Students/StudentStatusPanel';
 import type { StudentShowProps } from '@/components/Students/Students.types';
 import { studentUrl, studentsBase } from '@/components/Students/Students.utils';
 
 export default function StudentsShow(props: StudentShowProps): React.JSX.Element {
-  const { student, permissions } = props;
+  const { student, permissions, caseStudies, paees, statusPanel } = props;
+  const [activeTab, setActiveTab] = useState(props.activeTab || 'personal-data');
   const tabs: TabItem[] = [
     ...createStudentPersonalTabs(props),
-    ...createStudentSupportTabs({ student, permissions }),
+    ...createStudentSupportTabs({ student, permissions, caseStudies, paees }),
     ...createStudentDocumentTabs({ student, permissions }),
     ...createStudentAttendanceTabs(props),
   ];
@@ -36,10 +39,12 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
       subtitle="Visualize o ecossistema completo e histórico detalhado do aluno."
     >
       <StudentPersonalRecord {...props} />
+      <StudentStatusPanel panel={statusPanel} onOpenTab={setActiveTab} />
       <div className="studentsPage__recordTabs">
         <Tabs
           items={tabs}
-          initialActiveId={props.activeTab || 'personal-data'}
+          initialActiveId={activeTab}
+          onChange={setActiveTab}
           variant="vertical"
         />
       </div>

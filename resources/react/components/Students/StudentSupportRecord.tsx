@@ -9,12 +9,22 @@ import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import DeleteStudentRecord from './DeleteStudentRecord';
 import StudentRecordTable from './StudentRecordTable';
 import StudentSection from './StudentSection';
-import type { Permissions, StudentRecord } from './Students.types';
+import type {
+  Permissions,
+  StudentCaseStudySummary,
+  StudentPaeeSummary,
+  StudentRecord,
+} from './Students.types';
 import { aeeBase, dateLabel } from './Students.utils';
 
 interface StudentSupportRecordProps {
   student: StudentRecord;
   permissions: Permissions;
+}
+
+interface StudentSupportTabsProps extends StudentSupportRecordProps {
+  caseStudies: StudentCaseStudySummary[];
+  paees: StudentPaeeSummary[];
 }
 
 const profileColumns: TableListColumn[] = [
@@ -55,30 +65,55 @@ const guardianColumns: TableListColumn[] = [
   },
 ];
 
-const contextColumns: TableListColumn[] = [
+const caseStudyColumns: TableListColumn[] = [
   {
-    id: 'date',
-    label: 'Data',
-    width: '18%',
-    minWidth: 90,
+    id: 'version',
+    label: 'Versão',
+    width: '14%',
+    minWidth: 72,
     fixed: 'start',
   },
-  { id: 'version', label: 'Versão', width: '14%', minWidth: 72 },
-  {
-    id: 'evaluation',
-    label: 'Tipo de avaliação',
-    width: '30%',
-    minWidth: 120,
-  },
-  { id: 'status', label: 'Status', width: '16%', minWidth: 80 },
+  { id: 'semester', label: 'Semestre', width: '26%', minWidth: 100 },
+  { id: 'status', label: 'Status', width: '22%', minWidth: 100 },
+  { id: 'date', label: 'Criado em', width: '20%', minWidth: 90 },
   {
     id: 'actions',
     label: 'Ações',
-    width: '22%',
-    minWidth: 104,
+    width: '18%',
+    minWidth: 80,
     fixed: 'end',
   },
 ];
+
+const paeeColumns: TableListColumn[] = [
+  {
+    id: 'version',
+    label: 'Versão',
+    width: '14%',
+    minWidth: 72,
+    fixed: 'start',
+  },
+  { id: 'semester', label: 'Semestre', width: '26%', minWidth: 100 },
+  { id: 'status', label: 'Status', width: '22%', minWidth: 100 },
+  { id: 'review', label: 'Próxima revisão', width: '20%', minWidth: 110 },
+  {
+    id: 'actions',
+    label: 'Ações',
+    width: '18%',
+    minWidth: 80,
+    fixed: 'end',
+  },
+];
+
+const caseStudyTones: Record<string, string> = {
+  completed: 'success',
+  in_progress: 'warning',
+};
+
+const paeeTones: Record<string, string> = {
+  active: 'success',
+  under_review: 'warning',
+};
 
 function StudentProfiles({
   student,
@@ -224,73 +259,134 @@ function StudentGuardians({
   );
 }
 
-function StudentContexts({
+function StudentCaseStudies({
   student,
+  caseStudies,
   permissions,
-}: StudentSupportRecordProps): React.JSX.Element {
-  const contexts = student.contexts ?? [];
-  const createHref = contexts.length
-    ? `${aeeBase}/student-context/${student.id}/new-version`
-    : `${aeeBase}/student-context/${student.id}/create`;
-
+}: {
+  student: StudentRecord;
+  caseStudies: StudentCaseStudySummary[];
+  permissions: Permissions;
+}): React.JSX.Element {
   return (
     <StudentSection
-      id="contexts"
-      title="Histórico de Contextos"
-      iconClass="fa fa-file-text-o"
+      id="case-studies"
+      title="Estudos de Caso"
+      iconClass="fa fa-stethoscope"
     >
       <StudentRecordTable
-        ariaLabel="Histórico de contextos do aluno"
-        columns={contextColumns}
-        count={contexts.length}
-        emptyMessage="Nenhum contexto do aluno encontrado."
-        actions={permissions['student-context.create'] ? (
+        ariaLabel="Estudos de caso do aluno"
+        columns={caseStudyColumns}
+        count={caseStudies.length}
+        emptyMessage="Nenhum Estudo de Caso encontrado."
+        actions={permissions['case-study.create'] ? (
           <TableListCreateButton
-            href={createHref}
-            ariaLabel={contexts.length
-              ? 'Cadastrar nova versão do contexto'
-              : 'Cadastrar contexto do aluno'}
+            href={`${aeeBase}/case-studies/${student.id}/create`}
+            ariaLabel="Novo Estudo de Caso"
           />
         ) : undefined}
       >
-        {contexts.map((context) => (
-          <tr key={context.id}>
-            <td><strong>{dateLabel(context.created_at)}</strong></td>
-            <td>V{context.version}</td>
-            <td>{context.evaluation_type_label}</td>
+        {caseStudies.map((caseStudy) => (
+          <tr key={caseStudy.id}>
+            <td><strong>v{caseStudy.version}</strong></td>
+            <td>{caseStudy.semester_label ?? '—'}</td>
             <td>
-              <TableLabel tone={context.is_current ? 'success' : 'inverse'}>
-                {context.is_current ? 'Atual' : 'Histórico'}
+              <TableLabel tone={caseStudyTones[caseStudy.status] ?? 'inverse'}>
+                {caseStudy.status_label}
               </TableLabel>
             </td>
+            <td>{dateLabel(caseStudy.created_at)}</td>
             <td>
-              {permissions['student-context.view']
-              || (permissions['student-context.delete'] && context.can_manage) ? (
-                <TableActions>
-                  {permissions['student-context.view'] ? (
-                    <Button
-                      href={`${aeeBase}/student-context/${context.id}/show`}
-                      size="sm"
-                      tone="dark-blue"
-                      iconOnly
-                      leftIconClass="fa fa-eye"
-                      aria-label={`Visualizar contexto versão ${context.version}`}
-                    />
-                  ) : null}
-                  {permissions['student-context.delete'] && context.can_manage ? (
-                    <DeleteStudentRecord
-                      action={`${aeeBase}/student-context/${context.id}`}
-                      title="Excluir contexto do aluno"
-                      message={`Excluir permanentemente o contexto V${context.version}?`}
-                      ariaLabel={`Excluir contexto versão ${context.version}`}
-                    />
-                  ) : null}
-                </TableActions>
-              ) : 'Nenhuma ação'}
+              <TableActions>
+                <Button
+                  href={`${aeeBase}/case-studies/${caseStudy.id}/show`}
+                  size="sm"
+                  tone="dark-blue"
+                  iconOnly
+                  leftIconClass="fa fa-eye"
+                  aria-label={`Visualizar Estudo de Caso versão ${caseStudy.version}`}
+                />
+              </TableActions>
             </td>
           </tr>
         ))}
       </StudentRecordTable>
+      <div className="studentsPage__recordFooter">
+        <small>
+          São exibidas até 5 versões mais recentes. Para consultar o histórico completo, clique em "Ver Histórico".
+        </small>
+        <Button
+          href={`${aeeBase}/students/${student.id}/case-studies/history`}
+          tone="white"
+          size="sm"
+          leftIconClass="fa fa-history"
+          label="Ver Histórico"
+          title="Ver histórico de Estudos de Caso"
+          aria-label="Ver histórico de Estudos de Caso"
+        />
+      </div>
+    </StudentSection>
+  );
+}
+
+function StudentPaees({
+  student,
+  paees,
+}: {
+  student: StudentRecord;
+  paees: StudentPaeeSummary[];
+}): React.JSX.Element {
+  return (
+    <StudentSection
+      id="paees"
+      title="PAEE"
+      iconClass="fa fa-sitemap"
+    >
+      <StudentRecordTable
+        ariaLabel="PAEEs do aluno"
+        columns={paeeColumns}
+        count={paees.length}
+        emptyMessage="Nenhum PAEE encontrado."
+      >
+        {paees.map((paee) => (
+          <tr key={paee.id}>
+            <td><strong>v{paee.version}</strong></td>
+            <td>{paee.semester_label ?? '—'}</td>
+            <td>
+              <TableLabel tone={paeeTones[paee.status] ?? 'inverse'}>
+                {paee.status_label}
+              </TableLabel>
+            </td>
+            <td>{dateLabel(paee.next_review_date)}</td>
+            <td>
+              <TableActions>
+                <Button
+                  href={`${aeeBase}/paees/${paee.id}/show`}
+                  size="sm"
+                  tone="dark-blue"
+                  iconOnly
+                  leftIconClass="fa fa-eye"
+                  aria-label={`Visualizar PAEE versão ${paee.version}`}
+                />
+              </TableActions>
+            </td>
+          </tr>
+        ))}
+      </StudentRecordTable>
+      <div className="studentsPage__recordFooter">
+        <small>
+          São exibidas até 5 versões mais recentes. Para consultar o histórico completo, clique em "Gerenciar PAEE".
+        </small>
+        <Button
+          href={`${aeeBase}/students/${student.id}/paees`}
+          tone="white"
+          size="sm"
+          leftIconClass="fa fa-folder-open"
+          label="Gerenciar PAEE"
+          title="Gerenciar PAEEs do aluno"
+          aria-label="Gerenciar PAEEs do aluno"
+        />
+      </div>
     </StudentSection>
   );
 }
@@ -298,7 +394,9 @@ function StudentContexts({
 export function createStudentSupportTabs({
   student,
   permissions,
-}: StudentSupportRecordProps): TabItem[] {
+  caseStudies,
+  paees,
+}: StudentSupportTabsProps): TabItem[] {
   const items: TabItem[] = [];
 
   if (permissions['student-deficiency.view']) {
@@ -323,14 +421,27 @@ export function createStudentSupportTabs({
     });
   }
 
-  if (permissions['student-context.view']) {
+  if (permissions['case-study.view']) {
     items.push({
-      id: 'current-context',
-      label: 'Contextos',
-      icon: 'fa fa-file-text-o',
+      id: 'case-studies',
+      label: 'Estudos de Caso',
+      icon: 'fa fa-stethoscope',
       content: (
-        <StudentContexts student={student} permissions={permissions} />
+        <StudentCaseStudies
+          student={student}
+          caseStudies={caseStudies}
+          permissions={permissions}
+        />
       ),
+    });
+  }
+
+  if (permissions['paee.view']) {
+    items.push({
+      id: 'paees',
+      label: 'PAEE',
+      icon: 'fa fa-sitemap',
+      content: <StudentPaees student={student} paees={paees} />,
     });
   }
 

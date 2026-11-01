@@ -85,7 +85,8 @@ final class StudentController
         return Inertia::render(
             'Inclusion/Students/Show',
             ['student' => $this->presenter->student($student, $request)]
-                + compact('aeeEvaluations', 'pedagogicalRecords', 'caseStudies', 'paees', 'hasLaudo', 'activeTab')
+                + compact('aeeEvaluations', 'pedagogicalRecords', 'caseStudies', 'paees', 'activeTab')
+                + ['statusPanel' => $this->presenter->statusPanel($student, $hasLaudo)]
                 + $this->presenter->shared($request),
         );
     }
