@@ -35,13 +35,13 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
   const innerRef = useRef<HTMLDivElement | null>(null);
   const collapsedFlyoutRef = useRef<HTMLDivElement | null>(null);
   const hideTimerRef = useRef<number | null>(null);
-  const collapsedFlyoutHideTimerRef = useRef<number | null>(null);
+  const collapsedHoverHideTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!collapsed) {
-      if (collapsedFlyoutHideTimerRef.current !== null) {
-        window.clearTimeout(collapsedFlyoutHideTimerRef.current);
-        collapsedFlyoutHideTimerRef.current = null;
+      if (collapsedHoverHideTimerRef.current !== null) {
+        window.clearTimeout(collapsedHoverHideTimerRef.current);
+        collapsedHoverHideTimerRef.current = null;
       }
 
       setHoveredCollapsedItem(null);
@@ -203,19 +203,19 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
     router.visit(nextPath);
   }
 
-  function clearCollapsedFlyoutHideTimer(): void {
-    if (collapsedFlyoutHideTimerRef.current !== null) {
-      window.clearTimeout(collapsedFlyoutHideTimerRef.current);
-      collapsedFlyoutHideTimerRef.current = null;
+  function clearCollapsedHoverHideTimer(): void {
+    if (collapsedHoverHideTimerRef.current !== null) {
+      window.clearTimeout(collapsedHoverHideTimerRef.current);
+      collapsedHoverHideTimerRef.current = null;
     }
   }
 
-  function showCollapsedFlyout(item: SidebarItem, element: HTMLLIElement): void {
-    if (!collapsed || !item.children?.length) {
+  function showCollapsedItem(item: SidebarItem, element: HTMLLIElement): void {
+    if (!collapsed) {
       return;
     }
 
-    clearCollapsedFlyoutHideTimer();
+    clearCollapsedHoverHideTimer();
 
     const sidebarElement = sidebarRef.current;
 
@@ -239,9 +239,9 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
     setHoveredCollapsedItemHeight(itemHeight);
   }
 
-  function queueCollapsedFlyoutHide(): void {
-    clearCollapsedFlyoutHideTimer();
-    collapsedFlyoutHideTimerRef.current = window.setTimeout(() => {
+  function queueCollapsedHoverHide(): void {
+    clearCollapsedHoverHideTimer();
+    collapsedHoverHideTimerRef.current = window.setTimeout(() => {
       setHoveredCollapsedItem(null);
     }, 120);
   }
@@ -255,10 +255,14 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
             entries={entries}
             collapsed={collapsed}
             openKeyList={openKeyList}
-            activeCollapsedFlyoutKey={hoveredCollapsedItem?.key}
+            activeCollapsedFlyoutKey={
+              hoveredCollapsedItem?.children?.length
+                ? hoveredCollapsedItem.key
+                : undefined
+            }
             onItemClick={handleItemClick}
-            onTopLevelHoverStart={showCollapsedFlyout}
-            onTopLevelHoverEnd={queueCollapsedFlyoutHide}
+            onTopLevelHoverStart={showCollapsedItem}
+            onTopLevelHoverEnd={queueCollapsedHoverHide}
             isSectionTitle={isSectionTitle}
             hasActiveDescendant={(item: SidebarItem) => hasActiveDescendant(item, currentItemKey)}
           />
@@ -267,19 +271,31 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
         <div className="clearfix" />
       </div>
       {collapsed && hoveredCollapsedItem ? (
-        <div
-          className="sidebarPrimary__collapsedProjection"
-          style={{
-            top: `${hoveredCollapsedItemTop - hoveredCollapsedItemHeight}px`,
-            height: `${hoveredCollapsedItemHeight}px`,
-            width: `${hoveredCollapsedFlyoutWidth}px`
-          }}
-          aria-hidden="true"
-          onMouseEnter={clearCollapsedFlyoutHideTimer}
-          onMouseLeave={queueCollapsedFlyoutHide}
-        >
-          <span>{hoveredCollapsedItem.label}</span>
-        </div>
+        hoveredCollapsedItem.children?.length ? (
+          <div
+            className="sidebarPrimary__collapsedProjection"
+            style={{
+              top: `${hoveredCollapsedItemTop - hoveredCollapsedItemHeight}px`,
+              height: `${hoveredCollapsedItemHeight}px`,
+              width: `${hoveredCollapsedFlyoutWidth}px`
+            }}
+            aria-hidden="true"
+            onMouseEnter={clearCollapsedHoverHideTimer}
+            onMouseLeave={queueCollapsedHoverHide}
+          >
+            <span>{hoveredCollapsedItem.label}</span>
+          </div>
+        ) : (
+          <div
+            className="sidebarPrimary__collapsedTooltip"
+            style={{
+              top: `${hoveredCollapsedItemTop - hoveredCollapsedItemHeight / 2}px`
+            }}
+            aria-hidden="true"
+          >
+            {hoveredCollapsedItem.label}
+          </div>
+        )
       ) : null}
       {collapsed && hoveredCollapsedItem?.children?.length ? (
         <SidebarCollapsedFlyout
@@ -290,8 +306,8 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
           openKeyList={openKeyList}
           bodyRef={collapsedFlyoutRef}
           onItemClick={handleItemClick}
-          onMouseEnter={clearCollapsedFlyoutHideTimer}
-          onMouseLeave={queueCollapsedFlyoutHide}
+          onMouseEnter={clearCollapsedHoverHideTimer}
+          onMouseLeave={queueCollapsedHoverHide}
         />
       ) : null}
       <SidebarScrollbar visible={scrollbarVisible} thumbHeight={thumbHeight} thumbTop={thumbTop} />

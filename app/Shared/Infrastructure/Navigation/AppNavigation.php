@@ -104,25 +104,33 @@ final class AppNavigation
      */
     private function groups(): array
     {
+        // Organiza a navegação pelas tarefas do núcleo, sem expor ao usuário
+        // as divisões técnicas e históricas entre AEE e Radar Inclusivo.
         return [
             [null, [
                 ['dashboard', 'Dashboard', 'dashboard', 'ti-dashboard', [], ['dashboard']],
-                ['notifications', 'Notificações', 'notifications.index', 'ti-bell', [], ['notifications.*']],
+            ]],
+            ['Atendimento', [
                 ['students', 'Alunos', 'specialized-educational-support.students.index', 'ti-user', ['student.view'], ['specialized-educational-support.students.*', 'specialized-educational-support.guardians.*', 'specialized-educational-support.student-deficiencies.*']],
-                ['professionals', 'Equipe', 'specialized-educational-support.professionals.index', 'ti-id-badge', ['professional.view'], ['specialized-educational-support.professionals.*']],
-                ['teachers', 'Professores', 'specialized-educational-support.teachers.index', 'ti-blackboard', ['teacher.view'], ['specialized-educational-support.teachers.*']],
+                ['sessions', 'Agendamentos', 'specialized-educational-support.sessions.index', 'ti-calendar', ['session.view-all', 'session.view-own'], ['specialized-educational-support.sessions.*']],
+                ['waitlists', 'Fila de Espera', 'inclusive-radar.waitlists.index', 'ti-time', ['waitlist.index'], ['inclusive-radar.waitlists.*']],
+                ['aee-records', 'Atendimentos Especializados', 'specialized-educational-support.aee-records.index', 'ti-book', ['aee-record.view-own', 'aee-record.view-all'], ['specialized-educational-support.aee-records.*']],
+                ['pedagogical-records', 'Atendimentos Pedagógicos', 'specialized-educational-support.pedagogical-records.index', 'ti-write', ['pedagogical-record.view-own', 'pedagogical-record.view-all'], ['specialized-educational-support.pedagogical-records.*']],
+            ]],
+            ['Planos e acompanhamento', [
                 ['case-studies', 'Estudos de Caso', 'specialized-educational-support.case-study.all', 'ti-clipboard', ['case-study.view'], ['specialized-educational-support.case-study.*', 'specialized-educational-support.students.case-studies.*']],
                 ['paees', 'PAEEs', 'specialized-educational-support.paee.all', 'ti-direction-alt', ['paee.view'], ['specialized-educational-support.paee.*', 'specialized-educational-support.students.paees.*']],
                 ['pei', 'PEIs', 'specialized-educational-support.pei.all', 'ti-file', ['pei.view'], ['specialized-educational-support.pei.*']],
-                ['sessions', 'Agendamentos', 'specialized-educational-support.sessions.index', 'ti-calendar', ['session.view-all', 'session.view-own'], ['specialized-educational-support.sessions.*']],
-                ['aee-records', 'Atendimentos Especializados', 'specialized-educational-support.aee-records.index', 'ti-book', ['aee-record.view-own', 'aee-record.view-all'], ['specialized-educational-support.aee-records.*']],
-                ['pedagogical-records', 'Atendimentos Pedagógicos', 'specialized-educational-support.pedagogical-records.index', 'ti-write', ['pedagogical-record.view-own', 'pedagogical-record.view-all'], ['specialized-educational-support.pedagogical-records.*']],
-                ['pendencies', 'Pendências', 'specialized-educational-support.pendencies.index', 'ti-alert', ['pendency.view'], ['specialized-educational-support.pendencies.*']],
+            ]],
+            ['Recursos e acessibilidade', [
                 ['items', 'Itens', 'inclusive-radar.items.index', 'ti-package', ['item.index'], ['inclusive-radar.items.*']],
                 ['loans', 'Empréstimos', 'inclusive-radar.loans.index', 'ti-exchange-vertical', ['loan.index'], ['inclusive-radar.loans.*']],
-                ['waitlists', 'Fila de Espera', 'inclusive-radar.waitlists.index', 'ti-time', ['waitlist.index'], ['inclusive-radar.waitlists.*']],
                 ['barriers', 'Barreiras', 'inclusive-radar.barriers.index', 'ti-na', ['barrier.index'], ['inclusive-radar.barriers.*']],
-                ['publications', 'Publicações', 'inclusive-radar.publications.index', 'ti-announcement', ['publication.index'], ['inclusive-radar.publications.*']],
+            ]],
+            ['Gestão do núcleo', [
+                ['reports', 'Relatórios', 'reports.index', 'ti-bar-chart', ['report.index'], ['reports.*']],
+                ['professionals', 'Equipe', 'specialized-educational-support.professionals.index', 'ti-id-badge', ['professional.view'], ['specialized-educational-support.professionals.*']],
+                ['teachers', 'Professores', 'specialized-educational-support.teachers.index', 'ti-blackboard', ['teacher.view'], ['specialized-educational-support.teachers.*']],
                 ['registrations', 'Cadastros', null, 'ti-folder', [], [], [
                     ['deficiencies', 'Perfis de Atendimento', 'specialized-educational-support.deficiencies.index', 'ti-heart', ['deficiency.view'], ['specialized-educational-support.deficiencies.*']],
                     ['positions', 'Cargos', 'specialized-educational-support.positions.index', 'ti-briefcase', ['position.view'], ['specialized-educational-support.positions.*']],
@@ -136,12 +144,16 @@ final class AppNavigation
                     ['locations', 'Localizações', 'inclusive-radar.locations.index', 'ti-location-pin', ['location.index'], ['inclusive-radar.locations.*']],
                 ]],
             ]],
-            ['Outros', [
+            ['Comunicação', [
+                ['pendencies', 'Pendências', 'specialized-educational-support.pendencies.index', 'ti-alert', ['pendency.view'], ['specialized-educational-support.pendencies.*']],
+                ['publications', 'Publicações', 'inclusive-radar.publications.index', 'ti-announcement', ['publication.index'], ['inclusive-radar.publications.*']],
                 ['website', 'Site', 'website.builder.edit', 'ti-world', ['website.edit'], ['website.builder.*']],
-                ['reports', 'Relatórios', 'reports.index', 'ti-bar-chart', ['report.index'], ['reports.*']],
-                ['backups', 'Backups', 'backup.backups.index', 'ti-cloud-down', ['backup.index'], ['backup.backups.*']],
-                ['audit', 'Auditoria', 'audit.index', 'ti-shield', ['audit.index'], ['audit.*']],
+                ['notifications', 'Notificações', 'notifications.index', 'ti-bell', [], ['notifications.*']],
+            ]],
+            ['Sistema', [
                 ['settings', 'Configurações', 'settings.index', 'ti-settings', ['setting.view'], ['settings.*']],
+                ['audit', 'Auditoria', 'audit.index', 'ti-shield', ['audit.index'], ['audit.*']],
+                ['backups', 'Backups', 'backup.backups.index', 'ti-cloud-down', ['backup.index'], ['backup.backups.*']],
                 ['about', 'Sobre o Sistema', 'about-us', 'ti-info-alt', [], ['about-us']],
             ]],
         ];

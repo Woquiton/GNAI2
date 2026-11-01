@@ -38,12 +38,12 @@ export default function SidebarMenuItem({
         isCollapsedFlyoutActive && 'sidebarPrimary__item--collapsedFlyoutActive'
       )}
       onMouseEnter={(event: React.MouseEvent<HTMLLIElement>) => {
-        if (collapsed && depth === 0 && hasChildren) {
+        if (collapsed && depth === 0) {
           onTopLevelHoverStart?.(item, event.currentTarget);
         }
       }}
       onMouseLeave={() => {
-        if (collapsed && depth === 0 && hasChildren) {
+        if (collapsed && depth === 0) {
           onTopLevelHoverEnd?.();
         }
       }}
@@ -51,6 +51,7 @@ export default function SidebarMenuItem({
       <a
         href={item.href ?? '#'}
         className={joinClassNames((depth === 0 || item.waves) && 'waves-effect waves-light', isActive && depth === 0 && 'active', isOpen && 'subdrop')}
+        title={collapsed ? undefined : item.label}
         aria-current={isActive && !hasChildren ? 'page' : undefined}
         aria-label={collapsed && depth === 0 ? item.label : undefined}
         aria-expanded={hasChildren ? (collapsed ? Boolean(isCollapsedFlyoutActive) : isOpen) : undefined}
@@ -65,7 +66,11 @@ export default function SidebarMenuItem({
           </Label>
         ) : null}
 
-        <span>{depth === 0 ? ` ${item.label} ` : item.label}</span>
+        <span className="sidebarPrimary__itemLabel">{item.label}</span>
+
+        {hasChildren ? (
+          <span className="sidebarPrimary__expandIndicator" aria-hidden="true" />
+        ) : null}
       </a>
 
       {hasChildren ? children : null}

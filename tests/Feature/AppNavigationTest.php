@@ -45,7 +45,14 @@ final class AppNavigationTest extends TestCase
                 $links = $entries->filter(fn ($entry) => isset($entry['href']))
                     ->merge($registrations['children'] ?? []);
 
-                self::assertSame(['Outros'], $entries->pluck('title')->filter()->values()->all());
+                self::assertSame([
+                    'Atendimento',
+                    'Planos e acompanhamento',
+                    'Recursos e acessibilidade',
+                    'Gestão do núcleo',
+                    'Comunicação',
+                    'Sistema',
+                ], $entries->pluck('title')->filter()->values()->all());
                 self::assertContains('institutions', array_column($registrations['children'] ?? [], 'key'));
                 self::assertSame('/auth/dashboard', $links->firstWhere('key', 'dashboard')['href']);
                 foreach (['reports', 'backups', 'audit', 'settings', 'website'] as $adminOnly) {
@@ -76,7 +83,15 @@ final class AppNavigationTest extends TestCase
         $this->actingAs($user)->get('/notifications')->assertOk()->assertInertia(fn (Assert $page) => $page
             ->where('navigation.entries', function ($entries): bool {
                 $items = collect($entries)->filter(fn ($entry) => isset($entry['href']))->keyBy('key');
-                self::assertSame(['dashboard', 'notifications', 'students', 'sessions', 'aee-records', 'pedagogical-records', 'about'], $items->keys()->all());
+                self::assertSame([
+                    'dashboard',
+                    'students',
+                    'sessions',
+                    'aee-records',
+                    'pedagogical-records',
+                    'notifications',
+                    'about',
+                ], $items->keys()->all());
                 self::assertNull(collect($entries)->firstWhere('key', 'registrations'));
                 foreach (['sessions' => 'my-sessions', 'aee-records' => 'my-records', 'pedagogical-records' => 'my-records'] as $key => $action) {
                     self::assertSame(route("specialized-educational-support.$key.$action", absolute: false), $items[$key]['href']);

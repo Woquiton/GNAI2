@@ -32,9 +32,26 @@ function FlyoutItems({
         const hasChildren = Boolean(entry.children?.length);
 
         return (
-          <li key={entry.key} className={joinClassNames(hasChildren && 'has_sub', hasActiveDescendant(entry, currentItemKey) && 'active')}>
-            <a className={joinClassNames(entry.waves && 'waves-effect waves-light', openKeyList.includes(entry.key) && 'subdrop')} aria-current={entry.key === currentItemKey ? 'page' : undefined} href={entry.href ?? '#'} onClick={(event: React.MouseEvent<HTMLAnchorElement>) => onItemClick(event, entry)}>
-              <span>{entry.label}</span>
+          <li
+            key={entry.key}
+            className={joinClassNames(
+              hasChildren && 'has_sub',
+              hasActiveDescendant(entry, currentItemKey) && 'active'
+            )}
+          >
+            <a
+              className={joinClassNames(
+                entry.waves && 'waves-effect waves-light',
+                openKeyList.includes(entry.key) && 'subdrop'
+              )}
+              title={entry.label}
+              aria-current={entry.key === currentItemKey ? 'page' : undefined}
+              href={entry.href ?? '#'}
+              onClick={(event: React.MouseEvent<HTMLAnchorElement>) =>
+                onItemClick(event, entry)
+              }
+            >
+              <span className="sidebarPrimary__itemLabel">{entry.label}</span>
             </a>
 
             {hasChildren ? (
