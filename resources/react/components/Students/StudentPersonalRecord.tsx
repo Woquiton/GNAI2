@@ -10,8 +10,11 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import DeleteStudentRecord from './DeleteStudentRecord';
+import StudentRecordFilters, {
+  matchesStudentRecordFilter,
+  useStudentRecordFilters,
+} from './StudentRecordFilters';
 import StudentRecordTable from './StudentRecordTable';
-import StudentSection from './StudentSection';
 import type { StudentOptions, StudentRecord } from './Students.types';
 import { aeeBase, dateLabel } from './Students.utils';
 
@@ -37,6 +40,8 @@ const courseColumns: TableListColumn[] = [
 
 type StudentPersonalRecordProps = StudentOptions & {
   student: StudentRecord;
+  profileNames: string[];
+  academicLoading?: boolean;
 };
 
 function Detail({
@@ -68,31 +73,43 @@ function PersonalDetails({
   const person = student.person;
 
   return (
-    <StudentSection
-      id="dados-gerais"
-      title="Dados Pessoais"
-      iconClass="fa fa-user"
-    >
-      <dl className="studentsPage__detailGrid">
-        <Detail label="Nome completo">{person.name}</Detail>
-        <Detail label="Gênero">{person.gender_label || '---'}</Detail>
-        <Detail label="CPF">{person.document || '---'}</Detail>
-        <Detail label="Nascimento">{dateLabel(person.birth_date)}</Detail>
-        <Detail label="Idade">
-          {person.age != null ? `${person.age} anos` : '---'}
-        </Detail>
-        <Detail label="E-mail">{person.email || '---'}</Detail>
-        <Detail label="Telefone">{person.phone || '---'}</Detail>
-        <Detail label="Endereço" wide>
-          {person.address_html ? (
-            <div
-              className="studentsPage__richText"
-              dangerouslySetInnerHTML={{ __html: person.address_html }}
-            />
-          ) : '---'}
-        </Detail>
-      </dl>
-    </StudentSection>
+    <CardBox className="studentsPage__recordDetailsCard">
+      <FormSection
+        id="dados-identificacao"
+        title="Identificação"
+        iconClass="fa fa-user"
+        variant="inline"
+      >
+        <dl className="studentsPage__detailGrid">
+          <Detail label="Nome completo">{person.name}</Detail>
+          <Detail label="Gênero">{person.gender_label || '---'}</Detail>
+          <Detail label="CPF">{person.document || '---'}</Detail>
+          <Detail label="Nascimento">{dateLabel(person.birth_date)}</Detail>
+          <Detail label="Idade">
+            {person.age != null ? `${person.age} anos` : '---'}
+          </Detail>
+        </dl>
+      </FormSection>
+      <FormSection
+        id="dados-contato"
+        title="Contato e Endereço"
+        iconClass="fa fa-map-marker"
+        variant="inline"
+      >
+        <dl className="studentsPage__detailGrid">
+          <Detail label="E-mail">{person.email || '---'}</Detail>
+          <Detail label="Telefone">{person.phone || '---'}</Detail>
+          <Detail label="Endereço" wide>
+            {person.address_html ? (
+              <div
+                className="studentsPage__richText"
+                dangerouslySetInnerHTML={{ __html: person.address_html }}
+              />
+            ) : '---'}
+          </Detail>
+        </dl>
+      </FormSection>
+    </CardBox>
   );
 }
 
@@ -101,29 +118,65 @@ function AcademicDetails({
   permissions,
   studentStatuses,
   statusColors,
+  academicLoading,
 }: StudentPersonalRecordProps): React.JSX.Element {
+  const courses = student.student_courses ?? [];
+  const filters = useStudentRecordFilters(['course', 'year', 'status'] as const);
+  const filteredCourses = courses.filter((relation) => (
+    matchesStudentRecordFilter(relation.course?.name, filters.values.course)
+    && matchesStudentRecordFilter(relation.academic_year, filters.values.year)
+    && (!filters.values.status
+      || filters.values.status === (relation.is_current ? 'current' : 'history'))
+  ));
+
   return (
-    <StudentSection
-      id="informacoes-escolares"
-      title="Informações Acadêmicas"
-      iconClass="fa fa-graduation-cap"
-    >
-      <dl className="studentsPage__detailGrid">
-        <Detail label="Status atual">
-          <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
-            {studentStatuses[student.status] ?? student.status}
-          </TableLabel>
-        </Detail>
-        <Detail label="Data de ingresso">
-          {dateLabel(student.entry_date)}
-        </Detail>
-      </dl>
-      <h3 className="studentsPage__subheading">Vínculo com cursos</h3>
+    <div className="studentsPage__recordStack">
+      <CardBox className="studentsPage__recordDetailsCard">
+        <FormSection
+          id="situacao-academica"
+          title="Situação Acadêmica"
+          iconClass="fa fa-graduation-cap"
+          variant="inline"
+        >
+          <dl className="studentsPage__detailGrid">
+            <Detail label="Status atual">
+              <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
+                {studentStatuses[student.status] ?? student.status}
+              </TableLabel>
+            </Detail>
+            <Detail label="Data de ingresso">
+              {dateLabel(student.entry_date)}
+            </Detail>
+          </dl>
+        </FormSection>
+      </CardBox>
       <StudentRecordTable
         ariaLabel="Cursos do aluno"
         columns={courseColumns}
-        count={student.student_courses.length}
+        count={filteredCourses.length}
         emptyMessage="Nenhum curso do aluno encontrado."
+        loading={academicLoading}
+        filters={(
+          <StudentRecordFilters
+            idPrefix="student-course-filter"
+            label="Filtrar vínculos com cursos"
+            fields={[
+              { name: 'course', label: 'Curso / Série' },
+              { name: 'year', label: 'Ano letivo' },
+              {
+                name: 'status',
+                label: 'Situação',
+                options: [
+                  { value: 'current', label: 'Atual' },
+                  { value: 'history', label: 'Histórico' },
+                ],
+              },
+            ]}
+            values={filters.values}
+            onChange={filters.update}
+            onClear={filters.clear}
+          />
+        )}
         actions={permissions['student-course.create'] ? (
           <TableListCreateButton
             href={`${aeeBase}/student-courses/${student.id}/create`}
@@ -131,7 +184,7 @@ function AcademicDetails({
           />
         ) : undefined}
       >
-        {student.student_courses.map((relation) => (
+        {filteredCourses.map((relation) => (
           <tr key={relation.id}>
             <td>
               <strong>
@@ -173,7 +226,7 @@ function AcademicDetails({
           </tr>
         ))}
       </StudentRecordTable>
-    </StudentSection>
+    </div>
   );
 }
 
@@ -202,46 +255,42 @@ export default function StudentPersonalRecord({
   permissions,
   studentStatuses,
   statusColors,
+  profileNames,
 }: StudentPersonalRecordProps): React.JSX.Element {
   const person = student.person;
-  const profileNames = permissions['student-deficiency.view']
-    ? student.deficiencies?.map((item) => item.name).join(', ')
+  const profileSummary = permissions['student-deficiency.view']
+    ? profileNames.join(', ')
     : undefined;
 
   return (
     <CardBox className="studentsPage__summaryCard">
-      <FormSection
-        id="identificacao"
-        title="Identificação do Aluno"
-        iconClass="fa fa-user"
-        variant="inline"
-      >
-        <div className="studentsPage__summary">
-          <img
-            src={person.photo_url}
-            alt={`Foto de ${person.name}`}
-            className="studentsPage__summaryPhoto"
-          />
-          <div className="studentsPage__summaryBody">
-            <p className="studentsPage__summaryName">{person.name}</p>
-            <dl className="studentsPage__summaryDetails">
-              <Detail label="Matrícula">
-                {student.registration || '---'}
-              </Detail>
-              <Detail label="Status">
-                <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
-                  {studentStatuses[student.status] ?? student.status}
-                </TableLabel>
-              </Detail>
-              {permissions['student-deficiency.view'] ? (
-                <Detail label="Perfil de atendimento" wide>
-                  {profileNames || 'Nenhum perfil cadastrado'}
-                </Detail>
-              ) : null}
-            </dl>
-          </div>
+      <div className="studentsPage__summary">
+        <img
+          src={person.photo_url}
+          alt={`Foto de ${person.name}`}
+          className="studentsPage__summaryPhoto"
+        />
+        <div className="studentsPage__summaryBody">
+          <p className="studentsPage__summaryName">{person.name}</p>
+          <dl className="studentsPage__summaryDetails">
+            <div className="studentsPage__summaryDetail">
+              <dt>Matrícula:</dt>
+              <dd>{student.registration || '---'}</dd>
+            </div>
+            {permissions['student-deficiency.view'] ? (
+              <div className="studentsPage__summaryDetail studentsPage__summaryDetail--profile">
+                <dt>Perfil de atendimento:</dt>
+                <dd>{profileSummary || 'Nenhum perfil cadastrado'}</dd>
+              </div>
+            ) : null}
+          </dl>
         </div>
-      </FormSection>
+        <div className="studentsPage__summaryStatus">
+          <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
+            {studentStatuses[student.status] ?? student.status}
+          </TableLabel>
+        </div>
+      </div>
     </CardBox>
   );
 }

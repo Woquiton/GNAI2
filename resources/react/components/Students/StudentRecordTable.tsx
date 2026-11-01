@@ -14,6 +14,9 @@ export default function StudentRecordTable({
   count,
   emptyMessage,
   actions,
+  filters,
+  loading = false,
+  loadingLabel,
   children,
 }: {
   ariaLabel: string;
@@ -21,6 +24,9 @@ export default function StudentRecordTable({
   count: number;
   emptyMessage: string;
   actions?: ReactNode;
+  filters?: ReactNode;
+  loading?: boolean;
+  loadingLabel?: string;
   children: ReactNode;
 }): React.JSX.Element {
   const summary = `${count} ${count === 1 ? 'registro' : 'registros'}`;
@@ -30,7 +36,12 @@ export default function StudentRecordTable({
       {actions ? (
         <div className="studentsPage__recordListActions">{actions}</div>
       ) : null}
-      <TableListCard aria-label={ariaLabel}>
+      <TableListCard
+        aria-label={ariaLabel}
+        loading={loading}
+        loadingLabel={loadingLabel ?? `Carregando ${ariaLabel.toLowerCase()}`}
+      >
+        {filters}
         <TableListScroll aria-label={ariaLabel}>
           <TableListTable columns={columns} summary={summary}>
             {count ? children : (

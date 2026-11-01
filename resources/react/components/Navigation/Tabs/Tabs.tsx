@@ -1,6 +1,7 @@
 import {
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   type KeyboardEvent,
@@ -27,11 +28,14 @@ interface TabsProps {
 export default function Tabs({ items, initialActiveId, variant = 'standard', onChange }: TabsProps): React.JSX.Element {
   const [activeId, setActiveId] = useState<string>(initialActiveId ?? items[0]?.id ?? '');
   const activeItem = items.find((item: TabItem) => item.id === activeId) ?? items[0];
-  const activeIndex = Math.max(0, items.findIndex((item: TabItem) => item.id === activeId));
   const isVertical = variant === 'vertical' || variant === 'vertical-reverse';
   const hasMobileIcons = items.some((item: TabItem) => item.icon);
   const tabsId = useId();
   const previousInitialActiveId = useRef(initialActiveId);
+  const previousMeasuredActiveId = useRef(activeId);
+  const navigationRef = useRef<HTMLUListElement>(null);
+  const tabRefs = useRef(new Map<string, HTMLButtonElement>());
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
 
   useEffect(() => {
     const initialActiveIdChanged = previousInitialActiveId.current
@@ -52,6 +56,48 @@ export default function Tabs({ items, initialActiveId, variant = 'standard', onC
       setActiveId(items[0].id);
     }
   }, [activeId, initialActiveId, items]);
+
+  useLayoutEffect(() => {
+    if (isVertical || (variant !== 'standard' && variant !== 'material')) return;
+
+    const navigation = navigationRef.current;
+    const activeTab = tabRefs.current.get(activeId);
+    if (!navigation || !activeTab) return;
+
+    function updateIndicator(): void {
+      const navigationRect = navigation.getBoundingClientRect();
+      const activeTabRect = activeTab.getBoundingClientRect();
+
+      setIndicator({
+        left: activeTabRect.left - navigationRect.left + navigation.scrollLeft,
+        width: activeTabRect.width,
+        ready: true,
+      });
+    }
+
+    updateIndicator();
+
+    const activeTabChanged = previousMeasuredActiveId.current !== activeId;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    activeTab.scrollIntoView({
+      behavior: activeTabChanged && !reduceMotion ? 'smooth' : 'auto',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+    previousMeasuredActiveId.current = activeId;
+
+    const observer = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(updateIndicator);
+    observer?.observe(navigation);
+    observer?.observe(activeTab);
+    window.addEventListener('resize', updateIndicator);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', updateIndicator);
+    };
+  }, [activeId, isVertical, items.length, variant]);
 
   function selectTab(id: string): void {
     setActiveId(id);
@@ -87,8 +133,9 @@ export default function Tabs({ items, initialActiveId, variant = 'standard', onC
     nextTab?.focus();
   }
 
-  const navigation = (
+  const navigationList = (
     <ul
+      ref={navigationRef}
       className={`tabs__nav ${isVertical ? 'tabs__nav--vertical' : ''} ${variant === 'material' ? 'tabs__nav--material' : ''} ${variant === 'bootstrap' ? 'tabs__nav--bootstrap' : ''} ${variant === 'justified' ? 'tabs__nav--justified' : ''} ${variant === 'pills' ? 'tabs__nav--pills' : ''} ${variant === 'standard' || variant === 'material' ? 'tabs__nav--animated' : ''} ${hasMobileIcons ? 'tabs__nav--mobileIcons' : ''}`}
       role="tablist"
       aria-orientation={isVertical ? 'vertical' : 'horizontal'}
@@ -96,6 +143,10 @@ export default function Tabs({ items, initialActiveId, variant = 'standard', onC
       {items.map((item: TabItem, index) => (
         <li key={item.id} className={activeId === item.id ? 'tabs__item--active' : ''} role="presentation">
           <button
+            ref={(element) => {
+              if (element) tabRefs.current.set(item.id, element);
+              else tabRefs.current.delete(item.id);
+            }}
             type="button"
             className="tabs__button"
             role="tab"
@@ -113,16 +164,24 @@ export default function Tabs({ items, initialActiveId, variant = 'standard', onC
         </li>
       ))}
       {variant === 'standard' || variant === 'material' ? (
-        <span
-          className="tabs__indicator"
+        <li
+          className={indicator.ready
+            ? 'tabs__indicator tabs__indicator--ready'
+            : 'tabs__indicator'}
           style={{
-            left: `${(activeIndex / items.length) * 100}%`,
-            right: `${((items.length - activeIndex - 1) / items.length) * 100}%`,
+            width: `${indicator.width}px`,
+            transform: `translateX(${indicator.left}px)`,
           }}
+          role="presentation"
           aria-hidden="true"
         />
       ) : null}
     </ul>
+  );
+  const navigation = isVertical ? navigationList : (
+    <div className="tabs__navViewport">
+      {navigationList}
+    </div>
   );
 
   if (isVertical) {
@@ -130,6 +189,7 @@ export default function Tabs({ items, initialActiveId, variant = 'standard', onC
       <div className="tabs__verticalEnv">
         {variant === 'vertical' ? navigation : null}
         <div
+          key={activeItem?.id}
           id={`${tabsId}-${activeItem?.id}-panel`}
           className="tabs__content tabs__content--vertical"
           role="tabpanel"
@@ -144,9 +204,10 @@ export default function Tabs({ items, initialActiveId, variant = 'standard', onC
   }
 
   return (
-    <div className="tabs">
+    <div className={`tabs tabs--${variant}`}>
       {navigation}
       <div
+        key={activeItem?.id}
         id={`${tabsId}-${activeItem?.id}-panel`}
         className="tabs__content"
         role="tabpanel"

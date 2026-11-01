@@ -283,7 +283,6 @@ export default function InclusionCaseStudiesShowPage({
                 <Tabs
                     items={tabs}
                     initialActiveId="details"
-                    variant="vertical"
                 />
             </div>
             <FormActions

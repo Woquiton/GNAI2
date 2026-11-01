@@ -86,7 +86,6 @@ export default function InclusionAeeRecordsShowPage({
                             <div className="aeeRecordForm__tabs">
                                 <Tabs
                                     items={tabs}
-                                    variant="vertical"
                                 />
                             </div>
                         ) : (

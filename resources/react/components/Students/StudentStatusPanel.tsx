@@ -3,15 +3,13 @@ import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
 import type { StudentStatusPanelData } from './Students.types';
 
 /**
- * Painel "Status do atendimento": situação do laudo, Estudo de Caso, PAEE e
- * PEI vigentes do aluno, com atalho para ver ou iniciar cada documento.
+ * Situação dos registros que compõem o atendimento do aluno, em ordem de
+ * dependência, com ações somente quando o fluxo e a permissão as liberam.
  */
 export default function StudentStatusPanel({
   panel,
-  onOpenTab,
 }: {
   panel: StudentStatusPanelData;
-  onOpenTab: (tab: string) => void;
 }): React.JSX.Element {
   return (
     <section className="studentStatusPanel" aria-labelledby="student-status-panel-title">
@@ -19,50 +17,44 @@ export default function StudentStatusPanel({
         Status do atendimento
       </h2>
       <ul className="studentStatusPanel__list">
-        {panel.boxes.map((box) => {
-          const action = box.ok ? 'Ver' : 'Iniciar';
-          const actionLabel = `${action} ${box.label}`;
+        {panel.items.map((item) => {
+          const actionLabel = `${item.action_label} ${item.label}`;
 
           return (
             <li
-              key={box.key}
-              className={box.ok
+              key={item.key}
+              className={item.ok
                 ? 'studentStatusPanel__item studentStatusPanel__item--ok'
                 : 'studentStatusPanel__item studentStatusPanel__item--pending'}
             >
               <h3 className="studentStatusPanel__label">
-                <i className={box.icon} aria-hidden="true" /> {box.label}
+                <i className={item.icon} aria-hidden="true" /> {item.label}
               </h3>
               <span className="studentStatusPanel__status">
                 <i
-                  className={box.ok ? 'fa fa-check-circle' : 'fa fa-times-circle'}
+                  className={item.ok ? 'fa fa-check-circle' : 'fa fa-times-circle'}
                   aria-hidden="true"
                 />
-                {' '}{box.status}
+                {' '}{item.status}
               </span>
-              {box.href ? (
+              {item.href ? (
                 <Button
-                  href={box.href}
-                  tone="white"
+                  href={item.href}
+                  tone={item.action_label === 'Iniciar' ? 'success' : 'dark-blue'}
                   size="xs"
-                  label={action}
+                  leftIconClass={item.action_label === 'Iniciar'
+                    ? 'fa fa-play'
+                    : item.action_label === 'Continuar'
+                      ? 'fa fa-arrow-right'
+                      : 'fa fa-eye'}
+                  label={item.action_label}
                   title={actionLabel}
                   aria-label={actionLabel}
-                />
-              ) : box.tab ? (
-                <Button
-                  type="button"
-                  tone="white"
-                  size="xs"
-                  label={action}
-                  title={actionLabel}
-                  aria-label={actionLabel}
-                  onClick={() => onOpenTab(box.tab as string)}
                 />
               ) : null}
-              {box.updated_at ? (
+              {item.updated_at ? (
                 <small className="studentStatusPanel__updated">
-                  Atualizado em {box.updated_at}
+                  Atualizado em {item.updated_at}
                 </small>
               ) : null}
             </li>

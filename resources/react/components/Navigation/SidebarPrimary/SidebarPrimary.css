@@ -106,21 +106,39 @@
   position: absolute;
   left: calc(var(--ui-sidebar-collapsed-width) - 10px);
   box-sizing: border-box;
+  width: max-content;
   max-width: min(320px, calc(100vw - var(--ui-sidebar-collapsed-width) - 12px));
-  padding: 8px 10px;
-  overflow: hidden;
-  border-radius: 7px;
-  background: var(--ui-sidebar-bg);
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--ui-sidebar-accent);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
-  color: var(--ui-sidebar-text);
+  color: var(--ui-sidebar-active-bg);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.3;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   transform: translateY(-50%);
   pointer-events: none;
   z-index: 9998;
+}
+
+.sidebarPrimary__collapsedTooltip::before {
+  position: absolute;
+  top: 50%;
+  left: -7px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-right: 8px solid var(--ui-sidebar-accent);
+  border-bottom: 7px solid transparent;
+  content: '';
+  transform: translateY(-50%);
+}
+
+.sidebarPrimary__collapsedTooltipLabel {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sidebarPrimary__collapsedFlyoutBody {

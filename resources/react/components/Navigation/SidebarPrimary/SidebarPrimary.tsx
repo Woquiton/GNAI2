@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { router } from '@inertiajs/react';
 import './SidebarPrimary.css';
 import './SidebarPrimary.small.css';
@@ -11,6 +11,25 @@ import { hasActiveDescendant, isSectionTitle } from './SidebarPrimary.helpers';
 import SidebarMenu from './SidebarMenu';
 import SidebarCollapsedFlyout from './SidebarCollapsedFlyout';
 import SidebarScrollbar from './SidebarScrollbar';
+
+const sidebarScrollStorageKey = 'gnai.sidebarScrollTop';
+
+function savedSidebarScrollTop(): number {
+  try {
+    const value = Number(window.sessionStorage.getItem(sidebarScrollStorageKey));
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function saveSidebarScrollTop(value: number): void {
+  try {
+    window.sessionStorage.setItem(sidebarScrollStorageKey, String(value));
+  } catch {
+    // A navegação continua funcional quando o armazenamento está indisponível.
+  }
+}
 
 interface SidebarPrimaryProps {
   collapsed: boolean;
@@ -36,6 +55,24 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
   const collapsedFlyoutRef = useRef<HTMLDivElement | null>(null);
   const hideTimerRef = useRef<number | null>(null);
   const collapsedHoverHideTimerRef = useRef<number | null>(null);
+  const preservedScrollTopRef = useRef(savedSidebarScrollTop());
+
+  useLayoutEffect(() => {
+    const element = innerRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    const scrollTop = preservedScrollTopRef.current;
+    element.scrollTop = scrollTop;
+
+    const frame = window.requestAnimationFrame(() => {
+      element.scrollTop = scrollTop;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [currentItemKey]);
 
   useEffect(() => {
     if (!collapsed) {
@@ -129,6 +166,8 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
     };
 
     function handleScroll(): void {
+      preservedScrollTopRef.current = element.scrollTop;
+      saveSidebarScrollTop(element.scrollTop);
       updateThumb();
       setScrollbarVisible(true);
       queueHide();
@@ -200,6 +239,9 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
       return;
     }
 
+    const scrollTop = innerRef.current?.scrollTop ?? preservedScrollTopRef.current;
+    preservedScrollTopRef.current = scrollTop;
+    saveSidebarScrollTop(scrollTop);
     router.visit(nextPath);
   }
 
@@ -293,7 +335,9 @@ export default function SidebarPrimary({ collapsed, currentItemKey, smallMenu = 
             }}
             aria-hidden="true"
           >
-            {hoveredCollapsedItem.label}
+            <span className="sidebarPrimary__collapsedTooltipLabel">
+              {hoveredCollapsedItem.label}
+            </span>
           </div>
         )
       ) : null}

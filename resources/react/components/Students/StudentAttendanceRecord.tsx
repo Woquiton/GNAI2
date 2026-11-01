@@ -4,12 +4,18 @@ import type { TableListColumn } from '@/components/Tables/TableList/TableList';
 import Button from '@/components/UI/Button/Button';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import DeleteStudentRecord from './DeleteStudentRecord';
+import StudentRecordFilters, {
+  matchesStudentRecordFilter,
+  useStudentRecordFilters,
+} from './StudentRecordFilters';
 import StudentRecordTable from './StudentRecordTable';
-import StudentSection from './StudentSection';
 import type {
+  AeeEvaluation,
   AttendanceSession,
+  PedagogicalRecord,
   Permissions,
-  StudentShowProps,
+  StudentRecord,
+  StudentRecordTabId,
 } from './Students.types';
 import { aeeBase, dateLabel, studentUrl } from './Students.utils';
 
@@ -29,11 +35,19 @@ interface AttendanceRow {
 interface AttendancePanelProps {
   id: 'aee-records' | 'pedagogical-records';
   title: string;
-  iconClass: string;
   emptyMessage: string;
   rows: AttendanceRow[];
   studentId: number;
   permissions: Permissions;
+  loading?: boolean;
+}
+
+interface StudentAttendanceTabsProps {
+  student: StudentRecord;
+  permissions: Permissions;
+  aeeEvaluations: AeeEvaluation[];
+  pedagogicalRecords: PedagogicalRecord[];
+  loadingTab?: StudentRecordTabId | null;
 }
 
 const aeeColumns: TableListColumn[] = [
@@ -154,36 +168,70 @@ function AttendanceRowActions({
 function AttendancePanel({
   id,
   title,
-  iconClass,
   emptyMessage,
   rows,
   studentId,
   permissions,
+  loading = false,
 }: AttendancePanelProps): React.JSX.Element {
   const isAee = id === 'aee-records';
   const columns = isAee ? aeeColumns : pedagogicalColumns;
+  const filters = useStudentRecordFilters(['date', 'professional', 'presence'] as const);
+  const filteredRows = rows.filter((row) => (
+    matchesStudentRecordFilter(
+      `${row.session?.session_date ?? ''} ${dateLabel(row.session?.session_date)}`,
+      filters.values.date,
+    )
+    && matchesStudentRecordFilter(
+      row.session?.professional?.person?.name,
+      filters.values.professional,
+    )
+    && (!filters.values.presence
+      || filters.values.presence === (row.present ? 'present' : 'absent'))
+  ));
 
   return (
-    <StudentSection id={id} title={title} iconClass={iconClass}>
-      <StudentRecordTable
-        ariaLabel={title}
-        columns={columns}
-        count={rows.length}
-        emptyMessage={emptyMessage}
-        actions={permissions[`${isAee ? 'aee' : 'pedagogical'}-record.view`] ? (
-          <Button
-            href={studentUrl(studentId, `${id}/pdf`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            tone="dark-red"
-            leftIconClass="fa fa-file-pdf-o"
-          >
-            Histórico em PDF
-          </Button>
-        ) : undefined}
-      >
-        {rows.map((row) => (
-          <tr key={row.id}>
+    <StudentRecordTable
+      ariaLabel={title}
+      columns={columns}
+      count={filteredRows.length}
+      emptyMessage={emptyMessage}
+      loading={loading}
+      filters={(
+        <StudentRecordFilters
+          idPrefix={`student-${id}-filter`}
+          label={`Filtrar ${title.toLocaleLowerCase('pt-BR')}`}
+          fields={[
+            { name: 'date', label: 'Data' },
+            { name: 'professional', label: 'Profissional' },
+            {
+              name: 'presence',
+              label: 'Presença',
+              options: [
+                { value: 'present', label: 'Presente' },
+                { value: 'absent', label: 'Ausente' },
+              ],
+            },
+          ]}
+          values={filters.values}
+          onChange={filters.update}
+          onClear={filters.clear}
+        />
+      )}
+      actions={permissions[`${isAee ? 'aee' : 'pedagogical'}-record.view`] ? (
+        <Button
+          href={studentUrl(studentId, `${id}/pdf`)}
+          target="_blank"
+          rel="noopener noreferrer"
+          tone="dark-red"
+          leftIconClass="fa fa-file-pdf-o"
+        >
+          Histórico em PDF
+        </Button>
+      ) : undefined}
+    >
+      {filteredRows.map((row) => (
+        <tr key={row.id}>
             <td><strong>{dateLabel(row.session?.session_date)}</strong></td>
             {!isAee ? <td>{sessionTime(row.session)}</td> : null}
             <td>
@@ -209,10 +257,9 @@ function AttendancePanel({
                 permissions={permissions}
               />
             </td>
-          </tr>
-        ))}
-      </StudentRecordTable>
-    </StudentSection>
+        </tr>
+      ))}
+    </StudentRecordTable>
   );
 }
 
@@ -221,7 +268,8 @@ export function createStudentAttendanceTabs({
   permissions,
   aeeEvaluations,
   pedagogicalRecords,
-}: StudentShowProps): TabItem[] {
+  loadingTab,
+}: StudentAttendanceTabsProps): TabItem[] {
   const canAee = permissions['aee-record.view-all']
     || permissions['aee-record.view-own'];
   const canPedagogical = permissions['pedagogical-record.view-all']
@@ -237,10 +285,10 @@ export function createStudentAttendanceTabs({
         <AttendancePanel
           id="aee-records"
           title="Registros de Atendimentos AEE"
-          iconClass="fa fa-calendar-check-o"
           emptyMessage="Nenhum registro de atendimento AEE encontrado."
           studentId={student.id}
           permissions={permissions}
+          loading={loadingTab === 'aee-attendance'}
           rows={aeeEvaluations.map((item) => ({
             id: item.id,
             session: item.aee_record?.attendance_session,
@@ -272,10 +320,10 @@ export function createStudentAttendanceTabs({
         <AttendancePanel
           id="pedagogical-records"
           title="Atendimentos Pedagógicos"
-          iconClass="fa fa-comments-o"
           emptyMessage="Nenhum atendimento pedagógico encontrado."
           studentId={student.id}
           permissions={permissions}
+          loading={loadingTab === 'pedagogical-attendance'}
           rows={pedagogicalRecords.map((item) => ({
             id: item.id,
             session: item.attendance_session,

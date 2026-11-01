@@ -413,7 +413,7 @@ export default function TeacherPortalStudentShowPage({
             </CardBox>
 
             <div className="teacherPortal__tabs">
-                <Tabs items={tabs} variant="vertical" />
+                <Tabs items={tabs} />
             </div>
 
             <FormActions>

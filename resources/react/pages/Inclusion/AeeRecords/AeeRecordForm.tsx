@@ -369,7 +369,6 @@ export default function AeeRecordForm({
                                     key={tabFocus.version}
                                     items={tabs}
                                     initialActiveId={tabFocus.id}
-                                    variant="vertical"
                                 />
                             </div>
                         ) : (

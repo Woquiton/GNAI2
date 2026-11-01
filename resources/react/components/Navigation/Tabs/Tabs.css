@@ -1,4 +1,6 @@
 .tabs { margin-bottom: 30px; }
+.tabs__navViewport { width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; }
+.tabs__navViewport > .tabs__nav { width: max-content; min-width: 100%; }
 .tabs__nav { display: flex; margin: 0; padding: 0; list-style: none; background: #fff; box-shadow: 0 1px 1px rgba(0,0,0,.05); }
 .tabs__nav > li { flex: 1; min-width: 0; }
 .tabs__button { position: relative; width: 100%; height: 50px; padding: 0 20px; border: 0; background: transparent; color: #505461; cursor: pointer; font: 600 14px/50px var(--ui-font-ui); letter-spacing: .03em; text-transform: uppercase; transition: color .28s ease; }
@@ -6,7 +8,8 @@
 .tabs__item--active .tabs__button::after { position: absolute; right: 0; bottom: 0; left: 0; height: 2px; background: var(--ui-color-gnai-primary); content: ''; }
 .tabs__nav--animated .tabs__item--active .tabs__button::after { display: none; }
 .tabs__nav--animated { position: relative; }
-.tabs__indicator { position: absolute; bottom: 0; height: 2px; background: var(--ui-color-gnai-primary); pointer-events: none; transition: right .28s cubic-bezier(.4, 0, .2, 1), left .38s cubic-bezier(.4, 0, .2, 1) .06s; will-change: left, right; }
+.tabs__indicator { position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--ui-color-gnai-primary); opacity: 0; pointer-events: none; transform: translateX(0); transition: width .24s ease, transform .32s cubic-bezier(.4, 0, .2, 1), opacity .12s ease; will-change: width, transform; }
+.tabs__indicator--ready { opacity: 1; }
 .tabs__nav--material .tabs__indicator { top: 0; bottom: auto; }
 .tabs__nav--material .tabs__item--active .tabs__button::after { top: 0; bottom: auto; }
 .tabs__nav--material { box-shadow: 0 1px 1px rgba(0,0,0,.05); }
@@ -66,3 +69,73 @@
 @media (max-width: 767px) { .tabs__pillContent { display: block; } .tabs__pillContent img { display: block; } }
 @media (max-width: 767px) { .tabs__nav--justified { display: block; } .tabs__nav--justified > li { display: block; margin-bottom: 4px; } .tabs__nav--justified .tabs__button { display: block; width: 100%; } }
 @media (min-width: 768px) { .tabs__button .tabs__icon { display: none; } }
+
+/* Padrão Gnai para abas de negócio. */
+.tabs--standard { min-width: 0; margin: 0; }
+.tabs--standard .tabs__navViewport { scrollbar-width: thin; }
+.tabs--standard .tabs__nav {
+  justify-content: flex-start;
+  width: max-content;
+  min-width: 100%;
+  margin-bottom: 6px;
+  overflow: visible;
+  border-bottom: 2px solid var(--ui-color-card-border);
+  background: transparent;
+  box-shadow: none;
+}
+.tabs--standard .tabs__nav > li { flex: 0 0 auto; }
+.tabs--standard .tabs__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: auto;
+  min-height: 46px;
+  height: auto;
+  margin: 0;
+  padding: 10px 18px;
+  color: var(--ui-color-heading);
+  font: 600 14px/1.4 var(--ui-font-gnai-body);
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+  white-space: nowrap;
+}
+.tabs--standard .tabs__button:hover,
+.tabs--standard .tabs__item--active .tabs__button { color: var(--ui-color-gnai-primary); }
+.tabs--standard .tabs__nav--animated .tabs__item--active .tabs__button::after { display: none; }
+.tabs--standard .tabs__indicator { display: block; bottom: -2px; }
+.tabs--standard .tabs__icon { display: inline-block; order: -1; font-size: 16px; line-height: 1; }
+.tabs--standard .tabs__label { display: inline; }
+.tabs--standard .tabs__button:focus-visible {
+  z-index: 1;
+  outline: 2px solid var(--ui-color-gnai-primary);
+  outline-offset: 2px;
+}
+.tabs--standard .tabs__content {
+  min-width: 0;
+  min-height: 0;
+  padding: 24px 0 0;
+  background: transparent;
+  box-shadow: none;
+  animation: tabsPanelIn .2s ease both;
+}
+.tabs--standard .tabs__content:focus-visible {
+  outline: 2px solid var(--ui-color-gnai-primary);
+  outline-offset: 3px;
+}
+
+@keyframes tabsPanelIn {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 767px) {
+  .tabs--standard .tabs__button { padding-right: 14px; padding-left: 14px; }
+  .tabs--standard .tabs__content { padding-top: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabs__indicator { transition: none; }
+  .tabs--standard .tabs__content { animation: none; }
+}

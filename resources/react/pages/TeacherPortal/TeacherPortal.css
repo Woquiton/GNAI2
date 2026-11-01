@@ -19,27 +19,11 @@
 .teacherPortal__disciplineHeader h4 { margin: 0; color: var(--ui-color-heading); font: 600 1rem/1.4 var(--ui-font-ui); }
 .teacherPortal__disciplineActions { display: flex; justify-content: flex-end; }
 
-.teacherPortal__tabs .tabs__verticalEnv { min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--ui-color-card-border); border-radius: 4px 4px 0 0; background: var(--ui-color-surface-alt); box-shadow: 0 1px 1px var(--ui-color-shadow); }
-.teacherPortal__tabs .tabs__nav { flex: 0 0 clamp(190px, 23%, 250px); background: var(--ui-color-surface-alt); }
-.teacherPortal__tabs .tabs__button { min-height: 52px; height: auto; padding: 12px 18px; color: var(--ui-color-heading); font-size: 13px; line-height: 1.35; text-align: left; }
-.teacherPortal__tabs .tabs__button:hover,
-.teacherPortal__tabs .tabs__item--active .tabs__button { color: var(--ui-color-gnai-primary); }
-.teacherPortal__tabs .tabs__item--active .tabs__button { background: var(--ui-color-surface); }
-.teacherPortal__tabs .tabs__button:focus-visible { z-index: 1; outline: 2px solid var(--ui-color-gnai-primary); outline-offset: -3px; }
-.teacherPortal__tabs .tabs__content { min-width: 0; min-height: 390px; padding: 28px 30px; box-shadow: none; }
-.teacherPortal__tabs .tabs__content:focus-visible { outline: 2px solid var(--ui-color-gnai-primary); outline-offset: -4px; }
+.teacherPortal__tabs { min-width: 0; }
 .teacherPortal__tabs .formSection { margin-bottom: 0; }
 
 @media (max-width: 900px) {
     .teacherPortal__grid--four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (max-width: 767px) {
-    .teacherPortal__tabs .tabs__verticalEnv { display: block; overflow: visible; }
-    .teacherPortal__tabs .tabs__nav { display: flex; overflow-x: auto; background: var(--ui-color-surface-alt); }
-    .teacherPortal__tabs .tabs__nav > li { flex: 0 0 auto; }
-    .teacherPortal__tabs .tabs__button { min-width: 150px; text-align: center; }
-    .teacherPortal__tabs .tabs__content { min-height: 0; padding: 20px; }
 }
 
 @media (max-width: 600px) {

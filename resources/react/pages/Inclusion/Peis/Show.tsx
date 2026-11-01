@@ -203,7 +203,6 @@ export default function InclusionPeisShowPage({
                 <Tabs
                     items={tabs}
                     initialActiveId={initialTab}
-                    variant="vertical"
                 />
             </div>
             <FormActions

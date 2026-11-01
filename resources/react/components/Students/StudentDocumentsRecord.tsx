@@ -7,9 +7,16 @@ import {
 import Button from '@/components/UI/Button/Button';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import DeleteStudentRecord from './DeleteStudentRecord';
+import StudentRecordFilters, {
+  matchesStudentRecordFilter,
+  useStudentRecordFilters,
+} from './StudentRecordFilters';
 import StudentRecordTable from './StudentRecordTable';
-import StudentSection from './StudentSection';
-import type { Permissions, StudentRecord } from './Students.types';
+import type {
+  Permissions,
+  StudentRecord,
+  StudentRecordTabId,
+} from './Students.types';
 import {
   aeeBase,
   dateLabel,
@@ -20,6 +27,7 @@ import {
 interface StudentDocumentsRecordProps {
   student: StudentRecord;
   permissions: Permissions;
+  loadingTab?: StudentRecordTabId | null;
 }
 
 const peiColumns: TableListColumn[] = [
@@ -67,29 +75,54 @@ const documentColumns: TableListColumn[] = [
 function StudentPeis({
   student,
   permissions,
+  loadingTab,
 }: StudentDocumentsRecordProps): React.JSX.Element {
   const peis = student.peis ?? [];
+  const filters = useStudentRecordFilters(['semester', 'course', 'status'] as const);
+  const filteredPeis = peis.filter((pei) => (
+    matchesStudentRecordFilter(pei.semester_label, filters.values.semester)
+    && matchesStudentRecordFilter(pei.course?.name, filters.values.course)
+    && (!filters.values.status
+      || filters.values.status === (pei.is_finished ? 'finished' : 'open'))
+  ));
 
   return (
-    <StudentSection
-      id="peis"
-      title="PEIs (Plano Educacional Individualizado)"
-      iconClass="fa fa-map-o"
+    <StudentRecordTable
+      ariaLabel="Planos Educacionais Individualizados do aluno"
+      columns={peiColumns}
+      count={filteredPeis.length}
+      emptyMessage="Nenhum PEI do aluno encontrado."
+      loading={loadingTab === 'peis'}
+      filters={(
+        <StudentRecordFilters
+          idPrefix="student-pei-filter"
+          label="Filtrar Planos Educacionais Individualizados"
+          fields={[
+            { name: 'semester', label: 'Semestre' },
+            { name: 'course', label: 'Curso' },
+            {
+              name: 'status',
+              label: 'Status',
+              options: [
+                { value: 'open', label: 'Em aberto' },
+                { value: 'finished', label: 'Finalizado' },
+              ],
+            },
+          ]}
+          values={filters.values}
+          onChange={filters.update}
+          onClear={filters.clear}
+        />
+      )}
+      actions={permissions['pei.create'] ? (
+        <TableListCreateButton
+          href={`${aeeBase}/students/${student.id}/peis/create`}
+          ariaLabel="Cadastrar PEI do aluno"
+        />
+      ) : undefined}
     >
-      <StudentRecordTable
-        ariaLabel="Planos Educacionais Individualizados do aluno"
-        columns={peiColumns}
-        count={peis.length}
-        emptyMessage="Nenhum PEI do aluno encontrado."
-        actions={permissions['pei.create'] ? (
-          <TableListCreateButton
-            href={`${aeeBase}/students/${student.id}/peis/create`}
-            ariaLabel="Cadastrar PEI do aluno"
-          />
-        ) : undefined}
-      >
-        {peis.map((pei) => (
-          <tr key={pei.id}>
+      {filteredPeis.map((pei) => (
+        <tr key={pei.id}>
             <td>
               <strong>{pei.semester_label ?? 'Não informado'}</strong>
               <small className="studentsPage__tableSecondary">
@@ -128,39 +161,61 @@ function StudentPeis({
                 </TableActions>
               ) : 'Nenhuma ação'}
             </td>
-          </tr>
-        ))}
-      </StudentRecordTable>
-    </StudentSection>
+        </tr>
+      ))}
+    </StudentRecordTable>
   );
 }
 
 function StudentDocuments({
   student,
   permissions,
+  loadingTab,
 }: StudentDocumentsRecordProps): React.JSX.Element {
   const documents = student.documents ?? [];
+  const filters = useStudentRecordFilters(['document', 'type', 'semester'] as const);
+  const filteredDocuments = documents.filter((document) => (
+    matchesStudentRecordFilter(
+      `${document.title} ${document.original_name}`,
+      filters.values.document,
+    )
+    && (!filters.values.type || document.type_label === filters.values.type)
+    && matchesStudentRecordFilter(document.semester_label, filters.values.semester)
+  ));
+  const typeOptions = Array.from(new Set(
+    documents.map((document) => document.type_label),
+  )).map((label) => ({ value: label, label }));
 
   return (
-    <StudentSection
-      id="documents"
-      title="Documentos do Aluno"
-      iconClass="fa fa-folder-open-o"
+    <StudentRecordTable
+      ariaLabel="Documentos do aluno"
+      columns={documentColumns}
+      count={filteredDocuments.length}
+      emptyMessage="Nenhum documento do aluno encontrado."
+      loading={loadingTab === 'documents'}
+      filters={(
+        <StudentRecordFilters
+          idPrefix="student-document-filter"
+          label="Filtrar documentos do aluno"
+          fields={[
+            { name: 'document', label: 'Título ou arquivo' },
+            { name: 'type', label: 'Tipo', options: typeOptions },
+            { name: 'semester', label: 'Semestre' },
+          ]}
+          values={filters.values}
+          onChange={filters.update}
+          onClear={filters.clear}
+        />
+      )}
+      actions={permissions['student-document.create'] ? (
+        <TableListCreateButton
+          href={`${aeeBase}/students/${student.id}/documents/create`}
+          ariaLabel="Cadastrar documento do aluno"
+        />
+      ) : undefined}
     >
-      <StudentRecordTable
-        ariaLabel="Documentos do aluno"
-        columns={documentColumns}
-        count={documents.length}
-        emptyMessage="Nenhum documento do aluno encontrado."
-        actions={permissions['student-document.create'] ? (
-          <TableListCreateButton
-            href={`${aeeBase}/students/${student.id}/documents/create`}
-            ariaLabel="Cadastrar documento do aluno"
-          />
-        ) : undefined}
-      >
-        {documents.map((document) => (
-          <tr key={document.id}>
+      {filteredDocuments.map((document) => (
+        <tr key={document.id}>
             <td>
               <strong>{document.title}</strong>
               <small className="studentsPage__tableSecondary">
@@ -226,16 +281,16 @@ function StudentDocuments({
                 </TableActions>
               ) : 'Nenhuma ação'}
             </td>
-          </tr>
-        ))}
-      </StudentRecordTable>
-    </StudentSection>
+        </tr>
+      ))}
+    </StudentRecordTable>
   );
 }
 
 export function createStudentDocumentTabs({
   student,
   permissions,
+  loadingTab,
 }: StudentDocumentsRecordProps): TabItem[] {
   const items: TabItem[] = [];
 
@@ -245,7 +300,13 @@ export function createStudentDocumentTabs({
       label: 'PEIs',
       accessibleLabel: 'Planos Educacionais Individualizados',
       icon: 'fa fa-map-o',
-      content: <StudentPeis student={student} permissions={permissions} />,
+      content: (
+        <StudentPeis
+          student={student}
+          permissions={permissions}
+          loadingTab={loadingTab}
+        />
+      ),
     });
   }
 
@@ -255,7 +316,11 @@ export function createStudentDocumentTabs({
       label: 'Documentos',
       icon: 'fa fa-folder-open-o',
       content: (
-        <StudentDocuments student={student} permissions={permissions} />
+        <StudentDocuments
+          student={student}
+          permissions={permissions}
+          loadingTab={loadingTab}
+        />
       ),
     });
   }
