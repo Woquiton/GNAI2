@@ -19,13 +19,13 @@
     <p>Data do Estudo de Caso: {{ $caseStudy->study_date?->format('d/m/Y') ?? '—' }}</p>
 
     <h2>Escuta e Observação</h2>
-    <div class="box"><strong>Observação do estudante:</strong> {{ $caseStudy->student_observation }}</div>
-    <div class="box"><strong>Escuta do estudante/família:</strong> {{ $caseStudy->student_family_listening }}</div>
-    <div class="box"><strong>Escuta dos professores:</strong> {{ $caseStudy->teachers_listening }}</div>
+    <div class="box"><strong>Observação do estudante:</strong> {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $caseStudy->student_observation) !!}</div>
+    <div class="box"><strong>Escuta do estudante/família:</strong> {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $caseStudy->student_family_listening) !!}</div>
+    <div class="box"><strong>Escuta dos professores:</strong> {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $caseStudy->teachers_listening) !!}</div>
 
     <h2>Potencialidades</h2>
-    <div class="box"><strong>Aspectos favoráveis:</strong> {{ $caseStudy->favorable_aspects }}</div>
-    <div class="box"><strong>Potenciais e interesses:</strong> {{ $caseStudy->potentials_interests }}</div>
+    <div class="box"><strong>Aspectos favoráveis:</strong> {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $caseStudy->favorable_aspects) !!}</div>
+    <div class="box"><strong>Potenciais e interesses:</strong> {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $caseStudy->potentials_interests) !!}</div>
     <div class="box"><strong>Apoios necessários:</strong> {{ \App\Shared\Domain\Support\AeeLabels::neededSupportsList($caseStudy->needed_supports) }}</div>
 
     <h2>Barreiras</h2>

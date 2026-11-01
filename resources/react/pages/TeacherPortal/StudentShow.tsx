@@ -111,25 +111,25 @@ function CaseStudy({ caseStudy }: { caseStudy: TeacherPortalCaseStudy | null }):
                         <DetailField label="Semestre">{caseStudy.semester_label ?? "---"}</DetailField>
                         <DetailField label="Origem da demanda">{caseStudy.demand_origin_label}</DetailField>
                         <DetailField label="Observação do estudante" wide>
-                            <Text value={caseStudy.student_observation} />
+                            <RichTextContent html={caseStudy.student_observation || "Não informado"} />
                         </DetailField>
                         <DetailField label="Escuta do estudante/família" wide>
-                            <Text value={caseStudy.student_family_listening} />
+                            <RichTextContent html={caseStudy.student_family_listening || "Não informado"} />
                         </DetailField>
                         <DetailField label="Escuta dos professores" wide>
-                            <Text value={caseStudy.teachers_listening} />
+                            <RichTextContent html={caseStudy.teachers_listening || "Não informado"} />
                         </DetailField>
                     </dl>
                     <dl className="teacherPortal__grid teacherPortal__notice">
                         <DetailField label="Aspectos favoráveis">
-                            <Text value={caseStudy.favorable_aspects} />
+                            <RichTextContent html={caseStudy.favorable_aspects || "Não informado"} />
                         </DetailField>
                         <DetailField label="Potenciais e interesses">
-                            <Text value={caseStudy.potentials_interests} />
+                            <RichTextContent html={caseStudy.potentials_interests || "Não informado"} />
                         </DetailField>
                         {caseStudy.other_info ? (
                             <DetailField label="Outras informações" wide>
-                                <Text value={caseStudy.other_info} />
+                                <RichTextContent html={caseStudy.other_info || "Não informado"} />
                             </DetailField>
                         ) : null}
                     </dl>

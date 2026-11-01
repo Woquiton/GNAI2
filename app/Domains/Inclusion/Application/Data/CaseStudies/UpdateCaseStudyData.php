@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Data\CaseStudies;
 
 use App\Domains\Inclusion\Application\Data\CaseStudies\Concerns\HasCaseStudyValidation;
+use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -35,6 +36,8 @@ final class UpdateCaseStudyData extends Data
 
     public static function rules(): array
     {
-        return self::contentRules();
+        $caseStudy = request()->route('caseStudy');
+
+        return self::contentRules($caseStudy instanceof CaseStudy ? $caseStudy : null);
     }
 }

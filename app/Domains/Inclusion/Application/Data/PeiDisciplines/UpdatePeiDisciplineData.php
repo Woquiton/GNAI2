@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Data\PeiDisciplines;
 
+use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
@@ -25,6 +26,22 @@ final class UpdatePeiDisciplineData extends Data
         public ?string $materialsAndAssistiveTechnology = null,
         public ?string $objectivesDeadline = null,
     ) {}
+
+    public static function prepareForPipeline(array $properties): array
+    {
+        if (request()->routeIs('teacher-portal.discipline.update')) {
+            $peiDiscipline = request()->route('peiDiscipline');
+
+            abort_unless($peiDiscipline instanceof PeiDiscipline, 404);
+
+            // No portal, o professor edita o conteúdo, preservando o vínculo
+            // cadastrado mesmo se outros IDs forem enviados na requisição.
+            $properties['teacher_id'] = $peiDiscipline->teacher_id;
+            $properties['discipline_id'] = $peiDiscipline->discipline_id;
+        }
+
+        return $properties;
+    }
 
     public static function rules(): array
     {

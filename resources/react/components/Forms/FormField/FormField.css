@@ -1,5 +1,7 @@
 .formField { margin-bottom: 15px; }
-.formField__labelRow { display: flex; align-items: center; gap: 6px; }
+.formField__labelRow { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.formField__labelRow > .formField__label { margin-bottom: 0; }
+.formField__labelRow > .legacyTooltip__trigger { display: inline-flex; flex-shrink: 0; }
 .formField::before, .formField::after { display: table; content: ' '; }
 .formField::after { clear: both; }
 .formField__label { display: inline-block; max-width: 100%; margin-bottom: 5px; color: var(--ui-color-form-label); font-size: var(--ui-font-size-form-label); font-weight: 700; }

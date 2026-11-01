@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import ChoiceControl from "@/components/Forms/ChoiceControl/ChoiceControl";
 import ChoiceGroup from "@/components/Forms/ChoiceGroup/ChoiceGroup";
@@ -8,8 +8,10 @@ import FormField from "@/components/Forms/FormField/FormField";
 import FormGrid, { FormGridWide } from "@/components/Forms/FormGrid/FormGrid";
 import FormLayout from "@/components/Forms/FormLayout/FormLayout";
 import FormSection from "@/components/Forms/FormSection/FormSection";
+import RemovableField from "@/components/Forms/RemovableField/RemovableField";
 import RepeaterField from "@/components/Forms/RepeaterField/RepeaterField";
 import SelectField from "@/components/Forms/SelectField/SelectField";
+import SummernoteEditor from "@/components/Forms/SummernoteEditor/SummernoteEditor";
 import TextArea from "@/components/Forms/TextArea/TextArea";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
 import {
@@ -63,6 +65,7 @@ export default function CaseStudyForm({
 }: CaseStudyFormProps): React.JSX.Element {
     const editing = caseStudy !== null;
     const busy = useRef(false);
+    const [editorFailed, setEditorFailed] = useState(false);
     const element = useRef<HTMLFormElement>(null);
     const studentHref = studentRecordUrl(student.id, caseStudiesTab);
     const cancelHref = caseStudy ? caseStudyUrl(caseStudy.id) : studentHref;
@@ -96,29 +99,34 @@ export default function CaseStudyForm({
             .join(" ") || undefined;
     }
 
-    function textArea(
+    function richText(
         name: CaseStudyTextField,
         label: string,
         { required = false, rows = 3 }: { required?: boolean; rows?: number } = {},
     ): React.JSX.Element {
         const id = fieldId(name);
+        const inputId = `${id}-input`;
 
         return (
             <FormField
-                id={id}
+                id={inputId}
                 label={label}
                 requiredIndicator={required}
                 error={errors[name]}
             >
-                <TextArea
+                <SummernoteEditor
                     id={id}
-                    name={name}
-                    rows={rows}
-                    required={required}
-                    value={form.data[name]}
-                    aria-invalid={!!errors[name] || undefined}
-                    aria-describedby={describedBy(name)}
-                    onChange={(event) => form.setData(name, event.target.value)}
+                    label={label}
+                    height={rows === 2 ? 120 : 160}
+                    defaultValue={form.data[name]}
+                    disabled={form.processing}
+                    invalid={!!errors[name]}
+                    describedBy={errors[name] ? `${inputId}-error` : undefined}
+                    onChange={(html) => form.setData(name, html)}
+                    onLoadError={() => {
+                        setEditorFailed(true);
+                        form.setError(name, "Não foi possível carregar o editor. Atualize a página e tente novamente.");
+                    }}
                 />
             </FormField>
         );
@@ -143,7 +151,7 @@ export default function CaseStudyForm({
 
     function submit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        if (busy.current || form.processing) return;
+        if (busy.current || form.processing || editorFailed) return;
 
         busy.current = true;
         const requestOptions = {
@@ -217,6 +225,7 @@ export default function CaseStudyForm({
                                     id={fieldId("study_date")}
                                     label="Data do Estudo de Caso"
                                     hint="Data em que o Estudo de Caso foi realizado com os participantes."
+                                    hintLabel="Mais informações sobre a data do Estudo de Caso"
                                     error={errors.study_date}
                                 >
                                     <DatePicker
@@ -226,12 +235,12 @@ export default function CaseStudyForm({
                                         disabled={form.processing}
                                         value={form.data.study_date}
                                         invalid={!!errors.study_date}
-                                        describedBy={describedBy("study_date", true)}
+                                        describedBy={describedBy("study_date")}
                                         onChange={(value) => form.setData("study_date", value)}
                                     />
                                 </FormField>
                                 <FormGridWide>
-                                    {textArea("participants_summary", "Participantes (resumo)", { rows: 2 })}
+                                    {richText("participants_summary", "Participantes (resumo)", { rows: 2 })}
                                 </FormGridWide>
                             </FormGrid>
                         </FormSection>
@@ -244,16 +253,14 @@ export default function CaseStudyForm({
                         >
                             <FormGrid columns={2}>
                                 <FormGridWide>
-                                    {textArea("student_observation", "Observação do estudante", { required: true })}
+                                    <FormGrid columns={3}>
+                                        {richText("student_observation", "Observação do estudante", { required: true })}
+                                        {richText("student_family_listening", "Escuta do estudante/família", { required: true })}
+                                        {richText("teachers_listening", "Escuta dos professores", { required: true })}
+                                    </FormGrid>
                                 </FormGridWide>
-                                <FormGridWide>
-                                    {textArea("student_family_listening", "Escuta do estudante/família", { required: true })}
-                                </FormGridWide>
-                                <FormGridWide>
-                                    {textArea("teachers_listening", "Escuta dos professores", { required: true })}
-                                </FormGridWide>
-                                {textArea("other_info", "Outras informações", { rows: 2 })}
-                                {textArea("care_network_notes", "Observações da rede de cuidado", { rows: 2 })}
+                                {richText("other_info", "Outras informações", { rows: 2 })}
+                                {richText("care_network_notes", "Observações da rede de cuidado", { rows: 2 })}
                             </FormGrid>
                         </FormSection>
 
@@ -264,8 +271,8 @@ export default function CaseStudyForm({
                             iconClass="fa fa-star-o"
                         >
                             <FormGrid columns={2}>
-                                {textArea("favorable_aspects", "Aspectos favoráveis", { required: true })}
-                                {textArea("potentials_interests", "Potenciais e interesses", { required: true })}
+                                {richText("favorable_aspects", "Aspectos favoráveis", { required: true })}
+                                {richText("potentials_interests", "Potenciais e interesses", { required: true })}
                                 <FormGridWide>
                                     <FormField
                                         id={fieldId("needed_supports")}
@@ -296,7 +303,7 @@ export default function CaseStudyForm({
                                     </FormField>
                                 </FormGridWide>
                                 <FormGridWide>
-                                    {textArea("needed_supports_justification", "Justificativa dos apoios necessários", { rows: 2 })}
+                                    {richText("needed_supports_justification", "Justificativa dos apoios necessários", { rows: 2 })}
                                 </FormGridWide>
                             </FormGrid>
                         </FormSection>
@@ -319,30 +326,39 @@ export default function CaseStudyForm({
                                 addLabel="Barreira"
                                 emptyMessage="Nenhuma barreira adicionada."
                                 disabled={form.processing}
-                                renderItem={(barrier, index, update) => {
+                                removePlacement="field"
+                                renderItem={(barrier, index, update, remove) => {
                                     const prefix = `barriers.${index}`;
 
                                     return (
-                                        <FormGrid columns={3}>
-                                            <FormField
-                                                id={fieldId(`${prefix}.type`)}
-                                                label="Tipo"
-                                                requiredIndicator
-                                                error={errors[`${prefix}.type`]}
-                                            >
-                                                <SelectField
+                                        <FormGrid columns={2}>
+                                            <FormGridWide>
+                                                <FormField
                                                     id={fieldId(`${prefix}.type`)}
-                                                    name={`barriers[${index}][type]`}
-                                                    label="Tipo"
-                                                    required
-                                                    value={barrier.type}
-                                                    options={options.barrierTypes}
-                                                    aria-invalid={!!errors[`${prefix}.type`]}
-                                                    aria-describedby={describedBy(`${prefix}.type`)}
-                                                    disabled={form.processing}
-                                                    onChange={(event) => update({ type: event.target.value })}
-                                                />
-                                            </FormField>
+                                                    label="Categoria de barreira"
+                                                    requiredIndicator
+                                                    error={errors[`${prefix}.type`]}
+                                                >
+                                                    <RemovableField
+                                                        removeLabel={`Remover barreira ${index + 1}`}
+                                                        disabled={form.processing}
+                                                        onRemove={remove}
+                                                    >
+                                                        <SelectField
+                                                            id={fieldId(`${prefix}.type`)}
+                                                            name={`barriers[${index}][type]`}
+                                                            label="Categoria de barreira"
+                                                            required
+                                                            value={barrier.type}
+                                                            options={options.barrierTypes}
+                                                            aria-invalid={!!errors[`${prefix}.type`]}
+                                                            aria-describedby={describedBy(`${prefix}.type`)}
+                                                            disabled={form.processing}
+                                                            onChange={(event) => update({ type: event.target.value })}
+                                                        />
+                                                    </RemovableField>
+                                                </FormField>
+                                            </FormGridWide>
                                             <FormField
                                                 id={fieldId(`${prefix}.observed_situation`)}
                                                 label="Situação observada"
@@ -397,7 +413,8 @@ export default function CaseStudyForm({
                                 addLabel="Estratégia"
                                 emptyMessage="Nenhuma estratégia adicionada."
                                 disabled={form.processing}
-                                renderItem={(strategy, index, update) => {
+                                removePlacement="field"
+                                renderItem={(strategy, index, update, remove) => {
                                     const name = `strategies.${index}.description`;
 
                                     return (
@@ -407,16 +424,22 @@ export default function CaseStudyForm({
                                             requiredIndicator
                                             error={errors[name]}
                                         >
-                                            <TextArea
-                                                id={fieldId(name)}
-                                                name={`strategies[${index}][description]`}
-                                                rows={2}
-                                                required
-                                                value={strategy.description}
-                                                aria-invalid={!!errors[name] || undefined}
-                                                aria-describedby={describedBy(name)}
-                                                onChange={(event) => update({ description: event.target.value })}
-                                            />
+                                            <RemovableField
+                                                removeLabel={`Remover estratégia ${index + 1}`}
+                                                disabled={form.processing}
+                                                onRemove={remove}
+                                            >
+                                                <TextArea
+                                                    id={fieldId(name)}
+                                                    name={`strategies[${index}][description]`}
+                                                    rows={2}
+                                                    required
+                                                    value={strategy.description}
+                                                    aria-invalid={!!errors[name] || undefined}
+                                                    aria-describedby={describedBy(name)}
+                                                    onChange={(event) => update({ description: event.target.value })}
+                                                />
+                                            </RemovableField>
                                         </FormField>
                                     );
                                 }}
@@ -487,7 +510,7 @@ export default function CaseStudyForm({
                         label="Salvar"
                         title={editing ? "Atualizar Estudo de Caso" : "Salvar Estudo de Caso"}
                         aria-label={editing ? "Atualizar Estudo de Caso" : "Salvar Estudo de Caso"}
-                        disabled={form.processing}
+                        disabled={form.processing || editorFailed}
                     />
                 </FormActions>
             </FormLayout>

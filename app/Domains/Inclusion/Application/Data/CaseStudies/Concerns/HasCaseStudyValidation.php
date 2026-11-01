@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Data\CaseStudies\Concerns;
 
+use App\Domains\Inclusion\Application\Queries\CaseStudies\CaseStudyBarrierOptionsQuery;
+use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use Illuminate\Validation\Rule;
+
 trait HasCaseStudyValidation
 {
-    protected static function contentRules(): array
+    protected static function contentRules(?CaseStudy $caseStudy = null): array
     {
         return [
             'demand_origin' => ['required', 'string', 'in:teacher,family,student,medical_report,other'],
@@ -25,7 +29,12 @@ trait HasCaseStudyValidation
             'acceptance_status' => ['required', 'string', 'in:accepted,declined,not_applicable'],
             'acceptance_date' => ['nullable', 'date'],
             'barriers' => ['nullable', 'array'],
-            'barriers.*.type' => ['required_with:barriers', 'string', 'in:architectural,urbanistic,transport,communicational,methodological,technological,attitudinal,social'],
+            'barriers.*.type' => [
+                'required_with:barriers',
+                'string',
+                'max:255',
+                Rule::in(array_keys(app(CaseStudyBarrierOptionsQuery::class)->execute($caseStudy))),
+            ],
             'barriers.*.observed_situation' => ['required_with:barriers', 'string', 'max:100000'],
             'barriers.*.participation_implication' => ['required_with:barriers', 'string', 'max:100000'],
             'strategies' => ['nullable', 'array'],

@@ -1,3 +1,4 @@
+import RichTextContent from "@/components/UI/RichTextContent/RichTextContent";
 import FormActions from "@/components/Forms/FormActions/FormActions";
 import FormSection from "@/components/Forms/FormSection/FormSection";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
@@ -23,17 +24,6 @@ import {
 import type { CaseStudyShowProps } from "./CaseStudies.types";
 import "@/components/Students/Students.css";
 import "./CaseStudyShow.css";
-
-/** Texto simples com as quebras de linha digitadas no formulário. */
-function PlainText({
-    value,
-}: {
-    value: string | null | undefined;
-}): React.JSX.Element {
-    return value?.trim()
-        ? <span className="caseStudyShow__text">{value}</span>
-        : <>Não informado</>;
-}
 
 export default function InclusionCaseStudiesShowPage({
     student,
@@ -70,7 +60,7 @@ export default function InclusionCaseStudiesShowPage({
                                 {caseStudy.creator_name || "Não informado"}
                             </DetailField>
                             <DetailField label="Participantes (resumo)" wide>
-                                <PlainText value={caseStudy.participants_summary} />
+                                <RichTextContent html={caseStudy.participants_summary || "Não informado"} />
                             </DetailField>
                         </dl>
                     </FormSection>
@@ -82,19 +72,19 @@ export default function InclusionCaseStudiesShowPage({
                     >
                         <dl className="caseStudyShow__grid">
                             <DetailField label="Observação do estudante" wide>
-                                <PlainText value={caseStudy.student_observation} />
+                                <RichTextContent html={caseStudy.student_observation || "Não informado"} />
                             </DetailField>
                             <DetailField label="Escuta do estudante/família" wide>
-                                <PlainText value={caseStudy.student_family_listening} />
+                                <RichTextContent html={caseStudy.student_family_listening || "Não informado"} />
                             </DetailField>
                             <DetailField label="Escuta dos professores" wide>
-                                <PlainText value={caseStudy.teachers_listening} />
+                                <RichTextContent html={caseStudy.teachers_listening || "Não informado"} />
                             </DetailField>
                             <DetailField label="Outras informações">
-                                <PlainText value={caseStudy.other_info} />
+                                <RichTextContent html={caseStudy.other_info || "Não informado"} />
                             </DetailField>
                             <DetailField label="Observações da rede de cuidado">
-                                <PlainText value={caseStudy.care_network_notes} />
+                                <RichTextContent html={caseStudy.care_network_notes || "Não informado"} />
                             </DetailField>
                         </dl>
                     </FormSection>
@@ -106,16 +96,16 @@ export default function InclusionCaseStudiesShowPage({
                     >
                         <dl className="caseStudyShow__grid">
                             <DetailField label="Aspectos favoráveis">
-                                <PlainText value={caseStudy.favorable_aspects} />
+                                <RichTextContent html={caseStudy.favorable_aspects || "Não informado"} />
                             </DetailField>
                             <DetailField label="Potenciais e interesses">
-                                <PlainText value={caseStudy.potentials_interests} />
+                                <RichTextContent html={caseStudy.potentials_interests || "Não informado"} />
                             </DetailField>
                             <DetailField label="Apoios necessários" wide>
                                 {caseStudy.needed_supports_label || "Não informado"}
                             </DetailField>
                             <DetailField label="Justificativa dos apoios necessários" wide>
-                                <PlainText value={caseStudy.needed_supports_justification} />
+                                <RichTextContent html={caseStudy.needed_supports_justification || "Não informado"} />
                             </DetailField>
                         </dl>
                     </FormSection>

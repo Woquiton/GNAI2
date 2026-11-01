@@ -1,5 +1,12 @@
 .repeaterField { display: grid; gap: 12px; min-width: 0; }
-.repeaterField__empty { margin: 0; color: var(--ui-color-muted, #98a6ad); }
+.repeaterField__empty {
+    margin: 0;
+    color: var(--ui-color-text-muted);
+    font-family: var(--ui-font-body);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+}
 
 .repeaterField__item {
     position: relative;
@@ -25,3 +32,5 @@
 @media (max-width: 575.98px) {
     .repeaterField__item { padding-right: 12px; padding-top: 44px; }
 }
+
+.repeaterField__item.repeaterField__item--fieldRemoval { padding: 12px; }

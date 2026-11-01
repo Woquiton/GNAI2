@@ -17,6 +17,7 @@ export default function RepeaterField<T>({
     itemLabel,
     addLabel,
     emptyMessage,
+    removePlacement = "corner",
     disabled = false,
 }: {
     items: T[];
@@ -24,12 +25,14 @@ export default function RepeaterField<T>({
     /** Valores iniciais de um bloco novo. */
     createItem: () => T;
     /** Campos do bloco; `update` recebe só as chaves alteradas. */
-    renderItem: (item: T, index: number, update: (patch: Partial<T>) => void) => ReactNode;
+    renderItem: (item: T, index: number, update: (patch: Partial<T>) => void, remove: () => void) => ReactNode;
     /** Nome do bloco para leitores de tela, por exemplo "Barreira 2". */
     itemLabel: (index: number) => string;
     /** Texto curto do botão de adicionar, por exemplo "Barreira". */
     addLabel: string;
     emptyMessage?: string;
+    /** Em field, renderItem compõe a remoção junto ao controle com RemovableField. */
+    removePlacement?: "corner" | "field";
     disabled?: boolean;
 }): React.JSX.Element {
     const update = (index: number, patch: Partial<T>): void => {
@@ -43,21 +46,31 @@ export default function RepeaterField<T>({
             ) : null}
 
             {items.map((item, index) => (
-                <fieldset key={index} className="repeaterField__item">
+                <fieldset
+                    key={index}
+                    className={`repeaterField__item${removePlacement === "field" ? " repeaterField__item--fieldRemoval" : ""}`}
+                >
                     <legend className="repeaterField__legend">{itemLabel(index)}</legend>
-                    <Button
-                        type="button"
-                        tone="dark-red"
-                        size="xs"
-                        iconOnly
-                        leftIconClass="fa fa-times"
-                        className="repeaterField__remove"
-                        title={`Remover ${itemLabel(index).toLowerCase()}`}
-                        aria-label={`Remover ${itemLabel(index).toLowerCase()}`}
-                        disabled={disabled}
-                        onClick={() => onChange(items.filter((_, current) => current !== index))}
-                    />
-                    {renderItem(item, index, (patch) => update(index, patch))}
+                    {removePlacement === "corner" ? (
+                        <Button
+                            type="button"
+                            tone="dark-red"
+                            size="xs"
+                            iconOnly
+                            leftIconClass="fa fa-times"
+                            className="repeaterField__remove"
+                            title={`Remover ${itemLabel(index).toLowerCase()}`}
+                            aria-label={`Remover ${itemLabel(index).toLowerCase()}`}
+                            disabled={disabled}
+                            onClick={() => onChange(items.filter((_, current) => current !== index))}
+                        />
+                    ) : null}
+                    {renderItem(
+                        item,
+                        index,
+                        (patch) => update(index, patch),
+                        () => onChange(items.filter((_, current) => current !== index)),
+                    )}
                 </fieldset>
             ))}
 
