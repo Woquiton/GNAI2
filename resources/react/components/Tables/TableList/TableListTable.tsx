@@ -4,6 +4,7 @@ import { joinClassNames } from '@/utils/joinClassNames';
 import TableListColumnsMenu from './TableListColumnsMenu';
 import { formatTableListRange } from './TableList.utils';
 import type { TableListColumn, TableListTableProps } from './TableList.types';
+import { useTableColumnPreferences } from './useTableColumnPreferences';
 import './TableList.css';
 
 interface RowProps {
@@ -119,7 +120,9 @@ export default function TableListTable<T>({
 }: TableListTableProps<T>): React.JSX.Element {
     const tableRef = useRef<HTMLTableElement>(null);
     const resizeState = useRef<ResizeState | null>(null);
-    const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>({});
+    // Colunas escolhidas pelo usuário nesta tela, lembradas entre as visitas.
+    const { visibility: columnVisibility, update: updateColumnVisibility } =
+        useTableColumnPreferences(columns.map((column) => column.id));
     const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
 
     const hiddenColumns = useMemo(
@@ -266,15 +269,14 @@ export default function TableListTable<T>({
             return;
         }
 
-        setColumnVisibility((current) => {
-            const isVisible = (candidate: TableListColumn<T>) =>
-                Boolean(candidate.fixed) ||
-                candidate.hideable === false ||
-                (current[candidate.id] ?? candidate.defaultVisible !== false);
-            const visible = isVisible(column);
-            if (visible && columns.filter(isVisible).length <= 1) return current;
-            return { ...current, [columnId]: !visible };
-        });
+        const isVisible = (candidate: TableListColumn<T>) =>
+            Boolean(candidate.fixed) ||
+            candidate.hideable === false ||
+            (columnVisibility[candidate.id] ?? candidate.defaultVisible !== false);
+        const visible = isVisible(column);
+        if (visible && columns.filter(isVisible).length <= 1) return;
+
+        updateColumnVisibility({ ...columnVisibility, [columnId]: !visible });
         setColumnWidths({});
     }
 

@@ -33,6 +33,8 @@ export interface TableListRange {
 export interface TableListPage extends TableListRange {
     current_page: number;
     last_page: number;
+    /** Quantidade por página aplicada pelo servidor (preferência da tela ou padrão). */
+    per_page?: number;
 }
 
 export interface TableListTableProps<T = unknown> extends Omit<

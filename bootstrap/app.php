@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\Audit\UI\Middleware\StartAuditOperation;
+use App\Domains\Auth\UI\Middleware\ApplyTablePageSize;
 use App\Domains\Auth\UI\Middleware\BlockReadOnlyImpersonationWrites;
 use App\Domains\Auth\UI\Middleware\EnsureUserIsAdmin;
 use App\Shared\Application\Exceptions\AccessDeniedException;
@@ -38,6 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             BlockReadOnlyImpersonationWrites::class,
             SanitizeRichTextInput::class,
+            ApplyTablePageSize::class,
         ]);
 
         $middleware->redirectTo(

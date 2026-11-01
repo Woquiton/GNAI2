@@ -45,6 +45,7 @@ export default function SelectField({
     iconOnly = false,
     iconSearch = false,
     placeholder = 'Selecione',
+    searchable = true,
     onCreateOption,
     invalid: invalidProp,
     ...nativeProps
@@ -60,7 +61,10 @@ export default function SelectField({
     iconOnly?: boolean;
     /** Mantém a grade de ícones com busca por nome. */
     iconSearch?: boolean;
-    placeholder?: string;
+    /** `null` remove a opção vazia, para listas que sempre têm um valor escolhido. */
+    placeholder?: string | null;
+    /** `false` oculta a busca do Select2 em listas curtas. */
+    searchable?: boolean;
     /**
      * Permite usar um texto digitado na busca quando nenhuma opção corresponde:
      * Enter ou clique na mensagem entrega o texto, e o formulário decide como
@@ -146,6 +150,7 @@ export default function SelectField({
                                   : 'selectField__textResult',
                       }
                     : {}),
+                ...(!iconOnly && !searchable ? { minimumResultsForSearch: -1 } : {}),
                 searchInputPlaceholder: allowCreate ? 'Pesquisar ou digitar...' : 'Pesquisar...',
                 formatNoMatches: (term: string) =>
                     allowCreate && term.trim()
@@ -249,7 +254,7 @@ export default function SelectField({
             disposed = true;
             cleanup?.();
         };
-    }, [enhanced, iconOnly, iconSearch, id, props.multiple, allowCreate]);
+    }, [enhanced, iconOnly, iconSearch, searchable, id, props.multiple, allowCreate]);
     return (
         <div
             className={joinClassNames(
@@ -270,7 +275,7 @@ export default function SelectField({
                         .join(' ') || undefined
                 }
                 className="textInput"
-                data-placeholder={props.multiple ? placeholder : undefined}
+                data-placeholder={props.multiple ? (placeholder ?? undefined) : undefined}
                 defaultValue={
                     props.value === undefined
                         ? (defaultValue ?? (props.multiple ? [] : ''))
@@ -278,7 +283,9 @@ export default function SelectField({
                 }
             >
                 {/* Em seleção múltipla o placeholder vem de data-placeholder, sem opção vazia selecionável. */}
-                {props.multiple ? null : <option value="">{placeholder}</option>}
+                {props.multiple || placeholder === null ? null : (
+                    <option value="">{placeholder}</option>
+                )}
                 {(options ?? groups.flatMap((group) => group.options)).map((option) => (
                     <option value={option.value} key={option.value} data-icon={option.iconClass}>
                         {option.label}

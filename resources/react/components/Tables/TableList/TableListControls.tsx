@@ -1,9 +1,11 @@
-import type { HTMLAttributes, ReactNode, TdHTMLAttributes } from 'react';
+import { useState, type HTMLAttributes, type ReactNode, type TdHTMLAttributes } from 'react';
 import Pagination from '@/components/Navigation/Pagination/Pagination';
 import Button from '@/components/UI/Button/Button';
 import { joinClassNames } from '@/utils/joinClassNames';
 import type { TableListPage } from './TableList.types';
 import { formatTableListRange } from './TableList.utils';
+import { TableListBusyContext } from './TableListBusyContext';
+import TableListPageSize from './TableListPageSize';
 import './TableList.css';
 
 export function TableListCard({
@@ -16,14 +18,17 @@ export function TableListCard({
     loading?: boolean;
     loadingLabel?: string;
 }): React.JSX.Element {
+    const [busy, setBusy] = useState(false);
+    const showLoading = loading || busy;
+
     return (
         <section
             className={joinClassNames('tableListCard', className)}
             {...props}
-            aria-busy={loading || props['aria-busy']}
+            aria-busy={showLoading || props['aria-busy']}
         >
-            {children}
-            {loading ? (
+            <TableListBusyContext.Provider value={setBusy}>{children}</TableListBusyContext.Provider>
+            {showLoading ? (
                 <div
                     className="tableListCard__loading panel-disabled"
                     role="status"
@@ -116,7 +121,10 @@ export function TableListEmpty({
     );
 }
 
-/** Rodapé das listagens paginadas: o intervalo ("1 a 10 de 14") e a paginação vêm do mesmo paginador. */
+/**
+ * Rodapé das listagens paginadas: o intervalo ("1 a 10 de 14"), a quantidade por página e a
+ * paginação vêm do mesmo paginador. A quantidade é lembrada por usuário e por tela.
+ */
 export function TableListFooter({
     page,
     disabled = false,
@@ -130,7 +138,12 @@ export function TableListFooter({
 }): React.JSX.Element {
     return (
         <footer className="tableListFooter">
-            <span>{formatTableListRange(page)}</span>
+            <div className="tableListFooter__summary">
+                <span>{formatTableListRange(page)}</span>
+                {page.total > 0 ? (
+                    <TableListPageSize value={page.per_page} disabled={disabled} />
+                ) : null}
+            </div>
             <nav aria-label={paginationLabel}>
                 <Pagination
                     currentPage={page.current_page}

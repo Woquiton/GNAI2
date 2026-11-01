@@ -5,6 +5,7 @@ use App\Domains\Auth\UI\Controllers\ImpersonationController;
 use App\Domains\Auth\UI\Controllers\LoginController;
 use App\Domains\Auth\UI\Controllers\ProfileController;
 use App\Domains\Auth\UI\Controllers\ResetPasswordController;
+use App\Domains\Auth\UI\Controllers\TablePreferenceController;
 use App\Domains\Auth\UI\Controllers\TeacherAccessController;
 use App\Domains\Dashboard\UI\Controllers\DashboardController;
 
@@ -42,6 +43,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/perfil', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/perfil/conta', [ProfileController::class, 'updateAccount'])->name('profile.account.update');
+    Route::put('/preferencias/tabelas/colunas', [TablePreferenceController::class, 'updateColumns'])
+        ->name('preferences.tables.columns.update');
 
     Route::post('/acessar-como/encerrar', [ImpersonationController::class, 'leave'])
         ->name('admin.impersonate.leave');

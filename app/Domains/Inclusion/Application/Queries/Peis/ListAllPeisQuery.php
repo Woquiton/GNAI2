@@ -43,7 +43,7 @@ final class ListAllPeisQuery
 
         return $query
             ->latest()
-            ->paginate(10)
+            ->paginate($filters->perPage)
             ->withQueryString();
     }
 }

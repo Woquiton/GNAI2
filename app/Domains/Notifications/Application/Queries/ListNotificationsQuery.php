@@ -9,11 +9,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 final readonly class ListNotificationsQuery
 {
-    public function execute(User $user): LengthAwarePaginator
+    public function execute(User $user, int $perPage = 10): LengthAwarePaginator
     {
         return $user
             ->notifications()
             ->latest()
-            ->paginate(10);
+            ->paginate($perPage);
     }
 }

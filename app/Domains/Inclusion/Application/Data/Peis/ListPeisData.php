@@ -16,5 +16,13 @@ final class ListPeisData extends Data
         public ?int $semesterId = null,
         public null|bool|string|int $isFinished = null,
         public ?int $version = null,
+        public int $perPage = 10,
     ) {}
+
+    public static function rules(): array
+    {
+        return [
+            'per_page' => ['integer', 'min:1', 'max:100'],
+        ];
+    }
 }

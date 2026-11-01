@@ -51,7 +51,7 @@ final readonly class ListBarriersQuery
                 });
             })
             ->latest()
-            ->paginate(10)
+            ->paginate($filters->perPage)
             ->withQueryString();
     }
 }

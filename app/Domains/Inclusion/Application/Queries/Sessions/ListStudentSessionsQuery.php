@@ -20,7 +20,7 @@ final class ListStudentSessionsQuery
             ->when($filters->type !== null && $filters->type !== '', fn ($query) => $query->where('type', $filters->type))
             ->when($filters->status !== null && $filters->status !== '', fn ($query) => $query->where('status', $filters->status))
             ->orderByDesc('session_date')
-            ->paginate(10)
+            ->paginate($filters->perPage)
             ->withQueryString();
     }
 }

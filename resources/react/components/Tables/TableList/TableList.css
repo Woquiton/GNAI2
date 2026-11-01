@@ -486,6 +486,25 @@
     font-size: 13px;
 }
 
+.tableListFooter__summary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Quantidade por página: select compacto ao lado do intervalo exibido. */
+.tableListPageSize {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ui-color-text-muted);
+}
+
+.tableListPageSize__control {
+    width: 5.5rem;
+}
+
 .tableListFooter .paginationControl {
     display: flex;
     flex-wrap: wrap;
