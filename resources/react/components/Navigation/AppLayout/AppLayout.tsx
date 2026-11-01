@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { usePage } from '@inertiajs/react';
+import RenderErrorScreen from '@/components/Errors/RenderErrorScreen';
 import AppFooter from '@/components/Navigation/AppFooter/AppFooter';
 import ImpersonationIndicator from '@/components/Navigation/ImpersonationIndicator/ImpersonationIndicator';
 import InstitutionBrand from '@/components/Navigation/InstitutionBrand/InstitutionBrand';
@@ -13,6 +14,8 @@ import '@/styles/app-shell.css';
 import type { AppLayoutProps } from './AppLayout.types';
 import { useAppSidebar } from './useAppSidebar';
 import './AppLayout.css';
+
+const HOME_HREF = '/autenticacao/painel';
 
 export default function AppLayout({ children }: { children: ReactNode }): React.JSX.Element {
     const { props, url } = usePage<AppLayoutProps>();
@@ -43,65 +46,64 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
         },
     ];
 
+    // A falha de renderização troca o layout inteiro pela tela de erro avulsa.
     return (
-        <div
-            className={`app-page gnaiApp${sidebar.collapsed ? ' app-page--sidebarCollapsed' : ''}`}
-        >
-            <TopBarPrimary
-                brand="Gnai"
-                compactLogoSrc="/images/logo2.png"
-                expandedLogoText="NAI"
-                homeHref="/autenticacao/painel"
-                sidebarCollapsed={sidebar.collapsed}
-                onToggleSidebar={sidebar.toggle}
-                user={auth.user}
-                profileItems={profileItems}
-                notificationItems={topbar?.notifications ?? []}
-                unreadCount={topbar?.unreadCount ?? 0}
-                notificationsHref="/notificacoes"
-                showSettings={false}
-                actionsContent={
-                    impersonating ? (
-                        <ImpersonationIndicator
-                            name={auth.user.name}
-                            readOnly={impersonationReadOnly}
+        <PageErrorBoundary resetKey={url} fallback={<RenderErrorScreen homeHref={HOME_HREF} />}>
+            <div
+                className={`app-page gnaiApp${sidebar.collapsed ? ' app-page--sidebarCollapsed' : ''}`}
+            >
+                <TopBarPrimary
+                    brand="Gnai"
+                    compactLogoSrc="/images/logo2.png"
+                    expandedLogoText="NAI"
+                    homeHref={HOME_HREF}
+                    sidebarCollapsed={sidebar.collapsed}
+                    onToggleSidebar={sidebar.toggle}
+                    user={auth.user}
+                    profileItems={profileItems}
+                    notificationItems={topbar?.notifications ?? []}
+                    unreadCount={topbar?.unreadCount ?? 0}
+                    notificationsHref="/notificacoes"
+                    showSettings={false}
+                    actionsContent={
+                        impersonating ? (
+                            <ImpersonationIndicator
+                                name={auth.user.name}
+                                readOnly={impersonationReadOnly}
+                            />
+                        ) : undefined
+                    }
+                    leadingContent={
+                        <InstitutionBrand
+                            name={topbar?.institutionName ?? 'Gnai'}
+                            href={
+                                navigation.entries.some((item) => item.key === 'institutions')
+                                    ? '/inclusao/instituicoes'
+                                    : undefined
+                            }
                         />
-                    ) : undefined
-                }
-                leadingContent={
-                    <InstitutionBrand
-                        name={topbar?.institutionName ?? 'Gnai'}
-                        href={
-                            navigation.entries.some((item) => item.key === 'institutions')
-                                ? '/inclusao/instituicoes'
-                                : undefined
-                        }
-                    />
-                }
-            />
-            <SidebarPrimary
-                collapsed={sidebar.collapsed}
-                entries={navigation.entries}
-                currentItemKey={navigation.currentItemKey ?? undefined}
-            />
-            {!sidebar.collapsed ? (
-                <button
-                    className="gnaiApp__overlay"
-                    type="button"
-                    onClick={sidebar.closeOnMobile}
-                    aria-label="Fechar menu lateral"
+                    }
                 />
-            ) : null}
-            <div className="app-content-placeholder">
-                <div className="app-content-placeholder__inner">
-                    <PageErrorBoundary resetKey={url} homeHref="/autenticacao/painel">
-                        {children}
-                    </PageErrorBoundary>
+                <SidebarPrimary
+                    collapsed={sidebar.collapsed}
+                    entries={navigation.entries}
+                    currentItemKey={navigation.currentItemKey ?? undefined}
+                />
+                {!sidebar.collapsed ? (
+                    <button
+                        className="gnaiApp__overlay"
+                        type="button"
+                        onClick={sidebar.closeOnMobile}
+                        aria-label="Fechar menu lateral"
+                    />
+                ) : null}
+                <div className="app-content-placeholder">
+                    <div className="app-content-placeholder__inner">{children}</div>
+                    <AppFooter>Gnai &copy; {new Date().getFullYear()} | Gestão NAIs</AppFooter>
                 </div>
-                <AppFooter>Gnai &copy; {new Date().getFullYear()} | Gestão NAIs</AppFooter>
+                <FlashNotifications />
+                <PageScrollbar />
             </div>
-            <FlashNotifications />
-            <PageScrollbar />
-        </div>
+        </PageErrorBoundary>
     );
 }
