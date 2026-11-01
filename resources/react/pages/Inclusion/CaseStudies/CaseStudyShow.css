@@ -1,0 +1,41 @@
+.caseStudyShow__sections .formSection:not(:last-child) { margin-bottom: 28px; }
+.caseStudyShow__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 32px; margin: 0; }
+.caseStudyShow__summaryDetails { display: grid; grid-template-columns: repeat(4, minmax(0, max-content)); gap: 16px 32px; margin: 0; }
+.caseStudyShow__text { white-space: pre-line; overflow-wrap: anywhere; }
+.caseStudyShow__meta { color: var(--ui-color-text-muted); }
+.caseStudyShow__empty { margin: 0; color: var(--ui-color-text-muted); }
+
+.caseStudyShow__entries { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.caseStudyShow__entry {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    color: var(--ui-color-legacy-text);
+}
+.caseStudyShow__entry p { margin: 0; }
+
+.caseStudyShow__contributionForm { margin-top: 20px; }
+.caseStudyShow__contributionForm fieldset {
+    display: grid;
+    grid-template-columns: minmax(140px, 1fr) minmax(0, 3fr) auto;
+    align-items: end;
+    gap: 16px;
+}
+.caseStudyShow__contributionSubmit { padding-bottom: 2px; }
+
+@media (max-width: 1100px) {
+    .caseStudyShow__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .caseStudyShow__summaryDetails { grid-template-columns: repeat(2, minmax(0, max-content)); }
+}
+
+@media (max-width: 900px) {
+    .caseStudyShow__grid,
+    .caseStudyShow__contributionForm fieldset { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .caseStudyShow__summaryDetails { grid-template-columns: minmax(0, 1fr); }
+}

@@ -16,44 +16,56 @@ use App\Domains\Inclusion\Application\Data\CaseStudies\UpdateCaseStudyData;
 use App\Domains\Inclusion\Application\Queries\CaseStudies\CaseStudyFormQuery;
 use App\Domains\Inclusion\Application\Queries\CaseStudies\ListCaseStudiesQuery;
 use App\Domains\Inclusion\Application\Queries\CaseStudies\ShowCaseStudyQuery;
+use App\Domains\Inclusion\Application\Queries\Peis\PeiFilterOptionsQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentCaseStudiesQuery;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Student;
+use App\Domains\Inclusion\UI\Presenters\CaseStudyPagePresenter;
 use App\Shared\Application\Exceptions\AccessDeniedException;
+use App\Shared\Domain\Support\AuditLogger;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Throwable;
 
 final class CaseStudyController
 {
-    public function all(ListCaseStudiesData $filters, ListCaseStudiesQuery $query, Request $request): View
-    {
-        $caseStudies = $query->execute($filters);
-        if ($request->ajax()) {
-            return view('pages.specialized-educational-support.case-studies.partials.table', compact('caseStudies'));
-        }
+    public function __construct(private readonly CaseStudyPagePresenter $presenter) {}
 
-        return view('pages.specialized-educational-support.case-studies.all', compact('caseStudies'));
+    public function all(
+        ListCaseStudiesData $filters,
+        ListCaseStudiesQuery $query,
+        PeiFilterOptionsQuery $filterOptions,
+        Request $request,
+    ): InertiaResponse {
+        return Inertia::render(
+            'Inclusion/CaseStudies/All',
+            $this->presenter->list($query->execute($filters), $filterOptions->semesters(), $filters, $request),
+        );
     }
 
-    public function index(Student $student, ListCaseStudiesData $filters, ListCaseStudiesQuery $query, Request $request): View
-    {
-        $student->loadMissing('person');
-        $caseStudies = $query->execute($filters, $student);
-        if ($request->ajax()) {
-            return view('pages.specialized-educational-support.case-studies.partials.table', compact('caseStudies', 'student'));
-        }
-
-        return view('pages.specialized-educational-support.case-studies.index', compact('student', 'caseStudies'));
+    public function index(
+        Student $student,
+        ListCaseStudiesData $filters,
+        ListCaseStudiesQuery $query,
+        PeiFilterOptionsQuery $filterOptions,
+        Request $request,
+    ): InertiaResponse {
+        return Inertia::render(
+            'Inclusion/CaseStudies/Index',
+            $this->presenter->list($query->execute($filters, $student), $filterOptions->semesters(), $filters, $request, $student),
+        );
     }
 
-    public function create(Student $student, CaseStudyFormQuery $form): View
+    public function create(Student $student, CaseStudyFormQuery $form): InertiaResponse
     {
-        return view('pages.specialized-educational-support.case-studies.create', $form->forCreation($student));
+        ['student' => $student] = $form->forCreation($student);
+
+        return Inertia::render('Inclusion/CaseStudies/Create', $this->presenter->form($student));
     }
 
     /** @throws Throwable */
@@ -64,18 +76,20 @@ final class CaseStudyController
         return redirect()->route('specialized-educational-support.case-study.show', $caseStudy)->with('success', 'Estudo de Caso criado com sucesso.');
     }
 
-    public function show(CaseStudy $caseStudy, ShowCaseStudyQuery $query): View
+    public function show(CaseStudy $caseStudy, ShowCaseStudyQuery $query, Request $request): InertiaResponse
     {
         $caseStudy = $query->execute($caseStudy);
 
-        \App\Shared\Domain\Support\AuditLogger::logView($caseStudy);
+        AuditLogger::logView($caseStudy);
 
-        return view('pages.specialized-educational-support.case-studies.show', compact('caseStudy'));
+        return Inertia::render('Inclusion/CaseStudies/Show', $this->presenter->show($caseStudy, $request));
     }
 
-    public function edit(CaseStudy $caseStudy, CaseStudyFormQuery $form): View
+    public function edit(CaseStudy $caseStudy, CaseStudyFormQuery $form): InertiaResponse
     {
-        return view('pages.specialized-educational-support.case-studies.edit', $form->forUpdate($caseStudy));
+        ['caseStudy' => $caseStudy] = $form->forUpdate($caseStudy);
+
+        return Inertia::render('Inclusion/CaseStudies/Edit', $this->presenter->form($caseStudy->student, $caseStudy));
     }
 
     /** @throws Throwable */
@@ -124,12 +138,12 @@ final class CaseStudyController
         return $pdf->stream("estudo-de-caso-{$caseStudy->getKey()}.pdf");
     }
 
-    public function studentHistory(Student $student, StudentCaseStudiesQuery $query): View
+    public function studentHistory(Student $student, StudentCaseStudiesQuery $query, Request $request): InertiaResponse
     {
-        $student->loadMissing('person');
-        $caseStudies = $query->history($student);
-
-        return view('pages.specialized-educational-support.students.case-studies.index', compact('student', 'caseStudies'));
+        return Inertia::render(
+            'Inclusion/CaseStudies/History',
+            $this->presenter->history($student, $query->history($student), $request),
+        );
     }
 
     private function user(Request $request): User

@@ -15,6 +15,7 @@ final class ListCaseStudiesQuery
     {
         return CaseStudy::query()
             ->with(['student.person', 'creator', 'semester'])
+            ->withCount('paees')
             ->when($student !== null, fn ($query) => $query->where('student_id', $student->getKey()))
             ->when($filters->status !== null, fn ($query) => $query->where('status', $filters->status))
             ->when($filters->semesterId !== null, fn ($query) => $query->where('semester_id', $filters->semesterId))

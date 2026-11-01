@@ -4,4 +4,4 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Domain\Exceptions;
 
-final class InvalidCaseStudy extends SpecializedEducationalSupportException {}
+final class InvalidCaseStudy extends InclusionException {}
