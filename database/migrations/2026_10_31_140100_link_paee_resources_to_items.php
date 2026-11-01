@@ -29,8 +29,9 @@ return new class extends Migration
 
         foreach (Schema::getForeignKeys('paee_resources') as $foreignKey) {
             if ($foreignKey['columns'] === ['assistive_technology_id'] && $foreignKey['foreign_table'] === 'items') {
-                Schema::table('paee_resources', function (Blueprint $table) use ($foreignKey): void {
-                    $table->dropForeign($foreignKey['name']);
+                // Pela coluna, e não pelo nome: o SQLite (testes) só remove chaves assim.
+                Schema::table('paee_resources', function (Blueprint $table): void {
+                    $table->dropForeign(['assistive_technology_id']);
                 });
             }
         }
