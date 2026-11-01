@@ -5,6 +5,7 @@ import {
     notifyConnectionFailure,
     notifyOperationFailure,
 } from '@/components/UI/NotificationToast/operationFeedback';
+import { toJsonPayload } from './jsonPayload';
 
 type SubmitMethod = 'post' | 'put' | 'patch' | 'delete';
 
@@ -16,6 +17,11 @@ export interface FormSubmitRequest {
      * receber arquivos.
      */
     files?: boolean;
+    /**
+     * Com `files`, envia os campos num único JSON e só os arquivos como multipart. Use em
+     * formulários com centenas de campos, que ultrapassariam o `max_input_vars` do PHP.
+     */
+    jsonPayload?: boolean;
     /** Mensagem do toast quando o servidor responde com erro não relacionado à validação. */
     failureText: string;
     /** Impede o envio (sem permissão, editor indisponível, leitura de arquivo em andamento...). */
@@ -71,6 +77,7 @@ export function useFormSubmission<TForm extends Record<string, any>>(
         url,
         method = 'post',
         files = false,
+        jsonPayload = false,
         failureText,
         blocked = false,
         transform,
@@ -85,7 +92,11 @@ export function useFormSubmission<TForm extends Record<string, any>>(
 
         pending.current = true;
         form.transform((data) => {
-            const payload = transform ? transform(data as Record<string, unknown>) : data;
+            const transformed = transform ? transform(data as Record<string, unknown>) : data;
+            const payload =
+                files && jsonPayload
+                    ? toJsonPayload(transformed as Record<string, unknown>)
+                    : transformed;
 
             return spoofMethod ? { ...payload, _method: method } : payload;
         });

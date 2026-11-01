@@ -7,6 +7,7 @@ use App\Domains\Auth\UI\Middleware\EnsureUserIsAdmin;
 use App\Shared\Application\Exceptions\AccessDeniedException;
 use App\Shared\Domain\Exceptions\BusinessRuleException;
 use App\Shared\Infrastructure\Http\Middleware\EnsureTeacherPortalAccess;
+use App\Shared\Infrastructure\Http\Middleware\ExpandJsonPayload;
 use App\Shared\Infrastructure\Http\Middleware\HandleInertiaRequests;
 use App\Shared\Infrastructure\Http\Middleware\SanitizeRichTextInput;
 use Illuminate\Auth\AuthenticationException;
@@ -38,6 +39,8 @@ return Application::configure(basePath: dirname(__DIR__))
             StartAuditOperation::class,
             HandleInertiaRequests::class,
             BlockReadOnlyImpersonationWrites::class,
+            // Abre o `_payload` antes de sanitizar, para o texto rico ser tratado campo a campo.
+            ExpandJsonPayload::class,
             SanitizeRichTextInput::class,
             ApplyTablePageSize::class,
         ]);

@@ -326,6 +326,8 @@ export default function WebsiteBuilderForm({
             url: endpoint,
             method: 'put',
             files: true,
+            // O site passa de mil campos: tudo segue num JSON e só as imagens vão como arquivos.
+            jsonPayload: true,
             blocked: !can.submit || editorFailed,
             options: { preserveState: 'errors', onError: handleValidationErrors },
             failureText: 'Não foi possível salvar o site. Tente novamente.',
