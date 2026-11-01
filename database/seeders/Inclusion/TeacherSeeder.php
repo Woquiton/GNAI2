@@ -46,8 +46,7 @@ class TeacherSeeder extends Seeder
                 $course = Course::where('name', $data['course'])->first();
 
                 if ($course) {
-                    $teacher->courses()->syncWithoutDetaching([$course->id]);
-
+                    // O vínculo com o curso vem da matriz (teacher_course_disciplines).
                     $disciplineIds = $course->disciplines()
                         ->orderBy('name')
                         ->limit(7)
