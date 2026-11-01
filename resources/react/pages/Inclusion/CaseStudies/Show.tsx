@@ -2,7 +2,6 @@ import RichTextContent from "@/components/UI/RichTextContent/RichTextContent";
 import FormActions from "@/components/Forms/FormActions/FormActions";
 import FormSection from "@/components/Forms/FormSection/FormSection";
 import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import Tabs, { type TabItem } from "@/components/Navigation/Tabs/Tabs";
 import StudentRecordReturnButton from "@/components/Students/StudentRecordReturnButton";
 import {
     dateLabel,
@@ -12,6 +11,7 @@ import {
 } from "@/components/Students/Students.utils";
 import Button from "@/components/UI/Button/Button";
 import CardBox from "@/components/UI/CardBox/CardBox";
+import ExpandableContent from "@/components/UI/ExpandableContent/ExpandableContent";
 import DetailField from "@/components/UI/DetailField/DetailField";
 import TableLabel from "@/components/UI/TableLabel/TableLabel";
 import CaseStudyConfirmAction from "./CaseStudyConfirmAction";
@@ -36,193 +36,6 @@ export default function InclusionCaseStudiesShowPage({
             {caseStudy.status_label}
         </TableLabel>
     );
-    const tabs: TabItem[] = [
-        {
-            id: "details",
-            label: "Dados do estudo",
-            icon: "fa fa-file-text-o",
-            content: (
-                <div className="caseStudyShow__sections">
-                    <FormSection
-                        id="case-study-demand"
-                        title="Identificação da Demanda"
-                        iconClass="fa fa-bullhorn"
-                        variant="inline"
-                    >
-                        <dl className="caseStudyShow__grid">
-                            <DetailField label="Origem da demanda">
-                                {caseStudy.demand_origin_label}
-                            </DetailField>
-                            <DetailField label="Data do Estudo de Caso">
-                                {dateLabel(caseStudy.study_date)}
-                            </DetailField>
-                            <DetailField label="Criador">
-                                {caseStudy.creator_name || "Não informado"}
-                            </DetailField>
-                            <DetailField label="Participantes (resumo)" wide>
-                                <RichTextContent html={caseStudy.participants_summary || "Não informado"} />
-                            </DetailField>
-                        </dl>
-                    </FormSection>
-                    <FormSection
-                        id="case-study-listening"
-                        title="Escuta e Observação"
-                        iconClass="fa fa-comments-o"
-                        variant="inline"
-                    >
-                        <dl className="caseStudyShow__grid">
-                            <DetailField label="Observação do estudante" wide>
-                                <RichTextContent html={caseStudy.student_observation || "Não informado"} />
-                            </DetailField>
-                            <DetailField label="Escuta do estudante/família" wide>
-                                <RichTextContent html={caseStudy.student_family_listening || "Não informado"} />
-                            </DetailField>
-                            <DetailField label="Escuta dos professores" wide>
-                                <RichTextContent html={caseStudy.teachers_listening || "Não informado"} />
-                            </DetailField>
-                            <DetailField label="Outras informações">
-                                <RichTextContent html={caseStudy.other_info || "Não informado"} />
-                            </DetailField>
-                            <DetailField label="Observações da rede de cuidado">
-                                <RichTextContent html={caseStudy.care_network_notes || "Não informado"} />
-                            </DetailField>
-                        </dl>
-                    </FormSection>
-                    <FormSection
-                        id="case-study-potentials"
-                        title="Potencialidades e Apoios"
-                        iconClass="fa fa-star-o"
-                        variant="inline"
-                    >
-                        <dl className="caseStudyShow__grid">
-                            <DetailField label="Aspectos favoráveis">
-                                <RichTextContent html={caseStudy.favorable_aspects || "Não informado"} />
-                            </DetailField>
-                            <DetailField label="Potenciais e interesses">
-                                <RichTextContent html={caseStudy.potentials_interests || "Não informado"} />
-                            </DetailField>
-                            <DetailField label="Apoios necessários" wide>
-                                {caseStudy.needed_supports_label || "Não informado"}
-                            </DetailField>
-                            <DetailField label="Justificativa dos apoios necessários" wide>
-                                <RichTextContent html={caseStudy.needed_supports_justification || "Não informado"} />
-                            </DetailField>
-                        </dl>
-                    </FormSection>
-                    <FormSection
-                        id="case-study-acceptance"
-                        title="Aceite da Família/Estudante"
-                        iconClass="fa fa-thumbs-o-up"
-                        variant="inline"
-                    >
-                        <dl className="caseStudyShow__grid">
-                            <DetailField label="Status de aceite">
-                                {caseStudy.acceptance_status_label}
-                            </DetailField>
-                            <DetailField label="Data do aceite">
-                                {dateLabel(caseStudy.acceptance_date)}
-                            </DetailField>
-                            {caseStudy.completed_at ? (
-                                <DetailField label="Concluído em">
-                                    {dateTimeLabel(caseStudy.completed_at)}
-                                </DetailField>
-                            ) : null}
-                        </dl>
-                    </FormSection>
-                </div>
-            ),
-        },
-        {
-            id: "barriers",
-            label: "Barreiras e estratégias",
-            icon: "fa fa-ban",
-            content: (
-                <div className="caseStudyShow__sections">
-                    <FormSection
-                        id="case-study-barriers"
-                        title="Barreiras"
-                        iconClass="fa fa-ban"
-                        variant="inline"
-                    >
-                        {caseStudy.barriers.length ? (
-                            <ul className="caseStudyShow__entries">
-                                {caseStudy.barriers.map((barrier) => (
-                                    <li key={barrier.id} className="caseStudyShow__entry">
-                                        <strong>{barrier.type_label}</strong>
-                                        <p className="caseStudyShow__text">{barrier.observed_situation}</p>
-                                        <small className="caseStudyShow__meta">
-                                            Implicação: <span className="caseStudyShow__text">{barrier.participation_implication}</span>
-                                        </small>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className="caseStudyShow__empty">Nenhuma barreira registrada.</p>
-                        )}
-                    </FormSection>
-                    <FormSection
-                        id="case-study-strategies"
-                        title="Estratégias"
-                        iconClass="fa fa-lightbulb-o"
-                        variant="inline"
-                    >
-                        {caseStudy.strategies.length ? (
-                            <ul className="caseStudyShow__entries">
-                                {caseStudy.strategies.map((strategy) => (
-                                    <li key={strategy.id} className="caseStudyShow__entry">
-                                        <p className="caseStudyShow__text">{strategy.description}</p>
-                                        {strategy.linked_barrier_label ? (
-                                            <small className="caseStudyShow__meta">
-                                                Relacionada à barreira: {strategy.linked_barrier_label}
-                                            </small>
-                                        ) : null}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className="caseStudyShow__empty">Nenhuma estratégia registrada.</p>
-                        )}
-                    </FormSection>
-                </div>
-            ),
-        },
-        {
-            id: "contributions",
-            label: "Contribuições",
-            icon: "fa fa-users",
-            content: (
-                <FormSection
-                    id="case-study-contributions"
-                    title="Contribuições"
-                    iconClass="fa fa-users"
-                    variant="inline"
-                >
-                    {caseStudy.contributions.length ? (
-                        <ul className="caseStudyShow__entries">
-                            {caseStudy.contributions.map((contribution) => (
-                                <li key={contribution.id} className="caseStudyShow__entry">
-                                    <span>
-                                        <strong>{contribution.author_name || "Usuário removido"}</strong>
-                                        {" "}
-                                        <span className="caseStudyShow__meta">({contribution.role})</span>
-                                    </span>
-                                    <p className="caseStudyShow__text">{contribution.content}</p>
-                                    <small className="caseStudyShow__meta">
-                                        {dateTimeLabel(contribution.created_at)}
-                                    </small>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p className="caseStudyShow__empty">Nenhuma contribuição registrada.</p>
-                    )}
-                    {can.contribute ? (
-                        <CaseStudyContributionForm caseStudyId={caseStudy.id} />
-                    ) : null}
-                </FormSection>
-            ),
-        },
-    ];
 
     return (
         <BusinessPage
@@ -236,7 +49,7 @@ export default function InclusionCaseStudiesShowPage({
             ]}
             className="studentsPage caseStudyShow"
         >
-            <CardBox className="studentsPage__summaryCard">
+            <CardBox className="caseStudyShow__sections">
                 <FormSection
                     id="case-study-identification"
                     title="Identificação do Estudo de Caso"
@@ -268,14 +81,185 @@ export default function InclusionCaseStudiesShowPage({
                         </div>
                     </div>
                 </FormSection>
+                <FormSection
+                    id="case-study-demand"
+                    title="Identificação da Demanda"
+                    iconClass="fa fa-bullhorn"
+                    variant="inline"
+                >
+                    <dl className="caseStudyShow__grid">
+                        <DetailField label="Origem da demanda">
+                            {caseStudy.demand_origin_label}
+                        </DetailField>
+                        <DetailField label="Data do Estudo de Caso">
+                            {dateLabel(caseStudy.study_date)}
+                        </DetailField>
+                        <DetailField label="Criador">
+                            {caseStudy.creator_name || "Não informado"}
+                        </DetailField>
+                        <DetailField label="Participantes (resumo)" wide>
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.participants_summary || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                    </dl>
+                </FormSection>
+                <FormSection
+                    id="case-study-listening"
+                    title="Escuta e Observação"
+                    iconClass="fa fa-comments-o"
+                    variant="inline"
+                >
+                    <dl className="caseStudyShow__grid">
+                        <DetailField label="Observação do estudante" wide>
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.student_observation || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                        <DetailField label="Escuta do estudante/família" wide>
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.student_family_listening || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                        <DetailField label="Escuta dos professores" wide>
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.teachers_listening || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                        <DetailField label="Outras informações">
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.other_info || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                        <DetailField label="Observações da rede de cuidado">
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.care_network_notes || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                    </dl>
+                </FormSection>
+                <FormSection
+                    id="case-study-potentials"
+                    title="Potencialidades e Apoios"
+                    iconClass="fa fa-star-o"
+                    variant="inline"
+                >
+                    <dl className="caseStudyShow__grid">
+                        <DetailField label="Aspectos favoráveis">
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.favorable_aspects || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                        <DetailField label="Potenciais e interesses">
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.potentials_interests || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                        <DetailField label="Apoios necessários" wide>
+                            {caseStudy.needed_supports_label || "Não informado"}
+                        </DetailField>
+                        <DetailField label="Justificativa dos apoios necessários" wide>
+                            <ExpandableContent>
+                                <RichTextContent html={caseStudy.needed_supports_justification || "Não informado"} />
+                            </ExpandableContent>
+                        </DetailField>
+                    </dl>
+                </FormSection>
+                <FormSection
+                    id="case-study-acceptance"
+                    title="Aceite da Família/Estudante"
+                    iconClass="fa fa-thumbs-o-up"
+                    variant="inline"
+                >
+                    <dl className="caseStudyShow__grid">
+                        <DetailField label="Status de aceite">
+                            {caseStudy.acceptance_status_label}
+                        </DetailField>
+                        <DetailField label="Data do aceite">
+                            {dateLabel(caseStudy.acceptance_date)}
+                        </DetailField>
+                        {caseStudy.completed_at ? (
+                            <DetailField label="Concluído em">
+                                {dateTimeLabel(caseStudy.completed_at)}
+                            </DetailField>
+                        ) : null}
+                    </dl>
+                </FormSection>
+                <FormSection
+                    id="case-study-barriers"
+                    title="Barreiras"
+                    iconClass="fa fa-ban"
+                    variant="inline"
+                >
+                    {caseStudy.barriers.length ? (
+                        <ul className="caseStudyShow__entries">
+                            {caseStudy.barriers.map((barrier) => (
+                                <li key={barrier.id} className="caseStudyShow__entry">
+                                    <strong>{barrier.type_label}</strong>
+                                    <p className="caseStudyShow__text">{barrier.observed_situation}</p>
+                                    <small className="caseStudyShow__meta">
+                                        Implicação: <span className="caseStudyShow__text">{barrier.participation_implication}</span>
+                                    </small>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="caseStudyShow__empty">Nenhuma barreira registrada.</p>
+                    )}
+                </FormSection>
+                <FormSection
+                    id="case-study-strategies"
+                    title="Estratégias"
+                    iconClass="fa fa-lightbulb-o"
+                    variant="inline"
+                >
+                    {caseStudy.strategies.length ? (
+                        <ul className="caseStudyShow__entries">
+                            {caseStudy.strategies.map((strategy) => (
+                                <li key={strategy.id} className="caseStudyShow__entry">
+                                    <p className="caseStudyShow__text">{strategy.description}</p>
+                                    {strategy.linked_barrier_label ? (
+                                        <small className="caseStudyShow__meta">
+                                            Relacionada à barreira: {strategy.linked_barrier_label}
+                                        </small>
+                                    ) : null}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="caseStudyShow__empty">Nenhuma estratégia registrada.</p>
+                    )}
+                </FormSection>
+                <FormSection
+                    id="case-study-contributions"
+                    title="Contribuições"
+                    iconClass="fa fa-users"
+                    variant="inline"
+                >
+                    {caseStudy.contributions.length ? (
+                        <ul className="caseStudyShow__entries">
+                            {caseStudy.contributions.map((contribution) => (
+                                <li key={contribution.id} className="caseStudyShow__entry">
+                                    <span>
+                                        <strong>{contribution.author_name || "Usuário removido"}</strong>
+                                        {" "}
+                                        <span className="caseStudyShow__meta">({contribution.role})</span>
+                                    </span>
+                                    <p className="caseStudyShow__text">{contribution.content}</p>
+                                    <small className="caseStudyShow__meta">
+                                        {dateTimeLabel(contribution.created_at)}
+                                    </small>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="caseStudyShow__empty">Nenhuma contribuição registrada.</p>
+                    )}
+                    {can.contribute ? (
+                        <CaseStudyContributionForm caseStudyId={caseStudy.id} />
+                    ) : null}
+                </FormSection>
             </CardBox>
-            <div className="studentsPage__recordTabs">
-                <Tabs
-                    items={tabs}
-                    initialActiveId="details"
-                    variant="vertical"
-                />
-            </div>
             <FormActions
                 secondary={can.pdf ? (
                     <Button
