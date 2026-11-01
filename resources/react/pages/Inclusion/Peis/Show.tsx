@@ -16,7 +16,9 @@ import DetailField from "@/components/UI/DetailField/DetailField";
 import TableLabel from "@/components/UI/TableLabel/TableLabel";
 import PeiConfirmAction from "./PeiConfirmAction";
 import PeiDisciplineTable from "./PeiDisciplineTable";
-import PeiStudentContextDetails from "./PeiStudentContextDetails";
+import PeiAttendanceDetails from "./PeiAttendanceDetails";
+import PeiOtherInfo from "./PeiOtherInfo";
+import PeiPaeeDetails from "./PeiPaeeDetails";
 import type { PeiShowProps, PeiShowRecord } from "./PeiShow.types";
 import "@/components/Students/Students.css";
 import "./PeiShow.css";
@@ -36,7 +38,9 @@ function PeiStatus({
 export default function InclusionPeisShowPage({
     pei,
     student,
-    studentContext,
+    paee,
+    attendanceSummary,
+    otherRelevantInfo,
     peiDisciplines,
     activeTab,
     can,
@@ -89,12 +93,12 @@ export default function InclusionPeisShowPage({
         },
     ];
 
-    if (can.viewContext) {
+    if (can.viewPaee) {
         tabs.push({
-            id: "context",
-            label: "Contexto do estudante",
-            icon: "fa fa-user-circle-o",
-            content: <PeiStudentContextDetails context={studentContext} />,
+            id: "paee",
+            label: "PAEE vinculado",
+            icon: "fa fa-sitemap",
+            content: <PeiPaeeDetails paee={paee} />,
         });
     }
 
@@ -115,6 +119,29 @@ export default function InclusionPeisShowPage({
             ),
         });
     }
+
+    tabs.push(
+        {
+            id: "attendance",
+            label: "Acompanhamento",
+            accessibleLabel: "Atividades, acompanhamento e devolutivas do semestre",
+            icon: "fa fa-calendar-check-o",
+            content: <PeiAttendanceDetails summary={attendanceSummary} />,
+        },
+        {
+            id: "other-info",
+            label: "Outras informações",
+            accessibleLabel: "Outras informações relevantes",
+            icon: "fa fa-info-circle",
+            content: (
+                <PeiOtherInfo
+                    action={`${peiUrl}/other-info`}
+                    value={otherRelevantInfo}
+                    canUpdate={can.updateOtherInfo}
+                />
+            ),
+        },
+    );
 
     const initialTab = tabs.some((tab) => tab.id === activeTab)
         ? activeTab
@@ -181,16 +208,28 @@ export default function InclusionPeisShowPage({
             </div>
             <FormActions
                 secondary={can.pdf ? (
-                    <Button
-                        href={`${peiUrl}/pdf`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        tone="dark-red"
-                        leftIconClass="fa fa-file-pdf-o"
-                        label="PDF"
-                        title="Gerar PDF completo do PEI"
-                        aria-label="Gerar PDF completo do PEI"
-                    />
+                    <>
+                        <Button
+                            href={`${peiUrl}/pdf`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            tone="dark-red"
+                            leftIconClass="fa fa-file-pdf-o"
+                            label="PDF"
+                            title="Gerar PDF completo do PEI"
+                            aria-label="Gerar PDF completo do PEI"
+                        />
+                        <Button
+                            href={`${peiUrl}/pdf-familia`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            tone="white"
+                            leftIconClass="fa fa-file-pdf-o"
+                            label="PDF para a Família"
+                            title="Gerar PDF do PEI para a família"
+                            aria-label="Gerar PDF do PEI para a família"
+                        />
+                    </>
                 ) : undefined}
             >
                 <StudentRecordReturnButton

@@ -21,7 +21,7 @@ final class PeiDisciplineFormQuery
      * @throws InvalidPei
      * @throws InvalidStudent
      */
-    public function forCreation(Pei $pei, ?User $user = null): array
+    public function forCreation(Pei $pei): array
     {
         $pei->loadMissing(['student', 'course.disciplines']);
         $pei->student->ensureIsActive();
@@ -38,27 +38,30 @@ final class PeiDisciplineFormQuery
             ->reject(fn (Discipline $discipline): bool => $alreadyAssignedDisciplineIds->contains($discipline->getKey()))
             ->values();
 
-        $teachers = $this->teachers($pei);
-
-        $teachersByDiscipline = $disciplines->mapWithKeys(function (Discipline $discipline) use ($pei): array {
-            $eligible = Teacher::query()
-                ->whereHas('courseDisciplines', function ($query) use ($pei, $discipline): void {
-                    $query->where('course_id', $pei->course_id)
-                        ->where('discipline_id', $discipline->getKey());
-                })
-                ->with('person')
-                ->orderBy('id')
-                ->get();
-
-            return [$discipline->getKey() => $eligible];
-        });
-
+        // Cada disciplina lista só os professores vinculados a ela na matriz
+        // curricular do curso (teacher_course_disciplines).
         return [
-            'pei' => $pei,
-            'teachers' => $teachers,
-            'disciplines' => $disciplines,
-            'teachersByDiscipline' => $teachersByDiscipline,
-            'loggedTeacher' => $this->loggedTeacher($user),
+            'pei' => ['id' => (int) $pei->getKey()],
+            'disciplines' => $disciplines
+                ->map(fn (Discipline $discipline): array => [
+                    'id' => (int) $discipline->getKey(),
+                    'name' => (string) $discipline->name,
+                    'teachers' => Teacher::query()
+                        ->whereHas('courseDisciplines', function ($query) use ($pei, $discipline): void {
+                            $query->where('course_id', $pei->course_id)
+                                ->where('discipline_id', $discipline->getKey());
+                        })
+                        ->with('person')
+                        ->orderBy('id')
+                        ->get()
+                        ->map(fn (Teacher $teacher): array => [
+                            'value' => (string) $teacher->getKey(),
+                            'label' => (string) ($teacher->person?->name ?? ''),
+                        ])
+                        ->values()
+                        ->all(),
+                ])
+                ->all(),
         ];
     }
 
@@ -83,25 +86,6 @@ final class PeiDisciplineFormQuery
             'peiDiscipline' => $peiDiscipline,
             'teachers' => $this->teachers($pei),
             'disciplines' => Discipline::query()->orderBy('name')->get(),
-        ];
-    }
-
-    /**
-     * Professor vinculado ao usuário autenticado, usado como responsável fixo no cadastro.
-     *
-     * @return array{id: int, name: string|null}|null
-     */
-    private function loggedTeacher(?User $user): ?array
-    {
-        if (! $user?->teacher_id) {
-            return null;
-        }
-
-        $teacher = Teacher::query()->with('person')->find($user->teacher_id);
-
-        return [
-            'id' => (int) $user->teacher_id,
-            'name' => $teacher?->person?->name,
         ];
     }
 

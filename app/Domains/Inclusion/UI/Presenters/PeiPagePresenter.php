@@ -5,23 +5,17 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Application\Data\Peis\ListPeisData;
-use App\Domains\Inclusion\Domain\Enums\AttentionLevel;
-use App\Domains\Inclusion\Domain\Enums\AutonomyLevel;
-use App\Domains\Inclusion\Domain\Enums\CommunicationType;
-use App\Domains\Inclusion\Domain\Enums\ContextEvaluationType;
-use App\Domains\Inclusion\Domain\Enums\GeneralLevel;
-use App\Domains\Inclusion\Domain\Enums\InteractionLevel;
-use App\Domains\Inclusion\Domain\Enums\MemoryLevel;
-use App\Domains\Inclusion\Domain\Enums\ReasoningLevel;
-use App\Domains\Inclusion\Domain\Enums\SocializationLevel;
+use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
 use App\Domains\Inclusion\Domain\Models\Discipline;
+use App\Domains\Inclusion\Domain\Models\Paee;
+use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
 use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
+use App\Domains\Inclusion\Domain\Models\PeiDisciplineRevision;
 use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Student;
-use App\Domains\Inclusion\Domain\Models\StudentContext;
+use App\Shared\Domain\Support\AeeLabels;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
-use BackedEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -85,13 +79,14 @@ final class PeiPagePresenter
     }
 
     /**
+     * @param  array{aee: Collection<int, AeeStudentEvaluation>, pedagogical: Collection<int, PedagogicalRecord>, returns: Collection<int, array<string, mixed>>}  $attendanceSummary
      * @return array<string, mixed>
      */
-    public function show(Pei $pei, Request $request): array
+    public function show(Pei $pei, Request $request, array $attendanceSummary): array
     {
         $user = $request->user();
         $userId = $user?->getKey() === null ? null : (int) $user->getKey();
-        $canViewContext = $user?->can('student-context.view') ?? false;
+        $canViewPaee = $user?->can('paee.view') ?? false;
         $canViewDisciplines = $user?->can('pei-discipline.view') ?? false;
         $canUpdateDiscipline = $user?->can('pei-discipline.update') ?? false;
         $canDeleteDiscipline = $user?->can('pei-discipline.delete') ?? false;
@@ -117,17 +112,16 @@ final class PeiPagePresenter
                 ->latest()
                 ->get()
                 ->map(function (PeiDiscipline $item) use ($pei, $userId, $canUpdateDiscipline, $canDeleteDiscipline): array {
-                    $manageable = ! $pei->is_finished
-                        && $userId !== null
-                        && (int) $item->creator_id === $userId;
+                    // A adaptação continua editável após finalizar o PEI; só a exclusão é bloqueada.
+                    $isCreator = $userId !== null && (int) $item->creator_id === $userId;
 
                     return [
                         'id' => (int) $item->getKey(),
                         'discipline_name' => $item->discipline?->name,
                         'teacher_name' => $item->teacher?->person?->name,
                         'created_at' => $item->created_at?->toDateString(),
-                        'can_update' => $manageable && $canUpdateDiscipline,
-                        'can_delete' => $manageable && $canDeleteDiscipline,
+                        'can_update' => $isCreator && $canUpdateDiscipline,
+                        'can_delete' => $isCreator && ! $pei->is_finished && $canDeleteDiscipline,
                     ];
                 })
                 ->values()
@@ -159,11 +153,13 @@ final class PeiPagePresenter
                     ->values()
                     ->all(),
             ],
-            'studentContext' => $canViewContext ? $this->context($pei) : null,
+            'paee' => $canViewPaee ? $this->paee($pei) : null,
+            'attendanceSummary' => $this->attendanceSummary($attendanceSummary),
+            'otherRelevantInfo' => $pei->other_relevant_info,
             'peiDisciplines' => $disciplines,
             'activeTab' => $tab,
             'can' => [
-                'viewContext' => $canViewContext,
+                'viewPaee' => $canViewPaee,
                 'viewDisciplines' => $canViewDisciplines,
                 // As ações de domínio também exigem o criador do PEI e um PEI em aberto.
                 'createDiscipline' => ! $pei->is_finished
@@ -172,6 +168,7 @@ final class PeiPagePresenter
                     && $isCreator
                     && ($user?->can('pei.update') ?? false),
                 'delete' => $isCreator && ($user?->can('pei.delete') ?? false),
+                'updateOtherInfo' => $user?->can('pei.update') ?? false,
                 'pdf' => $user?->can('pei.view') ?? false,
             ],
         ];
@@ -184,12 +181,10 @@ final class PeiPagePresenter
     {
         $user = $request->user();
         $userId = $user?->getKey() === null ? null : (int) $user->getKey();
-        $manageable = ! $pei->is_finished
-            && $userId !== null
-            && (int) $peiDiscipline->creator_id === $userId;
+        $isCreator = $userId !== null && (int) $peiDiscipline->creator_id === $userId;
 
         $pei->loadMissing('student.person');
-        $peiDiscipline->loadMissing(['discipline', 'teacher.person']);
+        $peiDiscipline->loadMissing(['discipline', 'teacher.person', 'revisions.reviewer']);
 
         return [
             'pei' => [
@@ -206,8 +201,11 @@ final class PeiPagePresenter
                 'discipline_name' => $peiDiscipline->discipline?->name,
                 'teacher_name' => $peiDiscipline->teacher?->person?->name,
                 'specific_objectives_html' => $this->richText($peiDiscipline->specific_objectives),
+                'objectives_deadline_html' => $this->richText($peiDiscipline->objectives_deadline, '—'),
                 'content_programmatic_html' => $this->richText($peiDiscipline->content_programmatic),
+                'curricular_reference_html' => $this->richText($peiDiscipline->curricular_reference, '—'),
                 'methodologies_html' => $this->richText($peiDiscipline->methodologies),
+                'materials_and_assistive_technology_html' => $this->richText($peiDiscipline->materials_and_assistive_technology, '—'),
                 'evaluations_html' => $this->richText($peiDiscipline->evaluations),
                 'complementary_records_html' => $this->richText(
                     $peiDiscipline->complementary_records,
@@ -215,58 +213,104 @@ final class PeiPagePresenter
                 ),
                 'opinion_html' => $this->richText($peiDiscipline->opinion),
             ],
+            'revisions' => $peiDiscipline->revisions
+                ->map(fn (PeiDisciplineRevision $revision): array => [
+                    'id' => (int) $revision->getKey(),
+                    'reviewed_at' => $revision->reviewed_at?->format('d/m/Y'),
+                    'reviewer_name' => $revision->reviewer?->name,
+                    'what_changed' => $revision->what_changed,
+                    'why' => $revision->why,
+                ])
+                ->values()
+                ->all(),
             'can' => [
-                'update' => $manageable && ($user?->can('pei-discipline.update') ?? false),
-                'delete' => $manageable && ($user?->can('pei-discipline.delete') ?? false),
+                'update' => $isCreator && ($user?->can('pei-discipline.update') ?? false),
+                'delete' => $isCreator && ! $pei->is_finished && ($user?->can('pei-discipline.delete') ?? false),
+                'addRevision' => $user?->can('pei-discipline.update') ?? false,
                 'pdf' => $user?->can('pei.view') ?? false,
             ],
         ];
     }
 
     /**
+     * Resumo do PAEE vinculado, no lugar do antigo contexto do estudante.
+     *
      * @return array<string, mixed>|null
      */
-    private function context(Pei $pei): ?array
+    private function paee(Pei $pei): ?array
     {
-        $pei->loadMissing(['studentContext.semester', 'studentContext.evaluator.person']);
-        $context = $pei->studentContext;
+        $pei->loadMissing('paee');
+        $paee = $pei->paee;
 
-        if (! $context instanceof StudentContext) {
+        if (! $paee instanceof Paee) {
             return null;
         }
 
         return [
-            'id' => (int) $context->getKey(),
-            'semester_label' => $context->semester?->label ?? $context->semester?->name,
-            'evaluation_type_label' => $this->enumLabel(ContextEvaluationType::class, $context->evaluation_type),
-            'version' => $context->version,
-            'is_current' => (bool) $context->is_current,
-            'history_html' => $this->richText($context->history),
-            'specific_educational_needs_html' => $this->richText($context->specific_educational_needs),
-            'knowledge_html' => $this->richText($context->knowledge),
-            'difficulties_html' => $this->richText($context->difficulties),
-            'learning_level_label' => $this->enumLabel(GeneralLevel::class, $context->learning_level),
-            'attention_level_label' => $this->enumLabel(AttentionLevel::class, $context->attention_level),
-            'memory_level_label' => $this->enumLabel(MemoryLevel::class, $context->memory_level),
-            'reasoning_level_label' => $this->enumLabel(ReasoningLevel::class, $context->reasoning_level),
-            'learning_observations_html' => $this->richText($context->learning_observations),
-            'communication_type_label' => $this->enumLabel(CommunicationType::class, $context->communication_type),
-            'interaction_level_label' => $this->enumLabel(InteractionLevel::class, $context->interaction_level),
-            'socialization_level_label' => $this->enumLabel(SocializationLevel::class, $context->socialization_level),
-            'shows_aggressive_behavior' => (bool) $context->shows_aggressive_behavior,
-            'shows_withdrawn_behavior' => (bool) $context->shows_withdrawn_behavior,
-            'behavior_notes_html' => $this->richText($context->behavior_notes),
-            'autonomy_level_label' => $this->enumLabel(AutonomyLevel::class, $context->autonomy_level),
-            'needs_mobility_support_html' => $this->richText($context->needs_mobility_support),
-            'needs_communication_support_html' => $this->richText($context->needs_communication_support),
-            'needs_pedagogical_adaptation_html' => $this->richText($context->needs_pedagogical_adaptation),
-            'uses_assistive_technology_html' => $this->richText($context->uses_assistive_technology),
-            'has_medical_report' => (bool) $context->has_medical_report,
-            'uses_medication' => (bool) $context->uses_medication,
-            'medical_notes_html' => $this->richText($context->medical_notes),
-            'evaluator_name' => $context->evaluator?->person?->name,
-            'created_at' => $context->created_at?->toIso8601String(),
-            'updated_at' => $context->updated_at?->toIso8601String(),
+            'id' => (int) $paee->getKey(),
+            'version' => $paee->version,
+            'status_label' => AeeLabels::paeeStatus($paee->status),
+            'attendance_frequency_per_week' => $paee->attendance_frequency_per_week,
+            'attendance_duration_minutes' => $paee->attendance_duration_minutes,
+            'attendance_format_label' => AeeLabels::attendanceFormat($paee->attendance_format),
+            'attendance_location_label' => AeeLabels::attendanceLocation($paee->attendance_location),
+            'common_teachers_articulation_html' => $this->richText($paee->common_teachers_articulation, '—'),
+        ];
+    }
+
+    /**
+     * Atividades, acompanhamento e devolutivas do semestre (Portaria 421/2026,
+     * art. 11, I/III/IV), reunidos a partir dos atendimentos do aluno.
+     *
+     * @param  array{aee: Collection<int, AeeStudentEvaluation>, pedagogical: Collection<int, PedagogicalRecord>, returns: Collection<int, array<string, mixed>>}  $summary
+     * @return array<string, list<array<string, mixed>>>
+     */
+    private function attendanceSummary(array $summary): array
+    {
+        $aeeDate = static fn (AeeStudentEvaluation $evaluation): ?string => $evaluation->aeeRecord?->attendanceSession?->session_date?->format('d/m/Y');
+
+        $activities = $summary['aee']
+            ->map(fn (AeeStudentEvaluation $evaluation): array => [
+                'id' => 'aee-'.$evaluation->getKey(),
+                'date' => $aeeDate($evaluation),
+                'professional' => $evaluation->aeeRecord?->attendanceSession?->professional?->person?->name,
+                'text_html' => $evaluation->is_present
+                    ? $this->richText($evaluation->adaptations_made, '—')
+                    : e('Aluno ausente: ').$this->richText($evaluation->absence_reason, '—'),
+            ]);
+
+        $monitoring = $summary['aee']
+            ->filter(fn (AeeStudentEvaluation $evaluation): bool => (bool) $evaluation->is_present)
+            ->map(fn (AeeStudentEvaluation $evaluation): array => [
+                'id' => 'aee-'.$evaluation->getKey(),
+                'date' => $aeeDate($evaluation),
+                'source' => 'AEE',
+                'text_html' => $this->richText($evaluation->development_evaluation, '—'),
+                'indicators_html' => $evaluation->progress_indicators ? $this->richText($evaluation->progress_indicators) : null,
+                'adjustments_html' => $evaluation->next_session_adjustments ? $this->richText($evaluation->next_session_adjustments) : null,
+            ])
+            ->concat($summary['pedagogical']->map(fn (PedagogicalRecord $record): array => [
+                'id' => 'pedagogical-'.$record->getKey(),
+                'date' => $record->attendanceSession?->session_date?->format('d/m/Y'),
+                'source' => 'Pedagógico',
+                'text_html' => $this->richText($record->systematic_pedagogical_follow_up_record, '—'),
+                'indicators_html' => null,
+                'adjustments_html' => null,
+            ]));
+
+        $returns = $summary['returns']->map(fn (array $return, int $index): array => [
+            'id' => 'return-'.$index,
+            'date' => $return['date']?->format('d/m/Y'),
+            'source' => $return['source'],
+            'professional' => $return['professional'],
+            'guardians' => $return['guardians'] ?: null,
+            'summary_html' => $this->richText($return['summary'], '—'),
+        ]);
+
+        return [
+            'activities' => $activities->values()->all(),
+            'monitoring' => $monitoring->values()->all(),
+            'returns' => $returns->values()->all(),
         ];
     }
 
@@ -313,26 +357,6 @@ final class PeiPagePresenter
             'view' => $user?->can('pei.view') ?? false,
             'delete' => $user?->can('pei.delete') ?? false,
         ];
-    }
-
-    /**
-     * @param  class-string<BackedEnum>  $enum
-     */
-    private function enumLabel(string $enum, mixed $value): ?string
-    {
-        if ($value instanceof BackedEnum) {
-            $value = $value->value;
-        }
-
-        if ($value === null || $value === '') {
-            return null;
-        }
-
-        $case = $enum::tryFrom((string) $value);
-
-        return $case !== null && method_exists($case, 'label')
-            ? $case->label()
-            : (string) $value;
     }
 
     /** Texto simples mantém as quebras de linha; HTML é sanitizado como nas caixas do legado. */

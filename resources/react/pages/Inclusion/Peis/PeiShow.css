@@ -18,3 +18,12 @@
 @media (max-width: 600px) {
   .peiShow__summaryDetails { grid-template-columns: minmax(0, 1fr); }
 }
+.peiShow__timeline { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.peiShow__timeline li { padding: 10px 12px; border: 1px solid var(--ui-color-card-border); border-radius: 4px; overflow-wrap: anywhere; }
+.peiShow__timeline p { margin: 4px 0 0; }
+.peiShow__timeline small { color: var(--ui-color-text-muted); }
+.peiShow__timelineTitle { margin: 24px 0 10px; color: var(--ui-color-form-label); font-size: 14px; font-weight: 700; }
+.peiShow__timelineTitle:first-child { margin-top: 0; }
+.peiShow__note { margin: 0 0 16px; color: var(--ui-color-text-muted); }
+.peiShow__inlineForm { margin-top: 16px; }
+.peiShow__inlineFormActions { display: flex; justify-content: flex-end; margin-top: 8px; }

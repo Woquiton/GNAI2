@@ -18,38 +18,46 @@ export interface PeiShowStudent {
     deficiencies: string[];
 }
 
-export interface PeiStudentContext {
+export interface PeiPaeeSummary {
     id: number;
-    semester_label: string | null;
-    evaluation_type_label: string | null;
     version: number | null;
-    is_current: boolean;
-    history_html: string;
-    specific_educational_needs_html: string;
-    knowledge_html: string;
-    difficulties_html: string;
-    learning_level_label: string | null;
-    attention_level_label: string | null;
-    memory_level_label: string | null;
-    reasoning_level_label: string | null;
-    learning_observations_html: string;
-    communication_type_label: string | null;
-    interaction_level_label: string | null;
-    socialization_level_label: string | null;
-    shows_aggressive_behavior: boolean;
-    shows_withdrawn_behavior: boolean;
-    behavior_notes_html: string;
-    autonomy_level_label: string | null;
-    needs_mobility_support_html: string;
-    needs_communication_support_html: string;
-    needs_pedagogical_adaptation_html: string;
-    uses_assistive_technology_html: string;
-    has_medical_report: boolean;
-    uses_medication: boolean;
-    medical_notes_html: string;
-    evaluator_name: string | null;
-    created_at: string | null;
-    updated_at: string | null;
+    status_label: string;
+    attendance_frequency_per_week: number | null;
+    attendance_duration_minutes: number | null;
+    attendance_format_label: string;
+    attendance_location_label: string;
+    common_teachers_articulation_html: string;
+}
+
+export interface PeiAttendanceActivity {
+    id: string;
+    date: string | null;
+    professional: string | null;
+    text_html: string;
+}
+
+export interface PeiAttendanceMonitoring {
+    id: string;
+    date: string | null;
+    source: string;
+    text_html: string;
+    indicators_html: string | null;
+    adjustments_html: string | null;
+}
+
+export interface PeiAttendanceReturn {
+    id: string;
+    date: string | null;
+    source: string;
+    professional: string | null;
+    guardians: string | null;
+    summary_html: string;
+}
+
+export interface PeiAttendanceSummary {
+    activities: PeiAttendanceActivity[];
+    monitoring: PeiAttendanceMonitoring[];
+    returns: PeiAttendanceReturn[];
 }
 
 export interface PeiDisciplineSummary {
@@ -62,18 +70,21 @@ export interface PeiDisciplineSummary {
 }
 
 export interface PeiShowPermissions {
-    viewContext: boolean;
+    viewPaee: boolean;
     viewDisciplines: boolean;
     createDiscipline: boolean;
     finish: boolean;
     delete: boolean;
+    updateOtherInfo: boolean;
     pdf: boolean;
 }
 
 export interface PeiShowProps {
     pei: PeiShowRecord;
     student: PeiShowStudent;
-    studentContext: PeiStudentContext | null;
+    paee: PeiPaeeSummary | null;
+    attendanceSummary: PeiAttendanceSummary;
+    otherRelevantInfo: string | null;
     peiDisciplines: PeiDisciplineSummary[] | null;
     activeTab?: string;
     can: PeiShowPermissions;
@@ -84,8 +95,11 @@ export interface PeiDisciplineDetails {
     discipline_name: string | null;
     teacher_name: string | null;
     specific_objectives_html: string;
+    objectives_deadline_html: string;
     content_programmatic_html: string;
+    curricular_reference_html: string;
     methodologies_html: string;
+    materials_and_assistive_technology_html: string;
     evaluations_html: string;
     complementary_records_html: string;
     opinion_html: string;
@@ -102,9 +116,19 @@ export interface PeiDisciplineShowProps {
         name: string;
     };
     peiDiscipline: PeiDisciplineDetails;
+    revisions: PeiDisciplineRevision[];
     can: {
         update: boolean;
         delete: boolean;
+        addRevision: boolean;
         pdf: boolean;
     };
+}
+
+export interface PeiDisciplineRevision {
+    id: number;
+    reviewed_at: string | null;
+    reviewer_name: string | null;
+    what_changed: string;
+    why: string;
 }
