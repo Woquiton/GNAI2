@@ -1,13 +1,11 @@
-import { Component, type ErrorInfo, type ReactNode } from "react";
-import Button from "@/components/UI/Button/Button";
-import ErrorState from "@/components/UI/ErrorState/ErrorState";
-import "./PageErrorBoundary.css";
+import { Component, type ErrorInfo, type ReactNode } from 'react';
+import Button from '@/components/UI/Button/Button';
+import ErrorState from '@/components/UI/ErrorState/ErrorState';
+import './PageErrorBoundary.css';
 
 const description = {
-    title: "Não foi possível exibir esta tela",
-    paragraphs: [
-        "Ocorreu um erro inesperado nesta tela. Recarregue a página para continuar.",
-    ],
+    title: 'Não foi possível exibir esta tela',
+    paragraphs: ['Ocorreu um erro inesperado nesta tela. Recarregue a página para continuar.'],
 };
 
 /**
@@ -33,7 +31,7 @@ export default class PageErrorBoundary extends Component<
     }
 
     componentDidCatch(error: Error, info: ErrorInfo): void {
-        console.error("Falha ao exibir a página.", error, info.componentStack);
+        console.error('Falha ao exibir a página.', error, info.componentStack);
     }
 
     render(): ReactNode {
@@ -41,11 +39,7 @@ export default class PageErrorBoundary extends Component<
 
         return (
             <div className="pageErrorBoundary" role="alert">
-                <ErrorState
-                    code="500"
-                    description={description}
-                    homeHref={this.props.homeHref}
-                />
+                <ErrorState code="500" description={description} homeHref={this.props.homeHref} />
                 <p className="pageErrorBoundary__actions">
                     <Button
                         type="button"

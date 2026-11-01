@@ -1,0 +1,5 @@
+.peiSectionActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--ui-space-2);
+}

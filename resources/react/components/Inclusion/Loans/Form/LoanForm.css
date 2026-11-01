@@ -1,0 +1,13 @@
+/* Data e horário de saída lado a lado na mesma célula da grade. */
+.loanForm__dateTimeFields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--ui-space-2);
+    min-width: 0;
+}
+
+@media (max-width: 480px) {
+    .loanForm__dateTimeFields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

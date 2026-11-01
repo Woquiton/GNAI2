@@ -1,0 +1,11 @@
+.sessionList__date {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--ui-space-2);
+    min-width: 0;
+}
+
+.sessionList__date small,
+.sessionList__muted {
+    color: var(--ui-color-text-muted);
+}

@@ -22,25 +22,27 @@ export default defineConfig(({ command }) => ({
             refresh: command === 'serve',
         }),
     ],
-    ...(command === 'serve' ? {
-        server: {
-        host: '0.0.0.0',
-        port: 5173,
-        strictPort: true,
-        hmr: {
-            host: 'localhost',
-            protocol: 'ws'
-        },
-        watch: {
-            usePolling: true,
-            ignored: [
-                '**/vendor/**',
-                '**/storage/**',
-                '**/node_modules/**',
-                '**/public/build/**',
-                '**/.git/**',
-            ]
-        }
-        }
-    } : {})
+    ...(command === 'serve'
+        ? {
+              server: {
+                  host: '0.0.0.0',
+                  port: 5173,
+                  strictPort: true,
+                  hmr: {
+                      host: 'localhost',
+                      protocol: 'ws',
+                  },
+                  watch: {
+                      usePolling: true,
+                      ignored: [
+                          '**/vendor/**',
+                          '**/storage/**',
+                          '**/node_modules/**',
+                          '**/public/build/**',
+                          '**/.git/**',
+                      ],
+                  },
+              },
+          }
+        : {}),
 }));

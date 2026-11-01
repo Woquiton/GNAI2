@@ -1,6 +1,30 @@
 # Listagens React
 
-As listagens de negócio usam os componentes de `resources/react/components/Tables/TableList/` para manter o mesmo card, densidade de tabela, estado vazio e rodapé. As telas de Alunos e Itens são as referências integradas atuais.
+As listagens de negócio usam os componentes de `resources/react/components/Tables/TableList/` para manter o mesmo card, densidade de tabela, estado vazio e rodapé. As telas de Alunos e Itens são as referências integradas atuais; Itens é a referência da organização descrita em [arquitetura](architecture.md).
+
+## Composição padrão
+
+```tsx
+const filters = useTableListFilters({ url, initialFilters, emptyFilters, failureText });
+const removal = useConfirmedAction<Registro>({ failureText });
+
+<TableListLayout
+    title="Itens"
+    breadcrumbItems={itemBreadcrumb()}
+    create={can.create && { href: itemUrls.create, label: 'Cadastrar item' }}
+    listLabel="Listagem de itens"
+    loading={filters.loading}
+    loadingLabel="Atualizando itens"
+    filters={<ItemFilters values={filters.values} onUpdate={filters.update} ... />}
+    dialogs={<ItemDeleteModal item={removal.target} ... />}
+>
+    <ItemList items={items} onPageSelect={filters.selectPage} ... />
+</TableListLayout>
+```
+
+- Os filtros usam `TableListFilters` com os campos de `Forms/FormFields`; a grade, o botão limpar e "Mais filtros" são compartilhados. Não defina grades de filtros no CSS do domínio.
+- As colunas ficam em `List/<recurso>Columns.tsx`, com `render` por coluna, e a tabela usa `TableListTable` com `rows` e `rowKey`. A última coluna usa `TableListRowActions`.
+- O modo com `<tr>` filhos continua aceito nas listagens antigas; nele, declare uma célula por coluna na mesma ordem da configuração.
 
 Defina colunas complementares com `defaultVisible: false` em `TableListColumn`. As colunas existentes continuam marcadas por padrão; as complementares aparecem desmarcadas no mesmo seletor. Colunas fixas ou com `hideable: false` permanecem visíveis. Declare uma célula para cada coluna na mesma ordem da configuração, inclusive para as inicialmente ocultas; o componente filtra cabeçalho e corpo juntos e ajusta o `colSpan` do estado vazio. As escolhas permanecem durante filtros e paginação com estado preservado. Ao alterar a seleção, as larguras percentuais são redistribuídas dentro do card e os ajustes manuais de largura reiniciam. O menu tem rolagem vertical para coleções maiores de opções. Sua caixa se expande conforme o maior rótulo, mantendo a borda direita alinhada ao disparador e crescendo para a esquerda. Ao atingir o limite da tela, os rótulos quebram linha, sem rolagem horizontal.
 
@@ -8,7 +32,7 @@ Ofereça campos úteis explicitamente tipados e presentes no contrato real da li
 
 O texto das linhas segue a mesma fonte, peso regular e cor neutra da tabela, inclusive nomes, descrições e identificadores. Não destaque esses campos com negrito ou roxo fixo por tela. `TableList` normaliza o peso de `strong`/`b` no corpo da tabela e os links de texto herdam a tipografia e a cor da célula, sem sublinhado. Hover e foco usam o roxo de `--ui-color-gnai-primary-hover`, com transição suave de cor e respeito a movimento reduzido; o foco de teclado mantém contorno visível. Essas regras não alteram os botões de ação, badges de status, informações secundárias ou avisos semânticos, como prazos vencidos. Preserve os destinos e as condições dos links existentes; nas listagens de empréstimos e fila de espera, o nome do item abre o respectivo cadastro em outra aba.
 
-A moldura da página usa `Navigation/BusinessPage`, que reúne título do documento, breadcrumb, `PageTitle`, ações, flash e erro geral. Wrappers do domínio, como `StudentPage` e `ItemPage`, montam apenas os breadcrumbs e particularidades da funcionalidade.
+A moldura da página usa `Navigation/BusinessPage` (diretamente ou por `TableListLayout`), que reúne título do documento, breadcrumb, `PageTitle`, ações e erro geral. O breadcrumb vem do helper do recurso (`itemBreadcrumb`, baseado em `resourceBreadcrumb`); não crie wrappers de página apenas para montá-lo.
 
 Use `TableListCreateButton` para a ação superior “+ Cadastrar”, no mesmo roxo institucional do Gnai de `Salvar`, por meio dos tokens `--ui-color-save` e `--ui-color-save-hover`. O estado ativo e o destaque da paginação usam o mesmo roxo `--ui-color-gnai-primary`, compartilhado com a topbar. Use `TableListCard` como container da listagem, `TableListScroll` para a região da tabela, `TableListTable` para a barra de registros, seletor de colunas, cabeçalho e corpo, `TableListEmpty` para o estado vazio e `TableListFooter` para resumo e paginação. Passe o paginador do Laravel em `page` para `TableListTable` e `TableListFooter`: os componentes formatam o intervalo de forma centralizada, "1–10 de 14 registros" na barra da tabela e "1–10 de 14" no rodapé, por meio de `formatTableListRange`. Não monte esses textos nas páginas; `summary` em `TableListTable` fica reservado a coleções sem paginação. Ações compactas de linha usam `Tables/TableActions`. Nas listagens CRUD, apresente as ações compactas de Visualizar e Excluir quando a funcionalidade e as respectivas permissões existirem; o frontend apenas oculta ações não autorizadas, enquanto as rotas continuam protegidas pelo backend. Exclusão usa `UI/ConfirmActionModal`, nunca remoção imediata ou `window.confirm`.
 

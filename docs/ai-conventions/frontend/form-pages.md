@@ -4,6 +4,24 @@ Esta convenção documenta o padrão já implementado no cadastro e na edição 
 
 **Na migração, o Blade antigo (removido do repositório; consulte o histórico do git) é referência de dados, comportamentos e regras existentes; o formulário React de alunos é referência para a nova estrutura e identidade visual.** Quando os visuais divergirem, siga o React padronizado e preserve as funcionalidades, permissões e contratos do formulário de origem.
 
+## Composição atual
+
+O formulário de Itens é a referência da organização em pastas descrita em [arquitetura](architecture.md): a página (`pages/Inclusion/Items/Create.tsx`) compõe `BusinessPage` e `ItemForm`; `components/Inclusion/Items/Form/` reúne `ItemForm`, `useItemForm`, os tipos do payload e uma seção por responsabilidade (`ItemIdentificationFields`, `ItemManagementFields`, `ItemInspectionFields`). Os campos usam `Forms/FormFields` e o envio usa `useFormSubmission`.
+
+```tsx
+<TextInputField
+    id="item-name"
+    name="name"
+    label="Descrição do Item"
+    required
+    value={form.data.name}
+    error={errors.name}
+    onChange={(value) => form.setData('name', value)}
+/>
+```
+
+Alunos continua sendo a referência das particularidades descritas abaixo (foto, máscaras, endereço com editor).
+
 ## Referência principal e responsabilidades
 
 Os caminhos abaixo são referências da implementação atual, não uma obrigação de organizar todos os domínios como alunos. Releia o código antes de reutilizar suas APIs.
@@ -12,16 +30,16 @@ Os caminhos abaixo são referências da implementação atual, não uma obrigaç
 | --- | --- |
 | Página de cadastro e título | [Create.tsx](../../../resources/react/pages/Inclusion/Students/Create.tsx) |
 | Página de edição, registro existente e identidade do formulário | [Edit.tsx](../../../resources/react/pages/Inclusion/Students/Edit.tsx) |
-| Composição da página, breadcrumbs, cabeçalho e feedback | [StudentPage.tsx](../../../resources/react/components/Students/StudentPage.tsx) |
-| Dados, campos, seções, submissão, upload e processamento | [StudentForm.tsx](../../../resources/react/components/Students/StudentForm.tsx) |
-| Layout dos campos e adaptações responsivas do exemplo | [Students.css](../../../resources/react/components/Students/Students.css) |
-| Tipos recebidos e auxiliares do domínio | `resources/react/components/Students/Students.types.ts` e `Students.utils.ts` |
-| Falhas de conexão e de resposta HTTP | `resources/react/components/Students/useStudentRequest.ts` |
+| Composição da página, breadcrumbs, cabeçalho e feedback | `Navigation/BusinessPage` + `Inclusion/Students/Students.routes.ts` |
+| Dados, campos, seções, submissão, upload e processamento | [StudentForm.tsx](../../../resources/react/components/Inclusion/Students/Form/StudentForm.tsx) |
+| Layout dos campos e adaptações responsivas do exemplo | [StudentForm.css](../../../resources/react/components/Inclusion/Students/Form/StudentForm.css) |
+| Tipos recebidos e auxiliares do domínio | `components/Inclusion/Students/Students.types.ts`, `Students.constants.ts` e `Students.routes.ts` |
+| Falhas de conexão e de resposta HTTP | `components/Forms/FormLayout/useFormSubmission.ts` |
 | Resolução Inertia e layout compartilhado | `resources/react/main.tsx` e `resources/react/components/Navigation/AppLayout/AppLayout.tsx` |
 
 A página compõe o cabeçalho e recebe as props reais do controller. O componente de formulário controla os dados, erros, envio e estados locais. Componentes compartilhados encapsulam controles, estilos e plugins. As ações principais ficam no rodapé sticky do formulário, sem repetição no cabeçalho.
 
-`StudentPage`, `StudentForm`, seus helpers e suas classes CSS pertencem a alunos. Em outro cadastro, componha os componentes compartilhados adequados; não importe componentes de alunos apenas para obter seu visual, nem faça componentes dependerem de páginas.
+`StudentForm`, seus helpers e suas classes CSS pertencem a alunos. Em outro cadastro, componha os componentes compartilhados adequados; não importe componentes de alunos apenas para obter seu visual, nem faça componentes dependerem de páginas.
 
 ## Classificação das orientações
 
@@ -91,7 +109,7 @@ As fontes e cores compartilhadas estão em `resources/react/styles/tokens.css`, 
 | Erros de campo | `FormField`, controle com borda vermelha e mensagem logo abaixo em 12 px, peso 400 e vermelho do tema uBold; erro não pode depender somente de cor |
 | Salvar e cancelar | `Button` com `tone="save"`/`tone="cancel"`, ícone, texto visível, `title` e `aria-label`; confirmação no roxo institucional do Gnai com ícone de check e cancelamento cinza com X |
 
-`--ui-color-primary` e `--ui-color-custom` ainda representam cores do tema em outros componentes. Não use esses nomes como se já fossem os tokens oficiais roxos do Gnai, nem consolide toda a paleta durante uma migração de formulário.
+`--ui-color-primary` aponta para o roxo institucional; `--ui-color-theme-blue` e `--ui-color-custom` permanecem como cores do tema. Prefira os tokens semânticos (`--ui-color-save`, `--ui-color-form-label`, `--ui-focus-ring-color`) aos nomes genéricos.
 
 Organize campos relacionados com `FormGrid`, usando `FormGridWide` para campos longos e `FormStack` para controles empilhados. Mantenha CSS no domínio somente para composições particulares, como a foto ao lado dos dados pessoais. Preserve padding, bordas, foco e espaçamentos compartilhados; não copie dimensões locais de alunos como regra global.
 
@@ -130,7 +148,7 @@ O nome e o ID acima pertencem ao exemplo; adapte-os ao cadastro. Use hierarquia 
 - Durante o envio, sinalize `aria-busy`, bloqueie campos e ações apropriados e impeça submits duplicados. Alunos usam `fieldset disabled`, props `disabled` dos adaptadores e uma trava em `useRef`, liberada em `onFinish`. O Cancelar do rodapé recebe o estado de processamento. Não confie apenas no `fieldset` para widgets com elementos gerados fora dele.
 - Mantenha mensagens como “Salvando...” e status compreensíveis. `FormActions.status` anuncia o andamento; `form.progress` é usado quando houver upload. Falhas devem permitir corrigir e tentar novamente.
 
-As falhas de conexão e de resposta HTTP são apresentadas por `useStudentRequest` no toast global, por meio de `UI/NotificationToast/notify`. Esse hook é do domínio de alunos: não o copie nem o importe indiscriminadamente em outros cadastros. Reutilize o transporte de feedback compartilhado e, se houver necessidade real de outra abstração, trate-a no escopo autorizado.
+As falhas de conexão e de resposta HTTP são apresentadas por `Forms/FormLayout/useFormSubmission`, que também impede envio duplicado, aplica multipart com `_method` quando há arquivos e focaliza o primeiro campo inválido. Ligue `formRef` ao `FormLayout`. Requisições fora de formulários usam `notifyOperationFailure`/`notifyConnectionFailure` de `UI/NotificationToast/operationFeedback`. O hook do recurso (`Inclusion/Students/Form/useStudentForm`) usa esse transporte compartilhado.
 
 ## Padrões condicionais
 
@@ -208,7 +226,7 @@ Preserve nomes de campos, enums, formato das datas, arquivos e flags aceitos pel
 ## Processo de criação ou migração
 
 1. Leia esta convenção e as instruções `AGENTS.md` aplicáveis antes de implementar.
-2. Releia `Create`, `Edit`, `StudentPage`, `StudentForm` e seus componentes compartilhados para verificar o padrão atual; não presuma que uma nota antiga sobre scaffolds descreve essas páginas hoje.
+2. Releia `Create`, `Edit`, `BusinessPage`, `StudentForm` e seus componentes compartilhados para verificar o padrão atual; não presuma que uma nota antiga sobre scaffolds descreve essas páginas hoje.
 3. Localize a biblioteca interna e confira as APIs, CSS e hooks dos controles necessários.
 4. Em migrações, inspecione o Blade de origem, partials, componentes, estilos e scripts. Inventarie campos, defaults, condições, máscaras, uploads, ações, erros, loading e mensagens.
 5. Rastreie rotas, controllers, Data/Rules, Queries/Presenters, permissões e redirects. Identifique diferenças entre criar e editar antes de definir o payload.

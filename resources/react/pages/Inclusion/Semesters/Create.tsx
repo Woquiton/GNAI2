@@ -1,5 +1,15 @@
-import SemesterForm from "./SemesterForm";
+import SemesterForm from '@/components/Inclusion/Semesters/Form/SemesterForm';
+import { semesterBreadcrumb } from '@/components/Inclusion/Semesters/Semesters.routes';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSemestersCreatePage(): React.JSX.Element {
-    return <SemesterForm />;
+    return (
+        <BusinessPage
+            title="Cadastrar Novo Semestre"
+            subtitle="Defina o período letivo e sua vigência no sistema."
+            breadcrumbItems={semesterBreadcrumb({ current: 'Cadastrar' })}
+        >
+            <SemesterForm />
+        </BusinessPage>
+    );
 }

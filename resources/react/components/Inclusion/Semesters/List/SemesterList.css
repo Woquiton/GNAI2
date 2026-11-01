@@ -1,0 +1,27 @@
+.semesterList__period {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: var(--ui-space-2);
+}
+
+.semesterList__period small {
+    overflow: hidden;
+    color: var(--ui-color-text-muted);
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.semesterList__label {
+    text-transform: uppercase;
+}
+
+/* Destaque da linha do semestre atual. */
+.semesterList__row--current > td {
+    background-color: var(--ui-color-surface-alt);
+}
+
+.semesterList__info {
+    margin: var(--ui-space-4) 0 0;
+}

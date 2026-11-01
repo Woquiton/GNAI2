@@ -1,23 +1,18 @@
-import LocationForm from "./LocationForm";
-import type { InstitutionMapData, InstitutionOption } from "./Location.types";
+import LocationForm from '@/components/Inclusion/Locations/Form/LocationForm';
+import { locationBreadcrumb } from '@/components/Inclusion/Locations/Locations.routes';
+import type { LocationCreateProps } from '@/components/Inclusion/Locations/Locations.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function InclusionLocationsCreatePage({
-    institutions,
-    institutionsData,
-    selectedInstitution,
-    canSubmit,
-}: {
-    institutions: InstitutionOption[];
-    institutionsData: InstitutionMapData[];
-    selectedInstitution: { id: number } | null;
-    canSubmit: boolean;
-}): React.JSX.Element {
+export default function InclusionLocationsCreatePage(
+    options: LocationCreateProps,
+): React.JSX.Element {
     return (
-        <LocationForm
-            institutions={institutions}
-            institutionsData={institutionsData}
-            selectedInstitutionId={selectedInstitution?.id ?? null}
-            canSubmit={canSubmit}
-        />
+        <BusinessPage
+            title="Cadastrar Ponto de Referência"
+            subtitle="Vincule prédios ou áreas específicas a uma instituição base."
+            breadcrumbItems={locationBreadcrumb({ current: 'Cadastrar' })}
+        >
+            <LocationForm options={options} />
+        </BusinessPage>
     );
 }

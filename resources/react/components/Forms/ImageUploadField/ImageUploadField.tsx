@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import FileUploadButton from "@/components/Forms/FileUploadButton/FileUploadButton";
-import Button from "@/components/UI/Button/Button";
-import { joinClassNames } from "@/utils/joinClassNames";
-import "./ImageUploadField.css";
+import { useEffect, useState } from 'react';
+import FileUploadButton from '@/components/Forms/FileUploadButton/FileUploadButton';
+import Button from '@/components/UI/Button/Button';
+import { joinClassNames } from '@/utils/joinClassNames';
+import './ImageUploadField.css';
 
-export const defaultImageAccept = ".jpg,.jpeg,.png,.webp";
+export const defaultImageAccept = '.jpg,.jpeg,.png,.webp';
 
 /** Gera uma URL temporária para a prévia do arquivo e a libera ao trocar ou desmontar. */
 export function useObjectUrl(file: File | null | undefined): string | null {
@@ -37,13 +37,13 @@ export default function ImageUploadField({
     file,
     currentUrl,
     removed = false,
-    previewAlt = "",
+    previewAlt = '',
     accept = defaultImageAccept,
     maxSizeBytes = 4 * 1024 * 1024,
     disabled = false,
     invalid = false,
     describedBy,
-    variant = "landscape",
+    variant = 'landscape',
     onChange,
     onRemove,
     onError,
@@ -60,22 +60,24 @@ export default function ImageUploadField({
     disabled?: boolean;
     invalid?: boolean;
     describedBy?: string;
-    variant?: "landscape" | "logo";
+    variant?: 'landscape' | 'logo';
     onChange: (file: File) => void;
     onRemove: () => void;
     onError?: (message: string) => void;
 }): React.JSX.Element {
     const fileUrl = useObjectUrl(file);
-    const previewUrl = fileUrl ?? (removed ? null : currentUrl ?? null);
-    const allowed = accept.split(",").map((extension) => extension.trim().toLowerCase());
+    const previewUrl = fileUrl ?? (removed ? null : (currentUrl ?? null));
+    const allowed = accept.split(',').map((extension) => extension.trim().toLowerCase());
 
     function select(selected: File | undefined): void {
         if (!selected) return;
 
-        const extension = `.${selected.name.split(".").pop()?.toLowerCase() ?? ""}`;
+        const extension = `.${selected.name.split('.').pop()?.toLowerCase() ?? ''}`;
 
         if (!allowed.includes(extension)) {
-            onError?.(`Selecione uma imagem nos formatos ${allowed.join(", ").replaceAll(".", "").toUpperCase()}.`);
+            onError?.(
+                `Selecione uma imagem nos formatos ${allowed.join(', ').replaceAll('.', '').toUpperCase()}.`,
+            );
             return;
         }
 
@@ -90,9 +92,9 @@ export default function ImageUploadField({
     return (
         <div
             className={joinClassNames(
-                "imageUploadField",
+                'imageUploadField',
                 `imageUploadField--${variant}`,
-                invalid && "imageUploadField--invalid",
+                invalid && 'imageUploadField--invalid',
             )}
         >
             <div className="imageUploadField__preview">
@@ -109,14 +111,18 @@ export default function ImageUploadField({
                 <FileUploadButton
                     id={id}
                     name={name}
-                    label={previewUrl ? `Trocar ${label.toLowerCase()}` : `Escolher ${label.toLowerCase()}`}
+                    label={
+                        previewUrl
+                            ? `Trocar ${label.toLowerCase()}`
+                            : `Escolher ${label.toLowerCase()}`
+                    }
                     accept={accept}
                     disabled={disabled}
                     aria-invalid={invalid || undefined}
                     aria-describedby={describedBy}
                     onChange={(event) => {
                         select(event.target.files?.[0]);
-                        event.target.value = "";
+                        event.target.value = '';
                     }}
                 />
                 {previewUrl ? (

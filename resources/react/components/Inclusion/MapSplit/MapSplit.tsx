@@ -1,5 +1,12 @@
-import type { ReactNode } from "react";
-import "./MapSplit.css";
+import type { ReactNode } from 'react';
+import { joinClassNames } from '@/utils/joinClassNames';
+import './MapSplit.css';
+
+interface MapSplitProps {
+    children: ReactNode;
+    /** Coluna do mapa mais larga, para telas em que o mapa fica sozinho à direita. */
+    wideAside?: boolean;
+}
 
 /**
  * Divide o conteúdo de um card com mapa: dados em `MapSplitMain`, à esquerda,
@@ -9,12 +16,12 @@ import "./MapSplit.css";
 export default function MapSplit({
     children,
     wideAside = false,
-}: {
-    children: ReactNode;
-    /** Coluna do mapa mais larga, para telas em que o mapa fica sozinho à direita. */
-    wideAside?: boolean;
-}): React.JSX.Element {
-    return <div className={wideAside ? "mapSplit mapSplit--wideAside" : "mapSplit"}>{children}</div>;
+}: MapSplitProps): React.JSX.Element {
+    return (
+        <div className={joinClassNames('mapSplit', wideAside && 'mapSplit--wideAside')}>
+            {children}
+        </div>
+    );
 }
 
 export function MapSplitMain({ children }: { children: ReactNode }): React.JSX.Element {

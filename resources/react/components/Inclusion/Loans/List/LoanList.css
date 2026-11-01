@@ -1,0 +1,5 @@
+/* Prazo vencido: aviso semântico da listagem de empréstimos. */
+.loanList__overdue {
+    color: var(--ui-color-danger);
+    font-weight: 700;
+}

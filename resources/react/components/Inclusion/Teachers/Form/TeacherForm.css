@@ -1,0 +1,29 @@
+/* Foto à esquerda dos dados pessoais, como no cadastro de alunos. */
+.teacherForm__personal {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--ui-space-6) 40px;
+    margin-bottom: var(--ui-space-5);
+}
+
+.teacherForm__personal .personPhotoUpload {
+    margin-bottom: 0;
+}
+
+.teacherForm__personal .personPhotoUpload__divider {
+    display: none;
+}
+
+.teacherForm__personalFields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-5);
+    min-width: 0;
+}
+
+@media (max-width: 900px) {
+    .teacherForm__personal {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

@@ -1,105 +1,53 @@
-import { useEffect, useRef, useState } from "react";
-import { loadExternalScript } from "@/utils/loadExternalScript";
-import "/public/assets/react/plugins/leaflet/leaflet.css";
-import "./GeoMap.css";
+import { useEffect, useRef, useState } from 'react';
+import { joinClassNames } from '@/utils/joinClassNames';
+import { loadExternalScript } from '@/utils/loadExternalScript';
+import type {
+    GeoMapProps,
+    GeoPoint,
+    LeafletLayer,
+    LeafletLayerGroup,
+    LeafletMap,
+    LeafletRuntime,
+} from './GeoMap.types';
+import {
+    escapeTooltipText,
+    formatCoordinate,
+    GEO_MAP_DEFAULT_CENTER,
+    isValidGeoPoint,
+} from './GeoMap.utils';
+import '/public/assets/react/plugins/leaflet/leaflet.css';
+import './GeoMap.css';
 
-export type GeoPoint = {
-    latitude: number;
-    longitude: number;
+export type { GeoMapMarker, GeoMapProps, GeoMapReference, GeoPoint } from './GeoMap.types';
+
+const LEAFLET_SCRIPT = '/assets/react/plugins/leaflet/leaflet.js';
+
+/* Cores do Leaflet (SVG): os tooltips correspondentes ficam em GeoMap.css. */
+const institutionMarkerStyle = {
+    radius: 9,
+    color: '#c0392b',
+    fillColor: '#e74c3c',
+    fillOpacity: 0.9,
+};
+const locationMarkerStyle = {
+    radius: 6,
+    color: '#68737d',
+    fillColor: '#98a6ad',
+    fillOpacity: 0.9,
 };
 
-export type GeoMapMarker = GeoPoint & {
-    id: number;
-    label: string;
-};
-
-export type GeoMapReference = GeoPoint & {
-    id: number;
-    name: string;
-    default_zoom?: number;
-    locations?: GeoMapMarker[];
-};
-
-type LeafletLayer = {
-    addTo(map: LeafletMap | LeafletLayerGroup): LeafletLayer;
-    bindTooltip(text: string, options?: Record<string, unknown>): LeafletLayer;
-    setLatLng(point: [number, number]): void;
-    on(event: string, handler: (event: LeafletEvent) => void): void;
-    dragging?: { enable(): void; disable(): void };
-};
-
-type LeafletLayerGroup = {
-    addTo(map: LeafletMap): LeafletLayerGroup;
-    addLayer(layer: LeafletLayer): void;
-    clearLayers(): void;
-};
-
-type LeafletMap = {
-    remove(): void;
-    invalidateSize(): void;
-    flyTo(point: [number, number], zoom?: number, options?: Record<string, unknown>): void;
-    setView(point: [number, number], zoom?: number): void;
-    getZoom(): number;
-    getSize(): { x: number; y: number };
-    addLayer(layer: LeafletLayerGroup): void;
-    removeLayer(layer: LeafletLayerGroup): void;
-    on(event: string, handler: (event: LeafletEvent) => void): void;
-};
-
-type LeafletEvent = {
-    latlng?: { lat: number; lng: number };
-    target?: { getLatLng(): { lat: number; lng: number } };
-};
-
-type LeafletRuntime = {
-    map(element: HTMLElement, options: Record<string, unknown>): LeafletMap;
-    tileLayer(url: string, options: Record<string, unknown>): LeafletLayer;
-    marker(point: [number, number], options?: Record<string, unknown>): LeafletLayer;
-    circleMarker(point: [number, number], options?: Record<string, unknown>): LeafletLayer;
-    layerGroup(): LeafletLayerGroup;
-    control: {
-        layers(layers: Record<string, LeafletLayer>): {
-            addTo(map: LeafletMap): void;
-        };
-    };
-};
-
-type GeoMapProps = {
-    title: string;
-    value: GeoPoint;
-    zoom: number;
-    editable?: boolean;
-    interactionEnabled?: boolean;
-    height?: number;
-    markerLabel: string;
-    reference?: GeoMapReference | null;
-    excludedLocationId?: number;
-    onChange?: (point: GeoPoint) => void;
-    onBlockedInteraction?: () => void;
-    onZoomChange?: (zoom: number) => void;
-    showReferenceMarkers?: boolean;
-};
-
-const defaultCenter: GeoPoint = { latitude: -14.235, longitude: -51.9253 };
-
-function validPoint(point: GeoPoint): boolean {
-    return Number.isFinite(point.latitude)
-        && Number.isFinite(point.longitude)
-        && Math.abs(point.latitude) <= 90
-        && Math.abs(point.longitude) <= 180;
+function leafletRuntime(): LeafletRuntime | undefined {
+    return (window as Window & { L?: LeafletRuntime }).L;
 }
 
-function escapeTooltipText(value: string): string {
-    const replacements: Record<string, string> = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-    };
-    return value.replace(/[&<>"']/g, (character) => replacements[character] ?? character);
+function coordinateText(value: number, valid: boolean): string {
+    return valid ? formatCoordinate(value) : 'Não informado';
 }
 
+/**
+ * Mapa Leaflet das telas de inclusão. A instituição em `reference` define o enquadramento
+ * (coordenadas e `default_zoom`) e os marcadores de apoio; `value` é a posição real do marcador.
+ */
 export default function GeoMap({
     title,
     value,
@@ -110,10 +58,12 @@ export default function GeoMap({
     markerLabel,
     reference,
     excludedLocationId,
+    showReferenceMarkers = true,
+    error,
+    lockedMessage,
     onChange,
     onBlockedInteraction,
     onZoomChange,
-    showReferenceMarkers = true,
 }: GeoMapProps): React.JSX.Element {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<LeafletMap | null>(null);
@@ -131,66 +81,94 @@ export default function GeoMap({
     onBlockedInteractionRef.current = onBlockedInteraction;
     interactionEnabledRef.current = interactionEnabled;
     onZoomChangeRef.current = onZoomChange;
+
+    const { latitude, longitude } = value;
+    const validValue = isValidGeoPoint(value);
+    const hasReference = Boolean(reference);
+    const referenceId = reference?.id;
     // A sede define o enquadramento; value mantém a posição real do marcador.
-    const viewportCenter = reference && validPoint(reference)
-        ? reference
-        : validPoint(value) ? value : defaultCenter;
+    const viewportCenter =
+        reference && isValidGeoPoint(reference)
+            ? reference
+            : validValue
+              ? value
+              : GEO_MAP_DEFAULT_CENTER;
+    const { latitude: centerLatitude, longitude: centerLongitude } = viewportCenter;
     const viewportZoom = reference?.default_zoom ?? zoom;
+    const hint = interactionEnabled
+        ? 'Clique no mapa ou arraste o marcador para definir o ponto.'
+        : 'Selecione uma instituição base para posicionar o local.';
 
     useEffect(() => {
         let disposed = false;
         let resizeObserver: ResizeObserver | undefined;
         let resizeTimer: number | undefined;
-        void loadExternalScript("/assets/react/plugins/leaflet/leaflet.js")
+
+        void loadExternalScript(LEAFLET_SCRIPT)
             .then(() => {
                 if (disposed || !containerRef.current) return;
-                const leaflet = (window as Window & { L?: LeafletRuntime }).L;
-                if (!leaflet) throw new Error("Leaflet não foi carregado.");
+                const leaflet = leafletRuntime();
+                if (!leaflet) throw new Error('Leaflet não foi carregado.');
 
-                const point = validPoint(value) ? value : defaultCenter;
+                const point = validValue ? value : GEO_MAP_DEFAULT_CENTER;
                 const map = leaflet.map(containerRef.current, {
-                    center: [viewportCenter.latitude, viewportCenter.longitude],
+                    center: [centerLatitude, centerLongitude],
                     zoom: viewportZoom,
                     scrollWheelZoom: true,
                 });
-                const streets = leaflet.tileLayer(
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    { attribution: "© OpenStreetMap", maxZoom: 19 },
-                ).addTo(map);
+                const streets = leaflet
+                    .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap',
+                        maxZoom: 19,
+                    })
+                    .addTo(map);
                 const satellite = leaflet.tileLayer(
-                    "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-                    { attribution: "© Google Maps", maxZoom: 21 },
+                    'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                    { attribution: '© Google Maps', maxZoom: 21 },
                 );
-                leaflet.control.layers({ "Mapa de ruas (OSM)": streets, "Satélite (Google)": satellite }).addTo(map);
+                leaflet.control
+                    .layers({ 'Mapa de ruas (OSM)': streets, 'Satélite (Google)': satellite })
+                    .addTo(map);
                 const referenceMarkers = leaflet.layerGroup().addTo(map);
-                const selectedMarker = leaflet.marker(
-                    [point.latitude, point.longitude],
-                    { draggable: editable && interactionEnabled },
-                ).addTo(map).bindTooltip(escapeTooltipText(markerLabel), {
-                    permanent: true,
-                    direction: "top",
-                    offset: [-15, -30],
-                    className: "geoMap__selectedTooltip",
-                });
+                const selectedMarker = leaflet
+                    .marker([point.latitude, point.longitude], {
+                        draggable: editable && interactionEnabled,
+                    })
+                    .addTo(map)
+                    .bindTooltip(escapeTooltipText(markerLabel), {
+                        permanent: true,
+                        direction: 'top',
+                        offset: [-15, -30],
+                        className: 'geoMap__selectedTooltip',
+                    });
 
                 if (editable) {
-                    map.on("click", (event) => {
+                    map.on('click', (event) => {
                         if (!interactionEnabledRef.current) {
                             onBlockedInteractionRef.current?.();
                             return;
                         }
-                        const coordinates = event.latlng;
-                        if (coordinates) onChangeRef.current?.({ latitude: coordinates.lat, longitude: coordinates.lng });
+                        if (event.latlng) {
+                            onChangeRef.current?.({
+                                latitude: event.latlng.lat,
+                                longitude: event.latlng.lng,
+                            });
+                        }
                     });
-                    selectedMarker.on("dragend", (event) => {
+                    selectedMarker.on('dragend', (event) => {
                         if (!interactionEnabledRef.current) return;
                         const coordinates = event.target?.getLatLng();
-                        if (coordinates) onChangeRef.current?.({ latitude: coordinates.lat, longitude: coordinates.lng });
+                        if (coordinates) {
+                            onChangeRef.current?.({
+                                latitude: coordinates.lat,
+                                longitude: coordinates.lng,
+                            });
+                        }
                     });
                 }
-                map.on("zoomend", (event) => {
-                    const target = event.target as unknown as { getZoom(): number } | undefined;
-                    if (target) onZoomChangeRef.current?.(target.getZoom());
+                map.on('zoomend', (event) => {
+                    const nextZoom = event.target?.getZoom?.();
+                    if (nextZoom !== undefined) onZoomChangeRef.current?.(nextZoom);
                 });
 
                 mapRef.current = map;
@@ -214,63 +192,67 @@ export default function GeoMap({
             selectedMarkerRef.current = null;
             referenceMarkersRef.current = null;
         };
-        // The map is initialized once; controlled values are synchronized below.
+        // O mapa é criado uma única vez; os valores controlados são sincronizados abaixo.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        if (!editable || !selectedMarkerRef.current?.dragging) return;
-        if (interactionEnabled) selectedMarkerRef.current.dragging.enable();
-        else selectedMarkerRef.current.dragging.disable();
+        const dragging = selectedMarkerRef.current?.dragging;
+        if (!editable || !dragging) return;
+        if (interactionEnabled) dragging.enable();
+        else dragging.disable();
     }, [editable, interactionEnabled, ready]);
 
     useEffect(() => {
-        if (!validPoint(value)) return;
-        selectedMarkerRef.current?.setLatLng([value.latitude, value.longitude]);
-    }, [value.latitude, value.longitude, ready]);
+        if (!isValidGeoPoint({ latitude, longitude })) return;
+        selectedMarkerRef.current?.setLatLng([latitude, longitude]);
+    }, [latitude, longitude, ready]);
 
     useEffect(() => {
         const map = mapRef.current;
         if (!map || !ready || !Number.isFinite(viewportZoom) || viewportZoom < 0) return;
-        const point: [number, number] = [viewportCenter.latitude, viewportCenter.longitude];
-        const changedInstitution = previousReferenceIdRef.current !== reference?.id;
-        const changedCenter = previousViewportCenterRef.current?.latitude !== viewportCenter.latitude
-            || previousViewportCenterRef.current?.longitude !== viewportCenter.longitude;
-        previousReferenceIdRef.current = reference?.id;
+        const point: [number, number] = [centerLatitude, centerLongitude];
+        const changedInstitution = previousReferenceIdRef.current !== referenceId;
+        const changedCenter =
+            previousViewportCenterRef.current?.latitude !== centerLatitude ||
+            previousViewportCenterRef.current?.longitude !== centerLongitude;
+        previousReferenceIdRef.current = referenceId;
         previousViewportCenterRef.current = {
-            latitude: viewportCenter.latitude,
-            longitude: viewportCenter.longitude,
+            latitude: centerLatitude,
+            longitude: centerLongitude,
         };
         // Com o contêiner sem tamanho, o flyTo do Leaflet calcula NaN e lança erro.
         const size = map.getSize();
-        if (changedInstitution && reference && size.x > 0 && size.y > 0) {
+        if (changedInstitution && hasReference && size.x > 0 && size.y > 0) {
             map.flyTo(point, viewportZoom, { animate: true, duration: 0.8 });
-        } else if (changedInstitution && reference) {
+        } else if (changedInstitution && hasReference) {
             map.setView(point, viewportZoom);
         } else if (changedCenter || map.getZoom() !== viewportZoom) {
             map.setView(point, viewportZoom);
         }
-    }, [viewportCenter.latitude, viewportCenter.longitude, viewportZoom, reference?.id, ready]);
+    }, [centerLatitude, centerLongitude, viewportZoom, referenceId, hasReference, ready]);
 
     useEffect(() => {
-        const leaflet = (window as Window & { L?: LeafletRuntime }).L;
-        const map = mapRef.current;
+        const leaflet = leafletRuntime();
         const group = referenceMarkersRef.current;
-        if (!leaflet || !map || !group) return;
+        if (!leaflet || !mapRef.current || !group) return;
         group.clearLayers();
 
-        if (reference && validPoint(reference)) {
-            leaflet.circleMarker(
-                [reference.latitude, reference.longitude],
-                { radius: 9, color: "#c0392b", fillColor: "#e74c3c", fillOpacity: 0.9 },
-            ).addTo(group).bindTooltip(escapeTooltipText(`Sede: ${reference.name}`), { className: "geoMap__institutionTooltip" });
-            for (const location of reference.locations ?? []) {
-                if (location.id === excludedLocationId || !validPoint(location)) continue;
-                leaflet.circleMarker(
-                    [location.latitude, location.longitude],
-                    { radius: 6, color: "#68737d", fillColor: "#98a6ad", fillOpacity: 0.9 },
-                ).addTo(group).bindTooltip(escapeTooltipText(location.label), { className: "geoMap__locationTooltip" });
-            }
+        if (!reference || !isValidGeoPoint(reference)) return;
+        leaflet
+            .circleMarker([reference.latitude, reference.longitude], institutionMarkerStyle)
+            .addTo(group)
+            .bindTooltip(escapeTooltipText(`Sede: ${reference.name}`), {
+                className: 'geoMap__institutionTooltip',
+            });
+        for (const location of reference.locations ?? []) {
+            if (location.id === excludedLocationId || !isValidGeoPoint(location)) continue;
+            leaflet
+                .circleMarker([location.latitude, location.longitude], locationMarkerStyle)
+                .addTo(group)
+                .bindTooltip(escapeTooltipText(location.label), {
+                    className: 'geoMap__locationTooltip',
+                });
         }
     }, [reference, excludedLocationId, loadError, ready]);
 
@@ -283,16 +265,10 @@ export default function GeoMap({
     }, [showReferenceMarkers, ready]);
 
     return (
-        <div className="geoMap">
+        <div className={joinClassNames('geoMap', lockedMessage ? 'geoMap--locked' : undefined)}>
             <div className="geoMap__heading">
                 <h3>{title}</h3>
-                {editable ? (
-                    <span>
-                        {interactionEnabled
-                            ? "Clique no mapa ou arraste o marcador para definir o ponto."
-                            : "Selecione uma instituição base para posicionar o local."}
-                    </span>
-                ) : null}
+                {editable ? <span>{hint}</span> : null}
             </div>
             <div
                 ref={containerRef}
@@ -300,7 +276,7 @@ export default function GeoMap({
                 style={{ height }}
                 role="region"
                 aria-label={title}
-                aria-busy={!loadError && !mapRef.current}
+                aria-busy={!loadError && !ready}
             />
             {loadError ? (
                 <p className="geoMap__message" role="status">
@@ -308,9 +284,25 @@ export default function GeoMap({
                 </p>
             ) : null}
             <dl className="geoMap__coordinates">
-                <div><dt>Latitude</dt><dd>{validPoint(value) ? value.latitude.toFixed(8) : "Não informado"}</dd></div>
-                <div><dt>Longitude</dt><dd>{validPoint(value) ? value.longitude.toFixed(8) : "Não informado"}</dd></div>
+                <div>
+                    <dt>Latitude</dt>
+                    <dd>{coordinateText(latitude, validValue)}</dd>
+                </div>
+                <div>
+                    <dt>Longitude</dt>
+                    <dd>{coordinateText(longitude, validValue)}</dd>
+                </div>
             </dl>
+            {error ? (
+                <p className="geoMap__message" role="alert">
+                    {error}
+                </p>
+            ) : null}
+            {lockedMessage ? (
+                <div className="geoMap__lock">
+                    <span>{lockedMessage}</span>
+                </div>
+            ) : null}
         </div>
     );
 }

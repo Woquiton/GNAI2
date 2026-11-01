@@ -1,0 +1,21 @@
+.caseStudyContributionForm {
+    margin-top: var(--ui-space-5);
+}
+
+/* Papel, contribuição e o botão na mesma linha; o texto ocupa a maior parte. */
+.caseStudyContributionForm fieldset {
+    display: grid;
+    grid-template-columns: minmax(140px, 1fr) minmax(0, 3fr) auto;
+    align-items: end;
+    gap: var(--ui-space-4);
+}
+
+.caseStudyContributionForm__submit {
+    padding-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+    .caseStudyContributionForm fieldset {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

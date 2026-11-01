@@ -1,0 +1,11 @@
+.mailSettings__test {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.mailSettings__test .formField {
+    flex: 1 1 280px;
+    margin-bottom: 0;
+}

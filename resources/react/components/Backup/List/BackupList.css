@@ -1,0 +1,53 @@
+.backupList__headerActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.backupList__fileInput {
+    display: none;
+}
+
+.backupList__fileError {
+    flex-basis: 100%;
+    color: var(--ui-color-danger);
+    font-size: 12px;
+}
+
+.backupList__file {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+}
+
+.backupList__file span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.backupList__file i {
+    flex: 0 0 auto;
+    color: var(--ui-color-warning);
+}
+
+.backupList .tableActions {
+    flex-wrap: wrap;
+    white-space: normal;
+}
+
+.backupList__retention {
+    margin-top: 20px;
+}
+
+.backupList__restoreDetails {
+    display: grid;
+    gap: 8px;
+}
+
+.backupList__restoreDetails small {
+    color: var(--ui-color-text-muted);
+    line-height: 1.5;
+}

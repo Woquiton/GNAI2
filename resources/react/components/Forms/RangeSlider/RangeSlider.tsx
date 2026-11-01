@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { joinClassNames } from "@/utils/joinClassNames";
-import { loadExternalScript } from "@/utils/loadExternalScript";
-import { loadExternalStylesheet } from "@/utils/loadExternalStylesheet";
-import "./RangeSlider.css";
+import { useEffect, useRef, useState } from 'react';
+import { joinClassNames } from '@/utils/joinClassNames';
+import { loadExternalScript } from '@/utils/loadExternalScript';
+import { loadExternalStylesheet } from '@/utils/loadExternalStylesheet';
+import './RangeSlider.css';
 
 type IonSliderData = { from: number };
 
@@ -22,8 +22,8 @@ interface IonCollection {
 type IonRuntime = ((element: Element) => IonCollection) & { fn?: { ionRangeSlider?: unknown } };
 
 const stylesheets = [
-    "/assets/react/plugins/ion-rangeslider/ion.rangeSlider.css",
-    "/assets/react/plugins/ion-rangeslider/ion.rangeSlider.skinFlat.css",
+    '/assets/react/plugins/ion-rangeslider/ion.rangeSlider.css',
+    '/assets/react/plugins/ion-rangeslider/ion.rangeSlider.skinFlat.css',
 ];
 
 export interface RangeSliderProps {
@@ -78,20 +78,20 @@ export default function RangeSlider({
     current.current = { value, disabled, label, describedBy, invalid, live };
 
     function describeTrack(): void {
-        const track = root.current?.querySelector<HTMLElement>(".irs-line");
+        const track = root.current?.querySelector<HTMLElement>('.irs-line');
         if (!track) return;
         const state = current.current;
-        track.setAttribute("role", "slider");
-        track.setAttribute("tabindex", state.disabled ? "-1" : "0");
-        track.setAttribute("aria-label", state.label);
-        track.setAttribute("aria-valuemin", String(min));
-        track.setAttribute("aria-valuemax", String(max));
-        track.setAttribute("aria-valuenow", String(state.value));
-        track.setAttribute("aria-disabled", String(state.disabled));
-        if (state.invalid) track.setAttribute("aria-invalid", "true");
-        else track.removeAttribute("aria-invalid");
-        if (state.describedBy) track.setAttribute("aria-describedby", state.describedBy);
-        else track.removeAttribute("aria-describedby");
+        track.setAttribute('role', 'slider');
+        track.setAttribute('tabindex', state.disabled ? '-1' : '0');
+        track.setAttribute('aria-label', state.label);
+        track.setAttribute('aria-valuemin', String(min));
+        track.setAttribute('aria-valuemax', String(max));
+        track.setAttribute('aria-valuenow', String(state.value));
+        track.setAttribute('aria-disabled', String(state.disabled));
+        if (state.invalid) track.setAttribute('aria-invalid', 'true');
+        else track.removeAttribute('aria-invalid');
+        if (state.describedBy) track.setAttribute('aria-describedby', state.describedBy);
+        else track.removeAttribute('aria-describedby');
         // O plugin só aceita as setas na instância ativada por ponteiro; o foco por Tab também a ativa.
         track.onfocus = () => {
             const slider = instance.current;
@@ -104,8 +104,10 @@ export default function RangeSlider({
 
         async function initialize(): Promise<void> {
             await Promise.all(stylesheets.map((href) => loadExternalStylesheet(href)));
-            await loadExternalScript("/assets/react/js/jquery.min.js");
-            await loadExternalScript("/assets/react/plugins/ion-rangeslider/ion.rangeSlider.min.js");
+            await loadExternalScript('/assets/react/js/jquery.min.js');
+            await loadExternalScript(
+                '/assets/react/plugins/ion-rangeslider/ion.rangeSlider.min.js',
+            );
             const $ = (window as unknown as { jQuery?: IonRuntime }).jQuery;
             if (disposed || !input.current || !$?.fn?.ionRangeSlider) return;
 
@@ -120,15 +122,18 @@ export default function RangeSlider({
                 hide_min_max: grid,
                 disable: current.current.disabled,
                 onChange: (data: IonSliderData) => {
-                    root.current?.querySelector(".irs-line")?.setAttribute("aria-valuenow", String(data.from));
-                    if (current.current.live && data.from !== current.current.value) callback.current(data.from);
+                    root.current
+                        ?.querySelector('.irs-line')
+                        ?.setAttribute('aria-valuenow', String(data.from));
+                    if (current.current.live && data.from !== current.current.value)
+                        callback.current(data.from);
                 },
                 onFinish: (data: IonSliderData) => {
                     interacting.current = false;
                     if (data.from !== current.current.value) callback.current(data.from);
                 },
             });
-            instance.current = $(input.current).data("ionRangeSlider") as IonSliderInstance;
+            instance.current = $(input.current).data('ionRangeSlider') as IonSliderInstance;
             describeTrack();
         }
 
@@ -147,23 +152,26 @@ export default function RangeSlider({
         const finish = (): void => {
             interacting.current = false;
         };
-        window.addEventListener("pointerup", finish);
-        window.addEventListener("pointercancel", finish);
+        window.addEventListener('pointerup', finish);
+        window.addEventListener('pointercancel', finish);
 
         return () => {
-            window.removeEventListener("pointerup", finish);
-            window.removeEventListener("pointercancel", finish);
+            window.removeEventListener('pointerup', finish);
+            window.removeEventListener('pointercancel', finish);
         };
     }, []);
 
     useEffect(() => {
         const slider = instance.current;
         if (!slider || interacting.current) return;
-        const track = root.current?.querySelector(".irs-line");
+        const track = root.current?.querySelector('.irs-line');
         const hadFocus = !!track && track === document.activeElement;
-        if (slider.result?.from !== value || track?.getAttribute("aria-disabled") !== String(disabled)) {
+        if (
+            slider.result?.from !== value ||
+            track?.getAttribute('aria-disabled') !== String(disabled)
+        ) {
             slider.update({ from: value, disable: disabled });
-            if (hadFocus) root.current?.querySelector<HTMLElement>(".irs-line")?.focus();
+            if (hadFocus) root.current?.querySelector<HTMLElement>('.irs-line')?.focus();
         }
         describeTrack();
     }, [value, disabled, label, describedBy, invalid]);
@@ -175,9 +183,9 @@ export default function RangeSlider({
                 interacting.current = true;
             }}
             className={joinClassNames(
-                "rangeSlider",
-                invalid ? "rangeSlider--invalid" : undefined,
-                disabled ? "rangeSlider--disabled" : undefined,
+                'rangeSlider',
+                invalid ? 'rangeSlider--invalid' : undefined,
+                disabled ? 'rangeSlider--disabled' : undefined,
                 className,
             )}
         >
@@ -197,7 +205,16 @@ export default function RangeSlider({
                     onChange={(event) => callback.current(Number(event.target.value))}
                 />
             ) : (
-                <input ref={input} id={id} name={name} type="text" defaultValue={value} readOnly tabIndex={-1} aria-hidden="true" />
+                <input
+                    ref={input}
+                    id={id}
+                    name={name}
+                    type="text"
+                    defaultValue={value}
+                    readOnly
+                    tabIndex={-1}
+                    aria-hidden="true"
+                />
             )}
         </div>
     );

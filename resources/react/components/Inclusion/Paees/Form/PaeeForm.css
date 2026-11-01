@@ -1,0 +1,21 @@
+/* Blocos repetíveis: a descrição ocupa a maior parte da linha e o select fica ao lado. */
+.paeeForm__item {
+    display: grid;
+    gap: var(--ui-space-4) var(--ui-space-6);
+    align-items: start;
+}
+
+.paeeForm__item--objective {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+}
+
+.paeeForm__item--resource {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+@media (max-width: 700px) {
+    .paeeForm__item--objective,
+    .paeeForm__item--resource {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

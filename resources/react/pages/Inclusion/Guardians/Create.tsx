@@ -1,24 +1,18 @@
-import GuardianForm from "./GuardianForm";
-import GuardianPage from "./GuardianPage";
-import type { GuardianFormOptions } from "./Guardian.types";
+import GuardianForm from '@/components/Inclusion/Guardians/Form/GuardianForm';
+import { guardianBreadcrumb } from '@/components/Inclusion/Guardians/Guardians.routes';
+import type { GuardianCreateProps } from '@/components/Inclusion/Guardians/Guardians.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionGuardiansCreatePage(
-    props: GuardianFormOptions & { defaultGender?: string },
+    props: GuardianCreateProps,
 ): React.JSX.Element {
     return (
-        <GuardianPage
+        <BusinessPage
             title="Cadastrar Responsável"
             subtitle={`Aluno: ${props.student.person.name}`}
-            current="Cadastrar"
-            student={props.student}
+            breadcrumbItems={guardianBreadcrumb({ student: props.student, current: 'Cadastrar' })}
         >
-            <GuardianForm
-                mode="create"
-                student={props.student}
-                genders={props.genders}
-                relationships={props.relationships}
-                defaultGender={props.defaultGender}
-            />
-        </GuardianPage>
+            <GuardianForm mode="create" {...props} />
+        </BusinessPage>
     );
 }

@@ -35,11 +35,11 @@
     background: var(--about-divider-color);
 }
 
-.siteAbout__title[data-title-align="center"]::after {
+.siteAbout__title[data-title-align='center']::after {
     margin-inline: auto;
 }
 
-.siteAbout__title[data-title-align="right"]::after {
+.siteAbout__title[data-title-align='right']::after {
     margin-left: auto;
 }
 

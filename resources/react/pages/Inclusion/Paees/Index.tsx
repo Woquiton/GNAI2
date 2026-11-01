@@ -1,44 +1,66 @@
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import StudentRecordReturnButton from "@/components/Students/StudentRecordReturnButton";
+import PaeeDeleteModal from '@/components/Inclusion/Paees/PaeeDeleteModal';
+import PaeeFilters from '@/components/Inclusion/Paees/List/PaeeFilters';
+import PaeeList from '@/components/Inclusion/Paees/List/PaeeList';
+import { usePaeeList } from '@/components/Inclusion/Paees/List/usePaeeList';
 import {
-    studentRecordUrl,
-    studentsBase,
-} from "@/components/Students/Students.utils";
-import PaeeList from "./PaeeList";
-import type {
-    PaeeListProps,
-    PaeeStudentSummary,
-} from "./Paees.types";
-import { studentPaeesTab } from "./Paees.utils";
+    paeeStudentBreadcrumb,
+    paeeUrls,
+    studentPaeesTab,
+} from '@/components/Inclusion/Paees/Paees.routes';
+import type { PaeeStudentListProps } from '@/components/Inclusion/Paees/Paees.types';
+import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
+import { TableListLayout } from '@/components/Tables/TableList/TableList';
 
 export default function InclusionPaeesIndexPage({
+    paees,
     student,
-    ...props
-}: PaeeListProps & {
-    student: PaeeStudentSummary;
-}): React.JSX.Element {
+    semesters,
+    filters: initialFilters,
+    can,
+}: PaeeStudentListProps): React.JSX.Element {
+    const { errors, filters, removal } = usePaeeList({
+        url: paeeUrls.student(student.id),
+        initialFilters,
+    });
+
     return (
-        <BusinessPage
+        <TableListLayout
             title={`PAEE de ${student.name}`}
             subtitle="Planos de Atendimento Educacional Especializado do aluno."
-            breadcrumbItems={[
-                { label: "Home", href: "/autenticacao/painel" },
-                { label: "Alunos", href: studentsBase },
-                { label: student.name, href: studentRecordUrl(student.id, studentPaeesTab) },
-                { label: "PAEE" },
-            ]}
-            actions={
-                <StudentRecordReturnButton
-                    studentId={student.id}
-                    tab={studentPaeesTab}
+            breadcrumbItems={paeeStudentBreadcrumb(student, { recordTab: true, current: 'PAEE' })}
+            actions={<StudentRecordReturnButton studentId={student.id} tab={studentPaeesTab} />}
+            listLabel="PAEEs do aluno"
+            loading={filters.loading}
+            loadingLabel="Atualizando PAEEs"
+            filters={
+                <PaeeFilters
+                    values={filters.values}
+                    semesters={semesters}
+                    showSearch={false}
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
                 />
             }
-            className="paeesPage"
+            dialogs={
+                <PaeeDeleteModal
+                    name={removal.name}
+                    processing={removal.processing}
+                    onClose={removal.close}
+                    onConfirm={removal.confirm}
+                />
+            }
         >
             <PaeeList
-                {...props}
-                student={student}
+                paees={paees}
+                byStudent
+                permissions={can}
+                loading={filters.loading}
+                processing={removal.processing}
+                onDelete={removal.open}
+                onPageSelect={filters.selectPage}
             />
-        </BusinessPage>
+        </TableListLayout>
     );
 }

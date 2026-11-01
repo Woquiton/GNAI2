@@ -1,0 +1,31 @@
+/* Foto e nome centralizados no topo da identificação. */
+.professionalDetails__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ui-space-3);
+    margin-bottom: var(--ui-space-6);
+    text-align: center;
+}
+
+.professionalDetails__photo {
+    width: 128px;
+    height: 128px;
+    border: 3px solid var(--ui-color-surface-alt);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.professionalDetails__name {
+    margin: 0;
+    color: var(--ui-color-heading);
+    font: 600 1.25rem/1.35 var(--ui-font-ui);
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .professionalDetails__photo {
+        width: 96px;
+        height: 96px;
+    }
+}

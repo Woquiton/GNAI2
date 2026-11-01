@@ -1,0 +1,11 @@
+/* O responsável ocupa duas das quatro colunas, ao lado de prioridade e vencimento. */
+.pendencyForm__half {
+    grid-column: span 2;
+    min-width: 0;
+}
+
+@media (max-width: 700px) {
+    .pendencyForm__half {
+        grid-column: auto;
+    }
+}

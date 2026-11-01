@@ -1,21 +1,31 @@
-import AeeRecordForm from "./AeeRecordForm";
-import type { AeeGuardiansByStudent, AeeRecordRecord, AeeSession } from "./AeeRecord.types";
+import { aeeRecordBreadcrumb } from '@/components/Inclusion/AeeRecords/AeeRecords.routes';
+import type { AeeRecordEditProps } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
+import AeeRecordForm from '@/components/Inclusion/AeeRecords/Form/AeeRecordForm';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionAeeRecordsEditPage({
     aeeRecord,
     session,
     guardiansByStudent,
-}: {
-    aeeRecord: AeeRecordRecord;
-    session: AeeSession;
-    guardiansByStudent: AeeGuardiansByStudent;
-}): React.JSX.Element {
+}: AeeRecordEditProps): React.JSX.Element {
+    const sessionId = aeeRecord.attendance_session_id;
+
     return (
-        <AeeRecordForm
-            key={aeeRecord.id}
-            session={session}
-            aeeRecord={aeeRecord}
-            guardiansByStudent={guardiansByStudent}
-        />
+        <BusinessPage
+            title="Editar Registro de atendimento AEE"
+            subtitle={`Registro #${aeeRecord.id} • Agendamento #${sessionId}`}
+            breadcrumbItems={aeeRecordBreadcrumb({
+                sessionId,
+                recordId: aeeRecord.id,
+                current: 'Editar',
+            })}
+        >
+            <AeeRecordForm
+                key={aeeRecord.id}
+                session={session}
+                aeeRecord={aeeRecord}
+                guardiansByStudent={guardiansByStudent}
+            />
+        </BusinessPage>
     );
 }

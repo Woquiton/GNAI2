@@ -1,0 +1,9 @@
+.waitlistResourceDetails__item a {
+    color: var(--ui-color-legacy-text);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.waitlistResourceDetails__item a:hover {
+    text-decoration: underline;
+}

@@ -1,23 +1,19 @@
-import ItemForm from "./ItemForm";
-import ItemPage from "./ItemPage";
-import type { ItemFormOptions, ItemRecord } from "./ItemForm.types";
+import ItemForm from '@/components/Inclusion/Items/Form/ItemForm';
+import { itemBreadcrumb } from '@/components/Inclusion/Items/Items.routes';
+import type { ItemCreateProps } from '@/components/Inclusion/Items/Items.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function InclusionItemsCreatePage(
-    props: ItemFormOptions & { cloneSource?: ItemRecord | null },
-): React.JSX.Element {
-    const cloning = !!props.cloneSource;
-
+export default function InclusionItemsCreatePage({
+    cloneSource,
+    ...options
+}: ItemCreateProps): React.JSX.Element {
     return (
-        <ItemPage
-            title={cloning ? "Clonar Item" : "Novo Item"}
-            current="Cadastrar"
+        <BusinessPage
+            title={cloneSource ? 'Clonar Item' : 'Novo Item'}
             subtitle="Cadastre tecnologias assistivas ou materiais pedagógicos acessíveis e realize a vistoria inicial."
+            breadcrumbItems={itemBreadcrumb({ current: 'Cadastrar' })}
         >
-            <ItemForm
-                mode="create"
-                options={props}
-                cloneSource={props.cloneSource}
-            />
-        </ItemPage>
+            <ItemForm mode="create" options={options} cloneSource={cloneSource} />
+        </BusinessPage>
     );
 }

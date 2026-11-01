@@ -1,8 +1,27 @@
-import WaitlistForm from "./WaitlistForm";
-import type { WaitlistFormProps } from "./Waitlist.types";
+import WaitlistEditForm from '@/components/Inclusion/Waitlists/Form/WaitlistEditForm';
+import { waitlistBreadcrumb } from '@/components/Inclusion/Waitlists/Waitlists.routes';
+import type { WaitlistEditProps } from '@/components/Inclusion/Waitlists/Waitlists.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function InclusionWaitlistsEditPage(
-    props: WaitlistFormProps,
-): React.JSX.Element {
-    return <WaitlistForm key={props.waitlist?.id} {...props} />;
+export default function InclusionWaitlistsEditPage({
+    waitlist,
+    authUser,
+    statusLabel,
+    can,
+}: WaitlistEditProps): React.JSX.Element {
+    return (
+        <BusinessPage
+            title="Editar Solicitação de Fila"
+            subtitle="Atualize as informações. Os dados de identificação permanecem bloqueados para preservar o histórico."
+            breadcrumbItems={waitlistBreadcrumb({ waitlist, current: 'Editar' })}
+        >
+            <WaitlistEditForm
+                key={waitlist.id}
+                waitlist={waitlist}
+                authUser={authUser}
+                statusLabel={statusLabel}
+                canSubmit={can.submit}
+            />
+        </BusinessPage>
+    );
 }

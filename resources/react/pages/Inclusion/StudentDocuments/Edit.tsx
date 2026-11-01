@@ -1,25 +1,23 @@
-import StudentDocumentForm from "./StudentDocumentForm";
-import StudentDocumentPage from "./StudentDocumentPage";
-import type {
-    StudentDocumentFormOptions,
-    StudentDocumentRecord,
-} from "./StudentDocument.types";
+import StudentDocumentForm from '@/components/Inclusion/StudentDocuments/Form/StudentDocumentForm';
+import { studentDocumentBreadcrumb } from '@/components/Inclusion/StudentDocuments/StudentDocuments.routes';
+import type { StudentDocumentEditProps } from '@/components/Inclusion/StudentDocuments/StudentDocuments.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentDocumentsEditPage({
     student,
     types,
     semester,
     studentDocument,
-}: StudentDocumentFormOptions & {
-    studentDocument: StudentDocumentRecord;
-}): React.JSX.Element {
+}: StudentDocumentEditProps): React.JSX.Element {
     return (
-        <StudentDocumentPage
+        <BusinessPage
             title="Editar Documento"
             subtitle="Atualize as informações do documento ou substitua o arquivo anexado."
-            current="Editar"
-            student={student}
-            documentTitle={studentDocument.title}
+            breadcrumbItems={studentDocumentBreadcrumb({
+                student,
+                documentTitle: studentDocument.title,
+                current: 'Editar',
+            })}
         >
             <StudentDocumentForm
                 key={studentDocument.id}
@@ -28,6 +26,6 @@ export default function InclusionStudentDocumentsEditPage({
                 semester={semester}
                 studentDocument={studentDocument}
             />
-        </StudentDocumentPage>
+        </BusinessPage>
     );
 }

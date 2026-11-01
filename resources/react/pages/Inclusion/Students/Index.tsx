@@ -1,45 +1,80 @@
+import { usePage } from '@inertiajs/react';
+import StudentFilters from '@/components/Inclusion/Students/List/StudentFilters';
+import StudentList from '@/components/Inclusion/Students/List/StudentList';
+import StudentDeleteModal from '@/components/Inclusion/Students/StudentDeleteModal';
 import {
-  TableListCard,
-  TableListCreateButton,
-  useTableListVisit,
-} from '@/components/Tables/TableList/TableList';
-import StudentPage from '@/components/Students/StudentPage';
-import StudentFilters, { filterValues } from '@/components/Students/StudentFilters';
-import StudentList from '@/components/Students/StudentList';
-import type { StudentIndexProps } from '@/components/Students/Students.types';
-import { studentsBase } from '@/components/Students/Students.utils';
+    emptyStudentFilters,
+    STUDENT_FAILURE_TEXT,
+} from '@/components/Inclusion/Students/Students.constants';
+import { studentBreadcrumb, studentUrls } from '@/components/Inclusion/Students/Students.routes';
+import type { Student, StudentIndexProps } from '@/components/Inclusion/Students/Students.types';
+import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
+import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
-export default function StudentsIndex(props: StudentIndexProps): React.JSX.Element {
-  const list = useTableListVisit({
-    url: studentsBase,
-    failureText: 'Não foi possível concluir a operação. Atualize a página e tente novamente.',
-  });
-  const createAction = props.permissions['student.create'] ? (
-    <TableListCreateButton
-      href={`${studentsBase}/criar`}
-      ariaLabel="Cadastrar aluno"
-    />
-  ) : undefined;
+export default function StudentsIndex({
+    filters: initialFilters,
+    courses,
+    deficiencies,
+    ...listProps
+}: StudentIndexProps): React.JSX.Element {
+    const errors = usePage().props.errors as Record<string, string | undefined>;
+    const filters = useTableListFilters({
+        url: studentUrls.index,
+        initialFilters,
+        emptyFilters: emptyStudentFilters,
+        failureText: STUDENT_FAILURE_TEXT,
+    });
+    const removal = useConfirmedAction<Student>({ failureText: STUDENT_FAILURE_TEXT });
 
-  return (
-    <StudentPage
-      title="Alunos"
-      subtitle="Gerencie os estudantes e seus documentos de apoio especializado."
-      actions={createAction}
-    >
-      <TableListCard
-        aria-label="Listagem de alunos"
-        aria-busy={list.loading}
-        loading={list.loading}
-        loadingLabel="Atualizando alunos"
-      >
-        <StudentFilters {...props} onSearch={(filters) => list.visit(filters)} />
-        <StudentList
-          {...props}
-          loading={list.loading}
-          onPageChange={(page) => list.visit(filterValues(props.filters), page)}
-        />
-      </TableListCard>
-    </StudentPage>
-  );
+    function confirmRemoval(): void {
+        if (removal.target) {
+            filters.cancelScheduled();
+            removal.submit('delete', studentUrls.destroy(removal.target.id));
+        }
+    }
+
+    return (
+        <TableListLayout
+            title="Alunos"
+            subtitle="Gerencie os estudantes e seus documentos de apoio especializado."
+            breadcrumbItems={studentBreadcrumb()}
+            create={
+                listProps.permissions['student.create'] && {
+                    href: studentUrls.create,
+                    label: 'Cadastrar aluno',
+                }
+            }
+            listLabel="Listagem de alunos"
+            loading={filters.loading}
+            loadingLabel="Atualizando alunos"
+            filters={
+                <StudentFilters
+                    courses={courses}
+                    deficiencies={deficiencies}
+                    studentStatuses={listProps.studentStatuses}
+                    values={filters.values}
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
+                />
+            }
+            dialogs={
+                <StudentDeleteModal
+                    student={removal.target}
+                    processing={removal.processing}
+                    onClose={removal.close}
+                    onConfirm={confirmRemoval}
+                />
+            }
+        >
+            <StudentList
+                {...listProps}
+                loading={filters.loading}
+                processing={removal.processing}
+                onDelete={removal.open}
+                onPageSelect={filters.selectPage}
+            />
+        </TableListLayout>
+    );
 }

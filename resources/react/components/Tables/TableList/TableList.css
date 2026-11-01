@@ -1,514 +1,592 @@
 .tableListCard {
-  position: relative;
-  padding: 20px;
-  border: 1px solid var(--ui-color-card-border);
-  border-radius: 4px;
-  background: var(--ui-color-surface);
+    position: relative;
+    padding: 20px;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    background: var(--ui-color-surface);
 }
 
 .tableListCard__loading.panel-disabled {
-  position: absolute;
-  z-index: 10;
-  inset: 0;
-  border-radius: 4px;
-  background: rgba(243, 242, 241, 0.5);
+    position: absolute;
+    z-index: 10;
+    inset: 0;
+    border-radius: 4px;
+    background: rgba(243, 242, 241, 0.5);
 }
 
 .tableListCard__loader.loader-1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  margin: -15px 0 0 -15px;
-  animation: tableListLoaderRotate 1000ms linear infinite;
-  clip: rect(0, 30px, 30px, 15px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    animation: tableListLoaderRotate 1000ms linear infinite;
+    clip: rect(0, 30px, 30px, 15px);
 }
 
 .tableListCard__loader.loader-1::after {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  box-shadow: inset #999999 0 0 0 17px;
-  animation: tableListLoaderClip 1000ms ease-in-out infinite;
-  clip: rect(0, 30px, 30px, 15px);
-  content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: inset #999999 0 0 0 17px;
+    animation: tableListLoaderClip 1000ms ease-in-out infinite;
+    clip: rect(0, 30px, 30px, 15px);
+    content: '';
 }
 
 @keyframes tableListLoaderRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(220deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(220deg);
+    }
 }
 
 @keyframes tableListLoaderClip {
-  0% {
-    box-shadow: inset #999999 0 0 0 17px;
-    transform: rotate(-140deg);
-  }
+    0% {
+        box-shadow: inset #999999 0 0 0 17px;
+        transform: rotate(-140deg);
+    }
 
-  50% { box-shadow: inset #999999 0 0 0 2px; }
+    50% {
+        box-shadow: inset #999999 0 0 0 2px;
+    }
 
-  100% {
-    box-shadow: inset #999999 0 0 0 17px;
-    transform: rotate(140deg);
-  }
+    100% {
+        box-shadow: inset #999999 0 0 0 17px;
+        transform: rotate(140deg);
+    }
 }
 
 .tableListCard :is(input, select).textInput {
-  height: var(--ui-list-control-height);
-  padding:
-    var(--ui-list-control-padding-block)
-    var(--ui-list-control-padding-inline);
-  font-size: var(--ui-list-control-font-size);
+    height: var(--ui-list-control-height);
+    padding: var(--ui-list-control-padding-block) var(--ui-list-control-padding-inline);
+    font-size: var(--ui-list-control-font-size);
 }
 
 .tableListCard .selectField .select2-container {
-  min-height: var(--ui-list-control-height);
-  padding:
-    var(--ui-list-control-padding-block)
-    var(--ui-list-control-padding-inline);
-  font-size: var(--ui-list-control-font-size);
+    min-height: var(--ui-list-control-height);
+    padding: var(--ui-list-control-padding-block) var(--ui-list-control-padding-inline);
+    font-size: var(--ui-list-control-font-size);
 }
 
 .tableListCard .selectField .select2-container-multi {
-  padding: 0;
+    padding: 0;
 }
 
 .tableListCard .selectField .select2-container-multi .select2-choices {
-  min-height: var(--ui-list-control-height);
+    min-height: var(--ui-list-control-height);
 }
 
 .tableListCard .selectField .select2-container-multi .select2-search-choice {
-  margin: 3px 0 2px 5px;
-  padding: 2px 7px 2px 18px;
+    margin: 3px 0 2px 5px;
+    padding: 2px 7px 2px 18px;
 }
 
 .tableListCard .selectField .select2-container-multi .select2-search-field input {
-  padding:
-    var(--ui-list-control-padding-block)
-    7px
-    var(--ui-list-control-padding-block)
-    var(--ui-list-control-padding-inline);
+    padding: var(--ui-list-control-padding-block) 7px var(--ui-list-control-padding-block)
+        var(--ui-list-control-padding-inline);
 }
 
 .tableListFilterActions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .tableListClearButton.button {
-  width: var(--ui-list-control-height);
-  height: var(--ui-list-control-height);
-  padding: 0;
+    width: var(--ui-list-control-height);
+    height: var(--ui-list-control-height);
+    padding: 0;
 }
 
 .tableListMoreFilters {
-  margin-top: 16px;
-  color: var(--ui-color-text);
+    margin-top: 16px;
+    color: var(--ui-color-text);
 }
 
 .tableListMoreFilters__trigger {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  width: 100%;
-  min-height: var(--ui-list-control-height);
-  margin: 0;
-  padding:
-    var(--ui-list-control-padding-block)
-    var(--ui-list-control-padding-inline);
-  border: 1px solid var(--ui-color-card-border);
-  border-radius: 4px;
-  background: var(--ui-color-surface-alt);
-  color: inherit;
-  cursor: pointer;
-  font: 600 var(--ui-list-control-font-size)/1.4 var(--ui-font-body);
-  text-align: left;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    min-height: var(--ui-list-control-height);
+    margin: 0;
+    padding: var(--ui-list-control-padding-block) var(--ui-list-control-padding-inline);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    background: var(--ui-color-surface-alt);
+    color: inherit;
+    cursor: pointer;
+    font: 600 var(--ui-list-control-font-size)/1.4 var(--ui-font-body);
+    text-align: left;
 }
 
 .tableListMoreFilters__trigger:focus-visible {
-  border-color: var(--ui-color-input-focus-border);
-  outline: 2px solid var(--ui-color-input-focus-border);
-  outline-offset: 1px;
+    border-color: var(--ui-color-input-focus-border);
+    outline: 2px solid var(--ui-color-input-focus-border);
+    outline-offset: 1px;
 }
 
 .tableListMoreFilters__chevron {
-  width: 8px;
-  height: 8px;
-  flex: 0 0 8px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(-45deg);
-  transition: transform 160ms ease;
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 160ms ease;
 }
 
 .tableListMoreFilters--open .tableListMoreFilters__trigger {
-  border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
 }
 
 .tableListMoreFilters--open .tableListMoreFilters__chevron {
-  transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .tableListMoreFilters__collapse {
-  display: grid;
-  grid-template-rows: 0fr;
-  overflow: hidden;
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    grid-template-rows 250ms ease,
-    opacity 180ms ease,
-    visibility 0s linear 250ms;
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        grid-template-rows 250ms ease,
+        opacity 180ms ease,
+        visibility 0s linear 250ms;
 }
 
 .tableListMoreFilters--open .tableListMoreFilters__collapse {
-  grid-template-rows: 1fr;
-  visibility: visible;
-  opacity: 1;
-  transition:
-    grid-template-rows 250ms ease,
-    opacity 180ms ease;
+    grid-template-rows: 1fr;
+    visibility: visible;
+    opacity: 1;
+    transition:
+        grid-template-rows 250ms ease,
+        opacity 180ms ease;
 }
 
 .tableListMoreFilters__content {
-  min-height: 0;
-  padding: 0 16px;
-  overflow: hidden;
-  border: 1px solid var(--ui-color-card-border);
-  border-top: 0;
-  border-radius: 0 0 4px 4px;
-  background: var(--ui-color-surface);
-  transition: padding 250ms ease;
+    min-height: 0;
+    padding: 0 16px;
+    overflow: hidden;
+    border: 1px solid var(--ui-color-card-border);
+    border-top: 0;
+    border-radius: 0 0 4px 4px;
+    background: var(--ui-color-surface);
+    transition: padding 250ms ease;
 }
 
 .tableListMoreFilters--open .tableListMoreFilters__content {
-  padding: 16px;
+    padding: 16px;
 }
 
 .tableListScroll {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  overflow: visible;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
 }
 
 .tableListFrame {
-  min-width: 100%;
-  margin-top: 20px;
+    min-width: 100%;
+    margin-top: 20px;
 }
 
 .tableListToolbar {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  min-height: 42px;
-  padding: 6px 8px;
-  border: 1px solid var(--ui-color-card-border);
-  border-bottom: 0;
-  border-radius: 4px 4px 0 0;
-  background: var(--ui-color-surface-alt);
-  font-size: 13px;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    min-height: 42px;
+    padding: 6px 8px;
+    border: 1px solid var(--ui-color-card-border);
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background: var(--ui-color-surface-alt);
+    font-size: 13px;
 }
 
 .tableListToolbar__summary {
-  grid-column: 2;
-  color: var(--ui-color-text);
-  white-space: nowrap;
+    grid-column: 2;
+    color: var(--ui-color-text);
+    white-space: nowrap;
 }
 
 .tableListColumnsMenu {
-  position: relative;
-  grid-column: 3;
-  justify-self: end;
-  min-width: 160px;
-  color: var(--ui-color-text);
+    position: relative;
+    grid-column: 3;
+    justify-self: end;
+    min-width: 160px;
+    color: var(--ui-color-text);
 }
 
 .tableListColumnsMenu__trigger {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
-  height: var(--ui-list-control-height);
-  padding:
-    var(--ui-list-control-padding-block)
-    var(--ui-list-control-padding-inline);
-  border: 1px solid var(--ui-color-input-border);
-  border-radius: 4px;
-  background: var(--ui-color-surface);
-  color: #565656;
-  cursor: pointer;
-  font: 400 var(--ui-list-control-font-size)/1.42857143 var(--ui-font-body);
-  list-style: none;
-  transition: border-color 300ms linear;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    height: var(--ui-list-control-height);
+    padding: var(--ui-list-control-padding-block) var(--ui-list-control-padding-inline);
+    border: 1px solid var(--ui-color-input-border);
+    border-radius: 4px;
+    background: var(--ui-color-surface);
+    color: #565656;
+    cursor: pointer;
+    font: 400 var(--ui-list-control-font-size)/1.42857143 var(--ui-font-body);
+    list-style: none;
+    transition: border-color 300ms linear;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tableListMoreFilters__chevron,
-  .tableListMoreFilters__collapse,
-  .tableListMoreFilters__content,
-  .tableListColumnsMenu__caret,
-  .tableListColumnsMenu__collapse {
-    transition: none;
-  }
+    .tableListMoreFilters__chevron,
+    .tableListMoreFilters__collapse,
+    .tableListMoreFilters__content,
+    .tableListColumnsMenu__caret,
+    .tableListColumnsMenu__collapse {
+        transition: none;
+    }
 }
 
 .tableListColumnsMenu__trigger:focus-visible {
-  border-color: var(--ui-color-input-focus-border);
-  outline: 0;
+    border-color: var(--ui-color-input-focus-border);
+    outline: 0;
 }
 
 .tableListColumnsMenu__caret {
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
-  background: url('/images/icons/select-down.svg') center / 16px 16px no-repeat;
-  transition: transform 160ms ease;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    background: url('/images/icons/select-down.svg') center / 16px 16px no-repeat;
+    transition: transform 160ms ease;
 }
 
 .tableListColumnsMenu--open .tableListColumnsMenu__caret {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .tableListColumnsMenu__collapse {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  width: max-content;
-  min-width: min(210px, calc(100vw - 48px));
-  max-width: calc(100vw - 48px);
-  z-index: 20;
-  display: grid;
-  grid-template-rows: 0fr;
-  overflow: hidden;
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    grid-template-rows 250ms ease,
-    opacity 180ms ease,
-    visibility 0s linear 250ms;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    width: max-content;
+    min-width: min(210px, calc(100vw - 48px));
+    max-width: calc(100vw - 48px);
+    z-index: 20;
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        grid-template-rows 250ms ease,
+        opacity 180ms ease,
+        visibility 0s linear 250ms;
 }
 
 .tableListColumnsMenu--open .tableListColumnsMenu__collapse {
-  grid-template-rows: 1fr;
-  visibility: visible;
-  opacity: 1;
-  transition:
-    grid-template-rows 250ms ease,
-    opacity 180ms ease;
+    grid-template-rows: 1fr;
+    visibility: visible;
+    opacity: 1;
+    transition:
+        grid-template-rows 250ms ease,
+        opacity 180ms ease;
 }
 
 .tableListColumnsMenu__options {
-  display: grid;
-  min-height: 0;
-  min-width: 0;
-  margin: 0;
-  padding: 6px;
-  border: 1px solid var(--ui-color-card-border);
-  border-radius: 4px;
-  background: var(--ui-color-surface);
-  box-shadow: 0 2px 5px var(--ui-color-shadow);
-  max-height: min(360px, 60vh);
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
+    display: grid;
+    min-height: 0;
+    min-width: 0;
+    margin: 0;
+    padding: 6px;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    background: var(--ui-color-surface);
+    box-shadow: 0 2px 5px var(--ui-color-shadow);
+    max-height: min(360px, 60vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
 }
 
 .tableListColumnsMenu__options legend {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .tableListColumnsMenu__options .tableListColumnsMenu__option {
-  min-height: 32px;
-  margin: 0;
-  padding-top: 6px;
-  padding-right: 8px;
-  padding-bottom: 6px;
-  padding-left: 28px;
-  border-radius: 3px;
-  white-space: normal;
+    min-height: 32px;
+    margin: 0;
+    padding-top: 6px;
+    padding-right: 8px;
+    padding-bottom: 6px;
+    padding-left: 28px;
+    border-radius: 3px;
+    white-space: normal;
 }
 
 .tableListColumnsMenu__options .tableListColumnsMenu__option + .tableListColumnsMenu__option {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 .tableListColumnsMenu__option label {
-  display: block;
-  width: 100%;
-  overflow-wrap: anywhere;
+    display: block;
+    width: 100%;
+    overflow-wrap: anywhere;
 }
 
 .tableListColumnsMenu__option:not(:has(input:disabled)):hover {
-  background: #f4f8fb;
+    background: #f4f8fb;
 }
 
 .tableListColumnsMenu__option:has(input:disabled) {
-  cursor: default;
+    cursor: default;
 }
 
 .tableListViewport {
-  border: 1px solid var(--ui-color-card-border);
-  border-radius: 0 0 4px 4px;
-  overflow: hidden;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
 }
 
 .tableListTable {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 0;
-  table-layout: fixed;
-  font-size: 15.5px;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0;
+    table-layout: fixed;
+    font-size: 15.5px;
 }
 
 .tableListTable > tbody strong,
 .tableListTable > tbody b {
-  font-weight: inherit;
+    font-weight: inherit;
 }
 
 .tableListTable > tbody a:not(.button) {
-  color: inherit;
-  font: inherit;
-  text-decoration: none;
-  transition: color 160ms ease;
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+    transition: color 160ms ease;
 }
 
 .tableListTable > tbody a:not(.button):is(:hover, :focus-visible) {
-  color: var(--ui-color-gnai-primary-hover);
-  text-decoration: none;
+    color: var(--ui-color-gnai-primary-hover);
+    text-decoration: none;
 }
 
 .tableListTable > tbody a:not(.button):focus-visible {
-  outline: 2px solid var(--ui-color-input-focus-border);
-  outline-offset: 2px;
+    outline: 2px solid var(--ui-color-input-focus-border);
+    outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tableListTable > tbody a:not(.button) { transition: none; }
+    .tableListTable > tbody a:not(.button) {
+        transition: none;
+    }
 }
 
 .tableListTable.table-condensed > thead > tr > th {
-  position: relative;
-  padding: 16px 12px;
-  background: var(--ui-color-gnai-primary);
-  color: var(--ui-color-surface);
-  vertical-align: middle;
-  white-space: nowrap;
+    position: relative;
+    padding: 16px 12px;
+    background: var(--ui-color-gnai-primary);
+    color: var(--ui-color-surface);
+    vertical-align: middle;
+    white-space: nowrap;
 }
 
 .tableListTable.table-condensed > tbody > tr > td {
-  padding: 7px 10px;
-  vertical-align: middle;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    padding: 7px 10px;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tableListTable.table-condensed > thead > tr > th:last-child,
 .tableListTable.table-condensed > tbody > tr > td:last-child {
-  text-align: right;
+    text-align: right;
 }
 
 .tableListTable.table-condensed > thead > tr > th:last-child {
-  padding-right: 17px;
+    padding-right: 17px;
 }
 
 .tableListTable.table-condensed > tbody > tr > td:last-child {
-  padding-right: 15px;
+    padding-right: 15px;
 }
 
 .tableListTable__heading {
-  display: block;
-  padding-right: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    display: block;
+    padding-right: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .tableListTable__resizeHandle {
-  position: absolute;
-  top: 0;
-  left: -5px;
-  z-index: 2;
-  width: 10px;
-  height: 100%;
-  cursor: col-resize;
-  touch-action: none;
+    position: absolute;
+    top: 0;
+    left: -5px;
+    z-index: 2;
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+    touch-action: none;
 }
 
 .tableListTable__resizeHandle::after {
-  position: absolute;
-  top: 18%;
-  bottom: 18%;
-  left: 50%;
-  width: 1px;
-  background: var(--ui-color-surface);
-  content: '';
-  opacity: 0;
-  transition: opacity 120ms ease;
+    position: absolute;
+    top: 18%;
+    bottom: 18%;
+    left: 50%;
+    width: 1px;
+    background: var(--ui-color-surface);
+    content: '';
+    opacity: 0;
+    transition: opacity 120ms ease;
 }
 
 .tableListTable th:hover .tableListTable__resizeHandle::after,
 .tableListTable__resizeHandle:focus-visible::after,
 .tableListTable__resizeHandle:active::after {
-  opacity: 1;
+    opacity: 1;
 }
 
 .tableListTable__resizeHandle:focus-visible {
-  outline: 0;
+    outline: 0;
 }
 
 .tableListEmpty {
-  height: 100px;
-  text-align: center !important;
+    height: 100px;
+    text-align: center !important;
 }
 
 .tableListFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 16px;
-  font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+    font-size: 13px;
 }
 
 .tableListFooter .paginationControl {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
 }
 
 @media (max-width: 600px) {
-  .tableListCard { padding: 14px; }
-  .tableListToolbar {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-  .tableListToolbar__spacer { display: none; }
-  .tableListToolbar__summary { grid-column: 1; justify-self: start; }
-  .tableListColumnsMenu {
-    grid-column: 1;
-    justify-self: stretch;
-  }
-  .tableListTable.table-condensed > thead > tr > th { padding: 14px 8px; }
-  .tableListTable.table-condensed > tbody > tr > td { padding: 7px 8px; }
-  .tableListFooter { align-items: flex-start; flex-direction: column; }
-  .tableListFooter nav { flex-wrap: wrap; }
+    .tableListCard {
+        padding: 14px;
+    }
+    .tableListToolbar {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    .tableListToolbar__spacer {
+        display: none;
+    }
+    .tableListToolbar__summary {
+        grid-column: 1;
+        justify-self: start;
+    }
+    .tableListColumnsMenu {
+        grid-column: 1;
+        justify-self: stretch;
+    }
+    .tableListTable.table-condensed > thead > tr > th {
+        padding: 14px 8px;
+    }
+    .tableListTable.table-condensed > tbody > tr > td {
+        padding: 7px 8px;
+    }
+    .tableListFooter {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .tableListFooter nav {
+        flex-wrap: wrap;
+    }
+}
+
+/* Barra de filtros compartilhada (TableListFilters) */
+.tableListFilters__grid {
+    display: grid;
+    grid-template-columns:
+        minmax(200px, 1.6fr)
+        repeat(var(--tableListFilters-rest, 2), minmax(150px, 1fr))
+        auto;
+    align-items: end;
+    gap: var(--ui-space-4);
+}
+
+.tableListFilters__grid--single {
+    grid-template-columns: minmax(200px, 1fr) auto;
+}
+
+.tableListFilters__more {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--ui-space-4);
+}
+
+@media (max-width: 1200px) {
+    .tableListFilters__grid,
+    .tableListFilters__grid--single {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tableListFilters__grid > .tableListFilterActions {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .tableListFilters__grid,
+    .tableListFilters__grid--single,
+    .tableListFilters__more {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Célula de pessoa (TableListPersonCell) */
+.tableListPersonCell {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-3);
+    min-width: 0;
+    max-width: 100%;
+}
+
+.tableListPersonCell__photo {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tableListPersonCell__name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

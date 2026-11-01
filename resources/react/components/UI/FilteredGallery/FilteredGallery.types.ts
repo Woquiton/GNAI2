@@ -1,6 +1,6 @@
 export interface GalleryItem {
-  src: string;
-  categories: string[];
-  title: string;
-  caption: string;
+    src: string;
+    categories: string[];
+    title: string;
+    caption: string;
 }

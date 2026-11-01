@@ -4,8 +4,10 @@ Esta convenção reúne o padrão compartilhado das telas de visualização do G
 
 ## Estrutura comum
 
+A visualização de Itens é a referência: `pages/Inclusion/Items/Show.tsx` compõe `BusinessPage` (com `documentTitle` e `busy`), `Details/ItemDetails`, `Details/ItemDetailsActions` e o modal de exclusão do recurso, com `useConfirmedAction` para a exclusão. Os pares rótulo/valor usam `UI/DetailGrid` + `UI/DetailField`, e valores múltiplos usam `UI/TagList`; não defina grades de detalhes nem etiquetas no CSS do domínio.
+
 - Use a estrutura de página de negócio já integrada, com `Navigation/PageTitle` e breadcrumb fornecidos pelo wrapper do domínio.
-- Reutilize `UI/CardBox` e `Forms/FormSection variant="inline"` para organizar os dados. Títulos e ícones de seção usam o cinza compartilhado; labels usam `--ui-color-form-label` e valores usam `--ui-color-legacy-text`.
+- Reutilize `UI/CardBox` e `Forms/FormSection variant="inline"` para organizar os dados. Títulos e ícones de seção usam o cinza compartilhado; labels usam `--ui-color-form-label` em tamanho menor e valores usam `--ui-color-text`, para leitura sem aparência de formulário desabilitado.
 - Apresente pares de label e valor com HTML semântico, preferencialmente `dl`, `dt` e `dd`. Textos ricos vindos do servidor só podem ser renderizados pelo mesmo contrato sanitizado já adotado pela funcionalidade.
 - Status e classificações curtas usam `UI/TableLabel`; ações usam `UI/Button`. Não recrie badges, cards ou estilos de botão dentro da página.
 - Mantenha `Forms/FormActions` imediatamente depois do conteúdo principal. Preserve ações, permissões, links, downloads, modais e nomes acessíveis existentes.

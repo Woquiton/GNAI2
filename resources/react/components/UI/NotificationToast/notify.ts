@@ -1,7 +1,4 @@
-import type {
-    NotificationToastPosition,
-    NotificationToastTone,
-} from "./NotificationToast";
+import type { NotificationToastPosition, NotificationToastTone } from './NotificationToast';
 
 type NotificationListener = (notification: AppNotification) => void;
 
@@ -25,9 +22,9 @@ export function notify(notification: AppNotification): void {
     const signature = [
         notification.tone,
         notification.title,
-        notification.text ?? "",
-        notification.position ?? "",
-    ].join("\u0000");
+        notification.text ?? '',
+        notification.position ?? '',
+    ].join('\u0000');
     const now = Date.now();
     const lastShownAt = recentNotifications.get(signature);
 
@@ -44,10 +41,7 @@ export function notify(notification: AppNotification): void {
     if (!activeListener) {
         pendingNotifications.push(notification);
         if (pendingNotifications.length > pendingLimit) {
-            pendingNotifications.splice(
-                0,
-                pendingNotifications.length - pendingLimit,
-            );
+            pendingNotifications.splice(0, pendingNotifications.length - pendingLimit);
         }
         return;
     }
@@ -60,9 +54,7 @@ export function notify(notification: AppNotification): void {
  * Messages emitted during an Inertia layout transition are queued and flushed
  * as soon as the next consumer mounts, instead of being lost in the gap.
  */
-export function subscribeNotifications(
-    listener: NotificationListener,
-): () => void {
+export function subscribeNotifications(listener: NotificationListener): () => void {
     activeListener = listener;
 
     const pending = pendingNotifications.splice(0);

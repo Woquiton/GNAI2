@@ -1,24 +1,63 @@
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import CaseStudyList from "./CaseStudyList";
-import type { CaseStudyListProps } from "./CaseStudies.types";
+import { caseStudyAllBreadcrumb } from '@/components/Inclusion/CaseStudies/CaseStudies.routes';
+import type { CaseStudyListProps } from '@/components/Inclusion/CaseStudies/CaseStudies.types';
+import CaseStudyDeleteModal from '@/components/Inclusion/CaseStudies/CaseStudyDeleteModal';
+import CaseStudyFilters from '@/components/Inclusion/CaseStudies/List/CaseStudyFilters';
+import CaseStudyList from '@/components/Inclusion/CaseStudies/List/CaseStudyList';
+import { useCaseStudyList } from '@/components/Inclusion/CaseStudies/List/useCaseStudyList';
+import { TableListLayout } from '@/components/Tables/TableList/TableList';
 
-export default function InclusionCaseStudiesAllPage(
-    props: CaseStudyListProps,
-): React.JSX.Element {
+export default function InclusionCaseStudiesAllPage({
+    caseStudies,
+    semesters,
+    statuses,
+    filters: initialFilters,
+    can,
+}: CaseStudyListProps): React.JSX.Element {
+    const { errors, filters, rowName, removal } = useCaseStudyList({
+        student: null,
+        initialFilters,
+    });
+
     return (
-        <BusinessPage
+        <TableListLayout
             title="Estudos de Caso"
             subtitle="Primeira etapa da cadeia Estudo de Caso → PAEE → PEI (Decreto 12.686/2025)."
-            breadcrumbItems={[
-                { label: "Home", href: "/autenticacao/painel" },
-                { label: "Estudos de Caso" },
-            ]}
-            className="caseStudiesPage"
+            breadcrumbItems={caseStudyAllBreadcrumb()}
+            listLabel="Listagem geral de Estudos de Caso"
+            loading={filters.loading}
+            loadingLabel="Atualizando Estudos de Caso"
+            filters={
+                <CaseStudyFilters
+                    values={filters.values}
+                    semesters={semesters}
+                    statuses={statuses}
+                    showSearch
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
+                />
+            }
+            dialogs={
+                <CaseStudyDeleteModal
+                    open={removal.open}
+                    name={removal.name}
+                    processing={removal.processing}
+                    onClose={removal.close}
+                    onConfirm={removal.confirm}
+                />
+            }
         >
             <CaseStudyList
-                {...props}
-                student={null}
+                caseStudies={caseStudies}
+                byStudent={false}
+                permissions={can}
+                loading={filters.loading}
+                processing={removal.processing}
+                rowName={rowName}
+                onDelete={removal.request}
+                onPageSelect={filters.selectPage}
             />
-        </BusinessPage>
+        </TableListLayout>
     );
 }

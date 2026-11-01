@@ -1,0 +1,24 @@
+/* Nome e CID na mesma linha da coluna principal. */
+.deficiencyList__identity {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: var(--ui-space-2);
+}
+
+.deficiencyList__identity strong,
+.deficiencyList__identity small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.deficiencyList__identity strong {
+    min-width: 0;
+}
+
+.deficiencyList__identity small {
+    flex-shrink: 0;
+    max-width: 50%;
+    color: var(--ui-color-text-muted);
+}

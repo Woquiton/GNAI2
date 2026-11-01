@@ -1,0 +1,15 @@
+.peiDisciplineBulk {
+    display: grid;
+    gap: var(--ui-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.peiDisciplineBulk__row {
+    padding: var(--ui-space-3) var(--ui-space-4);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+}
+.peiDisciplineBulk__row:nth-child(odd) {
+    background: var(--ui-color-table-header);
+}

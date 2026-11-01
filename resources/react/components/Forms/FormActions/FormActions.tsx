@@ -3,62 +3,54 @@ import { joinClassNames } from '@/utils/joinClassNames';
 import './FormActions.css';
 
 interface FormActionsProps {
-  children: ReactNode;
-  secondary?: ReactNode;
-  status?: ReactNode;
-  className?: string;
+    children: ReactNode;
+    secondary?: ReactNode;
+    status?: ReactNode;
+    className?: string;
 }
 
 export default function FormActions({
-  children,
-  secondary,
-  status,
-  className,
+    children,
+    secondary,
+    status,
+    className,
 }: FormActionsProps): React.JSX.Element {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [fixed, setFixed] = useState(true);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [fixed, setFixed] = useState(true);
 
-  useEffect(() => {
-    const container = containerRef.current;
+    useEffect(() => {
+        const container = containerRef.current;
 
-    if (!container || typeof IntersectionObserver === 'undefined') {
-      setFixed(false);
-      return;
-    }
+        if (!container || typeof IntersectionObserver === 'undefined') {
+            setFixed(false);
+            return;
+        }
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setFixed(!entry.isIntersecting);
-    });
+        const observer = new IntersectionObserver(([entry]) => {
+            setFixed(!entry.isIntersecting);
+        });
 
-    observer.observe(container);
+        observer.observe(container);
 
-    return () => observer.disconnect();
-  }, []);
+        return () => observer.disconnect();
+    }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      className={joinClassNames('formActions', className)}
-    >
-      <footer
-        className={joinClassNames(
-          'formActions__bar',
-          fixed && 'formActions__bar--fixed',
-        )}
-      >
-        <div className="formActions__leading">
-          {secondary ? (
-            <div className="formActions__secondary">{secondary}</div>
-          ) : null}
-          {status ? (
-            <span className="formActions__status" role="status">
-              {status}
-            </span>
-          ) : null}
+    return (
+        <div ref={containerRef} className={joinClassNames('formActions', className)}>
+            <footer
+                className={joinClassNames('formActions__bar', fixed && 'formActions__bar--fixed')}
+            >
+                <div className="formActions__leading">
+                    {secondary ? <div className="formActions__secondary">{secondary}</div> : null}
+                    {status ? (
+                        <span className="formActions__status" role="status">
+                            {status}
+                        </span>
+                    ) : null}
+                </div>
+                <div className="formActions__primary">{children}</div>
+                <div className="formActions__balance" aria-hidden="true" />
+            </footer>
         </div>
-        <div className="formActions__primary">{children}</div>
-        <div className="formActions__balance" aria-hidden="true" />
-      </footer>
-    </div>
-  );
+    );
 }

@@ -1,0 +1,31 @@
+.caseStudyEntryList {
+    display: grid;
+    gap: var(--ui-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.caseStudyEntryList__item {
+    display: grid;
+    gap: var(--ui-space-2);
+    min-width: 0;
+    padding: var(--ui-space-3) var(--ui-space-4);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+    color: var(--ui-color-legacy-text);
+}
+
+.caseStudyEntryList__text {
+    margin: 0;
+}
+
+.caseStudyEntryList__text,
+.caseStudyEntryList__meta {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.caseStudyEntryList__meta {
+    color: var(--ui-color-text-muted);
+}

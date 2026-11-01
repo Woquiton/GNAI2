@@ -1,26 +1,18 @@
-import GuardianForm from "./GuardianForm";
-import GuardianPage from "./GuardianPage";
-import type { GuardianFormOptions, GuardianRecord } from "./Guardian.types";
+import GuardianForm from '@/components/Inclusion/Guardians/Form/GuardianForm';
+import { guardianBreadcrumb } from '@/components/Inclusion/Guardians/Guardians.routes';
+import type { GuardianEditProps } from '@/components/Inclusion/Guardians/Guardians.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function InclusionGuardiansEditPage(
-    props: GuardianFormOptions & { guardian: GuardianRecord },
-): React.JSX.Element {
+export default function InclusionGuardiansEditPage(props: GuardianEditProps): React.JSX.Element {
+    const { student, guardian } = props;
+
     return (
-        <GuardianPage
+        <BusinessPage
             title="Editar Responsável"
-            subtitle={`Editando vínculo de: ${props.guardian.person.name}`}
-            current="Editar"
-            student={props.student}
-            guardian={props.guardian}
+            subtitle={`Editando vínculo de: ${guardian.person.name}`}
+            breadcrumbItems={guardianBreadcrumb({ student, guardian, current: 'Editar' })}
         >
-            <GuardianForm
-                key={props.guardian.id}
-                mode="edit"
-                student={props.student}
-                genders={props.genders}
-                relationships={props.relationships}
-                guardian={props.guardian}
-            />
-        </GuardianPage>
+            <GuardianForm key={guardian.id} mode="edit" {...props} />
+        </BusinessPage>
     );
 }

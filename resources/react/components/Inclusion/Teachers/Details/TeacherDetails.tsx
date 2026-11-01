@@ -1,0 +1,68 @@
+import FormSection from '@/components/Forms/FormSection/FormSection';
+import CardBox from '@/components/UI/CardBox/CardBox';
+import DetailField from '@/components/UI/DetailField/DetailField';
+import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
+import { dateLabel } from '@/utils/formatters';
+import type { TeacherShowProps } from '../Teachers.types';
+import TeacherAssignments from './TeacherAssignments';
+import './TeacherDetails.css';
+
+type TeacherDetailsProps = Pick<TeacherShowProps, 'teacher' | 'display'>;
+
+/** Identificação pessoal e vínculo docente, com as disciplinas atribuídas por curso. */
+export default function TeacherDetails({
+    teacher,
+    display,
+}: TeacherDetailsProps): React.JSX.Element {
+    const { person } = teacher;
+
+    return (
+        <CardBox>
+            <FormSection
+                id="teacher-identification"
+                title="Identificação Pessoal"
+                variant="inline"
+                iconClass="fa fa-user"
+            >
+                <div className="teacherDetails__profile">
+                    <img
+                        src={person.photo_url ?? '/images/default-user.jpg'}
+                        alt={`Foto de ${person.name}`}
+                        className="teacherDetails__photo"
+                    />
+                    <p className="teacherDetails__name">{person.name}</p>
+                    <p className="teacherDetails__role">Professor(a) / Docente</p>
+                </div>
+                <DetailGrid columns={3}>
+                    <DetailField label="Nome Completo">
+                        <strong>{person.name}</strong>
+                    </DetailField>
+                    <DetailField label="CPF / Documento">{person.document || '---'}</DetailField>
+                    <DetailField label="Data de Nascimento">
+                        {dateLabel(person.birth_date)}
+                    </DetailField>
+                    <DetailField label="E-mail de Contato">{person.email || '---'}</DetailField>
+                    <DetailField label="Telefone">{person.phone || '---'}</DetailField>
+                    <DetailField label="Endereço" wide preserveLineBreaks>
+                        {person.address || '---'}
+                    </DetailField>
+                </DetailGrid>
+            </FormSection>
+            <FormSection
+                id="teacher-assignment"
+                title="Vínculo Docente"
+                variant="inline"
+                iconClass="fa fa-graduation-cap"
+            >
+                <DetailGrid columns={3}>
+                    <DetailField label="Matrícula">
+                        <code className="teacherDetails__registration">{teacher.registration}</code>
+                    </DetailField>
+                    <DetailField label="Data de Cadastro">{display.createdAt || '---'}</DetailField>
+                </DetailGrid>
+                <h3 className="teacherDetails__subheading">Disciplinas atribuídas</h3>
+                <TeacherAssignments assignments={teacher.course_disciplines ?? []} />
+            </FormSection>
+        </CardBox>
+    );
+}

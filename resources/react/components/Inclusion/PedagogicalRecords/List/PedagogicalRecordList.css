@@ -1,0 +1,21 @@
+.pedagogicalRecordList__student {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-1);
+    min-width: 0;
+}
+
+.pedagogicalRecordList__studentName {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pedagogicalRecordList__student > .tableLabel {
+    flex-shrink: 0;
+}
+
+.pedagogicalRecordList__muted {
+    color: var(--ui-color-text-muted);
+}

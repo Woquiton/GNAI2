@@ -1,7 +1,12 @@
 .sitePageHeader {
     padding: 40px 0 44px;
     background:
-        radial-gradient(circle at 94% 22%, transparent 0 130px, rgba(255, 255, 255, 0.04) 131px 190px, transparent 191px),
+        radial-gradient(
+            circle at 94% 22%,
+            transparent 0 130px,
+            rgba(255, 255, 255, 0.04) 131px 190px,
+            transparent 191px
+        ),
         linear-gradient(115deg, var(--site-primary), var(--site-primary-strong));
     color: #fff;
 }
@@ -19,7 +24,7 @@
 
 .sitePageHeader__trail li + li::before {
     margin-right: 6px;
-    content: "/";
+    content: '/';
     opacity: 0.6;
 }
 

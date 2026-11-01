@@ -4,15 +4,35 @@
     border-radius: var(--publication-card-radius);
     background: var(--publication-card-background);
 }
-.sitePublications .publicationCard__body { padding: var(--publication-card-padding); }
-.sitePublications .publicationCard__media { height: var(--publication-card-image-height); aspect-ratio: auto; }
-.sitePublications .publicationCard__title { font-size: var(--publication-card-title-size); overflow-wrap: anywhere; }
-.sitePublications .publicationCard__title a { color: var(--publication-card-title-color); }
-.sitePublications .publicationCard__summary { font-size: var(--publication-card-text-size); color: var(--publication-card-text-color); }
-.sitePublications .publicationCard a:focus-visible { outline: 2px solid var(--site-primary); outline-offset: 3px; }
+.sitePublications .publicationCard__body {
+    padding: var(--publication-card-padding);
+}
+.sitePublications .publicationCard__media {
+    height: var(--publication-card-image-height);
+    aspect-ratio: auto;
+}
+.sitePublications .publicationCard__title {
+    font-size: var(--publication-card-title-size);
+    overflow-wrap: anywhere;
+}
+.sitePublications .publicationCard__title a {
+    color: var(--publication-card-title-color);
+}
+.sitePublications .publicationCard__summary {
+    font-size: var(--publication-card-text-size);
+    color: var(--publication-card-text-color);
+}
+.sitePublications .publicationCard a:focus-visible {
+    outline: 2px solid var(--site-primary);
+    outline-offset: 3px;
+}
 @media (prefers-reduced-motion: reduce) {
-    .sitePublications .publicationCard { transition: none; }
-    .sitePublications .publicationCard:is(:hover, :focus-within) { transform: none; }
+    .sitePublications .publicationCard {
+        transition: none;
+    }
+    .sitePublications .publicationCard:is(:hover, :focus-within) {
+        transform: none;
+    }
 }
 
 .sitePublications .publicationCard__type,
@@ -32,4 +52,6 @@
     font-size: var(--publication-card-text-size);
     overflow-wrap: anywhere;
 }
-.sitePublications .publicationCard--event .publicationCard__body { min-width: 0; }
+.sitePublications .publicationCard--event .publicationCard__body {
+    min-width: 0;
+}

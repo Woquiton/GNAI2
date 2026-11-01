@@ -1,0 +1,29 @@
+/* Perfil centralizado no topo da visualização do responsável. */
+.guardianDetails__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ui-space-2);
+    margin-bottom: var(--ui-space-6);
+    text-align: center;
+}
+.guardianDetails__photo {
+    width: 128px;
+    height: 128px;
+    margin-bottom: var(--ui-space-1);
+    border: 3px solid var(--ui-color-surface-alt);
+    border-radius: 50%;
+    object-fit: cover;
+}
+.guardianDetails__name {
+    margin: 0;
+    color: var(--ui-color-heading);
+    font: 600 1.25rem/1.35 var(--ui-font-ui);
+    overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+    .guardianDetails__photo {
+        width: 96px;
+        height: 96px;
+    }
+}

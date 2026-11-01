@@ -1,24 +1,25 @@
-import { router } from "@inertiajs/react";
-import { useState } from "react";
-import ChoiceControl from "@/components/Forms/ChoiceControl/ChoiceControl";
-import ChoiceGroup from "@/components/Forms/ChoiceGroup/ChoiceGroup";
-import Button from "@/components/UI/Button/Button";
-import ConfirmActionModal from "@/components/UI/ConfirmActionModal/ConfirmActionModal";
-import { notify } from "@/components/UI/NotificationToast/notify";
-import "./ImpersonationAction.css";
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
+import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
+import ChoiceGroup from '@/components/Forms/ChoiceGroup/ChoiceGroup';
+import Button from '@/components/UI/Button/Button';
+import ConfirmActionModal from '@/components/UI/ConfirmActionModal/ConfirmActionModal';
+import { notify } from '@/components/UI/NotificationToast/notify';
+import './ImpersonationAction.css';
 
-type ImpersonationMode = "read_only" | "full";
+type ImpersonationMode = 'read_only' | 'full';
 
 const modes: Array<{ value: ImpersonationMode; label: string; description: string }> = [
     {
-        value: "read_only",
-        label: "Somente leitura",
-        description: "Apenas consulta. Cadastros, edições e exclusões ficam bloqueados.",
+        value: 'read_only',
+        label: 'Somente leitura',
+        description: 'Apenas consulta. Cadastros, edições e exclusões ficam bloqueados.',
     },
     {
-        value: "full",
-        label: "Acesso completo",
-        description: "Permite usar o sistema livremente em nome do usuário. As alterações são auditadas com o seu nome.",
+        value: 'full',
+        label: 'Acesso completo',
+        description:
+            'Permite usar o sistema livremente em nome do usuário. As alterações são auditadas com o seu nome.',
     },
 ];
 
@@ -37,7 +38,7 @@ export default function ImpersonationAction({
     onProcessingChange?: (processing: boolean) => void;
 }): React.JSX.Element {
     const [open, setOpen] = useState(false);
-    const [mode, setMode] = useState<ImpersonationMode>("read_only");
+    const [mode, setMode] = useState<ImpersonationMode>('read_only');
     const [processing, setProcessing] = useState(false);
 
     function changeProcessing(value: boolean): void {
@@ -46,7 +47,7 @@ export default function ImpersonationAction({
     }
 
     function failure(text: string): void {
-        notify({ tone: "error", title: "Não foi possível concluir", text });
+        notify({ tone: 'error', title: 'Não foi possível concluir', text });
     }
 
     function confirm(): void {
@@ -58,11 +59,11 @@ export default function ImpersonationAction({
             { mode },
             {
                 onHttpException: () => {
-                    failure("Não foi possível entrar como este usuário. Tente novamente.");
+                    failure('Não foi possível entrar como este usuário. Tente novamente.');
                     return false;
                 },
                 onNetworkError: () => {
-                    failure("Falha de conexão. Confira sua conexão e tente novamente.");
+                    failure('Falha de conexão. Confira sua conexão e tente novamente.');
                     return false;
                 },
                 onFinish: () => changeProcessing(false),
@@ -80,7 +81,7 @@ export default function ImpersonationAction({
                 aria-label={`Entrar no sistema como ${name}`}
                 disabled={disabled || processing}
                 onClick={() => {
-                    setMode("read_only");
+                    setMode('read_only');
                     setOpen(true);
                 }}
             />

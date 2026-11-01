@@ -1,22 +1,16 @@
-import { useEffect, useState } from "react";
-import FileUploadButton from "@/components/Forms/FileUploadButton/FileUploadButton";
-import FormField from "@/components/Forms/FormField/FormField";
-import Button from "@/components/UI/Button/Button";
-import "./EvidenceUpload.css";
+import { useEffect, useState } from 'react';
+import FileUploadButton from '@/components/Forms/FileUploadButton/FileUploadButton';
+import FormField from '@/components/Forms/FormField/FormField';
+import Button from '@/components/UI/Button/Button';
+import './EvidenceUpload.css';
 
 const defaultAccept =
-    ".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx,.ppt,.pptx,.odp,.odt,.ods,.xls,.xlsx,.csv,.txt";
+    '.jpg,.jpeg,.png,.webp,.pdf,.doc,.docx,.ppt,.pptx,.odp,.odt,.ods,.xls,.xlsx,.csv,.txt';
 
-function EvidenceFile({
-    file,
-    onRemove,
-}: {
-    file: File;
-    onRemove: () => void;
-}): React.JSX.Element {
-    const [previewUrl, setPreviewUrl] = useState("");
+function EvidenceFile({ file, onRemove }: { file: File; onRemove: () => void }): React.JSX.Element {
+    const [previewUrl, setPreviewUrl] = useState('');
     useEffect(() => {
-        if (!file.type.startsWith("image/")) return;
+        if (!file.type.startsWith('image/')) return;
         const url = URL.createObjectURL(file);
         setPreviewUrl(url);
         return () => URL.revokeObjectURL(url);
@@ -26,10 +20,7 @@ function EvidenceFile({
             {previewUrl ? (
                 <img src={previewUrl} alt="" />
             ) : (
-                <i
-                    className="fa fa-file-o evidenceUpload__fileIcon"
-                    aria-hidden="true"
-                />
+                <i className="fa fa-file-o evidenceUpload__fileIcon" aria-hidden="true" />
             )}
             <span>{file.name}</span>
             <Button
@@ -68,27 +59,23 @@ export default function EvidenceUpload({
     maxFileSizeMb?: number;
     accept?: string;
 }): React.JSX.Element {
-    const [localError, setLocalError] = useState("");
+    const [localError, setLocalError] = useState('');
     const message = error ?? localError;
     function add(selected: FileList | null): void {
         if (!selected) return;
         const next = [...files, ...Array.from(selected)];
         if (next.length > maxFiles) {
-            setLocalError(
-                `Uma inspeção pode possuir no máximo ${maxFiles} evidências.`,
-            );
+            setLocalError(`Uma inspeção pode possuir no máximo ${maxFiles} evidências.`);
             return;
         }
-        const oversized = next.find(
-            (file) => file.size > maxFileSizeMb * 1024 * 1024,
-        );
+        const oversized = next.find((file) => file.size > maxFileSizeMb * 1024 * 1024);
         if (oversized) {
             setLocalError(
                 `O arquivo ${oversized.name} ultrapassa o limite de ${maxFileSizeMb} MB.`,
             );
             return;
         }
-        setLocalError("");
+        setLocalError('');
         onChange(next);
     }
     return (
@@ -108,7 +95,7 @@ export default function EvidenceUpload({
                 disabled={disabled}
                 onChange={(event) => {
                     add(event.target.files);
-                    event.target.value = "";
+                    event.target.value = '';
                 }}
             />
             {files.length ? (
@@ -118,12 +105,8 @@ export default function EvidenceUpload({
                             key={`${file.name}-${file.size}-${file.lastModified}-${index}`}
                             file={file}
                             onRemove={() => {
-                                setLocalError("");
-                                onChange(
-                                    files.filter(
-                                        (_, itemIndex) => itemIndex !== index,
-                                    ),
-                                );
+                                setLocalError('');
+                                onChange(files.filter((_, itemIndex) => itemIndex !== index));
                             }}
                         />
                     ))}

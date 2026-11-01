@@ -1,4 +1,6 @@
-.pageTabs { margin-bottom: 20px; }
+.pageTabs {
+    margin-bottom: 20px;
+}
 .pageTabs ul {
     position: relative;
     display: grid;
@@ -25,9 +27,13 @@
     text-decoration: none;
 }
 .pageTabs__link:hover,
-.pageTabs__link:focus-visible { color: var(--ui-color-gnai-primary); }
+.pageTabs__link:focus-visible {
+    color: var(--ui-color-gnai-primary);
+}
 .pageTabs__link:focus-visible {
     outline: 2px solid var(--ui-color-gnai-primary);
     outline-offset: 2px;
 }
-.pageTabs__link--active { color: var(--ui-color-gnai-primary); }
+.pageTabs__link--active {
+    color: var(--ui-color-gnai-primary);
+}

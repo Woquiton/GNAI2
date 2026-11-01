@@ -1,0 +1,5 @@
+.studentCourseForm__empty {
+    margin: 0;
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-sm);
+}

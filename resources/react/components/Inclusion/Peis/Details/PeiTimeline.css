@@ -1,0 +1,28 @@
+.peiTimeline:not(:last-child) {
+    margin-bottom: var(--ui-space-6);
+}
+.peiTimeline__title {
+    margin: 0 0 var(--ui-space-3);
+    color: var(--ui-color-form-label);
+    font-size: var(--ui-font-size-md);
+    font-weight: 700;
+}
+.peiTimeline__list {
+    display: grid;
+    gap: var(--ui-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.peiTimeline__item {
+    padding: var(--ui-space-3);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+    overflow-wrap: anywhere;
+}
+.peiTimeline__item p {
+    margin: var(--ui-space-1) 0 0;
+}
+.peiTimeline__item small {
+    color: var(--ui-color-text-muted);
+}

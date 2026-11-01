@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
-import { Link, router, usePage } from "@inertiajs/react";
-import AppFooter from "@/components/Navigation/AppFooter/AppFooter";
-import Button from "@/components/UI/Button/Button";
-import FlashNotifications from "@/components/UI/FlashNotifications/FlashNotifications";
-import PageErrorBoundary from "@/components/UI/PageErrorBoundary/PageErrorBoundary";
-import "./TeacherPortalLayout.css";
+import type { ReactNode } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
+import AppFooter from '@/components/Navigation/AppFooter/AppFooter';
+import Button from '@/components/UI/Button/Button';
+import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
+import PageErrorBoundary from '@/components/UI/PageErrorBoundary/PageErrorBoundary';
+import './TeacherPortalLayout.css';
 
 interface TeacherPortalLayoutProps {
     auth: { user: { name: string } | null };
@@ -18,14 +18,22 @@ interface TeacherPortalLayoutProps {
  * administrativa, com o nome do usuário, saída e retorno da personificação.
  * Monta o único consumidor de flash das telas do portal.
  */
-export default function TeacherPortalLayout({ children }: { children: ReactNode }): React.JSX.Element {
+export default function TeacherPortalLayout({
+    children,
+}: {
+    children: ReactNode;
+}): React.JSX.Element {
     const { props, url } = usePage<TeacherPortalLayoutProps>();
     const { auth, impersonating, impersonationReadOnly } = props;
 
     return (
         <div className="teacherPortalLayout">
             <header className="teacherPortalLayout__topbar">
-                <Link href="/professor" className="teacherPortalLayout__brand" aria-label="Início do Portal do Professor - Gnai">
+                <Link
+                    href="/professor"
+                    className="teacherPortalLayout__brand"
+                    aria-label="Início do Portal do Professor - Gnai"
+                >
                     <img src="/images/logo2.png" alt="" className="teacherPortalLayout__logo" />
                     <span>Portal do Professor</span>
                 </Link>
@@ -34,8 +42,8 @@ export default function TeacherPortalLayout({ children }: { children: ReactNode 
                         <p className="teacherPortalLayout__impersonation">
                             <i className="fa fa-user-secret" aria-hidden="true" />
                             <span>
-                                Navegando como <strong>{auth.user.name}</strong>
-                                {" "}({impersonationReadOnly ? "somente leitura" : "acesso completo"})
+                                Navegando como <strong>{auth.user.name}</strong> (
+                                {impersonationReadOnly ? 'somente leitura' : 'acesso completo'})
                             </span>
                         </p>
                     ) : auth.user ? (
@@ -49,7 +57,7 @@ export default function TeacherPortalLayout({ children }: { children: ReactNode 
                             label="Minha conta"
                             title="Voltar para a minha conta"
                             aria-label="Voltar para a minha conta"
-                            onClick={() => router.post("/autenticacao/acessar-como/encerrar")}
+                            onClick={() => router.post('/autenticacao/acessar-como/encerrar')}
                         />
                     ) : null}
                     <Button
@@ -59,7 +67,7 @@ export default function TeacherPortalLayout({ children }: { children: ReactNode 
                         label="Sair"
                         title="Sair do Gnai"
                         aria-label="Sair do Gnai"
-                        onClick={() => router.post("/autenticacao/sair")}
+                        onClick={() => router.post('/autenticacao/sair')}
                     />
                 </div>
             </header>
@@ -68,9 +76,7 @@ export default function TeacherPortalLayout({ children }: { children: ReactNode 
                     {children}
                 </PageErrorBoundary>
             </div>
-            <AppFooter>
-                Gnai &copy; {new Date().getFullYear()} | Gestão NAIs
-            </AppFooter>
+            <AppFooter>Gnai &copy; {new Date().getFullYear()} | Gestão NAIs</AppFooter>
             <FlashNotifications />
         </div>
     );

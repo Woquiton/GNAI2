@@ -1,24 +1,28 @@
-import PublicationForm from "./PublicationForm";
-import type {
-    PublicationRecord,
-    PublicationFormOptions,
-} from "./Publication.types";
-
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import PublicationForm from '@/components/Inclusion/Publications/Form/PublicationForm';
+import { publicationBreadcrumb } from '@/components/Inclusion/Publications/Publications.routes';
+import type { PublicationEditProps } from '@/components/Inclusion/Publications/Publications.types';
 export default function InclusionPublicationsEditPage({
     publication,
     options,
     can,
-}: {
-    publication: PublicationRecord;
-    options: PublicationFormOptions;
-    can: { submit: boolean };
-}): React.JSX.Element {
+}: PublicationEditProps): React.JSX.Element {
     return (
-        <PublicationForm
-            key={publication.id}
-            publication={publication}
-            options={options}
-            canSubmit={can.submit}
-        />
+        <BusinessPage
+            title="Editar publicação"
+            subtitle="Escreva o conteúdo, anexe as mídias e defina como a publicação vai ao ar no site."
+            breadcrumbItems={publicationBreadcrumb({
+                current: 'Editar',
+                publicationId: publication.id,
+                publicationTitle: publication.title,
+            })}
+        >
+            <PublicationForm
+                key={publication.id}
+                publication={publication}
+                options={options}
+                canSubmit={can.submit}
+            />
+        </BusinessPage>
     );
 }

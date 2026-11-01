@@ -1,0 +1,16 @@
+/* Resumo do parecer em uma linha, com reticências, dentro da célula da tabela. */
+.inspectionHistoryTable__description.richTextContent {
+    overflow: hidden;
+    line-height: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.inspectionHistoryTable__description > * {
+    display: inline;
+    margin: 0;
+}
+
+.inspectionHistoryTable__description br {
+    display: none;
+}

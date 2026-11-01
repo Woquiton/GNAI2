@@ -1,15 +1,19 @@
-import SemesterForm from "./SemesterForm";
-import type { SemesterRecord } from "./Semester.types";
+import SemesterForm from '@/components/Inclusion/Semesters/Form/SemesterForm';
+import { semesterLabel } from '@/components/Inclusion/Semesters/Semesters.constants';
+import { semesterBreadcrumb } from '@/components/Inclusion/Semesters/Semesters.routes';
+import type { SemesterEditProps } from '@/components/Inclusion/Semesters/Semesters.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSemestersEditPage({
     semester,
-}: {
-    semester: SemesterRecord;
-}): React.JSX.Element {
+}: SemesterEditProps): React.JSX.Element {
     return (
-        <SemesterForm
-            key={semester.id}
-            semester={semester}
-        />
+        <BusinessPage
+            title="Editar Semestre"
+            subtitle={`Alterando: ${semesterLabel(semester)}`}
+            breadcrumbItems={semesterBreadcrumb({ semester, current: 'Editar' })}
+        >
+            <SemesterForm key={semester.id} semester={semester} />
+        </BusinessPage>
     );
 }

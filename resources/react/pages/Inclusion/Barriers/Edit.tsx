@@ -1,42 +1,19 @@
-import BarrierForm from "./BarrierForm";
-import type { BarrierCategory, BarrierDeficiency, BarrierInstitution, BarrierOption, BarrierRecord } from "./Barrier.types";
+import { barrierBreadcrumb } from '@/components/Inclusion/Barriers/Barriers.routes';
+import type { BarrierEditProps } from '@/components/Inclusion/Barriers/Barriers.types';
+import BarrierForm from '@/components/Inclusion/Barriers/Form/BarrierForm';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionBarriersEditPage({
     barrier,
-    institutions,
-    categories,
-    deficiencies,
-    students,
-    professionals,
-    priorities,
-    barrierStatuses,
-    selectedInstitution,
-    canSubmit,
-}: {
-    barrier: BarrierRecord;
-    institutions: BarrierInstitution[];
-    categories: BarrierCategory[];
-    deficiencies: BarrierDeficiency[];
-    students: Record<string, string>;
-    professionals: Record<string, string>;
-    priorities: BarrierOption[];
-    barrierStatuses: BarrierOption[];
-    selectedInstitution: BarrierInstitution | null;
-    canSubmit: boolean;
-}): React.JSX.Element {
+    ...options
+}: BarrierEditProps): React.JSX.Element {
     return (
-        <BarrierForm
-            key={barrier.id}
-            barrier={barrier}
-            institutions={institutions}
-            categories={categories}
-            deficiencies={deficiencies}
-            students={students}
-            professionals={professionals}
-            priorities={priorities}
-            barrierStatuses={barrierStatuses}
-            selectedInstitution={selectedInstitution}
-            canSubmit={canSubmit}
-        />
+        <BusinessPage
+            title="Editar Barreira de Acessibilidade"
+            subtitle={`Atualizando informações de ${barrier.name}.`}
+            breadcrumbItems={barrierBreadcrumb({ barrier, current: 'Editar' })}
+        >
+            <BarrierForm key={barrier.id} options={options} barrier={barrier} />
+        </BusinessPage>
     );
 }

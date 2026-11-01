@@ -1,0 +1,67 @@
+/* Composição particular das seções em modo leitura do Portal do Professor. */
+.emptyText.teacherPortal__notice {
+    margin-top: var(--ui-space-5);
+}
+
+.teacherPortal__text {
+    white-space: pre-wrap;
+}
+
+.teacherPortal__subheading {
+    margin: var(--ui-space-7) 0 var(--ui-space-3);
+    color: var(--ui-color-heading);
+    font: 600 var(--ui-font-size-lg) / 1.4 var(--ui-font-ui);
+}
+
+.teacherPortal__list {
+    display: grid;
+    gap: var(--ui-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.teacherPortal__listItem {
+    min-width: 0;
+    padding: var(--ui-space-3) 14px;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    color: var(--ui-color-legacy-text);
+    font-size: var(--ui-font-size-md);
+    overflow-wrap: anywhere;
+}
+
+.teacherPortal__listItem strong {
+    color: var(--ui-color-form-label);
+}
+
+.teacherPortal__meta {
+    display: block;
+    margin-top: var(--ui-space-1);
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-sm);
+}
+
+.teacherPortal__discipline {
+    display: grid;
+    gap: var(--ui-space-4);
+}
+
+.teacherPortal__disciplineHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--ui-space-1) var(--ui-space-4);
+}
+
+.teacherPortal__disciplineHeader h4 {
+    margin: 0;
+    color: var(--ui-color-heading);
+    font: 600 var(--ui-font-size-lg) / 1.4 var(--ui-font-ui);
+}
+
+.teacherPortal__disciplineActions {
+    display: flex;
+    justify-content: flex-end;
+}

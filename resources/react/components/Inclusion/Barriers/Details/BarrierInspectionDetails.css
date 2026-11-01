@@ -1,0 +1,26 @@
+.barrierInspectionDetails__evidences {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--ui-space-3);
+}
+.barrierInspectionDetails__evidence {
+    display: grid;
+    min-height: 120px;
+    place-items: center;
+    padding: var(--ui-space-3);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+    color: var(--ui-color-legacy-text);
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+.barrierInspectionDetails__evidence img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: var(--ui-radius-sm);
+}
+.barrierInspectionDetails__empty {
+    margin: 0;
+}

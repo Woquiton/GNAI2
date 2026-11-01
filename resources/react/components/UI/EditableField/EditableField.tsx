@@ -6,7 +6,7 @@ import './EditableField.base.css';
 import './EditableField.css';
 
 export default function EditableField(props: EditableFieldProps): React.JSX.Element {
-  const host = useRef<HTMLSpanElement>(null);
-  useEditableField(host, props);
-  return <span className="editableField" ref={host} />;
+    const host = useRef<HTMLSpanElement>(null);
+    useEditableField(host, props);
+    return <span className="editableField" ref={host} />;
 }

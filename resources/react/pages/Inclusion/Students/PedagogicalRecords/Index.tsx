@@ -1,50 +1,109 @@
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import StudentRecordReturnButton from "@/components/Students/StudentRecordReturnButton";
-import { studentsBase, studentUrl } from "@/components/Students/Students.utils";
-import PedagogicalRecordList from "@/pages/Inclusion/PedagogicalRecords/PedagogicalRecordList";
+import { usePage } from '@inertiajs/react';
+import PedagogicalRecordFilters from '@/components/Inclusion/PedagogicalRecords/List/PedagogicalRecordFilters';
+import PedagogicalRecordList from '@/components/Inclusion/PedagogicalRecords/List/PedagogicalRecordList';
+import PedagogicalRecordDeleteModal from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecordDeleteModal';
+import {
+    emptyPedagogicalRecordFilters,
+    pedagogicalRecordFailureTexts,
+    studentPedagogicalRecordFilters,
+} from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.constants';
+import {
+    STUDENT_PEDAGOGICAL_RECORD_TAB,
+    pedagogicalRecordUrls,
+    studentPedagogicalRecordBreadcrumb,
+} from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.routes';
 import type {
-    PedagogicalRecordFilterName,
-    PedagogicalRecordListProps,
-} from "@/pages/Inclusion/PedagogicalRecords/PedagogicalRecordList.types";
-
-type Props = PedagogicalRecordListProps & {
-    student: { id: number; name: string | null };
-};
+    PedagogicalRecordListRow,
+    StudentPedagogicalRecordIndexProps,
+} from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.types';
+import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
+import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
+import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
 export default function InclusionStudentsPedagogicalRecordsIndexPage({
     student,
-    ...props
-}: Props): React.JSX.Element {
-    const studentName = student.name ?? "Aluno";
-    const filters: PedagogicalRecordFilterName[] = props.can.view_all
-        ? ["professional_id", "is_present", "with_guardians"]
-        : ["is_present", "with_guardians"];
+    pedagogicalRecords,
+    professionals,
+    courses,
+    students,
+    filters: initialFilters,
+    can,
+}: StudentPedagogicalRecordIndexProps): React.JSX.Element {
+    const studentName = student.name ?? 'Aluno';
+    const errors = usePage().props.errors as Record<string, string | undefined>;
+    const filters = useTableListFilters({
+        url: pedagogicalRecordUrls.student(student.id),
+        initialFilters,
+        emptyFilters: emptyPedagogicalRecordFilters,
+        failureText: pedagogicalRecordFailureTexts.list,
+        pageParam: 'pedagogical_page',
+    });
+    const removal = useConfirmedAction<PedagogicalRecordListRow>({
+        failureText: pedagogicalRecordFailureTexts.delete,
+    });
+
+    function openRemoval(record: PedagogicalRecordListRow): void {
+        filters.cancelScheduled();
+        removal.open(record);
+    }
+
+    function confirmRemoval(): void {
+        if (removal.target) {
+            filters.cancelScheduled();
+            removal.submit('delete', pedagogicalRecordUrls.destroy(removal.target.id, student.id));
+        }
+    }
 
     return (
-        <BusinessPage
+        <TableListLayout
             title="Histórico de Atendimentos Pedagógicos"
             subtitle={`Aluno: ${studentName}`}
-            breadcrumbItems={[
-                { label: "Home", href: "/autenticacao/painel" },
-                { label: "Alunos", href: studentsBase },
-                { label: studentName, href: studentUrl(student.id) },
-                { label: "Atendimentos pedagógicos" },
-            ]}
-            actions={(
+            breadcrumbItems={studentPedagogicalRecordBreadcrumb({
+                id: student.id,
+                name: studentName,
+            })}
+            actions={
                 <StudentRecordReturnButton
                     studentId={student.id}
-                    tab="pedagogical-attendance"
+                    tab={STUDENT_PEDAGOGICAL_RECORD_TAB}
                 />
-            )}
+            }
+            listLabel="Listagem de atendimentos pedagógicos"
+            loading={filters.loading}
+            loadingLabel="Atualizando atendimentos pedagógicos"
+            filters={
+                <PedagogicalRecordFilters
+                    values={filters.values}
+                    students={students}
+                    professionals={professionals}
+                    courses={courses}
+                    primary={studentPedagogicalRecordFilters(can.view_all)}
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
+                />
+            }
+            dialogs={
+                <PedagogicalRecordDeleteModal
+                    open={removal.target !== null}
+                    record={removal.target}
+                    processing={removal.processing}
+                    onClose={removal.close}
+                    onConfirm={confirmRemoval}
+                />
+            }
         >
             <PedagogicalRecordList
-                {...props}
-                url={studentUrl(student.id, "atendimentos-pedagogicos")}
+                records={pedagogicalRecords}
                 variant="student"
-                primaryFilters={filters}
-                pageParam="pedagogical_page"
+                permissions={can}
                 studentId={student.id}
+                loading={filters.loading}
+                processing={removal.processing}
+                onDelete={openRemoval}
+                onPageSelect={filters.selectPage}
             />
-        </BusinessPage>
+        </TableListLayout>
     );
 }

@@ -1,0 +1,12 @@
+/* As classes mantêm o nome histórico porque a tabela de disciplinas do PEI também as utiliza. */
+.studentsPage__recordList {
+    min-width: 0;
+}
+.studentsPage__recordListActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--ui-space-3);
+}
+.studentsPage__recordList .tableListCard {
+    min-width: 0;
+}

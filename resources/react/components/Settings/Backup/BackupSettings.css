@@ -1,0 +1,17 @@
+.backupSettings__times {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.backupSettings__time {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.backupSettings__time .formField {
+    flex: 0 1 220px;
+    margin-bottom: 0;
+}

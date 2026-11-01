@@ -1,44 +1,19 @@
-import InlineAlert from "@/components/UI/InlineAlert/InlineAlert";
-import LoanForm from "./LoanForm";
-import LoanPage from "./LoanPage";
-import type { LoanFormProps, LoanRecord } from "./Loan.types";
-import "./Loan.css";
-
-type Props = LoanFormProps & {
-    display: LoanRecord;
-};
+import LoanEditForm from '@/components/Inclusion/Loans/Form/LoanEditForm';
+import { loanBreadcrumb } from '@/components/Inclusion/Loans/Loans.routes';
+import type { LoanEditProps } from '@/components/Inclusion/Loans/Loans.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionLoansEditPage({
     display: loan,
-    ...props
-}: Props): React.JSX.Element {
+    can,
+}: LoanEditProps): React.JSX.Element {
     return (
-        <LoanPage
+        <BusinessPage
             title="Editar Registro de Empréstimo"
             subtitle="Atualize as observações registradas para este empréstimo."
-            current="Editar"
-            loan={loan}
+            breadcrumbItems={loanBreadcrumb({ loan, current: 'Editar' })}
         >
-            {loan.is_returned ? (
-                <InlineAlert variant="info" className="loanForm__notice">
-                    <strong>Este empréstimo já foi finalizado.</strong> Apenas as
-                    observações podem ser atualizadas.
-                </InlineAlert>
-            ) : null}
-            {loan.is_overdue ? (
-                <InlineAlert variant="warning" className="loanForm__notice">
-                    <strong>Este item está com a devolução atrasada.</strong> O
-                    prazo encerrou em {loan.due_date_label}.
-                </InlineAlert>
-            ) : null}
-            <LoanForm
-                mode="edit"
-                students={props.students}
-                professionals={props.professionals}
-                authUser={props.authUser}
-                can={props.can}
-                loan={loan}
-            />
-        </LoanPage>
+            <LoanEditForm key={loan.id} loan={loan} canSubmit={can.submit} />
+        </BusinessPage>
     );
 }

@@ -1,27 +1,19 @@
-import LocationForm from "./LocationForm";
-import type { InstitutionMapData, InstitutionOption, LocationRecord } from "./Location.types";
+import LocationForm from '@/components/Inclusion/Locations/Form/LocationForm';
+import { locationBreadcrumb } from '@/components/Inclusion/Locations/Locations.routes';
+import type { LocationEditProps } from '@/components/Inclusion/Locations/Locations.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionLocationsEditPage({
     location,
-    institutions,
-    institutionsData,
-    selectedInstitution,
-    canSubmit,
-}: {
-    location: LocationRecord;
-    institutions: InstitutionOption[];
-    institutionsData: InstitutionMapData[];
-    selectedInstitution: { id: number } | null;
-    canSubmit: boolean;
-}): React.JSX.Element {
+    ...options
+}: LocationEditProps): React.JSX.Element {
     return (
-        <LocationForm
-            key={location.id}
-            location={location}
-            institutions={institutions}
-            institutionsData={institutionsData}
-            selectedInstitutionId={selectedInstitution?.id ?? null}
-            canSubmit={canSubmit}
-        />
+        <BusinessPage
+            title="Editar Ponto de Referência"
+            subtitle={`Atualize as informações de ${location.name}.`}
+            breadcrumbItems={locationBreadcrumb({ location, current: 'Editar' })}
+        >
+            <LocationForm key={location.id} options={options} location={location} />
+        </BusinessPage>
     );
 }

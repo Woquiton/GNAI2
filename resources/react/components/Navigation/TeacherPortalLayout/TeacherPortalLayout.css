@@ -63,8 +63,12 @@
     overflow-wrap: anywhere;
 }
 
-.teacherPortalLayout__impersonation i { margin-right: 6px; }
-.teacherPortalLayout__impersonation strong { color: var(--ui-color-surface); }
+.teacherPortalLayout__impersonation i {
+    margin-right: 6px;
+}
+.teacherPortalLayout__impersonation strong {
+    color: var(--ui-color-surface);
+}
 
 .teacherPortalLayout__content {
     flex: 1;
@@ -84,9 +88,15 @@
 }
 
 @media (max-width: 767px) {
-    .teacherPortalLayout__topbar { padding-inline: 15px; }
-    .teacherPortalLayout__content { padding: 20px 15px 80px; }
-    .teacherPortalLayout__userName { display: none; }
+    .teacherPortalLayout__topbar {
+        padding-inline: 15px;
+    }
+    .teacherPortalLayout__content {
+        padding: 20px 15px 80px;
+    }
+    .teacherPortalLayout__userName {
+        display: none;
+    }
 
     .teacherPortalLayout .formActions__bar--fixed {
         right: 15px;

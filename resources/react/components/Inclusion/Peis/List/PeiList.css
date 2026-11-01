@@ -1,0 +1,17 @@
+/* Valor principal com linha secundária na primeira coluna; ambos encolhem com reticências. */
+.peiList__identity {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.peiList__identity > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.peiList__meta {
+    margin-top: var(--ui-space-1);
+    color: var(--ui-color-text-muted);
+}

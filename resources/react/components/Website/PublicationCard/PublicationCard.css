@@ -5,7 +5,9 @@
     border: 1px solid var(--site-border);
     border-radius: var(--site-radius);
     background: #fff;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
 
 .publicationCard:hover,

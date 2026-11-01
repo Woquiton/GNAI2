@@ -1,0 +1,9 @@
+.paeeReviewForm {
+    margin-top: var(--ui-space-4);
+}
+
+.paeeReviewForm__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--ui-space-3);
+}

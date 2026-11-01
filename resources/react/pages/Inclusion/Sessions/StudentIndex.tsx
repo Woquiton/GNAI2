@@ -1,81 +1,33 @@
-import {
-    TableListCard,
-    useTableListVisit,
-} from "@/components/Tables/TableList/TableList";
-import Button from "@/components/UI/Button/Button";
-import {
-    studentsBase,
-    studentUrl,
-} from "@/components/Students/Students.utils";
-import SessionFilters from "./SessionFilters";
-import type {
-    SessionStudentIndexProps,
-    SessionTableFilterKey,
-} from "./SessionList.types";
-import SessionPage from "./SessionPage";
-import SessionTable from "./SessionTable";
-
-const tableFilterFields: SessionTableFilterKey[] = ["professional", "type", "status"];
+import StudentSessionList from '@/components/Inclusion/Sessions/List/StudentSessionList';
+import { studentSessionsBreadcrumb } from '@/components/Inclusion/Sessions/Sessions.routes';
+import type { SessionStudentIndexProps } from '@/components/Inclusion/Sessions/Sessions.types';
+import { studentUrls } from '@/components/Inclusion/Students/Students.routes';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import Button from '@/components/UI/Button/Button';
 
 export default function InclusionSessionsStudentIndexPage({
-    sessions,
-    student,
-    filters,
-    options,
     can,
+    ...list
 }: SessionStudentIndexProps): React.JSX.Element {
-    const list = useTableListVisit({
-        url: studentUrl(student.id, "sessions"),
-        failureText: "Não foi possível atualizar os agendamentos do aluno. Tente novamente.",
-    });
-    const currentFilters = {
-        professional: filters.professional,
-        type: filters.type,
-        status: filters.status,
-    };
+    const { student } = list;
 
     return (
-        <SessionPage
+        <BusinessPage
             title={`Agendamentos de Atendimento, ${student.name}`}
             subtitle="Histórico de atendimentos realizados para o aluno."
-            breadcrumbItems={[
-                { label: "Home", href: "/autenticacao/painel" },
-                { label: "Alunos", href: studentsBase },
-                { label: student.name, href: studentUrl(student.id) },
-                { label: "Agendamentos" },
-            ]}
-            actions={(
+            breadcrumbItems={studentSessionsBreadcrumb(student)}
+            actions={
                 <Button
-                    href={studentUrl(student.id)}
+                    href={studentUrls.show(student.id)}
                     tone="cancel"
                     leftIconClass="fa fa-arrow-left"
                     label="Voltar"
                     title="Voltar ao prontuário"
                     aria-label="Voltar ao prontuário do aluno"
                 />
-            )}
+            }
         >
-            <TableListCard
-                aria-label={`Listagem de agendamentos de ${student.name}`}
-                loading={list.loading}
-                loadingLabel="Atualizando agendamentos do aluno"
-            >
-                <SessionFilters
-                    fields={tableFilterFields}
-                    filters={filters}
-                    options={options}
-                    onSearch={(values) => list.visit(values)}
-                />
-                <SessionTable
-                    sessions={sessions}
-                    canView={can.view}
-                    showProfessional
-                    showTime
-                    loading={list.loading}
-                    emptyMessage="Nenhum agendamento encontrado para este aluno."
-                    onPage={(page) => list.visit(currentFilters, page)}
-                />
-            </TableListCard>
-        </SessionPage>
+            <StudentSessionList {...list} canView={can.view} />
+        </BusinessPage>
     );
 }

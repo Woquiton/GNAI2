@@ -166,7 +166,9 @@
     color: var(--site-ink-soft) !important;
     font-weight: 600;
     text-decoration: none;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
 .siteLayout__navLink:hover,
@@ -380,7 +382,6 @@
 .siteLayout__copyright a:hover {
     text-decoration-thickness: 2px;
 }
-
 
 .siteLayout__footer .siteLayout__logo {
     padding: 4px;

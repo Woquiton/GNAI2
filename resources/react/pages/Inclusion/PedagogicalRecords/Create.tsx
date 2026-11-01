@@ -1,10 +1,18 @@
-import PedagogicalRecordForm from "./PedagogicalRecordForm";
-import type { PedagogicalRecordFormContext } from "./PedagogicalRecordForm.types";
+import PedagogicalRecordForm from '@/components/Inclusion/PedagogicalRecords/Form/PedagogicalRecordForm';
+import { pedagogicalRecordBreadcrumb } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.routes';
+import type { PedagogicalRecordCreateProps } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPedagogicalRecordsCreatePage({
     context,
-}: {
-    context: PedagogicalRecordFormContext;
-}): React.JSX.Element {
-    return <PedagogicalRecordForm context={context} />;
+}: PedagogicalRecordCreateProps): React.JSX.Element {
+    return (
+        <BusinessPage
+            title="Novo Atendimento Pedagógico"
+            subtitle={`Agendamento #${context.session_id}`}
+            breadcrumbItems={pedagogicalRecordBreadcrumb({ sessionId: context.session_id })}
+        >
+            <PedagogicalRecordForm context={context} />
+        </BusinessPage>
+    );
 }

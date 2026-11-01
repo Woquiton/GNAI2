@@ -1,0 +1,6 @@
+/* O título ocupa duas colunas da grade de dados em telas largas. */
+@media (min-width: 1101px) {
+    .pendencyDetails__title {
+        grid-column: span 2;
+    }
+}

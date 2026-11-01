@@ -1,24 +1,21 @@
-import TeacherForm from "./TeacherForm";
-import TeacherPage from "./TeacherPage";
-import type { TeacherRecord } from "./Teacher.types";
+import TeacherForm from '@/components/Inclusion/Teachers/Form/TeacherForm';
+import { teacherBreadcrumb } from '@/components/Inclusion/Teachers/Teachers.routes';
+import type { TeacherEditProps } from '@/components/Inclusion/Teachers/Teachers.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionTeachersEditPage({
     teacher,
-}: {
-    teacher: TeacherRecord;
-}): React.JSX.Element {
+}: TeacherEditProps): React.JSX.Element {
     return (
-        <TeacherPage
+        <BusinessPage
             title="Editar Professor"
             subtitle="Atualize os dados e as disciplinas atribuídas ao docente."
-            current="Editar"
-            teacher={{ id: teacher.id, name: teacher.person.name }}
+            breadcrumbItems={teacherBreadcrumb({
+                teacher: { id: teacher.id, name: teacher.person.name },
+                current: 'Editar',
+            })}
         >
-            <TeacherForm
-                key={teacher.id}
-                mode="edit"
-                teacher={teacher}
-            />
-        </TeacherPage>
+            <TeacherForm key={teacher.id} mode="edit" teacher={teacher} />
+        </BusinessPage>
     );
 }

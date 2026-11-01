@@ -1,38 +1,18 @@
-import BarrierForm from "./BarrierForm";
-import type { BarrierCategory, BarrierDeficiency, BarrierInstitution, BarrierOption } from "./Barrier.types";
+import { barrierBreadcrumb } from '@/components/Inclusion/Barriers/Barriers.routes';
+import type { BarrierCreateProps } from '@/components/Inclusion/Barriers/Barriers.types';
+import BarrierForm from '@/components/Inclusion/Barriers/Form/BarrierForm';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function InclusionBarriersCreatePage({
-    institutions,
-    categories,
-    deficiencies,
-    students,
-    professionals,
-    priorities,
-    barrierStatuses,
-    selectedInstitution,
-    canSubmit,
-}: {
-    institutions: BarrierInstitution[];
-    categories: BarrierCategory[];
-    deficiencies: BarrierDeficiency[];
-    students: Record<string, string>;
-    professionals: Record<string, string>;
-    priorities: BarrierOption[];
-    barrierStatuses: BarrierOption[];
-    selectedInstitution: BarrierInstitution | null;
-    canSubmit: boolean;
-}): React.JSX.Element {
+export default function InclusionBarriersCreatePage(
+    options: BarrierCreateProps,
+): React.JSX.Element {
     return (
-        <BarrierForm
-            institutions={institutions}
-            categories={categories}
-            deficiencies={deficiencies}
-            students={students}
-            professionals={professionals}
-            priorities={priorities}
-            barrierStatuses={barrierStatuses}
-            selectedInstitution={selectedInstitution}
-            canSubmit={canSubmit}
-        />
+        <BusinessPage
+            title="Relatar Barreira de Acessibilidade"
+            subtitle="Registre um ponto de obstrução ou dificuldade encontrada no campus."
+            breadcrumbItems={barrierBreadcrumb({ current: 'Cadastrar' })}
+        >
+            <BarrierForm options={options} />
+        </BusinessPage>
     );
 }
