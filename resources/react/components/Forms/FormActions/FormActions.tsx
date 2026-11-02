@@ -16,7 +16,26 @@ export default function FormActions({
     className,
 }: FormActionsProps): React.JSX.Element {
     const containerRef = useRef<HTMLDivElement>(null);
+    const barRef = useRef<HTMLElement>(null);
     const [fixed, setFixed] = useState(true);
+
+    // No celular a barra fica sempre colada na base da tela; a página reserva a altura dela.
+    useEffect(() => {
+        const bar = barRef.current;
+        const root = document.documentElement;
+        if (!bar || typeof ResizeObserver === 'undefined') return;
+
+        const observer = new ResizeObserver(() => {
+            root.style.setProperty('--form-actions-height', `${bar.offsetHeight}px`);
+        });
+
+        observer.observe(bar);
+
+        return () => {
+            observer.disconnect();
+            root.style.removeProperty('--form-actions-height');
+        };
+    }, []);
 
     useEffect(() => {
         const container = containerRef.current;
@@ -38,6 +57,7 @@ export default function FormActions({
     return (
         <div ref={containerRef} className={joinClassNames('formActions', className)}>
             <footer
+                ref={barRef}
                 className={joinClassNames('formActions__bar', fixed && 'formActions__bar--fixed')}
             >
                 <div className="formActions__leading">
