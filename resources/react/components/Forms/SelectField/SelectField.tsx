@@ -226,6 +226,20 @@ export default function SelectField({
                 setNativeError(element.validationMessage);
                 focus();
             };
+            // O Select2 3.5 abre a seleção simples no `touchstart`, então passar o dedo por cima
+            // dela ao rolar a tela já a abria. Barrado esse evento, um toque de verdade ainda abre
+            // pelo `mousedown` que o navegador emite ao soltar o dedo sem arrastar; a rolagem não
+            // emite esse evento. Fica só na caixa da seleção: a lista aberta segue com o toque.
+            const selectContainer = element.previousElementSibling;
+            const ignoreTouchStart = (event: Event): void => {
+                if ((event.target as HTMLElement | null)?.closest('.select2-choice')) {
+                    event.stopPropagation();
+                }
+            };
+            selectContainer?.addEventListener('touchstart', ignoreTouchStart, {
+                capture: true,
+                passive: true,
+            });
             const labels = Array.from(element.labels ?? []);
             labels.forEach((label) => label.addEventListener('click', focus));
             element.addEventListener('focus', focus);
@@ -235,6 +249,7 @@ export default function SelectField({
                 searchInput?.removeEventListener('keydown', createOnEnter, true);
                 dropdownElement?.removeEventListener('mousedown', createOnClick);
                 plugin.current = null;
+                selectContainer?.removeEventListener('touchstart', ignoreTouchStart, true);
                 labels.forEach((label) => label.removeEventListener('click', focus));
                 element.removeEventListener('focus', focus);
                 element.removeEventListener('invalid', invalid);
