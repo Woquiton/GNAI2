@@ -53,14 +53,12 @@ export function sessionColumns({
         id: 'students',
         label: 'Aluno',
         width: showProfessional ? '24%' : '36%',
-        minWidth: 120,
         render: studentNames,
     };
     const professionalColumn: TableListColumn<SessionListRow> = {
         id: 'professional',
         label: 'Profissional',
         width: showStudents ? '22%' : '36%',
-        minWidth: 120,
         render: (session) => session.professional_name,
     };
 
@@ -69,7 +67,6 @@ export function sessionColumns({
             id: 'date',
             label: 'Data',
             width: '16%',
-            minWidth: 100,
             fixed: 'start',
             render: (session) => <SessionDateCell session={session} showTime={showTime} />,
         },
@@ -79,14 +76,12 @@ export function sessionColumns({
             id: 'type',
             label: 'Tipo',
             width: '12%',
-            minWidth: 80,
             render: (session) => session.type_label,
         },
         {
             id: 'status',
             label: 'Status',
             width: '12%',
-            minWidth: 90,
             render: (session) => (
                 <TableLabel tone={session.status_color}>{session.status_label}</TableLabel>
             ),
@@ -95,7 +90,6 @@ export function sessionColumns({
             id: 'actions',
             label: 'Ações',
             width: '14%',
-            minWidth: 86,
             fixed: 'end',
             render: (session) => (
                 <TableListRowActions

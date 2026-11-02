@@ -37,7 +37,6 @@ export default function PublicationList({
                 id: 'actions',
                 label: 'Ações',
                 width: '12%',
-                minWidth: 100,
                 fixed: 'end',
                 render: (publication) => (
                     <TableListRowActions

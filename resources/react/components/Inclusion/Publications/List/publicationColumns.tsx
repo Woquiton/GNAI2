@@ -20,7 +20,6 @@ export const publicationColumns: TableListColumn<PublicationRecord>[] = [
         id: 'title',
         label: 'Título',
         width: '32%',
-        minWidth: 140,
         fixed: 'start',
         render: (publication) => (
             <>
@@ -37,21 +36,18 @@ export const publicationColumns: TableListColumn<PublicationRecord>[] = [
         id: 'type',
         label: 'Tipo',
         width: '12%',
-        minWidth: 90,
         render: (publication) => publication.type_label,
     },
     {
         id: 'published',
         label: 'Publicação',
         width: '13%',
-        minWidth: 100,
         render: (publication) => publication.published_at_label,
     },
     {
         id: 'period',
         label: 'Período',
         width: '19%',
-        minWidth: 120,
         render: (publication) => (
             <>
                 {periodLabel(publication)}
@@ -67,7 +63,6 @@ export const publicationColumns: TableListColumn<PublicationRecord>[] = [
         id: 'status',
         label: 'Situação',
         width: '12%',
-        minWidth: 90,
         render: (publication) => (
             <TableLabel tone={publication.is_active ? 'success' : 'inverse'}>
                 {publication.is_active ? 'Publicado' : 'Rascunho'}

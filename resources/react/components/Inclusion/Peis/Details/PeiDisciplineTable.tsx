@@ -17,16 +17,14 @@ const columns: TableListColumn[] = [
         id: 'discipline',
         label: 'Disciplina',
         width: '32%',
-        minWidth: 140,
         fixed: 'start',
     },
-    { id: 'teacher', label: 'Professor responsável', width: '28%', minWidth: 130 },
-    { id: 'created', label: 'Cadastrada em', width: '16%', minWidth: 96 },
+    { id: 'teacher', label: 'Professor responsável', width: '28%' },
+    { id: 'created', label: 'Cadastrada em', width: '16%' },
     {
         id: 'actions',
         label: 'Ações',
         width: '24%',
-        minWidth: 150,
         fixed: 'end',
     },
 ];
@@ -136,12 +134,7 @@ export default function PeiDisciplineTable({
                     actions={createButton}
                 >
                     {items.map((item) => (
-                        <PeiDisciplineRow
-                            key={item.id}
-                            peiId={peiId}
-                            item={item}
-                            canPdf={canPdf}
-                        />
+                        <PeiDisciplineRow key={item.id} peiId={peiId} item={item} canPdf={canPdf} />
                     ))}
                 </StudentRecordTable>
             ) : (

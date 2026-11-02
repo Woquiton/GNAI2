@@ -17,7 +17,6 @@ const documentColumns: TableListColumn<TeacherPortalDocument>[] = [
         id: 'type',
         label: 'Tipo',
         width: '24%',
-        minWidth: 100,
         fixed: 'start',
         render: (document) => document.type_label ?? 'Não informado',
     },
@@ -25,21 +24,18 @@ const documentColumns: TableListColumn<TeacherPortalDocument>[] = [
         id: 'title',
         label: 'Título',
         width: '40%',
-        minWidth: 130,
         render: (document) => document.title ?? 'Sem título',
     },
     {
         id: 'created_at',
         label: 'Enviado em',
         width: '20%',
-        minWidth: 90,
         render: (document) => document.created_at ?? '---',
     },
     {
         id: 'actions',
         label: 'Ações',
         width: '16%',
-        minWidth: 90,
         fixed: 'end',
         render: (document) => (
             <TableListRowActions

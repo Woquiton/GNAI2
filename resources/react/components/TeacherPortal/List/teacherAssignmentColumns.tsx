@@ -8,7 +8,6 @@ export const teacherAssignmentColumns: TableListColumn<TeacherPortalAssignment>[
         id: 'student',
         label: 'Aluno',
         width: '34%',
-        minWidth: 140,
         fixed: 'start',
         render: (item) => item.student_name,
     },
@@ -16,21 +15,18 @@ export const teacherAssignmentColumns: TableListColumn<TeacherPortalAssignment>[
         id: 'discipline',
         label: 'Disciplina',
         width: '26%',
-        minWidth: 110,
         render: (item) => item.discipline_name ?? 'Não informada',
     },
     {
         id: 'course',
         label: 'Curso',
         width: '24%',
-        minWidth: 110,
         render: (item) => item.course_name ?? 'Não informado',
     },
     {
         id: 'actions',
         label: 'Ações',
         width: '16%',
-        minWidth: 104,
         fixed: 'end',
         render: (item) => (
             <TableListRowActions

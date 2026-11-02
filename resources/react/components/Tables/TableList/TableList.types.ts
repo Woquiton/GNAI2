@@ -5,8 +5,6 @@ export interface TableListColumn<T = unknown> {
     id: string;
     label: string;
     width?: number | string;
-    /** @deprecated Mantido por compatibilidade; não limita o redimensionamento. */
-    minWidth?: number;
     hideable?: boolean;
     /** Colunas complementares começam desmarcadas; fixas continuam sempre visíveis. */
     defaultVisible?: boolean;
