@@ -7,7 +7,6 @@ namespace App\Domains\Inclusion\Domain\Models;
 use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
-use App\Shared\Domain\Support\AeeLabels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -38,8 +37,8 @@ final class CaseStudyBarrier extends Model implements Auditable
     {
         return [
             'case_study_id' => AuditedField::number('ID do Estudo de Caso'),
-            // Guarda o nome da categoria como retrato histórico; tipos antigos usam as chaves fixas.
-            'type' => AuditedField::enum('Categoria de barreira', valueLabels: AeeLabels::BARRIER_TYPES),
+            // Guarda o nome da categoria como retrato histórico.
+            'type' => AuditedField::text('Categoria de barreira'),
             'observed_situation' => AuditedField::text('Situação observada'),
             'participation_implication' => AuditedField::text('Implicação na participação'),
         ];

@@ -191,7 +191,7 @@ final class CaseStudyPagePresenter
                 'barriers' => $caseStudy->barriers
                     ->map(static fn (CaseStudyBarrier $barrier): array => [
                         'id' => (int) $barrier->getKey(),
-                        'type_label' => AeeLabels::barrierType($barrier->type),
+                        'type_label' => (string) $barrier->type,
                         'observed_situation' => (string) $barrier->observed_situation,
                         'participation_implication' => (string) $barrier->participation_implication,
                     ])
@@ -203,7 +203,7 @@ final class CaseStudyPagePresenter
                         'description' => (string) $strategy->description,
                         'linked_barrier_label' => $strategy->linkedBarrier === null
                             ? null
-                            : AeeLabels::barrierType($strategy->linkedBarrier->type),
+                            : (string) $strategy->linkedBarrier->type,
                     ])
                     ->values()
                     ->all(),

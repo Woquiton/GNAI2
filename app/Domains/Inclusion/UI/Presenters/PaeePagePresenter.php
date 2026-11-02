@@ -173,7 +173,7 @@ final class PaeePagePresenter
             trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $barrier->observed_situation))) ?? ''),
             80,
         );
-        $type = AeeLabels::barrierType($barrier->type);
+        $type = (string) $barrier->type;
 
         return $situation === '' ? $type : "{$type}: {$situation}";
     }
@@ -228,7 +228,7 @@ final class PaeePagePresenter
                         'description' => $objective->description,
                         'term_label' => AeeLabels::objectiveTerm($objective->term),
                         'linked_barrier' => $objective->linkedBarrier === null ? null : [
-                            'type_label' => AeeLabels::barrierType($objective->linkedBarrier->type),
+                            'type_label' => (string) $objective->linkedBarrier->type,
                             'observed_situation' => $objective->linkedBarrier->observed_situation,
                         ],
                     ])

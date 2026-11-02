@@ -33,7 +33,7 @@
         <thead><tr><th>Tipo</th><th>Situação observada</th><th>Implicação</th></tr></thead>
         <tbody>
         @forelse($caseStudy->barriers as $barrier)
-            <tr><td>{{ \App\Shared\Domain\Support\AeeLabels::barrierType($barrier->type) }}</td><td>{{ $barrier->observed_situation }}</td><td>{{ $barrier->participation_implication }}</td></tr>
+            <tr><td>{{ $barrier->type }}</td><td>{{ $barrier->observed_situation }}</td><td>{{ $barrier->participation_implication }}</td></tr>
         @empty
             <tr><td colspan="3">Nenhuma barreira registrada.</td></tr>
         @endforelse

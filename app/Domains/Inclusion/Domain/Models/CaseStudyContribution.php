@@ -15,6 +15,9 @@ final class CaseStudyContribution extends Model implements Auditable
 {
     use AuditsChanges;
 
+    /** Papel da contribuição automática registrada ao criar o Estudo de Caso. */
+    public const CREATOR_ROLE = 'Criador';
+
     public $timestamps = false;
 
     protected $table = 'case_study_contributions';

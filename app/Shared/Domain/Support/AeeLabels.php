@@ -45,17 +45,6 @@ final class AeeLabels
         'none' => 'Nenhum',
     ];
 
-    public const BARRIER_TYPES = [
-        'architectural' => 'Arquitetônica',
-        'urbanistic' => 'Urbanística',
-        'transport' => 'Transporte',
-        'communicational' => 'Comunicacional',
-        'methodological' => 'Metodológica',
-        'technological' => 'Tecnológica',
-        'attitudinal' => 'Atitudinal',
-        'social' => 'Social',
-    ];
-
     public const ATTENDANCE_FORMATS = [
         'individual' => 'Individual',
         'collective' => 'Coletivo',
@@ -112,11 +101,6 @@ final class AeeLabels
         return collect($values ?? [])
             ->map(fn (string $value): string => self::neededSupport($value))
             ->implode(', ');
-    }
-
-    public static function barrierType(?string $value): string
-    {
-        return self::fromMap($value, self::BARRIER_TYPES);
     }
 
     public static function attendanceFormat(?string $value): string
