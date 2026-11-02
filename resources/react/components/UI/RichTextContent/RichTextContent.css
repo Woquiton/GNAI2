@@ -1,9 +1,18 @@
+/*
+ * O conteúdo colado (tabelas do Word, blocos com largura fixa no style) nunca alarga a tela:
+ * cada elemento se limita à largura do campo e o que ainda sobrar, como uma tabela com muitas
+ * colunas, rola na horizontal dentro do próprio campo.
+ */
 .richTextContent {
     display: flow-root;
     min-width: 0;
     max-width: 100%;
+    overflow-x: auto;
     overflow-wrap: anywhere;
     line-height: 1.6;
+}
+.richTextContent * {
+    max-width: 100%;
 }
 .richTextContent > :first-child {
     margin-top: 0;
