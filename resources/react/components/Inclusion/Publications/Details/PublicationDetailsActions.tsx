@@ -37,7 +37,7 @@ export default function PublicationDetailsActions({
                                 href={publication.public_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                tone="list-action"
+                                tone="dark-blue"
                                 leftIconClass="fa fa-external-link"
                                 label="Ver no site"
                                 title="Abrir a publicação no site em nova aba"

@@ -79,7 +79,7 @@ Para retirar uma publicação do site sem excluí-la, edite-a e mude a **Situaç
 ## Ver, editar ou exportar uma publicação
 
 1. Na listagem, clique no ícone de visualizar da linha.
-2. A tela mostra o conteúdo, as datas e o local, os participantes, a capa, a galeria e a situação no site.
+2. A tela mostra o conteúdo, as datas e o local, os participantes, a capa, a galeria e a situação no site. Textos longos em **Texto da publicação** mostram **Ver mais** para expandir e **Ver menos** para recolher.
 3. Use os botões do rodapé:
    - **Editar**: abre o formulário. Na galeria, é possível alterar o texto alternativo, remover fotos existentes e adicionar novas. Ao salvar, o sistema mostra "Publicação atualizada com sucesso!".
    - **PDF**: gera a publicação em PDF em uma nova aba.
@@ -95,6 +95,7 @@ A publicação é excluída permanentemente, com a capa e a galeria. O sistema m
 ## Dúvidas comuns
 
 - **"Descreva a imagem de capa no texto alternativo."**: preencha o **Texto alternativo** sempre que houver capa.
+- **"A foto não foi recebida corretamente. Selecione a imagem novamente."**: adicione novamente a foto indicada antes de salvar.
 - **"Todas as fotos da galeria precisam de texto alternativo."** ou **"Descreva a foto no texto alternativo."**: preencha a descrição de cada foto.
 - **"Já existe uma publicação com este endereço."**: escolha outro **Endereço da página** ou deixe-o em branco para o sistema gerar um.
 - **"Informe as datas e os horários de início e término do evento."**: com **Tem data de início e término** ativado, as datas, os horários e o local são obrigatórios. Desative a opção se a publicação não for um evento.

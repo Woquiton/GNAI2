@@ -21,6 +21,7 @@ A migração moderniza a tecnologia e a apresentação do Gnai preservando ident
 - Nas telas de visualizar, criar e editar, as ações principais ficam em `Forms/FormActions`, logo depois do conteúdo, sem repetição no cabeçalho. Ações secundárias, como PDF, usam a prop `secondary`, à esquerda.
 - No celular (até 767 px) o rodapé fica colado à base da tela, de ponta a ponta. A ação principal (`tone="save"` ou `tone="warning"`, como Salvar e Editar) mostra o rótulo; as demais ficam só com ícone e usam o `title` como nome.
 - Botões têm ícone pertinente e texto curto (`Salvar`, `Cancelar`, `Voltar`, `Editar`, `Excluir`, `PDF`) e sempre `title`. Ações só com ícone exigem `aria-label`. `iconOnly` só em exceções autorizadas; remova o ícone só quando pedido (`showIcon={false}`).
+- Botões que abrem o site público em nova aba, como **Ver no site**, **Abrir no site** e **Ver site**, usam `tone="dark-blue"` e ícone `fa fa-external-link`.
 - Salvar usa check no roxo institucional (`tone="save"`); cancelar e voltar usam X cinza (`tone="cancel"`). Preserve desabilitação e indicação de processamento durante o envio.
 
 ## Assets próprios confirmados

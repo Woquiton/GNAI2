@@ -17,7 +17,7 @@
     top: 0;
 }
 
-.fileUploadButton:focus-within {
+html:root[data-focus-mode='keyboard'] .fileUploadButton:focus-within {
     outline: var(--ui-focus-ring-width) solid var(--ui-focus-ring-color);
     outline-offset: var(--ui-focus-ring-offset);
 }

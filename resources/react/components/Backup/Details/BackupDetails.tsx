@@ -17,13 +17,13 @@ export default function BackupDetails({ backup }: { backup: BackupRecord }): Rea
                 iconClass="fa fa-file-archive-o"
             >
                 <DetailGrid columns={3}>
-                    <DetailField label="Arquivo ZIP" wide>
-                        <strong>{backup.file_name}</strong>
+                    <DetailField label="Arquivo ZIP">
+                        {backup.file_name}
                     </DetailField>
-                    <DetailField label="Caminho no Servidor" wide>
+                    <DetailField label="Caminho no Servidor">
                         <code className="backupDetails__path">{backup.file_path}</code>
                     </DetailField>
-                    <DetailField label="Nome de Exibição (Alias)" wide>
+                    <DetailField label="Nome de Exibição (Alias)">
                         {backup.file_name}
                     </DetailField>
                     <DetailField label="Tamanho do Arquivo">{backup.size}</DetailField>
