@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
@@ -78,14 +79,14 @@ final class PedagogicalRecordPagePresenter
         return [
             'pedagogicalRecord' => [
                 'id' => $pedagogicalRecord->getKey(),
-                'follow_up_reason' => $pedagogicalRecord->follow_up_reason,
+                'follow_up_reason' => $this->richText($pedagogicalRecord->follow_up_reason),
                 'duration' => $pedagogicalRecord->duration,
                 'is_present' => (bool) $pedagogicalRecord->is_present,
-                'absence_reason' => $pedagogicalRecord->absence_reason,
-                'systematic_pedagogical_follow_up_record' => $pedagogicalRecord->systematic_pedagogical_follow_up_record,
-                'strategies_and_resources_adopted' => $pedagogicalRecord->strategies_and_resources_adopted,
-                'referrals_made' => $pedagogicalRecord->referrals_made,
-                'complementary_observations' => $pedagogicalRecord->complementary_observations,
+                'absence_reason' => $this->richText($pedagogicalRecord->absence_reason),
+                'systematic_pedagogical_follow_up_record' => $this->richText($pedagogicalRecord->systematic_pedagogical_follow_up_record),
+                'strategies_and_resources_adopted' => $this->richText($pedagogicalRecord->strategies_and_resources_adopted),
+                'referrals_made' => $this->richText($pedagogicalRecord->referrals_made),
+                'complementary_observations' => $this->richText($pedagogicalRecord->complementary_observations),
                 'has_guardians' => $pedagogicalRecord->guardians->isNotEmpty(),
                 'guardian_names' => $pedagogicalRecord->guardian_names,
             ],
@@ -103,5 +104,13 @@ final class PedagogicalRecordPagePresenter
                 'pdf' => $user->can('pedagogical-record.view'),
             ],
         ];
+    }
+
+    /** HTML sanitizado para a visualização; conteúdo sem texto nem imagem vira `null`. */
+    private function richText(?string $value): ?string
+    {
+        $html = RichTextSanitizer::sanitize((string) $value);
+
+        return RichTextSanitizer::toPlainText($html) === '' && ! str_contains($html, '<img') ? null : $html;
     }
 }

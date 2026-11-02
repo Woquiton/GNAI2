@@ -1,23 +1,12 @@
 import { usePage } from '@inertiajs/react';
-import { useMemo } from 'react';
-import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
-import {
-    TableListCard,
-    TableListCreateButton,
-    useTableListAction,
-    useTableListVisit,
-} from '@/components/Tables/TableList/TableList';
-import ConfirmActionModal from '@/components/UI/ConfirmActionModal/ConfirmActionModal';
-import useAutoListFilters from '@/hooks/useAutoListFilters';
-import ItemFilters from './ItemFilters';
-import ItemList from './ItemList';
-import {
-    emptyItemFilters,
-    itemsBase,
-    type ItemFilters as Filters,
-    type ItemIndexProps,
-    type ItemSummary,
-} from './Items.types';
+import ItemDeleteModal from '@/components/Inclusion/Items/ItemDeleteModal';
+import { emptyItemFilters } from '@/components/Inclusion/Items/Items.constants';
+import { itemBreadcrumb, itemUrls } from '@/components/Inclusion/Items/Items.routes';
+import type { ItemIndexProps, ItemSummary } from '@/components/Inclusion/Items/Items.types';
+import ItemFilters from '@/components/Inclusion/Items/List/ItemFilters';
+import ItemList from '@/components/Inclusion/Items/List/ItemList';
+import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
+import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
 export default function InclusionItemsIndexPage({
     items,
@@ -26,104 +15,61 @@ export default function InclusionItemsIndexPage({
     accessibilityFeatureOptions,
     can,
 }: ItemIndexProps): React.JSX.Element {
-    const { errors } = usePage().props;
-    const list = useTableListVisit({
-        url: itemsBase,
+    const errors = usePage().props.errors as Record<string, string | undefined>;
+    const filters = useTableListFilters({
+        url: itemUrls.index,
+        initialFilters,
+        emptyFilters: emptyItemFilters,
         failureText: 'Não foi possível concluir a operação. Tente novamente.',
     });
-    const removal = useTableListAction<ItemSummary>({
+    const removal = useConfirmedAction<ItemSummary>({
         failureText: 'Não foi possível concluir a exclusão. Tente novamente.',
     });
-    const initialValues = useMemo(
-        () => ({ ...emptyItemFilters, ...initialFilters }),
-        [initialFilters],
-    );
-    const {
-        values: filters,
-        update: updateFilter,
-        clear: clearFilters,
-        submit: submitFilters,
-        cancelScheduled,
-    } = useAutoListFilters({
-        initialValues,
-        emptyValues: emptyItemFilters,
-        onSearch: (values: Filters) => list.visit(values),
-    });
 
-    function selectPage(page: number): void {
-        cancelScheduled();
-        const params = new URLSearchParams(window.location.search);
-        params.set('page', String(page));
-        list.visitUrl(`${itemsBase}?${params.toString()}`);
+    function confirmRemoval(): void {
+        if (removal.target) {
+            filters.cancelScheduled();
+            removal.submit('delete', itemUrls.destroy(removal.target.id));
+        }
     }
 
     return (
-        <BusinessPage
+        <TableListLayout
             title="Itens"
             subtitle="Gestão de tecnologias assistivas e materiais pedagógicos acessíveis."
-            breadcrumbItems={[
-                { label: 'Home', href: '/auth/dashboard' },
-                { label: 'Itens' },
-            ]}
-            actions={
-                can.create ? (
-                    <TableListCreateButton
-                        href={`${itemsBase}/create`}
-                        ariaLabel="Cadastrar item"
-                    />
-                ) : undefined
-            }
-            className="itemIndex"
-        >
-            <TableListCard
-                aria-label="Listagem de itens"
-                aria-busy={list.loading}
-                loading={list.loading}
-                loadingLabel="Atualizando itens"
-            >
+            breadcrumbItems={itemBreadcrumb()}
+            create={can.create && { href: itemUrls.create, label: 'Cadastrar item' }}
+            listLabel="Listagem de itens"
+            loading={filters.loading}
+            loadingLabel="Atualizando itens"
+            filters={
                 <ItemFilters
-                    values={filters}
+                    values={filters.values}
                     itemTypeOptions={itemTypeOptions}
                     accessibilityFeatureOptions={accessibilityFeatureOptions}
                     errors={errors}
-                    onUpdate={updateFilter}
-                    onClear={clearFilters}
-                    onSubmit={submitFilters}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
                 />
-                <ItemList
-                    items={items}
-                    permissions={can}
-                    loading={list.loading}
+            }
+            dialogs={
+                <ItemDeleteModal
+                    item={removal.target}
                     processing={removal.processing}
-                    onDelete={removal.open}
-                    onPageSelect={selectPage}
+                    onClose={removal.close}
+                    onConfirm={confirmRemoval}
                 />
-            </TableListCard>
-            <ConfirmActionModal
-                open={removal.target !== null}
-                title="Excluir Item"
-                message={
-                    <>
-                        Excluir o item <strong>{removal.target?.name}</strong>?
-                    </>
-                }
+            }
+        >
+            <ItemList
+                items={items}
+                permissions={can}
+                loading={filters.loading}
                 processing={removal.processing}
-                confirmLabel="Confirmar exclusão"
-                processingLabel="Excluindo item..."
-                confirmTone="dark-red"
-                onClose={removal.close}
-                onConfirm={() => {
-                    if (!removal.target) {
-                        return;
-                    }
-
-                    cancelScheduled();
-                    removal.submit(
-                        'delete',
-                        `${itemsBase}/${removal.target.id}`,
-                    );
-                }}
+                onDelete={removal.open}
+                onPageSelect={filters.selectPage}
             />
-        </BusinessPage>
+        </TableListLayout>
     );
 }

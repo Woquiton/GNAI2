@@ -1,19 +1,15 @@
-import { isWebsiteSectionVisible } from "../WebsiteSections";
-import SitePublications from "../SitePublications/SitePublications";
-import SiteGuidance from "../SiteGuidance/SiteGuidance";
-import SiteContact from "../SiteContact/SiteContact";
-import { joinClassNames } from "@/utils/joinClassNames";
-import SiteHero from "../SiteHero/SiteHero";
-import SiteAbout from "../SiteAbout/SiteAbout";
-import SitePillars from "../SitePillars/SitePillars";
-import { useSitePreview } from "../SiteLayout/SiteLink";
-import SiteTeam from "../SiteTeam/SiteTeam";
-import {
-    type WebsiteContent,
-    type WebsiteSection,
-    type WebsiteSite,
-} from "../Website.types";
-import "./SiteSections.css";
+import { isWebsiteSectionVisible } from '../WebsiteSections';
+import SitePublications from '../SitePublications/SitePublications';
+import SiteGuidance from '../SiteGuidance/SiteGuidance';
+import SiteContact from '../SiteContact/SiteContact';
+import { joinClassNames } from '@/utils/joinClassNames';
+import SiteHero from '../SiteHero/SiteHero';
+import SiteAbout from '../SiteAbout/SiteAbout';
+import SitePillars from '../SitePillars/SitePillars';
+import { useSitePreview } from '../SiteLayout/SiteLink';
+import SiteTeam from '../SiteTeam/SiteTeam';
+import { type WebsiteContent, type WebsiteSection, type WebsiteSite } from '../Website.types';
+import './SiteSections.css';
 
 type SectionProps = {
     section: WebsiteSection;
@@ -35,7 +31,7 @@ const renderers = {
     events: SitePublications,
     publications: SitePublications,
     contact: SiteContact,
-} satisfies Record<WebsiteSection["type"], (props: SectionProps) => React.JSX.Element | null>;
+} satisfies Record<WebsiteSection['type'], (props: SectionProps) => React.JSX.Element | null>;
 
 /**
  * Renderiza as seções habilitadas da página inicial, na ordem definida
@@ -53,9 +49,12 @@ export default function SiteSections({
     highlightedId?: string | null;
 }): React.JSX.Element {
     const preview = useSitePreview();
-    const visible = sections.filter((section) => renderers[section.type]
-        && (preview ? section.enabled : isWebsiteSectionVisible(section, content)));
-    const mainHeroId = visible.find((section) => section.type === "hero")?.id;
+    const visible = sections.filter(
+        (section) =>
+            renderers[section.type] &&
+            (preview ? section.enabled : isWebsiteSectionVisible(section, content)),
+    );
+    const mainHeroId = visible.find((section) => section.type === 'hero')?.id;
 
     return (
         <div className="siteSections">
@@ -67,8 +66,8 @@ export default function SiteSections({
                     <div
                         key={section.id}
                         className={joinClassNames(
-                            "siteSections__block",
-                            highlightedId === section.id && "siteSections__block--highlighted",
+                            'siteSections__block',
+                            highlightedId === section.id && 'siteSections__block--highlighted',
                         )}
                         data-section-id={section.id}
                         id={section.id}

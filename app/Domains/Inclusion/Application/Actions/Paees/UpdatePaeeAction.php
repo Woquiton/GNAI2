@@ -62,8 +62,9 @@ final class UpdatePaeeAction
                 ]);
             }
 
-            $lockedPaee->objectives()->delete();
-            $lockedPaee->resources()->delete();
+            // Um a um, para a auditoria registrar cada exclusão.
+            $lockedPaee->objectives()->get()->each->delete();
+            $lockedPaee->resources()->get()->each->delete();
 
             foreach ($data->objectives as $objective) {
                 $lockedPaee->objectives()->save(new PaeeObjective([

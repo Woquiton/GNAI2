@@ -93,12 +93,14 @@ final class LoanController
         return Inertia::render(
             'Inclusion/Loans/Show',
             [
-                'loan' => $presenter->loan($loan),
+                'loan' => $presenter->loan($loan, includeObservationHtml: true),
                 'can' => [
                     'edit' => $request->user()?->can('loan.edit') ?? false,
                     'return' => $request->user()?->can('loan.return') ?? false,
                     'destroy' => $request->user()?->can('loan.destroy') ?? false,
                     'pdf' => $request->user()?->can('loan.pdf') ?? false,
+                    'viewItem' => $request->user()?->can('item.show') ?? false,
+                    'viewStudent' => $request->user()?->can('student.view') ?? false,
                 ],
             ],
         );

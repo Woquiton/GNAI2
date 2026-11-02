@@ -6,6 +6,8 @@ namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Application\Data\Paees\ListPaeesData;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use App\Domains\Inclusion\Domain\Models\CaseStudyBarrier;
+use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Inclusion\Domain\Models\PaeeObjective;
 use App\Domains\Inclusion\Domain\Models\PaeeResource;
@@ -13,9 +15,12 @@ use App\Domains\Inclusion\Domain\Models\PaeeReview;
 use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Shared\Domain\Support\AeeLabels;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 final class PaeePagePresenter
 {
@@ -67,9 +72,10 @@ final class PaeePagePresenter
     }
 
     /**
+     * @param  EloquentCollection<int, Item>  $assistiveTechnologies
      * @return array<string, mixed>
      */
-    public function create(CaseStudy $caseStudy): array
+    public function create(CaseStudy $caseStudy, EloquentCollection $assistiveTechnologies): array
     {
         return [
             'caseStudy' => [
@@ -77,13 +83,15 @@ final class PaeePagePresenter
                 'version' => $caseStudy->version,
             ],
             'student' => $this->studentSummary($caseStudy->student),
+            'options' => $this->formOptions($caseStudy, $assistiveTechnologies),
         ];
     }
 
     /**
+     * @param  EloquentCollection<int, Item>  $assistiveTechnologies
      * @return array<string, mixed>
      */
-    public function edit(Paee $paee): array
+    public function edit(Paee $paee, EloquentCollection $assistiveTechnologies): array
     {
         return [
             'paee' => [
@@ -94,25 +102,23 @@ final class PaeePagePresenter
                 'attendance_format' => $paee->attendance_format,
                 'attendance_location' => $paee->attendance_location,
                 'assistive_technology_needed' => (bool) $paee->assistive_technology_needed,
-                'assistive_technology_notes' => $paee->assistive_technology_notes,
-                'assistive_technology_availability_capacity' => $paee->assistive_technology_availability_capacity,
+                'assistive_technology_notes' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_notes),
+                'assistive_technology_availability_capacity' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_availability_capacity),
                 'caa_needed' => (bool) $paee->caa_needed,
-                'caa_notes' => $paee->caa_notes,
+                'caa_notes' => RichTextSanitizer::sanitize((string) $paee->caa_notes),
                 'is_assistive_technology_portable_digital_device' => (bool) $paee->is_assistive_technology_portable_digital_device,
-                'assistive_technology_pedagogical_opinion' => $paee->assistive_technology_pedagogical_opinion,
+                'assistive_technology_pedagogical_opinion' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_pedagogical_opinion),
                 'support_professional_needed' => (bool) $paee->support_professional_needed,
-                'support_professional_justification' => $paee->support_professional_justification,
+                'support_professional_justification' => RichTextSanitizer::sanitize((string) $paee->support_professional_justification),
                 'libras_interpreter_needed' => (bool) $paee->libras_interpreter_needed,
-                'libras_interpreter_justification' => $paee->libras_interpreter_justification,
+                'libras_interpreter_justification' => RichTextSanitizer::sanitize((string) $paee->libras_interpreter_justification),
                 'guide_interpreter_needed' => (bool) $paee->guide_interpreter_needed,
-                'guide_interpreter_justification' => $paee->guide_interpreter_justification,
-                'school_professionals_orientation' => $paee->school_professionals_orientation,
-                'common_teachers_articulation' => $paee->common_teachers_articulation,
-                'family_articulation' => $paee->family_articulation,
-                'intersectoral_articulation' => $paee->intersectoral_articulation,
-                'training_demands' => $paee->training_demands,
-                // Barreira vinculada e tecnologia assistiva não aparecem no formulário,
-                // mas seguem no envio para a edição não apagar vínculos já gravados.
+                'guide_interpreter_justification' => RichTextSanitizer::sanitize((string) $paee->guide_interpreter_justification),
+                'school_professionals_orientation' => RichTextSanitizer::sanitize((string) $paee->school_professionals_orientation),
+                'common_teachers_articulation' => RichTextSanitizer::sanitize((string) $paee->common_teachers_articulation),
+                'family_articulation' => RichTextSanitizer::sanitize((string) $paee->family_articulation),
+                'intersectoral_articulation' => RichTextSanitizer::sanitize((string) $paee->intersectoral_articulation),
+                'training_demands' => RichTextSanitizer::sanitize((string) $paee->training_demands),
                 'objectives' => $paee->objectives
                     ->map(static fn (PaeeObjective $objective): array => [
                         'description' => $objective->description,
@@ -131,7 +137,45 @@ final class PaeePagePresenter
                     ->all(),
             ],
             'student' => $this->studentSummary($paee->student),
+            'options' => $this->formOptions($paee->caseStudy, $assistiveTechnologies),
         ];
+    }
+
+    /**
+     * Barreiras do Estudo de Caso que fundamenta o PAEE e tecnologias assistivas do catálogo de itens.
+     *
+     * @param  EloquentCollection<int, Item>  $assistiveTechnologies
+     * @return array{barriers: list<array{value: string, label: string}>, assistiveTechnologies: list<array{value: string, label: string}>}
+     */
+    private function formOptions(?CaseStudy $caseStudy, EloquentCollection $assistiveTechnologies): array
+    {
+        return [
+            'barriers' => ($caseStudy?->barriers ?? new EloquentCollection())
+                ->map(static fn (CaseStudyBarrier $barrier): array => [
+                    'value' => (string) $barrier->getKey(),
+                    'label' => self::barrierOptionLabel($barrier),
+                ])
+                ->values()
+                ->all(),
+            'assistiveTechnologies' => $assistiveTechnologies
+                ->map(static fn (Item $item): array => [
+                    'value' => (string) $item->getKey(),
+                    'label' => $item->asset_code ? "{$item->name} ({$item->asset_code})" : (string) $item->name,
+                ])
+                ->values()
+                ->all(),
+        ];
+    }
+
+    private static function barrierOptionLabel(CaseStudyBarrier $barrier): string
+    {
+        $situation = Str::limit(
+            trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $barrier->observed_situation))) ?? ''),
+            80,
+        );
+        $type = (string) $barrier->type;
+
+        return $situation === '' ? $type : "{$type}: {$situation}";
     }
 
     /**
@@ -161,30 +205,30 @@ final class PaeePagePresenter
                 'attendance_format_label' => AeeLabels::attendanceFormat($paee->attendance_format),
                 'attendance_location_label' => AeeLabels::attendanceLocation($paee->attendance_location),
                 'assistive_technology_needed' => (bool) $paee->assistive_technology_needed,
-                'assistive_technology_notes' => $paee->assistive_technology_notes,
-                'assistive_technology_availability_capacity' => $paee->assistive_technology_availability_capacity,
+                'assistive_technology_notes' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_notes),
+                'assistive_technology_availability_capacity' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_availability_capacity),
                 'caa_needed' => (bool) $paee->caa_needed,
-                'caa_notes' => $paee->caa_notes,
+                'caa_notes' => RichTextSanitizer::sanitize((string) $paee->caa_notes),
                 'is_assistive_technology_portable_digital_device' => (bool) $paee->is_assistive_technology_portable_digital_device,
-                'assistive_technology_pedagogical_opinion' => $paee->assistive_technology_pedagogical_opinion,
+                'assistive_technology_pedagogical_opinion' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_pedagogical_opinion),
                 'support_professional_needed' => (bool) $paee->support_professional_needed,
-                'support_professional_justification' => $paee->support_professional_justification,
+                'support_professional_justification' => RichTextSanitizer::sanitize((string) $paee->support_professional_justification),
                 'libras_interpreter_needed' => (bool) $paee->libras_interpreter_needed,
-                'libras_interpreter_justification' => $paee->libras_interpreter_justification,
+                'libras_interpreter_justification' => RichTextSanitizer::sanitize((string) $paee->libras_interpreter_justification),
                 'guide_interpreter_needed' => (bool) $paee->guide_interpreter_needed,
-                'guide_interpreter_justification' => $paee->guide_interpreter_justification,
-                'school_professionals_orientation' => $paee->school_professionals_orientation,
-                'common_teachers_articulation' => $paee->common_teachers_articulation,
-                'family_articulation' => $paee->family_articulation,
-                'intersectoral_articulation' => $paee->intersectoral_articulation,
-                'training_demands' => $paee->training_demands,
+                'guide_interpreter_justification' => RichTextSanitizer::sanitize((string) $paee->guide_interpreter_justification),
+                'school_professionals_orientation' => RichTextSanitizer::sanitize((string) $paee->school_professionals_orientation),
+                'common_teachers_articulation' => RichTextSanitizer::sanitize((string) $paee->common_teachers_articulation),
+                'family_articulation' => RichTextSanitizer::sanitize((string) $paee->family_articulation),
+                'intersectoral_articulation' => RichTextSanitizer::sanitize((string) $paee->intersectoral_articulation),
+                'training_demands' => RichTextSanitizer::sanitize((string) $paee->training_demands),
                 'objectives' => $paee->objectives
                     ->map(static fn (PaeeObjective $objective): array => [
                         'id' => (int) $objective->getKey(),
                         'description' => $objective->description,
                         'term_label' => AeeLabels::objectiveTerm($objective->term),
                         'linked_barrier' => $objective->linkedBarrier === null ? null : [
-                            'type_label' => AeeLabels::barrierType($objective->linkedBarrier->type),
+                            'type_label' => (string) $objective->linkedBarrier->type,
                             'observed_situation' => $objective->linkedBarrier->observed_situation,
                         ],
                     ])
@@ -204,8 +248,8 @@ final class PaeePagePresenter
                         'id' => (int) $review->getKey(),
                         'reviewed_at' => $review->reviewed_at?->toDateString(),
                         'reviewer_name' => $review->reviewer?->name,
-                        'what_changed' => $review->what_changed,
-                        'why' => $review->why,
+                        'what_changed' => RichTextSanitizer::sanitize((string) $review->what_changed),
+                        'why' => RichTextSanitizer::sanitize((string) $review->why),
                     ])
                     ->values()
                     ->all(),

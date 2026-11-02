@@ -1,19 +1,16 @@
-import StudentPage from '@/components/Students/StudentPage';
-import StudentForm from '@/components/Students/StudentForm';
-import type { Student, StudentFormOptions } from '@/components/Students/Students.types';
+import StudentForm from '@/components/Inclusion/Students/Form/StudentForm';
+import { studentBreadcrumb } from '@/components/Inclusion/Students/Students.routes';
+import type { StudentEditProps } from '@/components/Inclusion/Students/Students.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function StudentsEdit(props: StudentFormOptions & { student: Student }): React.JSX.Element {
-  return (
-    <StudentPage
-      title={`Editar ${props.student.person.name}`}
-      current="Editar"
-      subtitle="Atualize as informações cadastrais e acadêmicas do estudante."
-    >
-      <StudentForm
-        key={props.student.id}
-        mode="edit"
-        {...props}
-      />
-    </StudentPage>
-  );
+export default function StudentsEdit({ student, ...options }: StudentEditProps): React.JSX.Element {
+    return (
+        <BusinessPage
+            title={`Editar ${student.person.name}`}
+            subtitle="Atualize as informações cadastrais e acadêmicas do estudante."
+            breadcrumbItems={studentBreadcrumb({ student, current: 'Editar' })}
+        >
+            <StudentForm key={student.id} mode="edit" options={options} student={student} />
+        </BusinessPage>
+    );
 }

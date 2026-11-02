@@ -1,0 +1,101 @@
+/* Foto, nome e função centralizados no topo da identificação. */
+.teacherDetails__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ui-space-2);
+    margin-bottom: var(--ui-space-6);
+    text-align: center;
+}
+
+.teacherDetails__photo {
+    width: 128px;
+    height: 128px;
+    margin-bottom: var(--ui-space-1);
+    border: 3px solid var(--ui-color-surface-alt);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.teacherDetails__name {
+    margin: 0;
+    color: var(--ui-color-heading);
+    font: 600 1.25rem/1.35 var(--ui-font-ui);
+    overflow-wrap: anywhere;
+}
+
+.teacherDetails__role {
+    margin: 0;
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-sm);
+}
+
+.teacherDetails__registration {
+    color: inherit;
+    font-weight: 700;
+}
+
+.teacherDetails__subheading {
+    margin: var(--ui-space-7) 0 var(--ui-space-4);
+    color: var(--ui-color-form-label);
+    font-size: var(--ui-font-size-md);
+    font-weight: 600;
+}
+
+/* Um bloco por curso: cabeçalho com nome e total, seguido das disciplinas. */
+.teacherAssignments {
+    display: grid;
+    gap: var(--ui-space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.teacherAssignments__course {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+}
+
+.teacherAssignments__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-space-2) var(--ui-space-4);
+    padding: var(--ui-space-3) var(--ui-space-4);
+    background: var(--ui-color-surface-alt);
+}
+
+.teacherAssignments__courseName {
+    min-width: 0;
+    color: var(--ui-color-form-label);
+    overflow-wrap: anywhere;
+}
+
+.teacherAssignments__course .teacherAssignments__disciplines {
+    padding: var(--ui-space-4);
+}
+
+.teacherAssignments__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: var(--ui-space-8) var(--ui-space-4);
+    color: var(--ui-color-text-muted);
+    text-align: center;
+}
+
+.teacherAssignments__empty > .fa {
+    margin-bottom: 6px;
+    font-size: 32px;
+}
+
+@media (max-width: 600px) {
+    .teacherDetails__photo {
+        width: 96px;
+        height: 96px;
+    }
+}

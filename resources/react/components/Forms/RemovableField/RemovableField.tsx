@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
-import Button from "@/components/UI/Button/Button";
-import "./RemovableField.css";
+import type { ReactNode } from 'react';
+import Button from '@/components/UI/Button/Button';
+import './RemovableField.css';
 
 /**
  * Campo com o botão de remover colado à direita, no padrão `input-group-btn`
@@ -32,9 +32,9 @@ export default function RemovableField({
             <div className="removableField__control">{children}</div>
             <Button
                 type="button"
-                tone={removed ? "white" : "dark-red"}
+                tone={removed ? 'white' : 'dark-red'}
                 iconOnly
-                leftIconClass={removed ? "fa fa-undo" : "fa fa-times"}
+                leftIconClass={removed ? 'fa fa-undo' : 'fa fa-times'}
                 className="removableField__button"
                 title={label}
                 aria-label={label}

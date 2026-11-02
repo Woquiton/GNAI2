@@ -1,53 +1,74 @@
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import StudentRecordReturnButton from "@/components/Students/StudentRecordReturnButton";
-import {
-    studentRecordUrl,
-    studentsBase,
-} from "@/components/Students/Students.utils";
-import { TableListCreateButton } from "@/components/Tables/TableList/TableList";
-import PeiList, { studentPeisUrl } from "./PeiList";
-import type {
-    PeiListProps,
-    PeiStudentSummary,
-} from "./PeiList.types";
+import PeiFilters from '@/components/Inclusion/Peis/List/PeiFilters';
+import PeiList from '@/components/Inclusion/Peis/List/PeiList';
+import { usePeiList } from '@/components/Inclusion/Peis/List/usePeiList';
+import PeiDeleteModal from '@/components/Inclusion/Peis/PeiDeleteModal';
+import { studentPeisBreadcrumb, peiUrls } from '@/components/Inclusion/Peis/Peis.routes';
+import type { PeiIndexProps } from '@/components/Inclusion/Peis/Peis.types';
+import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
+import { TableListLayout, TableListCreateButton } from '@/components/Tables/TableList/TableList';
 
 export default function InclusionPeisIndexPage({
+    peis,
+    semesters,
+    students = [],
+    filters: initialFilters,
+    can,
     student,
-    ...props
-}: PeiListProps & {
-    student: PeiStudentSummary;
-}): React.JSX.Element {
+}: PeiIndexProps): React.JSX.Element {
+    const { errors, filters, removal } = usePeiList({
+        url: peiUrls.studentIndex(student.id),
+        initialFilters,
+    });
+
     return (
-        <BusinessPage
+        <TableListLayout
             title="Histórico de PEIs"
             subtitle={`Aluno: ${student.name}`}
-            breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Alunos", href: studentsBase },
-                { label: student.name, href: studentRecordUrl(student.id, "peis") },
-                { label: "PEIs" },
-            ]}
+            breadcrumbItems={studentPeisBreadcrumb(student)}
             actions={
                 <>
-                    <StudentRecordReturnButton
-                        studentId={student.id}
-                        tab="peis"
-                    />
-                    {props.can.create ? (
+                    <StudentRecordReturnButton studentId={student.id} tab="peis" />
+                    {can.create ? (
                         <TableListCreateButton
-                            href={`${studentPeisUrl(student.id)}/create`}
+                            href={peiUrls.create(student.id)}
                             ariaLabel="Cadastrar PEI do aluno"
                         />
                     ) : null}
                 </>
             }
-            className="peisPage"
+            listLabel="Listagem de PEIs"
+            loading={filters.loading}
+            loadingLabel="Atualizando PEIs"
+            filters={
+                <PeiFilters
+                    variant="student"
+                    values={filters.values}
+                    semesters={semesters}
+                    students={students}
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
+                />
+            }
+            dialogs={
+                <PeiDeleteModal
+                    pei={removal.target}
+                    processing={removal.processing}
+                    onClose={removal.close}
+                    onConfirm={removal.confirm}
+                />
+            }
         >
             <PeiList
-                {...props}
                 variant="student"
-                studentId={student.id}
+                peis={peis}
+                permissions={can}
+                loading={filters.loading}
+                processing={removal.processing}
+                onDelete={removal.open}
+                onPageSelect={filters.selectPage}
             />
-        </BusinessPage>
+        </TableListLayout>
     );
 }

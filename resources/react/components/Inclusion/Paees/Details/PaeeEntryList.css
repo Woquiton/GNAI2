@@ -1,0 +1,16 @@
+.paeeEntryList {
+    display: grid;
+    gap: var(--ui-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.paeeEntryList__item {
+    display: grid;
+    gap: var(--ui-space-3);
+    min-width: 0;
+    padding: var(--ui-space-3);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+}

@@ -16,6 +16,7 @@ use App\Domains\Inclusion\Application\Queries\Professionals\ProfessionalFormQuer
 use App\Domains\Inclusion\Application\Queries\Professionals\ShowProfessionalQuery;
 use App\Domains\Inclusion\Domain\Enums\ProfessionalStatus;
 use App\Domains\Inclusion\Domain\Models\Professional;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -72,6 +73,7 @@ final class ProfessionalController
                     'statusLabel' => $professional->status?->label(),
                     'statusColor' => $professional->status?->color(),
                     'serviceTime' => $professional->entry_date?->diffForHumans(null, true),
+                    'addressHtml' => RichTextSanitizer::sanitize($professional->person?->address ?? '', decodeEntities: false),
                 ],
                 'impersonationUserId' => $isSuperAdmin
                     ? $professional->user()

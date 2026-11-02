@@ -26,7 +26,7 @@ final class ListAuditRecordsData extends Data
         public ?string $event = null,
         /** texto na identificação do registro ou no nome do autor */
         public ?string $search = null,
-        public int $perPage = 25,
+        public int $perPage = 10,
     ) {}
 
     public static function prepareForPipeline(array $properties): array

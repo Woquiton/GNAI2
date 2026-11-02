@@ -1,0 +1,76 @@
+/*
+ * Acessibilidade global do Gnai.
+ *
+ * Referências: LBI (Lei 13.146/2015, art. 63), eMAG 3.1 (modelo do gov.br) e WCAG 2.2 AA
+ * (2.4.1 Ignorar blocos, 2.4.7 Foco visível, 2.4.11 Foco não encoberto, 1.4.3 Contraste,
+ * 2.3.3 Animação a partir de interações).
+ *
+ * O atributo `data-focus-mode` é mantido por `utils/accessibilityPreferences.ts`:
+ * clique e toque preservam o foco discreto de cada componente (como a borda roxa dos campos);
+ * a navegação por teclado recebe o anel reforçado abaixo, em todos os elementos focáveis.
+ * `!important` é intencional: o anel precisa vencer resets `outline: 0` de plugins legados.
+ */
+
+html:root[data-focus-mode='keyboard'] :focus-visible:not([tabindex='-1']) {
+    outline: var(--ui-focus-keyboard-width) solid var(--ui-focus-keyboard-color) !important;
+    outline-offset: var(--ui-focus-keyboard-offset) !important;
+    box-shadow: var(
+        --ui-focus-keyboard-shadow,
+        0 0 0 var(--ui-focus-keyboard-offset) var(--ui-focus-keyboard-gap-color),
+        0 0 0
+            calc(
+                var(--ui-focus-keyboard-offset) + var(--ui-focus-keyboard-width) +
+                    var(--ui-focus-keyboard-halo-size)
+            )
+            color-mix(
+                in srgb,
+                var(--ui-focus-keyboard-color) var(--ui-focus-keyboard-halo-strength),
+                transparent
+            )
+    ) !important;
+}
+
+/* Áreas que recebem foco programático (alvos dos atalhos, diálogos) não ganham moldura. */
+:where([tabindex='-1']):focus {
+    outline: none;
+}
+
+/*
+ * Controles com input nativo oculto: o anel aparece na parte visível.
+ * Checkbox/radio desenham a caixa no ::before do label; Select2 foca um input fora da tela;
+ * o botão de upload cobre o input transparente.
+ */
+html:root[data-focus-mode='keyboard'] :is(.checkbox, .radio) input:focus-visible + label::before {
+    outline: var(--ui-focus-keyboard-width) solid var(--ui-focus-keyboard-color) !important;
+    outline-offset: 2px !important;
+}
+
+html:root[data-focus-mode='keyboard'] .select2-container:focus-within,
+html:root[data-focus-mode='keyboard'] .fileUploadButton:focus-within {
+    outline: var(--ui-focus-keyboard-width) solid var(--ui-focus-keyboard-color) !important;
+    outline-offset: var(--ui-focus-keyboard-offset) !important;
+}
+
+/*
+ * Foco não encoberto (WCAG 2.4.11): a rolagem automática até o elemento focado e até os alvos
+ * dos atalhos desconta a barra superior fixa e o rodapé de ações fixo dos formulários.
+ */
+html:has(.gnaiApp, .teacherPortalLayout) {
+    scroll-padding-top: calc(var(--ui-topbar-height) + var(--ui-space-4));
+}
+
+html:has(.formActions__bar--fixed) {
+    scroll-padding-bottom: calc(var(--ui-topbar-height) + var(--ui-space-8));
+}
+
+/* Quem pede menos movimento no sistema operacional não recebe animações nem rolagem suave. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

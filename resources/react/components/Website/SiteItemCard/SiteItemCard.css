@@ -11,23 +11,27 @@
     border-radius: var(--pillar-card-radius);
     background: var(--pillar-card-background);
     box-shadow: var(--pillar-card-shadow);
-    transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.siteSections .siteItemCard__card--left[data-has-icon="true"] {
+.siteSections .siteItemCard__card--left[data-has-icon='true'] {
     grid-template-columns: minmax(0, var(--pillar-icon-width)) minmax(0, 1fr);
 }
 
-.siteSections .siteItemCard__card--right[data-has-icon="true"] {
+.siteSections .siteItemCard__card--right[data-has-icon='true'] {
     grid-template-columns: minmax(0, 1fr) minmax(0, var(--pillar-icon-width));
 }
 
-.siteSections .siteItemCard__card--right[data-has-icon="true"] .siteItemCard__icon {
+.siteSections .siteItemCard__card--right[data-has-icon='true'] .siteItemCard__icon {
     grid-column: 2;
     grid-row: 1;
 }
 
-.siteSections .siteItemCard__card--right[data-has-icon="true"] .siteItemCard__cardText {
+.siteSections .siteItemCard__card--right[data-has-icon='true'] .siteItemCard__cardText {
     grid-column: 1;
     grid-row: 1;
 }
@@ -66,24 +70,24 @@
     text-align: var(--pillar-text-align);
 }
 
-.siteSections .siteItemCard__card--hover:is(:hover, :focus-within, .siteItemCard__card--previewHover) {
+.siteSections
+    .siteItemCard__card--hover:is(:hover, :focus-within, .siteItemCard__card--previewHover) {
     transform: translateY(var(--pillar-hover-lift));
     box-shadow: var(--pillar-hover-shadow);
     background: var(--pillar-hover-background);
     border-color: var(--pillar-hover-border);
 }
 
-
 @media (prefers-reduced-motion: reduce) {
     .siteSections .siteItemCard__card {
         transition: none;
     }
 
-    .siteSections .siteItemCard__card--hover:is(:hover, :focus-within, .siteItemCard__card--previewHover) {
+    .siteSections
+        .siteItemCard__card--hover:is(:hover, :focus-within, .siteItemCard__card--previewHover) {
         transform: none;
     }
 }
-
 
 .siteSections .siteItemCard__icon > i {
     font-size: inherit;
@@ -91,5 +95,7 @@
 }
 
 @container site (max-width: 600px) {
-    .siteSections .siteItemCard__card { width: 100%; }
+    .siteSections .siteItemCard__card {
+        width: 100%;
+    }
 }

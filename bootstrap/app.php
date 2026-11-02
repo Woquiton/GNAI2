@@ -1,11 +1,13 @@
 <?php
 
 use App\Domains\Audit\UI\Middleware\StartAuditOperation;
+use App\Domains\Auth\UI\Middleware\ApplyTablePageSize;
 use App\Domains\Auth\UI\Middleware\BlockReadOnlyImpersonationWrites;
 use App\Domains\Auth\UI\Middleware\EnsureUserIsAdmin;
 use App\Shared\Application\Exceptions\AccessDeniedException;
 use App\Shared\Domain\Exceptions\BusinessRuleException;
 use App\Shared\Infrastructure\Http\Middleware\EnsureTeacherPortalAccess;
+use App\Shared\Infrastructure\Http\Middleware\ExpandJsonPayload;
 use App\Shared\Infrastructure\Http\Middleware\HandleInertiaRequests;
 use App\Shared\Infrastructure\Http\Middleware\SanitizeRichTextInput;
 use Illuminate\Auth\AuthenticationException;
@@ -23,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
-        health: '/up',
+        health: '/saude',
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(
@@ -37,12 +39,15 @@ return Application::configure(basePath: dirname(__DIR__))
             StartAuditOperation::class,
             HandleInertiaRequests::class,
             BlockReadOnlyImpersonationWrites::class,
+            // Abre o `_payload` antes de sanitizar, para o texto rico ser tratado campo a campo.
+            ExpandJsonPayload::class,
             SanitizeRichTextInput::class,
+            ApplyTablePageSize::class,
         ]);
 
         $middleware->redirectTo(
-            guests: 'auth/login',
-            users: 'auth/dashboard'
+            guests: 'autenticacao/entrar',
+            users: 'autenticacao/painel'
         );
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,

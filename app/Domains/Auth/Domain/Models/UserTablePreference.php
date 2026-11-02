@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Auth\Domain\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * Preferência de uma tela para um usuário: `per_page` na chave da rota e
+ * `columns` (id da coluna => visível) na chave `rota#tabela`.
+ */
+final class UserTablePreference extends Model
+{
+    /** Quantidades oferecidas no rodapé das listagens. */
+    public const PAGE_SIZES = [10, 25, 50, 100];
+
+    public const DEFAULT_PAGE_SIZE = 10;
+
+    protected $fillable = [
+        'user_id',
+        'table_key',
+        'settings',
+    ];
+
+    protected $casts = [
+        'settings' => 'array',
+    ];
+
+    public static function isPageSize(mixed $value): bool
+    {
+        return in_array($value, self::PAGE_SIZES, true);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+}

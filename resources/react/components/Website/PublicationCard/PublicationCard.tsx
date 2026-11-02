@@ -1,18 +1,19 @@
-import { joinClassNames } from "@/utils/joinClassNames";
-import SiteLink from "../SiteLayout/SiteLink";
-import type { PublicationCardData, PublicationSchedule, PublicationsAppearance } from "../Website.types";
-import "./PublicationCard.css";
+import { joinClassNames } from '@/utils/joinClassNames';
+import SiteLink from '../SiteLayout/SiteLink';
+import type {
+    PublicationCardData,
+    PublicationSchedule,
+    PublicationsAppearance,
+} from '../Website.types';
+import './PublicationCard.css';
 
-export function ScheduleStatus({
-    schedule,
-}: {
-    schedule: PublicationSchedule;
-}): React.JSX.Element {
-    const icon = schedule.status === "ongoing"
-        ? "fa fa-circle"
-        : schedule.status === "upcoming"
-            ? "fa fa-clock-o"
-            : "fa fa-check";
+export function ScheduleStatus({ schedule }: { schedule: PublicationSchedule }): React.JSX.Element {
+    const icon =
+        schedule.status === 'ongoing'
+            ? 'fa fa-circle'
+            : schedule.status === 'upcoming'
+              ? 'fa fa-clock-o'
+              : 'fa fa-check';
 
     return (
         <span className={`publicationCard__status publicationCard__status--${schedule.status}`}>
@@ -29,18 +30,18 @@ export function ScheduleStatus({
 export default function PublicationCard({
     publication,
     headingLevel = 3,
-    variant = "default",
+    variant = 'default',
     appearance,
 }: {
     publication: PublicationCardData;
     headingLevel?: 2 | 3;
-    variant?: "default" | "event";
+    variant?: 'default' | 'event';
     appearance?: PublicationsAppearance;
 }): React.JSX.Element {
-    const Heading = headingLevel === 2 ? "h2" : "h3";
+    const Heading = headingLevel === 2 ? 'h2' : 'h3';
     const schedule = publication.schedule;
 
-    if (variant === "event" && schedule) {
+    if (variant === 'event' && schedule) {
         return (
             <article className="publicationCard publicationCard--event">
                 {appearance?.show_date !== false ? (
@@ -50,7 +51,9 @@ export default function PublicationCard({
                     </div>
                 ) : null}
                 <div className="publicationCard__body">
-                    {appearance?.show_tags !== false ? <ScheduleStatus schedule={schedule} /> : null}
+                    {appearance?.show_tags !== false ? (
+                        <ScheduleStatus schedule={schedule} />
+                    ) : null}
                     <Heading className="publicationCard__title">
                         <SiteLink href={publication.url}>{publication.title}</SiteLink>
                     </Heading>
@@ -85,17 +88,25 @@ export default function PublicationCard({
     return (
         <article
             className={joinClassNames(
-                "publicationCard",
-                publication.is_featured && "publicationCard--featured",
+                'publicationCard',
+                publication.is_featured && 'publicationCard--featured',
             )}
         >
             {appearance?.show_image !== false ? (
                 <div className="publicationCard__media">
                     {publication.cover_url ? (
-                        <img src={publication.cover_url} alt={publication.cover_alt} loading="lazy" />
+                        <img
+                            src={publication.cover_url}
+                            alt={publication.cover_alt}
+                            loading="lazy"
+                        />
                     ) : (
                         <span className="publicationCard__placeholder" aria-hidden="true">
-                            <i className={publication.schedule ? "fa fa-calendar" : "fa fa-file-text-o"} />
+                            <i
+                                className={
+                                    publication.schedule ? 'fa fa-calendar' : 'fa fa-file-text-o'
+                                }
+                            />
                         </span>
                     )}
                 </div>
@@ -105,13 +116,18 @@ export default function PublicationCard({
                     <div className="publicationCard__tags">
                         <span className="publicationCard__type">{publication.type_label}</span>
                         {publication.tags.map((tag) => (
-                            <span key={tag} className="publicationCard__category">{tag}</span>
+                            <span key={tag} className="publicationCard__category">
+                                {tag}
+                            </span>
                         ))}
                         {schedule ? <ScheduleStatus schedule={schedule} /> : null}
                     </div>
                 ) : null}
                 {appearance?.show_date !== false && publication.published_at_label ? (
-                    <time className="publicationCard__date" dateTime={publication.published_at ?? undefined}>
+                    <time
+                        className="publicationCard__date"
+                        dateTime={publication.published_at ?? undefined}
+                    >
                         {publication.published_at_label}
                     </time>
                 ) : null}

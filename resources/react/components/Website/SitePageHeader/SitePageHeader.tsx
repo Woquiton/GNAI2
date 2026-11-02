@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
-import SiteLink from "../SiteLayout/SiteLink";
-import { websiteRoutes } from "../Website.types";
-import "./SitePageHeader.css";
+import type { ReactNode } from 'react';
+import SiteLink from '../SiteLayout/SiteLink';
+import { websiteRoutes } from '../Website.routes';
+import './SitePageHeader.css';
 
 /** Faixa de título das páginas internas do site, com trilha de navegação. */
 export default function SitePageHeader({
@@ -22,7 +22,9 @@ export default function SitePageHeader({
             <div className="siteLayout__container">
                 <nav aria-label="Você está em" className="sitePageHeader__trail">
                     <ol>
-                        <li><SiteLink href={websiteRoutes.home}>Início</SiteLink></li>
+                        <li>
+                            <SiteLink href={websiteRoutes.home}>Início</SiteLink>
+                        </li>
                         {trail.map((item) => (
                             <li key={item.label}>
                                 {item.href ? (

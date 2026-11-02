@@ -1,32 +1,23 @@
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import {
-    studentUrl,
-    studentsBase,
-} from "@/components/Students/Students.utils";
-import PaeeForm from "./PaeeForm";
-import type { PaeeCreateProps } from "./Paees.types";
-import { caseStudyUrl, paeeVersionLabel } from "./Paees.utils";
+import PaeeForm from '@/components/Inclusion/Paees/Form/PaeeForm';
+import { paeeVersionLabel } from '@/components/Inclusion/Paees/Paees.constants';
+import { paeeStudentBreadcrumb } from '@/components/Inclusion/Paees/Paees.routes';
+import type { PaeeCreateProps } from '@/components/Inclusion/Paees/Paees.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPaeesCreatePage({
     caseStudy,
     student,
+    options,
 }: PaeeCreateProps): React.JSX.Element {
+    const subtitle = `Aluno: ${student.name} • a partir do Estudo de Caso ${paeeVersionLabel(caseStudy.version)}`;
+
     return (
         <BusinessPage
             title="Novo PAEE"
-            subtitle={`Aluno: ${student.name} • a partir do Estudo de Caso ${paeeVersionLabel(caseStudy.version)}`}
-            breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Alunos", href: studentsBase },
-                { label: student.name, href: studentUrl(student.id) },
-                { label: "Novo PAEE" },
-            ]}
-            className="paeesPage"
+            subtitle={subtitle}
+            breadcrumbItems={paeeStudentBreadcrumb(student, { current: 'Novo PAEE' })}
         >
-            <PaeeForm
-                caseStudyId={caseStudy.id}
-                cancelHref={caseStudyUrl(caseStudy.id)}
-            />
+            <PaeeForm mode="create" caseStudyId={caseStudy.id} options={options} />
         </BusinessPage>
     );
 }

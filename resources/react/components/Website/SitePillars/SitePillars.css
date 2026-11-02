@@ -11,11 +11,11 @@
     background: var(--pillars-divider-color);
 }
 
-.sitePillars__title[data-title-align="center"]::after {
+.sitePillars__title[data-title-align='center']::after {
     margin-inline: auto;
 }
 
-.sitePillars__title[data-title-align="right"]::after {
+.sitePillars__title[data-title-align='right']::after {
     margin-left: auto;
 }
 
@@ -40,12 +40,12 @@
 }
 
 .sitePillars--list .sitePillars__grid,
-.sitePillars[data-columns="1"] .sitePillars__grid {
+.sitePillars[data-columns='1'] .sitePillars__grid {
     grid-template-columns: minmax(0, 1fr);
 }
 
 @container site (max-width: 960px) {
-    .sitePillars--grid:not([data-columns="1"]) .sitePillars__grid {
+    .sitePillars--grid:not([data-columns='1']) .sitePillars__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
@@ -55,12 +55,14 @@
         padding: min(var(--pillars-padding), 48px) 0;
     }
 
-    .sitePillars--grid:not([data-columns="1"]) .sitePillars__grid {
+    .sitePillars--grid:not([data-columns='1']) .sitePillars__grid {
         grid-template-columns: minmax(0, 1fr);
     }
 }
 
-.sitePillars--type-faq .sitePillars__grid { align-items: start; }
+.sitePillars--type-faq .sitePillars__grid {
+    align-items: start;
+}
 .sitePillars--type-faq .siteSections__question {
     margin: 0;
     padding: 0;
@@ -75,11 +77,18 @@
     text-align: var(--pillar-title-align);
     cursor: pointer;
 }
-.sitePillars--type-faq .siteSections__question[open] summary { margin-bottom: 12px; }
-.sitePillars--type-faq .siteSections__question p { padding: 0; }
+.sitePillars--type-faq .siteSections__question[open] summary {
+    margin-bottom: 12px;
+}
+.sitePillars--type-faq .siteSections__question p {
+    padding: 0;
+}
 .sitePillars--type-faq .siteSections__question summary:focus-visible,
 .sitePillars--type-resources .siteSections__resourceLink:focus-visible {
     outline: 2px solid var(--site-primary);
     outline-offset: 4px;
 }
-.sitePillars--type-resources .siteSections__resourceLink { display: inline-flex; margin-top: 16px; }
+.sitePillars--type-resources .siteSections__resourceLink {
+    display: inline-flex;
+    margin-top: 16px;
+}

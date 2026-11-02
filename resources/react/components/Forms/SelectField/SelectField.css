@@ -1,207 +1,214 @@
 .selectField {
-  min-width: 0;
+    min-width: 0;
 }
 .selectField .select2-container {
-  width: 100% !important;
-  height: auto;
-  min-height: 38px;
-  border: 1px solid var(--input-border, var(--ui-color-input-border));
-  border-radius: 4px;
-  background: #fff;
-  padding: 7px 12px;
-  transition: border-color 300ms linear;
+    width: 100% !important;
+    height: auto;
+    min-height: 38px;
+    border: 1px solid var(--input-border, var(--ui-color-input-border));
+    border-radius: 4px;
+    background: #fff;
+    padding: 7px 12px;
+    transition: border-color 300ms linear;
 }
 .selectField .select2-container.select2-container-active,
 .selectField .select2-container.select2-dropdown-open,
 .selectField .select2-container:focus-within {
-  border-color: var(--input-focus-border, var(--ui-color-input-focus-border));
+    border-color: var(--input-focus-border, var(--ui-color-input-focus-border));
 }
 .selectField .select2-container.select2-container-disabled {
-  background: #eee;
-  cursor: not-allowed;
+    background: #eee;
+    cursor: not-allowed;
 }
 .selectField--invalid .select2-container,
 .selectField--invalid .select2-container.select2-container-active,
 .selectField--invalid .select2-container.select2-dropdown-open,
 .selectField--invalid .select2-container:focus-within {
-  border-color: var(--ui-color-danger) !important;
-  background-color: #fff;
+    border-color: var(--ui-color-danger) !important;
+    background-color: #fff;
 }
-.selectField .select2-container :is(.select2-choice, .select2-input, .select2-focusser):focus-visible {
-  outline: 0 !important;
+.selectField
+    .select2-container
+    :is(.select2-choice, .select2-input, .select2-focusser):focus-visible {
+    outline: 0 !important;
 }
 .selectField .select2-container :is(.select2-choice, .select2-input, .select2-focusser):focus {
-  outline: 0 !important;
-  box-shadow: none !important;
+    outline: 0 !important;
+    box-shadow: none !important;
 }
 .selectField .select2-container .select2-choice,
 .selectField .select2-container.select2-container-active .select2-choice,
 .selectField .select2-container.select2-dropdown-open .select2-choice {
-  background-image: none !important;
-  border: none !important;
-  height: auto !important;
-  padding: 0 !important;
-  line-height: 22px !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
+    background-image: none !important;
+    border: none !important;
+    height: auto !important;
+    padding: 0 !important;
+    line-height: 22px !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 .selectField .select2-container .select2-choice .select2-arrow {
-  background-image: none !important;
-  background: transparent;
-  border: none;
-  width: 14px;
-  top: -2px;
+    background-image: none !important;
+    background: transparent;
+    border: none;
+    width: 14px;
+    top: -2px;
 }
 .selectFieldDropdown {
-  font: 14px/20px var(--ui-font-body);
+    font: 14px/20px var(--ui-font-body);
 }
 .selectFieldDropdown.select2-drop-active {
-  border: 1px solid #e3e3e3 !important;
-  padding-top: 5px;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
-  animation: selectFieldDropdownEnter 250ms ease both;
+    border: 1px solid #e3e3e3 !important;
+    padding-top: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+    animation: selectFieldDropdownEnter 250ms ease both;
 }
 .selectFieldDropdown.select2-drop-above.select2-drop-active {
-  transform-origin: bottom;
+    transform-origin: bottom;
 }
 @keyframes selectFieldDropdownEnter {
-  from {
-    opacity: 0;
-    transform: translateY(-6px) scaleY(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scaleY(1);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scaleY(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
 }
 .selectFieldDropdown.select2-drop-above.select2-drop-active {
-  animation-name: selectFieldDropdownEnterAbove;
+    animation-name: selectFieldDropdownEnterAbove;
 }
 .selectFieldDropdown.selectFieldDropdown--closing {
-  animation-name: selectFieldDropdownExit;
+    animation-name: selectFieldDropdownExit;
 }
 .selectFieldDropdown.select2-drop-above.selectFieldDropdown--closing {
-  animation-name: selectFieldDropdownExitAbove;
+    animation-name: selectFieldDropdownExitAbove;
 }
 @keyframes selectFieldDropdownEnterAbove {
-  from {
-    opacity: 0;
-    transform: translateY(6px) scaleY(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scaleY(1);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(6px) scaleY(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
 }
 @keyframes selectFieldDropdownExit {
-  to {
-    opacity: 0;
-    transform: translateY(-6px) scaleY(0.96);
-  }
+    to {
+        opacity: 0;
+        transform: translateY(-6px) scaleY(0.96);
+    }
 }
 @keyframes selectFieldDropdownExitAbove {
-  to {
-    opacity: 0;
-    transform: translateY(6px) scaleY(0.96);
-  }
+    to {
+        opacity: 0;
+        transform: translateY(6px) scaleY(0.96);
+    }
 }
 .selectFieldDropdown .select2-search input {
-  border: 1px solid #e3e3e3 !important;
-  height: 30px;
-  font: 14px/20px var(--ui-font-body);
-  border-radius: 4px;
-  transition: border-color 300ms linear;
+    border: 1px solid #e3e3e3 !important;
+    height: 30px;
+    font: 14px/20px var(--ui-font-body);
+    border-radius: 4px;
+    transition: border-color 300ms linear;
 }
 .selectFieldDropdown .select2-search input:focus {
-  border-color: #e3e3e3 !important;
-  outline: 0;
-  box-shadow: none;
+    border-color: #e3e3e3 !important;
+    outline: 0;
+    box-shadow: none;
 }
 .selectFieldDropdown .select2-results .select2-highlighted {
-  color: #fff;
-  background-color: var(--ui-color-gnai-primary) !important;
+    color: #fff;
+    background-color: var(--ui-color-gnai-primary) !important;
 }
 /* Modo iconOnly: valor e opções pelos ícones, com o nome oculto para leitores de tela. */
 .selectField__srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 .selectField__iconOption {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
 }
 .selectField__iconOption > i {
-  font-size: 16px;
+    font-size: 16px;
 }
 .selectFieldDropdown--icons .select2-results {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-  gap: 4px;
-  padding: 6px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 4px;
+    padding: 6px;
 }
 .selectFieldDropdown--icons .select2-results .selectField__iconResult {
-  border-radius: 4px;
+    border-radius: 4px;
 }
 .selectFieldDropdown--icons .select2-results .selectField__textResult {
-  grid-column: 1 / -1;
+    grid-column: 1 / -1;
 }
 .selectFieldDropdown--icons .select2-results .selectField__iconResult .select2-result-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  padding: 0;
-  border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0;
+    border-radius: 4px;
 }
 .selectField .select2-container-multi {
-  padding: 0;
+    padding: 0;
 }
 .selectField .select2-container-multi .select2-choices {
-  min-height: 36px;
-  border: 0 !important;
-  border-radius: 4px;
-  background: transparent;
-  box-shadow: none !important;
+    min-height: 36px;
+    border: 0 !important;
+    border-radius: 4px;
+    background: transparent;
+    box-shadow: none !important;
 }
 .selectField .select2-container-multi .select2-search-choice {
-  margin: 5px 0 3px 5px;
-  padding: 4px 7px 4px 18px;
-  border-color: #e5e5e5;
-  background: #f5f5f5;
-  color: #555;
-  box-shadow: none;
+    margin: 5px 0 3px 5px;
+    padding: 4px 7px 4px 18px;
+    border-color: #e5e5e5;
+    background: #f5f5f5;
+    color: #555;
+    box-shadow: none;
 }
 .selectField .select2-container-multi .select2-search-field input {
-  padding: 7px 7px 7px 10px;
-  font-family: inherit;
+    padding: 7px 7px 7px 10px;
+    font-family: inherit;
 }
 .selectField__fallback {
-  display: block;
-  margin-top: 5px;
-  color: #666;
-  font-size: 12px;
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 12px;
 }
 .selectField__error {
-  display: block;
-  margin-top: 2px;
-  color: var(--ui-color-danger);
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.42857143;
+    display: block;
+    margin-top: 2px;
+    color: var(--ui-color-danger);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
 }
 @media (prefers-reduced-motion: reduce) {
-  .selectFieldDropdown.select2-drop-active,
-  .selectFieldDropdown.selectFieldDropdown--closing {
-    animation-duration: 0.01ms;
-  }
+    .selectFieldDropdown.select2-drop-active,
+    .selectFieldDropdown.selectFieldDropdown--closing {
+        animation-duration: 0.01ms;
+    }
 }
-.selectFieldDropdown .select2-no-results .selectField__create { display: block; cursor: pointer; color: var(--ui-color-gnai-primary); font-weight: 600; }
+.selectFieldDropdown .select2-no-results .selectField__create {
+    display: block;
+    cursor: pointer;
+    color: var(--ui-color-gnai-primary);
+    font-weight: 600;
+}

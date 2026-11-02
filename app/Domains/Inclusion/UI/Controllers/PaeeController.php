@@ -23,7 +23,6 @@ use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\UI\Presenters\PaeePagePresenter;
 use App\Shared\Application\Exceptions\AccessDeniedException;
-use App\Shared\Domain\Support\AuditLogger;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -57,9 +56,9 @@ final class PaeeController
 
     public function create(CaseStudy $caseStudy, PaeeFormQuery $form): InertiaResponse
     {
-        ['caseStudy' => $caseStudy] = $form->forCreation($caseStudy);
+        ['caseStudy' => $caseStudy, 'assistiveTechnologies' => $assistiveTechnologies] = $form->forCreation($caseStudy);
 
-        return Inertia::render('Inclusion/Paees/Create', $this->presenter->create($caseStudy));
+        return Inertia::render('Inclusion/Paees/Create', $this->presenter->create($caseStudy, $assistiveTechnologies));
     }
 
     /** @throws Throwable */
@@ -74,16 +73,14 @@ final class PaeeController
     {
         $paee = $query->execute($paee);
 
-        AuditLogger::logView($paee);
-
         return Inertia::render('Inclusion/Paees/Show', $this->presenter->show($paee, $request));
     }
 
     public function edit(Paee $paee, PaeeFormQuery $form): InertiaResponse
     {
-        ['paee' => $paee] = $form->forUpdate($paee);
+        ['paee' => $paee, 'assistiveTechnologies' => $assistiveTechnologies] = $form->forUpdate($paee);
 
-        return Inertia::render('Inclusion/Paees/Edit', $this->presenter->edit($paee));
+        return Inertia::render('Inclusion/Paees/Edit', $this->presenter->edit($paee, $assistiveTechnologies));
     }
 
     /** @throws Throwable */

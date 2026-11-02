@@ -21,7 +21,6 @@ final class RunReportData extends Data
         public string $source,
         public array $columns,
         public array $filters = [],
-        public int $limit = 200,
         public bool $filterRelatedValues = false,
     ) {}
 
@@ -29,13 +28,12 @@ final class RunReportData extends Data
     {
         return [
             'source' => ['required', 'string', 'regex:/^[a-z0-9.-]+$/', 'max:100'],
-            'columns' => ['required', 'array', 'min:1', 'max:8'],
+            'columns' => ['required', 'array', 'min:1'],
             'columns.*' => ['required', 'string', 'distinct', 'max:100'],
-            'filters' => ['sometimes', 'array', 'max:12'],
+            'filters' => ['sometimes', 'array'],
             'filters.*.field' => ['required', 'string', 'max:100'],
             'filters.*.operator' => ['required', 'string', Rule::enum(ReportOperator::class)],
             'filters.*.value' => ['required'],
-            'limit' => ['sometimes', 'integer', 'min:1', 'max:1000'],
             'filter_related_values' => ['sometimes', 'boolean'],
         ];
     }
@@ -46,10 +44,7 @@ final class RunReportData extends Data
             'source.required' => 'Selecione uma fonte de relatório.',
             'source.regex' => 'A fonte de relatório é inválida.',
             'columns.required' => 'Selecione ao menos uma coluna.',
-            'columns.max' => 'Selecione no máximo 8 colunas.',
             'columns.*.distinct' => 'Não repita colunas no relatório.',
-            'filters.max' => 'Use no máximo 12 filtros.',
-            'limit.max' => 'A prévia está limitada a 1.000 registros.',
         ];
     }
 }

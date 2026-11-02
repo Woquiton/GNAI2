@@ -1,0 +1,21 @@
+.tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tagList__item {
+    padding: 3px 10px;
+    border-radius: var(--ui-radius-sm);
+    background: var(--ui-color-tag-bg);
+    color: var(--ui-color-tag-text);
+    font-size: var(--ui-font-size-sm);
+    line-height: 1.5;
+}
+
+.tagList__empty {
+    color: var(--ui-color-text-muted);
+}

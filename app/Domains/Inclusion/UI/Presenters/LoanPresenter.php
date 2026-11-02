@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Domain\Exceptions\InvalidLoanableResource;
 use App\Domains\Inclusion\Domain\Models\Loan;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 
 final class LoanPresenter
 {
@@ -14,7 +15,7 @@ final class LoanPresenter
      *
      * @throws InvalidLoanableResource
      */
-    public function loan(Loan $loan): array
+    public function loan(Loan $loan, bool $includeObservationHtml = false): array
     {
         $loan->loadMissing([
             'loanable',
@@ -25,7 +26,7 @@ final class LoanPresenter
             'user:id,name',
         ]);
 
-        return [
+        $payload = [
             'id' => $loan->id,
             'loanable_id' => $loan->loanable_id,
             'item_type' => $loan->loanableType()->value,
@@ -36,10 +37,12 @@ final class LoanPresenter
                 'asset_code' => $loan->loanable?->asset_code,
             ],
             'student' => $loan->student ? [
+                'id' => (int) $loan->student->getKey(),
                 'name' => $loan->student->person?->name ?? 'Sem nome',
                 'registration' => $loan->student->registration,
             ] : null,
             'professional' => $loan->professional ? [
+                'id' => (int) $loan->professional->getKey(),
                 'name' => $loan->professional->person?->name ?? 'Sem nome',
                 'registration' => $loan->professional->registration,
             ] : null,
@@ -57,5 +60,11 @@ final class LoanPresenter
             'is_returned' => $loan->isReturned(),
             'is_overdue' => $loan->isOverdue(),
         ];
+
+        if ($includeObservationHtml) {
+            $payload['observation_html'] = RichTextSanitizer::sanitize($loan->observation ?? '');
+        }
+
+        return $payload;
     }
 }

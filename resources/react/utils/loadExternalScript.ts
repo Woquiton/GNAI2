@@ -1,39 +1,39 @@
 export function loadExternalScript(src: string): Promise<void> {
-  return new Promise((resolve: () => void, reject: (reason?: unknown) => void) => {
-    const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement | null;
+    return new Promise((resolve: () => void, reject: (reason?: unknown) => void) => {
+        const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement | null;
 
-    // Uma falha anterior não pode prender as próximas tentativas: recria a tag.
-    if (existing?.dataset.failed === 'true') existing.remove();
-    else if (existing) {
-      if (existing.dataset.loaded === 'true') {
-        resolve();
-        return;
-      }
+        // Uma falha anterior não pode prender as próximas tentativas: recria a tag.
+        if (existing?.dataset.failed === 'true') existing.remove();
+        else if (existing) {
+            if (existing.dataset.loaded === 'true') {
+                resolve();
+                return;
+            }
 
-      existing.addEventListener('load', () => resolve(), { once: true });
-      existing.addEventListener('error', (event: Event) => reject(event), { once: true });
-      return;
-    }
+            existing.addEventListener('load', () => resolve(), { once: true });
+            existing.addEventListener('error', (event: Event) => reject(event), { once: true });
+            return;
+        }
 
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = true;
-    script.addEventListener(
-      'load',
-      () => {
-        script.dataset.loaded = 'true';
-        resolve();
-      },
-      { once: true }
-    );
-    script.addEventListener(
-      'error',
-      (event: Event) => {
-        script.dataset.failed = 'true';
-        reject(event);
-      },
-      { once: true }
-    );
-    document.body.appendChild(script);
-  });
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.addEventListener(
+            'load',
+            () => {
+                script.dataset.loaded = 'true';
+                resolve();
+            },
+            { once: true },
+        );
+        script.addEventListener(
+            'error',
+            (event: Event) => {
+                script.dataset.failed = 'true';
+                reject(event);
+            },
+            { once: true },
+        );
+        document.body.appendChild(script);
+    });
 }

@@ -1,0 +1,120 @@
+/*
+ * Visualização do Estudo de Caso em um único card, no formato do perfil do Ubold: cabeçalho
+ * centralizado com o aluno e a única divisória da tela; abaixo, a ficha curta à esquerda e os
+ * textos longos à direita e, na largura do card, o chat de contribuições com o envio ao lado.
+ * Os blocos se separam só pelo espaçamento. O card se une ao rodapé de ações como as demais
+ * visualizações.
+ */
+.caseStudyProfile.card-box {
+    padding: 0;
+}
+
+.caseStudyProfile__banner {
+    padding: var(--ui-space-8) var(--ui-space-5);
+    border-bottom: 1px solid var(--ui-color-card-border);
+    text-align: center;
+}
+
+.caseStudyProfile .caseStudyProfile__photo {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.caseStudyProfile__name {
+    margin: var(--ui-space-3) 0 5px;
+    color: var(--ui-color-heading);
+    font-size: 18px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.caseStudyProfile__meta {
+    margin: 0;
+    color: var(--ui-color-legacy-muted);
+}
+
+.caseStudyProfile__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ui-space-2) var(--ui-space-4);
+    margin: var(--ui-space-3) 0 0;
+    color: var(--ui-color-text);
+}
+
+.caseStudyProfile__columns {
+    --case-study-block-gap: 28px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--case-study-block-gap) var(--ui-space-8);
+    padding: var(--ui-space-6) var(--ui-space-5);
+}
+
+.caseStudyProfile__summary,
+.caseStudyProfile__content {
+    display: grid;
+    align-content: start;
+    gap: var(--case-study-block-gap);
+    min-width: 0;
+}
+
+.caseStudyProfile__section {
+    min-width: 0;
+}
+
+.caseStudyProfile .caseStudyProfile__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+    margin: 0 0 var(--ui-space-4);
+    color: var(--ui-color-heading);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.caseStudyProfile__about.detailGrid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+/* Barreiras e estratégias lado a lado: são blocos curtos e relacionados. */
+.caseStudyProfile__pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--case-study-block-gap) var(--ui-space-6);
+}
+
+@media (min-width: 1200px) {
+    .caseStudyProfile__pair {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Contribuições: abaixo das duas colunas, na largura do card. */
+.caseStudyProfile__contributions {
+    padding: 0 var(--ui-space-5) var(--ui-space-6);
+}
+
+@media (max-width: 991px) {
+    .caseStudyProfile__columns {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .caseStudyProfile__banner {
+        padding: var(--ui-space-5) var(--ui-space-4);
+    }
+
+    .caseStudyProfile__columns {
+        padding: var(--ui-space-5) var(--ui-space-4);
+    }
+
+    .caseStudyProfile__contributions {
+        padding: 0 var(--ui-space-4) var(--ui-space-5);
+    }
+}

@@ -1,2 +1,6 @@
-.authFooter { text-align: center; }
-.authFooter a { color: var(--ui-color-primary); }
+.authFooter {
+    text-align: center;
+}
+.authFooter a {
+    color: var(--ui-color-primary);
+}

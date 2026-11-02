@@ -24,9 +24,10 @@ final class DeleteCaseStudyAction
                 throw new InvalidCaseStudy('Não é possível remover um Estudo de Caso que já possui PAEE vinculado.');
             }
 
-            $lockedCaseStudy->strategies()->delete();
-            $lockedCaseStudy->barriers()->delete();
-            $lockedCaseStudy->contributions()->delete();
+            // Um a um, para a auditoria registrar cada exclusão.
+            $lockedCaseStudy->strategies()->get()->each->delete();
+            $lockedCaseStudy->barriers()->get()->each->delete();
+            $lockedCaseStudy->contributions()->get()->each->delete();
             $lockedCaseStudy->delete();
         });
     }

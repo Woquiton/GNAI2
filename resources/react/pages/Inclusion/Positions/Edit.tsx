@@ -1,25 +1,19 @@
-import PositionForm from "./PositionForm";
-import PositionPage from "./PositionPage";
-import type { PositionFormProps, PositionRecord } from "./Position.types";
+import PositionForm from '@/components/Inclusion/Positions/Form/PositionForm';
+import { positionBreadcrumb } from '@/components/Inclusion/Positions/Positions.routes';
+import type { PositionEditProps } from '@/components/Inclusion/Positions/Positions.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPositionsEditPage({
     position,
     permissions,
-}: PositionFormProps & {
-    position: PositionRecord;
-}): React.JSX.Element {
+}: PositionEditProps): React.JSX.Element {
     return (
-        <PositionPage
+        <BusinessPage
             title="Editar Cargo"
             subtitle={`Alterando informações do cargo: ${position.name}`}
-            current="Editar"
-            position={position}
+            breadcrumbItems={positionBreadcrumb({ position, current: 'Editar' })}
         >
-            <PositionForm
-                key={position.id}
-                position={position}
-                permissions={permissions}
-            />
-        </PositionPage>
+            <PositionForm key={position.id} position={position} permissions={permissions} />
+        </BusinessPage>
     );
 }

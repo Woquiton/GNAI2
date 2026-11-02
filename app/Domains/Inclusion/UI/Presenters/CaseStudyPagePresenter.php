@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Application\Data\CaseStudies\ListCaseStudiesData;
+use App\Domains\Inclusion\Application\Queries\CaseStudies\CaseStudyBarrierOptionsQuery;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\CaseStudyBarrier;
 use App\Domains\Inclusion\Domain\Models\CaseStudyContribution;
@@ -12,6 +13,7 @@ use App\Domains\Inclusion\Domain\Models\CaseStudyStrategy;
 use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Shared\Domain\Support\AeeLabels;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -22,6 +24,8 @@ use Illuminate\Support\Collection;
  */
 final class CaseStudyPagePresenter
 {
+    public function __construct(private readonly CaseStudyBarrierOptionsQuery $barrierOptions) {}
+
     /** Opções do formulário, nos mesmos rótulos do formulário Blade do módulo. */
     private const DEMAND_ORIGINS = [
         'teacher' => 'Professor',
@@ -42,17 +46,6 @@ final class CaseStudyPagePresenter
         'guide_interpreter' => 'Guia-intérprete',
         'orientation_mobility' => 'Orientação e mobilidade',
         'none' => 'Nenhum',
-    ];
-
-    private const BARRIER_TYPES = [
-        'architectural' => 'Arquitetônica',
-        'urbanistic' => 'Urbanística',
-        'transport' => 'Transporte',
-        'communicational' => 'Comunicacional',
-        'methodological' => 'Metodológica',
-        'technological' => 'Tecnológica',
-        'attitudinal' => 'Atitudinal',
-        'social' => 'Social',
     ];
 
     private const ACCEPTANCE_STATUSES = [
@@ -128,17 +121,17 @@ final class CaseStudyPagePresenter
                 'id' => (int) $caseStudy->getKey(),
                 'version' => (int) $caseStudy->version,
                 'demand_origin' => (string) $caseStudy->demand_origin,
-                'participants_summary' => $caseStudy->participants_summary,
+                'participants_summary' => RichTextSanitizer::sanitize((string) $caseStudy->participants_summary),
                 'study_date' => $caseStudy->study_date?->toDateString(),
-                'student_observation' => $caseStudy->student_observation,
-                'student_family_listening' => $caseStudy->student_family_listening,
-                'teachers_listening' => $caseStudy->teachers_listening,
-                'other_info' => $caseStudy->other_info,
-                'care_network_notes' => $caseStudy->care_network_notes,
-                'favorable_aspects' => $caseStudy->favorable_aspects,
-                'potentials_interests' => $caseStudy->potentials_interests,
+                'student_observation' => RichTextSanitizer::sanitize((string) $caseStudy->student_observation),
+                'student_family_listening' => RichTextSanitizer::sanitize((string) $caseStudy->student_family_listening),
+                'teachers_listening' => RichTextSanitizer::sanitize((string) $caseStudy->teachers_listening),
+                'other_info' => RichTextSanitizer::sanitize((string) $caseStudy->other_info),
+                'care_network_notes' => RichTextSanitizer::sanitize((string) $caseStudy->care_network_notes),
+                'favorable_aspects' => RichTextSanitizer::sanitize((string) $caseStudy->favorable_aspects),
+                'potentials_interests' => RichTextSanitizer::sanitize((string) $caseStudy->potentials_interests),
                 'needed_supports' => array_values(array_map('strval', $caseStudy->needed_supports ?? [])),
-                'needed_supports_justification' => $caseStudy->needed_supports_justification,
+                'needed_supports_justification' => RichTextSanitizer::sanitize((string) $caseStudy->needed_supports_justification),
                 'acceptance_status' => (string) $caseStudy->acceptance_status,
                 'acceptance_date' => $caseStudy->acceptance_date?->toDateString(),
                 'barriers' => $caseStudy->barriers
@@ -159,7 +152,7 @@ final class CaseStudyPagePresenter
             'options' => [
                 'demandOrigins' => $this->options(self::DEMAND_ORIGINS),
                 'neededSupports' => $this->options(self::NEEDED_SUPPORTS),
-                'barrierTypes' => $this->options(self::BARRIER_TYPES),
+                'barrierTypes' => $this->options($this->barrierOptions->execute($caseStudy)),
                 'acceptanceStatuses' => $this->options(self::ACCEPTANCE_STATUSES),
             ],
         ];
@@ -181,24 +174,24 @@ final class CaseStudyPagePresenter
                 'is_current' => (bool) $caseStudy->is_current,
                 'creator_name' => $caseStudy->creator?->name,
                 'demand_origin_label' => AeeLabels::demandOrigin($caseStudy->demand_origin),
-                'participants_summary' => $caseStudy->participants_summary,
+                'participants_summary' => RichTextSanitizer::sanitize((string) $caseStudy->participants_summary),
                 'study_date' => $caseStudy->study_date?->toDateString(),
-                'student_observation' => $caseStudy->student_observation,
-                'student_family_listening' => $caseStudy->student_family_listening,
-                'teachers_listening' => $caseStudy->teachers_listening,
-                'other_info' => $caseStudy->other_info,
-                'care_network_notes' => $caseStudy->care_network_notes,
-                'favorable_aspects' => $caseStudy->favorable_aspects,
-                'potentials_interests' => $caseStudy->potentials_interests,
+                'student_observation' => RichTextSanitizer::sanitize((string) $caseStudy->student_observation),
+                'student_family_listening' => RichTextSanitizer::sanitize((string) $caseStudy->student_family_listening),
+                'teachers_listening' => RichTextSanitizer::sanitize((string) $caseStudy->teachers_listening),
+                'other_info' => RichTextSanitizer::sanitize((string) $caseStudy->other_info),
+                'care_network_notes' => RichTextSanitizer::sanitize((string) $caseStudy->care_network_notes),
+                'favorable_aspects' => RichTextSanitizer::sanitize((string) $caseStudy->favorable_aspects),
+                'potentials_interests' => RichTextSanitizer::sanitize((string) $caseStudy->potentials_interests),
                 'needed_supports_label' => AeeLabels::neededSupportsList($caseStudy->needed_supports),
-                'needed_supports_justification' => $caseStudy->needed_supports_justification,
+                'needed_supports_justification' => RichTextSanitizer::sanitize((string) $caseStudy->needed_supports_justification),
                 'acceptance_status_label' => AeeLabels::acceptanceStatus($caseStudy->acceptance_status),
                 'acceptance_date' => $caseStudy->acceptance_date?->toDateString(),
                 'completed_at' => $caseStudy->completed_at?->toIso8601String(),
                 'barriers' => $caseStudy->barriers
                     ->map(static fn (CaseStudyBarrier $barrier): array => [
                         'id' => (int) $barrier->getKey(),
-                        'type_label' => AeeLabels::barrierType($barrier->type),
+                        'type_label' => (string) $barrier->type,
                         'observed_situation' => (string) $barrier->observed_situation,
                         'participation_implication' => (string) $barrier->participation_implication,
                     ])
@@ -210,7 +203,7 @@ final class CaseStudyPagePresenter
                         'description' => (string) $strategy->description,
                         'linked_barrier_label' => $strategy->linkedBarrier === null
                             ? null
-                            : AeeLabels::barrierType($strategy->linkedBarrier->type),
+                            : (string) $strategy->linkedBarrier->type,
                     ])
                     ->values()
                     ->all(),
@@ -218,7 +211,9 @@ final class CaseStudyPagePresenter
                     ->sortBy('created_at')
                     ->map(static fn (CaseStudyContribution $contribution): array => [
                         'id' => (int) $contribution->getKey(),
+                        'author_id' => $contribution->author_id === null ? null : (int) $contribution->author_id,
                         'author_name' => $contribution->author?->name,
+                        'author_photo_url' => $contribution->author?->photo_url,
                         'role' => (string) $contribution->role,
                         'content' => (string) $contribution->content,
                         'created_at' => $contribution->created_at?->toIso8601String(),

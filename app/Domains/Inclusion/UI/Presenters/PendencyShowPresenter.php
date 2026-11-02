@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Domain\Models\Pendency;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\Request;
 
 final class PendencyShowPresenter
@@ -22,6 +23,7 @@ final class PendencyShowPresenter
                 'id' => $pendency->id,
                 'title' => $pendency->title,
                 'description' => $pendency->description,
+                'description_html' => RichTextSanitizer::sanitize((string) ($pendency->description ?: 'Não informado')),
                 'priority_label' => $pendency->priority?->label(),
                 'priority_color' => $pendency->priority?->color(),
                 'due_date' => $pendency->due_date_formatted,

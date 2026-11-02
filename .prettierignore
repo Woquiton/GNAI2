@@ -1,0 +1,12 @@
+# Somente o frontend React e as configurações JS são formatados pelo Prettier.
+/*
+!/resources/
+/resources/*
+!/resources/react/
+!/eslint.config.js
+!/vite.config.js
+!/.prettierrc.json
+
+# Estilos de terceiros copiados dos plugins e da fonte de ícones.
+/resources/react/styles/icons.css
+/resources/react/**/*.base.css

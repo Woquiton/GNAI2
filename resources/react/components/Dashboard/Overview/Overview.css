@@ -1,0 +1,228 @@
+.gnaiDashboard__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.gnaiDashboard__stats > a {
+    color: inherit;
+    text-decoration: none;
+}
+.gnaiDashboard__stats .statWidgetCard {
+    height: 100%;
+    margin: 0;
+}
+.gnaiDashboard__stats > a:focus-visible {
+    outline: var(--ui-focus-ring-width) solid var(--ui-focus-ring-color);
+    outline-offset: var(--ui-focus-ring-offset);
+}
+.gnaiDashboard__charts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 20px;
+}
+.gnaiDashboard__charts--map {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+.gnaiDashboard__chart {
+    min-width: 0;
+    margin-bottom: 20px;
+}
+.gnaiDashboard__chart > .header-title {
+    margin: 0 0 24px;
+    font-size: 16px;
+}
+.gnaiDashboard__total {
+    border-top: 1px solid var(--ui-color-surface-alt);
+    padding-top: 16px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.gnaiDashboard__empty {
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    color: var(--ui-color-legacy-text);
+    text-align: center;
+}
+.gnaiDashboard__map {
+    height: 360px;
+    /* Mesmo contorno do mapa dos formulários (GeoMap). */
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    z-index: 0;
+}
+.gnaiDashboard__mapFrame {
+    position: relative;
+}
+/* Acima dos controles do Leaflet (z-index 1000), que ficam no contexto do próprio mapa. */
+.gnaiDashboard__mapNotice {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+.gnaiDashboard__mapSheet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    /* Contorno do card: o mapa bloqueado não parece um vão no painel. */
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(3px);
+    pointer-events: auto;
+    text-align: center;
+    animation: gnaiDashboardSheetIn 0.25s ease-out;
+}
+.gnaiDashboard__mapSheet .sweetAlertErrorIcon {
+    margin: 0 auto 16px;
+}
+.gnaiDashboard__mapNoticeTitle {
+    margin: 0 0 6px;
+    color: var(--ui-color-danger);
+    font: 600 22px/1.3 var(--ui-font-ui);
+}
+.gnaiDashboard__mapNoticeText {
+    margin: 0;
+    color: var(--ui-color-legacy-text);
+    font-size: 15px;
+}
+.gnaiDashboard__mapSheet--leaving {
+    pointer-events: none;
+    animation: gnaiDashboardSheetOut 0.5s ease-in forwards;
+}
+@keyframes gnaiDashboardSheetOut {
+    0%,
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes gnaiDashboardSheetIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.gnaiDashboard__filters {
+    margin: 16px 0 0;
+}
+/* Seis opções curtas: colunas mais estreitas que as dos formulários. */
+.gnaiDashboard__filters .choiceGroup .checkbox {
+    min-width: 120px;
+}
+.gnaiDashboard__radarMetrics {
+    margin-bottom: 20px;
+}
+@media (max-width: 1100px) {
+    .gnaiDashboard__stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 767px) {
+    .gnaiDashboard__charts,
+    .gnaiDashboard__stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.gnaiDashboard__charts > * {
+    min-width: 0;
+}
+
+/* Seis indicadores numa linha só quando a área comporta: card mais compacto, mesmo desenho. */
+.gnaiDashboard__statsArea {
+    container-type: inline-size;
+}
+@container (min-width: 1240px) {
+    .gnaiDashboard__stats--singleRow {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 16px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard {
+        padding: 16px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__icon {
+        width: 56px;
+        height: 56px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__icon i {
+        font-size: 24px;
+        line-height: 56px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__value {
+        margin: 2px 0 6px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__title {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+}
+
+.gnaiDashboard__feed {
+    margin-bottom: 20px;
+}
+.gnaiDashboard__feedHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.gnaiDashboard__feedHeader .header-title {
+    margin: 0;
+    font-size: 16px;
+}
+.gnaiDashboard__feedFilters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 220px));
+    gap: 12px;
+}
+.gnaiDashboard__feedList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.gnaiDashboard__feedList li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--ui-color-surface-alt);
+}
+.gnaiDashboard__feedList li > i {
+    margin-top: 3px;
+    color: var(--ui-color-gnai-primary);
+}
+.gnaiDashboard__feedList small {
+    display: block;
+    color: var(--ui-color-legacy-muted);
+}
+.gnaiDashboard__feedEmpty {
+    margin: 0;
+    padding: 16px 0;
+    color: var(--ui-color-legacy-text);
+    text-align: center;
+}
+.gnaiDashboard__feedMore {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+@media (max-width: 575px) {
+    .gnaiDashboard__feedFilters {
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+    }
+}

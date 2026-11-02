@@ -1,27 +1,17 @@
-import { router } from "@inertiajs/react";
-import { useState } from "react";
-import FormActions from "@/components/Forms/FormActions/FormActions";
-import FormSection from "@/components/Forms/FormSection/FormSection";
-import { FormStack } from "@/components/Forms/FormGrid/FormGrid";
-import Button from "@/components/UI/Button/Button";
-import CardBox from "@/components/UI/CardBox/CardBox";
-import ConfirmActionModal from "@/components/UI/ConfirmActionModal/ConfirmActionModal";
-import DetailField from "@/components/UI/DetailField/DetailField";
-import TableLabel from "@/components/UI/TableLabel/TableLabel";
-import WaitlistPage from "./WaitlistPage";
-import WaitlistResourceDetails from "./WaitlistResourceDetails";
-import type { WaitlistRecord } from "./Waitlist.types";
-import "./Waitlists.css";
-
-type Props = {
-    waitlist: WaitlistRecord;
-    canCancel: boolean;
-    statusLabel: string;
-    statusColor: string;
-    can: { edit: boolean; cancel: boolean; destroy: boolean; pdf: boolean };
-};
-
-const base = "/inclusive-radar/waitlists";
+import WaitlistCancelModal from '@/components/Inclusion/Waitlists/Details/WaitlistCancelModal';
+import WaitlistDetails from '@/components/Inclusion/Waitlists/Details/WaitlistDetails';
+import WaitlistDetailsActions from '@/components/Inclusion/Waitlists/Details/WaitlistDetailsActions';
+import WaitlistDeleteModal from '@/components/Inclusion/Waitlists/WaitlistDeleteModal';
+import {
+    waitlistBreadcrumb,
+    waitlistUrls,
+} from '@/components/Inclusion/Waitlists/Waitlists.routes';
+import type {
+    WaitlistRecord,
+    WaitlistShowProps,
+} from '@/components/Inclusion/Waitlists/Waitlists.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
 export default function InclusionWaitlistsShowPage({
     waitlist,
@@ -29,152 +19,48 @@ export default function InclusionWaitlistsShowPage({
     statusLabel,
     statusColor,
     can,
-}: Props): React.JSX.Element {
-    const [action, setAction] = useState<"cancel" | "delete" | null>(null);
-    const [processing, setProcessing] = useState(false);
-    const [failure, setFailure] = useState("");
-    const url = `${base}/${waitlist.id}`;
-
-    function closeModal(): void {
-        if (processing) return;
-        setAction(null);
-        setFailure("");
-    }
-
-    function confirmAction(): void {
-        if (processing || !action) return;
-        setFailure("");
-        setProcessing(true);
-        if (action === "cancel") {
-            router.patch(`${url}/cancel`, {}, {
-                preserveScroll: true,
-                onError: () => setFailure("Não foi possível cancelar a solicitação. Tente novamente."),
-                onSuccess: () => setAction(null),
-                onFinish: () => setProcessing(false),
-            });
-        } else {
-            router.delete(url, {
-                preserveScroll: true,
-                onError: () => setFailure("Não foi possível excluir a solicitação. Tente novamente."),
-                onSuccess: () => setAction(null),
-                onFinish: () => setProcessing(false),
-            });
-        }
-    }
+}: WaitlistShowProps): React.JSX.Element {
+    const cancellation = useConfirmedAction<WaitlistRecord>({
+        failureText: 'Não foi possível cancelar a solicitação. Tente novamente.',
+    });
+    const removal = useConfirmedAction<WaitlistRecord>({
+        failureText: 'Não foi possível excluir a solicitação. Tente novamente.',
+    });
+    const processing = cancellation.processing || removal.processing;
 
     return (
-        <WaitlistPage
+        <BusinessPage
             title="Detalhes da Fila de Espera"
             subtitle="Visualize as informações da solicitação, o status e o histórico do recurso."
-            waitlistId={waitlist.id}
+            documentTitle={`Solicitação #${waitlist.id}`}
+            breadcrumbItems={waitlistBreadcrumb({ waitlist })}
+            busy={processing}
         >
-            <CardBox className="waitlistShow__card">
-                <FormSection
-                    id="waitlist-show-identification"
-                    title="Identificação"
-                    variant="inline"
-                    iconClass="fa fa-list-alt"
-                >
-                    <FormStack>
-                        <WaitlistResourceDetails {...waitlist} />
-                        <dl className="waitlistShow__grid">
-                            <DetailField label="Estudante (Beneficiário)">
-                                {waitlist.student?.name ?? "Não informado"}
-                            </DetailField>
-                            <DetailField label="Profissional (Beneficiário)">
-                                {waitlist.professional?.name ?? "Não informado"}
-                            </DetailField>
-                            <DetailField label="Usuário Responsável">
-                                {waitlist.user || "Não informado"}
-                            </DetailField>
-                            <DetailField label="Data da Solicitação">
-                                {waitlist.requested_at_label}
-                            </DetailField>
-                            <DetailField label="Status da Solicitação">
-                                <TableLabel tone={statusColor}>{statusLabel}</TableLabel>
-                            </DetailField>
-                            <DetailField label="Observações" wide>
-                                {waitlist.observation_html ? (
-                                    <div
-                                        className="waitlistShow__richText"
-                                        dangerouslySetInnerHTML={{ __html: waitlist.observation_html }}
-                                    />
-                                ) : "Nenhuma observação registrada."}
-                            </DetailField>
-                        </dl>
-                    </FormStack>
-                </FormSection>
-            </CardBox>
-            <FormActions
-                secondary={can.pdf ? (
-                    <Button
-                        href={`${url}/pdf`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        tone="dark-red"
-                        leftIconClass="fa fa-file-pdf-o"
-                        label="PDF"
-                        title="Exportar solicitação em PDF"
-                        aria-label="Exportar solicitação em PDF"
-                    />
-                ) : undefined}
-            >
-                <Button
-                    href={base}
-                    tone="cancel"
-                    label="Voltar"
-                    title="Voltar para a fila de espera"
-                    aria-label="Voltar para a fila de espera"
-                    disabled={processing}
-                />
-                {can.edit ? (
-                    <Button
-                        href={`${url}/edit`}
-                        tone="warning"
-                        leftIconClass="fa fa-pencil"
-                        label="Editar"
-                        title="Editar solicitação"
-                        aria-label="Editar solicitação"
-                        disabled={processing}
-                    />
-                ) : null}
-                {can.cancel && canCancel ? (
-                    <Button
-                        tone="danger"
-                        leftIconClass="fa fa-ban"
-                        label="Cancelar solicitação"
-                        title="Cancelar solicitação"
-                        aria-label="Cancelar solicitação"
-                        disabled={processing}
-                        onClick={() => setAction("cancel")}
-                    />
-                ) : null}
-                {can.destroy ? (
-                    <Button
-                        tone="dark-red"
-                        leftIconClass="fa fa-trash-o"
-                        label="Excluir"
-                        title="Excluir solicitação"
-                        aria-label="Excluir solicitação"
-                        disabled={processing}
-                        onClick={() => setAction("delete")}
-                    />
-                ) : null}
-            </FormActions>
-            <ConfirmActionModal
-                open={action !== null}
-                title={action === "cancel" ? "Cancelar Solicitação" : "Excluir Solicitação"}
-                message={action === "cancel"
-                    ? <>A solicitação <strong>#{waitlist.id}</strong> será cancelada e deixará de ficar ativa.</>
-                    : <>A solicitação <strong>#{waitlist.id}</strong> será excluída permanentemente.</>}
-                processing={processing}
-                confirmLabel={action === "cancel" ? "Confirmar cancelamento" : "Confirmar exclusão"}
-                processingLabel={action === "cancel" ? "Cancelando solicitação..." : "Excluindo solicitação..."}
-                confirmTone="dark-red"
-                error={failure || undefined}
-                onClose={closeModal}
-                onConfirm={confirmAction}
+            <WaitlistDetails
+                waitlist={waitlist}
+                statusLabel={statusLabel}
+                statusColor={statusColor}
             />
-        </WaitlistPage>
+            <WaitlistDetailsActions
+                waitlistId={waitlist.id}
+                permissions={can}
+                cancellable={canCancel}
+                processing={processing}
+                onCancel={() => cancellation.open(waitlist)}
+                onDelete={() => removal.open(waitlist)}
+            />
+            <WaitlistCancelModal
+                waitlist={cancellation.target}
+                processing={cancellation.processing}
+                onClose={cancellation.close}
+                onConfirm={() => cancellation.submit('patch', waitlistUrls.cancel(waitlist.id))}
+            />
+            <WaitlistDeleteModal
+                waitlist={removal.target}
+                processing={removal.processing}
+                onClose={removal.close}
+                onConfirm={() => removal.submit('delete', waitlistUrls.destroy(waitlist.id))}
+            />
+        </BusinessPage>
     );
 }

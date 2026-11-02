@@ -1,0 +1,28 @@
+/* Aviso de atraso: ícone ao lado do texto. */
+.loanOverdueNotice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ui-space-3);
+}
+
+.loanOverdueNotice__icon {
+    margin-top: 2px;
+    font-size: 18px;
+}
+
+.loanOverdueNotice__content {
+    min-width: 0;
+}
+
+.loanOverdueNotice__content strong {
+    display: block;
+    font-weight: 600;
+}
+
+.loanOverdueNotice__content p {
+    margin: 3px 0 0;
+}
+
+.loanOverdueNotice__content time {
+    font-weight: 600;
+}

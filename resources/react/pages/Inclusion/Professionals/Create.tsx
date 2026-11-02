@@ -1,20 +1,18 @@
-import ProfessionalForm from "./ProfessionalForm";
-import ProfessionalPage from "./ProfessionalPage";
-import type { ProfessionalFormOptions } from "./Professional.types";
+import ProfessionalForm from '@/components/Inclusion/Professionals/Form/ProfessionalForm';
+import { professionalBreadcrumb } from '@/components/Inclusion/Professionals/Professionals.routes';
+import type { ProfessionalFormOptions } from '@/components/Inclusion/Professionals/Professionals.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionProfessionalsCreatePage(
-    props: ProfessionalFormOptions,
+    options: ProfessionalFormOptions,
 ): React.JSX.Element {
     return (
-        <ProfessionalPage
+        <BusinessPage
             title="Novo Profissional"
             subtitle="Cadastre os dados pessoais e funcionais de um profissional ou tutor de pares. Mesmo com o título “Profissionais”, esta seção também permite o cadastro de tutores de pares, utilizando a mesma estrutura."
-            current="Cadastrar"
+            breadcrumbItems={professionalBreadcrumb({ current: 'Cadastrar' })}
         >
-            <ProfessionalForm
-                mode="create"
-                {...props}
-            />
-        </ProfessionalPage>
+            <ProfessionalForm mode="create" options={options} />
+        </BusinessPage>
     );
 }

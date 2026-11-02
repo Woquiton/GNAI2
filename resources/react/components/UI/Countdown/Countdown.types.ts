@@ -1,6 +1,6 @@
 export interface CountdownValue {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
 }

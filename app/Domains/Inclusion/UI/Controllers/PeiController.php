@@ -30,7 +30,6 @@ use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\UI\Presenters\PeiPagePresenter;
-use App\Shared\Domain\Support\AuditLogger;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
@@ -90,8 +89,6 @@ final class PeiController
         Request $request,
     ): InertiaResponse {
         $pei = $query->execute($pei);
-
-        AuditLogger::logView($pei);
 
         return Inertia::render(
             'Inclusion/Peis/Show',
@@ -175,8 +172,6 @@ final class PeiController
 
         $pei->updateOtherRelevantInfo($validated['other_relevant_info'] ?? null);
         $pei->save();
-
-        AuditLogger::logUpdated($pei, ['other_relevant_info' => ['from' => null, 'to' => $pei->other_relevant_info]]);
 
         return redirect()
             ->route('specialized-educational-support.pei.show', $pei)

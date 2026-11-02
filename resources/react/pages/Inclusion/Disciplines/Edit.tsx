@@ -1,15 +1,18 @@
-import DisciplineForm from "./DisciplineForm";
-import type { DisciplineRecord } from "./Discipline.types";
+import { disciplineBreadcrumb } from '@/components/Inclusion/Disciplines/Disciplines.routes';
+import type { DisciplineEditProps } from '@/components/Inclusion/Disciplines/Disciplines.types';
+import DisciplineForm from '@/components/Inclusion/Disciplines/Form/DisciplineForm';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionDisciplinesEditPage({
     discipline,
-}: {
-    discipline: DisciplineRecord;
-}): React.JSX.Element {
+}: DisciplineEditProps): React.JSX.Element {
     return (
-        <DisciplineForm
-            key={discipline.id}
-            discipline={discipline}
-        />
+        <BusinessPage
+            title="Editar Disciplina"
+            subtitle="Atualize as informações e o status da disciplina selecionada."
+            breadcrumbItems={disciplineBreadcrumb({ discipline, current: 'Editar' })}
+        >
+            <DisciplineForm key={discipline.id} discipline={discipline} />
+        </BusinessPage>
     );
 }

@@ -14,46 +14,51 @@ Route::middleware('web')->group(function () {
             ->name('react.catalog');
     }
 
-    Route::redirect('/', '/about-us');
+    Route::redirect('/', '/sobre-nos');
 
     Route::group([], base_path('routes/modules/inclusion.php'));
 
     Route::middleware(['auth'])
-        ->prefix('backup')
+        ->prefix('backups')
         ->name('backup.')
         ->group(base_path('routes/modules/backup.php'));
 
     Route::middleware(['auth'])
-        ->prefix('audit')
+        ->prefix('auditoria')
         ->name('audit.')
         ->group(base_path('routes/modules/audit.php'));
 
     Route::middleware(['auth'])
-        ->prefix('settings')
+        ->prefix('configuracoes')
         ->name('settings.')
         ->group(base_path('routes/modules/settings.php'));
+
+    Route::middleware(['auth'])
+        ->prefix('ajuda')
+        ->name('help.')
+        ->group(base_path('routes/modules/help.php'));
 
     Route::name('website.')
         ->group(base_path('routes/modules/website.php'));
 
-    Route::prefix('reports')
+    Route::prefix('relatorios')
         ->name('reports.')
         ->group(base_path('routes/modules/reporting.php'));
 
-    Route::prefix('auth')
+    Route::prefix('autenticacao')
         ->name('')
         ->group(base_path('routes/auth.php'));
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-        Route::get('/notifications/count', [NotificationController::class, 'count'])->name('notifications.count');
-        Route::get('/notifications/list', [NotificationController::class, 'list'])->name('notifications.list');
-        Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
-        Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])
+        Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('/notificacoes/contagem', [NotificationController::class, 'count'])->name('notifications.count');
+        Route::get('/notificacoes/lista', [NotificationController::class, 'list'])->name('notifications.list');
+        Route::post('/notificacoes/{id}/ler', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+        Route::post('/notificacoes/ler-todas', [NotificationController::class, 'markAllAsRead'])
             ->name('notifications.readAll');
     });
 
-    Route::get('/about-us', function () {
+    Route::get('/sobre-nos', function () {
         if (request()->header('X-Inertia')) {
             return Inertia::location(route('about-us'));
         }
@@ -76,7 +81,7 @@ Route::middleware('web')->group(function () {
             Route::get('/', [TeacherPortalController::class, 'index'])->name('index');
             Route::get('/alunos/{student}', [TeacherPortalController::class, 'showStudent'])->name('students.show');
             Route::get('/documentos/{document}', [TeacherPortalController::class, 'viewDocument'])->name('documents.view');
-            Route::get('/adaptacoes/{peiDiscipline}/edit', [TeacherPortalController::class, 'editDiscipline'])->name('discipline.edit');
+            Route::get('/adaptacoes/{peiDiscipline}/editar', [TeacherPortalController::class, 'editDiscipline'])->name('discipline.edit');
             Route::put('/adaptacoes/{peiDiscipline}', [TeacherPortalController::class, 'updateDiscipline'])->name('discipline.update');
         });
 });

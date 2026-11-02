@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
-import { joinClassNames } from "@/utils/joinClassNames";
-import "./ChoiceGroup.css";
+import type { ReactNode } from 'react';
+import { joinClassNames } from '@/utils/joinClassNames';
+import './ChoiceGroup.css';
 
 export default function ChoiceGroup({
     id,
@@ -18,11 +18,13 @@ export default function ChoiceGroup({
     className?: string;
 }): React.JSX.Element {
     return (
+        // aria-invalid acompanha o estado visual do grupo; a mensagem é associada por aria-describedby.
+        // eslint-disable-next-line jsx-a11y/role-supports-aria-props
         <div
             id={id}
             className={joinClassNames(
-                "choiceGroup",
-                invalid ? "choiceGroup--invalid" : undefined,
+                'choiceGroup',
+                invalid ? 'choiceGroup--invalid' : undefined,
                 className,
             )}
             role="group"

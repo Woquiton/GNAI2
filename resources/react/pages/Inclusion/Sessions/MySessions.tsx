@@ -1,12 +1,9 @@
-import { TableListCreateButton } from "@/components/Tables/TableList/TableList";
-import Button from "@/components/UI/Button/Button";
-import { aeeBase } from "@/components/Students/Students.utils";
-import { sessionsBase } from "./SessionForm.utils";
-import type { SessionMySessionsProps } from "./SessionList.types";
-import SessionPage from "./SessionPage";
-import SessionWorkspace from "./SessionWorkspace";
-
-const mySessionsBase = `${aeeBase}/my-sessions`;
+import SessionWorkspace from '@/components/Inclusion/Sessions/List/SessionWorkspace';
+import SessionWorkspaceActions from '@/components/Inclusion/Sessions/List/SessionWorkspaceActions';
+import { mySessionsFailureText } from '@/components/Inclusion/Sessions/Sessions.constants';
+import { mySessionsBreadcrumb, sessionUrls } from '@/components/Inclusion/Sessions/Sessions.routes';
+import type { SessionMySessionsProps } from '@/components/Inclusion/Sessions/Sessions.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSessionsMySessionsPage({
     sessions,
@@ -16,39 +13,30 @@ export default function InclusionSessionsMySessionsPage({
     options,
     can,
 }: SessionMySessionsProps): React.JSX.Element {
-    const actions = can.create || can.viewAll ? (
-        <>
-            {can.viewAll ? (
-                <Button
-                    href={sessionsBase}
-                    tone="inverse"
-                    leftIconClass="fa fa-calendar"
-                    label="Todos Agendamentos"
-                    title="Voltar para agendamentos"
-                />
-            ) : null}
-            {can.create ? (
-                <TableListCreateButton
-                    href={`${sessionsBase}/create`}
-                    ariaLabel="Cadastrar agendamento"
-                />
-            ) : null}
-        </>
-    ) : undefined;
+    const actions =
+        can.create || can.viewAll ? (
+            <SessionWorkspaceActions
+                shortcut={
+                    can.viewAll && {
+                        href: sessionUrls.index,
+                        label: 'Todos Agendamentos',
+                        title: 'Voltar para agendamentos',
+                        iconClass: 'fa fa-calendar',
+                    }
+                }
+                canCreate={can.create}
+            />
+        ) : undefined;
 
     return (
-        <SessionPage
+        <BusinessPage
             title="Meus Agendamentos"
             subtitle="Acompanhe os seus atendimentos no calendário ou em formato de lista."
-            breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Agendamentos", href: can.viewAll ? sessionsBase : undefined },
-                { label: "Meus Agendamentos" },
-            ]}
+            breadcrumbItems={mySessionsBreadcrumb(can.viewAll)}
             actions={actions}
         >
             <SessionWorkspace
-                baseUrl={mySessionsBase}
+                baseUrl={sessionUrls.mySessions}
                 sessions={sessions}
                 calendar={calendar}
                 filters={filters}
@@ -57,8 +45,8 @@ export default function InclusionSessionsMySessionsPage({
                 canView={can.view}
                 showProfessional={false}
                 label="Meus agendamentos"
-                failureText="Não foi possível atualizar seus agendamentos. Tente novamente."
+                failureText={mySessionsFailureText}
             />
-        </SessionPage>
+        </BusinessPage>
     );
 }

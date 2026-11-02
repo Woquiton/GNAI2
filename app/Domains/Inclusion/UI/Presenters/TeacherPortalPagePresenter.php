@@ -119,16 +119,16 @@ final class TeacherPortalPagePresenter
             'status_label' => AeeLabels::caseStudyStatus($caseStudy->status),
             'semester_label' => $caseStudy->semester?->label,
             'demand_origin_label' => AeeLabels::demandOrigin($caseStudy->demand_origin),
-            'student_observation' => $caseStudy->student_observation,
-            'student_family_listening' => $caseStudy->student_family_listening,
-            'teachers_listening' => $caseStudy->teachers_listening,
-            'favorable_aspects' => $caseStudy->favorable_aspects,
-            'potentials_interests' => $caseStudy->potentials_interests,
-            'other_info' => $caseStudy->other_info,
+            'student_observation' => RichTextSanitizer::sanitize((string) $caseStudy->student_observation),
+            'student_family_listening' => RichTextSanitizer::sanitize((string) $caseStudy->student_family_listening),
+            'teachers_listening' => RichTextSanitizer::sanitize((string) $caseStudy->teachers_listening),
+            'favorable_aspects' => RichTextSanitizer::sanitize((string) $caseStudy->favorable_aspects),
+            'potentials_interests' => RichTextSanitizer::sanitize((string) $caseStudy->potentials_interests),
+            'other_info' => RichTextSanitizer::sanitize((string) $caseStudy->other_info),
             'barriers' => $caseStudy->barriers
                 ->map(static fn (CaseStudyBarrier $barrier): array => [
                     'id' => (int) $barrier->getKey(),
-                    'type_label' => AeeLabels::barrierType($barrier->type),
+                    'type_label' => (string) $barrier->type,
                     'observed_situation' => $barrier->observed_situation,
                     'participation_implication' => $barrier->participation_implication,
                 ])
@@ -139,7 +139,7 @@ final class TeacherPortalPagePresenter
                     'id' => (int) $strategy->getKey(),
                     'description' => $strategy->description,
                     'linked_barrier_label' => $strategy->linkedBarrier !== null
-                        ? AeeLabels::barrierType($strategy->linkedBarrier->type)
+                        ? (string) $strategy->linkedBarrier->type
                         : null,
                 ])
                 ->values()
@@ -171,10 +171,10 @@ final class TeacherPortalPagePresenter
             'attendance_location_label' => AeeLabels::attendanceLocation($paee->attendance_location),
             'assistive_technology_needed' => (bool) $paee->assistive_technology_needed,
             'support_professional_needed' => (bool) $paee->support_professional_needed,
-            'assistive_technology_notes' => $paee->assistive_technology_notes,
-            'school_professionals_orientation' => $paee->school_professionals_orientation,
-            'common_teachers_articulation' => $paee->common_teachers_articulation,
-            'family_articulation' => $paee->family_articulation,
+            'assistive_technology_notes' => RichTextSanitizer::sanitize((string) $paee->assistive_technology_notes),
+            'school_professionals_orientation' => RichTextSanitizer::sanitize((string) $paee->school_professionals_orientation),
+            'common_teachers_articulation' => RichTextSanitizer::sanitize((string) $paee->common_teachers_articulation),
+            'family_articulation' => RichTextSanitizer::sanitize((string) $paee->family_articulation),
             'objectives' => $paee->objectives
                 ->map(static fn (PaeeObjective $objective): array => [
                     'id' => (int) $objective->getKey(),
@@ -196,8 +196,8 @@ final class TeacherPortalPagePresenter
                     'id' => (int) $review->getKey(),
                     'reviewed_at' => $review->reviewed_at?->format('d/m/Y'),
                     'reviewer_name' => $review->reviewer?->name,
-                    'what_changed' => $review->what_changed,
-                    'why' => $review->why,
+                    'what_changed' => RichTextSanitizer::sanitize((string) $review->what_changed),
+                    'why' => RichTextSanitizer::sanitize((string) $review->why),
                 ])
                 ->values()
                 ->all(),

@@ -1,0 +1,22 @@
+.sessionForm__times {
+    gap: 20px 16px;
+}
+
+.sessionForm__students {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.sessionForm__studentRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+}
+
+.sessionForm__studentSelect {
+    flex: 1 1 auto;
+    min-width: 0;
+}

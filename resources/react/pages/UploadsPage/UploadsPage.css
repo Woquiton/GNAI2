@@ -1,3 +1,0 @@
-.uploadsPage { margin-bottom: 30px; }
-.uploadsPage::after { content: ''; display: table; clear: both; }
-.uploadsPage__actions { float: right; margin-top: 15px; }

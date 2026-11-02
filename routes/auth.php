@@ -5,6 +5,7 @@ use App\Domains\Auth\UI\Controllers\ImpersonationController;
 use App\Domains\Auth\UI\Controllers\LoginController;
 use App\Domains\Auth\UI\Controllers\ProfileController;
 use App\Domains\Auth\UI\Controllers\ResetPasswordController;
+use App\Domains\Auth\UI\Controllers\TablePreferenceController;
 use App\Domains\Auth\UI\Controllers\TeacherAccessController;
 use App\Domains\Dashboard\UI\Controllers\DashboardController;
 
@@ -15,12 +16,12 @@ Route::get('/', function () {
 });
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login']);
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm'])->name('password.request');
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendLink'])->name('password.email');
-    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showForm'])->name('password.reset');
-    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+    Route::get('/entrar', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/entrar', [LoginController::class, 'login']);
+    Route::get('/esqueci-a-senha', [ForgotPasswordController::class, 'showForm'])->name('password.request');
+    Route::post('/esqueci-a-senha', [ForgotPasswordController::class, 'sendLink'])->name('password.email');
+    Route::get('/redefinir-senha/{token}', [ResetPasswordController::class, 'showForm'])->name('password.reset');
+    Route::post('/redefinir-senha', [ResetPasswordController::class, 'reset'])->name('password.update');
 
     Route::get('/acesso', [TeacherAccessController::class, 'showRequestForm'])->name('teacher-access.request');
     Route::post('/acesso', [TeacherAccessController::class, 'sendLink'])->name('teacher-access.send-link');
@@ -36,17 +37,19 @@ Route::get('/acesso/{token}', [TeacherAccessController::class, 'showConfirm'])->
 Route::post('/acesso/{token}', [TeacherAccessController::class, 'confirm'])->name('teacher-access.confirm');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/activity-feed', [DashboardController::class, 'activityFeed'])->name('dashboard.activity-feed');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/painel', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/painel/atividades', [DashboardController::class, 'activityFeed'])->name('dashboard.activity-feed');
+    Route::post('/sair', [LoginController::class, 'logout'])->name('logout');
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/perfil', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/perfil/conta', [ProfileController::class, 'updateAccount'])->name('profile.account.update');
+    Route::put('/preferencias/tabelas/colunas', [TablePreferenceController::class, 'updateColumns'])
+        ->name('preferences.tables.columns.update');
 
-    Route::post('/impersonate/leave', [ImpersonationController::class, 'leave'])
+    Route::post('/acessar-como/encerrar', [ImpersonationController::class, 'leave'])
         ->name('admin.impersonate.leave');
 
-    Route::post('/impersonate/{user}', [ImpersonationController::class, 'start'])
+    Route::post('/acessar-como/{user}', [ImpersonationController::class, 'start'])
         ->name('admin.impersonate')
         ->middleware('admin');
 

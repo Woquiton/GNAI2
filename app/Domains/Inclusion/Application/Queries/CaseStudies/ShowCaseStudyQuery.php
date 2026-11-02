@@ -16,7 +16,8 @@ final class ShowCaseStudyQuery
             'semester',
             'barriers',
             'strategies.linkedBarrier',
-            'contributions.author',
+            'contributions.author.professional.person',
+            'contributions.author.teacher.person',
             'paees',
         ]);
     }

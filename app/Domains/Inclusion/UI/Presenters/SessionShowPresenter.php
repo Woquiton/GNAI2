@@ -8,6 +8,7 @@ use App\Domains\Inclusion\Domain\Enums\AttendanceType;
 use App\Domains\Inclusion\Domain\Enums\SessionStatus;
 use App\Domains\Inclusion\Domain\Enums\SessionType;
 use App\Domains\Inclusion\Domain\Models\Session;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,7 @@ final class SessionShowPresenter
                 'attendance_type_label' => AttendanceType::labelFor($session->attendance_type),
                 'type_label' => SessionType::labelFor($session->type),
                 'session_objective' => $session->session_objective,
+                'session_objective_html' => RichTextSanitizer::sanitize((string) $session->session_objective),
                 'cancellation_reason' => $session->cancellation_reason,
             ],
             'record' => $this->record($session, $can, $isResponsibleProfessional && $isScheduled && $dateHasArrived),

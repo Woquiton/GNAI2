@@ -1,15 +1,16 @@
-import StudentPage from '@/components/Students/StudentPage';
-import StudentForm from '@/components/Students/StudentForm';
-import type { StudentFormOptions } from '@/components/Students/Students.types';
+import StudentForm from '@/components/Inclusion/Students/Form/StudentForm';
+import { studentBreadcrumb } from '@/components/Inclusion/Students/Students.routes';
+import type { StudentFormOptions } from '@/components/Inclusion/Students/Students.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function StudentsCreate(props: StudentFormOptions): React.JSX.Element {
-  return (
-    <StudentPage
-      title="Cadastrar Aluno"
-      current="Cadastrar"
-      subtitle="Insira as informações pessoais e acadêmicas para registrar o novo estudante no sistema."
-    >
-      <StudentForm mode="create" {...props} />
-    </StudentPage>
-  );
+export default function StudentsCreate(options: StudentFormOptions): React.JSX.Element {
+    return (
+        <BusinessPage
+            title="Cadastrar Aluno"
+            subtitle="Insira as informações pessoais e acadêmicas para registrar o novo estudante no sistema."
+            breadcrumbItems={studentBreadcrumb({ current: 'Cadastrar' })}
+        >
+            <StudentForm mode="create" options={options} />
+        </BusinessPage>
+    );
 }

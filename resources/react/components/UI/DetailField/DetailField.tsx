@@ -1,19 +1,31 @@
-import type { ReactNode } from "react";
-import "./DetailField.css";
+import type { ReactNode } from 'react';
+import { joinClassNames } from '@/utils/joinClassNames';
+import './DetailField.css';
 
+interface DetailFieldProps {
+    label: string;
+    children: ReactNode;
+    /** Ocupa todas as colunas do `DetailGrid` (textos longos, listas e editores ricos). */
+    wide?: boolean;
+    /** Mantém as quebras de linha de textos simples (sem editor rico). */
+    preserveLineBreaks?: boolean;
+    className?: string;
+}
+
+/** Par rótulo/valor de uma visualização. Deve ficar dentro de `DetailGrid` (um `<dl>`). */
 export default function DetailField({
     label,
     children,
     wide = false,
-}: {
-    label: string;
-    children: ReactNode;
-    wide?: boolean;
-}): React.JSX.Element {
+    preserveLineBreaks = false,
+    className,
+}: DetailFieldProps): React.JSX.Element {
     return (
-        <div className={`detailField${wide ? " detailField--wide" : ""}`}>
-            <dt>{label}:</dt>
-            <dd>{children}</dd>
+        <div className={joinClassNames('detailField', wide && 'detailField--wide', className)}>
+            <dt>{label}</dt>
+            <dd className={preserveLineBreaks ? 'detailField__value--preLine' : undefined}>
+                {children}
+            </dd>
         </div>
     );
 }

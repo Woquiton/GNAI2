@@ -1,0 +1,31 @@
+/* Blocos repetíveis: descrição, vínculo com o catálogo e select final com o botão de remover. */
+.paeeForm__item {
+    display: grid;
+    gap: var(--ui-space-4) var(--ui-space-6);
+    align-items: start;
+}
+
+.paeeForm__item--objective,
+.paeeForm__item--resource {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 1fr);
+}
+
+/* Em telas médias, a descrição ocupa a linha e os dois selects ficam lado a lado. */
+@media (max-width: 1100px) {
+    .paeeForm__item--objective,
+    .paeeForm__item--resource {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .paeeForm__item--objective > :first-child,
+    .paeeForm__item--resource > :first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 700px) {
+    .paeeForm__item--objective,
+    .paeeForm__item--resource {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

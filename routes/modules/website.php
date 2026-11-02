@@ -17,10 +17,10 @@ Route::prefix('site')->group(function (): void {
 
 // Retaguarda do site
 
-Route::middleware(['auth'])->prefix('website')->group(function (): void {
-    Route::get('/builder', [WebsiteBuilderController::class, 'edit'])
+Route::middleware(['auth'])->prefix('administracao-do-site')->group(function (): void {
+    Route::get('/construtor', [WebsiteBuilderController::class, 'edit'])
         ->name('builder.edit')->middleware('can:website.edit');
 
-    Route::put('/builder', [WebsiteBuilderController::class, 'update'])
+    Route::put('/construtor', [WebsiteBuilderController::class, 'update'])
         ->name('builder.update')->middleware('can:website.update');
 });

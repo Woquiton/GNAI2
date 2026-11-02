@@ -14,6 +14,7 @@ use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Inclusion\Domain\Models\PaeeObjective;
 use App\Domains\Inclusion\Domain\Models\PaeeResource;
+use App\Domains\Inclusion\Domain\Models\Pei;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -68,6 +69,18 @@ final readonly class CreatePaeeAction
                 data: $this->dto($data),
             );
             $paee->save();
+
+            // O PEI vigente em elaboração passa a seguir a versão nova do PAEE.
+            $currentPei = Pei::query()
+                ->where('student_id', $student->getKey())
+                ->where('is_current', true)
+                ->where('is_finished', false)
+                ->lockForUpdate()
+                ->first();
+            if ($currentPei instanceof Pei) {
+                $currentPei->followPaee($paee);
+                $currentPei->save();
+            }
 
             foreach ($data->objectives as $objective) {
                 $paee->objectives()->save(new PaeeObjective([

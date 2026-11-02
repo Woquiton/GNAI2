@@ -1,0 +1,28 @@
+/* Composições particulares das abas do prontuário do aluno. */
+.studentDetails__subheading {
+    margin: var(--ui-space-7) 0 var(--ui-space-3);
+    color: var(--ui-color-heading);
+    font: 600 1rem/1.4 var(--ui-font-ui);
+}
+.studentDetails__secondary {
+    display: block;
+    min-width: 0;
+    margin-top: var(--ui-space-1);
+    color: var(--ui-color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.studentDetails__recordFooter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-space-2);
+    margin-top: var(--ui-space-3);
+    padding-top: var(--ui-space-3);
+    border-top: 1px solid var(--ui-color-card-border);
+}
+.studentDetails__recordFooter small {
+    color: var(--ui-color-text-muted);
+}

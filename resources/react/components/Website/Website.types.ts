@@ -20,18 +20,18 @@ export interface WebsiteSite {
 }
 
 export type WebsiteSectionType =
-    | "hero"
-    | "about"
-    | "pillars"
-    | "audience"
-    | "guidance"
-    | "faq"
-    | "resources"
-    | "features"
-    | "team"
-    | "events"
-    | "publications"
-    | "contact";
+    | 'hero'
+    | 'about'
+    | 'pillars'
+    | 'audience'
+    | 'guidance'
+    | 'faq'
+    | 'resources'
+    | 'features'
+    | 'team'
+    | 'events'
+    | 'publications'
+    | 'contact';
 
 export interface WebsiteSectionItem {
     icon: string;
@@ -41,10 +41,10 @@ export interface WebsiteSectionItem {
     appearance?: PillarCardAppearance;
 }
 
-export type HeroAlignment = "left" | "center" | "right";
+export type HeroAlignment = 'left' | 'center' | 'right';
 
 export interface HeroAppearance {
-    mode: "text" | "banners";
+    mode: 'text' | 'banners';
     title_align: HeroAlignment;
     subtitle_align: HeroAlignment;
     badge_align: HeroAlignment;
@@ -72,9 +72,9 @@ export interface HeroAppearance {
     badge_visible: boolean;
     gradient_enabled: boolean;
     autoplay: boolean;
-    gradient_direction: "to bottom" | "to top" | "to right" | "to left";
-    image_fit: "cover" | "contain";
-    image_position: "center" | "top" | "bottom" | "left" | "right";
+    gradient_direction: 'to bottom' | 'to top' | 'to right' | 'to left';
+    image_fit: 'cover' | 'contain';
+    image_position: 'center' | 'top' | 'bottom' | 'left' | 'right';
 }
 
 export interface AboutAppearance {
@@ -100,12 +100,12 @@ export interface AboutAppearance {
     gradient_end_color: string;
     title_align: HeroAlignment;
     subtitle_align: HeroAlignment;
-    body_align: HeroAlignment | "justify";
+    body_align: HeroAlignment | 'justify';
     button_align: HeroAlignment;
-    image_side: "right" | "left" | "top" | "bottom";
-    image_fit: "cover" | "contain";
-    image_position: "center" | "top" | "bottom" | "left" | "right";
-    gradient_direction: "to bottom" | "to top" | "to right" | "to left";
+    image_side: 'right' | 'left' | 'top' | 'bottom';
+    image_fit: 'cover' | 'contain';
+    image_position: 'center' | 'top' | 'bottom' | 'left' | 'right';
+    gradient_direction: 'to bottom' | 'to top' | 'to right' | 'to left';
     image_visible: boolean;
     title_divider: boolean;
     gradient_enabled: boolean;
@@ -122,10 +122,10 @@ export interface PillarsAppearance {
     background_color: string;
     gradient_end_color: string;
     divider_color: string;
-    title_align: "center" | "left" | "right";
-    subtitle_align: "center" | "left" | "right";
-    layout: "grid" | "list";
-    gradient_direction: "to bottom" | "to top" | "to right" | "to left";
+    title_align: 'center' | 'left' | 'right';
+    subtitle_align: 'center' | 'left' | 'right';
+    layout: 'grid' | 'list';
+    gradient_direction: 'to bottom' | 'to top' | 'to right' | 'to left';
     title_divider: boolean;
     gradient_enabled: boolean;
 }
@@ -156,11 +156,11 @@ export interface PillarCardAppearance {
     hover_background: string;
     hover_border_color: string;
     gradient_end_color: string;
-    icon_align: "left" | "center" | "right";
-    title_align: "left" | "center" | "right";
-    text_align: "left" | "center" | "right" | "justify";
-    icon_position: "top" | "left" | "right";
-    gradient_direction: "to bottom" | "to top" | "to right" | "to left";
+    icon_align: 'left' | 'center' | 'right';
+    title_align: 'left' | 'center' | 'right';
+    text_align: 'left' | 'center' | 'right' | 'justify';
+    icon_position: 'top' | 'left' | 'right';
+    gradient_direction: 'to bottom' | 'to top' | 'to right' | 'to left';
     hover_enabled: boolean;
     gradient_enabled: boolean;
 }
@@ -187,12 +187,12 @@ export interface GuidanceAppearance {
     button_background: string;
     hover_color: string;
     hover_background: string;
-    title_align: "left" | "center" | "right";
-    subtitle_align: "left" | "center" | "right";
-    layout: "grid" | "list" | "timeline" | "carousel";
-    button_align: "left" | "center" | "right";
-    action_style: "link" | "button";
-    gradient_direction: "to bottom" | "to top" | "to right" | "to left";
+    title_align: 'left' | 'center' | 'right';
+    subtitle_align: 'left' | 'center' | 'right';
+    layout: 'grid' | 'list' | 'timeline' | 'carousel';
+    button_align: 'left' | 'center' | 'right';
+    action_style: 'link' | 'button';
+    gradient_direction: 'to bottom' | 'to top' | 'to right' | 'to left';
     title_divider: boolean;
     gradient_enabled: boolean;
     autoplay: boolean;
@@ -234,7 +234,7 @@ export interface TeamAppearance extends GuidanceAppearance {
     card_title_color: string;
     card_text_color: string;
     card_border_color: string;
-    card_align: "left" | "center" | "right";
+    card_align: 'left' | 'center' | 'right';
     show_photo: boolean;
     show_role: boolean;
 }
@@ -253,7 +253,7 @@ export interface ContactAppearance extends GuidanceAppearance {
     card_title_color: string;
     card_text_color: string;
     card_border_color: string;
-    card_align: "left" | "center" | "right";
+    card_align: 'left' | 'center' | 'right';
     show_icons: boolean;
     show_social: boolean;
 }
@@ -293,7 +293,7 @@ export interface WebsiteSection {
 }
 
 export interface PublicationSchedule {
-    status: "upcoming" | "ongoing" | "finished";
+    status: 'upcoming' | 'ongoing' | 'finished';
     status_label: string;
     starts_at: string | null;
     day: string;
@@ -366,9 +366,3 @@ export interface WebsitePaginator<T> {
     from: number | null;
     to: number | null;
 }
-
-export const websiteRoutes = {
-    home: "/site",
-    team: "/site/equipe",
-    publications: "/site/publicacoes",
-} as const;

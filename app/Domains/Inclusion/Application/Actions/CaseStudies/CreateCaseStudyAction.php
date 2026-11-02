@@ -83,7 +83,7 @@ final readonly class CreateCaseStudyAction
 
             $caseStudy->contributions()->save(new CaseStudyContribution([
                 'author_id' => (int) $creator->getKey(),
-                'role' => 'creator',
+                'role' => CaseStudyContribution::CREATOR_ROLE,
                 'content' => 'Estudo de Caso criado.',
                 'created_at' => now(),
             ]));

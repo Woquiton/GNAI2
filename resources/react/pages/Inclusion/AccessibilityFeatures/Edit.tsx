@@ -1,17 +1,26 @@
-import AccessibilityFeatureForm from "./AccessibilityFeatureForm";
-import type { AccessibilityFeatureRecord } from "./AccessibilityFeature.types";
+import AccessibilityFeatureForm from '@/components/Inclusion/AccessibilityFeatures/Form/AccessibilityFeatureForm';
+import { accessibilityFeatureBreadcrumb } from '@/components/Inclusion/AccessibilityFeatures/AccessibilityFeatures.routes';
+import type { AccessibilityFeatureEditProps } from '@/components/Inclusion/AccessibilityFeatures/AccessibilityFeatures.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionAccessibilityFeaturesEditPage({
     accessibilityFeature,
     can,
-}: {
-    accessibilityFeature: AccessibilityFeatureRecord;
-    can: { update: boolean };
-}): React.JSX.Element {
+}: AccessibilityFeatureEditProps): React.JSX.Element {
     return (
-        <AccessibilityFeatureForm
-            feature={accessibilityFeature}
-            canSubmit={can.update}
-        />
+        <BusinessPage
+            title="Editar Recurso de Acessibilidade"
+            subtitle={`Atualizando informações de: ${accessibilityFeature.name}`}
+            breadcrumbItems={accessibilityFeatureBreadcrumb({
+                feature: accessibilityFeature,
+                current: 'Editar',
+            })}
+        >
+            <AccessibilityFeatureForm
+                key={accessibilityFeature.id}
+                feature={accessibilityFeature}
+                canSubmit={can.update}
+            />
+        </BusinessPage>
     );
 }

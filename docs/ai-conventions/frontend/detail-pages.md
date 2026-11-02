@@ -4,8 +4,10 @@ Esta convenção reúne o padrão compartilhado das telas de visualização do G
 
 ## Estrutura comum
 
+A visualização de Itens é a referência: `pages/Inclusion/Items/Show.tsx` compõe `BusinessPage` (com `documentTitle` e `busy`), `Details/ItemDetails`, `Details/ItemDetailsActions` e o modal de exclusão do recurso, com `useConfirmedAction` para a exclusão. Os pares rótulo/valor usam `UI/DetailGrid` + `UI/DetailField`, e valores múltiplos usam `UI/TagList`; não defina grades de detalhes nem etiquetas no CSS do domínio.
+
 - Use a estrutura de página de negócio já integrada, com `Navigation/PageTitle` e breadcrumb fornecidos pelo wrapper do domínio.
-- Reutilize `UI/CardBox` e `Forms/FormSection variant="inline"` para organizar os dados. Títulos e ícones de seção usam o cinza compartilhado; labels usam `--ui-color-form-label` e valores usam `--ui-color-legacy-text`.
+- Reutilize `UI/CardBox` e `Forms/FormSection variant="inline"` para organizar os dados. Títulos e ícones de seção usam o cinza compartilhado; labels usam `--ui-color-form-label` em tamanho menor e valores usam `--ui-color-text`, para leitura sem aparência de formulário desabilitado.
 - Apresente pares de label e valor com HTML semântico, preferencialmente `dl`, `dt` e `dd`. Textos ricos vindos do servidor só podem ser renderizados pelo mesmo contrato sanitizado já adotado pela funcionalidade.
 - Status e classificações curtas usam `UI/TableLabel`; ações usam `UI/Button`. Não recrie badges, cards ou estilos de botão dentro da página.
 - Mantenha `Forms/FormActions` imediatamente depois do conteúdo principal. Preserve ações, permissões, links, downloads, modais e nomes acessíveis existentes.
@@ -18,20 +20,15 @@ Telas com poucos grupos de informação devem permanecer em um card com seções
 
 Quando uma visualização reúne muitos grupos independentes e provoca rolagem excessiva:
 
-1. Mostre primeiro uma faixa compacta de identificação em `CardBox`, ocupando a largura disponível e contendo apenas os dados essenciais já existentes no contrato, como foto, nome, código ou matrícula, status e classificação principal. Não adicione um título “Identificação” quando o próprio conteúdo já deixa a finalidade evidente.
-2. Organize os demais grupos com `Navigation/Tabs`, usando abas horizontais no mesmo padrão visual de `Navigation/PageTabs`: ícone e rótulo, divisor inferior neutro e indicador roxo na aba ativa. Cada aba representa uma seção funcional completa, não um campo isolado.
-3. A navegação permanece neutra; somente o texto, o ícone e o indicador da aba ativa, além dos estados de interação, usam `--ui-color-gnai-primary`. Não aplique fundo roxo à aba ativa.
-4. Quando os rótulos excederem a largura disponível, mantenha uma única faixa horizontal rolável acima do conteúdo. O painel continua ocupando a largura disponível e os textos das abas não são substituídos apenas por ícones.
-5. A linha neutra sob as abas ocupa toda a largura disponível. O indicador roxo usa a posição e a largura reais da aba ativa e desliza entre elas; a faixa reposiciona horizontalmente a seleção quando necessário. Não permita overflow vertical e respeite `prefers-reduced-motion` tanto no indicador quanto na transição do painel.
-6. Monte somente as abas permitidas ao usuário. A ocultação visual acompanha as permissões recebidas, sem substituir a autorização do servidor.
-7. O rótulo da aba já identifica o painel. Não repita esse mesmo nome em um `FormSection` ou page header logo abaixo da navegação. Quando houver dados de detalhe, organize-os em `CardBox` com subseções funcionais de nomes mais específicos; quando houver somente uma coleção, comece diretamente pelo card da listagem.
-8. Quando a aba representa uma coleção própria do registro, apresente sua listagem completa dentro da aba com os componentes de `Tables/TableList`. Inclua no próprio `TableListCard` filtros úteis para as colunas e o contexto daquela coleção, seguindo a densidade das listagens. Não mantenha um resumo limitado acompanhado por botão “Gerenciar” se a aba já comporta a tabela integral.
-9. A tabela embutida preserva primeira e última colunas fixas, seletor de colunas, redimensionamento apenas das colunas intermediárias, estado vazio, contagem e ações compactas conforme a convenção de listagens. Como todos os registros já pertencem à aba, a contagem estática substitui paginação artificial.
-10. Quando autorizado, o cadastro fica acima da tabela com `TableListCreateButton`. Visualização, edição, download e exclusão permanecem nas ações da linha conforme os contratos e permissões da funcionalidade; exclusão usa `ConfirmActionModal`.
-11. Fluxos abertos a partir de uma aba devem retornar ao prontuário com o parâmetro `tab` correspondente. Botões Voltar/Cancelar e redirects de sucesso ou exclusão preservam essa origem, em vez de encaminhar para uma segunda tela de listagem.
-12. Coleções independentes do prontuário usam propriedades opcionais do Inertia e recargas parciais: a consulta só é executada quando a respectiva aba é aberta. Mantenha a estrutura da tabela montada com o estado de carregamento compartilhado e preserve no estado da página as propriedades já recebidas, evitando uma nova consulta ao voltar para uma aba aberta.
-13. A identificação, o resumo e indicadores pequenos necessários ao cabeçalho podem permanecer na carga inicial. Não carregue previamente relações completas apenas para alimentar uma tabela de aba fechada; quando um resumo precisar de parte desses dados, use um contrato inicial reduzido e explícito.
-14. Quando o prontuário tiver uma sequência operacional de status, apresente-a logo após a identificação em cards compactos e ordenados pelas dependências reais do domínio. Mostre tanto etapas concluídas quanto pendentes, ofereça a ação somente quando seus pré-requisitos e a permissão estiverem satisfeitos e dê destaque semântico à ação de iniciar.
+1. Mostre primeiro um card compacto de identificação, contendo apenas os dados essenciais já existentes no contrato, como foto, nome, código ou matrícula, status e classificação principal.
+2. Organize os demais grupos com `Navigation/Tabs`, usando a variante vertical em telas largas. Cada aba representa uma seção funcional completa, não um campo isolado.
+3. A navegação lateral permanece neutra; somente o texto da aba ativa e seus estados de interação usam `--ui-color-gnai-primary`. Não aplique fundo roxo à aba ativa.
+4. Em telas estreitas, transforme a navegação em uma faixa horizontal rolável acima do conteúdo. O painel continua ocupando a largura disponível.
+5. Monte somente as abas permitidas ao usuário. A ocultação visual acompanha as permissões recebidas, sem substituir a autorização do servidor.
+6. Quando a aba representa uma coleção própria do registro, apresente sua listagem completa dentro da aba com os componentes de `Tables/TableList`. Não mantenha um resumo limitado acompanhado por botão “Gerenciar” se a aba já comporta a tabela integral.
+7. A tabela embutida preserva primeira e última colunas fixas, seletor de colunas, redimensionamento apenas das colunas intermediárias, estado vazio, contagem e ações compactas conforme a convenção de listagens. Como todos os registros já pertencem à aba, a contagem estática substitui paginação artificial.
+8. Quando autorizado, o cadastro fica acima da tabela com `TableListCreateButton`. Visualização, edição, download e exclusão permanecem nas ações da linha conforme os contratos e permissões da funcionalidade; exclusão usa `ConfirmActionModal`.
+9. Fluxos abertos a partir de uma aba devem retornar ao prontuário com o parâmetro `tab` correspondente. Botões Voltar/Cancelar e redirects de sucesso ou exclusão preservam essa origem, em vez de encaminhar para uma segunda tela de listagem.
 
 ## Acessibilidade das abas
 

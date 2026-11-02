@@ -1,24 +1,21 @@
-import StudentDeficiencyForm from "./StudentDeficiencyForm";
-import StudentDeficiencyPage from "./StudentDeficiencyPage";
-import type {
-    StudentDeficiencyRecord,
-    StudentDeficiencyStudent,
-} from "./StudentDeficiency.types";
+import StudentDeficiencyForm from '@/components/Inclusion/StudentDeficiencies/Form/StudentDeficiencyForm';
+import { studentDeficiencyBreadcrumb } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.routes';
+import type { StudentDeficiencyEditProps } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentDeficienciesEditPage({
     student,
     student_deficiency: studentDeficiency,
-}: {
-    student: StudentDeficiencyStudent;
-    student_deficiency: StudentDeficiencyRecord;
-}): React.JSX.Element {
+}: StudentDeficiencyEditProps): React.JSX.Element {
     return (
-        <StudentDeficiencyPage
+        <BusinessPage
             title="Editar Perfil de Atendimento do Aluno"
             subtitle={`Aluno: ${student.person.name}`}
-            current="Editar"
-            student={student}
-            studentDeficiency={studentDeficiency}
+            breadcrumbItems={studentDeficiencyBreadcrumb({
+                student,
+                studentDeficiency,
+                current: 'Editar',
+            })}
         >
             <StudentDeficiencyForm
                 key={studentDeficiency.id}
@@ -26,6 +23,6 @@ export default function InclusionStudentDeficienciesEditPage({
                 student={student}
                 studentDeficiency={studentDeficiency}
             />
-        </StudentDeficiencyPage>
+        </BusinessPage>
     );
 }

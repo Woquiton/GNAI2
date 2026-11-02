@@ -1,0 +1,104 @@
+.helpResults {
+    display: flow-root;
+    margin-top: var(--ui-space-6);
+}
+.helpResults__heading {
+    margin: 0;
+    color: var(--ui-color-legacy-text);
+    font: 500 18px/1.3 var(--ui-font-body);
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+.helpResults__summary,
+.helpResults__empty {
+    margin: var(--ui-space-2) 0 0;
+    text-align: center;
+}
+.helpResults__summary {
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-sm);
+}
+.helpResults .tabs {
+    margin: var(--ui-space-6) 0 0;
+}
+.helpResults .tabs__nav {
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--ui-color-card-border);
+    box-shadow: none;
+}
+.helpResults .tabs__nav > li {
+    margin-bottom: -1px;
+}
+.helpResults .tabs__button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+    padding: 0 var(--ui-space-4);
+    text-transform: none;
+    letter-spacing: 0;
+}
+.helpResults .tabs__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+}
+.helpResults .tabs__item--active .tabs__button {
+    border: 1px solid var(--ui-color-card-border);
+    border-bottom-color: var(--ui-color-surface);
+    border-radius: var(--ui-radius-sm) var(--ui-radius-sm) 0 0;
+}
+.helpResults .tabs__content {
+    min-height: 0;
+    padding: var(--ui-space-6) var(--ui-space-2) 0;
+    box-shadow: none;
+}
+.helpResultItem {
+    padding-bottom: var(--ui-space-5);
+    margin-bottom: var(--ui-space-5);
+    border-bottom: 1px solid var(--ui-color-border-soft);
+}
+.helpResults__list > .helpResultItem:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+.helpResultItem__title {
+    margin: 0 0 var(--ui-space-1);
+    font: 600 16px/1.3 var(--ui-font-body);
+}
+.helpResultItem__title a {
+    color: var(--ui-color-gnai-primary);
+}
+.helpResultItem__title a:hover {
+    color: var(--ui-color-gnai-primary-hover);
+    text-decoration: underline;
+}
+.helpResultItem__section {
+    font-weight: 500;
+}
+.helpResultItem__path {
+    margin-bottom: var(--ui-space-2);
+    color: var(--ui-color-success);
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+.helpResultItem__description {
+    margin: 0;
+    color: var(--ui-color-legacy-text);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+.helpResultItem__description mark {
+    padding: 0 2px;
+    border-radius: 2px;
+    background: var(--ui-color-tag-bg);
+    color: var(--ui-color-gnai-primary);
+    font-weight: 600;
+}
+@media (min-width: 992px) {
+    .helpSearch,
+    .helpResults__heading,
+    .helpResults__summary {
+        width: 66.66666667%;
+        margin-inline: auto;
+    }
+}

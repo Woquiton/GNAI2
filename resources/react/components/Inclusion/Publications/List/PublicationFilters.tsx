@@ -1,0 +1,56 @@
+import { TextInputField, SelectInputField } from '@/components/Forms/FormFields/FormFields';
+import { TableListFilters } from '@/components/Tables/TableList/TableList';
+import type { PublicationFilters as Filters, SelectOption } from '../Publications.types';
+export default function PublicationFilters({
+    values,
+    types,
+    errors,
+    onUpdate,
+    onClear,
+    onSubmit,
+}: {
+    values: Filters;
+    types: SelectOption[];
+    errors: Record<string, string | undefined>;
+    onUpdate: (key: keyof Filters, value: string) => void;
+    onClear: () => void;
+    onSubmit: () => void;
+}): React.JSX.Element {
+    return (
+        <TableListFilters label="Filtrar publicações" onSubmit={onSubmit} onClear={onClear}>
+            <TextInputField
+                id="publication-title-filter"
+                name="title"
+                label="Título"
+                value={values.title}
+                maxLength={255}
+                placeholder="Filtrar por título..."
+                error={errors.title}
+                onChange={(value) => onUpdate('title', value)}
+            />
+            <SelectInputField
+                id="publication-type-filter"
+                name="type"
+                label="Tipo"
+                placeholder="Todos"
+                value={values.type}
+                options={types}
+                error={errors.type}
+                onChange={(value) => onUpdate('type', value)}
+            />
+            <SelectInputField
+                id="publication-status-filter"
+                name="is_active"
+                label="Situação"
+                placeholder="Todas"
+                value={values.is_active}
+                options={[
+                    { value: '1', label: 'Publicado' },
+                    { value: '0', label: 'Rascunho' },
+                ]}
+                error={errors.is_active}
+                onChange={(value) => onUpdate('is_active', value)}
+            />
+        </TableListFilters>
+    );
+}

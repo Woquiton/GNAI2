@@ -2,15 +2,15 @@ import type { ElementType, ReactNode } from 'react';
 import { joinClassNames } from '@/utils/joinClassNames';
 
 interface CardBoxProps {
-  as?: ElementType;
-  children: ReactNode;
-  className?: string;
+    as?: ElementType;
+    children: ReactNode;
+    className?: string;
 }
 
 export default function CardBox({
-  as: Component = 'div',
-  children,
-  className
+    as: Component = 'div',
+    children,
+    className,
 }: CardBoxProps): React.JSX.Element {
-  return <Component className={joinClassNames('card-box', className)}>{children}</Component>;
+    return <Component className={joinClassNames('card-box', className)}>{children}</Component>;
 }

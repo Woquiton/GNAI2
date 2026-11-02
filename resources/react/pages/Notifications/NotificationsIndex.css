@@ -1,8 +1,0 @@
-.notificationIndex__clock { margin-right: 5px; color: var(--ui-color-text-muted); }
-.notificationIndex__emptyIcon { display: block; margin-bottom: 10px; font-size: 2em; }
-/* Ícone da seção da sidebar à qual a notificação leva, como no topo. */
-.notificationIndex__title { display: flex; align-items: center; gap: 12px; min-width: 0; }
-.notificationIndex__icon { flex: 0 0 24px; color: var(--ui-color-gnai-primary); font-size: 20px; text-align: center; }
-.notificationIndex__titleText { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-.notificationIndex__table .tableActions { gap: 12px; }

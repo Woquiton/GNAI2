@@ -41,7 +41,7 @@ final class ListStudentPeisQuery
 
         return $query
             ->latest()
-            ->paginate(10)
+            ->paginate($filters->perPage)
             ->withQueryString();
     }
 }

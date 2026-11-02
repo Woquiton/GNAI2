@@ -1,20 +1,19 @@
-import PublicationForm from "./PublicationForm";
-import type { PublicationFormOptions } from "./Publication.types";
-
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import PublicationForm from '@/components/Inclusion/Publications/Form/PublicationForm';
+import { publicationBreadcrumb } from '@/components/Inclusion/Publications/Publications.routes';
+import type { PublicationCreateProps } from '@/components/Inclusion/Publications/Publications.types';
 export default function InclusionPublicationsCreatePage({
     backRoute,
     options,
     can,
-}: {
-    backRoute: string;
-    options: PublicationFormOptions;
-    can: { submit: boolean };
-}): React.JSX.Element {
+}: PublicationCreateProps): React.JSX.Element {
     return (
-        <PublicationForm
-            backRoute={backRoute}
-            options={options}
-            canSubmit={can.submit}
-        />
+        <BusinessPage
+            title="Nova publicação"
+            subtitle="Escreva o conteúdo, anexe as mídias e defina como a publicação vai ao ar no site."
+            breadcrumbItems={publicationBreadcrumb({ current: 'Cadastrar', backRoute })}
+        >
+            <PublicationForm backRoute={backRoute} options={options} canSubmit={can.submit} />
+        </BusinessPage>
     );
 }

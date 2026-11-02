@@ -20,7 +20,9 @@ use App\Domains\Inclusion\Domain\Enums\ItemType;
 use App\Domains\Inclusion\Domain\Exceptions\AssetCodeAlreadyInUse;
 use App\Domains\Inclusion\Domain\Models\Inspection;
 use App\Domains\Inclusion\Domain\Models\Item;
+use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\UI\Presenters\ItemPresenter;
+use App\Domains\Inclusion\UI\Presenters\LoanPresenter;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -105,12 +107,20 @@ final class ItemController
         Item $item,
         ShowItemQuery $query,
         ItemPresenter $presenter,
+        LoanPresenter $loanPresenter,
         Request $request,
     ): InertiaResponse {
         $item = $query->execute($item);
+        $loans = $item->loans;
+        // O histórico segue apresentado pelo LoanPresenter, sem duplicar os registros crus no item.
+        $item->unsetRelation('loans');
+        $canListLoans = $request->user()?->can('loan.index') ?? false;
 
         return Inertia::render('Inclusion/Items/Show', [
             'item' => $item,
+            'loans' => $canListLoans
+                ? $loans->map(fn (Loan $loan): array => $loanPresenter->loan($loan->setRelation('loanable', $item)))->values()->all()
+                : [],
             'deficiencies' => $item->deficiencies,
             'features' => $item->accessibilityFeatures,
             'display' => $presenter->display($item),
@@ -120,6 +130,9 @@ final class ItemController
                 'inspection' => $request->user()?->can('item.inspection.show') ?? false,
                 'pdf' => $request->user()?->can('item.pdf') ?? false,
                 'destroy' => $request->user()?->can('item.destroy') ?? false,
+                'loans' => $canListLoans,
+                'viewLoan' => $request->user()?->can('loan.show') ?? false,
+                'viewStudent' => $request->user()?->can('student.view') ?? false,
             ],
         ]);
     }

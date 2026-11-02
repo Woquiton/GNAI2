@@ -15,6 +15,7 @@ use App\Domains\Inclusion\Application\Queries\Positions\ListPositionsQuery;
 use App\Domains\Inclusion\Application\Queries\Positions\PositionFormQuery;
 use App\Domains\Inclusion\Application\Queries\Positions\ShowPositionQuery;
 use App\Domains\Inclusion\Domain\Models\Position;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -54,6 +55,9 @@ final class PositionController
             'Inclusion/Positions/Show',
             [
                 'position' => $position,
+                'descriptionHtml' => RichTextSanitizer::sanitize(
+                    $position->description ?: 'Nenhuma descrição detalhada foi fornecida para este cargo.',
+                ),
                 'can' => [
                     'update' => $request->user()?->can('position.update') ?? false,
                     'delete' => $request->user()?->can('position.delete') ?? false,
@@ -113,7 +117,7 @@ final class PositionController
             : 'Cargo desativado com sucesso!';
 
         return redirect()
-            ->route('specialized-educational-support.positions.index')
+            ->route('specialized-educational-support.positions.show', $position)
             ->with('success', $message);
     }
 

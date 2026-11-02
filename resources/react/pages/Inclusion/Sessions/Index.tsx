@@ -1,10 +1,9 @@
-import { TableListCreateButton } from "@/components/Tables/TableList/TableList";
-import Button from "@/components/UI/Button/Button";
-import { aeeBase } from "@/components/Students/Students.utils";
-import { sessionsBase } from "./SessionForm.utils";
-import type { SessionIndexProps } from "./SessionList.types";
-import SessionPage from "./SessionPage";
-import SessionWorkspace from "./SessionWorkspace";
+import SessionWorkspace from '@/components/Inclusion/Sessions/List/SessionWorkspace';
+import SessionWorkspaceActions from '@/components/Inclusion/Sessions/List/SessionWorkspaceActions';
+import { sessionIndexFailureText } from '@/components/Inclusion/Sessions/Sessions.constants';
+import { sessionBreadcrumb, sessionUrls } from '@/components/Inclusion/Sessions/Sessions.routes';
+import type { SessionIndexProps } from '@/components/Inclusion/Sessions/Sessions.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSessionsIndexPage({
     sessions,
@@ -14,34 +13,30 @@ export default function InclusionSessionsIndexPage({
     can,
     view,
 }: SessionIndexProps): React.JSX.Element {
-    const actions = can.create || can.mySessions ? (
-        <>
-            {can.mySessions ? (
-                <Button
-                    href={`${aeeBase}/my-sessions`}
-                    tone="inverse"
-                    leftIconClass="fa fa-clock-o"
-                    label="Meus agendamentos"
-                    title="Meus agendamentos"
-                />
-            ) : null}
-            {can.create ? (
-                <TableListCreateButton
-                    href={`${sessionsBase}/create`}
-                    ariaLabel="Cadastrar agendamento"
-                />
-            ) : null}
-        </>
-    ) : undefined;
+    const actions =
+        can.create || can.mySessions ? (
+            <SessionWorkspaceActions
+                shortcut={
+                    can.mySessions && {
+                        href: sessionUrls.mySessions,
+                        label: 'Meus agendamentos',
+                        title: 'Meus agendamentos',
+                        iconClass: 'fa fa-clock-o',
+                    }
+                }
+                canCreate={can.create}
+            />
+        ) : undefined;
 
     return (
-        <SessionPage
+        <BusinessPage
             title="Agendamentos"
             subtitle="Acompanhe os atendimentos do NAPNE no calendário ou em formato de lista."
+            breadcrumbItems={sessionBreadcrumb()}
             actions={actions}
         >
             <SessionWorkspace
-                baseUrl={sessionsBase}
+                baseUrl={sessionUrls.index}
                 sessions={sessions}
                 calendar={calendar}
                 filters={filters}
@@ -49,8 +44,8 @@ export default function InclusionSessionsIndexPage({
                 view={view}
                 canView={can.view}
                 label="Central de agendamentos"
-                failureText="Não foi possível atualizar os agendamentos. Tente novamente."
+                failureText={sessionIndexFailureText}
             />
-        </SessionPage>
+        </BusinessPage>
     );
 }

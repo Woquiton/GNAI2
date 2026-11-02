@@ -1,66 +1,15 @@
-import { Link, router, useForm, usePage } from "@inertiajs/react";
-import { useMemo, useRef, useState } from "react";
-import FormField from "@/components/Forms/FormField/FormField";
-import FormLayout from "@/components/Forms/FormLayout/FormLayout";
-import SelectField from "@/components/Forms/SelectField/SelectField";
-import TextInput from "@/components/Forms/TextInput/TextInput";
-import TableActions from "@/components/Tables/TableActions/TableActions";
-import {
-    formatTableListDate,
-    TableListCard,
-    TableListClearButton,
-    TableListEmpty,
-    TableListFilterActions,
-    TableListFooter,
-    TableListScroll,
-    TableListTable,
-    useTableListAction,
-    useTableListVisit,
-    type TableListColumn,
-} from "@/components/Tables/TableList/TableList";
-import Button from "@/components/UI/Button/Button";
-import ConfirmActionModal from "@/components/UI/ConfirmActionModal/ConfirmActionModal";
-import InlineAlert from "@/components/UI/InlineAlert/InlineAlert";
-import { notify } from "@/components/UI/NotificationToast/notify";
-import useAutoListFilters from "@/hooks/useAutoListFilters";
-import BackupPage from "./BackupPage";
-import BackupStatusLabel from "./BackupStatusLabel";
-import type { BackupFilters, BackupPaginator, BackupRecord } from "./Backup.types";
-import "./Backup.css";
-
-type BackupUser = { id: number; name: string };
-type Props = {
-    backups: BackupPaginator;
-    users: BackupUser[];
-    filters: Partial<BackupFilters>;
-    backupDirectory: string;
-    can: {
-        store: boolean;
-        upload: boolean;
-        show: boolean;
-        download: boolean;
-        restore: boolean;
-        destroy: boolean;
-    };
-};
-
-const base = "/backup/backups";
-const emptyFilters: BackupFilters = { name: "", status: "", user_id: "" };
-const statusOptions = [
-    { value: "success", label: "Sucesso" },
-    { value: "failed", label: "Falha" },
-    { value: "archived", label: "Arquivado" },
-];
-const columns: TableListColumn[] = [
-    { id: "file", label: "Arquivo ZIP", width: "27%", minWidth: 120, fixed: "start" },
-    { id: "status", label: "Status", width: "12%", minWidth: 72 },
-    { id: "size", label: "Tamanho", width: "11%", minWidth: 60 },
-    { id: "created", label: "Criado em", width: "18%", minWidth: 100 },
-    { id: "user", label: "Responsável", width: "14%", minWidth: 85 },
-    { id: "path", label: "Caminho do arquivo", width: "16%", defaultVisible: false },
-    { id: "updated", label: "Atualizado em", width: "16%", defaultVisible: false },
-    { id: "actions", label: "Ações", width: "18%", minWidth: 108, fixed: "end" },
-];
+import { usePage } from '@inertiajs/react';
+import BackupDeleteModal from '@/components/Backup/BackupDeleteModal';
+import { emptyBackupFilters } from '@/components/Backup/Backup.constants';
+import { backupBreadcrumb, backupUrls } from '@/components/Backup/Backup.routes';
+import type { BackupIndexProps } from '@/components/Backup/Backup.types';
+import BackupFilters from '@/components/Backup/List/BackupFilters';
+import BackupHeaderActions from '@/components/Backup/List/BackupHeaderActions';
+import BackupList from '@/components/Backup/List/BackupList';
+import BackupRestoreModal from '@/components/Backup/List/BackupRestoreModal';
+import BackupRetentionNotice from '@/components/Backup/List/BackupRetentionNotice';
+import { useBackupListActions } from '@/components/Backup/List/useBackupListActions';
+import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 
 export default function BackupIndexPage({
     backups,
@@ -68,338 +17,63 @@ export default function BackupIndexPage({
     filters: initialFilters,
     backupDirectory,
     can,
-}: Props): React.JSX.Element {
-    const pageErrors = usePage().props.errors as Record<string, string | undefined>;
-    const fileInput = useRef<HTMLInputElement>(null);
-    const pending = useRef(false);
-    const [uploading, setUploading] = useState(false);
-    const [restoreTarget, setRestoreTarget] = useState<BackupRecord | null>(null);
-    const restoreForm = useForm({ password: "" });
-    const list = useTableListVisit({
-        url: base,
-        failureText: "Não foi possível atualizar os backups. Tente novamente.",
+}: BackupIndexProps): React.JSX.Element {
+    const errors = usePage().props.errors as Record<string, string | undefined>;
+    const filters = useTableListFilters({
+        url: backupUrls.index,
+        initialFilters,
+        emptyFilters: emptyBackupFilters,
+        failureText: 'Não foi possível atualizar os backups. Tente novamente.',
     });
-    const removal = useTableListAction<BackupRecord>({
-        failureText: "Não foi possível excluir o backup. Tente novamente.",
-    });
-    const generation = useTableListAction<never>({
-        failureText: "Não foi possível gerar o backup. Tente novamente.",
-    });
-    const busy = uploading || generation.processing;
-    const actionBusy = busy || removal.processing || restoreForm.processing;
-    const action = restoreTarget ? "restore" : removal.target ? "delete" : null;
-    const selectedBackup = restoreTarget ?? removal.target;
-    const initialValues = useMemo<BackupFilters>(() => ({
-        name: initialFilters.name ?? "",
-        status: initialFilters.status ?? "",
-        user_id: initialFilters.user_id ?? "",
-    }), [initialFilters]);
-    const {
-        values: filterValues,
-        update: updateFilter,
-        clear: clearFilters,
-        submit: submitFilters,
-        cancelScheduled,
-    } = useAutoListFilters({
-        initialValues,
-        emptyValues: emptyFilters,
-        onSearch: (values) => list.visit(values),
-    });
-
-    function fail(text: string): false {
-        notify({ tone: "error", title: "Não foi possível concluir", text });
-        return false;
-    }
-
-    function closeRestore(): void {
-        setRestoreTarget(null);
-        restoreForm.reset();
-        restoreForm.clearErrors();
-    }
-
-    function restore(target: BackupRecord): void {
-        if (pending.current) return;
-        pending.current = true;
-        restoreForm.post(`${base}/${target.id}/restore`, {
-            preserveScroll: true,
-            onNetworkError: () => fail("Falha de conexão. Confira sua conexão e tente novamente."),
-            onHttpException: () => fail("Não foi possível restaurar o backup. Tente novamente."),
-            onSuccess: closeRestore,
-            onFinish: () => { pending.current = false; },
-        });
-    }
-
-    function upload(file: File): void {
-        if (pending.current || actionBusy) return;
-        pending.current = true;
-        setUploading(true);
-        router.post(`${base}/upload`, { backup_file: file }, {
-            forceFormData: true,
-            preserveScroll: true,
-            onNetworkError: () => fail("Falha de conexão. Confira sua conexão e tente novamente."),
-            onHttpException: () => fail("Não foi possível importar o backup. Tente novamente."),
-            onFinish: () => {
-                pending.current = false;
-                setUploading(false);
-                if (fileInput.current) fileInput.current.value = "";
-            },
-        });
-    }
-
-    function generate(): void {
-        if (pending.current || actionBusy) return;
-        generation.submit("post", `${base}/store`);
-    }
-
-    function openAction(target: BackupRecord, nextAction: "restore" | "delete"): void {
-        cancelScheduled();
-        restoreForm.reset();
-        restoreForm.clearErrors();
-        if (nextAction === "restore") setRestoreTarget(target);
-        else removal.open(target);
-    }
+    const actions = useBackupListActions({ beforeOpen: filters.cancelScheduled });
 
     return (
-        <BackupPage
+        <TableListLayout
             title="Gerenciamento de Backups"
             subtitle="Visualize e administre as cópias de segurança do sistema."
-            actions={(
-                <div className="backupIndex__headerActions">
-                    {can.upload ? (
-                        <>
-                            <input
-                                ref={fileInput}
-                                className="backupIndex__fileInput"
-                                type="file"
-                                accept=".zip,application/zip"
-                                aria-label="Selecionar arquivo ZIP para importar backup"
-                                disabled={actionBusy}
-                                onChange={(event) => {
-                                    const file = event.currentTarget.files?.[0];
-                                    if (file) upload(file);
-                                }}
-                            />
-                            <Button
-                                tone="dark-blue"
-                                labelIconClass="fa fa-cloud-upload"
-                                label={busy ? "Processando..." : "Importar Backup"}
-                                aria-label={busy ? "Importando backup..." : "Importar backup ZIP"}
-                                aria-describedby={pageErrors.backup_file ? "backup-file-error" : undefined}
-                                disabled={actionBusy}
-                                onClick={() => fileInput.current?.click()}
-                            />
-                        </>
-                    ) : null}
-                    {can.store ? (
-                        <Button
-                            tone="list-action"
-                            labelIconClass="fa fa-database"
-                            label={busy ? "Processando..." : "Gerar Novo"}
-                            aria-label={busy ? "Gerando backup..." : "Gerar novo backup"}
-                            disabled={actionBusy}
-                            onClick={generate}
-                        />
-                    ) : null}
-                    {can.upload && pageErrors.backup_file ? (
-                        <span id="backup-file-error" className="backupIndex__fileError" role="alert">
-                            {pageErrors.backup_file}
-                        </span>
-                    ) : null}
-                </div>
-            )}
-        >
-            <TableListCard aria-label="Histórico de backups" aria-busy={list.loading} loading={list.loading} loadingLabel="Atualizando histórico de backups">
-                <FormLayout onSubmit={(event) => { event.preventDefault(); submitFilters(); }}>
-                    <div className="backupIndex__filters">
-                        <FormField id="backup-filter-name" label="Arquivo ZIP" error={pageErrors.name}>
-                            <TextInput
-                                id="backup-filter-name"
-                                name="name"
-                                value={filterValues.name}
-                                maxLength={255}
-                                placeholder="Filtrar por nome..."
-                                invalid={!!pageErrors.name}
-                                aria-describedby={pageErrors.name ? "backup-filter-name-error" : undefined}
-                                onChange={(event) => updateFilter("name", event.target.value)}
-                            />
-                        </FormField>
-                        <FormField id="backup-filter-status" label="Status" error={pageErrors.status}>
-                            <SelectField
-                                id="backup-filter-status"
-                                name="status"
-                                label="Status"
-                                placeholder="Todos os status"
-                                value={filterValues.status}
-                                options={statusOptions}
-                                aria-invalid={!!pageErrors.status}
-                                aria-describedby={pageErrors.status ? "backup-filter-status-error" : undefined}
-                                onChange={(event) => updateFilter("status", event.target.value)}
-                            />
-                        </FormField>
-                        <FormField id="backup-filter-user" label="Responsável" error={pageErrors.user_id}>
-                            <SelectField
-                                id="backup-filter-user"
-                                name="user_id"
-                                label="Responsável"
-                                placeholder="Todos os responsáveis"
-                                value={filterValues.user_id}
-                                options={users.map((user) => ({ value: String(user.id), label: user.name }))}
-                                aria-invalid={!!pageErrors.user_id}
-                                aria-describedby={pageErrors.user_id ? "backup-filter-user-error" : undefined}
-                                onChange={(event) => updateFilter("user_id", event.target.value)}
-                            />
-                        </FormField>
-                        <TableListFilterActions>
-                            <TableListClearButton onClick={clearFilters} />
-                        </TableListFilterActions>
-                    </div>
-                </FormLayout>
-                <TableListScroll aria-label="Tabela de backups">
-                    <TableListTable
-                        className="backupIndex__table"
-                        columns={columns}
-                        page={backups}
-                    >
-                        {backups.data.length ? backups.data.map((backup) => {
-                            return (
-                                <tr key={backup.id}>
-                                    <td>
-                                        {can.show ? (
-                                            <Link className="backupIndex__fileLink" href={`${base}/${backup.id}`}>
-                                                <i className="fa fa-file-archive-o" aria-hidden="true" />
-                                                <span>{backup.file_name}</span>
-                                            </Link>
-                                        ) : (
-                                            <span className="backupIndex__fileName">
-                                                <i className="fa fa-file-archive-o" aria-hidden="true" />
-                                                <span>{backup.file_name}</span>
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td><BackupStatusLabel status={backup.status} /></td>
-                                    <td>{backup.size}</td>
-                                    <td>{backup.created_at_label}</td>
-                                    <td>{backup.user?.name ?? "Sistema"}</td>
-                                    <td>{backup.file_path || "Não informado"}</td>
-                                    <td>{formatTableListDate(backup.updated_at, true)}</td>
-                                    <td>
-                                        <TableActions>
-                                            {can.download ? (
-                                                <Button
-                                                    href={`${base}/${backup.id}/download`}
-                                                    download
-                                                    size="sm"
-                                                    tone="success"
-                                                    iconOnly
-                                                    leftIconClass="fa fa-download"
-                                                    aria-label={`Baixar ${backup.file_name}`}
-                                                />
-                                            ) : null}
-                                            {can.restore && backup.status === "success" ? (
-                                                <Button
-                                                    size="sm"
-                                                    tone="warning"
-                                                    iconOnly
-                                                    leftIconClass="fa fa-history"
-                                                    aria-label={`Restaurar ${backup.file_name}`}
-                                                    disabled={actionBusy}
-                                                    onClick={() => openAction(backup, "restore")}
-                                                />
-                                            ) : null}
-                                            {can.show ? (
-                                                <Button
-                                                    href={`${base}/${backup.id}`}
-                                                    size="sm"
-                                                    tone="dark-blue"
-                                                    iconOnly
-                                                    leftIconClass="fa fa-eye"
-                                                    aria-label={`Visualizar ${backup.file_name}`}
-                                                />
-                                            ) : null}
-                                            {can.destroy ? (
-                                                <Button
-                                                    size="sm"
-                                                    tone="dark-red"
-                                                    iconOnly
-                                                    leftIconClass="fa fa-trash-o"
-                                                    aria-label={`Excluir ${backup.file_name}`}
-                                                    disabled={actionBusy}
-                                                    onClick={() => openAction(backup, "delete")}
-                                                />
-                                            ) : null}
-                                            {!can.download && !can.restore && !can.show && !can.destroy ? <span>Sem ações</span> : null}
-                                        </TableActions>
-                                    </td>
-                                </tr>
-                            );
-                        }) : (
-                            <tr><TableListEmpty colSpan={columns.length}>Nenhum backup encontrado no histórico.</TableListEmpty></tr>
-                        )}
-                    </TableListTable>
-                </TableListScroll>
-                <TableListFooter
-                    page={backups}
-                    disabled={list.loading}
-                    paginationLabel="Paginação de backups"
-                    onSelect={(page) => {
-                        cancelScheduled();
-                        list.visit(filterValues, page);
-                    }}
+            breadcrumbItems={backupBreadcrumb()}
+            actions={
+                <BackupHeaderActions
+                    actions={actions}
+                    permissions={can}
+                    fileError={errors.backup_file}
                 />
-            </TableListCard>
-            <InlineAlert variant="info" className="backupIndex__retention">
-                <i className="fa fa-shield" aria-hidden="true" />{" "}
-                <strong>Política de Armazenamento.</strong> Os backups são armazenados em{" "}
-                <code>storage/app/private/{backupDirectory}</code>. O sistema mantém os 30 registros mais recentes; os excedentes são removidos automaticamente com seus arquivos físicos.
-            </InlineAlert>
-            <ConfirmActionModal
-                open={action !== null}
-                title={action === "restore" ? "Restaurar Backup" : "Excluir Backup"}
-                message={action === "restore"
-                    ? <>O backup <strong>{selectedBackup?.file_name}</strong> será usado para restaurar o banco de dados e os arquivos de mídia, sobrescrevendo o ambiente atual.</>
-                    : <>O arquivo <strong>{selectedBackup?.file_name}</strong> será apagado do servidor e o registro removido do histórico.</>}
-                details={action === "restore" ? (
-                    <div className="backupIndex__restoreDetails">
-                        <FormField
-                            id="backup-restore-password"
-                            label="Confirme sua senha"
-                            requiredIndicator
-                            error={restoreForm.errors.password}
-                        >
-                            <TextInput
-                                id="backup-restore-password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                required
-                                value={restoreForm.data.password}
-                                invalid={!!restoreForm.errors.password}
-                                aria-describedby={restoreForm.errors.password ? "backup-restore-password-error" : undefined}
-                                onChange={(event) => {
-                                    restoreForm.clearErrors("password");
-                                    restoreForm.setData("password", event.target.value);
-                                }}
-                            />
-                        </FormField>
-                        <small>Esta confirmação é obrigatória porque a restauração sobrescreve dados do sistema.</small>
-                    </div>
-                ) : undefined}
-                processing={action === "restore" ? restoreForm.processing : removal.processing}
-                confirmLabel={action === "restore" ? "Confirmar restauração" : "Confirmar exclusão"}
-                processingLabel={action === "restore" ? "Restaurando backup..." : "Excluindo backup..."}
-                confirmTone={action === "restore" ? "warning" : "dark-red"}
-                onClose={() => {
-                    if (restoreTarget) {
-                        if (!pending.current) closeRestore();
-                    } else {
-                        removal.close();
-                    }
-                }}
-                onConfirm={() => {
-                    if (restoreTarget) restore(restoreTarget);
-                    else if (removal.target) removal.submit("delete", `${base}/${removal.target.id}`);
-                }}
+            }
+            listLabel="Histórico de backups"
+            loading={filters.loading}
+            loadingLabel="Atualizando histórico de backups"
+            filters={
+                <BackupFilters
+                    values={filters.values}
+                    users={users}
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
+                />
+            }
+            dialogs={
+                <>
+                    <BackupRetentionNotice backupDirectory={backupDirectory} />
+                    <BackupRestoreModal actions={actions} />
+                    <BackupDeleteModal
+                        backup={actions.removal.target}
+                        processing={actions.removal.processing}
+                        onClose={actions.removal.close}
+                        onConfirm={actions.confirmRemoval}
+                    />
+                </>
+            }
+        >
+            <BackupList
+                backups={backups}
+                permissions={can}
+                loading={filters.loading}
+                processing={actions.actionBusy}
+                onRestore={actions.openRestore}
+                onDelete={actions.openRemoval}
+                onPageSelect={filters.selectPage}
             />
-        </BackupPage>
+        </TableListLayout>
     );
 }

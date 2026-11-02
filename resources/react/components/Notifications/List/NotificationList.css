@@ -1,0 +1,35 @@
+.notificationList__clock {
+    margin-right: 5px;
+    color: var(--ui-color-text-muted);
+}
+
+.notificationList__emptyIcon {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 2em;
+}
+
+.notificationList__title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.notificationList__icon {
+    flex: 0 0 24px;
+    color: var(--ui-color-gnai-primary);
+    font-size: 20px;
+    text-align: center;
+}
+
+.notificationList__titleText {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.notificationList .tableActions {
+    gap: 12px;
+}

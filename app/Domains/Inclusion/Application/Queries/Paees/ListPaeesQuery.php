@@ -23,7 +23,7 @@ final class ListPaeesQuery
                 fn ($person) => $person->where('name', 'like', "%{$filters->search}%")
             ))
             ->orderByDesc('id')
-            ->paginate(15)
+            ->paginate($filters->perPage)
             ->withQueryString();
     }
 }

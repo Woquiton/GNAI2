@@ -1,0 +1,10 @@
+/* Envio ao lado do chat: papel em cima, contribuição embaixo e o botão Adicionar à direita. */
+.caseStudyContributionForm fieldset {
+    display: grid;
+    gap: var(--ui-space-3);
+}
+
+.caseStudyContributionForm__submit {
+    display: flex;
+    justify-content: flex-end;
+}

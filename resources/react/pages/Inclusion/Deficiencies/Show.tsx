@@ -1,154 +1,54 @@
-import { router } from "@inertiajs/react";
-import { useEffect, useState } from "react";
-import FormActions from "@/components/Forms/FormActions/FormActions";
-import FormSection from "@/components/Forms/FormSection/FormSection";
-import Button from "@/components/UI/Button/Button";
-import CardBox from "@/components/UI/CardBox/CardBox";
-import ConfirmActionModal from "@/components/UI/ConfirmActionModal/ConfirmActionModal";
-import DetailField from "@/components/UI/DetailField/DetailField";
-import { notify } from "@/components/UI/NotificationToast/notify";
-import TableLabel from "@/components/UI/TableLabel/TableLabel";
-import DeficiencyPage, { deficiencyBase } from "./DeficiencyPage";
-import type { DeficiencyRecord } from "./Deficiency.types";
-import "./Deficiencies.css";
+import {
+    deficiencyBreadcrumb,
+    deficiencyUrls,
+} from '@/components/Inclusion/Deficiencies/Deficiencies.routes';
+import type { DeficiencyShowProps } from '@/components/Inclusion/Deficiencies/Deficiencies.types';
+import DeficiencyDeleteModal from '@/components/Inclusion/Deficiencies/DeficiencyDeleteModal';
+import DeficiencyDetails from '@/components/Inclusion/Deficiencies/Details/DeficiencyDetails';
+import DeficiencyDetailsActions from '@/components/Inclusion/Deficiencies/Details/DeficiencyDetailsActions';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
 export default function InclusionDeficienciesShowPage({
     deficiency,
+    descriptionHtml,
     can,
-}: {
-    deficiency: DeficiencyRecord;
-    can: { update: boolean; delete: boolean };
-}): React.JSX.Element {
-    const [deleteOpen, setDeleteOpen] = useState(false);
-    const [deleting, setDeleting] = useState(false);
-    const [failure, setFailure] = useState("");
-    const itemUrl = `${deficiencyBase}/${deficiency.id}`;
-
-    useEffect(() => {
-        if (failure) {
-            notify({ tone: "error", title: "Não foi possível concluir", text: failure });
-        }
-    }, [failure]);
-
-    function remove(): void {
-        if (deleting) return;
-        setFailure("");
-        setDeleting(true);
-        router.delete(itemUrl, {
-            preserveScroll: true,
-            onNetworkError: () => {
-                setFailure("Falha de conexão. Confira sua conexão e tente novamente.");
-                return false;
-            },
-            onHttpException: () => {
-                setFailure("Não foi possível excluir o perfil de atendimento. Tente novamente.");
-                return false;
-            },
-            onSuccess: () => setDeleteOpen(false),
-            onFinish: () => setDeleting(false),
-        });
-    }
+}: DeficiencyShowProps): React.JSX.Element {
+    const removal = useConfirmedAction<typeof deficiency>({
+        failureText: 'Não foi possível excluir o perfil de atendimento. Tente novamente.',
+    });
+    const statusChange = useConfirmedAction<typeof deficiency>({
+        failureText: 'Não foi possível alterar o status do perfil de atendimento. Tente novamente.',
+    });
+    const busy = removal.processing || statusChange.processing;
 
     return (
-        <DeficiencyPage
+        <BusinessPage
             title="Detalhes do Perfil"
             subtitle="Informações sobre o perfil para acompanhamento e encaminhamentos pedagógicos."
-            deficiency={deficiency}
+            documentTitle={deficiency.name}
+            breadcrumbItems={deficiencyBreadcrumb({ deficiency })}
+            busy={busy}
         >
-            <CardBox aria-busy={deleting}>
-                <FormSection
-                    id="deficiency-show-identification"
-                    title="Identificação Clínica"
-                    variant="inline"
-                    iconClass="fa fa-id-card-o"
-                >
-                    <dl className="deficiencyShow__grid">
-                        <DetailField label="Nome do Perfil">
-                            <strong>{deficiency.name}</strong>
-                        </DetailField>
-                        <DetailField label="Código CID">
-                            {deficiency.cid_code || "Não informado"}
-                        </DetailField>
-                        <DetailField label="Status no Sistema">
-                            <TableLabel tone={deficiency.is_active ? "success" : "inverse"}>
-                                {deficiency.is_active ? "Ativa" : "Inativa"}
-                            </TableLabel>
-                        </DetailField>
-                    </dl>
-                </FormSection>
-                <FormSection
-                    id="deficiency-show-description"
-                    title="Descrição e Observações Técnicas"
-                    variant="inline"
-                    iconClass="fa fa-file-text-o"
-                >
-                    <dl className="deficiencyShow__grid">
-                        <DetailField
-                            label="Descrição Detalhada"
-                            wide
-                        >
-                            <span className="deficiencyShow__text">
-                                {deficiency.description
-                                    || "Nenhuma descrição técnica foi cadastrada para este perfil."}
-                            </span>
-                        </DetailField>
-                    </dl>
-                </FormSection>
-            </CardBox>
-            <FormActions>
-                <Button
-                    href={deficiencyBase}
-                    tone="cancel"
-                    label="Voltar"
-                    title="Voltar para perfis de atendimento"
-                    aria-label="Voltar para perfis de atendimento"
-                    disabled={deleting}
-                />
-                {can.update ? (
-                    <Button
-                        href={`${itemUrl}/edit`}
-                        tone="warning"
-                        leftIconClass="fa fa-pencil"
-                        label="Editar"
-                        title="Editar perfil de atendimento"
-                        aria-label="Editar perfil de atendimento"
-                        disabled={deleting}
-                    />
-                ) : null}
-                {can.delete ? (
-                    <Button
-                        tone="dark-red"
-                        leftIconClass="fa fa-trash-o"
-                        label="Excluir"
-                        title="Excluir perfil de atendimento"
-                        aria-label="Excluir perfil de atendimento"
-                        disabled={deleting}
-                        onClick={() => {
-                            setFailure("");
-                            setDeleteOpen(true);
-                        }}
-                    />
-                ) : null}
-            </FormActions>
-            <ConfirmActionModal
-                open={deleteOpen}
-                title="Excluir Perfil de Atendimento"
-                message={
-                    <>
-                        Excluir o perfil <strong>{deficiency.name}</strong> pode afetar alunos vinculados a este registro.
-                    </>
+            <DeficiencyDetails deficiency={deficiency} descriptionHtml={descriptionHtml} />
+            <DeficiencyDetailsActions
+                deficiencyId={deficiency.id}
+                active={deficiency.is_active}
+                permissions={can}
+                busy={busy}
+                status={statusChange.processing ? 'Alterando status…' : undefined}
+                onToggleActive={() =>
+                    statusChange.submit('patch', deficiencyUrls.toggleActive(deficiency.id))
                 }
-                processing={deleting}
-                confirmLabel="Confirmar exclusão"
-                processingLabel="Excluindo perfil..."
-                confirmTone="dark-red"
-                onClose={() => {
-                    if (deleting) return;
-                    setFailure("");
-                    setDeleteOpen(false);
-                }}
-                onConfirm={remove}
+                onDelete={() => removal.open(deficiency)}
             />
-        </DeficiencyPage>
+            <DeficiencyDeleteModal
+                deficiency={removal.target}
+                context="details"
+                processing={removal.processing}
+                onClose={removal.close}
+                onConfirm={() => removal.submit('delete', deficiencyUrls.destroy(deficiency.id))}
+            />
+        </BusinessPage>
     );
 }

@@ -19,7 +19,15 @@ final class ListSessionsData extends Data
         public ?string $week = null,
         public ?int $studentAgenda = null,
         public ?int $professionalAgenda = null,
+        public int $perPage = 10,
     ) {}
+
+    public static function rules(): array
+    {
+        return [
+            'per_page' => ['integer', 'min:1', 'max:100'],
+        ];
+    }
 
     public static function prepareForPipeline(array $properties): array
     {

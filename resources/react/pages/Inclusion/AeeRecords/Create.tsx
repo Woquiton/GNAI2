@@ -1,18 +1,23 @@
-import AeeRecordForm from "./AeeRecordForm";
-import type { AeeGuardiansByStudent, AeeSession } from "./AeeRecord.types";
+import { aeeRecordBreadcrumb } from '@/components/Inclusion/AeeRecords/AeeRecords.routes';
+import type { AeeRecordCreateProps } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
+import AeeRecordForm from '@/components/Inclusion/AeeRecords/Form/AeeRecordForm';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionAeeRecordsCreatePage({
     session,
     guardiansByStudent,
-}: {
-    session: AeeSession;
-    guardiansByStudent: AeeGuardiansByStudent;
-}): React.JSX.Element {
+}: AeeRecordCreateProps): React.JSX.Element {
     return (
-        <AeeRecordForm
-            key={session.id}
-            session={session}
-            guardiansByStudent={guardiansByStudent}
-        />
+        <BusinessPage
+            title="Novo Registro de atendimento AEE"
+            subtitle={`Agendamento #${session.id}`}
+            breadcrumbItems={aeeRecordBreadcrumb({ sessionId: session.id, current: 'Cadastrar' })}
+        >
+            <AeeRecordForm
+                key={session.id}
+                session={session}
+                guardiansByStudent={guardiansByStudent}
+            />
+        </BusinessPage>
     );
 }

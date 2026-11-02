@@ -75,7 +75,7 @@ final class AeeRecordController
     public function show(AeeRecord $aeeRecord, ShowAeeRecordQuery $query, AeeRecordPagePresenter $presenter, Request $request): InertiaResponse
     {
         $user = $this->user($request);
-        $aeeRecord = $query->execute($aeeRecord, $user);
+        $aeeRecord = $presenter->displayRecord($query->execute($aeeRecord, $user));
         $session = $aeeRecord->attendanceSession;
         $can = $presenter->managementAbilities($user, (int) $session->professional_id);
 
@@ -130,13 +130,13 @@ final class AeeRecordController
     public function studentShow(Student $student, AeeStudentEvaluation $evaluation, ListStudentAeeEvaluationsQuery $query, AeeRecordPagePresenter $presenter, Request $request): InertiaResponse
     {
         $user = $this->user($request);
-        $evaluation = $query->show($student, $evaluation, $user);
+        $evaluation = $presenter->displayEvaluation($query->show($student, $evaluation, $user));
         $can = $presenter->managementAbilities($user, (int) $evaluation->aeeRecord->attendanceSession->professional_id);
 
         return Inertia::render('Inclusion/Students/AeeRecords/Show', compact('student', 'evaluation', 'can'));
     }
 
-    public function studentEdit(Student $student, AeeStudentEvaluation $evaluation, ListStudentAeeEvaluationsQuery $query, AeeRecordFormQuery $form, Request $request): InertiaResponse
+    public function studentEdit(Student $student, AeeStudentEvaluation $evaluation, ListStudentAeeEvaluationsQuery $query, AeeRecordFormQuery $form, AeeRecordPagePresenter $presenter, Request $request): InertiaResponse
     {
         $evaluation = $query->show($student, $evaluation, $this->user($request));
         if ((int) $evaluation->aeeRecord->attendanceSession->professional_id !== $this->professionalId($request)) {
@@ -144,6 +144,7 @@ final class AeeRecordController
         }
 
         $evaluation->loadMissing('guardians');
+        $presenter->displayEditContext($evaluation);
         $guardians = $form->guardiansByStudent([$student])[(int) $student->getKey()];
 
         return Inertia::render('Inclusion/Students/AeeRecords/Edit', compact('student', 'evaluation', 'guardians'));

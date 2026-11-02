@@ -407,7 +407,7 @@ $relationshipMap = [
                 </tr>
                 @foreach($caseStudy->barriers as $barrier)
                     <tr>
-                        <td class="pdf-cell">{!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::barrierType($barrier->type)) !!}</td>
+                        <td class="pdf-cell">{!! $renderHtml($barrier->type) !!}</td>
                         <td class="pdf-cell">{!! $renderHtml($barrier->observed_situation) !!}</td>
                         <td class="pdf-cell">{!! $renderHtml($barrier->participation_implication) !!}</td>
                     </tr>
@@ -427,7 +427,7 @@ $relationshipMap = [
                 @foreach($caseStudy->strategies as $strategy)
                     <tr>
                         <td class="pdf-cell">{!! $renderHtml($strategy->description) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($strategy->linkedBarrier ? \App\Shared\Domain\Support\AeeLabels::barrierType($strategy->linkedBarrier->type) : null) !!}</td>
+                        <td class="pdf-cell">{!! $renderHtml($strategy->linkedBarrier ? $strategy->linkedBarrier->type : null) !!}</td>
                     </tr>
                 @endforeach
             </table>
@@ -562,7 +562,7 @@ $relationshipMap = [
                     <tr>
                         <td class="pdf-cell">{!! $renderHtml($objective->description) !!}</td>
                         <td class="pdf-cell">{!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::objectiveTerm($objective->term)) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($objective->linkedBarrier ? \App\Shared\Domain\Support\AeeLabels::barrierType($objective->linkedBarrier->type) : null) !!}</td>
+                        <td class="pdf-cell">{!! $renderHtml($objective->linkedBarrier ? $objective->linkedBarrier->type : null) !!}</td>
                     </tr>
                 @endforeach
             </table>

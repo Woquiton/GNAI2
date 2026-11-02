@@ -22,19 +22,28 @@
 
     <h2>Tecnologia Assistiva e CAA</h2>
     <div class="box">
-        TA necessária: {{ $paee->assistive_technology_needed ? 'Sim' : 'Não' }} — {{ $paee->assistive_technology_notes }}<br>
-        Capacidade de disponibilização: {{ $paee->assistive_technology_availability_capacity ?? '—' }}<br>
-        CAA necessária: {{ $paee->caa_needed ? 'Sim' : 'Não' }} — {{ $paee->caa_notes }}<br>
+        TA necessária: {{ $paee->assistive_technology_needed ? 'Sim' : 'Não' }} — {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($paee->assistive_technology_notes)) !!}<br>
+        Capacidade de disponibilização: {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($paee->assistive_technology_availability_capacity ?? '—')) !!}<br>
+        CAA necessária: {{ $paee->caa_needed ? 'Sim' : 'Não' }} — {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($paee->caa_notes)) !!}<br>
         @if($paee->is_assistive_technology_portable_digital_device)
-            TA é dispositivo digital portátil — Parecer pedagógico: {{ $paee->assistive_technology_pedagogical_opinion ?? '—' }}
+            TA é dispositivo digital portátil — Parecer pedagógico: {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($paee->assistive_technology_pedagogical_opinion ?? '—')) !!}
         @endif
     </div>
 
     <h2>Apoios de Profissionais</h2>
     <div class="box">
-        Profissional de apoio: {{ $paee->support_professional_needed ? 'Sim — '.$paee->support_professional_justification : 'Não' }}<br>
-        Intérprete de Libras: {{ $paee->libras_interpreter_needed ? 'Sim — '.$paee->libras_interpreter_justification : 'Não' }}<br>
-        Guia-intérprete: {{ $paee->guide_interpreter_needed ? 'Sim — '.$paee->guide_interpreter_justification : 'Não' }}
+        Profissional de apoio: {{ $paee->support_professional_needed ? 'Sim' : 'Não' }}
+        @if($paee->support_professional_needed)
+            {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $paee->support_professional_justification) !!}
+        @endif<br>
+        Intérprete de Libras: {{ $paee->libras_interpreter_needed ? 'Sim' : 'Não' }}
+        @if($paee->libras_interpreter_needed)
+            {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $paee->libras_interpreter_justification) !!}
+        @endif<br>
+        Guia-intérprete: {{ $paee->guide_interpreter_needed ? 'Sim' : 'Não' }}
+        @if($paee->guide_interpreter_needed)
+            {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $paee->guide_interpreter_justification) !!}
+        @endif
     </div>
 
     <h2>Objetivos</h2>

@@ -1,51 +1,51 @@
 .activityTimeline {
-  border-left: 2px solid #98a6ad;
-  position: relative;
+    border-left: 2px solid #98a6ad;
+    position: relative;
 }
 .activityTimeline__item {
-  padding-bottom: 1px;
-  position: relative;
+    padding-bottom: 1px;
+    position: relative;
 }
 .activityTimeline__item::before {
-  content: " ";
-  display: table;
+    content: ' ';
+    display: table;
 }
 .activityTimeline__item::after {
-  content: "";
-  background: white;
-  border: 2px solid #98a6ad;
-  border-radius: 10px;
-  width: 14px;
-  height: 14px;
-  left: 0;
-  margin-left: -8px;
-  position: absolute;
-  top: 5px;
+    content: '';
+    background: white;
+    border: 2px solid #98a6ad;
+    border-radius: 10px;
+    width: 14px;
+    height: 14px;
+    left: 0;
+    margin-left: -8px;
+    position: absolute;
+    top: 5px;
 }
 .activityTimeline__info {
-  margin-bottom: 15px;
-  margin-left: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
 }
 .activityTimeline__time {
-  color: var(--ui-color-legacy-muted);
+    color: var(--ui-color-legacy-muted);
 }
 .activityTimeline__time small {
-  font-size: 85%;
+    font-size: 85%;
 }
 .activityTimeline__info p {
-  margin-bottom: 10px !important;
+    margin-bottom: 10px !important;
 }
 .activityTimeline__info a {
-  color: var(--ui-color-info);
+    color: var(--ui-color-info);
 }
 .activityTimeline__info a:hover,
 .activityTimeline__info a:focus {
-  color: #245269;
+    color: #245269;
 }
 .activityTimeline__info a.activityTimeline__with {
-  color: var(--ui-color-success);
+    color: var(--ui-color-success);
 }
 .activityTimeline__info a.activityTimeline__with:hover,
 .activityTimeline__info a.activityTimeline__with:focus {
-  color: #2b542c;
+    color: #2b542c;
 }

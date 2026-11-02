@@ -1,29 +1,23 @@
-import StudentDeficiencyForm from "./StudentDeficiencyForm";
-import StudentDeficiencyPage from "./StudentDeficiencyPage";
-import type {
-    DeficiencyOption,
-    StudentDeficiencyStudent,
-} from "./StudentDeficiency.types";
+import StudentDeficiencyForm from '@/components/Inclusion/StudentDeficiencies/Form/StudentDeficiencyForm';
+import { studentDeficiencyBreadcrumb } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.routes';
+import type { StudentDeficiencyCreateProps } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentDeficienciesCreatePage({
     student,
     deficienciesList,
-}: {
-    student: StudentDeficiencyStudent;
-    deficienciesList: DeficiencyOption[];
-}): React.JSX.Element {
+}: StudentDeficiencyCreateProps): React.JSX.Element {
     return (
-        <StudentDeficiencyPage
+        <BusinessPage
             title="Vincular Perfil de Atendimento"
             subtitle={`Aluno: ${student.person.name}`}
-            current="Cadastrar"
-            student={student}
+            breadcrumbItems={studentDeficiencyBreadcrumb({ student, current: 'Cadastrar' })}
         >
             <StudentDeficiencyForm
                 mode="create"
                 student={student}
                 deficiencies={deficienciesList}
             />
-        </StudentDeficiencyPage>
+        </BusinessPage>
     );
 }

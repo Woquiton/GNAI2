@@ -1,5 +1,5 @@
-import { createContext, useContext, type ReactNode } from "react";
-import { Link } from "@inertiajs/react";
+import { createContext, useContext, type ReactNode } from 'react';
+import { Link } from '@inertiajs/react';
 
 /** Indica se o site está sendo renderizado dentro da prévia do construtor. */
 export const SitePreviewContext = createContext(false);
@@ -9,7 +9,7 @@ export function useSitePreview(): boolean {
 }
 
 function isInternal(href: string): boolean {
-    return href.startsWith("/") && !href.startsWith("//");
+    return href.startsWith('/') && !href.startsWith('//');
 }
 
 /**
@@ -28,7 +28,7 @@ export default function SiteLink({
     className?: string;
     children: ReactNode;
     ariaLabel?: string;
-    ariaCurrent?: "page";
+    ariaCurrent?: 'page';
 }): React.JSX.Element {
     const preview = useSitePreview();
 
@@ -46,7 +46,7 @@ export default function SiteLink({
         );
     }
 
-    if (isInternal(href) && !href.includes("#")) {
+    if (isInternal(href) && !href.includes('#')) {
         return (
             <Link
                 href={href}
@@ -66,8 +66,8 @@ export default function SiteLink({
             href={href}
             className={className}
             aria-label={ariaLabel}
-            target={external ? "_blank" : undefined}
-            rel={external ? "noopener noreferrer" : undefined}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener noreferrer' : undefined}
         >
             {children}
         </a>

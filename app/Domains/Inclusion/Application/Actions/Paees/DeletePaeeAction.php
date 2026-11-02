@@ -15,9 +15,10 @@ final class DeletePaeeAction
     {
         DB::transaction(function () use ($paee): void {
             $lockedPaee = Paee::query()->lockForUpdate()->findOrFail($paee->getKey());
-            $lockedPaee->objectives()->delete();
-            $lockedPaee->resources()->delete();
-            $lockedPaee->reviews()->delete();
+            // Um a um, para a auditoria registrar cada exclusão.
+            $lockedPaee->objectives()->get()->each->delete();
+            $lockedPaee->resources()->get()->each->delete();
+            $lockedPaee->reviews()->get()->each->delete();
             $lockedPaee->delete();
         });
     }

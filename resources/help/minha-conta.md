@@ -1,0 +1,107 @@
+---
+titulo: Minha conta e perfil
+resumo: Como abrir o seu perfil, atualizar seus dados pessoais, trocar ou remover a foto e alterar a sua senha.
+categoria: Primeiros passos
+palavras-chave: perfil, meu perfil, minha conta, conta, dados pessoais, editar perfil, alterar dados, atualizar cadastro, nome, e-mail, cpf, telefone, matrícula, endereço, data de nascimento, gênero, foto, foto de perfil, avatar, trocar foto, remover foto, câmera, webcam, senha, trocar senha, alterar senha, mudar senha, nova senha, senha atual, segurança
+ordem: 3
+---
+
+Em **Meu Perfil** você mantém atualizados os seus dados, a sua foto e a sua senha. O conteúdo da tela depende do tipo de conta: quem faz parte da equipe ou do corpo docente vê os dados pessoais completos; contas administrativas sem vínculo com a equipe veem apenas os dados de acesso.
+
+## Abrir o meu perfil
+
+1. Clique na sua foto, no canto superior direito da tela.
+2. Clique em **Perfil**.
+
+A tela **Meu Perfil** mostra, à esquerda, a sua foto, o seu nome, o cargo e o vínculo (por exemplo, **Profissional Apoio** ou **Corpo Docente**).
+
+## Atualizar meus dados pessoais
+
+Vale para quem tem cadastro na equipe ou no corpo docente.
+
+1. Abra o perfil.
+2. Altere os campos da seção **Dados Pessoais**:
+
+| Campo | Regra |
+| --- | --- |
+| **Nome Completo** | Obrigatório, de 3 a 255 caracteres. |
+| **E-mail** | Obrigatório. Não pode estar em uso por outra pessoa ou conta. É o e-mail usado para entrar no Gnai. |
+| **CPF** | Opcional. Precisa ser um CPF válido e não pode estar em uso por outra pessoa. |
+| **Data de Nascimento** | Obrigatório, anterior a hoje. |
+| **Gênero** | Obrigatório: Não informado, Masculino, Feminino ou Outro. |
+| **Telefone** | Opcional, com 10 ou 11 dígitos (DDD + número). |
+| **Matrícula** | Obrigatório, até 50 caracteres e única. |
+| **Endereço** | Opcional, até 500 caracteres, com editor de texto. |
+
+3. Clique em **Salvar**, no rodapé da tela.
+
+Com sucesso, aparece "Seu perfil foi atualizado com sucesso!". O cargo não é alterado por aqui; ele é definido no cadastro da equipe.
+
+## Atualizar os dados de uma conta administrativa
+
+Contas administrativas sem vínculo com a equipe (como o administrador superior) veem a seção **Dados da Conta**, com:
+
+- **Nome**: obrigatório, de 3 a 255 caracteres.
+- **E-mail de acesso**: obrigatório e único. Para alterá-lo, preencha também **Senha atual**, na seção **Segurança**.
+
+Clique em **Salvar** para gravar.
+
+## Trocar ou remover minha foto
+
+1. Abra o perfil.
+2. No círculo **Alterar Foto**:
+   - clique no círculo para escolher uma imagem do computador ou do celular;
+   - ou arraste uma imagem até o círculo;
+   - ou use o botão de câmera para tirar a foto na hora (câmera do celular ou webcam do computador; no computador, a webcam exige conexão segura).
+3. Se a nova foto ficou invertida, use o botão de espelhar (setas horizontais), que aparece depois de escolher a imagem.
+4. Para tirar a foto atual, use o botão de remover (lixeira) junto ao círculo.
+5. Clique em **Salvar**. A foto só é gravada ao salvar o perfil.
+
+A foto deve estar em JPG, JPEG ou PNG e ter no máximo 2 MB. Enquanto a imagem é preparada e enviada, o rodapé mostra o andamento (por exemplo, "Enviando foto: 40%"). Sem foto, o Gnai mostra uma imagem padrão.
+
+## Trocar minha senha
+
+### Equipe e corpo docente
+
+1. Abra o perfil.
+2. Na seção **Alterar Senha**, preencha **Nova Senha** e **Confirmar Nova Senha**.
+3. Clique em **Salvar**.
+
+A nova senha precisa ter pelo menos 8 caracteres, com letras e números. Se deixar os dois campos em branco, a senha atual continua valendo.
+
+### Contas administrativas
+
+1. Abra o perfil.
+2. Na seção **Segurança**, preencha **Senha atual**, **Nova senha** e **Confirmar nova senha**.
+3. Clique em **Salvar**.
+
+A nova senha precisa ter pelo menos 12 caracteres, com letras maiúsculas e minúsculas, números e símbolos, e não pode constar em vazamentos de senhas conhecidos. Deixe **Nova senha** em branco para manter a atual.
+
+> **Importante:** se você não lembra a senha atual, saia do sistema e use **Esqueceu sua senha?** na tela de login. Veja [Esqueci minha senha](/ajuda/acesso-ao-sistema#esqueci-minha-senha).
+
+## Cancelar as alterações
+
+Clique em **Cancelar**, no rodapé. Você volta ao Painel sem gravar nada.
+
+## Dúvidas comuns
+
+**"Este e-mail já está cadastrado em outra conta."**
+Outra pessoa ou conta já usa esse e-mail. Informe outro ou procure a administração.
+
+**"Esta matrícula já está em uso."** ou **"Este CPF/Documento já está em uso."**
+O valor pertence a outro cadastro. Confira a digitação.
+
+**"As senhas digitadas não conferem."**
+A nova senha e a confirmação estão diferentes.
+
+**"Informe sua senha atual para alterar o e-mail ou a senha."** ou **"A senha atual está incorreta."**
+Em contas administrativas, a troca de e-mail ou de senha exige a senha atual correta.
+
+**"Esta senha aparece em vazamentos conhecidos. Escolha outra senha."**
+A senha escolhida já foi exposta em vazamentos públicos. Escolha uma senha diferente.
+
+**"A foto não pode ultrapassar 2 MB."** ou **"A foto deve estar nos formatos JPG, PNG."**
+Reduza a imagem ou converta-a para um dos formatos aceitos.
+
+**O botão Salvar não responde.**
+Ele fica desativado enquanto a foto é preparada ou o envio está em andamento, e também quando o editor do endereço não carrega. Aguarde ou recarregue a página.

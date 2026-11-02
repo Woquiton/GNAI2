@@ -14,6 +14,7 @@ use App\Domains\Inclusion\Application\Data\Deficiencies\UpdateDeficiencyData;
 use App\Domains\Inclusion\Application\Queries\Deficiencies\ListDeficienciesQuery;
 use App\Domains\Inclusion\Application\Queries\Deficiencies\ShowDeficiencyQuery;
 use App\Domains\Inclusion\Domain\Models\Deficiency;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -56,6 +57,9 @@ final class DeficiencyController
             'Inclusion/Deficiencies/Show',
             [
                 'deficiency' => $deficiency,
+                'descriptionHtml' => RichTextSanitizer::sanitize(
+                    $deficiency->description ?: 'Nenhuma descrição técnica foi cadastrada para este perfil.',
+                ),
                 'can' => [
                     'update' => $request->user()?->can('deficiency.update') ?? false,
                     'delete' => $request->user()?->can('deficiency.delete') ?? false,
@@ -113,7 +117,7 @@ final class DeficiencyController
             : 'Deficiência desativada com sucesso!';
 
         return redirect()
-            ->route('specialized-educational-support.deficiencies.index')
+            ->route('specialized-educational-support.deficiencies.show', $deficiency)
             ->with('success', $message);
     }
 

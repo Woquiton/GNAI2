@@ -1,64 +1,87 @@
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import StudentRecordReturnButton from "@/components/Students/StudentRecordReturnButton";
-import {
-    studentRecordUrl,
-    studentsBase,
-} from "@/components/Students/Students.utils";
-import { TableListCreateButton } from "@/components/Tables/TableList/TableList";
-import Button from "@/components/UI/Button/Button";
-import CaseStudyList from "./CaseStudyList";
 import {
     caseStudiesTab,
-    createCaseStudyUrl,
-    studentCaseStudiesUrl,
-} from "./caseStudies.utils";
+    caseStudyStudentBreadcrumb,
+    caseStudyUrls,
+} from '@/components/Inclusion/CaseStudies/CaseStudies.routes';
 import type {
-    CaseStudyListProps,
-    CaseStudyStudent,
-} from "./CaseStudies.types";
+    CaseStudyStudentListProps,
+} from '@/components/Inclusion/CaseStudies/CaseStudies.types';
+import CaseStudyDeleteModal from '@/components/Inclusion/CaseStudies/CaseStudyDeleteModal';
+import CaseStudyFilters from '@/components/Inclusion/CaseStudies/List/CaseStudyFilters';
+import CaseStudyList from '@/components/Inclusion/CaseStudies/List/CaseStudyList';
+import { useCaseStudyList } from '@/components/Inclusion/CaseStudies/List/useCaseStudyList';
+import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
+import { TableListLayout } from '@/components/Tables/TableList/TableList';
+import Button from '@/components/UI/Button/Button';
 
 export default function InclusionCaseStudiesIndexPage({
+    caseStudies,
     student,
-    ...props
-}: CaseStudyListProps & {
-    student: CaseStudyStudent;
-}): React.JSX.Element {
+    semesters,
+    statuses,
+    filters: initialFilters,
+    can,
+}: CaseStudyStudentListProps): React.JSX.Element {
+    const { errors, filters, rowName, removal } = useCaseStudyList({ student, initialFilters });
+    const headerActions = (
+        <>
+            <StudentRecordReturnButton studentId={student.id} tab={caseStudiesTab} />
+            <Button
+                href={caseStudyUrls.studentHistory(student.id)}
+                tone="white"
+                leftIconClass="fa fa-history"
+                label="Ver Histórico"
+                aria-label="Ver histórico completo de Estudos de Caso do aluno"
+            />
+        </>
+    );
+
     return (
-        <BusinessPage
+        <TableListLayout
             title={`Estudos de Caso de ${student.name}`}
-            breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Alunos", href: studentsBase },
-                { label: student.name, href: studentRecordUrl(student.id, caseStudiesTab) },
-                { label: "Estudos de Caso" },
-            ]}
-            actions={
-                <>
-                    <StudentRecordReturnButton
-                        studentId={student.id}
-                        tab={caseStudiesTab}
-                    />
-                    <Button
-                        href={`${studentCaseStudiesUrl(student.id)}/history`}
-                        tone="white"
-                        leftIconClass="fa fa-history"
-                        label="Ver Histórico"
-                        aria-label="Ver histórico completo de Estudos de Caso do aluno"
-                    />
-                    {props.can.create ? (
-                        <TableListCreateButton
-                            href={createCaseStudyUrl(student.id)}
-                            ariaLabel="Cadastrar Estudo de Caso do aluno"
-                        />
-                    ) : null}
-                </>
+            breadcrumbItems={caseStudyStudentBreadcrumb(student, { current: 'Estudos de Caso' })}
+            actions={headerActions}
+            create={
+                can.create && {
+                    href: caseStudyUrls.create(student.id),
+                    label: 'Cadastrar Estudo de Caso do aluno',
+                }
             }
-            className="caseStudiesPage"
+            listLabel="Estudos de Caso do aluno"
+            loading={filters.loading}
+            loadingLabel="Atualizando Estudos de Caso"
+            filters={
+                <CaseStudyFilters
+                    values={filters.values}
+                    semesters={semesters}
+                    statuses={statuses}
+                    showSearch={false}
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
+                />
+            }
+            dialogs={
+                <CaseStudyDeleteModal
+                    open={removal.open}
+                    name={removal.name}
+                    processing={removal.processing}
+                    onClose={removal.close}
+                    onConfirm={removal.confirm}
+                />
+            }
         >
             <CaseStudyList
-                {...props}
-                student={student}
+                caseStudies={caseStudies}
+                byStudent
+                permissions={can}
+                loading={filters.loading}
+                processing={removal.processing}
+                rowName={rowName}
+                onDelete={removal.request}
+                onPageSelect={filters.selectPage}
             />
-        </BusinessPage>
+        </TableListLayout>
     );
 }

@@ -1,23 +1,38 @@
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import Button from "@/components/UI/Button/Button";
-import PendencyList, { pendenciesBase } from "./PendencyList";
-import type { PendencyListProps } from "./PendencyList.types";
+import { usePage } from '@inertiajs/react';
+import PendencyFilters from '@/components/Inclusion/Pendencies/List/PendencyFilters';
+import PendencyList from '@/components/Inclusion/Pendencies/List/PendencyList';
+import { emptyPendencyFilters } from '@/components/Inclusion/Pendencies/Pendencies.constants';
+import {
+    pendencyBreadcrumb,
+    pendencyUrls,
+} from '@/components/Inclusion/Pendencies/Pendencies.routes';
+import type { PendencyListProps } from '@/components/Inclusion/Pendencies/Pendencies.types';
+import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
+import Button from '@/components/UI/Button/Button';
 
-export default function InclusionPendenciesMyPage(
-    props: PendencyListProps,
-): React.JSX.Element {
+export default function InclusionPendenciesMyPage({
+    pendencies,
+    priorities,
+    filters: initialFilters,
+    can,
+}: PendencyListProps): React.JSX.Element {
+    const errors = usePage().props.errors as Record<string, string | undefined>;
+    // O profissional é sempre o usuário atual: sem campo próprio, `assigned_to` fica vazio e não é enviado.
+    const filters = useTableListFilters({
+        url: pendencyUrls.my,
+        initialFilters,
+        emptyFilters: emptyPendencyFilters,
+        failureText: 'Não foi possível atualizar as pendências. Tente novamente.',
+    });
+
     return (
-        <BusinessPage
+        <TableListLayout
             title="Minhas Pendências"
             subtitle="Pendências atribuídas a você como responsável."
-            breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Pendências", href: pendenciesBase },
-                { label: "Minhas Pendências" },
-            ]}
+            breadcrumbItems={pendencyBreadcrumb({ current: 'Minhas Pendências' })}
             actions={
                 <Button
-                    href={pendenciesBase}
+                    href={pendencyUrls.index}
                     tone="cancel"
                     leftIconClass="fa fa-arrow-left"
                     label="Voltar"
@@ -25,12 +40,29 @@ export default function InclusionPendenciesMyPage(
                     aria-label="Voltar para pendências"
                 />
             }
-            className="pendenciesPage"
+            listLabel="Listagem das minhas pendências"
+            loading={filters.loading}
+            loadingLabel="Atualizando pendências"
+            filters={
+                <PendencyFilters
+                    values={filters.values}
+                    priorities={priorities}
+                    errors={errors}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
+                />
+            }
         >
             <PendencyList
-                {...props}
                 variant="my"
+                pendencies={pendencies}
+                priorities={priorities}
+                permissions={{ view: can.view, delete: false }}
+                loading={filters.loading}
+                processing={false}
+                onPageSelect={filters.selectPage}
             />
-        </BusinessPage>
+        </TableListLayout>
     );
 }

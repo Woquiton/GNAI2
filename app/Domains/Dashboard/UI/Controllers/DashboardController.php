@@ -7,7 +7,7 @@ namespace App\Domains\Dashboard\UI\Controllers;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Dashboard\Application\Queries\ActivityFeedQuery;
 use App\Domains\Dashboard\Application\Queries\DashboardMetricsQuery;
-use App\Shared\Domain\Support\ActivityFeedPresenter;
+use App\Domains\Dashboard\UI\Presenters\ActivityFeedPresenter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +17,8 @@ use Inertia\Response as InertiaResponse;
 
 final class DashboardController
 {
+    public function __construct(private readonly ActivityFeedPresenter $feed) {}
+
     public function index(DashboardMetricsQuery $query, ActivityFeedQuery $feedQuery): InertiaResponse|RedirectResponse
     {
         $user = Auth::user();
@@ -28,8 +30,8 @@ final class DashboardController
         return Inertia::render('Dashboard/Overview/Index', [
             ...$query->execute(),
             'activityFeed' => [
-                ...ActivityFeedPresenter::page($feedQuery->execute($user), $user),
-                'modelOptions' => ActivityFeedPresenter::modelOptions(),
+                ...$this->feed->page($feedQuery->execute($user), $user),
+                'modelOptions' => $this->feed->modelOptions(),
             ],
         ]);
     }
@@ -39,12 +41,12 @@ final class DashboardController
         /** @var User $user */
         $user = $request->user();
 
-        $logs = $query->execute(
+        $records = $query->execute(
             $user,
             $request->only(['model', 'period']),
             (int) $request->integer('page', 1),
         );
 
-        return response()->json(ActivityFeedPresenter::page($logs, $user));
+        return response()->json($this->feed->page($records, $user));
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\UI\Controllers;
 
+use App\Domains\Auth\Application\Resolvers\AuthenticatedUserResolver;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Application\Actions\PeiDisciplines\UpdatePeiDisciplineAction;
 use App\Domains\Inclusion\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
@@ -59,38 +60,16 @@ final class TeacherPortalController
     }
 
     /** @throws Throwable */
-    public function updateDiscipline(PeiDiscipline $peiDiscipline, Request $request, UpdatePeiDisciplineAction $action): RedirectResponse
-    {
+    public function updateDiscipline(
+        UpdatePeiDisciplineData $data,
+        PeiDiscipline $peiDiscipline,
+        UpdatePeiDisciplineAction $action,
+        AuthenticatedUserResolver $authenticatedUser,
+        Request $request,
+    ): RedirectResponse {
         $this->ensureOwnsDiscipline($peiDiscipline, $this->teacherId($request));
 
-        $validated = $request->validate([
-            'specific_objectives' => ['required', 'string'],
-            'content_programmatic' => ['required', 'string'],
-            'methodologies' => ['required', 'string'],
-            'evaluations' => ['required', 'string'],
-            'opinion' => ['nullable', 'string'],
-            'complementary_records' => ['nullable', 'string'],
-            'curricular_reference' => ['nullable', 'string'],
-            'materials_and_assistive_technology' => ['nullable', 'string'],
-            'objectives_deadline' => ['nullable', 'string', 'max:255'],
-        ], UpdatePeiDisciplineData::messages());
-
-        $data = new UpdatePeiDisciplineData(
-            teacherId: $peiDiscipline->teacher_id,
-            disciplineId: $peiDiscipline->discipline_id,
-            specificObjectives: $validated['specific_objectives'],
-            contentProgrammatic: $validated['content_programmatic'],
-            methodologies: $validated['methodologies'],
-            evaluations: $validated['evaluations'],
-            opinion: $validated['opinion'] ?? null,
-            complementaryRecords: $validated['complementary_records'] ?? null,
-            curricularReference: $validated['curricular_reference'] ?? null,
-            materialsAndAssistiveTechnology: $validated['materials_and_assistive_technology'] ?? null,
-            objectivesDeadline: $validated['objectives_deadline'] ?? null,
-        );
-
-        $user = $request->user();
-        $action->execute($peiDiscipline, $user, $data);
+        $action->execute($peiDiscipline, $authenticatedUser->fromRequest($request), $data);
 
         return redirect()
             ->route('teacher-portal.index')

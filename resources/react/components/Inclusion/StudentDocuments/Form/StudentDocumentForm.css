@@ -1,0 +1,35 @@
+/* Seleção do arquivo e arquivo atual do documento do aluno. */
+.studentDocumentForm__file {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-space-2) var(--ui-space-3);
+}
+/* O input do FileUploadButton fica transparente; o anel de foco é desenhado no botão. */
+.studentDocumentForm__file .fileUploadButton:focus-within {
+    outline: var(--ui-focus-ring-width) solid var(--ui-focus-ring-color);
+    outline-offset: var(--ui-focus-ring-offset);
+}
+.studentDocumentForm__fileName {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--ui-color-text);
+}
+.studentDocumentForm__current {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ui-space-3);
+    margin-bottom: var(--ui-space-3);
+    color: var(--ui-color-text);
+}
+.studentDocumentForm__current i {
+    font-size: 1.5rem;
+    color: var(--ui-color-heading);
+}
+.studentDocumentForm__current p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}

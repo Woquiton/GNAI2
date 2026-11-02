@@ -23,12 +23,14 @@
     color: var(--contact-title-color);
     font-size: var(--contact-title-size);
 }
-.siteContact__card p, .siteContact__card a {
+.siteContact__card p,
+.siteContact__card a {
     margin: 0;
     color: var(--contact-text-color);
     font-size: var(--contact-text-size);
 }
-.siteContact__card a:focus-visible, .siteContact__social a:focus-visible {
+.siteContact__card a:focus-visible,
+.siteContact__social a:focus-visible {
     outline: 2px solid var(--site-primary);
     outline-offset: 4px;
 }

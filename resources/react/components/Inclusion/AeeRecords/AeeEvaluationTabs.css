@@ -1,0 +1,22 @@
+.aeeEvaluationTabs__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+}
+
+.aeeEvaluationTabs__icon--danger {
+    color: var(--ui-color-danger);
+}
+
+.aeeEvaluationTabs__title {
+    margin: 0 0 var(--ui-space-5);
+    padding-bottom: var(--ui-space-2);
+    border-bottom: 1px solid var(--ui-color-border-soft);
+    color: var(--ui-color-page-title);
+    font-size: var(--ui-font-size-xl);
+    font-weight: 700;
+}
+
+.aeeEvaluationTabs__errors {
+    margin-bottom: var(--ui-space-4);
+}

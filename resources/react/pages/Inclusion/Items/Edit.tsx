@@ -1,27 +1,26 @@
-import ItemForm from "./ItemForm";
-import ItemPage from "./ItemPage";
-import type { ItemFormOptions, ItemRecord } from "./ItemForm.types";
+import ItemForm from '@/components/Inclusion/Items/Form/ItemForm';
+import { itemBreadcrumb } from '@/components/Inclusion/Items/Items.routes';
+import type { ItemEditProps } from '@/components/Inclusion/Items/Items.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function InclusionItemsEditPage(
-    props: ItemFormOptions & {
-        item: ItemRecord;
-        activeLoans: number;
-    },
-): React.JSX.Element {
+export default function InclusionItemsEditPage({
+    item,
+    activeLoans,
+    ...options
+}: ItemEditProps): React.JSX.Element {
     return (
-        <ItemPage
+        <BusinessPage
             title="Editar Item"
-            current="Editar"
-            item={props.item}
-            subtitle={`Atualizando informações de: ${props.item.name}`}
+            subtitle={`Atualizando informações de: ${item.name}`}
+            breadcrumbItems={itemBreadcrumb({ item, current: 'Editar' })}
         >
             <ItemForm
-                key={props.item.id}
+                key={item.id}
                 mode="edit"
-                options={props}
-                item={props.item}
-                activeLoans={props.activeLoans}
+                options={options}
+                item={item}
+                activeLoans={activeLoans}
             />
-        </ItemPage>
+        </BusinessPage>
     );
 }

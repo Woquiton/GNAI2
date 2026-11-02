@@ -1,12 +1,26 @@
-import BarrierCategoryForm from "./BarrierCategoryForm";
-import type { BarrierCategoryRecord } from "./BarrierCategory.types";
+import { barrierCategoryBreadcrumb } from '@/components/Inclusion/BarrierCategories/BarrierCategories.routes';
+import type { BarrierCategoryEditProps } from '@/components/Inclusion/BarrierCategories/BarrierCategories.types';
+import BarrierCategoryForm from '@/components/Inclusion/BarrierCategories/Form/BarrierCategoryForm';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionBarrierCategoriesEditPage({
     barrierCategory,
     can,
-}: {
-    barrierCategory: BarrierCategoryRecord;
-    can: { update: boolean };
-}): React.JSX.Element {
-    return <BarrierCategoryForm category={barrierCategory} canSubmit={can.update} />;
+}: BarrierCategoryEditProps): React.JSX.Element {
+    return (
+        <BusinessPage
+            title="Editar Categoria de Barreira"
+            subtitle={`Atualizando as definições da categoria: ${barrierCategory.name}`}
+            breadcrumbItems={barrierCategoryBreadcrumb({
+                category: barrierCategory,
+                current: 'Editar',
+            })}
+        >
+            <BarrierCategoryForm
+                key={barrierCategory.id}
+                category={barrierCategory}
+                canSubmit={can.update}
+            />
+        </BusinessPage>
+    );
 }

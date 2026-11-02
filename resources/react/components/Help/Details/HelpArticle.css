@@ -1,0 +1,115 @@
+.helpArticle {
+    display: grid;
+    gap: var(--ui-space-5);
+    align-items: start;
+}
+@media (min-width: 992px) {
+    .helpArticle {
+        grid-template-columns: minmax(0, 1fr) 280px;
+    }
+    .helpArticle__aside {
+        position: sticky;
+        top: calc(var(--ui-topbar-height) + var(--ui-space-5));
+    }
+}
+.helpArticle__body,
+.helpArticle__panel {
+    margin-bottom: 0;
+}
+.helpArticle__aside {
+    display: grid;
+    gap: var(--ui-space-5);
+    min-width: 0;
+}
+.helpArticle__panelTitle {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+    margin: 0 0 var(--ui-space-3);
+    padding-bottom: var(--ui-space-2);
+    border-bottom: 2px solid var(--ui-color-section-divider);
+    color: var(--ui-color-heading);
+    font-size: var(--ui-font-size-section-title);
+    font-weight: 600;
+}
+.helpArticle__toc,
+.helpArticle__related {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.helpArticle__toc li + li,
+.helpArticle__related li + li {
+    margin-top: var(--ui-space-2);
+}
+.helpArticle__toc a,
+.helpArticle__related a {
+    color: var(--ui-color-link);
+    overflow-wrap: anywhere;
+}
+.helpArticle__toc a:hover,
+.helpArticle__toc a:focus-visible,
+.helpArticle__related a:hover,
+.helpArticle__related a:focus-visible {
+    color: var(--ui-color-link-hover);
+    text-decoration: underline;
+}
+.helpArticle__related p {
+    margin: 2px 0 0;
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-sm);
+    line-height: 1.5;
+}
+
+/* Conteúdo Markdown convertido no servidor. */
+.helpArticle__content {
+    color: var(--ui-color-text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+.helpArticle__content :is(h2, h3) {
+    scroll-margin-top: calc(var(--ui-topbar-height) + var(--ui-space-4));
+    color: var(--ui-color-page-title);
+    font-family: var(--ui-font-gnai-heading);
+    font-weight: 700;
+    line-height: 1.3;
+}
+.helpArticle__content h2 {
+    margin: var(--ui-space-8) 0 var(--ui-space-3);
+    padding-bottom: var(--ui-space-2);
+    border-bottom: 2px solid var(--ui-color-section-divider);
+    font-size: 20px;
+}
+.helpArticle__content h3 {
+    margin: var(--ui-space-6) 0 var(--ui-space-2);
+    font-size: 17px;
+}
+.helpArticle__content :is(p, table, blockquote, pre) {
+    margin: 0 0 var(--ui-space-4);
+}
+.helpArticle__content li + li {
+    margin-top: var(--ui-space-1);
+}
+.helpArticle__content th {
+    background: var(--ui-color-table-header);
+    font-weight: 600;
+    text-align: left;
+}
+.helpArticle__content :is(th, td) {
+    padding: var(--ui-space-2) var(--ui-space-3);
+    vertical-align: top;
+}
+.helpArticle__content blockquote {
+    border-left-color: var(--ui-color-gnai-primary);
+    border-radius: 0 var(--ui-radius-sm) var(--ui-radius-sm) 0;
+    background: var(--ui-color-surface-alt);
+}
+.helpArticle__content blockquote > :last-child {
+    margin-bottom: 0;
+}
+.helpArticle__content code {
+    padding: 1px 4px;
+    border-radius: var(--ui-radius-sm);
+    background: var(--ui-color-surface-alt);
+    font-size: 0.9em;
+}

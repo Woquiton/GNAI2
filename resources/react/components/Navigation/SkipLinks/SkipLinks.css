@@ -1,0 +1,83 @@
+/* Fora da tela até receber foco; então aparece no topo, centralizada, como a barra do gov.br. */
+.skipLinks {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 10050;
+    max-width: calc(100vw - 16px);
+    transform: translate(-50%, -110%);
+    transition: transform 160ms ease;
+    /* O fundo claro marca o atalho focado; o anel fica por dentro para não ser cortado. */
+    --ui-focus-keyboard-color: var(--ui-skip-links-active-text);
+    --ui-focus-keyboard-offset: -4px;
+    --ui-focus-keyboard-shadow: none;
+}
+
+.skipLinks:focus-within {
+    transform: translate(-50%, 0);
+}
+
+.skipLinks__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 0 0 var(--ui-radius-lg) var(--ui-radius-lg);
+    background: var(--ui-skip-links-bg);
+    box-shadow: 0 4px 14px var(--ui-color-shadow);
+    list-style: none;
+}
+
+.skipLinks__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+    padding: 10px 16px;
+    color: var(--ui-skip-links-text);
+    font: 600 var(--ui-font-size-md) / 1.2 var(--ui-font-gnai-body);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.skipLinks__link:hover,
+.skipLinks__link:focus {
+    background: var(--ui-skip-links-active-bg);
+    color: var(--ui-skip-links-active-text);
+    text-decoration: none;
+}
+
+.skipLinks__key {
+    display: inline-flex;
+    min-width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--ui-radius-sm);
+    background: var(--ui-skip-links-active-bg);
+    color: var(--ui-skip-links-active-text);
+    font-size: var(--ui-font-size-xs);
+    font-weight: 700;
+}
+
+.skipLinks__link:is(:hover, :focus) .skipLinks__key {
+    background: var(--ui-skip-links-bg);
+    color: var(--ui-skip-links-text);
+}
+
+@media (max-width: 575px) {
+    .skipLinks {
+        width: calc(100vw - 16px);
+    }
+
+    .skipLinks__list {
+        flex-direction: column;
+    }
+
+    .skipLinks__link {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

@@ -275,8 +275,8 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['communication', 'interaction', 'assistive_technology'],
                 'needed_supports_justification' => "Os apoios de comunicação e interação social visam reduzir a sobrecarga sensorial em atividades coletivas; o apoio de tecnologia assistiva refere-se ao uso de fones abafadores de ruído e aplicativo de agenda visual já utilizados em outros ambientes pelo estudante.",
                 'barriers' => [
-                    ['type' => 'methodological', 'observed_situation' => "Atividades avaliativas aplicadas sem roteiro prévio ou com alteração de formato no último momento geram bloqueio na participação de {$firstName}.", 'participation_implication' => "Compromete a demonstração real do conhecimento adquirido, gerando desempenho abaixo do potencial em avaliações surpresa."],
-                    ['type' => 'attitudinal', 'observed_situation' => "Em dinâmicas de grupo com composição alterada sem aviso, colegas por vezes demonstram impaciência com o tempo de adaptação do estudante.", 'participation_implication' => "Reduz a participação espontânea de {$firstName} em atividades coletivas e pode gerar isolamento social."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Atividades avaliativas aplicadas sem roteiro prévio ou com alteração de formato no último momento geram bloqueio na participação de {$firstName}.", 'participation_implication' => "Compromete a demonstração real do conhecimento adquirido, gerando desempenho abaixo do potencial em avaliações surpresa."],
+                    ['type' => 'Atitudinal', 'observed_situation' => "Em dinâmicas de grupo com composição alterada sem aviso, colegas por vezes demonstram impaciência com o tempo de adaptação do estudante.", 'participation_implication' => "Reduz a participação espontânea de {$firstName} em atividades coletivas e pode gerar isolamento social."],
                 ],
                 'strategies' => [
                     ['description' => "Antecipar por escrito o roteiro e os critérios de qualquer atividade avaliativa, evitando alterações de última hora.", 'linked_barrier_index' => 0],
@@ -313,8 +313,8 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['pedagogical_adaptation', 'orientation_mobility'],
                 'needed_supports_justification' => "Recomenda-se fracionamento de tarefas longas e pausas estruturadas para sustentação da atenção, com apoio de orientação para organização de materiais e prazos.",
                 'barriers' => [
-                    ['type' => 'methodological', 'observed_situation' => "Atividades expositivas longas sem pausas ou fracionamento levam {$firstName} à dispersão e à perda de informações centrais do conteúdo.", 'participation_implication' => "Reduz a retenção do conteúdo e o desempenho em avaliações cumulativas."],
-                    ['type' => 'social', 'observed_situation' => "Esquecimento frequente de materiais e prazos de entrega gera atrasos recorrentes na realização de trabalhos.", 'participation_implication' => "Impacta negativamente a nota de atividades avaliativas contínuas, mesmo quando o conteúdo é dominado."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Atividades expositivas longas sem pausas ou fracionamento levam {$firstName} à dispersão e à perda de informações centrais do conteúdo.", 'participation_implication' => "Reduz a retenção do conteúdo e o desempenho em avaliações cumulativas."],
+                    ['type' => 'Social', 'observed_situation' => "Esquecimento frequente de materiais e prazos de entrega gera atrasos recorrentes na realização de trabalhos.", 'participation_implication' => "Impacta negativamente a nota de atividades avaliativas contínuas, mesmo quando o conteúdo é dominado."],
                 ],
                 'strategies' => [
                     ['description' => "Fracionar atividades longas em blocos de 15 a 20 minutos, com pausas estruturadas entre eles.", 'linked_barrier_index' => 0],
@@ -351,8 +351,8 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['assistive_technology', 'pedagogical_adaptation'],
                 'needed_supports_justification' => "Necessário fornecimento de material didático em fonte ampliada ou formato digital compatível com recursos de ampliação de tela, além de posicionamento preferencial em sala.",
                 'barriers' => [
-                    ['type' => 'communicational', 'observed_situation' => "Materiais impressos em fonte padrão e mapas/gráficos de letra pequena dificultam a leitura autônoma de {$firstName}.", 'participation_implication' => "Gera dependência de leitura por terceiros e atraso na realização de atividades individuais."],
-                    ['type' => 'methodological', 'observed_situation' => "Conteúdos apresentados exclusivamente em slides projetados a distância, sem material de apoio individual.", 'participation_implication' => "Reduz o acompanhamento em tempo real da aula expositiva."],
+                    ['type' => 'Comunicacional', 'observed_situation' => "Materiais impressos em fonte padrão e mapas/gráficos de letra pequena dificultam a leitura autônoma de {$firstName}.", 'participation_implication' => "Gera dependência de leitura por terceiros e atraso na realização de atividades individuais."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Conteúdos apresentados exclusivamente em slides projetados a distância, sem material de apoio individual.", 'participation_implication' => "Reduz o acompanhamento em tempo real da aula expositiva."],
                 ],
                 'strategies' => [
                     ['description' => "Disponibilizar material didático em fonte ampliada (mínimo 18pt) ou em formato digital acessível, com antecedência às aulas.", 'linked_barrier_index' => 0],
@@ -389,8 +389,8 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['communication', 'assistive_technology'],
                 'needed_supports_justification' => "Necessário posicionamento estratégico em sala, uso de recursos visuais de apoio e legendas em materiais audiovisuais para garantir plena compreensão do conteúdo.",
                 'barriers' => [
-                    ['type' => 'communicational', 'observed_situation' => "Vídeos e áudios utilizados em sala sem legenda ou transcrição dificultam o acompanhamento integral do conteúdo por {$firstName}.", 'participation_implication' => "Gera lacunas de compreensão em conteúdos audiovisuais sem suporte visual complementar."],
-                    ['type' => 'methodological', 'observed_situation' => "Explicações realizadas de costas para a turma (ex: enquanto escreve no quadro) impedem a leitura labial.", 'participation_implication' => "Compromete o acompanhamento simultâneo da explicação oral do conteúdo."],
+                    ['type' => 'Comunicacional', 'observed_situation' => "Vídeos e áudios utilizados em sala sem legenda ou transcrição dificultam o acompanhamento integral do conteúdo por {$firstName}.", 'participation_implication' => "Gera lacunas de compreensão em conteúdos audiovisuais sem suporte visual complementar."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Explicações realizadas de costas para a turma (ex: enquanto escreve no quadro) impedem a leitura labial.", 'participation_implication' => "Compromete o acompanhamento simultâneo da explicação oral do conteúdo."],
                 ],
                 'strategies' => [
                     ['description' => "Priorizar vídeos e áudios com legenda ou fornecer transcrição escrita do conteúdo sonoro utilizado em aula.", 'linked_barrier_index' => 0],
@@ -427,8 +427,8 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['locomotion'],
                 'needed_supports_justification' => "Necessário tempo adicional para deslocamento entre salas e adequação de atividades práticas que exijam mobilidade ampla.",
                 'barriers' => [
-                    ['type' => 'architectural', 'observed_situation' => "Trocas de sala entre blocos distantes, em intervalos curtos, dificultam a chegada pontual de {$firstName} às aulas seguintes.", 'participation_implication' => "Gera atrasos recorrentes e perda do início de conteúdos nas aulas seguintes."],
-                    ['type' => 'methodological', 'observed_situation' => "Atividades práticas de campo realizadas em terrenos irregulares sem rota alternativa acessível.", 'participation_implication' => "Impede a participação plena em parte das atividades práticas do curso."],
+                    ['type' => 'Arquitetônica', 'observed_situation' => "Trocas de sala entre blocos distantes, em intervalos curtos, dificultam a chegada pontual de {$firstName} às aulas seguintes.", 'participation_implication' => "Gera atrasos recorrentes e perda do início de conteúdos nas aulas seguintes."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Atividades práticas de campo realizadas em terrenos irregulares sem rota alternativa acessível.", 'participation_implication' => "Impede a participação plena em parte das atividades práticas do curso."],
                 ],
                 'strategies' => [
                     ['description' => "Organizar o horário de {$firstName} priorizando salas próximas entre si e conceder tolerância de alguns minutos para deslocamento entre blocos distantes.", 'linked_barrier_index' => 0],
@@ -464,8 +464,8 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['pedagogical_adaptation', 'communication'],
                 'needed_supports_justification' => "Necessária adaptação curricular com simplificação de linguagem, exemplos concretos e tempo adicional para realização de atividades avaliativas.",
                 'barriers' => [
-                    ['type' => 'methodological', 'observed_situation' => "Enunciados de atividades e avaliações com linguagem complexa e múltiplos comandos simultâneos dificultam a compreensão de {$firstName}.", 'participation_implication' => "Reduz o desempenho em avaliações mesmo quando o conteúdo de base é compreendido."],
-                    ['type' => 'social', 'observed_situation' => "Tempo padrão de realização de provas é insuficiente para o ritmo de processamento do estudante.", 'participation_implication' => "Gera entregas incompletas e avaliação aquém do conhecimento real demonstrado."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Enunciados de atividades e avaliações com linguagem complexa e múltiplos comandos simultâneos dificultam a compreensão de {$firstName}.", 'participation_implication' => "Reduz o desempenho em avaliações mesmo quando o conteúdo de base é compreendido."],
+                    ['type' => 'Social', 'observed_situation' => "Tempo padrão de realização de provas é insuficiente para o ritmo de processamento do estudante.", 'participation_implication' => "Gera entregas incompletas e avaliação aquém do conhecimento real demonstrado."],
                 ],
                 'strategies' => [
                     ['description' => "Simplificar a linguagem de enunciados, apresentando um comando por vez com apoio de exemplos concretos.", 'linked_barrier_index' => 0],
@@ -501,7 +501,7 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['none'],
                 'needed_supports_justification' => "Não há apoio de acessibilidade necessário; recomenda-se enriquecimento curricular e projetos de aprofundamento como estratégia pedagógica.",
                 'barriers' => [
-                    ['type' => 'methodological', 'observed_situation' => "Ausência de atividades de aprofundamento ou desafio adicional após a conclusão antecipada das tarefas propostas.", 'participation_implication' => "Gera desmotivação e dispersão em sala de aula após a conclusão das atividades regulares."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Ausência de atividades de aprofundamento ou desafio adicional após a conclusão antecipada das tarefas propostas.", 'participation_implication' => "Gera desmotivação e dispersão em sala de aula após a conclusão das atividades regulares."],
                 ],
                 'strategies' => [
                     ['description' => "Oferecer atividades de aprofundamento e projetos de enriquecimento curricular alinhados aos interesses do estudante.", 'linked_barrier_index' => 0],
@@ -535,7 +535,7 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                 'needed_supports' => ['pedagogical_adaptation'],
                 'needed_supports_justification' => "Apoio pedagógico recomendado enquanto o processo de investigação do perfil de aprendizagem do estudante está em andamento.",
                 'barriers' => [
-                    ['type' => 'methodological', 'observed_situation' => "Dificuldade de manutenção de foco em atividades expositivas longas, sem causa pedagógica ou clínica ainda esclarecida.", 'participation_implication' => "Compromete parcialmente o acompanhamento de conteúdos apresentados de forma extensa e contínua."],
+                    ['type' => 'Metodológica', 'observed_situation' => "Dificuldade de manutenção de foco em atividades expositivas longas, sem causa pedagógica ou clínica ainda esclarecida.", 'participation_implication' => "Compromete parcialmente o acompanhamento de conteúdos apresentados de forma extensa e contínua."],
                 ],
                 'strategies' => [
                     ['description' => "Monitorar o desempenho do estudante por período determinado, com checagens periódicas de compreensão durante as aulas.", 'linked_barrier_index' => 0],

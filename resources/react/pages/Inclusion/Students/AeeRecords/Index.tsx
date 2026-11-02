@@ -1,211 +1,99 @@
-import { usePage } from "@inertiajs/react";
-import { useMemo } from "react";
-import BusinessPage from "@/components/Navigation/BusinessPage/BusinessPage";
-import DeleteStudentRecord from "@/components/Students/DeleteStudentRecord";
-import StudentRecordReturnButton from "@/components/Students/StudentRecordReturnButton";
+import { usePage } from '@inertiajs/react';
+import AeeRecordDeleteModal from '@/components/Inclusion/AeeRecords/AeeRecordDeleteModal';
 import {
-    dateLabel,
-    studentRecordUrl,
-    studentsBase,
-} from "@/components/Students/Students.utils";
-import TableActions from "@/components/Tables/TableActions/TableActions";
+    AEE_DELETE_FAILURE_TEXT,
+    STUDENT_AEE_LIST_FAILURE_TEXT,
+    aeeStudentName,
+    emptyAeeRecordFilters,
+    studentAeeRecordFilters,
+} from '@/components/Inclusion/AeeRecords/AeeRecords.constants';
 import {
-    TableListCard,
-    TableListEmpty,
-    TableListFooter,
-    TableListScroll,
-    TableListTable,
-    useTableListVisit,
-    type TableListColumn,
-} from "@/components/Tables/TableList/TableList";
-import Button from "@/components/UI/Button/Button";
-import TableLabel from "@/components/UI/TableLabel/TableLabel";
-import useAutoListFilters from "@/hooks/useAutoListFilters";
-import AeeRecordFilters, {
-    aeeFilterValues,
-} from "@/pages/Inclusion/AeeRecords/AeeRecordFilters";
-import type { AeeStudent } from "@/pages/Inclusion/AeeRecords/AeeRecord.types";
+    STUDENT_AEE_RECORD_TAB,
+    studentAeeRecordBreadcrumb,
+    studentAeeRecordUrls,
+} from '@/components/Inclusion/AeeRecords/AeeRecords.routes';
 import type {
-    AeeFilterOptions,
-    AeeListFilterName,
-    AeeListFilters,
-    AeePaginator,
     AeeStudentEvaluationListItem,
-} from "@/pages/Inclusion/AeeRecords/AeeRecordList.types";
-import {
-    studentAeeEvaluationUrl,
-    studentAeeRecordsUrl,
-} from "@/pages/Inclusion/AeeRecords/AeeRecord.utils";
-
-type Props = AeeFilterOptions & {
-    student: AeeStudent;
-    aeeEvaluations: AeePaginator<AeeStudentEvaluationListItem>;
-    filters: Partial<AeeListFilters>;
-    can: {
-        view: boolean;
-        update: boolean;
-        delete: boolean;
-        view_all: boolean;
-    };
-};
-
-const recordTab = "aee-attendance";
-const columns: TableListColumn[] = [
-    { id: "date", label: "Data", width: "15%", minWidth: 90, fixed: "start" },
-    { id: "professional", label: "Profissional", width: "31%", minWidth: 120 },
-    { id: "duration", label: "Duração", width: "16%", minWidth: 76 },
-    { id: "presence", label: "Presença", width: "16%", minWidth: 82 },
-    { id: "actions", label: "Ações", width: "22%", minWidth: 120, fixed: "end" },
-];
+    StudentAeeRecordIndexProps,
+} from '@/components/Inclusion/AeeRecords/AeeRecords.types';
+import AeeRecordFilters from '@/components/Inclusion/AeeRecords/List/AeeRecordFilters';
+import StudentAeeRecordList from '@/components/Inclusion/AeeRecords/List/StudentAeeRecordList';
+import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
+import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
+import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
 export default function InclusionStudentsAeeRecordsIndexPage({
     student,
     aeeEvaluations,
-    filters,
+    filters: initialFilters,
     professionals,
     can,
-}: Props): React.JSX.Element {
+}: StudentAeeRecordIndexProps): React.JSX.Element {
     const errors = usePage().props.errors as Record<string, string | undefined>;
-    const studentName = student.person?.name ?? `Aluno #${student.id}`;
-    const fields = useMemo<AeeListFilterName[]>(
-        () => (can.view_all ? ["professional_id", "is_present"] : ["is_present"]),
-        [can.view_all],
-    );
-    const list = useTableListVisit({
-        url: studentAeeRecordsUrl(student.id),
-        failureText: "Não foi possível atualizar os registros de atendimento AEE. Tente novamente.",
+    const studentName = aeeStudentName(student, student.id);
+    const urls = studentAeeRecordUrls(student.id);
+    const filters = useTableListFilters({
+        url: urls.index,
+        initialFilters,
+        emptyFilters: emptyAeeRecordFilters,
+        failureText: STUDENT_AEE_LIST_FAILURE_TEXT,
     });
-    const initialValues = useMemo(
-        () => aeeFilterValues(fields, filters),
-        [fields, filters],
-    );
-    const emptyValues = useMemo(
-        () => aeeFilterValues(fields),
-        [fields],
-    );
-    const { values, update, clear, submit } = useAutoListFilters({
-        initialValues,
-        emptyValues,
-        onSearch: (next) => list.visit(next),
+    const removal = useConfirmedAction<AeeStudentEvaluationListItem>({
+        failureText: AEE_DELETE_FAILURE_TEXT,
     });
+
+    const returnAction = (
+        <StudentRecordReturnButton studentId={student.id} tab={STUDENT_AEE_RECORD_TAB} />
+    );
+
+    function confirmRemoval(): void {
+        if (removal.target) {
+            filters.cancelScheduled();
+            removal.submit('delete', urls.destroy(removal.target.id));
+        }
+    }
 
     return (
-        <BusinessPage
+        <TableListLayout
             title="Histórico de Registros de Atendimento AEE"
             subtitle={`Aluno: ${studentName}`}
-            breadcrumbItems={[
-                { label: "Home", href: "/auth/dashboard" },
-                { label: "Alunos", href: studentsBase },
-                { label: studentName, href: studentRecordUrl(student.id, recordTab) },
-                { label: "Registros de atendimentos AEE" },
-            ]}
-            actions={(
-                <StudentRecordReturnButton
-                    studentId={student.id}
-                    tab={recordTab}
-                />
-            )}
-        >
-            <TableListCard
-                aria-label="Listagem de registros de atendimento AEE do aluno"
-                loading={list.loading}
-                loadingLabel="Atualizando registros de atendimento AEE"
-            >
+            breadcrumbItems={studentAeeRecordBreadcrumb({ studentId: student.id, studentName })}
+            actions={returnAction}
+            listLabel="Listagem de registros de atendimento AEE do aluno"
+            loading={filters.loading}
+            loadingLabel="Atualizando registros de atendimento AEE"
+            filters={
                 <AeeRecordFilters
                     idPrefix="student-aee-records"
-                    ariaLabel="Filtrar registros de atendimento AEE do aluno"
-                    fields={fields}
-                    values={values}
+                    label="Filtrar registros de atendimento AEE do aluno"
+                    fields={studentAeeRecordFilters(can.view_all)}
+                    values={filters.values}
                     errors={errors}
                     professionals={professionals}
-                    onChange={update}
-                    onClear={clear}
-                    onSubmit={submit}
+                    onUpdate={filters.update}
+                    onClear={filters.clear}
+                    onSubmit={filters.submit}
                 />
-                <TableListScroll aria-label="Tabela de registros de atendimento AEE do aluno">
-                    <TableListTable
-                        columns={columns}
-                        page={aeeEvaluations}
-                    >
-                        {aeeEvaluations.data.length ? aeeEvaluations.data.map((evaluation) => {
-                            const session = evaluation.aee_record?.attendance_session;
-                            const date = dateLabel(session?.session_date);
-                            const canUpdate = can.update && evaluation.can_manage;
-                            const canDelete = can.delete && evaluation.can_manage;
-
-                            return (
-                                <tr key={evaluation.id}>
-                                    <td>
-                                        <strong className="aeeRecordList__date">{date}</strong>
-                                    </td>
-                                    <td>{session?.professional?.person?.name ?? "Não informado"}</td>
-                                    <td>{evaluation.aee_record?.duration || "Não informado"}</td>
-                                    <td>
-                                        <TableLabel tone={evaluation.is_present ? "success" : "danger"}>
-                                            <i
-                                                className={evaluation.is_present
-                                                    ? "fa fa-check-circle"
-                                                    : "fa fa-times-circle"}
-                                                aria-hidden="true"
-                                            />
-                                            {" "}
-                                            {evaluation.is_present ? "Presente" : "Ausente"}
-                                        </TableLabel>
-                                    </td>
-                                    <td>
-                                        {can.view || canUpdate || canDelete ? (
-                                            <TableActions>
-                                                {can.view ? (
-                                                    <Button
-                                                        href={studentAeeEvaluationUrl(student.id, evaluation.id)}
-                                                        size="sm"
-                                                        tone="dark-blue"
-                                                        iconOnly
-                                                        leftIconClass="fa fa-eye"
-                                                        aria-label={`Visualizar atendimento de ${date}`}
-                                                    />
-                                                ) : null}
-                                                {canUpdate ? (
-                                                    <Button
-                                                        href={studentAeeEvaluationUrl(student.id, evaluation.id, "edit")}
-                                                        size="sm"
-                                                        tone="warning"
-                                                        iconOnly
-                                                        leftIconClass="fa fa-pencil"
-                                                        aria-label={`Editar atendimento de ${date}`}
-                                                    />
-                                                ) : null}
-                                                {canDelete ? (
-                                                    <DeleteStudentRecord
-                                                        action={studentAeeEvaluationUrl(student.id, evaluation.id, "")}
-                                                        title="Excluir registro do aluno"
-                                                        message="Excluir apenas o registro deste aluno neste atendimento AEE?"
-                                                        ariaLabel={`Excluir atendimento de ${date}`}
-                                                    />
-                                                ) : null}
-                                            </TableActions>
-                                        ) : (
-                                            <span>Sem ações</span>
-                                        )}
-                                    </td>
-                                </tr>
-                            );
-                        }) : (
-                            <tr>
-                                <TableListEmpty colSpan={columns.length}>
-                                    Nenhum registro encontrado.
-                                </TableListEmpty>
-                            </tr>
-                        )}
-                    </TableListTable>
-                </TableListScroll>
-                <TableListFooter
-                    page={aeeEvaluations}
-                    disabled={list.loading}
-                    paginationLabel="Paginação de registros de atendimento AEE do aluno"
-                    onSelect={(page) => list.visit(values, page)}
+            }
+            dialogs={
+                <AeeRecordDeleteModal
+                    scope="evaluation"
+                    open={removal.target !== null}
+                    processing={removal.processing}
+                    onClose={removal.close}
+                    onConfirm={confirmRemoval}
                 />
-            </TableListCard>
-        </BusinessPage>
+            }
+        >
+            <StudentAeeRecordList
+                studentId={student.id}
+                aeeEvaluations={aeeEvaluations}
+                permissions={can}
+                loading={filters.loading}
+                processing={removal.processing}
+                onDelete={removal.open}
+                onPageSelect={filters.selectPage}
+            />
+        </TableListLayout>
     );
 }

@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [SettingsController::class, 'index'])
     ->name('index')->middleware('can:setting.view');
 
-Route::get('/mail', [SettingsController::class, 'editMail'])
+Route::get('/email', [SettingsController::class, 'editMail'])
     ->name('mail.edit')->middleware('can:setting.view');
 
-Route::put('/mail', [SettingsController::class, 'updateMail'])
+Route::put('/email', [SettingsController::class, 'updateMail'])
     ->name('mail.update')->middleware('can:setting.update');
 
-Route::post('/mail/test', [SettingsController::class, 'sendTestMail'])
+Route::post('/email/teste', [SettingsController::class, 'sendTestMail'])
     ->name('mail.test')->middleware('can:setting.update');
 
 Route::get('/backups', [SettingsController::class, 'editBackup'])

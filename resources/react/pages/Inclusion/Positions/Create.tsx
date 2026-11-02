@@ -1,17 +1,18 @@
-import PositionForm from "./PositionForm";
-import PositionPage from "./PositionPage";
-import type { PositionFormProps } from "./Position.types";
+import PositionForm from '@/components/Inclusion/Positions/Form/PositionForm';
+import { positionBreadcrumb } from '@/components/Inclusion/Positions/Positions.routes';
+import type { PositionCreateProps } from '@/components/Inclusion/Positions/Positions.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPositionsCreatePage({
     permissions,
-}: PositionFormProps): React.JSX.Element {
+}: PositionCreateProps): React.JSX.Element {
     return (
-        <PositionPage
+        <BusinessPage
             title="Cadastrar Novo Cargo"
             subtitle="Defina as atribuições e o status do cargo no sistema."
-            current="Cadastrar"
+            breadcrumbItems={positionBreadcrumb({ current: 'Cadastrar' })}
         >
             <PositionForm permissions={permissions} />
-        </PositionPage>
+        </BusinessPage>
     );
 }

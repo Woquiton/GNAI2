@@ -1,20 +1,64 @@
-.formField { margin-bottom: 15px; }
-.formField__labelRow { display: flex; align-items: center; gap: 6px; }
-.formField::before, .formField::after { display: table; content: ' '; }
-.formField::after { clear: both; }
-.formField__label { display: inline-block; max-width: 100%; margin-bottom: 5px; color: var(--ui-color-form-label); font-size: var(--ui-font-size-form-label); font-weight: 700; }
-.formField__hint { color: #98a6ad; font-size: 13px; }
-.formField__required { color: var(--ui-color-danger, #f05050); font-style: italic; }
-.formField__error {
-  display: block;
-  margin-top: 2px;
-  color: var(--ui-color-danger, #f05050);
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.42857143;
+.formField {
+    margin-bottom: 15px;
 }
-.formField--horizontal > .formField__label, .formField--horizontal > .formField__control { position: relative; min-height: 1px; padding: 0 10px; }
+.formField__labelRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+}
+.formField__labelRow > .formField__label {
+    margin-bottom: 0;
+}
+.formField__labelRow > .legacyTooltip__trigger {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+.formField::before,
+.formField::after {
+    display: table;
+    content: ' ';
+}
+.formField::after {
+    clear: both;
+}
+.formField__label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    color: var(--ui-color-form-label);
+    font-size: var(--ui-font-size-form-label);
+    font-weight: 700;
+}
+.formField__hint {
+    color: #98a6ad;
+    font-size: 13px;
+}
+.formField__required {
+    color: var(--ui-color-danger, #f05050);
+    font-style: italic;
+}
+.formField__error {
+    display: block;
+    margin-top: 2px;
+    color: var(--ui-color-danger, #f05050);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
+}
+.formField--horizontal > .formField__label,
+.formField--horizontal > .formField__control {
+    position: relative;
+    min-height: 1px;
+    padding: 0 10px;
+}
 @media (min-width: 1200px) {
-  .formField--horizontal > .formField__label { float: left; width: 16.66666667%; }
-  .formField--horizontal > .formField__control { float: left; width: 83.33333333%; }
+    .formField--horizontal > .formField__label {
+        float: left;
+        width: 16.66666667%;
+    }
+    .formField--horizontal > .formField__control {
+        float: left;
+        width: 83.33333333%;
+    }
 }

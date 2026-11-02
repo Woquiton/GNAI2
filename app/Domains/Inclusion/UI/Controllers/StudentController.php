@@ -11,18 +11,20 @@ use App\Domains\Inclusion\Application\Actions\Students\UpdateStudentAction;
 use App\Domains\Inclusion\Application\Data\Students\CreateStudentData;
 use App\Domains\Inclusion\Application\Data\Students\ListStudentsData;
 use App\Domains\Inclusion\Application\Data\Students\UpdateStudentData;
-use App\Domains\Inclusion\Application\Queries\Semesters\CurrentSemesterQuery;
 use App\Domains\Inclusion\Application\Queries\Students\ListStudentsQuery;
 use App\Domains\Inclusion\Application\Queries\Students\ShowStudentQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentAeeEvaluationsQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentCaseStudiesQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentFilterOptionsQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentFormQuery;
+use App\Domains\Inclusion\Application\Queries\Students\StudentLoansQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPaeesQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPdfQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPedagogicalRecordsQuery;
 use App\Domains\Inclusion\Domain\Enums\StudentDocumentType;
+use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Student;
+use App\Domains\Inclusion\UI\Presenters\LoanPresenter;
 use App\Domains\Inclusion\UI\Presenters\StudentPagePresenter;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -59,131 +61,42 @@ final class StudentController
         StudentPedagogicalRecordsQuery $pedagogicalRecordsQuery,
         StudentCaseStudiesQuery $caseStudiesQuery,
         StudentPaeesQuery $paeesQuery,
-        CurrentSemesterQuery $currentSemesterQuery,
+        StudentLoansQuery $loansQuery,
+        LoanPresenter $loanPresenter,
         Request $request,
     ): InertiaResponse {
         $user = $request->user();
         $authenticatedUser = $user instanceof User ? $user : null;
-        $requestedTab = $request->string('tab')->toString();
-        $availableTabs = [
-            'personal-data',
-            'academic-data',
-            'support-profiles',
-            'guardians',
-            'case-studies',
-            'paees',
-            'peis',
-            'documents',
-            'aee-attendance',
-            'pedagogical-attendance',
-        ];
-        $activeTab = in_array($requestedTab, $availableTabs, true)
-            ? $requestedTab
-            : 'personal-data';
-        $tabProp = static fn (string $tab, callable $resolver): mixed => $activeTab === $tab
-            ? $resolver
-            : Inertia::optional($resolver);
+        $student = $showStudent->execute($student);
+        $aeeEvaluations = $aeeEvaluationsQuery->execute(
+            $student,
+            $authenticatedUser,
+            limit: null,
+        );
+        $pedagogicalRecords = $pedagogicalRecordsQuery->execute(
+            $student,
+            $authenticatedUser,
+            limit: null,
+        );
+        $this->presenter->markManageableAeeEvaluations($aeeEvaluations, $authenticatedUser);
+        $this->presenter->markManageablePedagogicalRecords($pedagogicalRecords, $authenticatedUser);
+        $caseStudies = $this->presenter->caseStudies($caseStudiesQuery->execute($student));
+        $paees = $this->presenter->paees($paeesQuery->execute($student));
+        // Empréstimos do Radar só são serializados para quem pode consultá-los.
+        $loans = $authenticatedUser?->can('loan.index')
+            ? $loansQuery->execute($student)->map(fn (Loan $loan): array => $loanPresenter->loan($loan))->values()->all()
+            : [];
+        $hasLaudo = $student->documents()
+            ->where('type', StudentDocumentType::TECHNICAL_REPORT->value)
+            ->exists();
+        $activeTab = $request->string('tab')->toString();
 
         return Inertia::render(
             'Inclusion/Students/Show',
-            [
-                'student' => fn (): array => $this->presenter->student(
-                    $showStudent->execute($student),
-                    $request,
-                ),
-                'profileNames' => fn (): array => $request->user()?->can('student-deficiency.view')
-                    ? $showStudent->profileNames($student)
-                    : [],
-                'statusPanel' => function () use ($student, $showStudent, $currentSemesterQuery, $request): array {
-                    $studentWithStatus = $showStudent->status($student);
-                    $hasLaudo = $student->documents()
-                        ->where('type', StudentDocumentType::TECHNICAL_REPORT->value)
-                        ->exists();
-
-                    return $this->presenter->statusPanel(
-                        $studentWithStatus,
-                        $hasLaudo,
-                        $showStudent->currentCourseId($student),
-                        $currentSemesterQuery->execute() !== null,
-                        $request,
-                    );
-                },
-                'studentCourses' => $tabProp(
-                    'academic-data',
-                    fn (): array => $this->presenter->studentCourses(
-                        $showStudent->studentCourses($student),
-                    ),
-                ),
-                'supportProfiles' => $tabProp(
-                    'support-profiles',
-                    fn (): array => $request->user()?->can('student-deficiency.view')
-                        ? $this->presenter->deficiencies($showStudent->deficiencies($student))
-                        : [],
-                ),
-                'guardians' => $tabProp(
-                    'guardians',
-                    fn (): array => $request->user()?->can('guardian.view')
-                        ? $this->presenter->guardians($showStudent->guardians($student))
-                        : [],
-                ),
-                'caseStudies' => $tabProp(
-                    'case-studies',
-                    fn (): array => $request->user()?->can('case-study.view')
-                        ? $this->presenter->caseStudies($caseStudiesQuery->execute($student))
-                        : [],
-                ),
-                'paees' => $tabProp(
-                    'paees',
-                    fn (): array => $request->user()?->can('paee.view')
-                        ? $this->presenter->paees($paeesQuery->execute($student))
-                        : [],
-                ),
-                'peis' => $tabProp(
-                    'peis',
-                    fn (): array => $request->user()?->can('pei.view')
-                        ? $this->presenter->peis($showStudent->peis($student))
-                        : [],
-                ),
-                'documents' => $tabProp(
-                    'documents',
-                    fn (): array => $request->user()?->can('student-document.view')
-                        ? $this->presenter->documents($showStudent->documents($student))
-                        : [],
-                ),
-                'aeeEvaluations' => $tabProp(
-                    'aee-attendance',
-                    function () use ($aeeEvaluationsQuery, $authenticatedUser, $student) {
-                        $evaluations = $aeeEvaluationsQuery->execute(
-                            $student,
-                            $authenticatedUser,
-                            limit: null,
-                        );
-                        $this->presenter->markManageableAeeEvaluations(
-                            $evaluations,
-                            $authenticatedUser,
-                        );
-
-                        return $evaluations;
-                    },
-                ),
-                'pedagogicalRecords' => $tabProp(
-                    'pedagogical-attendance',
-                    function () use ($pedagogicalRecordsQuery, $authenticatedUser, $student) {
-                        $records = $pedagogicalRecordsQuery->execute(
-                            $student,
-                            $authenticatedUser,
-                            limit: null,
-                        );
-                        $this->presenter->markManageablePedagogicalRecords(
-                            $records,
-                            $authenticatedUser,
-                        );
-
-                        return $records;
-                    },
-                ),
-                'activeTab' => $activeTab,
-            ] + $this->presenter->shared($request),
+            ['student' => $this->presenter->student($student, $request)]
+                + compact('aeeEvaluations', 'pedagogicalRecords', 'caseStudies', 'paees', 'loans', 'activeTab')
+                + ['statusPanel' => $this->presenter->statusPanel($student, $hasLaudo)]
+                + $this->presenter->shared($request),
         );
     }
 

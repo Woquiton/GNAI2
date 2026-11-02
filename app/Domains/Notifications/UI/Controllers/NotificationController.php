@@ -28,7 +28,10 @@ final class NotificationController
         AppNavigation $navigation,
     ): InertiaResponse {
         $notifications = $query
-            ->execute($authenticatedUser->fromRequest($request))
+            ->execute(
+                $authenticatedUser->fromRequest($request),
+                perPage: max(1, min(100, $request->integer('per_page', 10))),
+            )
             ->through(fn (DatabaseNotification $notification): array => [
                 'id' => $notification->id,
                 'title' => $notification->data['title'] ?? 'Notificação',

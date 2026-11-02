@@ -1,35 +1,29 @@
-import { useEffect, useMemo, useState } from "react";
-import type { SidebarEntry, SidebarItem } from "./SidebarPrimary.types";
-import {
-  collectInitiallyOpenKeys,
-  toggleSidebarBranch,
-} from "./SidebarPrimary.helpers";
+import { useEffect, useMemo, useState } from 'react';
+import type { SidebarEntry, SidebarItem } from './SidebarPrimary.types';
+import { collectInitiallyOpenKeys, toggleSidebarBranch } from './SidebarPrimary.helpers';
 
 export function useSidebarBranches(
-  entries: SidebarEntry[],
-  currentItemKey?: string,
+    entries: SidebarEntry[],
+    currentItemKey?: string,
 ): {
-  openKeyList: string[];
-  toggleItem: (item: SidebarItem) => void;
+    openKeyList: string[];
+    toggleItem: (item: SidebarItem) => void;
 } {
-  const [openKeys, setOpenKeys] = useState<Set<string>>(
-    () => new Set(collectInitiallyOpenKeys(entries, currentItemKey)),
-  );
-  const openKeyList = useMemo(() => Array.from(openKeys), [openKeys]);
-
-  useEffect(() => {
-    setOpenKeys(
-      (current) =>
-        new Set([
-          ...current,
-          ...collectInitiallyOpenKeys(entries, currentItemKey),
-        ]),
+    const [openKeys, setOpenKeys] = useState<Set<string>>(
+        () => new Set(collectInitiallyOpenKeys(entries, currentItemKey)),
     );
-  }, [entries, currentItemKey]);
+    const openKeyList = useMemo(() => Array.from(openKeys), [openKeys]);
 
-  function toggleItem(item: SidebarItem): void {
-    setOpenKeys((current) => toggleSidebarBranch(current, entries, item));
-  }
+    useEffect(() => {
+        setOpenKeys(
+            (current) =>
+                new Set([...current, ...collectInitiallyOpenKeys(entries, currentItemKey)]),
+        );
+    }, [entries, currentItemKey]);
 
-  return { openKeyList, toggleItem };
+    function toggleItem(item: SidebarItem): void {
+        setOpenKeys((current) => toggleSidebarBranch(current, entries, item));
+    }
+
+    return { openKeyList, toggleItem };
 }

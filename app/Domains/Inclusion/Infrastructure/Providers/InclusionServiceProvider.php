@@ -10,6 +10,10 @@ use App\Domains\Inclusion\Domain\Models\AeeRecord;
 use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
 use App\Domains\Inclusion\Domain\Models\Barrier;
 use App\Domains\Inclusion\Domain\Models\BarrierCategory;
+use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use App\Domains\Inclusion\Domain\Models\CaseStudyBarrier;
+use App\Domains\Inclusion\Domain\Models\CaseStudyContribution;
+use App\Domains\Inclusion\Domain\Models\CaseStudyStrategy;
 use App\Domains\Inclusion\Domain\Models\Course;
 use App\Domains\Inclusion\Domain\Models\Deficiency;
 use App\Domains\Inclusion\Domain\Models\Discipline;
@@ -20,6 +24,10 @@ use App\Domains\Inclusion\Domain\Models\Institution;
 use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Location;
+use App\Domains\Inclusion\Domain\Models\Paee;
+use App\Domains\Inclusion\Domain\Models\PaeeObjective;
+use App\Domains\Inclusion\Domain\Models\PaeeResource;
+use App\Domains\Inclusion\Domain\Models\PaeeReview;
 use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
 use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
@@ -60,6 +68,10 @@ final class InclusionServiceProvider extends ServiceProvider
             AeeStudentEvaluation::class,
             Barrier::class,
             BarrierCategory::class,
+            CaseStudy::class,
+            CaseStudyBarrier::class,
+            CaseStudyContribution::class,
+            CaseStudyStrategy::class,
             Course::class,
             Deficiency::class,
             Discipline::class,
@@ -70,6 +82,10 @@ final class InclusionServiceProvider extends ServiceProvider
             Item::class,
             Loan::class,
             Location::class,
+            Paee::class,
+            PaeeObjective::class,
+            PaeeResource::class,
+            PaeeReview::class,
             PedagogicalRecord::class,
             Pei::class,
             PeiDiscipline::class,

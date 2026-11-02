@@ -183,6 +183,19 @@ final class Pei extends Model implements Auditable
         $this->is_current = false;
     }
 
+    /**
+     * Acompanha a nova versão do PAEE do aluno enquanto o PEI está em elaboração.
+     * O PEI finalizado é documento fechado e mantém o PAEE que o fundamentou.
+     */
+    public function followPaee(Paee $paee): void
+    {
+        if ($this->is_finished || (int) $paee->student_id !== (int) $this->student_id) {
+            return;
+        }
+
+        $this->paee_id = $paee->getKey();
+    }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');

@@ -1,72 +1,66 @@
-import KnobChart from "@/components/UI/KnobChart/KnobChart";
-import "./RevenueSummaryCard.css";
+import KnobChart from '@/components/UI/KnobChart/KnobChart';
+import './RevenueSummaryCard.css';
 
 const knobOptions = {
-  width: 150,
-  height: 150,
-  lineCap: "round",
-  fgColor: "#fb6d9d",
-  skin: "tron",
-  angleOffset: 180,
-  readOnly: true,
-  thickness: 0.15,
-  draw(this: { xy: number; lineWidth: number; scale: number; radius: number }): void {
-    // Keep the rounded stroke inside the canvas, including its antialiased edge.
-    this.radius = this.xy - this.lineWidth / 2 - 2 * this.scale;
-  },
+    width: 150,
+    height: 150,
+    lineCap: 'round',
+    fgColor: '#fb6d9d',
+    skin: 'tron',
+    angleOffset: 180,
+    readOnly: true,
+    thickness: 0.15,
+    draw(this: { xy: number; lineWidth: number; scale: number; radius: number }): void {
+        // Keep the rounded stroke inside the canvas, including its antialiased edge.
+        this.radius = this.xy - this.lineWidth / 2 - 2 * this.scale;
+    },
 };
 
 interface RevenueMetric {
-  label: string;
-  value: string;
+    label: string;
+    value: string;
 }
 
 interface RevenueSummaryCardProps {
-  title: string;
-  caption: string;
-  amount: string;
-  progress: number;
-  metrics: RevenueMetric[];
+    title: string;
+    caption: string;
+    amount: string;
+    progress: number;
+    metrics: RevenueMetric[];
 }
 
 export default function RevenueSummaryCard({
-  title,
-  caption,
-  amount,
-  progress,
-  metrics,
+    title,
+    caption,
+    amount,
+    progress,
+    metrics,
 }: RevenueSummaryCardProps): React.JSX.Element {
-  return (
-    <div className="revenueSummaryCard card-box">
-      <h4 className="revenueSummaryCard__title text-dark header-title">
-        {title}
-      </h4>
+    return (
+        <div className="revenueSummaryCard card-box">
+            <h4 className="revenueSummaryCard__title text-dark header-title">{title}</h4>
 
-      <div className="revenueSummaryCard__content widget-chart text-center">
-        <div className="revenueSummaryCard__chart" aria-hidden="true">
-          <KnobChart
-            value={progress}
-            options={knobOptions}
-            animate
-          />
+            <div className="revenueSummaryCard__content widget-chart text-center">
+                <div className="revenueSummaryCard__chart" aria-hidden="true">
+                    <KnobChart value={progress} options={knobOptions} animate />
+                </div>
+
+                <h5 className="revenueSummaryCard__caption text-muted">{caption}</h5>
+                <h2 className="revenueSummaryCard__amount font-600">{amount}</h2>
+
+                <ul className="revenueSummaryCard__metrics list-inline">
+                    {metrics.map((metric: RevenueMetric) => (
+                        <li key={metric.label}>
+                            <h5 className="revenueSummaryCard__metricLabel text-muted">
+                                {metric.label}
+                            </h5>
+                            <h4 className="revenueSummaryCard__metricValue m-b-0">
+                                {metric.value}
+                            </h4>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
-
-        <h5 className="revenueSummaryCard__caption text-muted">{caption}</h5>
-        <h2 className="revenueSummaryCard__amount font-600">{amount}</h2>
-
-        <ul className="revenueSummaryCard__metrics list-inline">
-          {metrics.map((metric: RevenueMetric) => (
-            <li key={metric.label}>
-              <h5 className="revenueSummaryCard__metricLabel text-muted">
-                {metric.label}
-              </h5>
-              <h4 className="revenueSummaryCard__metricValue m-b-0">
-                {metric.value}
-              </h4>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+    );
 }

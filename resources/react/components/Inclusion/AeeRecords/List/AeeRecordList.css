@@ -1,0 +1,33 @@
+/* Células com uma linha por aluno avaliado (curso e presença). */
+.aeeRecordList__stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-1);
+    min-width: 0;
+}
+
+.aeeRecordList__stack > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.aeeRecordList__student {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.aeeRecordList__name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.aeeRecordList__student > .tableLabel {
+    flex: 0 0 auto;
+}
+
+.aeeRecordList__muted {
+    color: var(--ui-color-text-muted);
+}

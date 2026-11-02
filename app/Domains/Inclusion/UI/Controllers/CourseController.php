@@ -14,6 +14,7 @@ use App\Domains\Inclusion\Application\Queries\Courses\CourseFormQuery;
 use App\Domains\Inclusion\Application\Queries\Courses\ListCoursesQuery;
 use App\Domains\Inclusion\Application\Queries\Courses\ShowCourseQuery;
 use App\Domains\Inclusion\Domain\Models\Course;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -51,6 +52,9 @@ final class CourseController
             'Inclusion/Courses/Show',
             [
                 'course' => $course,
+                'display' => [
+                    'descriptionHtml' => RichTextSanitizer::sanitize($course->description ?: 'Nenhuma descrição informada.'),
+                ],
                 'can' => [
                     'update' => $request->user()?->can('course.update') ?? false,
                     'delete' => $request->user()?->can('course.delete') ?? false,

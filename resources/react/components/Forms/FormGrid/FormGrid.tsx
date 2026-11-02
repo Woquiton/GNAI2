@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
-import { joinClassNames } from "@/utils/joinClassNames";
-import "./FormGrid.css";
+import type { ReactNode } from 'react';
+import { joinClassNames } from '@/utils/joinClassNames';
+import './FormGrid.css';
 
 export default function FormGrid({
     children,
@@ -12,13 +12,7 @@ export default function FormGrid({
     className?: string;
 }): React.JSX.Element {
     return (
-        <div
-            className={joinClassNames(
-                "formGrid",
-                `formGrid--${columns}`,
-                className,
-            )}
-        >
+        <div className={joinClassNames('formGrid', `formGrid--${columns}`, className)}>
             {children}
         </div>
     );
@@ -31,11 +25,7 @@ export function FormGridWide({
     children: ReactNode;
     className?: string;
 }): React.JSX.Element {
-    return (
-        <div className={joinClassNames("formGrid__wide", className)}>
-            {children}
-        </div>
-    );
+    return <div className={joinClassNames('formGrid__wide', className)}>{children}</div>;
 }
 
 export function FormStack({
@@ -45,7 +35,5 @@ export function FormStack({
     children: ReactNode;
     className?: string;
 }): React.JSX.Element {
-    return (
-        <div className={joinClassNames("formStack", className)}>{children}</div>
-    );
+    return <div className={joinClassNames('formStack', className)}>{children}</div>;
 }

@@ -45,13 +45,6 @@ final class AppNavigation
             return null;
         }
 
-        // Endereços antigos ainda gravados em notificações → endereço atual.
-        foreach (['/inclusive-radar/institutional-events' => '/inclusive-radar/publications'] as $legacy => $current) {
-            if ($path === $legacy || str_starts_with($path, $legacy.'/')) {
-                $path = $current.substr($path, strlen($legacy));
-            }
-        }
-
         $best = null;
         $bestLength = 0;
 
@@ -154,6 +147,7 @@ final class AppNavigation
                 ['settings', 'Configurações', 'settings.index', 'ti-settings', ['setting.view'], ['settings.*']],
                 ['audit', 'Auditoria', 'audit.index', 'ti-shield', ['audit.index'], ['audit.*']],
                 ['backups', 'Backups', 'backup.backups.index', 'ti-cloud-down', ['backup.index'], ['backup.backups.*']],
+                ['help', 'Ajuda', 'help.index', 'ti-help-alt', [], ['help.*']],
                 ['about', 'Sobre o Sistema', 'about-us', 'ti-info-alt', [], ['about-us']],
             ]],
         ];
