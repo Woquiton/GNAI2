@@ -23,7 +23,6 @@ export function publicationBreadcrumb({
 } = {}): PageBreadcrumbItem[] {
     const breadcrumbs: PageBreadcrumbItem[] = [
         { label: 'Home', href: '/autenticacao/painel' },
-        { label: 'Site' },
         {
             label: 'Publicações',
             href: current || publicationId ? backRoute || base : undefined,
