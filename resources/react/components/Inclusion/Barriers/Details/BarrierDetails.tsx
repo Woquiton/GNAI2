@@ -65,8 +65,6 @@ export default function BarrierDetails({
     const blocksMap = Boolean(barrier.category?.blocks_map);
     const lockedMessage = blocksMap ? (
         <>
-            <i className="fa fa-lock" aria-hidden="true" />
-            <br />
             Mapa não se aplica à categoria
             <br />
             {barrier.category?.name}.

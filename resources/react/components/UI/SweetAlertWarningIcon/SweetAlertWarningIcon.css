@@ -1,0 +1,91 @@
+/* Ícone de aviso do SweetAlert (Ubold): círculo e "!" alternando entre dois tons de amarelo. */
+.sweetAlertWarningIcon {
+    position: relative;
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 20px auto;
+    border: 4px solid #f8bb86;
+    border-radius: 50%;
+    box-sizing: content-box;
+    animation:
+        sweetAlertWarningIn 0.4s ease-out,
+        sweetAlertWarningPulse 0.75s infinite alternate;
+}
+
+/* Saída: o salto da entrada ao contrário; a cor continua pulsando até sumir. */
+.sweetAlertWarningIcon--leaving {
+    animation:
+        sweetAlertWarningOut 0.4s ease-in forwards,
+        sweetAlertWarningPulse 0.75s infinite alternate;
+}
+
+.sweetAlertWarningIcon__body,
+.sweetAlertWarningIcon__dot {
+    position: absolute;
+    left: 50%;
+    background-color: #f8bb86;
+    animation: sweetAlertWarningPulseFill 0.75s infinite alternate;
+}
+
+.sweetAlertWarningIcon__body {
+    top: 10px;
+    width: 5px;
+    height: 47px;
+    margin-left: -2px;
+    border-radius: 2px;
+}
+
+.sweetAlertWarningIcon__dot {
+    bottom: 10px;
+    width: 7px;
+    height: 7px;
+    margin-left: -3px;
+    border-radius: 50%;
+}
+
+@keyframes sweetAlertWarningPulse {
+    0% {
+        border-color: #f8d486;
+    }
+    100% {
+        border-color: #f8bb86;
+    }
+}
+
+@keyframes sweetAlertWarningPulseFill {
+    0% {
+        background-color: #f8d486;
+    }
+    100% {
+        background-color: #f8bb86;
+    }
+}
+
+@keyframes sweetAlertWarningIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes sweetAlertWarningOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    30% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+}

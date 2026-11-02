@@ -1,0 +1,110 @@
+/* Ícone de erro animado do SweetAlert (Ubold): o círculo gira para a frente e o X surge e salta. */
+.sweetAlertErrorIcon {
+    position: relative;
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 20px auto;
+    border: 4px solid #f27474;
+    border-radius: 50%;
+    box-sizing: content-box;
+    animation: sweetAlertErrorIconIn 0.5s;
+}
+
+.sweetAlertErrorIcon__xMark {
+    position: relative;
+    display: block;
+    animation: sweetAlertErrorIconXMark 0.5s;
+}
+
+.sweetAlertErrorIcon__line {
+    position: absolute;
+    top: 37px;
+    display: block;
+    width: 47px;
+    height: 5px;
+    border-radius: 2px;
+    background-color: #f27474;
+}
+
+.sweetAlertErrorIcon__line--left {
+    left: 17px;
+    transform: rotate(45deg);
+}
+
+.sweetAlertErrorIcon__line--right {
+    right: 16px;
+    transform: rotate(-45deg);
+}
+
+@keyframes sweetAlertErrorIconIn {
+    0% {
+        transform: rotateX(100deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotateX(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes sweetAlertErrorIconXMark {
+    0% {
+        transform: scale(0.4);
+        margin-top: 26px;
+        opacity: 0;
+    }
+    50% {
+        transform: scale(0.4);
+        margin-top: 26px;
+        opacity: 0;
+    }
+    80% {
+        transform: scale(1.15);
+        margin-top: -6px;
+    }
+    100% {
+        transform: scale(1);
+        margin-top: 0;
+        opacity: 1;
+    }
+}
+
+/* Saída: a entrada ao contrário, com o X recolhendo antes de o círculo girar para trás. */
+.sweetAlertErrorIcon--leaving {
+    animation: sweetAlertErrorIconOut 0.5s forwards;
+}
+
+.sweetAlertErrorIcon--leaving .sweetAlertErrorIcon__xMark {
+    animation: sweetAlertErrorIconXMarkOut 0.5s forwards;
+}
+
+@keyframes sweetAlertErrorIconOut {
+    0%,
+    40% {
+        transform: rotateX(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: rotateX(100deg);
+        opacity: 0;
+    }
+}
+
+@keyframes sweetAlertErrorIconXMarkOut {
+    0% {
+        transform: scale(1);
+        margin-top: 0;
+        opacity: 1;
+    }
+    20% {
+        transform: scale(1.15);
+        margin-top: -6px;
+    }
+    50%,
+    100% {
+        transform: scale(0.4);
+        margin-top: 26px;
+        opacity: 0;
+    }
+}

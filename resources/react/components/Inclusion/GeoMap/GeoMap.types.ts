@@ -37,6 +37,8 @@ export interface GeoMapProps {
     error?: string;
     /** Mensagem sobreposta ao mapa quando ele não se aplica ou depende de outro campo. */
     lockedMessage?: ReactNode;
+    /** Título do aviso sobre o mapa, acima de `lockedMessage`. */
+    lockedTitle?: string;
     onChange?: (point: GeoPoint) => void;
     onBlockedInteraction?: () => void;
     onZoomChange?: (zoom: number) => void;
@@ -55,6 +57,7 @@ export type LeafletLayer = {
     setLatLng(point: [number, number]): void;
     on(event: string, handler: (event: LeafletEvent) => void): void;
     dragging?: { enable(): void; disable(): void };
+    getElement(): HTMLElement | undefined;
 };
 
 export type LeafletLayerGroup = {
@@ -70,8 +73,8 @@ export type LeafletMap = {
     setView(point: [number, number], zoom?: number): void;
     getZoom(): number;
     getSize(): { x: number; y: number };
-    addLayer(layer: LeafletLayerGroup): void;
-    removeLayer(layer: LeafletLayerGroup): void;
+    addLayer(layer: LeafletLayer | LeafletLayerGroup): void;
+    removeLayer(layer: LeafletLayer | LeafletLayerGroup): void;
     on(event: string, handler: (event: LeafletEvent) => void): void;
 };
 
@@ -79,7 +82,7 @@ export type LeafletRuntime = {
     map(element: HTMLElement, options: Record<string, unknown>): LeafletMap;
     tileLayer(url: string, options: Record<string, unknown>): LeafletLayer;
     marker(point: [number, number], options?: Record<string, unknown>): LeafletLayer;
-    circleMarker(point: [number, number], options?: Record<string, unknown>): LeafletLayer;
+    divIcon(options: Record<string, unknown>): unknown;
     layerGroup(): LeafletLayerGroup;
     control: {
         layers(layers: Record<string, LeafletLayer>): {

@@ -130,6 +130,8 @@
     --ui-color-info-text: var(--color-info-text);
     --ui-color-success: #81c868;
     --ui-color-warning: #ffbd4a;
+    /* Âmbar dos títulos de aviso: legível como texto grande (3:1) sobre o branco. */
+    --ui-color-warning-strong: #c98a0e;
     --ui-color-inverse: #4c5667;
     --ui-color-pink: #fb6d9d;
     --ui-color-purple: #7266ba;

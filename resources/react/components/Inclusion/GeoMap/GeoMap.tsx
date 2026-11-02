@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { describeMapMarker, mapMarkerIcon } from '@/components/UI/MapMarker/mapMarker';
+import SweetAlertWarningIcon from '@/components/UI/SweetAlertWarningIcon/SweetAlertWarningIcon';
 import { joinClassNames } from '@/utils/joinClassNames';
 import { loadExternalScript } from '@/utils/loadExternalScript';
 import type {
@@ -22,19 +24,13 @@ export type { GeoMapMarker, GeoMapProps, GeoMapReference, GeoPoint } from './Geo
 
 const LEAFLET_SCRIPT = '/assets/react/plugins/leaflet/leaflet.js';
 
-/* Cores do Leaflet (SVG): os tooltips correspondentes ficam em GeoMap.css. */
-const institutionMarkerStyle = {
-    radius: 9,
-    color: '#c0392b',
-    fillColor: '#e74c3c',
-    fillOpacity: 0.9,
-};
-const locationMarkerStyle = {
-    radius: 6,
-    color: '#68737d',
-    fillColor: '#98a6ad',
-    fillOpacity: 0.9,
-};
+/** Duração da saída do aviso sobre o mapa, igual à animação do ícone e da folha. */
+const LOCK_LEAVE_MS = 500;
+
+/* Cores dos pontos; os tooltips correspondentes ficam em GeoMap.css. */
+const SELECTED_MARKER_COLOR = 'var(--ui-color-gnai-primary)';
+const INSTITUTION_MARKER_COLOR = '#e74c3c';
+const LOCATION_MARKER_COLOR = '#98a6ad';
 
 function leafletRuntime(): LeafletRuntime | undefined {
     return (window as Window & { L?: LeafletRuntime }).L;
@@ -61,6 +57,7 @@ export default function GeoMap({
     showReferenceMarkers = true,
     error,
     lockedMessage,
+    lockedTitle = 'Atenção',
     onChange,
     onBlockedInteraction,
     onZoomChange,
@@ -75,12 +72,23 @@ export default function GeoMap({
     const onBlockedInteractionRef = useRef(onBlockedInteraction);
     const interactionEnabledRef = useRef(interactionEnabled);
     const onZoomChangeRef = useRef(onZoomChange);
+    const markerLabelRef = useRef(markerLabel);
     const [loadError, setLoadError] = useState(false);
     const [ready, setReady] = useState(false);
+    // O aviso continua na tela durante a saída; o mapa já fica liberado por baixo.
+    const [lock, setLock] = useState<{
+        title: string;
+        message: React.ReactNode;
+        leaving: boolean;
+    } | null>(() =>
+        lockedMessage ? { title: lockedTitle, message: lockedMessage, leaving: false } : null,
+    );
+    const locked = Boolean(lockedMessage);
     onChangeRef.current = onChange;
     onBlockedInteractionRef.current = onBlockedInteraction;
     interactionEnabledRef.current = interactionEnabled;
     onZoomChangeRef.current = onZoomChange;
+    markerLabelRef.current = markerLabel;
 
     const { latitude, longitude } = value;
     const validValue = isValidGeoPoint(value);
@@ -133,14 +141,18 @@ export default function GeoMap({
                 const selectedMarker = leaflet
                     .marker([point.latitude, point.longitude], {
                         draggable: editable && interactionEnabled,
+                        keyboard: true,
+                        icon: mapMarkerIcon(leaflet, { color: SELECTED_MARKER_COLOR, pulse: true }),
                     })
-                    .addTo(map)
                     .bindTooltip(escapeTooltipText(markerLabel), {
                         permanent: true,
                         direction: 'top',
-                        offset: [-15, -30],
                         className: 'geoMap__selectedTooltip',
                     });
+                // O Leaflet recria o elemento a cada vez que o marcador entra no mapa.
+                selectedMarker.on('add', () =>
+                    describeMapMarker(selectedMarker.getElement(), markerLabelRef.current),
+                );
 
                 if (editable) {
                     map.on('click', (event) => {
@@ -196,12 +208,32 @@ export default function GeoMap({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // O ponto do registro só aparece quando há coordenada e o mapa não está bloqueado por um aviso.
+    useEffect(() => {
+        if (lockedMessage) {
+            setLock({ title: lockedTitle, message: lockedMessage, leaving: false });
+            return undefined;
+        }
+        setLock((current) => (current ? { ...current, leaving: true } : null));
+        const timer = window.setTimeout(() => setLock(null), LOCK_LEAVE_MS);
+        return () => window.clearTimeout(timer);
+    }, [lockedMessage, lockedTitle]);
+
+    const showSelectedMarker = validValue && !locked;
+    useEffect(() => {
+        const map = mapRef.current;
+        const marker = selectedMarkerRef.current;
+        if (!map || !marker) return;
+        if (showSelectedMarker) map.addLayer(marker);
+        else map.removeLayer(marker);
+    }, [showSelectedMarker, ready]);
+
     useEffect(() => {
         const dragging = selectedMarkerRef.current?.dragging;
         if (!editable || !dragging) return;
         if (interactionEnabled) dragging.enable();
         else dragging.disable();
-    }, [editable, interactionEnabled, ready]);
+    }, [editable, interactionEnabled, ready, showSelectedMarker]);
 
     useEffect(() => {
         if (!isValidGeoPoint({ latitude, longitude })) return;
@@ -239,20 +271,35 @@ export default function GeoMap({
         group.clearLayers();
 
         if (!reference || !isValidGeoPoint(reference)) return;
-        leaflet
-            .circleMarker([reference.latitude, reference.longitude], institutionMarkerStyle)
+        // Pontos de apoio focáveis por Tab; o Leaflet mostra o tooltip também no foco do teclado.
+        const institutionLabel = `Sede: ${reference.name}`;
+        const institution = leaflet
+            .marker([reference.latitude, reference.longitude], {
+                keyboard: true,
+                // Como os círculos anteriores, o clique chega ao mapa e posiciona o ponto ao editar.
+                bubblingMouseEvents: true,
+                icon: mapMarkerIcon(leaflet, { color: INSTITUTION_MARKER_COLOR }),
+            })
             .addTo(group)
-            .bindTooltip(escapeTooltipText(`Sede: ${reference.name}`), {
+            .bindTooltip(escapeTooltipText(institutionLabel), {
+                direction: 'top',
                 className: 'geoMap__institutionTooltip',
             });
+        describeMapMarker(institution.getElement(), institutionLabel);
         for (const location of reference.locations ?? []) {
             if (location.id === excludedLocationId || !isValidGeoPoint(location)) continue;
-            leaflet
-                .circleMarker([location.latitude, location.longitude], locationMarkerStyle)
+            const marker = leaflet
+                .marker([location.latitude, location.longitude], {
+                    keyboard: true,
+                    bubblingMouseEvents: true,
+                    icon: mapMarkerIcon(leaflet, { color: LOCATION_MARKER_COLOR, size: 'sm' }),
+                })
                 .addTo(group)
                 .bindTooltip(escapeTooltipText(location.label), {
+                    direction: 'top',
                     className: 'geoMap__locationTooltip',
                 });
+            describeMapMarker(marker.getElement(), location.label);
         }
     }, [reference, excludedLocationId, loadError, ready]);
 
@@ -265,7 +312,7 @@ export default function GeoMap({
     }, [showReferenceMarkers, ready]);
 
     return (
-        <div className={joinClassNames('geoMap', lockedMessage ? 'geoMap--locked' : undefined)}>
+        <div className={joinClassNames('geoMap', lock ? 'geoMap--locked' : undefined)}>
             <div className="geoMap__heading">
                 <h3>{title}</h3>
                 {editable ? <span>{hint}</span> : null}
@@ -277,6 +324,7 @@ export default function GeoMap({
                 role="region"
                 aria-label={title}
                 aria-busy={!loadError && !ready}
+                inert={locked}
             />
             {loadError ? (
                 <p className="geoMap__message" role="status">
@@ -298,9 +346,18 @@ export default function GeoMap({
                     {error}
                 </p>
             ) : null}
-            {lockedMessage ? (
-                <div className="geoMap__lock">
-                    <span>{lockedMessage}</span>
+            {lock ? (
+                <div
+                    className={joinClassNames(
+                        'geoMap__lock',
+                        lock.leaving ? 'geoMap__lock--leaving' : undefined,
+                    )}
+                    role="status"
+                    aria-hidden={lock.leaving || undefined}
+                >
+                    <SweetAlertWarningIcon leaving={lock.leaving} />
+                    <p className="geoMap__lockTitle">{lock.title}</p>
+                    <p className="geoMap__lockText">{lock.message}</p>
                 </div>
             ) : null}
         </div>
