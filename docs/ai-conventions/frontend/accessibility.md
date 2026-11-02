@@ -64,6 +64,7 @@ Regras de uso:
 - **Checkbox:** `Forms/ChoiceControl` usa o checkbox nativo e alterna somente com Espaço, como define o padrão de checkbox da WAI-ARIA e como fazem o gov.br e os leitores de tela. Não adicione Enter: usuários de teclado esperam o Espaço, e o Enter fica reservado a ativar botões e links e a enviar formulários.
 - **Interruptor:** `Forms/ToggleControl` expõe `role="switch"` e alterna com Espaço e Enter.
 - **Radio:** mantém o padrão nativo. As setas mudam a opção do grupo e Espaço marca a opção focada.
+- **Editor de texto:** `Forms/SummernoteEditor` não captura Tab nem Shift + Tab, que movem o foco como em qualquer campo (WCAG 2.1.2). O recuo fica em Ctrl + ] e Ctrl + [ (Command no Mac).
 
 ## Foco não encoberto
 

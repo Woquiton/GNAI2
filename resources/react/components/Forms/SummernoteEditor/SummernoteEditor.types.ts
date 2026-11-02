@@ -32,5 +32,8 @@ export interface SummernoteRuntime {
         element: Document,
         key: 'events',
     ) => Record<string, Array<{ handler: (...args: unknown[]) => unknown }>> | undefined;
-    summernote: { lang: Record<string, Record<string, Record<string, string>>> };
+    summernote: {
+        lang: Record<string, Record<string, Record<string, string>>>;
+        options: { keyMap: Record<'pc' | 'mac', Record<string, string>> };
+    };
 }

@@ -55,6 +55,14 @@ export function useSummernote(
             runtime = (window as Window & { jQuery?: SummernoteRuntime }).jQuery;
             if (!runtime) throw new Error('jQuery indisponível.');
             completeSummernoteLocale(runtime);
+            // Tab e Shift + Tab saem do editor como em qualquer campo (WCAG 2.1.2), em vez de
+            // inserir recuo. O recuo segue pelos atalhos Ctrl + ] e Ctrl + [.
+            const withoutTab = (map: Record<string, string>): Record<string, string> =>
+                Object.fromEntries(
+                    Object.entries(map).filter(([key]) => key !== 'TAB' && key !== 'SHIFT+TAB'),
+                );
+            const { keyMap } = runtime.summernote.options;
+            const keyMapWithoutTab = { pc: withoutTab(keyMap.pc), mac: withoutTab(keyMap.mac) };
             holder = document.createElement('div');
             holder.innerHTML = initialValue.current;
             root.append(holder);
@@ -75,6 +83,7 @@ export function useSummernote(
                     height: mode === 'standard' ? height : undefined,
                     airMode: mode === 'inline',
                     focus: false,
+                    keyMap: keyMapWithoutTab,
                     ...(toolbar ? { toolbar } : {}),
                     onChange: (html: string): void => {
                         if (!cancelled && !state.current.disabled) callback.current?.(html);

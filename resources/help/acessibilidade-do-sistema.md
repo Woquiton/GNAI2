@@ -2,7 +2,7 @@
 titulo: Acessibilidade do sistema
 resumo: Como usar o Gnai pelo teclado, com a barra de atalhos no padrão gov.br, as teclas de acesso, o foco reforçado e a navegação do menu lateral.
 categoria: Primeiros passos
-palavras-chave: acessibilidade, teclado, sem mouse, atalhos, teclas de atalho, teclas de acesso, accesskey, alt 1, barra de acessibilidade, gov.br, emag, pular para o conteúdo, ir para o conteúdo, ir para o menu, ir para o rodapé, foco, contorno do foco, navegação por teclado, tab, leitor de tela, nvda, menu recolhido, submenu, movimento reduzido, animações
+palavras-chave: acessibilidade, teclado, sem mouse, atalhos, teclas de atalho, teclas de acesso, accesskey, alt 1, barra de acessibilidade, gov.br, emag, pular para o conteúdo, ir para o conteúdo, ir para o menu, ir para o rodapé, foco, contorno do foco, navegação por teclado, tab, editor de texto, recuo, leitor de tela, nvda, menu recolhido, submenu, movimento reduzido, animações
 ordem: 5
 ---
 
@@ -66,6 +66,12 @@ Para recolher ou expandir o menu, veja [Recolher ou abrir o menu lateral](/ajuda
 - **Interruptores (liga/desliga)**: alterne com **Espaço** ou **Enter**.
 - **Opções de escolha única**: use as **setas** para mudar a opção do grupo.
 - **Enter** envia o formulário ou ativa o botão com foco.
+
+## Sair do editor de texto com o teclado
+
+Nos campos com barra de formatação, como parecer e descrição, **Tab** sai do editor e segue para o próximo item da página. **Shift** + **Tab** volta ao item anterior.
+
+Para recuar um parágrafo ou um item de lista, use **Ctrl** + **]**. Para desfazer o recuo, use **Ctrl** + **[**. No Mac, troque **Ctrl** por **Command**.
 
 ## O foco fica escondido atrás das barras fixas?
 

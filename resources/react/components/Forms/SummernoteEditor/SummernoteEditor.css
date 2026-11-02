@@ -75,9 +75,16 @@
 :is(.summernoteEditor, .summernoteOverlay) .note-editable {
     outline: none;
 }
-:is(.summernoteEditor, .summernoteOverlay) .note-editable:focus-visible {
-    outline: 2px solid var(--summernote-accent);
-    outline-offset: 3px;
+/*
+ * A área de edição corta o que passa da borda: o anel de teclado é desenhado por dentro do texto
+ * e do código-fonte. No fundo escuro do código-fonte, o anel usa o lilás claro para ter contraste.
+ */
+:is(.summernoteEditor, .summernoteOverlay) .note-editing-area {
+    --ui-focus-keyboard-offset: -3px;
+    --ui-focus-keyboard-shadow: none;
+}
+:is(.summernoteEditor, .summernoteOverlay) .note-codable {
+    --ui-focus-keyboard-color: var(--ui-sidebar-accent);
 }
 .summernoteBackdrop {
     position: fixed;
@@ -101,4 +108,10 @@
 }
 .summernoteEditor .note-editor.fullscreen {
     position: fixed;
+}
+/* Bloco de código com rolagem própria vira parada extra do Tab no Chrome: dentro do editor ele quebra linha. */
+:is(.summernoteEditor, .summernoteOverlay) .note-editable pre {
+    overflow: visible;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
