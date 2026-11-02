@@ -30,11 +30,6 @@
     font-size: var(--ui-font-size-sm);
 }
 
-.teacherDetails__registration {
-    color: inherit;
-    font-weight: 700;
-}
-
 .teacherDetails__subheading {
     margin: var(--ui-space-7) 0 var(--ui-space-4);
     color: var(--ui-color-form-label);

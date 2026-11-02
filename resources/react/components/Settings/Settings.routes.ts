@@ -6,8 +6,10 @@ const base = '/configuracoes';
 export const settingsUrls = {
     index: base,
     mail: `${base}/email`,
+    pdf: `${base}/pdfs`,
     mailTest: `${base}/email/teste`,
     backup: `${base}/backups`,
+    teacherAccess: `${base}/acesso-dos-professores`,
 };
 
 /** Destino dos botões "Cancelar" das configurações. */

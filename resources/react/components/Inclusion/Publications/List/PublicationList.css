@@ -1,5 +1,4 @@
-.publicationIndex__featured,
-.publicationIndex__schedule {
+.publicationIndex__featured {
     display: block;
     color: var(--ui-color-text-muted);
     font-size: 12px;

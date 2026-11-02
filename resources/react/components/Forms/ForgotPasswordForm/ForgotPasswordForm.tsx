@@ -17,8 +17,8 @@ export default function ForgotPasswordForm(): React.JSX.Element {
             }}
         >
             <InlineAlert variant="info">
-                Digite seu <b>e-mail institucional</b> para receber as instruções de recuperação de
-                acesso ao Gnai.
+                Digite o <b>e-mail cadastrado na sua conta</b> para receber as instruções de
+                recuperação de acesso ao Gnai.
             </InlineAlert>
             <InputAction
                 type="email"
@@ -27,7 +27,7 @@ export default function ForgotPasswordForm(): React.JSX.Element {
                 autoFocus
                 autoComplete="email"
                 placeholder="Digite seu e-mail"
-                aria-label="E-mail institucional"
+                aria-label="E-mail cadastrado na sua conta"
                 value={form.data.email}
                 onChange={(event) => form.setData('email', event.target.value)}
                 invalid={!!form.errors.email}

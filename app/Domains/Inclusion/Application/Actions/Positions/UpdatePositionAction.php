@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\Application\Actions\Positions;
 
 use App\Domains\Auth\Application\Permissions\PermissionCache;
 use App\Domains\Inclusion\Application\Data\Positions\UpdatePositionData;
+use App\Domains\Inclusion\Application\Queries\Positions\PositionHasProfessionalsQuery;
 use App\Domains\Inclusion\Domain\DTOs\Positions\UpdatePositionDTO;
 use App\Domains\Inclusion\Domain\Models\Position;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ final readonly class UpdatePositionAction
 {
     public function __construct(
         private PermissionCache $permissionCache,
+        private PositionHasProfessionalsQuery $hasProfessionals,
     ) {}
 
     /**
@@ -26,6 +28,17 @@ final readonly class UpdatePositionAction
             $lockedPosition = Position::query()
                 ->lockForUpdate()
                 ->findOrFail($position->getKey());
+
+            if ($data->isActive !== null && $data->isActive !== $lockedPosition->is_active) {
+                if ($data->isActive) {
+                    $lockedPosition->activate();
+                } else {
+                    $lockedPosition->ensureCanBeDeactivated(
+                        $this->hasProfessionals->execute($lockedPosition),
+                    );
+                    $lockedPosition->deactivate();
+                }
+            }
 
             $positionDTO = new UpdatePositionDTO(
                 name: $data->name,

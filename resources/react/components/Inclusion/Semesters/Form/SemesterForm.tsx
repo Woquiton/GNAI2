@@ -1,4 +1,3 @@
-import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import FieldError from '@/components/Forms/FormField/FieldError';
 import { fieldErrorId } from '@/components/Forms/FormField/fieldDescription';
@@ -6,6 +5,7 @@ import { DateInputField, TextInputField } from '@/components/Forms/FormFields/Fo
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { semesterUrls } from '../Semesters.routes';
@@ -46,7 +46,7 @@ export default function SemesterForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="semester-identification"
-                        title="Identificação do Período"
+                        title="Identificação"
                         variant="inline"
                         iconClass="fa fa-calendar"
                     >
@@ -77,15 +77,6 @@ export default function SemesterForm({
                                 error={errors.term}
                                 onChange={(value) => form.setData('term', value)}
                             />
-                        </FormGrid>
-                    </FormSection>
-                    <FormSection
-                        id="semester-duration"
-                        title="Duração do Semestre"
-                        variant="inline"
-                        iconClass="fa fa-clock-o"
-                    >
-                        <FormGrid columns={2}>
                             <DateInputField
                                 id="semester-start-date"
                                 name="start_date"
@@ -105,9 +96,8 @@ export default function SemesterForm({
                                 onChange={(date) => form.setData('end_date', date)}
                             />
                             <FormGridWide>
-                                <ChoiceControl
-                                    type="checkbox"
-                                    tone="purple"
+                                <ToggleControl
+                                    size="small"
                                     id="semester-is-current"
                                     name="is_current"
                                     label={currentLabel}

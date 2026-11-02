@@ -17,10 +17,7 @@ export default function InclusionDeficienciesShowPage({
     const removal = useConfirmedAction<typeof deficiency>({
         failureText: 'Não foi possível excluir o perfil de atendimento. Tente novamente.',
     });
-    const statusChange = useConfirmedAction<typeof deficiency>({
-        failureText: 'Não foi possível alterar o status do perfil de atendimento. Tente novamente.',
-    });
-    const busy = removal.processing || statusChange.processing;
+    const busy = removal.processing;
 
     return (
         <BusinessPage
@@ -33,13 +30,8 @@ export default function InclusionDeficienciesShowPage({
             <DeficiencyDetails deficiency={deficiency} descriptionHtml={descriptionHtml} />
             <DeficiencyDetailsActions
                 deficiencyId={deficiency.id}
-                active={deficiency.is_active}
                 permissions={can}
                 busy={busy}
-                status={statusChange.processing ? 'Alterando status…' : undefined}
-                onToggleActive={() =>
-                    statusChange.submit('patch', deficiencyUrls.toggleActive(deficiency.id))
-                }
                 onDelete={() => removal.open(deficiency)}
             />
             <DeficiencyDeleteModal

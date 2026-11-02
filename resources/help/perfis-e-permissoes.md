@@ -1,8 +1,8 @@
 ---
 titulo: Perfis e permissões: quem vê o quê no Gnai
-resumo: Como funciona o controle de acesso do Gnai, como conceder permissões pelos cargos, pelas permissões globais dos professores ou pelo acesso de administrador, e por que um item do menu pode não aparecer.
+resumo: Como funciona o controle de acesso do Gnai, como conceder permissões pelos cargos ou pelo acesso de administrador, e por que um item do menu pode não aparecer.
 categoria: Gestão do núcleo
-palavras-chave: permissão, permissões, perfil de acesso, perfis, acesso, controle de acesso, autorização, quem pode, liberar acesso, dar acesso, conceder permissão, retirar permissão, cargo, permissões do cargo, administrador, administrador interno, administrador superior, admin, professor, permissões globais, menu não aparece, item sumiu do menu, não vejo o menu, botão não aparece, acesso restrito, sem permissão, 403, entrar como, personificar, navegar como outro usuário, somente leitura, visualizar próprios, visualizar todos
+palavras-chave: permissão, permissões, perfil de acesso, perfis, acesso, controle de acesso, autorização, quem pode, liberar acesso, dar acesso, conceder permissão, retirar permissão, cargo, permissões do cargo, administrador, administrador interno, administrador superior, admin, professor, portal do professor, menu não aparece, item sumiu do menu, não vejo o menu, botão não aparece, acesso restrito, sem permissão, 403, entrar como, personificar, navegar como outro usuário, somente leitura, visualizar próprios, visualizar todos
 ordem: 50
 ---
 
@@ -13,7 +13,7 @@ No Gnai, o que cada pessoa vê e pode fazer depende do tipo de conta e das permi
 | Conta | Como é criada | O que pode fazer |
 | --- | --- | --- |
 | **Profissional da equipe** | Ao cadastrar o profissional em [Equipe](/ajuda/equipe). | O que as permissões do seu **cargo** permitem. |
-| **Professor** | Ao cadastrar o professor em [Professores](/ajuda/professores). | Usa o Portal do Professor e recebe as **permissões globais dos professores**. |
+| **Professor** | Ao cadastrar o professor em [Professores](/ajuda/professores). | Usa o Portal do Professor para acessar os alunos e as adaptações vinculados a ele. |
 | **Administrador interno** | Profissional marcado como administrador da unidade. | Tem acesso a todas as funcionalidades, independentemente do cargo. |
 | **Administrador superior** | Criado pela equipe técnica no servidor do Gnai. | Tem acesso total e é o único que concede ou retira o acesso de administrador. |
 
@@ -31,14 +31,11 @@ As permissões costumam vir em conjuntos por área: **Visualizar** (abre a lista
 
 > **Importante:** salvar as permissões de um cargo atualiza o acesso na hora. Já a troca do cargo de um profissional pode levar até uma hora para refletir; se precisar que valha imediatamente, salve novamente o cargo de destino.
 
-## Conceder permissões aos professores
+## Como funciona o acesso dos professores?
 
-Professores não têm cargo. Eles usam o Portal do Professor para consultar seus alunos e preencher as adaptações do PEI, e recebem as permissões globais, que valem para todas as contas de professor ao mesmo tempo:
+Professores acessam o Portal do Professor com senha ou link enviado por e-mail. O portal verifica os vínculos com as disciplinas dos PEIs vigentes para permitir a consulta dos alunos e a edição das próprias adaptações. Não há concessão de permissões globais para contas de professor.
 
-1. Acesse **Gestão do núcleo → Professores** e clique em **Permissões**.
-2. Marque as permissões desejadas e clique em **Salvar**.
-
-Veja [Definir as permissões globais dos professores](/ajuda/professores#definir-as-permissoes-globais-dos-professores).
+Se a mesma conta também estiver vinculada a um profissional da equipe, suas permissões nas áreas internas continuam sendo definidas pelo cargo desse profissional. Veja [Professores](/ajuda/professores).
 
 ## Tornar um profissional administrador
 
@@ -80,7 +77,7 @@ O administrador superior pode usar **Entrar como**, na visualização de um prof
 | **Somente leitura** | Apenas consulta. Cadastros, edições e exclusões ficam bloqueados. |
 | **Acesso completo** | Usar o sistema livremente em nome do usuário. As alterações são auditadas com o nome do administrador. |
 
-Durante o uso, o topo da tela indica a conta em uso; clique em **Voltar para a minha conta** para encerrar.
+Durante o uso, o topo da tela indica a conta em uso e o modo selecionado, tanto na área da equipe quanto no Portal do Professor. Use o ícone de retorno **Voltar para a minha conta** para encerrar.
 
 ## Dúvidas comuns
 

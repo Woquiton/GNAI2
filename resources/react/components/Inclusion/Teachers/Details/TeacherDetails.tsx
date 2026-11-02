@@ -36,7 +36,7 @@ export default function TeacherDetails({
                 </div>
                 <DetailGrid columns={3}>
                     <DetailField label="Nome Completo">
-                        <strong>{person.name}</strong>
+                        {person.name}
                     </DetailField>
                     <DetailField label="CPF / Documento">{person.document || '---'}</DetailField>
                     <DetailField label="Data de Nascimento">
@@ -61,7 +61,7 @@ export default function TeacherDetails({
             >
                 <DetailGrid columns={3}>
                     <DetailField label="Matrícula">
-                        <code className="teacherDetails__registration">{teacher.registration}</code>
+                        {teacher.registration}
                     </DetailField>
                     <DetailField label="Data de Cadastro">{display.createdAt || '---'}</DetailField>
                 </DetailGrid>

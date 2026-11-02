@@ -26,6 +26,7 @@ final readonly class CreatePositionAction
             $positionDTO = new CreatePositionDTO(
                 name: $data->name,
                 description: $data->description,
+                isActive: $data->isActive,
             );
 
             $position = Position::register($positionDTO);

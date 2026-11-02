@@ -34,9 +34,24 @@
 }
 
 .impersonationIndicator__leave {
+    display: block;
+    padding: 0 15px;
+    color: var(--ui-color-surface);
+    line-height: var(--ui-topbar-height);
+    text-align: center;
     border: 0;
     background: transparent;
     cursor: pointer;
+}
+
+.impersonationIndicator__leave i {
+    font-size: 16px;
+}
+
+.impersonationIndicator__leave:hover {
+    background-color: color-mix(in srgb, var(--ui-color-surface) 10%, transparent);
+    color: var(--ui-color-surface);
+    text-decoration: none;
 }
 
 .impersonationIndicator__leave:focus-visible {

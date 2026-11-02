@@ -30,3 +30,18 @@ export interface BackupSettingsProps {
     timezone: string;
     canUpdate: boolean;
 }
+
+export interface TeacherAccessSettingsProps {
+    domains: string[];
+    canUpdate: boolean;
+}
+
+export interface PdfHeaderSettingsProps {
+    pdfHeader: {
+        institution_name: string;
+        issuing_unit: string | null;
+        details: string | null;
+        logo_url: string | null;
+    };
+    canUpdate: boolean;
+}

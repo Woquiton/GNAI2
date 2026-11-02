@@ -28,11 +28,11 @@ Registram as condições, características e necessidades educacionais dos estud
 | **Código CID** | Opcional, até 20 caracteres, por exemplo "F84.0". Não pode repetir o de outro perfil. |
 | **Descrição / Detalhes** | Texto livre com formatação. |
 
-O perfil é criado ativo.
+O controle **Perfil Ativo**, abaixo de **Descrição / Detalhes** na seção **Identificação**, vem ligado no cadastro e pode ser alterado antes de salvar.
 
 ### Ativar, desativar ou excluir
 
-Na visualização do perfil, use **Desativar** (ou **Ativar**) e **Excluir**. Perfis vinculados a algum aluno não podem ser desativados nem excluídos; o sistema mostra "Este perfil está vinculado a um ou mais alunos e não pode ser desativado."
+Para ativar ou desativar, clique em **Editar**, altere **Perfil Ativo** e clique em **Salvar**. Para excluir, use **Excluir** na visualização do perfil. Perfis vinculados a algum aluno não podem ser desativados nem excluídos; o sistema mostra "Este perfil está vinculado a um ou mais alunos e não pode ser desativado."
 
 ## Cargos
 
@@ -43,17 +43,17 @@ Cargos descrevem as funções da equipe (por exemplo, Professor AEE ou Psicólog
 ### Cadastrar um cargo e escolher suas permissões
 
 1. Acesse **Gestão do núcleo → Cadastros → Cargos** e clique em **Cadastrar cargo**.
-2. Em **Informações do Cargo**, preencha **Nome do Cargo** (obrigatório) e, se quiser, a **Descrição**.
-3. Em **Permissões do Cargo**, marque as permissões. Elas estão agrupadas por área (Alunos, PEI, Itens, Relatórios...), e cada grupo tem a opção **Selecionar Todas**.
+2. Em **Identificação**, preencha **Nome do Cargo** (obrigatório) e, se quiser, a **Descrição**.
+3. Em **Permissões do Cargo**, marque as permissões. Use **Selecionar todas as permissões**, no topo, para marcar ou desmarcar todas de uma vez. Elas estão agrupadas por área (Alunos, PEI, Itens, Relatórios...), e cada grupo também tem a opção **Selecionar Todas**. Você pode ajustar cada permissão individualmente depois.
 4. Clique em **Salvar**. O sistema mostra "Cargo criado com sucesso!".
 
-O cargo é criado ativo. Os nomes das permissões combinam a ação e a área, por exemplo **Visualizar Alunos**, **Criar Alunos**, **Editar Alunos**, **Excluir Alunos** ou **Gerar PDF Itens**.
+O controle **Cargo Ativo**, abaixo de **Descrição**, vem ligado no cadastro e pode ser alterado antes de salvar. Os nomes das permissões combinam a ação e a área, por exemplo **Visualizar Alunos**, **Criar Alunos**, **Editar Alunos**, **Excluir Alunos** ou **Gerar PDF Itens**.
 
 > **Importante:** alterar as permissões de um cargo vale imediatamente para todos os profissionais que têm esse cargo.
 
 ### Ativar, desativar ou excluir
 
-Na visualização do cargo, use **Desativar** (ou **Ativar**) e **Excluir**. Cargos vinculados a algum profissional não podem ser desativados nem excluídos; troque antes o cargo desses profissionais. As mensagens são "Este cargo está vinculado a um ou mais profissionais e não pode ser desativado." e "Este cargo está vinculado a um ou mais profissionais e não pode ser removido."
+Para ativar ou desativar, clique em **Editar**, altere **Cargo Ativo** e clique em **Salvar**. Para excluir, use **Excluir** na visualização do cargo. Cargos vinculados a algum profissional não podem ser desativados nem excluídos; troque antes o cargo desses profissionais. As mensagens são "Este cargo está vinculado a um ou mais profissionais e não pode ser desativado." e "Este cargo está vinculado a um ou mais profissionais e não pode ser removido."
 
 ## Semestres
 
@@ -64,14 +64,14 @@ Os semestres organizam os períodos letivos. O **semestre atual** é o período 
 ### Cadastrar um semestre
 
 1. Acesse **Gestão do núcleo → Cadastros → Semestres** e clique em **Cadastrar semestre**.
-2. Preencha os campos e clique em **Salvar**. O sistema mostra "Semestre criado com sucesso."
+2. Na seção **Identificação**, preencha os campos e clique em **Salvar**. O sistema mostra "Semestre criado com sucesso."
 
 | Campo | Observação |
 | --- | --- |
 | **Ano Letivo** (obrigatório) | Entre 1901 e 2155. |
 | **Período** (obrigatório) | 1 ou 2. Não pode haver dois semestres com o mesmo ano e período. |
 | **Data de Início** e **Data de Término** | Opcionais, mas, se uma for informada, a outra também precisa ser. O término não pode ser anterior ao início. |
-| **Definir este como o semestre atual do sistema** | Marca este semestre como atual; o atual anterior passa a ser histórico. |
+| **Definir este como o semestre atual do sistema** | Toggle que define este semestre como atual; o atual anterior passa a ser histórico. |
 
 O rótulo do semestre é gerado automaticamente a partir do ano e do período, por exemplo "2026.1".
 
@@ -92,14 +92,14 @@ O catálogo de disciplinas (matérias) da instituição.
 ### Cadastrar uma disciplina
 
 1. Acesse **Gestão do núcleo → Cadastros → Disciplinas** e clique em **Cadastrar disciplina**.
-2. Preencha **Nome da Disciplina** (obrigatório, até 255 caracteres), **Descrição** e **Status** (obrigatório; já vem como **Ativo**).
+2. Preencha **Nome da Disciplina** (obrigatório, até 255 caracteres), **Descrição** e **Disciplina Ativa** (já vem ligado).
 3. Clique em **Salvar**. O sistema mostra "Disciplina cadastrada com sucesso."
 
 Para que a disciplina possa ser usada, inclua-a na matriz de um curso (veja [Cursos](#cursos)). A visualização da disciplina mostra os cursos a que ela está vinculada.
 
 ### Inativar ou excluir uma disciplina
 
-- **Inativar**: edite a disciplina e mude o **Status** para **Inativo**. Não é possível inativar uma disciplina que ainda está na matriz de algum curso ou atribuída a professores.
+- **Inativar**: edite a disciplina e desligue **Disciplina Ativa** e clique em **Salvar**. Não é possível inativar uma disciplina que ainda está na matriz de algum curso ou atribuída a professores.
 - **Excluir**: use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando a disciplina tem registros no histórico de cursos de alunos, está atribuída a professores ou está vinculada a cursos.
 
 Para liberar a disciplina, retire-a antes da matriz dos cursos (editando o curso) e das matrizes dos professores (em **Professores → Gerenciar Disciplinas**).
@@ -117,11 +117,11 @@ Os cursos (e séries) da instituição, cada um com sua **matriz curricular**, i
 3. Em **Disciplinas do curso**, marque as disciplinas que compõem a matriz. Use **Buscar disciplina** para filtrar a lista; só aparecem disciplinas ativas.
 4. Clique em **Salvar**. O sistema mostra "Curso cadastrado com sucesso."
 
-O curso é criado ativo. Na edição aparece também o campo **Status do Curso** (obrigatório), com as opções **Ativo** e **Inativo**, e a matriz pode ser alterada a qualquer momento.
+O curso é criado ativo. Na edição aparece também o toggle **Curso Ativo**, e a matriz pode ser alterada a qualquer momento.
 
 ### Inativar ou excluir um curso
 
-- **Inativar**: edite o curso e mude o **Status do Curso** para **Inativo**. Não é possível quando há alunos vinculados ao curso ("Este curso está vinculado a um ou mais alunos e não pode ser desativado.").
+- **Inativar**: edite o curso e desligue **Curso Ativo** e clique em **Salvar**. Não é possível quando há alunos vinculados ao curso ("Este curso está vinculado a um ou mais alunos e não pode ser desativado.").
 - **Excluir**: use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando há alunos vinculados ao curso ("Este curso está vinculado a um ou mais alunos e não pode ser excluído.").
 
 ## Dúvidas comuns

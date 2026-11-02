@@ -22,3 +22,15 @@ Route::get('/backups', [SettingsController::class, 'editBackup'])
 
 Route::put('/backups', [SettingsController::class, 'updateBackup'])
     ->name('backup.update')->middleware('can:setting.update');
+
+Route::get('/acesso-dos-professores', [SettingsController::class, 'editTeacherAccess'])
+    ->name('teacher-access.edit')->middleware('can:setting.view');
+
+Route::put('/acesso-dos-professores', [SettingsController::class, 'updateTeacherAccess'])
+    ->name('teacher-access.update')->middleware('can:setting.update');
+
+Route::get('/pdfs', [SettingsController::class, 'editPdf'])
+    ->name('pdf.edit')->middleware('can:setting.view');
+
+Route::put('/pdfs', [SettingsController::class, 'updatePdf'])
+    ->name('pdf.update')->middleware('can:setting.update');

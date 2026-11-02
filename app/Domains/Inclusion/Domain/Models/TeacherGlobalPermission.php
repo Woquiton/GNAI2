@@ -11,7 +11,7 @@ use App\Domains\Auth\Domain\Models\Permission;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** Permissão concedida a todos os professores. */
+/** Modelo preservado para consultar registros históricos da matriz descontinuada. */
 final class TeacherGlobalPermission extends Model implements Auditable
 {
     use AuditsChanges;
@@ -42,30 +42,6 @@ final class TeacherGlobalPermission extends Model implements Auditable
     public function auditDescription(): string
     {
         return 'a permissão global de professores '.($this->permission?->name ?? "#{$this->permission_id}");
-    }
-
-    /**
-     * Concede e revoga registro a registro para cada alteração entrar na auditoria.
-     *
-     * @param  list<int|string>  $permissionIds
-     */
-    public static function syncPermissions(array $permissionIds): void
-    {
-        $permissionIds = array_values(array_unique(array_map('intval', $permissionIds)));
-
-        self::query()
-            ->whereNotIn('permission_id', $permissionIds)
-            ->get()
-            ->each(fn (self $permission) => $permission->delete());
-
-        $currentPermissionIds = self::query()
-            ->pluck('permission_id')
-            ->map(fn (mixed $id): int => (int) $id)
-            ->all();
-
-        foreach (array_diff($permissionIds, $currentPermissionIds) as $permissionId) {
-            self::query()->create(['permission_id' => $permissionId]);
-        }
     }
 
     public function permission(): BelongsTo

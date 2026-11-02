@@ -1,0 +1,32 @@
+.pdfHeaderPreview {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-5);
+    padding: var(--ui-space-5);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+    color: var(--ui-color-text);
+}
+
+.pdfHeaderPreview img {
+    width: 85px;
+    max-height: 70px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.pdfHeaderPreview__text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.pdfHeaderPreview__text p {
+    margin: var(--ui-space-1) 0 0;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 575px) {
+    .pdfHeaderPreview {
+        flex-wrap: wrap;
+    }
+}

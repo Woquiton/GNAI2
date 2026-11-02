@@ -501,7 +501,7 @@ export default function WebsiteBuilderForm({
                         href={publicUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        tone="cancel"
+                        tone="dark-blue"
                         leftIconClass="fa fa-external-link"
                         label="Ver site"
                         title="Abrir o site publicado em nova aba"

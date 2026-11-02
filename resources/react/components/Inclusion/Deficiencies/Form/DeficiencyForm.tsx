@@ -3,6 +3,7 @@ import { RichTextField, TextInputField } from '@/components/Forms/FormFields/For
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { deficiencyUrls } from '../Deficiencies.routes';
@@ -43,9 +44,9 @@ export default function DeficiencyForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="deficiency-information"
-                        title={editing ? 'Atualizar Dados' : 'Identificação'}
+                        title="Identificação"
                         variant="inline"
-                        iconClass="fa fa-universal-access"
+                        iconClass="fa fa-list-alt"
                     >
                         <FormGrid columns={2}>
                             <TextInputField
@@ -83,6 +84,15 @@ export default function DeficiencyForm({
                                     onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
+                            <ToggleControl
+                                id="deficiency-active"
+                                name="is_active"
+                                size="small"
+                                label="Perfil Ativo"
+                                checked={form.data.is_active}
+                                disabled={form.processing}
+                                onChange={(checked) => form.setData('is_active', checked)}
+                            />
                         </FormGrid>
                     </FormSection>
                 </fieldset>

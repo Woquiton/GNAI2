@@ -1,3 +1,7 @@
+.positionPermissions__selectAll {
+    margin: 0 0 var(--ui-space-4);
+}
+
 .positionPermissions__groups {
     display: flex;
     flex-direction: column;

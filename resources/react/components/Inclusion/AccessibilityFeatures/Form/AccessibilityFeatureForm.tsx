@@ -52,7 +52,7 @@ export default function AccessibilityFeatureForm({
                         id="accessibility-feature-identification"
                         title="Identificação"
                         variant="inline"
-                        iconClass="fa fa-universal-access"
+                        iconClass="fa fa-list-alt"
                     >
                         <FormGrid columns={2}>
                             <FormGridWide>

@@ -1,9 +1,9 @@
 import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import EmptyText from '@/components/UI/EmptyText/EmptyText';
 import type { GroupedPositionPermissions, PositionPermission } from '../Positions.types';
 import './PositionPermissionsFields.css';
-import EmptyText from '@/components/UI/EmptyText/EmptyText';
 
 interface PositionPermissionsFieldsProps {
     permissions: GroupedPositionPermissions;
@@ -62,6 +62,7 @@ function PermissionGroup({
                 </h3>
                 <ChoiceControl
                     type="checkbox"
+                    tone="purple"
                     id={`position-group-${slug}-all`}
                     label="Selecionar Todas"
                     aria-label={`Selecionar todas as permissões de ${label}`}
@@ -77,6 +78,7 @@ function PermissionGroup({
                         <ChoiceControl
                             key={permission.id}
                             type="checkbox"
+                            tone="purple"
                             id={`position-permission-${permission.id}`}
                             name="permissions[]"
                             label={permission.name}
@@ -101,6 +103,8 @@ export default function PositionPermissionsFields({
     onToggle,
 }: PositionPermissionsFieldsProps): React.JSX.Element {
     const groups = Object.entries(permissions);
+    const allIds = [...new Set(groups.flatMap(([, items]) => items.map((item) => item.id)))];
+    const allChecked = allIds.length > 0 && allIds.every((id) => selected.includes(id));
     const content = groups.length ? (
         <div className="positionPermissions__groups">
             {groups.map(([group, items], index) => (
@@ -134,6 +138,18 @@ export default function PositionPermissionsFields({
                 >
                     {error}
                 </p>
+            ) : null}
+            {allIds.length > 0 ? (
+                <ChoiceControl
+                    type="checkbox"
+                    tone="purple"
+                    id="position-permissions-all"
+                    label="Selecionar todas as permissões"
+                    checked={allChecked}
+                    disabled={disabled}
+                    className="positionPermissions__selectAll"
+                    onChange={(checked) => onToggle(allIds, checked)}
+                />
             ) : null}
             {content}
         </FormSection>

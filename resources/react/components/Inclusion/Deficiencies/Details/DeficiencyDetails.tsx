@@ -6,7 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { DeficiencyRecord } from '../Deficiencies.types';
 
-/** Identificação clínica e descrição técnica de um perfil de atendimento. */
+/** Identificação e descrição de um perfil de atendimento. */
 export default function DeficiencyDetails({
     deficiency,
     descriptionHtml,
@@ -18,13 +18,13 @@ export default function DeficiencyDetails({
         <CardBox>
             <FormSection
                 id="deficiency-show-identification"
-                title="Identificação Clínica"
+                title="Identificação"
                 variant="inline"
-                iconClass="fa fa-id-card-o"
+                iconClass="fa fa-list-alt"
             >
                 <DetailGrid>
                     <DetailField label="Nome do Perfil">
-                        <strong>{deficiency.name}</strong>
+                        {deficiency.name}
                     </DetailField>
                     <DetailField label="Código CID">
                         {deficiency.cid_code || 'Não informado'}
@@ -34,16 +34,7 @@ export default function DeficiencyDetails({
                             {deficiency.is_active ? 'Ativa' : 'Inativa'}
                         </TableLabel>
                     </DetailField>
-                </DetailGrid>
-            </FormSection>
-            <FormSection
-                id="deficiency-show-description"
-                title="Descrição e Observações Técnicas"
-                variant="inline"
-                iconClass="fa fa-file-text-o"
-            >
-                <DetailGrid>
-                    <DetailField label="Descrição Detalhada" wide>
+                    <DetailField label="Descrição / Detalhes" wide>
                         <RichTextContent html={descriptionHtml} />
                     </DetailField>
                 </DetailGrid>

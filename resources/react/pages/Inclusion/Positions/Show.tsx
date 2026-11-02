@@ -17,10 +17,7 @@ export default function InclusionPositionsShowPage({
     const removal = useConfirmedAction<typeof position>({
         failureText: 'Não foi possível excluir o cargo. Tente novamente.',
     });
-    const statusChange = useConfirmedAction<typeof position>({
-        failureText: 'Não foi possível alterar o status do cargo. Tente novamente.',
-    });
-    const busy = removal.processing || statusChange.processing;
+    const busy = removal.processing;
 
     return (
         <BusinessPage
@@ -33,13 +30,8 @@ export default function InclusionPositionsShowPage({
             <PositionDetails position={position} descriptionHtml={descriptionHtml} />
             <PositionDetailsActions
                 positionId={position.id}
-                active={position.is_active}
                 permissions={can}
                 busy={busy}
-                status={statusChange.processing ? 'Alterando status…' : undefined}
-                onToggleActive={() =>
-                    statusChange.submit('patch', positionUrls.toggleActive(position.id))
-                }
                 onDelete={() => removal.open(position)}
             />
             <PositionDeleteModal

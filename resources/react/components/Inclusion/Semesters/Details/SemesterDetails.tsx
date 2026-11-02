@@ -6,7 +6,6 @@ import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import { semesterLabel } from '../Semesters.constants';
 import type { SemesterRecord } from '../Semesters.types';
-import './SemesterDetails.css';
 
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 
@@ -42,15 +41,13 @@ export default function SemesterDetails({
         <CardBox>
             <FormSection
                 id="semester-show-identification"
-                title="Identificação do Período"
+                title="Identificação"
                 variant="inline"
                 iconClass="fa fa-calendar"
             >
                 <DetailGrid>
                     <DetailField label="Rótulo / Identificador">
-                        <strong className="semesterDetails__label">
-                            {semesterLabel(semester)}
-                        </strong>
+                        {semesterLabel(semester)}
                     </DetailField>
                     <DetailField label="Ano Letivo">{semester.year}</DetailField>
                     <DetailField label="Etapa (Termo)">{semester.term}º Semestre</DetailField>
@@ -61,15 +58,6 @@ export default function SemesterDetails({
                                 : 'Período encerrado / histórico'}
                         </TableLabel>
                     </DetailField>
-                </DetailGrid>
-            </FormSection>
-            <FormSection
-                id="semester-show-duration"
-                title="Duração do Semestre"
-                variant="inline"
-                iconClass="fa fa-clock-o"
-            >
-                <DetailGrid columns={3}>
                     <DetailField label="Data de Início">
                         {semesterDate(semester.start_date)}
                     </DetailField>

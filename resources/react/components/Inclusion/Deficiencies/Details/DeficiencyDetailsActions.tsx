@@ -5,24 +5,20 @@ import type { DeficiencyDetailsPermissions } from '../Deficiencies.types';
 
 interface DeficiencyDetailsActionsProps {
     deficiencyId: number;
-    active: boolean;
     permissions: DeficiencyDetailsPermissions;
-    /** Exclusão ou troca de status em andamento. */
+    /** Exclusão em andamento. */
     busy: boolean;
     /** Texto de processamento exibido no rodapé. */
     status?: string;
-    onToggleActive: () => void;
     onDelete: () => void;
 }
 
-/** Rodapé fixo da visualização: voltar, editar, ativar/desativar (sem confirmação) e excluir. */
+/** Rodapé fixo da visualização: voltar, editar e excluir. */
 export default function DeficiencyDetailsActions({
     deficiencyId,
-    active,
     permissions,
     busy,
     status,
-    onToggleActive,
     onDelete,
 }: DeficiencyDetailsActionsProps): React.JSX.Element {
     return (
@@ -44,17 +40,6 @@ export default function DeficiencyDetailsActions({
                     title="Editar perfil de atendimento"
                     aria-label="Editar perfil de atendimento"
                     disabled={busy}
-                />
-            ) : null}
-            {permissions.update ? (
-                <Button
-                    tone="inverse"
-                    leftIconClass={active ? 'fa fa-toggle-on' : 'fa fa-toggle-off'}
-                    label={active ? 'Desativar' : 'Ativar'}
-                    title={`${active ? 'Desativar' : 'Ativar'} perfil de atendimento`}
-                    aria-label={`${active ? 'Desativar' : 'Ativar'} perfil de atendimento`}
-                    disabled={busy}
-                    onClick={onToggleActive}
                 />
             ) : null}
             {permissions.delete ? (

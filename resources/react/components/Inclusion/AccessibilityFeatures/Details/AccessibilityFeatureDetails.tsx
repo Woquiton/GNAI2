@@ -20,7 +20,7 @@ export default function AccessibilityFeatureDetails({
                 id="accessibility-feature-show-identification"
                 title="Identificação"
                 variant="inline"
-                iconClass="fa fa-universal-access"
+                iconClass="fa fa-list-alt"
             >
                 <DetailGrid>
                     <DetailField label="Nome do Recurso" wide>

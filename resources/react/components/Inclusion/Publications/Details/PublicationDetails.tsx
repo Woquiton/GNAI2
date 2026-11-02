@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import DetailField from '@/components/UI/DetailField/DetailField';
+import ExpandableContent from '@/components/UI/ExpandableContent/ExpandableContent';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { scheduleStatusLabels } from '../Publications.constants';
@@ -23,11 +24,11 @@ export default function PublicationDetails({
                 variant="inline"
                 iconClass="fa fa-file-text-o"
             >
-                <DetailGrid>
-                    <DetailField label="Título" wide>
+                <DetailGrid columns={3}>
+                    <DetailField label="Título">
                         {publication.title}
                     </DetailField>
-                    <DetailField label="Resumo" wide>
+                    <DetailField label="Resumo">
                         {publication.summary || 'Nenhum resumo informado.'}
                     </DetailField>
                     <DetailField label="Tipo">{publication.type_label}</DetailField>
@@ -52,10 +53,12 @@ export default function PublicationDetails({
                     </DetailField>
                     <DetailField label="Texto da publicação" wide>
                         {publication.description_html ? (
-                            <RichTextContent
-                                html={publication.description_html}
-                                className="publicationShow__richText"
-                            />
+                            <ExpandableContent>
+                                <RichTextContent
+                                    html={publication.description_html}
+                                    className="publicationShow__richText"
+                                />
+                            </ExpandableContent>
                         ) : (
                             'Nenhum texto fornecido.'
                         )}
@@ -68,7 +71,7 @@ export default function PublicationDetails({
                 variant="inline"
                 iconClass="fa fa-calendar"
             >
-                <DetailGrid>
+                <DetailGrid columns={4}>
                     {publication.has_schedule ? (
                         <>
                             <DetailField label="Data de Início">
@@ -98,10 +101,10 @@ export default function PublicationDetails({
                     <DetailField label="Organizador">
                         {publication.organizer || 'Não informado'}
                     </DetailField>
-                    <DetailField label="Público" wide>
+                    <DetailField label="Público">
                         {publication.audience || 'Não informado'}
                     </DetailField>
-                    <DetailField label="Participantes" wide>
+                    <DetailField label="Participantes" wide={Boolean(publication.speakers?.length)}>
                         {publication.speakers?.length ? (
                             <ul className="publicationShow__people">
                                 {publication.speakers.map((speaker) => (
@@ -136,7 +139,7 @@ export default function PublicationDetails({
                 iconClass="fa fa-picture-o"
             >
                 <DetailGrid>
-                    <DetailField label="Capa" wide>
+                    <DetailField label="Capa">
                         {publication.cover_url ? (
                             <figure className="publicationShow__cover">
                                 <img
@@ -151,7 +154,7 @@ export default function PublicationDetails({
                             'Nenhuma capa enviada.'
                         )}
                     </DetailField>
-                    <DetailField label="Galeria" wide>
+                    <DetailField label="Galeria">
                         {publication.gallery?.length ? (
                             <ul className="publicationShow__gallery">
                                 {publication.gallery.map((image) => (
@@ -172,7 +175,7 @@ export default function PublicationDetails({
                 variant="inline"
                 iconClass="fa fa-bullhorn"
             >
-                <DetailGrid>
+                <DetailGrid columns={3}>
                     <DetailField label="Situação">
                         <TableLabel tone={publication.is_active ? 'success' : 'inverse'}>
                             {publication.is_active ? 'Publicado' : 'Rascunho'}

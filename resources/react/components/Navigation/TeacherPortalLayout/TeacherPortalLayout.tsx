@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import RenderErrorScreen from '@/components/Errors/RenderErrorScreen';
 import AppFooter from '@/components/Navigation/AppFooter/AppFooter';
+import ImpersonationIndicator from '@/components/Navigation/ImpersonationIndicator/ImpersonationIndicator';
 import SkipLinks, { type SkipLinkItem } from '@/components/Navigation/SkipLinks/SkipLinks';
 import Button from '@/components/UI/Button/Button';
 import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
@@ -37,6 +38,17 @@ export default function TeacherPortalLayout({
     const { props, url } = usePage<TeacherPortalLayoutProps>();
     const { auth, impersonating, impersonationReadOnly } = props;
 
+    let sessionIdentity: ReactNode = null;
+    if (auth.user) {
+        sessionIdentity = impersonating ? (
+            <ul className="teacherPortalLayout__impersonationNav">
+                <ImpersonationIndicator name={auth.user.name} readOnly={impersonationReadOnly} />
+            </ul>
+        ) : (
+            <span className="teacherPortalLayout__userName">{auth.user.name}</span>
+        );
+    }
+
     // A falha de renderização troca o portal inteiro pela tela de erro avulsa.
     return (
         <PageErrorBoundary resetKey={url} fallback={<RenderErrorScreen homeHref={HOME_HREF} />}>
@@ -52,28 +64,7 @@ export default function TeacherPortalLayout({
                         <span>Portal do Professor</span>
                     </Link>
                     <div className="teacherPortalLayout__session">
-                        {impersonating && auth.user ? (
-                            <p className="teacherPortalLayout__impersonation">
-                                <i className="fa fa-user-secret" aria-hidden="true" />
-                                <span>
-                                    Navegando como <strong>{auth.user.name}</strong> (
-                                    {impersonationReadOnly ? 'somente leitura' : 'acesso completo'})
-                                </span>
-                            </p>
-                        ) : auth.user ? (
-                            <span className="teacherPortalLayout__userName">{auth.user.name}</span>
-                        ) : null}
-                        {impersonating ? (
-                            <Button
-                                tone="white"
-                                size="sm"
-                                leftIconClass="ti-back-left"
-                                label="Minha conta"
-                                title="Voltar para a minha conta"
-                                aria-label="Voltar para a minha conta"
-                                onClick={() => router.post('/autenticacao/acessar-como/encerrar')}
-                            />
-                        ) : null}
+                        {sessionIdentity}
                         <Button
                             tone="white"
                             size="sm"

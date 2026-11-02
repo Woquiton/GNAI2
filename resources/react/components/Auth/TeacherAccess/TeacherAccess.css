@@ -22,7 +22,7 @@
 .teacherAccessForm__submit {
     text-transform: uppercase;
 }
-.teacherAccessForm__alternative {
+.teacherAccessForm .teacherAccessForm__alternative {
     margin: 24px 0 0;
 }
 .teacherAccessForm__alternative a {
@@ -30,4 +30,12 @@
 }
 .teacherAccessForm__alternative i {
     margin-right: 5px;
+}
+
+.teacherAccessForm .teacherAccessForm__domains {
+    margin: 8px 0 0;
+    color: var(--ui-color-text-muted);
+    font-size: var(--ui-font-size-sm);
+    text-align: left;
+    overflow-wrap: anywhere;
 }

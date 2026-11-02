@@ -60,7 +60,7 @@ export default function PublicationList({
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 size="sm"
-                                tone="list-action"
+                                tone="dark-blue"
                                 iconOnly
                                 leftIconClass="fa fa-external-link"
                                 title="Abrir no site"

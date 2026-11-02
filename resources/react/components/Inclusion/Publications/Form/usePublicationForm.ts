@@ -1,6 +1,10 @@
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
+import {
+    focusFirstInvalid,
+    useFormSubmission,
+} from '@/components/Forms/FormLayout/useFormSubmission';
+import { notifyOperationFailure } from '@/components/UI/NotificationToast/operationFeedback';
 import type { PublicationRecord, PublicationFormOptions } from '../Publications.types';
 import { publicationUrls } from '../Publications.routes';
 import type { PublicationFormData } from './PublicationForm.types';
@@ -61,14 +65,28 @@ export function usePublicationForm(
     const submission = useFormSubmission(form);
     function submit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
+        const galleryErrors: Record<string, string> = {};
+        form.data.gallery.forEach((image, index) => {
+            if (!image.alt.trim()) {
+                galleryErrors[`gallery.${index}.alt`] = 'Descreva a foto no texto alternativo.';
+            }
+        });
+        if (Object.keys(galleryErrors).length) {
+            form.setError(galleryErrors);
+            notifyOperationFailure('Confira o texto alternativo de cada foto antes de salvar.');
+            focusFirstInvalid(submission.formRef.current);
+            return;
+        }
+
         submission.submit({
             url: publication ? publicationUrls.update(publication.id) : publicationUrls.store,
             method: publication ? 'put' : 'post',
             files: true,
             blocked: !canSubmit || editorFailed,
             failureText: 'Não foi possível salvar a publicação. Tente novamente.',
-            transform: () => {
-                const { speaker_rows: speakerRows, ...data } = form.data;
+            transform: (payload) => {
+                const { speaker_rows: speakerRows, ...data } =
+                    payload as unknown as PublicationFormData;
                 return {
                     ...data,
                     speakers: speakerRows.map((row) => ({

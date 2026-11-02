@@ -36,10 +36,6 @@ function PriorityLabel({
 function CompletedLabel({ completed }: { completed: boolean }): React.JSX.Element {
     return (
         <TableLabel tone={completed ? 'success' : 'danger'}>
-            <i
-                className={completed ? 'fa fa-check-circle' : 'fa fa-times-circle'}
-                aria-hidden="true"
-            />{' '}
             {completed ? 'Sim' : 'Não'}
         </TableLabel>
     );
@@ -49,7 +45,6 @@ function CompletedLabel({ completed }: { completed: boolean }): React.JSX.Elemen
 function StatusLabel({ completed }: { completed: boolean }): React.JSX.Element {
     return (
         <TableLabel tone={completed ? 'success' : 'danger'}>
-            <i className={completed ? 'fa fa-check-circle' : 'fa fa-clock-o'} aria-hidden="true" />{' '}
             {completed ? 'Concluída' : 'Pendente'}
         </TableLabel>
     );

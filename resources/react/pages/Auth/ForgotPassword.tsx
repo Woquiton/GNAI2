@@ -3,7 +3,13 @@ import ForgotPasswordForm from '@/components/Forms/ForgotPasswordForm/ForgotPass
 
 export default function AuthForgotPasswordPage(): React.JSX.Element {
     return (
-        <AuthLayout title="Recuperar senha" heading="RECUPERAR SENHA" backToLogin split>
+        <AuthLayout
+            title="Recuperar senha"
+            heading="RECUPERAR SENHA"
+            backToLogin
+            split
+            centerVertically
+        >
             <ForgotPasswordForm />
         </AuthLayout>
     );

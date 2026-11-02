@@ -9,6 +9,7 @@ use App\Domains\Settings\Domain\Enums\MailEncryption;
 use App\Domains\Settings\Domain\Enums\MailTransport;
 use App\Domains\Settings\Domain\ValueObjects\BackupSettings;
 use App\Domains\Settings\Domain\ValueObjects\MailSettings;
+use App\Domains\Settings\Infrastructure\Storage\PdfHeaderLogoStorage;
 use Illuminate\Support\Collection;
 
 final readonly class SettingsFormQuery
@@ -16,6 +17,8 @@ final readonly class SettingsFormQuery
     public function __construct(
         private GetMailSettingsQuery $mailSettings,
         private GetBackupSettingsQuery $backupSettings,
+        private GetPdfHeaderSettingsQuery $pdfHeaderSettings,
+        private PdfHeaderLogoStorage $pdfLogoStorage,
     ) {}
 
     /**
@@ -50,6 +53,23 @@ final readonly class SettingsFormQuery
             'defaults' => BackupSettings::defaults()->toPayload(),
             'retentionModes' => $this->options(BackupRetentionMode::cases()),
             'timezone' => (string) config('app.timezone'),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function forPdf(): array
+    {
+        $settings = $this->pdfHeaderSettings->execute();
+
+        return [
+            'pdfHeader' => [
+                'institution_name' => $settings->institutionName,
+                'issuing_unit' => $settings->issuingUnit,
+                'details' => $settings->details,
+                'logo_url' => $this->pdfLogoStorage->url($settings),
+            ],
         ];
     }
 

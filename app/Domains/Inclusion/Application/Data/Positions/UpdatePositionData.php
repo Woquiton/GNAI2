@@ -18,6 +18,7 @@ final class UpdatePositionData extends Data
         public string $name,
         public ?string $description = null,
         public array $permissions = [],
+        public ?bool $isActive = null,
     ) {}
 
     public static function rules(): array
@@ -25,6 +26,7 @@ final class UpdatePositionData extends Data
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'is_active' => ['sometimes', 'boolean'],
             'permissions' => ['sometimes', 'array'],
             'permissions.*' => ['integer', 'exists:permissions,id'],
         ];
@@ -37,6 +39,7 @@ final class UpdatePositionData extends Data
             'name.string' => 'O nome do cargo deve ser um texto válido.',
             'name.max' => 'O nome não pode ultrapassar 255 caracteres.',
             'description.string' => 'A descrição do cargo deve ser um texto válido.',
+            'is_active.boolean' => 'O status deve ser verdadeiro ou falso.',
             'permissions.array' => 'As permissões devem ser informadas em uma lista válida.',
             'permissions.*.integer' => 'Uma das permissões selecionadas é inválida.',
             'permissions.*.exists' => 'Uma das permissões selecionadas é inválida.',

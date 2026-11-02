@@ -9,6 +9,7 @@ export type DeficiencyFormData = {
     name: string;
     cid_code: string;
     description: string;
+    is_active: boolean;
 };
 
 /** Estado e envio do cadastro/edição de perfis de atendimento. */
@@ -17,6 +18,7 @@ export function useDeficiencyForm(deficiency?: DeficiencyRecord) {
         name: deficiency?.name ?? '',
         cid_code: deficiency?.cid_code ?? '',
         description: deficiency?.description ?? '',
+        is_active: deficiency?.is_active ?? true,
     });
     const { formRef, submit } = useFormSubmission(form);
     const { editorFailed, reportEditorFailure } = useEditorFailure(form);

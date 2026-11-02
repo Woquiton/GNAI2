@@ -9,6 +9,7 @@ use App\Domains\Inclusion\Domain\Models\Publication;
 use App\Domains\Inclusion\Infrastructure\Storage\PublicationMediaStorage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 /**
@@ -50,11 +51,13 @@ final readonly class SyncPublicationRelationsAction
 
             $newPhotos = [];
 
-            foreach ($newGallery as $entry) {
+            foreach ($newGallery as $index => $entry) {
                 $file = $entry['file'] ?? null;
 
-                if (! $file instanceof UploadedFile) {
-                    continue;
+                if (! $file instanceof UploadedFile || ! $file->isValid()) {
+                    throw ValidationException::withMessages([
+                        "gallery.{$index}.file" => 'A foto não foi recebida corretamente. Selecione a imagem novamente.',
+                    ]);
                 }
 
                 $path = $this->storage->store($file);

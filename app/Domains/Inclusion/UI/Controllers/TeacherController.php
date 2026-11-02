@@ -8,17 +8,14 @@ use App\Domains\Inclusion\Application\Actions\Teachers\CreateTeacherAction;
 use App\Domains\Inclusion\Application\Actions\Teachers\DeleteTeacherAction;
 use App\Domains\Inclusion\Application\Actions\Teachers\UpdateTeacherAction;
 use App\Domains\Inclusion\Application\Actions\Teachers\UpdateTeacherDisciplinesAction;
-use App\Domains\Inclusion\Application\Actions\Teachers\UpdateTeacherGlobalPermissionsAction;
 use App\Domains\Inclusion\Application\Data\Teachers\CreateTeacherData;
 use App\Domains\Inclusion\Application\Data\Teachers\ListTeachersData;
 use App\Domains\Inclusion\Application\Data\Teachers\UpdateTeacherData;
 use App\Domains\Inclusion\Application\Data\Teachers\UpdateTeacherDisciplinesData;
-use App\Domains\Inclusion\Application\Data\Teachers\UpdateTeacherGlobalPermissionsData;
 use App\Domains\Inclusion\Application\Queries\Teachers\ListTeachersQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\ShowTeacherQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\TeacherDisciplinesFormQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\TeacherFormQuery;
-use App\Domains\Inclusion\Application\Queries\Teachers\TeacherPermissionsFormQuery;
 use App\Domains\Inclusion\Domain\Models\Teacher;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
@@ -134,28 +131,6 @@ final class TeacherController
         return redirect()
             ->route('specialized-educational-support.teachers.index')
             ->with('success', 'Professor removido com sucesso.');
-    }
-
-    public function permissions(TeacherPermissionsFormQuery $query): InertiaResponse
-    {
-        return Inertia::render(
-            'Inclusion/Teachers/GlobalPermissions',
-            $query->execute(),
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function updatePermissions(
-        UpdateTeacherGlobalPermissionsData $data,
-        UpdateTeacherGlobalPermissionsAction $action,
-    ): RedirectResponse {
-        $action->execute($data);
-
-        return redirect()
-            ->route('specialized-educational-support.teachers.index')
-            ->with('success', 'Permissões globais de professores atualizadas!');
     }
 
     public function disciplines(Teacher $teacher, TeacherDisciplinesFormQuery $query): InertiaResponse

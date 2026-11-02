@@ -1,13 +1,19 @@
+import type { TeacherAccessRequestProps } from '@/components/Auth/TeacherAccess/TeacherAccess.types';
 import { Link, useForm } from '@inertiajs/react';
 import InputAction from '@/components/Forms/InputAction/InputAction';
 import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
 import { teacherAccessUrls } from './TeacherAccess.routes';
 import './TeacherAccess.css';
 
-/** Pedido do link mágico de acesso do professor (e-mail institucional, sem senha). */
-export default function TeacherAccessRequestForm(): React.JSX.Element {
+/** Solicitação de acesso por e-mail, conforme os domínios configurados na instalação. */
+export default function TeacherAccessRequestForm({
+    allowedDomains,
+}: TeacherAccessRequestProps): React.JSX.Element {
     const form = useForm({ email: '' });
     const error = form.errors.email;
+    const domainHint = allowedDomains.length
+        ? `Domínios aceitos: ${allowedDomains.map((domain) => `@${domain}`).join(', ')}.`
+        : 'São aceitos e-mails de qualquer domínio, desde que cadastrados como professor.';
 
     return (
         <form
@@ -24,8 +30,8 @@ export default function TeacherAccessRequestForm(): React.JSX.Element {
             }}
         >
             <InlineAlert variant="info">
-                Informe seu <b>e-mail institucional (@ifbaiano.edu.br)</b> e enviaremos um link de
-                acesso para que você edite o PEI dos alunos sob sua responsabilidade.
+                Informe o <b>e-mail cadastrado como professor</b> e enviaremos um link de acesso
+                para que você edite o PEI dos alunos sob sua responsabilidade.
             </InlineAlert>
             <InputAction
                 type="email"
@@ -33,15 +39,18 @@ export default function TeacherAccessRequestForm(): React.JSX.Element {
                 required
                 autoFocus
                 autoComplete="email"
-                placeholder="seu.nome@ifbaiano.edu.br"
-                aria-label="E-mail institucional"
+                placeholder="Digite seu e-mail cadastrado"
+                aria-label="E-mail cadastrado como professor"
                 value={form.data.email}
                 onChange={(event) => form.setData('email', event.target.value)}
                 invalid={Boolean(error)}
-                aria-describedby={error ? 'teacher-access-email-error' : undefined}
+                aria-describedby={`teacher-access-domains${error ? ' teacher-access-email-error' : ''}`}
                 buttonDisabled={form.processing}
                 label={form.processing ? 'Enviando...' : 'Enviar link'}
             />
+            <p id="teacher-access-domains" className="teacherAccessForm__domains">
+                {domainHint}
+            </p>
             {error ? (
                 <p
                     id="teacher-access-email-error"

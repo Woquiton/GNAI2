@@ -3,6 +3,7 @@ import { RichTextField, TextInputField } from '@/components/Forms/FormFields/For
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { positionUrls } from '../Positions.routes';
@@ -54,7 +55,7 @@ export default function PositionForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="position-information"
-                        title="Informações do Cargo"
+                        title="Identificação"
                         variant="inline"
                         iconClass="fa fa-briefcase"
                     >
@@ -84,6 +85,15 @@ export default function PositionForm({
                                     onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
+                            <ToggleControl
+                                id="position-active"
+                                name="is_active"
+                                size="small"
+                                label="Cargo Ativo"
+                                checked={form.data.is_active}
+                                disabled={form.processing}
+                                onChange={(checked) => form.setData('is_active', checked)}
+                            />
                         </FormGrid>
                     </FormSection>
                     <PositionPermissionsFields
