@@ -85,8 +85,9 @@
     margin-bottom: 0;
     vertical-align: middle;
 }
-.checkbox-inline + .checkbox-inline,
-.radio-inline + .radio-inline {
+/* Mais específica que `.checkbox + .checkbox`, que sobe os controles empilhados e desalinharia a linha. */
+.checkbox.checkbox-inline + .checkbox.checkbox-inline,
+.radio.radio-inline + .radio.radio-inline {
     margin-top: 0;
     margin-left: 10px;
 }

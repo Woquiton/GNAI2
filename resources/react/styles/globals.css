@@ -78,3 +78,17 @@ html::-webkit-scrollbar {
     width: auto !important;
     height: auto !important;
 }
+
+/*
+ * Autocompletar do navegador: Chrome e Edge pintam o campo de azul e não deixam trocar o fundo.
+ * Uma sombra interna da cor da superfície cobre o azul, e o texto mantém a cor do próprio campo.
+ * `!important` vence o `box-shadow: none` do foco dos campos; o anel de foco por teclado, mais
+ * específico, continua prevalecendo.
+ */
+input:is(:autofill, :-webkit-autofill),
+textarea:is(:autofill, :-webkit-autofill),
+select:is(:autofill, :-webkit-autofill) {
+    -webkit-text-fill-color: currentColor;
+    box-shadow: 0 0 0 1000px var(--ui-color-surface) inset !important;
+    caret-color: currentColor;
+}
