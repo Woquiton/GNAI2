@@ -1,23 +1,183 @@
-import { useState } from 'react';
+import { router } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
 import StudentDetailsActions from '@/components/Inclusion/Students/Details/StudentDetailsActions';
 import StudentRecordSummary from '@/components/Inclusion/Students/Details/StudentRecordSummary';
 import { createStudentRecordTabs } from '@/components/Inclusion/Students/Details/studentRecordTabs';
 import StudentStatusPanel from '@/components/Inclusion/Students/Details/StudentStatusPanel';
 import StudentDeleteModal from '@/components/Inclusion/Students/StudentDeleteModal';
 import { STUDENT_FAILURE_TEXT } from '@/components/Inclusion/Students/Students.constants';
-import { studentBreadcrumb, studentUrls } from '@/components/Inclusion/Students/Students.routes';
+import {
+    studentBreadcrumb,
+    studentRecordUrl,
+    studentUrls,
+} from '@/components/Inclusion/Students/Students.routes';
 import type {
+    Permissions,
     StudentRecord,
+    StudentRecordTabId,
     StudentShowProps,
 } from '@/components/Inclusion/Students/Students.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
-import RecordTabs from '@/components/Navigation/RecordTabs/RecordTabs';
+import Tabs from '@/components/Navigation/Tabs/Tabs';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
+import {
+    notifyConnectionFailure,
+    notifyOperationFailure,
+} from '@/components/UI/NotificationToast/operationFeedback';
+
+function isTabAvailable(tab: StudentRecordTabId, permissions: Permissions): boolean {
+    switch (tab) {
+        case 'support-profiles':
+            return permissions['student-deficiency.view'];
+        case 'guardians':
+            return permissions['guardian.view'];
+        case 'case-studies':
+            return permissions['case-study.view'];
+        case 'paees':
+            return permissions['paee.view'];
+        case 'peis':
+            return permissions['pei.view'];
+        case 'documents':
+            return permissions['student-document.view'];
+        case 'aee-attendance':
+            return permissions['aee-record.view-all'] || permissions['aee-record.view-own'];
+        case 'pedagogical-attendance':
+            return (
+                permissions['pedagogical-record.view-all'] ||
+                permissions['pedagogical-record.view-own']
+            );
+        case 'loans':
+            return permissions['loan.index'];
+        default:
+            return true;
+    }
+}
+
+function initialTab(props: StudentShowProps): StudentRecordTabId {
+    const requested = props.activeTab as StudentRecordTabId | undefined;
+
+    return requested && isTabAvailable(requested, props.permissions)
+        ? requested
+        : 'personal-data';
+}
+
+function dataPropFor(tab: StudentRecordTabId): keyof StudentShowProps | null {
+    switch (tab) {
+        case 'academic-data':
+            return 'studentCourses';
+        case 'support-profiles':
+            return 'supportProfiles';
+        case 'guardians':
+            return 'guardians';
+        case 'case-studies':
+            return 'caseStudies';
+        case 'paees':
+            return 'paees';
+        case 'peis':
+            return 'peis';
+        case 'documents':
+            return 'documents';
+        case 'aee-attendance':
+            return 'aeeEvaluations';
+        case 'pedagogical-attendance':
+            return 'pedagogicalRecords';
+        case 'loans':
+            return 'loans';
+        default:
+            return null;
+    }
+}
+
+function tabIsLoaded(tab: StudentRecordTabId, props: StudentShowProps): boolean {
+    const dataProp = dataPropFor(tab);
+
+    return dataProp === null || props[dataProp] !== undefined;
+}
 
 export default function StudentsShow(props: StudentShowProps): React.JSX.Element {
     const { student, permissions, statusPanel } = props;
-    const [activeTab, setActiveTab] = useState(props.activeTab || 'personal-data');
+    const [activeTab, setActiveTab] = useState<StudentRecordTabId>(() => initialTab(props));
+    const [loadingTab, setLoadingTab] = useState<StudentRecordTabId | null>(null);
+    const cancelRequest = useRef<(() => void) | null>(null);
+    const pendingTab = useRef<StudentRecordTabId | null>(null);
     const removal = useConfirmedAction<StudentRecord>({ failureText: STUDENT_FAILURE_TEXT });
+    const recordStudent: StudentRecord = {
+        ...student,
+        student_courses: props.studentCourses ?? [],
+        deficiencies: props.supportProfiles ?? [],
+        guardians: props.guardians ?? [],
+        peis: props.peis ?? [],
+        documents: props.documents ?? [],
+    };
+    const tabs = createStudentRecordTabs({
+        ...props,
+        student: recordStudent,
+        loadingTab,
+    });
+
+    useEffect(() => () => cancelRequest.current?.(), []);
+
+    useEffect(() => {
+        const requested = props.activeTab as StudentRecordTabId | undefined;
+        setActiveTab(
+            requested && isTabAvailable(requested, permissions) ? requested : 'personal-data',
+        );
+    }, [permissions, props.activeTab]);
+
+    function selectTab(tab: StudentRecordTabId): void {
+        if (!isTabAvailable(tab, permissions)) return;
+
+        const previousTab = activeTab;
+        const dataProp = dataPropFor(tab);
+        setActiveTab(tab);
+        cancelRequest.current?.();
+        cancelRequest.current = null;
+        pendingTab.current = null;
+
+        if (!dataProp || tabIsLoaded(tab, props)) {
+            setLoadingTab(null);
+            router.replace<StudentShowProps>({
+                url: studentRecordUrl(student.id, tab),
+                props: (current) => ({ ...current, activeTab: tab }),
+                preserveScroll: true,
+                preserveState: true,
+            });
+            return;
+        }
+
+        pendingTab.current = tab;
+        setLoadingTab(tab);
+        router.get(studentRecordUrl(student.id, tab), {}, {
+            only: ['activeTab', dataProp],
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+            onCancelToken: (token) => {
+                if (pendingTab.current === tab) {
+                    cancelRequest.current = () => token.cancel();
+                }
+            },
+            onNetworkError: () => {
+                setActiveTab(previousTab);
+                notifyConnectionFailure();
+                return false;
+            },
+            onHttpException: () => {
+                setActiveTab(previousTab);
+                notifyOperationFailure(
+                    'Ocorreu uma falha ao consultar esta seção do prontuário.',
+                );
+                return false;
+            },
+            onFinish: () => {
+                if (pendingTab.current === tab) {
+                    cancelRequest.current = null;
+                    pendingTab.current = null;
+                    setLoadingTab((current) => (current === tab ? null : current));
+                }
+            },
+        });
+    }
 
     return (
         <BusinessPage
@@ -28,11 +188,12 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
             busy={removal.processing}
         >
             <StudentRecordSummary {...props} />
-            <StudentStatusPanel panel={statusPanel} onOpenTab={setActiveTab} />
-            <RecordTabs
-                items={createStudentRecordTabs(props)}
+            <StudentStatusPanel panel={statusPanel} />
+            <Tabs
+                items={tabs}
                 initialActiveId={activeTab}
-                onChange={setActiveTab}
+                variant="standard"
+                onChange={(tab) => selectTab(tab as StudentRecordTabId)}
             />
             <StudentDetailsActions
                 studentId={student.id}

@@ -64,24 +64,25 @@ Clique no círculo da foto, arraste uma imagem para ele ou use a câmera (no cel
 
 ## Consultar o prontuário do aluno
 
-O prontuário abre ao visualizar um aluno ou logo depois de cadastrá-lo. No topo ficam a **Identificação do Aluno** (matrícula, status e perfis de atendimento) e o painel **Status do atendimento**.
+O prontuário abre ao visualizar um aluno ou logo depois de cadastrá-lo. No topo ficam a faixa compacta de identificação, com foto, matrícula, status e perfis de atendimento, e o painel **Status do atendimento**.
 
 ### Painel Status do atendimento
 
-O painel mostra a situação de quatro documentos:
+O painel mostra a sequência do acompanhamento e só oferece uma ação quando os pré-requisitos e a permissão do usuário permitem:
 
 | Caixa | Como fica "ok" | Atalho |
 | --- | --- | --- |
-| **Laudo** | Há um documento do tipo Laudo anexado. | **Ver** ou **Iniciar** abre a aba **Documentos**. |
-| **Estudo de Caso** | O Estudo de Caso atual está concluído. | **Ver** abre o estudo; **Iniciar** abre o cadastro de um novo. |
-| **PAEE** | Há um PAEE ativo. | **Ver** abre o PAEE. |
-| **PEI** | Há um PEI atual. | **Ver** abre o PEI. |
+| **Vínculo com curso** | O aluno tem uma matrícula vigente. | **Ver** abre o vínculo atual; **Iniciar** abre o cadastro quando ainda não há curso vigente. |
+| **Laudo** | Há um documento do tipo Laudo anexado. | **Ver** abre a aba **Documentos**; **Iniciar** abre o envio de documento. |
+| **Estudo de Caso** | O Estudo de Caso atual está concluído. | **Ver**, **Continuar** ou **Iniciar** abre a etapa correspondente. |
+| **PAEE** | Há um PAEE ativo. | **Ver** abre o PAEE; **Iniciar** aparece quando o fluxo permite criar um. |
+| **PEI** | Há um PEI atual. | **Ver** abre o PEI; **Iniciar** aparece quando o aluno tem situação ativa, curso e PAEE vigentes e semestre atual. |
 
-O painel também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está vinculado a um Estudo de Caso concluído.
+O painel também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado.
 
 ### Abas do prontuário
 
-Cada aba só aparece para quem tem permissão de consultá-la.
+Cada aba só aparece para quem tem permissão de consultá-la. As abas com tabelas carregam seus registros quando são abertas pela primeira vez; a estrutura e o indicador de carregamento aparecem imediatamente, e os registros permanecem disponíveis ao voltar para uma aba já consultada. Use os filtros acima de cada tabela para localizar registros dentro da aba.
 
 | Aba | Conteúdo |
 | --- | --- |

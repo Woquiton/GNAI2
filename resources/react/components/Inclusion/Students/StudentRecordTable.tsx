@@ -15,6 +15,11 @@ interface StudentRecordTableBaseProps<T> {
     emptyMessage: string;
     /** Cadastro exibido acima da tabela (normalmente `TableListCreateButton`). */
     actions?: ReactNode;
+    /** Filtros locais da coleção, exibidos dentro do card. */
+    filters?: ReactNode;
+    /** Mantém a estrutura visível enquanto a aba consulta os registros. */
+    loading?: boolean;
+    loadingLabel?: string;
 }
 
 /** Modo por dados: cada coluna renderiza sua célula com `render`. */
@@ -45,12 +50,17 @@ export default function StudentRecordTable<T>({
     columns,
     emptyMessage,
     actions,
+    filters,
+    loading = false,
+    loadingLabel,
     ...content
 }: StudentRecordTableProps<T>): React.JSX.Element {
-    const count = content.rows ? content.rows.length : content.count;
+    const rows = 'rows' in content ? content.rows : undefined;
+    const rowKey = 'rowKey' in content ? content.rowKey : undefined;
+    const count = rows !== undefined ? rows.length : 'count' in content ? content.count : 0;
     const summary = `${count} ${count === 1 ? 'registro' : 'registros'}`;
-    const rowsContent = content.rows ? undefined : count ? (
-        content.children
+    const rowsContent = rows !== undefined ? undefined : count ? (
+        'children' in content ? content.children : undefined
     ) : (
         <TableListEmptyRow colSpan={columns.length}>{emptyMessage}</TableListEmptyRow>
     );
@@ -58,13 +68,18 @@ export default function StudentRecordTable<T>({
     return (
         <div className="studentsPage__recordList">
             {actions ? <div className="studentsPage__recordListActions">{actions}</div> : null}
-            <TableListCard aria-label={ariaLabel}>
+            <TableListCard
+                aria-label={ariaLabel}
+                loading={loading}
+                loadingLabel={loadingLabel ?? `Carregando ${ariaLabel.toLocaleLowerCase('pt-BR')}`}
+            >
+                {filters}
                 <TableListScroll aria-label={ariaLabel}>
                     <TableListTable
                         columns={columns}
                         summary={summary}
-                        rows={content.rows}
-                        rowKey={content.rowKey}
+                        rows={rows}
+                        rowKey={rowKey}
                         emptyMessage={emptyMessage}
                     >
                         {rowsContent}

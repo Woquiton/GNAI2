@@ -9,12 +9,17 @@ import {
 } from '@/components/Tables/TableList/TableList';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import StudentRecordTable from '../StudentRecordTable';
-import type { Permissions, StudentRecord } from '../Students.types';
+import type { Permissions, StudentRecord, StudentRecordTabId } from '../Students.types';
+import StudentRecordFilters, {
+    matchesStudentRecordFilter,
+    useStudentRecordFilters,
+} from './StudentRecordFilters';
 
 interface StudentLoansTabsProps {
     student: StudentRecord;
     permissions: Permissions;
     loans: LoanRecord[];
+    loadingTab?: StudentRecordTabId | null;
 }
 
 function loanColumns(permissions: Permissions): TableListColumn<LoanRecord>[] {
@@ -85,7 +90,19 @@ function loanColumns(permissions: Permissions): TableListColumn<LoanRecord>[] {
     ];
 }
 
-function StudentLoans({ student, permissions, loans }: StudentLoansTabsProps): React.JSX.Element {
+function StudentLoans({
+    student,
+    permissions,
+    loans,
+    loadingTab,
+}: StudentLoansTabsProps): React.JSX.Element {
+    const filters = useStudentRecordFilters(['item', 'type', 'status'] as const);
+    const filteredLoans = loans.filter(
+        (loan) =>
+            matchesStudentRecordFilter(loan.loanable.name, filters.values.item) &&
+            matchesStudentRecordFilter(loan.item_type_label, filters.values.type) &&
+            matchesStudentRecordFilter(loan.status_label, filters.values.status),
+    );
     const createAction = permissions['loan.create'] ? (
         <TableListCreateButton
             href={`${loanUrls.create}?student_id=${student.id}`}
@@ -98,10 +115,25 @@ function StudentLoans({ student, permissions, loans }: StudentLoansTabsProps): R
             <StudentRecordTable
                 ariaLabel="Empréstimos do aluno"
                 columns={loanColumns(permissions)}
-                rows={loans}
+                rows={filteredLoans}
                 rowKey={(loan) => loan.id}
                 emptyMessage="Nenhum empréstimo encontrado."
                 actions={createAction}
+                loading={loadingTab === 'loans'}
+                filters={
+                    <StudentRecordFilters
+                        idPrefix="student-loan-filter"
+                        label="Filtrar empréstimos do aluno"
+                        fields={[
+                            { name: 'item', label: 'Item' },
+                            { name: 'type', label: 'Tipo do item' },
+                            { name: 'status', label: 'Status' },
+                        ]}
+                        values={filters.values}
+                        onChange={filters.update}
+                        onClear={filters.clear}
+                    />
+                }
             />
         </FormSection>
     );

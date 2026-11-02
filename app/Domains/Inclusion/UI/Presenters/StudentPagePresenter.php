@@ -9,10 +9,15 @@ use App\Domains\Inclusion\Domain\Enums\DeficiencySeverity;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
+use App\Domains\Inclusion\Domain\Models\Deficiency;
+use App\Domains\Inclusion\Domain\Models\Guardian;
 use App\Domains\Inclusion\Domain\Models\Paee;
+use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
 use App\Domains\Inclusion\Domain\Models\Person;
 use App\Domains\Inclusion\Domain\Models\Student;
+use App\Domains\Inclusion\Domain\Models\StudentCourse;
+use App\Domains\Inclusion\Domain\Models\StudentDocument;
 use App\Shared\Domain\Support\AeeLabels;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,7 +32,7 @@ final class StudentPagePresenter
             'student-course.view', 'student-course.create', 'student-course.update', 'student-course.delete',
             'student-deficiency.view', 'student-deficiency.create', 'student-deficiency.update', 'student-deficiency.delete',
             'guardian.view', 'guardian.create', 'guardian.update', 'guardian.delete',
-            'case-study.view', 'case-study.create', 'paee.view', 'paee.create',
+            'case-study.view', 'case-study.create', 'case-study.update', 'paee.view', 'paee.create',
             'pei.view', 'pei.create', 'pei.update', 'pei.delete',
             'student-document.view', 'student-document.create', 'student-document.update', 'student-document.delete',
             'aee-record.view', 'aee-record.view-all', 'aee-record.view-own', 'aee-record.update', 'aee-record.delete',
@@ -70,42 +75,72 @@ final class StudentPagePresenter
         }
 
         if (isset($data['guardians'])) {
-            $data['guardians'] = $student->guardians->map(fn ($guardian): array => [
-                ...$guardian->toArray(),
-                'person' => $this->person($guardian->person),
-                'relationship_label' => $guardian->relationshipLabel(),
-            ])->all();
+            $data['guardians'] = $this->guardians($student->guardians);
         }
         if (isset($data['documents'])) {
-            $data['documents'] = $student->documents->map(fn ($document): array => [
-                ...$document->toArray(),
-                'type_label' => $document->type->label(),
-                'semester_label' => $document->semester?->label,
-            ])->all();
+            $data['documents'] = $this->documents($student->documents);
         }
         if (isset($data['student_courses'])) {
-            $data['student_courses'] = $student->studentCourses->map(fn ($studentCourse): array => [
-                ...$studentCourse->toArray(),
-                'semester_label' => $studentCourse->semester?->label,
-            ])->all();
+            $data['student_courses'] = $this->studentCourses($student->studentCourses);
         }
         if (isset($data['deficiencies'])) {
-            $data['deficiencies'] = $student->deficiencies->map(fn ($deficiency): array => [
-                ...$deficiency->toArray(),
-                'student_deficiency_id' => (int) $deficiency->pivot->getKey(),
-                'severity_label' => DeficiencySeverity::tryFrom($deficiency->pivot->severity ?? '')?->label(),
-                'severity_color' => DeficiencySeverity::tryFrom($deficiency->pivot->severity ?? '')?->color(),
-            ])->all();
+            $data['deficiencies'] = $this->deficiencies($student->deficiencies);
         }
         if (isset($data['peis'])) {
-            $data['peis'] = $student->peis->map(fn ($pei): array => [
-                ...$pei->toArray(),
-                'semester_label' => $pei->semester?->label,
-                'teacher_names' => $pei->peiDisciplines->pluck('teacher.person.name')->filter()->unique()->values()->all(),
-            ])->all();
+            $data['peis'] = $this->peis($student->peis);
         }
 
         return $data;
+    }
+
+    /** @param Collection<int, StudentCourse> $studentCourses */
+    public function studentCourses(Collection $studentCourses): array
+    {
+        return $studentCourses->map(fn (StudentCourse $studentCourse): array => [
+            ...$studentCourse->toArray(),
+            'semester_label' => $studentCourse->semester?->label,
+        ])->all();
+    }
+
+    /** @param Collection<int, Deficiency> $deficiencies */
+    public function deficiencies(Collection $deficiencies): array
+    {
+        return $deficiencies->map(fn (Deficiency $deficiency): array => [
+            ...$deficiency->toArray(),
+            'student_deficiency_id' => (int) $deficiency->pivot->getKey(),
+            'severity_label' => DeficiencySeverity::tryFrom($deficiency->pivot->severity ?? '')?->label(),
+            'severity_color' => DeficiencySeverity::tryFrom($deficiency->pivot->severity ?? '')?->color(),
+        ])->all();
+    }
+
+    /** @param Collection<int, Guardian> $guardians */
+    public function guardians(Collection $guardians): array
+    {
+        return $guardians->map(fn (Guardian $guardian): array => [
+            ...$guardian->toArray(),
+            'person' => $this->person($guardian->person),
+            'relationship_label' => $guardian->relationshipLabel(),
+        ])->all();
+    }
+
+    /** @param Collection<int, Pei> $peis */
+    public function peis(Collection $peis): array
+    {
+        return $peis->map(fn (Pei $pei): array => [
+            ...$pei->toArray(),
+            'semester_label' => $pei->semester?->label,
+            'teacher_names' => $pei->peiDisciplines->pluck('teacher.person.name')->filter()->unique()->values()->all(),
+        ])->all();
+    }
+
+    /** @param Collection<int, StudentDocument> $documents */
+    public function documents(Collection $documents): array
+    {
+        return $documents->map(fn (StudentDocument $document): array => [
+            ...$document->toArray(),
+            'type_label' => $document->type->label(),
+            'semester_label' => $document->semester?->label,
+        ])->all();
     }
 
     /**
@@ -145,74 +180,134 @@ final class StudentPagePresenter
     }
 
     /**
-     * Painel "Status do atendimento": laudo, Estudo de Caso, PAEE e PEI
-     * vigentes, com os alertas de revisão e de vínculo do PAEE.
+     * Status do atendimento, ordenado pelas dependências reais dos fluxos de
+     * curso, laudo, Estudo de Caso, PAEE e PEI.
      *
-     * @return array{boxes: list<array<string, mixed>>, alerts: list<string>}
+     * @return array{items: list<array<string, mixed>>, alerts: list<string>}
      */
-    public function statusPanel(Student $student, bool $hasLaudo): array
-    {
-        $base = '/inclusao';
+    public function statusPanel(
+        Student $student,
+        bool $hasLaudo,
+        ?int $currentCourseId,
+        bool $hasCurrentSemester,
+        Request $request,
+    ): array {
+        $studentId = (int) $student->getKey();
+        $isEnabled = $student->status->isEnabled();
+        $hasCurrentCourse = $currentCourseId !== null;
         $caseStudy = $student->currentCaseStudy;
         $paee = $student->currentPaee;
-        $pei = $student->peis()->where('is_current', true)->first();
+        $currentPei = $student->peis()
+            ->where('is_current', true)
+            ->first(['id', 'updated_at']);
+        $hasCurrentPei = $currentPei instanceof Pei;
         $caseStudyCompleted = $caseStudy instanceof CaseStudy && $caseStudy->status === CaseStudy::STATUS_COMPLETED;
+        $canStartPaee = $caseStudy instanceof CaseStudy
+            && ($caseStudyCompleted || $hasLaudo)
+            && $hasCurrentSemester;
+        $canStartPei = $isEnabled
+            && $hasCurrentCourse
+            && $paee instanceof Paee
+            && $hasCurrentSemester;
 
+        $items = [];
         $alerts = [];
 
         if ($paee instanceof Paee && $paee->next_review_date !== null && $paee->next_review_date->isPast()) {
             $alerts[] = 'O PAEE está com a revisão vencida desde '.$paee->next_review_date->format('d/m/Y').'.';
         }
 
-        if ($paee instanceof Paee && ! $caseStudyCompleted) {
+        if ($paee instanceof Paee && ! $caseStudyCompleted && ! $hasLaudo) {
             $alerts[] = 'O PAEE ativo não está vinculado a um Estudo de Caso concluído.';
         }
 
-        return [
-            'boxes' => [
-                [
-                    'key' => 'laudo',
-                    'label' => 'Laudo',
-                    'ok' => $hasLaudo,
-                    'status' => $hasLaudo ? 'Anexado' : 'Não anexado',
-                    'icon' => 'fa fa-file-text-o',
-                    'href' => null,
+        $items[] = [
+            'key' => 'current-course',
+            'label' => 'Vínculo com curso',
+            'ok' => $hasCurrentCourse,
+            'status' => $hasCurrentCourse ? 'Vigente' : 'Não cadastrado',
+            'icon' => 'fa fa-graduation-cap',
+            'href' => $hasCurrentCourse && $request->user()?->can('student-course.view')
+                ? route('specialized-educational-support.student-courses.show', $currentCourseId)
+                : (! $hasCurrentCourse && $isEnabled && $request->user()?->can('student-course.create')
+                    ? route('specialized-educational-support.student-courses.create', $studentId)
+                    : null),
+            'action_label' => $hasCurrentCourse ? 'Ver' : 'Iniciar',
+            'updated_at' => null,
+        ];
+
+        $items[] = [
+            'key' => 'technical-report',
+            'label' => 'Laudo',
+            'ok' => $hasLaudo,
+            'status' => $hasLaudo ? 'Anexado' : 'Não anexado',
+            'icon' => 'fa fa-file-text-o',
+            'href' => $hasLaudo && $request->user()?->can('student-document.view')
+                ? route('specialized-educational-support.students.show', [
+                    'student' => $studentId,
                     'tab' => 'documents',
-                    'updated_at' => null,
-                ],
-                [
-                    'key' => 'case-study',
-                    'label' => 'Estudo de Caso',
-                    'ok' => $caseStudyCompleted,
-                    'status' => $caseStudyCompleted ? 'Concluído' : ($caseStudy ? 'Em andamento' : 'Não iniciado'),
-                    'icon' => 'fa fa-stethoscope',
-                    'href' => $caseStudy
-                        ? "{$base}/estudos-de-caso/{$caseStudy->getKey()}/visualizar"
-                        : "{$base}/estudos-de-caso/{$student->getKey()}/criar",
-                    'tab' => null,
-                    'updated_at' => $caseStudy?->updated_at?->format('d/m/Y'),
-                ],
-                [
-                    'key' => 'paee',
-                    'label' => 'PAEE',
-                    'ok' => $paee instanceof Paee,
-                    'status' => $paee ? 'Ativo' : 'Não iniciado',
-                    'icon' => 'fa fa-sitemap',
-                    'href' => $paee ? "{$base}/paees/{$paee->getKey()}/visualizar" : null,
-                    'tab' => null,
-                    'updated_at' => $paee?->updated_at?->format('d/m/Y'),
-                ],
-                [
-                    'key' => 'pei',
-                    'label' => 'PEI',
-                    'ok' => $pei !== null,
-                    'status' => $pei ? 'Ativo' : 'Não iniciado',
-                    'icon' => 'fa fa-file',
-                    'href' => $pei ? "{$base}/peis/{$pei->getKey()}/visualizar" : null,
-                    'tab' => null,
-                    'updated_at' => $pei?->updated_at?->format('d/m/Y'),
-                ],
-            ],
+                ])
+                : (! $hasLaudo && $isEnabled && $hasCurrentSemester && $request->user()?->can('student-document.create')
+                    ? route('specialized-educational-support.student-documents.create', $studentId)
+                    : null),
+            'action_label' => $hasLaudo ? 'Ver' : 'Iniciar',
+            'updated_at' => null,
+        ];
+
+        $caseStudyInProgress = $caseStudy instanceof CaseStudy && ! $caseStudyCompleted;
+        $caseStudyAction = match (true) {
+            $caseStudyCompleted => 'Ver',
+            $caseStudyInProgress && $request->user()?->can('case-study.update') => 'Continuar',
+            $caseStudyInProgress => 'Ver',
+            default => 'Iniciar',
+        };
+        $items[] = [
+            'key' => 'case-study',
+            'label' => 'Estudo de Caso',
+            'ok' => $caseStudyCompleted,
+            'status' => $caseStudyCompleted ? 'Concluído' : ($caseStudyInProgress ? 'Em andamento' : 'Não iniciado'),
+            'icon' => 'fa fa-stethoscope',
+            'href' => $caseStudy instanceof CaseStudy && $request->user()?->can('case-study.view')
+                ? route('specialized-educational-support.case-study.show', $caseStudy)
+                : (! ($caseStudy instanceof CaseStudy) && $isEnabled && $hasCurrentSemester && $request->user()?->can('case-study.create')
+                    ? route('specialized-educational-support.case-study.create', $studentId)
+                    : null),
+            'action_label' => $caseStudyAction,
+            'updated_at' => $caseStudy?->updated_at?->format('d/m/Y'),
+        ];
+
+        $items[] = [
+            'key' => 'paee',
+            'label' => 'PAEE',
+            'ok' => $paee instanceof Paee,
+            'status' => $paee instanceof Paee ? 'Ativo' : 'Não iniciado',
+            'icon' => 'fa fa-sitemap',
+            'href' => $paee instanceof Paee && $request->user()?->can('paee.view')
+                ? route('specialized-educational-support.paee.show', $paee)
+                : (! ($paee instanceof Paee) && $isEnabled && $canStartPaee && $request->user()?->can('paee.create')
+                    ? route('specialized-educational-support.paee.create', $caseStudy)
+                    : null),
+            'action_label' => $paee instanceof Paee ? 'Ver' : 'Iniciar',
+            'updated_at' => $paee?->updated_at?->format('d/m/Y'),
+        ];
+
+        $items[] = [
+            'key' => 'pei',
+            'label' => 'PEI',
+            'ok' => $hasCurrentPei,
+            'status' => $hasCurrentPei ? 'Ativo' : 'Não iniciado',
+            'icon' => 'fa fa-file',
+            'href' => $hasCurrentPei && $request->user()?->can('pei.view')
+                ? route('specialized-educational-support.pei.show', $currentPei)
+                : (! $hasCurrentPei && $canStartPei && $request->user()?->can('pei.create')
+                    ? route('specialized-educational-support.pei.create', $studentId)
+                    : null),
+            'action_label' => $hasCurrentPei ? 'Ver' : 'Iniciar',
+            'updated_at' => $currentPei?->updated_at?->format('d/m/Y'),
+        ];
+
+        return [
+            'items' => $items,
             'alerts' => $alerts,
         ];
     }

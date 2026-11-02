@@ -55,7 +55,7 @@ export interface StudentIndexProps extends StudentOptions {
     filters: Partial<StudentFilters>;
 }
 export interface StudentRecord extends Student {
-    student_courses: Array<{
+    student_courses?: Array<{
         id: number;
         course: { name: string } | null;
         academic_year: number;
@@ -131,28 +131,47 @@ export interface StudentPaeeSummary {
     status_label: string;
     next_review_date: string | null;
 }
-export interface StudentStatusBox {
+export interface StudentStatusItem {
     key: string;
     label: string;
     ok: boolean;
     status: string;
     icon: string;
     href: string | null;
-    tab: string | null;
+    action_label: string;
     updated_at: string | null;
 }
 export interface StudentStatusPanelData {
-    boxes: StudentStatusBox[];
+    items: StudentStatusItem[];
     alerts: string[];
 }
 export interface StudentShowProps extends StudentOptions {
     student: StudentRecord;
-    aeeEvaluations: AeeEvaluation[];
-    pedagogicalRecords: PedagogicalRecord[];
-    caseStudies: StudentCaseStudySummary[];
-    paees: StudentPaeeSummary[];
+    profileNames: string[];
+    studentCourses?: NonNullable<StudentRecord['student_courses']>;
+    supportProfiles?: NonNullable<StudentRecord['deficiencies']>;
+    guardians?: NonNullable<StudentRecord['guardians']>;
+    peis?: NonNullable<StudentRecord['peis']>;
+    documents?: NonNullable<StudentRecord['documents']>;
+    aeeEvaluations?: AeeEvaluation[];
+    pedagogicalRecords?: PedagogicalRecord[];
+    caseStudies?: StudentCaseStudySummary[];
+    paees?: StudentPaeeSummary[];
     /** Empréstimos do Radar; vazio quando o usuário não pode listá-los. */
-    loans: LoanRecord[];
+    loans?: LoanRecord[];
     statusPanel: StudentStatusPanelData;
     activeTab?: string;
 }
+
+export type StudentRecordTabId =
+    | 'personal-data'
+    | 'academic-data'
+    | 'support-profiles'
+    | 'guardians'
+    | 'case-studies'
+    | 'paees'
+    | 'peis'
+    | 'documents'
+    | 'aee-attendance'
+    | 'pedagogical-attendance'
+    | 'loans';

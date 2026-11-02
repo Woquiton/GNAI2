@@ -29,6 +29,9 @@ Quando uma visualização reúne muitos grupos independentes e provoca rolagem e
 7. A tabela embutida preserva primeira e última colunas fixas, seletor de colunas, redimensionamento apenas das colunas intermediárias, estado vazio, contagem e ações compactas conforme a convenção de listagens. Como todos os registros já pertencem à aba, a contagem estática substitui paginação artificial.
 8. Quando autorizado, o cadastro fica acima da tabela com `TableListCreateButton`. Visualização, edição, download e exclusão permanecem nas ações da linha conforme os contratos e permissões da funcionalidade; exclusão usa `ConfirmActionModal`.
 9. Fluxos abertos a partir de uma aba devem retornar ao prontuário com o parâmetro `tab` correspondente. Botões Voltar/Cancelar e redirects de sucesso ou exclusão preservam essa origem, em vez de encaminhar para uma segunda tela de listagem.
+10. Coleções independentes do prontuário usam propriedades opcionais do Inertia e recargas parciais: a consulta só é executada quando a respectiva aba é aberta. Mantenha a estrutura da tabela montada com o estado de carregamento compartilhado e preserve no estado da página as propriedades já recebidas, evitando uma nova consulta ao voltar para uma aba aberta.
+11. A identificação, o resumo e indicadores pequenos necessários ao cabeçalho podem permanecer na carga inicial. Não carregue previamente relações completas apenas para alimentar uma tabela de aba fechada; quando um resumo precisar de parte desses dados, use um contrato inicial reduzido e explícito.
+12. Quando o prontuário tiver uma sequência operacional de status, apresente-a logo após a identificação em cards compactos e ordenados pelas dependências reais do domínio. Mostre tanto etapas concluídas quanto pendentes, ofereça a ação somente quando seus pré-requisitos e a permissão estiverem satisfeitos e dê destaque semântico à ação de iniciar.
 
 ## Acessibilidade das abas
 

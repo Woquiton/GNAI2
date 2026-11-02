@@ -1,6 +1,16 @@
 .tabs {
     margin-bottom: 30px;
 }
+.tabs__navViewport {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.tabs__navViewport > .tabs__nav {
+    width: max-content;
+    min-width: 100%;
+}
 .tabs__nav {
     display: flex;
     margin: 0;
@@ -373,5 +383,125 @@
 @media (min-width: 768px) {
     .tabs__button .tabs__icon {
         display: none;
+    }
+}
+
+/* Padrão Gnai para abas horizontais de negócio e prontuários extensos. */
+.tabs--standard {
+    min-width: 0;
+    margin: 0;
+}
+.tabs--standard .tabs__navViewport {
+    scrollbar-width: thin;
+}
+.tabs--standard .tabs__nav {
+    justify-content: flex-start;
+    width: max-content;
+    min-width: 100%;
+    margin-bottom: 6px;
+    overflow: visible;
+    border-bottom: 2px solid var(--ui-color-card-border);
+    background: transparent;
+    box-shadow: none;
+}
+.tabs--standard .tabs__nav > li {
+    flex: 0 0 auto;
+}
+.tabs--standard .tabs__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: auto;
+    min-height: 46px;
+    height: auto;
+    margin: 0;
+    padding: 10px 18px;
+    color: var(--ui-color-heading);
+    font: 600 14px/1.4 var(--ui-font-gnai-body);
+    letter-spacing: normal;
+    text-align: center;
+    text-transform: none;
+    white-space: nowrap;
+}
+.tabs--standard .tabs__button:hover,
+.tabs--standard .tabs__item--active .tabs__button {
+    color: var(--ui-color-gnai-primary);
+}
+.tabs--standard .tabs__nav--animated .tabs__item--active .tabs__button::after {
+    display: none;
+}
+.tabs .tabs__indicator {
+    right: auto;
+    left: 0;
+    width: 0;
+    opacity: 0;
+    transform: translateX(0);
+    transition:
+        width 0.24s ease,
+        transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.12s ease;
+    will-change: width, transform;
+}
+.tabs .tabs__indicator--ready {
+    opacity: 1;
+}
+.tabs--standard .tabs__indicator {
+    bottom: -2px;
+}
+.tabs--standard .tabs__icon {
+    display: inline-block;
+    order: -1;
+    font-size: 16px;
+    line-height: 1;
+}
+.tabs--standard .tabs__label {
+    display: inline;
+}
+.tabs--standard .tabs__button:focus-visible {
+    z-index: 1;
+    outline: 2px solid var(--ui-color-gnai-primary);
+    outline-offset: 2px;
+}
+.tabs--standard .tabs__content {
+    min-width: 0;
+    min-height: 0;
+    padding: 24px 0 0;
+    background: transparent;
+    box-shadow: none;
+    animation: tabsPanelIn 0.2s ease both;
+}
+.tabs--standard .tabs__content:focus-visible {
+    outline: 2px solid var(--ui-color-gnai-primary);
+    outline-offset: 3px;
+}
+
+@keyframes tabsPanelIn {
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 767px) {
+    .tabs--standard .tabs__button {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+    .tabs--standard .tabs__content {
+        padding-top: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tabs .tabs__indicator {
+        transition: none;
+    }
+    .tabs--standard .tabs__content {
+        animation: none;
     }
 }

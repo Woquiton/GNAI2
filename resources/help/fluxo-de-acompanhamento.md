@@ -28,7 +28,7 @@ O acompanhamento de um aluno no Gnai segue uma cadeia: cada documento usa as inf
 
 ## Onde vejo em que etapa o aluno está?
 
-Na visualização do aluno, o painel **Status do atendimento** mostra a situação de **Laudo**, **Estudo de Caso**, **PAEE** e **PEI**, com os botões **Ver** ou **Iniciar** para abrir cada documento. O painel também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está vinculado a um Estudo de Caso concluído.
+Na visualização do aluno, o painel **Status do atendimento** mostra, em ordem, **Vínculo com curso**, **Laudo**, **Estudo de Caso**, **PAEE** e **PEI**. Os botões **Ver**, **Continuar** e **Iniciar** aparecem conforme a situação, os pré-requisitos e as permissões do usuário. O painel também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado.
 
 ## Versões
 

@@ -1,11 +1,13 @@
-import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import RecordSummary from '@/components/UI/RecordSummary/RecordSummary';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { StudentOptions, StudentRecord } from '../Students.types';
 
-type StudentRecordSummaryProps = StudentOptions & { student: StudentRecord };
+type StudentRecordSummaryProps = StudentOptions & {
+    student: StudentRecord;
+    profileNames: string[];
+};
 
 /** Identificação compacta no topo do prontuário: foto, nome, matrícula, status e perfis. */
 export default function StudentRecordSummary({
@@ -13,36 +15,31 @@ export default function StudentRecordSummary({
     permissions,
     studentStatuses,
     statusColors,
+    profileNames,
 }: StudentRecordSummaryProps): React.JSX.Element {
     const person = student.person;
     const canViewProfiles = permissions['student-deficiency.view'];
-    const profileNames = student.deficiencies?.map((item) => item.name).join(', ');
+    const profileSummary = profileNames.join(', ');
 
     return (
-        <CardBox>
-            <FormSection
-                id="identificacao"
-                title="Identificação do Aluno"
-                iconClass="fa fa-user"
-                variant="inline"
+        <CardBox className="studentDetails__summaryCard">
+            <RecordSummary
+                photo={{ src: person.photo_url, alt: `Foto de ${person.name}` }}
+                name={person.name}
+                className="studentDetails__summary"
             >
-                <RecordSummary
-                    photo={{ src: person.photo_url, alt: `Foto de ${person.name}` }}
-                    name={person.name}
-                >
-                    <DetailField label="Matrícula">{student.registration || '---'}</DetailField>
-                    <DetailField label="Status">
-                        <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
-                            {studentStatuses[student.status] ?? student.status}
-                        </TableLabel>
+                <DetailField label="Matrícula">{student.registration || '---'}</DetailField>
+                <DetailField label="Status">
+                    <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
+                        {studentStatuses[student.status] ?? student.status}
+                    </TableLabel>
+                </DetailField>
+                {canViewProfiles ? (
+                    <DetailField label="Perfil de atendimento" wide>
+                        {profileSummary || 'Nenhum perfil cadastrado'}
                     </DetailField>
-                    {canViewProfiles ? (
-                        <DetailField label="Perfil de atendimento" wide>
-                            {profileNames || 'Nenhum perfil cadastrado'}
-                        </DetailField>
-                    ) : null}
-                </RecordSummary>
-            </FormSection>
+                ) : null}
+            </RecordSummary>
         </CardBox>
     );
 }

@@ -1,8 +1,38 @@
 /* Composições particulares das abas do prontuário do aluno. */
+.studentDetails__summaryCard.card-box {
+    margin: var(--ui-space-4) 0 var(--ui-space-5);
+    padding: var(--ui-space-4) var(--ui-space-5);
+}
+.studentDetails__summary.recordSummary {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: var(--ui-space-4);
+}
+.studentDetails__summary .recordSummary__photo {
+    width: 64px;
+    height: 64px;
+    border-width: 2px;
+}
+.studentDetails__summary .recordSummary__name {
+    margin-bottom: var(--ui-space-2);
+    font-size: 1.15rem;
+}
+.studentDetails__summary .recordSummary__details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-2) var(--ui-space-6);
+}
 .studentDetails__subheading {
-    margin: var(--ui-space-7) 0 var(--ui-space-3);
+    margin: 0 0 var(--ui-space-3);
     color: var(--ui-color-heading);
     font: 600 1rem/1.4 var(--ui-font-ui);
+}
+.studentDetails__recordStack {
+    display: grid;
+    min-width: 0;
+    gap: var(--ui-space-5);
+}
+.studentDetails__recordDetailsCard .formSection {
+    margin-bottom: 0;
 }
 .studentDetails__secondary {
     display: block;
@@ -25,4 +55,44 @@
 }
 .studentDetails__recordFooter small {
     color: var(--ui-color-text-muted);
+}
+.studentDetails__recordFilters {
+    margin-bottom: var(--ui-space-5);
+}
+.studentDetails__recordFilterGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(150px, 1fr)) auto;
+    align-items: end;
+    gap: var(--ui-space-4);
+}
+.studentDetails__recordFilterGrid > .tableListFilterActions {
+    padding-bottom: 1px;
+}
+
+@media (max-width: 900px) {
+    .studentDetails__recordFilterGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .studentDetails__recordFilterGrid > .tableListFilterActions {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .studentDetails__summaryCard.card-box {
+        padding: var(--ui-space-3) var(--ui-space-4);
+    }
+    .studentDetails__summary.recordSummary {
+        grid-template-columns: 52px minmax(0, 1fr);
+        gap: var(--ui-space-3);
+    }
+    .studentDetails__summary .recordSummary__photo {
+        width: 52px;
+        height: 52px;
+    }
+    .studentDetails__summary .recordSummary__details,
+    .studentDetails__recordFilterGrid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
 }

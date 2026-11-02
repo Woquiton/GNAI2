@@ -1,13 +1,12 @@
 import FormSection from '@/components/Forms/FormSection/FormSection';
-import {
-    studentCourseUrls,
-} from '@/components/Inclusion/StudentCourses/StudentCourses.routes';
+import { studentCourseUrls } from '@/components/Inclusion/StudentCourses/StudentCourses.routes';
 import type { TabItem } from '@/components/Navigation/Tabs/Tabs';
 import {
     TableListCreateButton,
     TableListRowActions,
     type TableListColumn,
 } from '@/components/Tables/TableList/TableList';
+import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
@@ -16,12 +15,18 @@ import { dateLabel } from '@/utils/formatters';
 import DeleteStudentRecord from '../DeleteStudentRecord';
 import StudentRecordTable from '../StudentRecordTable';
 import type { Permissions, StudentOptions, StudentRecord } from '../Students.types';
+import StudentRecordFilters, {
+    matchesStudentRecordFilter,
+    useStudentRecordFilters,
+} from './StudentRecordFilters';
 import './StudentDetails.css';
 
-type StudentCourse = StudentRecord['student_courses'][number];
+type StudentCourse = NonNullable<StudentRecord['student_courses']>[number];
 
-type StudentPersonalRecordProps = StudentOptions & { student: StudentRecord };
-
+type StudentPersonalRecordProps = StudentOptions & {
+    student: StudentRecord;
+    academicLoading?: boolean;
+};
 
 function courseColumns(permissions: Permissions): TableListColumn<StudentCourse>[] {
     return [
@@ -90,25 +95,27 @@ function PersonalDetails({ student }: { student: StudentRecord }): React.JSX.Ele
     const address = person.address_html ? <RichTextContent html={person.address_html} /> : '---';
 
     return (
-        <FormSection
-            id="dados-gerais"
-            title="Dados Pessoais"
-            iconClass="fa fa-user"
-            variant="inline"
-        >
-            <DetailGrid>
-                <DetailField label="Nome completo">{person.name}</DetailField>
-                <DetailField label="Gênero">{person.gender_label || '---'}</DetailField>
-                <DetailField label="CPF">{person.document || '---'}</DetailField>
-                <DetailField label="Nascimento">{dateLabel(person.birth_date)}</DetailField>
-                <DetailField label="Idade">{age}</DetailField>
-                <DetailField label="E-mail">{person.email || '---'}</DetailField>
-                <DetailField label="Telefone">{person.phone || '---'}</DetailField>
-                <DetailField label="Endereço" wide>
-                    {address}
-                </DetailField>
-            </DetailGrid>
-        </FormSection>
+        <CardBox className="studentDetails__recordDetailsCard">
+            <FormSection
+                id="dados-gerais"
+                title="Dados Pessoais"
+                iconClass="fa fa-user"
+                variant="inline"
+            >
+                <DetailGrid>
+                    <DetailField label="Nome completo">{person.name}</DetailField>
+                    <DetailField label="Gênero">{person.gender_label || '---'}</DetailField>
+                    <DetailField label="CPF">{person.document || '---'}</DetailField>
+                    <DetailField label="Nascimento">{dateLabel(person.birth_date)}</DetailField>
+                    <DetailField label="Idade">{age}</DetailField>
+                    <DetailField label="E-mail">{person.email || '---'}</DetailField>
+                    <DetailField label="Telefone">{person.phone || '---'}</DetailField>
+                    <DetailField label="Endereço" wide>
+                        {address}
+                    </DetailField>
+                </DetailGrid>
+            </FormSection>
+        </CardBox>
     );
 }
 
@@ -117,7 +124,17 @@ function AcademicDetails({
     permissions,
     studentStatuses,
     statusColors,
+    academicLoading,
 }: StudentPersonalRecordProps): React.JSX.Element {
+    const courses = student.student_courses ?? [];
+    const filters = useStudentRecordFilters(['course', 'year', 'status'] as const);
+    const filteredCourses = courses.filter(
+        (relation) =>
+            matchesStudentRecordFilter(relation.course?.name, filters.values.course) &&
+            matchesStudentRecordFilter(relation.academic_year, filters.values.year) &&
+            (!filters.values.status ||
+                filters.values.status === (relation.is_current ? 'current' : 'history')),
+    );
     const createAction = permissions['student-course.create'] ? (
         <TableListCreateButton
             href={studentCourseUrls.create(student.id)}
@@ -126,30 +143,62 @@ function AcademicDetails({
     ) : undefined;
 
     return (
-        <FormSection
-            id="informacoes-escolares"
-            title="Informações Acadêmicas"
-            iconClass="fa fa-graduation-cap"
-            variant="inline"
-        >
-            <DetailGrid>
-                <DetailField label="Status atual">
-                    <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
-                        {studentStatuses[student.status] ?? student.status}
-                    </TableLabel>
-                </DetailField>
-                <DetailField label="Data de ingresso">{dateLabel(student.entry_date)}</DetailField>
-            </DetailGrid>
-            <h3 className="studentDetails__subheading">Vínculo com cursos</h3>
-            <StudentRecordTable
-                ariaLabel="Cursos do aluno"
-                columns={courseColumns(permissions)}
-                rows={student.student_courses}
-                rowKey={(relation) => relation.id}
-                emptyMessage="Nenhum curso do aluno encontrado."
-                actions={createAction}
-            />
-        </FormSection>
+        <div className="studentDetails__recordStack">
+            <CardBox className="studentDetails__recordDetailsCard">
+                <FormSection
+                    id="situacao-academica"
+                    title="Situação Acadêmica"
+                    iconClass="fa fa-graduation-cap"
+                    variant="inline"
+                >
+                    <DetailGrid>
+                        <DetailField label="Status atual">
+                            <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
+                                {studentStatuses[student.status] ?? student.status}
+                            </TableLabel>
+                        </DetailField>
+                        <DetailField label="Data de ingresso">
+                            {dateLabel(student.entry_date)}
+                        </DetailField>
+                    </DetailGrid>
+                </FormSection>
+            </CardBox>
+            <section aria-labelledby="student-courses-title">
+                <h3 id="student-courses-title" className="studentDetails__subheading">
+                    Vínculo com cursos
+                </h3>
+                <StudentRecordTable
+                    ariaLabel="Cursos do aluno"
+                    columns={courseColumns(permissions)}
+                    rows={filteredCourses}
+                    rowKey={(relation) => relation.id}
+                    emptyMessage="Nenhum curso do aluno encontrado."
+                    actions={createAction}
+                    loading={academicLoading}
+                    filters={
+                        <StudentRecordFilters
+                            idPrefix="student-course-filter"
+                            label="Filtrar vínculos com cursos"
+                            fields={[
+                                { name: 'course', label: 'Curso / Série' },
+                                { name: 'year', label: 'Ano letivo' },
+                                {
+                                    name: 'status',
+                                    label: 'Situação',
+                                    options: [
+                                        { value: 'current', label: 'Atual' },
+                                        { value: 'history', label: 'Histórico' },
+                                    ],
+                                },
+                            ]}
+                            values={filters.values}
+                            onChange={filters.update}
+                            onClear={filters.clear}
+                        />
+                    }
+                />
+            </section>
+        </div>
     );
 }
 

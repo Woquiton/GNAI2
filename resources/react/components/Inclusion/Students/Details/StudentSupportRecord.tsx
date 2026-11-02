@@ -23,7 +23,12 @@ import type {
     StudentCaseStudySummary,
     StudentPaeeSummary,
     StudentRecord,
+    StudentRecordTabId,
 } from '../Students.types';
+import StudentRecordFilters, {
+    matchesStudentRecordFilter,
+    useStudentRecordFilters,
+} from './StudentRecordFilters';
 import './StudentDetails.css';
 
 type StudentProfile = NonNullable<StudentRecord['deficiencies']>[number];
@@ -37,6 +42,7 @@ interface StudentSupportRecordProps {
 interface StudentSupportTabsProps extends StudentSupportRecordProps {
     caseStudies: StudentCaseStudySummary[];
     paees: StudentPaeeSummary[];
+    loadingTab?: StudentRecordTabId | null;
 }
 
 function profileColumns({
@@ -251,7 +257,18 @@ const paeeColumns: TableListColumn<StudentPaeeSummary>[] = [
     },
 ];
 
-function StudentProfiles({ student, permissions }: StudentSupportRecordProps): React.JSX.Element {
+function StudentProfiles({
+    student,
+    permissions,
+    loading = false,
+}: StudentSupportRecordProps & { loading?: boolean }): React.JSX.Element {
+    const profiles = student.deficiencies ?? [];
+    const filters = useStudentRecordFilters(['name', 'severity'] as const);
+    const filteredProfiles = profiles.filter(
+        (profile) =>
+            matchesStudentRecordFilter(profile.name, filters.values.name) &&
+            matchesStudentRecordFilter(profile.severity_label, filters.values.severity),
+    );
     const createAction = permissions['student-deficiency.create'] ? (
         <TableListCreateButton
             href={studentDeficiencyUrls.create(student.id)}
@@ -269,16 +286,48 @@ function StudentProfiles({ student, permissions }: StudentSupportRecordProps): R
             <StudentRecordTable
                 ariaLabel="Perfis de atendimento do aluno"
                 columns={profileColumns({ student, permissions })}
-                rows={student.deficiencies ?? []}
+                rows={filteredProfiles}
                 rowKey={(profile) => profile.student_deficiency_id}
                 emptyMessage="Nenhum perfil de atendimento do aluno encontrado."
                 actions={createAction}
+                loading={loading}
+                filters={
+                    <StudentRecordFilters
+                        idPrefix="student-profile-filter"
+                        label="Filtrar perfis de atendimento"
+                        fields={[
+                            { name: 'name', label: 'Perfil de atendimento' },
+                            { name: 'severity', label: 'Severidade' },
+                        ]}
+                        values={filters.values}
+                        onChange={filters.update}
+                        onClear={filters.clear}
+                    />
+                }
             />
         </FormSection>
     );
 }
 
-function StudentGuardians({ student, permissions }: StudentSupportRecordProps): React.JSX.Element {
+function StudentGuardians({
+    student,
+    permissions,
+    loading = false,
+}: StudentSupportRecordProps & { loading?: boolean }): React.JSX.Element {
+    const guardians = student.guardians ?? [];
+    const filters = useStudentRecordFilters(['name', 'relationship', 'contact'] as const);
+    const filteredGuardians = guardians.filter(
+        (guardian) =>
+            matchesStudentRecordFilter(guardian.person.name, filters.values.name) &&
+            matchesStudentRecordFilter(
+                guardian.relationship_label,
+                filters.values.relationship,
+            ) &&
+            matchesStudentRecordFilter(
+                `${guardian.person.email ?? ''} ${guardian.person.phone ?? ''}`,
+                filters.values.contact,
+            ),
+    );
     const createAction = permissions['guardian.create'] ? (
         <TableListCreateButton
             href={guardianUrls(student.id).create}
@@ -291,10 +340,25 @@ function StudentGuardians({ student, permissions }: StudentSupportRecordProps): 
             <StudentRecordTable
                 ariaLabel="Responsáveis do aluno"
                 columns={guardianColumns({ student, permissions })}
-                rows={student.guardians ?? []}
+                rows={filteredGuardians}
                 rowKey={(guardian) => guardian.id}
                 emptyMessage="Nenhum responsável encontrado para este aluno."
                 actions={createAction}
+                loading={loading}
+                filters={
+                    <StudentRecordFilters
+                        idPrefix="student-guardian-filter"
+                        label="Filtrar responsáveis do aluno"
+                        fields={[
+                            { name: 'name', label: 'Responsável' },
+                            { name: 'relationship', label: 'Vínculo' },
+                            { name: 'contact', label: 'Contato' },
+                        ]}
+                        values={filters.values}
+                        onChange={filters.update}
+                        onClear={filters.clear}
+                    />
+                }
             />
         </FormSection>
     );
@@ -304,7 +368,18 @@ function StudentCaseStudies({
     student,
     caseStudies,
     permissions,
-}: StudentSupportRecordProps & { caseStudies: StudentCaseStudySummary[] }): React.JSX.Element {
+    loading = false,
+}: StudentSupportRecordProps & {
+    caseStudies: StudentCaseStudySummary[];
+    loading?: boolean;
+}): React.JSX.Element {
+    const filters = useStudentRecordFilters(['semester', 'status', 'date'] as const);
+    const filteredCaseStudies = caseStudies.filter(
+        (caseStudy) =>
+            matchesStudentRecordFilter(caseStudy.semester_label, filters.values.semester) &&
+            matchesStudentRecordFilter(caseStudy.status_label, filters.values.status) &&
+            matchesStudentRecordFilter(caseStudy.created_at, filters.values.date),
+    );
     const createAction = permissions['case-study.create'] ? (
         <TableListCreateButton
             href={caseStudyUrls.create(student.id)}
@@ -322,10 +397,25 @@ function StudentCaseStudies({
             <StudentRecordTable
                 ariaLabel="Estudos de caso do aluno"
                 columns={caseStudyColumns}
-                rows={caseStudies}
+                rows={filteredCaseStudies}
                 rowKey={(caseStudy) => caseStudy.id}
                 emptyMessage="Nenhum Estudo de Caso encontrado."
                 actions={createAction}
+                loading={loading}
+                filters={
+                    <StudentRecordFilters
+                        idPrefix="student-case-study-filter"
+                        label="Filtrar Estudos de Caso"
+                        fields={[
+                            { name: 'semester', label: 'Semestre' },
+                            { name: 'status', label: 'Status' },
+                            { name: 'date', label: 'Data de criação' },
+                        ]}
+                        values={filters.values}
+                        onChange={filters.update}
+                        onClear={filters.clear}
+                    />
+                }
             />
             <div className="studentDetails__recordFooter">
                 <small>
@@ -349,18 +439,43 @@ function StudentCaseStudies({
 function StudentPaees({
     student,
     paees,
+    loading = false,
 }: {
     student: StudentRecord;
     paees: StudentPaeeSummary[];
+    loading?: boolean;
 }): React.JSX.Element {
+    const filters = useStudentRecordFilters(['semester', 'status', 'review'] as const);
+    const filteredPaees = paees.filter(
+        (paee) =>
+            matchesStudentRecordFilter(paee.semester_label, filters.values.semester) &&
+            matchesStudentRecordFilter(paee.status_label, filters.values.status) &&
+            matchesStudentRecordFilter(paee.next_review_date, filters.values.review),
+    );
+
     return (
         <FormSection id="paees" title="PAEE" iconClass="fa fa-sitemap" variant="inline">
             <StudentRecordTable
                 ariaLabel="PAEEs do aluno"
                 columns={paeeColumns}
-                rows={paees}
+                rows={filteredPaees}
                 rowKey={(paee) => paee.id}
                 emptyMessage="Nenhum PAEE encontrado."
+                loading={loading}
+                filters={
+                    <StudentRecordFilters
+                        idPrefix="student-paee-filter"
+                        label="Filtrar PAEEs"
+                        fields={[
+                            { name: 'semester', label: 'Semestre' },
+                            { name: 'status', label: 'Status' },
+                            { name: 'review', label: 'Próxima revisão' },
+                        ]}
+                        values={filters.values}
+                        onChange={filters.update}
+                        onClear={filters.clear}
+                    />
+                }
             />
             <div className="studentDetails__recordFooter">
                 <small>
@@ -387,6 +502,7 @@ export function createStudentSupportTabs({
     permissions,
     caseStudies,
     paees,
+    loadingTab,
 }: StudentSupportTabsProps): TabItem[] {
     const items: TabItem[] = [];
 
@@ -395,7 +511,13 @@ export function createStudentSupportTabs({
             id: 'support-profiles',
             label: 'Perfis de atendimento',
             icon: 'fa fa-wheelchair',
-            content: <StudentProfiles student={student} permissions={permissions} />,
+            content: (
+                <StudentProfiles
+                    student={student}
+                    permissions={permissions}
+                    loading={loadingTab === 'support-profiles'}
+                />
+            ),
         });
     }
 
@@ -404,7 +526,13 @@ export function createStudentSupportTabs({
             id: 'guardians',
             label: 'Responsáveis',
             icon: 'fa fa-users',
-            content: <StudentGuardians student={student} permissions={permissions} />,
+            content: (
+                <StudentGuardians
+                    student={student}
+                    permissions={permissions}
+                    loading={loadingTab === 'guardians'}
+                />
+            ),
         });
     }
 
@@ -418,6 +546,7 @@ export function createStudentSupportTabs({
                     student={student}
                     caseStudies={caseStudies}
                     permissions={permissions}
+                    loading={loadingTab === 'case-studies'}
                 />
             ),
         });
@@ -428,7 +557,13 @@ export function createStudentSupportTabs({
             id: 'paees',
             label: 'PAEE',
             icon: 'fa fa-sitemap',
-            content: <StudentPaees student={student} paees={paees} />,
+            content: (
+                <StudentPaees
+                    student={student}
+                    paees={paees}
+                    loading={loadingTab === 'paees'}
+                />
+            ),
         });
     }
 
