@@ -60,6 +60,10 @@ Os caminhos são relativos a `resources/react/components/`.
 | Prontuários | `UI/RecordSummary` (foto, nome e dados essenciais) + `Navigation/RecordTabs` (abas verticais) |
 | Diálogos | `UI/Modal` (foco inicial, contenção por Tab e retorno ao disparador; `initialFocus`) e `UI/ConfirmActionModal` |
 | Falhas de operação | `UI/NotificationToast/operationFeedback`: `notifyOperationFailure`, `notifyConnectionFailure` |
+| Controles isolados | `Forms/`: `TextInput`, `TextArea`, `SelectField`, `ChoiceControl`, `ChoiceGroup`, `ToggleControl`, `MaskedInput`, `DatePicker`, `FileUploadButton`, `FileDropzone`, `EvidenceUpload`, `ImageUploadField`, `PersonPhotoUpload`, `FormSection`, `FormActions` |
+| Agrupamento, ações e estados | `UI/Button`, `UI/CardBox`, `UI/Panel`, `UI/InlineAlert`, `UI/AppLoader`, `UI/ErrorState`, `UI/Tooltip`, `UI/SearchInput` |
+| Navegação e tabelas | `Navigation/Tabs`, `Navigation/Pagination`, `Navigation/PageTitle`, `Navigation/PageBreadcrumb`, `Tables/Table`, `Tables/DataTable`; `Navigation/PageHeader` é só referência Ubold |
+| Estrutura compartilhada | `Navigation/AppLayout` (atribuído em `main.tsx`), `AuthLayout` com `AccountLayout`, `TeacherPortalLayout`, `TopBarPrimary`, `SidebarPrimary`, `AppFooter`, `SkipLinks`. Não repita header, footer, barras ou navegação por página |
 
 `useTableListAction` continua disponível como alias de `useConfirmedAction` nas listagens existentes.
 

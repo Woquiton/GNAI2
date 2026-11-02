@@ -73,6 +73,14 @@ Regras de uso:
 
 Com `prefers-reduced-motion: reduce` ativo no sistema, animações, transições e rolagem suave ficam praticamente instantâneas para todo o frontend.
 
+## Componentes compartilhados
+
+- `FormField` fornece label e IDs de dica e erro; o consumidor passa o `id` ao controle e liga `aria-describedby`. Os campos de `Forms/FormFields` já fazem essa ligação.
+- `Button` diferencia botão de link, sempre apresenta `title` e aceita `aria-label`. `title` e `UI/Tooltip` são complementares e não substituem o nome acessível.
+- `Tooltip` abre por hover e foco, usa `role="tooltip"`/`aria-describedby`, sobrescreve a descrição anterior e depende de o filho encaminhar o atributo (`Button` encaminha). Confira a composição real.
+- `Modal` e `ConfirmActionModal` têm `role="dialog"`, `aria-modal`, Escape, título ligado por `useId` e, via `useDialogFocus`, foco inicial, contenção do Tab e retorno ao disparador. Use `initialFocus` quando o fluxo exigir outro alvo.
+- `NotificationToast` usa `role="alert"` e botão de fechar. `InlineAlert` não cria região de anúncio. A opção `confirm` do toast é demonstração com `window.alert`, não confirmação de negócio. Registre lacunas para o componente comum, sem criar sistema paralelo.
+
 ## Checklist por tela ou componente
 
 - **Teclado:** todas as ações funcionam por teclado, na ordem visual, sem armadilhas de foco. Modais usam `useDialogFocus`.

@@ -1,6 +1,6 @@
 # Convenção de telas de formulários React do Gnai
 
-Esta convenção documenta o padrão já implementado no cadastro e na edição de alunos. Consulte-a antes de criar, refatorar ou migrar formulários React, junto do `AGENTS.md` da raiz e de `resources/react/AGENTS.md`. Instruções explícitas do usuário prevalecem; uma experiência visual local não redefine automaticamente o padrão compartilhado.
+Esta convenção documenta o padrão já implementado no cadastro e na edição de alunos. Consulte-a antes de criar, refatorar ou migrar formulários React.
 
 **Na migração, o Blade antigo (removido do repositório; consulte o histórico do git) é referência de dados, comportamentos e regras existentes; o formulário React de alunos é referência para a nova estrutura e identidade visual.** Quando os visuais divergirem, siga o React padronizado e preserve as funcionalidades, permissões e contratos do formulário de origem.
 
@@ -54,8 +54,8 @@ A página compõe o cabeçalho e recebe as props reais do controller. O componen
 ### Estrutura e composição
 
 1. Use o layout compartilhado existente. `main.tsx` atribui `AppLayout` às páginas de negócio; ele monta topbar, sidebar e footer para usuários autenticados. Não duplique essa estrutura dentro do formulário.
-2. Defina o título do documento com `Head` do Inertia e componha o cabeçalho visual com `Navigation/PageTitle`. Ele recebe `title`, `subtitle` e `actions`, usa `h1` por padrão e oferece quebra responsiva. A referência visual é o título maior e roxo do antigo Blade de criar aluno. `Navigation/PageHeader` continua disponível nos exemplos Ubold, mas não é o padrão oficial desses cabeçalhos de negócio.
-3. Use `Navigation/PageBreadcrumb` dentro de uma navegação com nome acessível. Passe a cadeia de navegação real; o último item é apresentado como atual. Links permanecem azuis, com hover/foco azul escuro, conforme seu CSS compartilhado.
+2. Componha título, subtítulo e breadcrumb por `Navigation/BusinessPage`, que usa `PageTitle` e `PageBreadcrumb` conforme a [identidade visual](identity.md).
+3. Passe a cadeia de navegação real pelo helper de breadcrumb do recurso.
 4. Use `Forms/FormLayout` como o `<form>` semântico, com `onSubmit`, prevenção do submit nativo e indicação de processamento. Ele aplica `noValidate` para impedir os balões nativos do navegador: a requisição deve chegar ao backend e os erros retornados pelo Laravel/Inertia devem aparecer junto de todos os campos correspondentes. O componente também centraliza reset de `fieldset`, espaçamento base de campos, última seção e foco das ações. Dentro dele, reúna os campos em um único `UI/CardBox`.
 5. Divida o conteúdo com `Forms/FormSection`, usando `variant="inline"`, título pertinente e `iconClass` adequado. A variante padrão `card` cria outro card: não a use inadvertidamente para cada seção de um formulário que deve ter um só card.
 6. Coloque `Forms/FormActions` imediatamente depois do card, ainda dentro do `<form>`. Ele forma uma unidade contínua com o card, cria o rodapé sticky centralizado, apresenta o status de envio e reúne as ações principais sem repeti-las no cabeçalho. Preserve a navegação de Cancelar e bloqueie as ações durante o processamento.
@@ -115,7 +115,7 @@ Organize campos relacionados com `FormGrid`, usando `FormGridWide` para campos l
 
 No `ToggleControl`, texto e controle ficam próximos na mesma linha, com o toggle imediatamente após o rótulo e sua eventual ajuda. Não distribua o rótulo e o controle pelas extremidades da coluna. Em telas estreitas, o texto pode quebrar dentro de sua área, mantendo o controle ao lado; preserve o texto de estado, a associação acessível e o foco do componente compartilhado.
 
-Botões devem ter ícone pertinente e texto, inclusive nos rodapés sticky de criar, editar e visualizar. Todo botão tem `title`; o componente compartilhado o infere de `aria-label`, `label` ou texto simples, enquanto conteúdos complexos devem informá-lo explicitamente. Use rótulos curtos conforme o contexto: `Salvar` e `Cancelar` em formulários; `Voltar`, `Editar`, `Excluir`, `Clonar` e `PDF` nas visualizações quando essas ações existirem. Ações somente com ícone também precisam de `aria-label`, pois `title` não substitui o nome acessível. Cancelar/voltar usa X cinza; salvar usa check no roxo institucional do Gnai. `Button` também admite `iconOnly` para exceções autorizadas, `leftIconClass`, outras posições de ícone e `showIcon={false}`. Não suponha que todas as variantes do tema já tenham as cores do Gnai.
+Botões seguem as regras de ações e rodapé da [identidade visual](identity.md); nas visualizações, `Clonar` também é um rótulo curto válido. `Button` admite `leftIconClass`, outras posições de ícone e `showIcon={false}`; não suponha que todas as variantes do tema já tenham as cores do Gnai.
 
 ### Labels, validação e acessibilidade
 
@@ -221,25 +221,15 @@ A referência cria por POST em `/inclusao/alunos/salvar` e atualiza por PUT em `
 
 Preserve nomes de campos, enums, formato das datas, arquivos e flags aceitos pelo backend. Não substitua validações, permissões, queries/actions ou regras de negócio por condições visuais. Os erros de validação chegam por Inertia em `form.errors`; os redirects e flash devem seguir os contratos existentes. Não acrescente capabilities ao usuário compartilhado nem invente permissões que o servidor não fornece.
 
-**Consumo de feedback:** `AppLayout` monta uma única instância de `UI/FlashNotifications/FlashNotifications.tsx` para as telas autenticadas, e `AccountLayout` faz o mesmo na autenticação. O consumidor converte flash do backend, erros de validação Inertia e mensagens emitidas por `UI/NotificationToast/notify` em toast. Páginas, wrappers de domínio e `BusinessPage` não devem montar outro consumidor das mesmas mensagens. A fila compartilhada preserva avisos emitidos durante transições entre layouts, enquanto `flash.response_id`, gerado pelo middleware, impede que a mesma resposta seja consumida novamente por uma renderização, remontagem ou restauração do histórico do Inertia.
+O consumo das mensagens (flash, erros de validação e toasts) segue a [convenção de feedback](feedback.md).
 
 ## Processo de criação ou migração
 
-1. Leia esta convenção e as instruções `AGENTS.md` aplicáveis antes de implementar.
-2. Releia `Create`, `Edit`, `BusinessPage`, `StudentForm` e seus componentes compartilhados para verificar o padrão atual; não presuma que uma nota antiga sobre scaffolds descreve essas páginas hoje.
-3. Localize a biblioteca interna e confira as APIs, CSS e hooks dos controles necessários.
-4. Em migrações, inspecione o Blade de origem, partials, componentes, estilos e scripts. Inventarie campos, defaults, condições, máscaras, uploads, ações, erros, loading e mensagens.
-5. Rastreie rotas, controllers, Data/Rules, Queries/Presenters, permissões e redirects. Identifique diferenças entre criar e editar antes de definir o payload.
-6. Componha a nova página e o formulário seguindo os padrões obrigatórios desta convenção, aplicando os componentes condicionais somente quando o cadastro exigir.
-7. Reutilize os componentes compartilhados e mantenha tipos, hooks, utilitários e CSS específicos com seu proprietário. Use páginas `pages/Dominio/Recurso/Acao.tsx`, componentes `.tsx` e lógica/tipos sem markup em `.ts`.
-8. Preserve integração e regras de negócio. Aplique a apresentação React padronizada sem copiar mecanicamente o visual do Blade ou criar padrões paralelos.
-9. Compare o código com o inventário funcional, revise o diff e confirme campos, submissão, edição, remoção de foto quando aplicável, mensagens, foco e responsividade. Corrija divergências no escopo autorizado.
-10. Entregue um resumo curto dos arquivos e comportamentos implementados. A homologação visual/funcional é manual; não afirme que houve execução quando a revisão foi apenas estática.
+Siga o fluxo de reconstrução e os limites de execução do `AGENTS.md`. Específico de formulários:
 
-Siga os limites de execução do `AGENTS.md`: não crie ou execute testes, build, typecheck, scripts de homologação, servidores, navegador, banco temporário ou infraestrutura automaticamente. Essas ações dependem de solicitação explícita ou de uma tarefa cujo objetivo seja validar o ambiente.
+1. Releia `Create`, `Edit`, `BusinessPage`, `StudentForm` e os componentes compartilhados para confirmar o padrão atual.
+2. Identifique as diferenças entre criar e editar antes de definir o payload.
+3. Aplique os padrões obrigatórios desta convenção e os condicionais só quando o cadastro exigir.
+4. Na revisão, confirme campos, submissão, edição, remoção de foto quando houver, mensagens, foco e responsividade.
 
-## Manutenção da convenção
-
-Quando uma alteração autorizada redefinir o padrão compartilhado de formulários, atualize este documento e os links do índice no `AGENTS.md`, se os caminhos mudarem. Verifique o código real antes de atualizar exemplos e APIs. Uma nova tela que segue o mesmo padrão não exige uma nova convenção.
-
-Outras convenções podem ser adicionadas a `docs/ai-conventions/` e indexadas no `AGENTS.md` conforme existirem. Não crie documentos vazios para planejar essa expansão. A documentação de domínio já existente em `Docs/` permanece separada; evite duplicar seus contratos nesta convenção.
+Quando uma alteração autorizada redefinir o padrão de formulários, atualize este documento conferindo o código real. Uma nova tela que segue o padrão não exige nova convenção.
