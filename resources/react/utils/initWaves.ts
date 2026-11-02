@@ -113,15 +113,21 @@ const effect = {
 
         ripple.setAttribute('style', convertStyle(rippleStyle));
     },
-    hide(this: HTMLElement, event: MouseEvent | TouchEvent): void {
+    hide(this: HTMLElement, event: MouseEvent | TouchEvent | DragEvent): void {
         touchHandler.touchup(event);
 
-        const ripples = this.getElementsByClassName('waves-ripple');
-        const ripple = ripples.length > 0 ? (ripples[ripples.length - 1] as HTMLElement) : null;
+        /*
+         * Apaga todas as ondas ainda visíveis, não só a última: uma onda que perdeu o `mouseup`
+         * (arraste do link, por exemplo) ficaria presa sobre o item, clareando o fundo ativo.
+         */
+        const ripples = Array.from(this.getElementsByClassName('waves-ripple')).filter(
+            (ripple: Element) => !ripple.hasAttribute('data-hiding'),
+        ) as HTMLElement[];
 
-        if (!ripple) {
-            return;
-        }
+        ripples.forEach((ripple: HTMLElement) => effect.fade(this, ripple));
+    },
+    fade(element: HTMLElement, ripple: HTMLElement): void {
+        ripple.setAttribute('data-hiding', '');
 
         const relativeX = ripple.getAttribute('data-x');
         const relativeY = ripple.getAttribute('data-y');
@@ -148,8 +154,8 @@ const effect = {
             ripple.setAttribute('style', convertStyle(style));
 
             setTimeout(() => {
-                if (ripple.parentNode === this) {
-                    this.removeChild(ripple);
+                if (ripple.parentNode === element) {
+                    element.removeChild(ripple);
                 }
             }, effect.duration);
         }, delay);
@@ -203,6 +209,8 @@ function showEffect(event: MouseEvent | TouchEvent): void {
 
     element.addEventListener('mouseup', effect.hide as EventListener, false);
     element.addEventListener('mouseleave', effect.hide as EventListener, false);
+    // Ao arrastar um link, o navegador não dispara `mouseup` nem `mouseleave` no elemento.
+    element.addEventListener('dragstart', effect.hide as EventListener, false);
 }
 
 export function initWaves(): void {
