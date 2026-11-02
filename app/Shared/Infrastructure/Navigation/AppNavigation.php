@@ -147,6 +147,7 @@ final class AppNavigation
                 ['settings', 'Configurações', 'settings.index', 'ti-settings', ['setting.view'], ['settings.*']],
                 ['audit', 'Auditoria', 'audit.index', 'ti-shield', ['audit.index'], ['audit.*']],
                 ['backups', 'Backups', 'backup.backups.index', 'ti-cloud-down', ['backup.index'], ['backup.backups.*']],
+                ['help', 'Ajuda', 'help.index', 'ti-help-alt', [], ['help.*']],
                 ['about', 'Sobre o Sistema', 'about-us', 'ti-info-alt', [], ['about-us']],
             ]],
         ];

@@ -33,6 +33,11 @@ Route::middleware('web')->group(function () {
         ->name('settings.')
         ->group(base_path('routes/modules/settings.php'));
 
+    Route::middleware(['auth'])
+        ->prefix('ajuda')
+        ->name('help.')
+        ->group(base_path('routes/modules/help.php'));
+
     Route::name('website.')
         ->group(base_path('routes/modules/website.php'));
 
