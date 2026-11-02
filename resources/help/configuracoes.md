@@ -1,13 +1,13 @@
 ---
 titulo: Configurações
-resumo: Como configurar o envio de e-mails do Gnai, testar a conta de envio e definir os horários e a retenção dos backups automáticos.
+resumo: Como configurar o envio de e-mails do Gnai, testar a conta de envio definir os horários e a retenção dos backups automáticos e configurar os domínios aceitos no acesso de professores.
 categoria: Sistema
 palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, senha de app, senha de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos
 ordem: 10
 permissoes: setting.view
 ---
 
-Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail** e **Backups**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
+Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **Backups** e **Acesso dos professores**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
 
 ## Para que serve a configuração de e-mail?
 
@@ -65,3 +65,13 @@ Sem configuração salva, o Gnai faz um backup por dia às 12:05 e mantém os 30
 - **"Informe o servidor SMTP."** ou **"Informe a porta do servidor SMTP."**: esses campos são obrigatórios quando o tipo de envio é SMTP.
 - **"Este horário está repetido."**: cada horário de backup deve ser diferente.
 - **Não consigo alterar os campos**: sua permissão permite apenas consultar as configurações.
+
+## Configurar os domínios de e-mail dos professores
+
+1. Acesse **Sistema → Configurações → Acesso dos professores**.
+2. Use **Domínio** para adicionar os domínios aceitos, um por linha. Informe somente o domínio, por exemplo `escola.edu.br` ou `educacao.municipio.gov.br`. O arroba inicial é opcional; letras maiúsculas são convertidas para minúsculas.
+3. Clique em **Salvar**.
+
+Com a lista vazia, qualquer domínio é aceito, desde que o e-mail esteja cadastrado como professor. Para liberar todos os domínios, remova todas as linhas e salve. Uma linha adicionada precisa ser preenchida ou removida.
+
+A restrição vale para novos pedidos de link de acesso do professor, sem alterar o login com senha ou a recuperação de senha. A tela de acesso mostra os domínios configurados abaixo do campo de e-mail. Cada domínio é comparado por inteiro: `escola.edu.br` não inclui `campus.escola.edu.br`; cadastre cada um separadamente. Não são aceitos curingas como `*.edu.br`.

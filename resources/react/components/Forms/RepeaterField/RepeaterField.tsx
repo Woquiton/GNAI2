@@ -23,6 +23,8 @@ interface RepeaterFieldProps<T> {
     emptyMessage?: string;
     /** Em field, renderItem compõe a remoção junto ao controle com RemovableField. */
     removePlacement?: 'corner' | 'field';
+    /** Campos simples, sem moldura ou título duplicado do bloco. */
+    variant?: 'blocks' | 'fields';
     disabled?: boolean;
     /**
      * Identidade estável do bloco (por exemplo, o `id` de um registro salvo). Sem ela, o
@@ -69,6 +71,7 @@ export default function RepeaterField<T>({
     addLabel,
     emptyMessage,
     removePlacement = 'corner',
+    variant = 'blocks',
     disabled = false,
     getItemKey,
 }: RepeaterFieldProps<T>): React.JSX.Element {
@@ -95,12 +98,16 @@ export default function RepeaterField<T>({
                 return (
                     <fieldset
                         key={getItemKey ? getItemKey(item, index) : repeaterKeys.keys[index]}
+                        aria-label={variant === 'fields' ? label : undefined}
                         className={joinClassNames(
                             'repeaterField__item',
                             removePlacement === 'field' && 'repeaterField__item--fieldRemoval',
+                            variant === 'fields' && 'repeaterField__item--fields',
                         )}
                     >
-                        <legend className="repeaterField__legend">{label}</legend>
+                        {variant === 'blocks' ? (
+                            <legend className="repeaterField__legend">{label}</legend>
+                        ) : null}
                         {removePlacement === 'corner' ? (
                             <Button
                                 type="button"

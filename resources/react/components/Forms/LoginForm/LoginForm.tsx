@@ -101,7 +101,7 @@ export default function LoginForm(): React.JSX.Element {
             <div className="loginForm__teacherAccess">
                 <Link href="/autenticacao/acesso">
                     <i className="fa fa-graduation-cap" aria-hidden="true" /> Sou professor(a):
-                    entrar com e-mail institucional
+                    entrar com e-mail
                 </Link>
             </div>
         </form>

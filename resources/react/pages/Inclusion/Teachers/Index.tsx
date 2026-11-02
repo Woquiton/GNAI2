@@ -9,7 +9,6 @@ import type {
     TeacherRecord,
 } from '@/components/Inclusion/Teachers/Teachers.types';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
-import Button from '@/components/UI/Button/Button';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
 export default function InclusionTeachersIndexPage({
@@ -27,18 +26,6 @@ export default function InclusionTeachersIndexPage({
     const removal = useConfirmedAction<TeacherRecord>({
         failureText: 'Não foi possível excluir o professor. Tente novamente.',
     });
-    const permissionsAction = can.update ? (
-        <Button
-            href={teacherUrls.permissions}
-            tone="default"
-            labelIconClass="fa fa-shield"
-            title="Permissões globais dos professores"
-            aria-label="Permissões globais dos professores"
-        >
-            Permissões
-        </Button>
-    ) : undefined;
-
     function confirmRemoval(): void {
         if (removal.target) {
             filters.cancelScheduled();
@@ -51,7 +38,6 @@ export default function InclusionTeachersIndexPage({
             title="Professores"
             subtitle="Gerencie o corpo docente e suas atribuições de disciplinas."
             breadcrumbItems={teacherBreadcrumb()}
-            actions={permissionsAction}
             create={can.create && { href: teacherUrls.create, label: 'Cadastrar professor' }}
             listLabel="Listagem de professores"
             loading={filters.loading}

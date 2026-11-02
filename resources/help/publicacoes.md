@@ -12,7 +12,7 @@ As publicações são o conteúdo exibido no site público do núcleo: notícias
 ## Consultar as publicações
 
 1. Acesse **Comunicação → Publicações**.
-2. A listagem mostra, entre outras colunas, **Título**, **Tipo**, **Período** e **Situação** (Publicado ou Rascunho).
+2. A listagem mostra, entre outras colunas, **Título**, **Tipo**, **Data e hora de início**, **Data e hora de término**, **Andamento** e **Situação** (Publicado ou Rascunho).
 3. Filtre por **Título**, **Tipo** (Notícia, Evento, Comunicado, Artigo ou Registro) e **Situação** (Publicado ou Rascunho).
 4. Clique no ícone de visualizar da linha para abrir os detalhes.
 

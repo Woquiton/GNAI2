@@ -54,8 +54,7 @@
     gap: 8px 12px;
 }
 
-.teacherPortalLayout__userName,
-.teacherPortalLayout__impersonation {
+.teacherPortalLayout__userName {
     min-width: 0;
     margin: 0;
     color: color-mix(in srgb, var(--ui-color-surface) 80%, transparent);
@@ -63,11 +62,10 @@
     overflow-wrap: anywhere;
 }
 
-.teacherPortalLayout__impersonation i {
-    margin-right: 6px;
-}
-.teacherPortalLayout__impersonation strong {
-    color: var(--ui-color-surface);
+.teacherPortalLayout__impersonationNav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .teacherPortalLayout__content {

@@ -360,8 +360,6 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::delete('/profissionais/{professional}', [ProfessionalController::class, 'destroy'])->name('professionals.destroy')->middleware('can:professional.delete');
 
         /* 4. TEACHERS */
-        Route::get('/professores/permissoes', [TeacherController::class, 'permissions'])->name('teachers.permissions')->middleware('can:teacher.update');
-        Route::put('/professores/permissoes/atualizar', [TeacherController::class, 'updatePermissions'])->name('teachers.permissions.update')->middleware('can:teacher.update');
         Route::get('/professores', [TeacherController::class, 'index'])->name('teachers.index')->middleware('can:teacher.view');
         Route::get('/professores/{teacher}/visualizar', [TeacherController::class, 'show'])->name('teachers.show')->middleware('can:teacher.view');
         Route::get('/professores/criar', [TeacherController::class, 'create'])->name('teachers.create')->middleware('can:teacher.create');

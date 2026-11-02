@@ -16,4 +16,11 @@ export const settingsCategories = [
         href: settingsUrls.backup,
         iconClass: 'fa fa-database',
     },
+    {
+        key: 'teacher-access',
+        component: 'Settings/TeacherAccess',
+        label: 'Acesso dos professores',
+        href: settingsUrls.teacherAccess,
+        iconClass: 'fa fa-graduation-cap',
+    },
 ] as const;

@@ -12,4 +12,5 @@ enum SettingCategory: string
 {
     case MAIL = 'mail';
     case BACKUP = 'backup';
+    case TEACHER_ACCESS = 'teacher_access';
 }

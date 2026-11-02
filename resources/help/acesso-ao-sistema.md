@@ -6,7 +6,7 @@ palavras-chave: login, entrar, acessar, acesso, logar, senha, e-mail, esqueci mi
 ordem: 2
 ---
 
-Administradores e profissionais da equipe entram no Gnai com o e-mail e a senha cadastrados. Professores que só preenchem as adaptações do PEI entram por um link enviado ao e-mail institucional, sem senha; veja [Portal do Professor](/ajuda/portal-do-professor).
+Administradores e profissionais da equipe entram no Gnai com o e-mail e a senha cadastrados. Professores que só preenchem as adaptações do PEI entram por um link enviado ao e-mail cadastrado, sem senha; veja [Portal do Professor](/ajuda/portal-do-professor).
 
 ## Entrar no Gnai
 
@@ -19,7 +19,7 @@ Com tudo certo, você vai para o [Painel](/ajuda/painel) e recebe a mensagem "Lo
 ## Esqueci minha senha
 
 1. Na tela de login, clique em **Esqueceu sua senha?**.
-2. Na tela **RECUPERAR SENHA**, digite seu e-mail institucional.
+2. Na tela **RECUPERAR SENHA**, digite o e-mail cadastrado na sua conta. A recuperação de senha não exige domínio institucional.
 3. Clique em **Enviar link**.
 
 O sistema mostra "Se o e-mail estiver cadastrado, enviaremos instruções.". Por segurança, a mensagem é a mesma para qualquer e-mail, cadastrado ou não.
@@ -70,7 +70,7 @@ O link de redefinição já foi usado, passou de 60 minutos ou foi substituído 
 **Nova senha** e **Confirmar senha** estão diferentes. Digite as duas novamente.
 
 **Sou professor(a) e não tenho senha.**
-Use o link **Sou professor(a): entrar com e-mail institucional**, na tela de login. Veja [Portal do Professor](/ajuda/portal-do-professor).
+Use o link **Sou professor(a): entrar com e-mail**, na tela de login. Veja [Portal do Professor](/ajuda/portal-do-professor).
 
 **Quero trocar a senha que já sei.**
 Faça isso pelo seu perfil, sem precisar do e-mail. Veja [Trocar minha senha](/ajuda/minha-conta#trocar-minha-senha).

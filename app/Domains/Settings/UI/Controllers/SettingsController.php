@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Domains\Settings\UI\Controllers;
 
 use App\Domains\Settings\Application\Actions\SendTestMailAction;
+use App\Domains\Settings\Application\Actions\UpdateTeacherAccessSettingsAction;
+use App\Domains\Settings\Application\Data\UpdateTeacherAccessSettingsData;
+use App\Domains\Settings\Application\Queries\GetTeacherAccessSettingsQuery;
 use App\Domains\Settings\Application\Actions\UpdateBackupSettingsAction;
 use App\Domains\Settings\Application\Actions\UpdateMailSettingsAction;
 use App\Domains\Settings\Application\Data\SendTestMailData;
@@ -76,5 +79,24 @@ final class SettingsController
         return redirect()
             ->route('settings.backup.edit')
             ->with('success', 'Configurações de backup salvas com sucesso.');
+    }
+
+    public function editTeacherAccess(GetTeacherAccessSettingsQuery $query, Request $request): InertiaResponse
+    {
+        return Inertia::render('Settings/TeacherAccess', [
+            'domains' => $query->execute(),
+            'canUpdate' => $request->user()?->can('setting.update') === true,
+        ]);
+    }
+
+    public function updateTeacherAccess(
+        UpdateTeacherAccessSettingsData $data,
+        UpdateTeacherAccessSettingsAction $action,
+    ): RedirectResponse {
+        $action->execute($data);
+
+        return redirect()
+            ->route('settings.teacher-access.edit')
+            ->with('success', 'Configurações de acesso dos professores salvas com sucesso.');
     }
 }

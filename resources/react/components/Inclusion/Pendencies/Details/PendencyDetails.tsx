@@ -23,19 +23,18 @@ export default function PendencyDetails({
     ) : (
         NOT_INFORMED
     );
-    const completedIcon = pendency.is_completed ? 'fa fa-check-circle' : 'fa fa-times-circle';
 
     return (
         <CardBox>
             <FormSection
                 id="pendency-data"
-                title="Dados da Pendência"
+                title="Identificação"
                 variant="inline"
                 iconClass="fa fa-tasks"
             >
                 <DetailGrid columns={3}>
                     <DetailField label="Título" className="pendencyDetails__title">
-                        <strong>{pendency.title}</strong>
+                        {pendency.title}
                     </DetailField>
                     <DetailField label="Profissional Responsável">
                         {pendency.assigned_name}
@@ -44,7 +43,6 @@ export default function PendencyDetails({
                     <DetailField label="Vencimento">{pendency.due_date}</DetailField>
                     <DetailField label="Concluída">
                         <TableLabel tone={pendency.is_completed ? 'success' : 'danger'}>
-                            <i className={completedIcon} aria-hidden="true" />{' '}
                             {pendency.is_completed ? 'Sim' : 'Não'}
                         </TableLabel>
                     </DetailField>

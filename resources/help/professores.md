@@ -1,8 +1,8 @@
 ---
 titulo: Professores: cadastro, disciplinas e acesso ao Portal do Professor
-resumo: Como cadastrar professores, atribuir as disciplinas de cada curso, dar acesso ao Portal do Professor e definir as permissões globais dos professores.
+resumo: Como cadastrar professores, atribuir as disciplinas de cada curso, dar acesso ao Portal do Professor com senha ou link por e-mail.
 categoria: Gestão do núcleo
-palavras-chave: professor, professores, docente, docentes, corpo docente, cadastrar professor, novo professor, matrícula, disciplinas do professor, gerenciar disciplinas, matriz curricular, atribuir disciplina, vincular disciplina, disciplina por curso, curso, portal do professor, acesso do professor, link de acesso, e-mail institucional, senha do professor, permissões globais, permissões dos professores, adaptação do pei, excluir professor, foto
+palavras-chave: professor, professores, docente, docentes, corpo docente, cadastrar professor, novo professor, matrícula, disciplinas do professor, gerenciar disciplinas, matriz curricular, atribuir disciplina, vincular disciplina, disciplina por curso, curso, portal do professor, acesso do professor, link de acesso, e-mail institucional, senha do professor, adaptação do pei, excluir professor, foto
 ordem: 30
 permissoes: teacher.view
 ---
@@ -53,24 +53,16 @@ Ao cadastrar as adaptações curriculares de um PEI, cada disciplina só aceita 
 
 ## Como o professor acessa o Gnai?
 
+O cadastro do professor é necessário tanto para o acesso com senha quanto para solicitar o link por e-mail. O próprio professor solicita esse link na tela de login; a equipe não precisa gerar o token manualmente. Não existe uma matriz de permissões globais para professores.
+
 Professores usam o **Portal do Professor**, uma área própria, sem o menu lateral, que mostra os alunos com PEI vigente vinculado a ele e permite editar as suas adaptações. Há duas formas de entrar:
 
 - **Com senha**: pela tela de login, com o **E-mail de Acesso** e a senha definida no cadastro ou pelo link recebido por e-mail.
-- **Sem senha**: na tela de login, o professor clica em **Sou professor(a): entrar com e-mail institucional**, informa o e-mail e clica em **Enviar link**. O link chega por e-mail, vale por 24 horas e só pode ser usado uma vez; ao abri-lo, o professor clica em **Confirmar e acessar**.
+- **Sem senha**: na tela de login, o professor clica em **Sou professor(a): entrar com e-mail**, informa o e-mail e clica em **Enviar link**. O link chega por e-mail, vale por 24 horas e só pode ser usado uma vez; ao abri-lo, o professor clica em **Confirmar e acessar**.
 
 Mais detalhes em [Portal do Professor](/ajuda/portal-do-professor).
 
 > **Importante:** o professor só vê no portal os alunos cujo PEI vigente tem uma disciplina atribuída a ele. Cadastrar o professor e a matriz curricular não basta; é preciso vinculá-lo às disciplinas do PEI.
-
-## Definir as permissões globais dos professores
-
-Além do portal, os professores podem receber permissões do sistema. Elas são **globais**: valem para todas as contas de professor ao mesmo tempo, sem distinção.
-
-1. Em **Gestão do núcleo → Professores**, clique em **Permissões**, no cabeçalho da listagem.
-2. Na tela **Permissões globais de professores**, marque as permissões em cada grupo, ou use **Selecionar todas**.
-3. Clique em **Salvar**. O sistema mostra "Permissões globais de professores atualizadas!".
-
-Os botões **Permissões** e **Gerenciar Disciplinas** só aparecem para quem pode editar professores.
 
 ## Editar ou excluir um professor
 
@@ -86,5 +78,5 @@ A exclusão é bloqueada quando o professor já tem adaptações registradas em 
 - **"Não é possível excluir este professor pois ele possui registros de acompanhamento em Planos Educacionais Individualizados (PEI)."**: O professor já tem adaptações em PEIs e o cadastro precisa ser mantido.
 - **"O professor selecionado não está vinculado à disciplina neste curso."**: Ao montar o PEI, atribua antes a disciplina ao professor no curso do aluno, em **Gerenciar Disciplinas**.
 - **"Uma ou mais disciplinas informadas não pertencem ao curso ... ou estão inativas."**: A matriz do curso ou o status da disciplina mudou enquanto você editava. Abra **Gerenciar Disciplinas** novamente.
-- **"Este link de acesso é inválido, já foi usado ou expirou."**: O professor deve pedir um novo link pela opção **Sou professor(a): entrar com e-mail institucional**.
+- **"Este link de acesso é inválido, já foi usado ou expirou."**: O professor deve pedir um novo link pela opção **Sou professor(a): entrar com e-mail**.
 - **O professor não vê um aluno no portal**: Confira se o PEI do aluno é o vigente e se tem uma disciplina atribuída a esse professor.

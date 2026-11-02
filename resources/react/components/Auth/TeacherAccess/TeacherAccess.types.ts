@@ -2,3 +2,8 @@
 export interface TeacherAccessConfirmProps {
     token: string;
 }
+
+/** Domínios públicos aceitos para solicitar o link de acesso. */
+export interface TeacherAccessRequestProps {
+    allowedDomains: string[];
+}

@@ -13,8 +13,6 @@ export const teacherUrls = {
     update: (id: number) => `${base}/${id}`,
     destroy: (id: number) => `${base}/${id}`,
     disciplines: (id: number) => `${base}/${id}/disciplinas`,
-    permissions: `${base}/permissoes`,
-    updatePermissions: `${base}/permissoes/atualizar`,
 };
 
 export function teacherBreadcrumb(

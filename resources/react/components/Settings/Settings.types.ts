@@ -30,3 +30,8 @@ export interface BackupSettingsProps {
     timezone: string;
     canUpdate: boolean;
 }
+
+export interface TeacherAccessSettingsProps {
+    domains: string[];
+    canUpdate: boolean;
+}

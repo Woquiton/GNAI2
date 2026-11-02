@@ -47,3 +47,8 @@
 .repeaterField__item.repeaterField__item--fieldRemoval {
     padding: 12px;
 }
+
+.repeaterField__item.repeaterField__item--fields {
+    padding: 0;
+    border: 0;
+}

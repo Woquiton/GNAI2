@@ -79,7 +79,7 @@ Select2, Summernote, Datepicker, Clockpicker, Timepicker, Switchery e demais plu
 
 ### Listas removíveis
 
-`RepeaterField` mantém chaves internas estáveis por bloco; informe `getItemKey` quando o item tiver identidade própria (por exemplo, `id` de registro salvo). Não use índices como `key` em listas que permitem remover itens intermediários. Índices continuam válidos nos nomes enviados (`items[0][campo]`) e nos caminhos de erro.
+`RepeaterField` oferece `variant="fields"` para linhas de campos simples sem moldura nem título duplicado, mantendo o nome acessível do grupo. A variante padrão `blocks` conserva a moldura e o título. O componente mantém chaves internas estáveis por bloco; informe `getItemKey` quando o item tiver identidade própria (por exemplo, `id` de registro salvo). Não use índices como `key` em listas que permitem remover itens intermediários. Índices continuam válidos nos nomes enviados (`items[0][campo]`) e nos caminhos de erro.
 
 ## Estilos e tokens
 

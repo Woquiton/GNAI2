@@ -8,6 +8,7 @@ use App\Domains\Auth\Application\Actions\TeacherAccess\ConfirmTeacherAccessToken
 use App\Domains\Auth\Application\Actions\TeacherAccess\RequestTeacherAccessLinkAction;
 use App\Domains\Auth\Application\Data\TeacherAccess\RequestTeacherAccessLinkData;
 use App\Domains\Auth\Domain\Exceptions\InvalidTeacherAccessToken;
+use App\Domains\Settings\Application\Queries\GetTeacherAccessSettingsQuery;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,9 +26,9 @@ final class TeacherAccessController
 
     private const DECAY_SECONDS = 3600;
 
-    public function showRequestForm(): InertiaResponse
+    public function showRequestForm(GetTeacherAccessSettingsQuery $query): InertiaResponse
     {
-        return Inertia::render('Auth/TeacherAccess/Request');
+        return Inertia::render('Auth/TeacherAccess/Request', ['allowedDomains' => $query->execute()]);
     }
 
     public function sendLink(RequestTeacherAccessLinkData $data, RequestTeacherAccessLinkAction $action, Request $request): RedirectResponse

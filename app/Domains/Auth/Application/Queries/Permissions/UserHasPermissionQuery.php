@@ -36,7 +36,7 @@ final class UserHasPermissionQuery
     private function permissionSlugsFor(User $user): Collection
     {
         $cacheKey = sprintf(
-            'auth.permission_slugs.v%d.user.%d',
+            'auth.permission_slugs.staff.v%d.user.%d',
             $this->permissionCache->version(),
             $user->getKey(),
         );
@@ -54,14 +54,6 @@ final class UserHasPermissionQuery
                         ->join('permission_position', 'permission_position.permission_id', '=', 'permissions.id')
                         ->join('professionals', 'professionals.position_id', '=', 'permission_position.position_id')
                         ->where('professionals.id', $user->professional_id)
-                        ->pluck('permissions.slug')
-                );
-            }
-
-            if ($user->teacher_id) {
-                $slugs = $slugs->merge(
-                    DB::table('teacher_global_permissions')
-                        ->join('permissions', 'permissions.id', '=', 'teacher_global_permissions.permission_id')
                         ->pluck('permissions.slug')
                 );
             }

@@ -29,10 +29,6 @@ export default function PositionDetails({
                     </DetailField>
                     <DetailField label="Status de Disponibilidade">
                         <TableLabel tone={position.is_active ? 'success' : 'inverse'}>
-                            <i
-                                className={position.is_active ? 'fa fa-check-circle' : 'fa fa-ban'}
-                                aria-hidden="true"
-                            />{' '}
                             {position.is_active ? 'Ativo' : 'Desativado'}
                         </TableLabel>
                     </DetailField>

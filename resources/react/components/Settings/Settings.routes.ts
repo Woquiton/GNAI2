@@ -8,6 +8,7 @@ export const settingsUrls = {
     mail: `${base}/email`,
     mailTest: `${base}/email/teste`,
     backup: `${base}/backups`,
+    teacherAccess: `${base}/acesso-dos-professores`,
 };
 
 /** Destino dos botões "Cancelar" das configurações. */

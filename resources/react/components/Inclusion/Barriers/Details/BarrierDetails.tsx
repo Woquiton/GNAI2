@@ -119,7 +119,10 @@ export default function BarrierDetails({
                                 </ExpandableContent>
                             </DetailField>
                             <DetailField label="Público Alvo" wide>
-                                <TagList items={barrier.deficiencies ?? []} emptyMessage="---" />
+                                <TagList
+                                    items={barrier.deficiencies ?? []}
+                                    emptyMessage="Não informado"
+                                />
                             </DetailField>
                             <DetailField label="Pessoa(s) Impactada(s)" wide>
                                 <BarrierAffectedPeople barrier={barrier} />

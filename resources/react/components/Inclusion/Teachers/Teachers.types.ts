@@ -23,11 +23,6 @@ export interface TeacherEditProps {
     teacher: TeacherRecord;
 }
 
-export interface TeacherGlobalPermissionsProps {
-    permissions: Record<string, Array<{ id: number; name: string; slug: string }>>;
-    globalPermissionsIds: number[];
-}
-
 export interface TeacherDisciplinesProps {
     teacher: TeacherRecord;
     courses: Array<{

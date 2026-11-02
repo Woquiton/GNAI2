@@ -2,24 +2,23 @@ import { formatTableListText, type TableListColumn } from '@/components/Tables/T
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { scheduleStatusLabels } from '../Publications.constants';
 import type { PublicationRecord } from '../Publications.types';
-function periodLabel(publication: PublicationRecord): string {
-    if (!publication.has_schedule || !publication.start_date) return 'Sem datas';
+function scheduleDateTime(publication: PublicationRecord, edge: 'start' | 'end'): string {
+    if (!publication.has_schedule) return 'Sem datas';
 
-    const dates =
-        publication.start_date === publication.end_date
-            ? publication.start_date_label
-            : `${publication.start_date_label} a ${publication.end_date_label}`;
+    const date = edge === 'start' ? publication.start_date : publication.end_date;
+    const label = edge === 'start' ? publication.start_date_label : publication.end_date_label;
+    const time = edge === 'start' ? publication.start_time : publication.end_time;
 
-    return publication.start_time
-        ? `${dates}, ${publication.start_time} a ${publication.end_time ?? ''}`
-        : dates;
+    if (!date) return 'Não informado';
+
+    return time ? `${label} às ${time}` : label;
 }
 
 export const publicationColumns: TableListColumn<PublicationRecord>[] = [
     {
         id: 'title',
         label: 'Título',
-        width: '32%',
+        width: '24%',
         fixed: 'start',
         render: (publication) => (
             <>
@@ -45,19 +44,25 @@ export const publicationColumns: TableListColumn<PublicationRecord>[] = [
         render: (publication) => publication.published_at_label,
     },
     {
-        id: 'period',
-        label: 'Período',
-        width: '19%',
-        render: (publication) => (
-            <>
-                {periodLabel(publication)}
-                {publication.schedule_status ? (
-                    <span className="publicationIndex__schedule">
-                        {scheduleStatusLabels[publication.schedule_status]}
-                    </span>
-                ) : null}
-            </>
-        ),
+        id: 'start_date_time',
+        label: 'Data e hora de início',
+        width: '17%',
+        render: (publication) => scheduleDateTime(publication, 'start'),
+    },
+    {
+        id: 'end_date_time',
+        label: 'Data e hora de término',
+        width: '17%',
+        render: (publication) => scheduleDateTime(publication, 'end'),
+    },
+    {
+        id: 'schedule_status',
+        label: 'Andamento',
+        width: '12%',
+        render: (publication) =>
+            publication.schedule_status
+                ? scheduleStatusLabels[publication.schedule_status]
+                : 'Sem datas',
     },
     {
         id: 'status',

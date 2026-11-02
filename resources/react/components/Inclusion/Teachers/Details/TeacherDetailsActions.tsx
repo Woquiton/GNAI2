@@ -51,7 +51,7 @@ export default function TeacherDetailsActions({
             {permissions.update ? (
                 <Button
                     href={teacherUrls.disciplines(teacherId)}
-                    tone="info"
+                    tone="dark-blue"
                     leftIconClass="fa fa-book"
                     label="Gerenciar Disciplinas"
                     title="Gerenciar disciplinas do professor"

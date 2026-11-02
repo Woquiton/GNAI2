@@ -10,6 +10,7 @@ A visualização de Itens é a referência: `pages/Inclusion/Items/Show.tsx` com
 - Reutilize `UI/CardBox` e `Forms/FormSection variant="inline"` para organizar os dados. Títulos e ícones de seção usam o cinza compartilhado; labels usam `--ui-color-form-label` em tamanho menor e valores usam `--ui-color-text`, para leitura sem aparência de formulário desabilitado.
 - Apresente pares de label e valor com HTML semântico, preferencialmente `dl`, `dt` e `dd`. Textos ricos vindos do servidor só podem ser renderizados pelo mesmo contrato sanitizado já adotado pela funcionalidade.
 - Status e classificações curtas usam `UI/TableLabel`; ações usam `UI/Button`. Não recrie badges, cards ou estilos de botão dentro da página.
+- Nas visualizações dos recursos do menu **Gestão do núcleo → Cadastros**, badges de status mostram somente texto, sem ícone interno, como na visualização de cursos.
 - Mantenha `Forms/FormActions` imediatamente depois do conteúdo principal. Preserve ações, permissões, links, downloads, modais e nomes acessíveis existentes.
 
 ## Visualizações simples

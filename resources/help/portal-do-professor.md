@@ -1,24 +1,24 @@
 ---
 titulo: Portal do Professor
-resumo: Como o professor entra pelo link enviado ao e-mail institucional, consulta os alunos vinculados e edita a adaptação da sua disciplina no PEI.
+resumo: Como o professor entra pelo link enviado ao e-mail cadastrado, consulta os alunos vinculados e edita a adaptação da sua disciplina no PEI.
 categoria: Primeiros passos
-palavras-chave: portal do professor, professor, professora, docente, corpo docente, acesso do professor, link de acesso, link mágico, entrar sem senha, e-mail institucional, ifbaiano, meus alunos, adaptação, adaptação curricular, editar adaptação, minha disciplina, pei, plano educacional individualizado, objetivos específicos, conteúdo programático, metodologias, processo de avaliação, parecer, modo leitura, laudo, estudo de caso, paee, link expirado, link inválido
+palavras-chave: portal do professor, professor, professora, docente, corpo docente, acesso do professor, link de acesso, link mágico, entrar sem senha, e-mail cadastrado, domínios aceitos, meus alunos, adaptação, adaptação curricular, editar adaptação, minha disciplina, pei, plano educacional individualizado, objetivos específicos, conteúdo programático, metodologias, processo de avaliação, parecer, modo leitura, laudo, estudo de caso, paee, link expirado, link inválido
 ordem: 6
 ---
 
-O Portal do Professor é a área do Gnai para os professores vinculados ao PEI dos alunos. Nele, o professor consulta a situação dos seus alunos, em modo leitura, e preenche a adaptação da própria disciplina no PEI. O acesso é feito por um link enviado ao e-mail institucional, sem senha.
+O Portal do Professor é a área do Gnai para os professores vinculados ao PEI dos alunos. Nele, o professor consulta a situação dos seus alunos, em modo leitura, e preenche a adaptação da própria disciplina no PEI. O acesso é feito por um link enviado ao e-mail cadastrado, sem senha.
 
 ## O que preciso para acessar o portal?
 
-- Estar cadastrado(a) em **Gestão do núcleo → Professores** com o seu e-mail institucional (terminado em @ifbaiano.edu.br).
+- Estar cadastrado(a) em **Gestão do núcleo → Professores** com o seu e-mail. Se a instalação restringir domínios, o e-mail também precisa usar um dos domínios exibidos na tela de acesso.
 - Para ver alunos no portal: estar indicado(a) como professor(a) responsável por uma disciplina na versão atual do PEI do aluno.
 
 Se o e-mail não estiver cadastrado como professor, nenhum link é enviado. Procure a equipe do núcleo para conferir o seu cadastro.
 
 ## Pedir o link de acesso
 
-1. Na tela de login do Gnai, clique em **Sou professor(a): entrar com e-mail institucional**.
-2. Na tela **ACESSO DO PROFESSOR**, digite o seu e-mail institucional.
+1. Na tela de login do Gnai, clique em **Sou professor(a): entrar com e-mail**.
+2. Na tela **ACESSO DO PROFESSOR**, digite o seu e-mail cadastrado.
 3. Clique em **Enviar link**.
 
 O sistema mostra "Se este e-mail estiver cadastrado, você receberá um link de acesso.". A resposta é a mesma para qualquer e-mail, por segurança.
@@ -95,8 +95,8 @@ Clique em **Sair**, na barra do topo. Em computadores compartilhados, sempre sai
 
 ## Dúvidas comuns
 
-**"Informe seu e-mail institucional (@ifbaiano.edu.br)."**
-O portal só aceita e-mails institucionais. Digite o e-mail terminado em @ifbaiano.edu.br.
+**Meu domínio não é aceito.**
+Confira os domínios exibidos abaixo do campo de e-mail. A equipe pode alterá-los em **Sistema → Configurações → Acesso dos professores**. Sem domínios configurados, qualquer e-mail cadastrado como professor pode solicitar o link.
 
 **"Muitas tentativas. Aguarde um pouco antes de solicitar um novo link."**
 Foram feitos muitos pedidos em pouco tempo (mais de 5 por e-mail em uma hora). Aguarde e use o link mais recente que recebeu.
