@@ -571,7 +571,7 @@
   border-radius: 3px;
 }
 :where(.editableField) .has-error .form-control {
-  border-color: #f05050;
+  border-color: var(--ui-color-danger);
   box-shadow: none !important;
 }
 :where(.editableField) .popover {
@@ -584,7 +584,7 @@
 }
 :where(.editableField) .popover .popover-title {
   background-color: transparent;
-  color: #5fbeaa;
+  color: var(--ui-color-custom);
   font-weight: 600;
 }
 
@@ -604,7 +604,7 @@
 :where(.editableField) .btn-primary:active,
 :where(.editableField) .btn-primary:focus,
 :where(.editableField) .btn-primary:hover {
-  background-color: #5d9cec !important;
-  border: 1px solid #5d9cec !important;
+  background-color: var(--ui-color-theme-blue) !important;
+  border: 1px solid var(--ui-color-theme-blue) !important;
 }
 

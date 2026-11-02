@@ -59,7 +59,7 @@
 .clockPicker__error {
     display: block;
     margin-top: 2px;
-    color: var(--ui-color-danger, #f05050);
+    color: var(--ui-color-danger);
     font-size: 12px;
 }
 

@@ -104,8 +104,8 @@
     --ui-color-gnai-primary-hover: var(--color-primary-hover);
     --ui-color-primary: var(--ui-color-gnai-primary);
     --ui-color-primary-hover: var(--ui-color-gnai-primary-hover);
-    --ui-color-theme-blue: #5d9cec;
-    --ui-color-custom: #5fbeaa;
+    --ui-color-theme-blue: #3b82f6;
+    --ui-color-custom: #14b8a6;
     --ui-color-list-action: var(--ui-color-save);
     --ui-color-list-action-hover: var(--ui-color-save-hover);
     --ui-color-save: var(--ui-color-gnai-primary);
@@ -124,15 +124,15 @@
     --ui-color-input-focus-border: var(--input-focus-border-color);
 
     /* Estados semânticos */
-    --ui-color-danger: #f05050;
-    --ui-color-info: #34d3eb;
+    --ui-color-danger: #ef4444;
+    --ui-color-info: #06b6d4;
     --ui-color-info-light: var(--color-info-light);
     --ui-color-info-text: var(--color-info-text);
-    --ui-color-success: #81c868;
-    --ui-color-warning: #ffbd4a;
+    --ui-color-success: #16a34a;
+    --ui-color-warning: #f59e0b;
     /* Âmbar dos títulos de aviso: legível como texto grande (3:1) sobre o branco. */
-    --ui-color-warning-strong: #c98a0e;
-    --ui-color-inverse: #4c5667;
+    --ui-color-warning-strong: #b45309;
+    --ui-color-inverse: #64748b;
     --ui-color-pink: #fb6d9d;
     --ui-color-purple: #7266ba;
 

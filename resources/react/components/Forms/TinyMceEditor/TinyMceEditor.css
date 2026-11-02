@@ -33,7 +33,7 @@
 }
 .mce-reset .mce-textbox:focus {
     box-shadow: none;
-    border-color: var(--ui-color-custom, #5fbeaa);
+    border-color: var(--ui-color-custom);
 }
 .mce-reset .mce-checkbox .mce-ico {
     background-image: none;
@@ -88,7 +88,7 @@
     background-image: none;
 }
 .mce-container .mce-primary {
-    background-color: var(--ui-color-custom, #5fbeaa);
+    background-color: var(--ui-color-custom);
     background-image: none;
     outline: 0;
     border: 0px;
@@ -168,7 +168,7 @@
     background-image: none;
 }
 .mce-container.mce-menu .mce-menu-item .mce-ico {
-    color: var(--ui-color-custom, #5fbeaa);
+    color: var(--ui-color-custom);
     font-size: 14px;
 }
 .mce-container.mce-menu .mce-menu-item .mce-text {
@@ -186,7 +186,7 @@
 .mce-container.mce-menu .mce-menu-item:hover,
 .mce-container.mce-menu .mce-menu-item:focus,
 .mce-container.mce-menu .mce-menu-item.mce-selected {
-    background-color: var(--ui-color-custom, #5fbeaa);
+    background-color: var(--ui-color-custom);
 }
 .mce-container.mce-menu .mce-menu-item:hover .mce-ico,
 .mce-container.mce-menu .mce-menu-item:focus .mce-ico,
@@ -230,7 +230,7 @@
     color: #36404a !important;
 }
 .mce-menu-item-normal.mce-active {
-    background-color: var(--ui-color-custom, #5fbeaa) !important;
+    background-color: var(--ui-color-custom) !important;
 }
 .mce-menu-item-normal.mce-active .mce-text {
     color: #ffffff !important;

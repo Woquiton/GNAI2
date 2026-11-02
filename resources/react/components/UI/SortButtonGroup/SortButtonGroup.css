@@ -19,7 +19,7 @@
     border: 1px solid #eaeaea;
     border-radius: 3px;
     background: #fff;
-    color: #4c5667;
+    color: var(--ui-color-inverse);
     cursor: pointer;
     font: 400 14px/20px var(--ui-font-body);
     text-align: center;

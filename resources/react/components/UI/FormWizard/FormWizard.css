@@ -1,6 +1,6 @@
 /* Geometry and states from jquery.steps.css and the interface wizard theme. */
 .formWizard {
-    --wizard-accent: var(--ui-color-custom, #5fbeaa);
+    --wizard-accent: var(--ui-color-custom);
     --wizard-completed: #7a8c9a;
     --wizard-error: #ff3111;
     display: block;
@@ -131,7 +131,7 @@
 }
 .formWizard__panel .formField__error {
     margin-left: 0;
-    color: var(--ui-color-danger, #f05050);
+    color: var(--ui-color-danger);
     font-size: 12px;
     font-weight: 500;
 }

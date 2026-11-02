@@ -89,7 +89,7 @@
     line-height: 1.42857143;
 }
 :where(.eventCalendar) .bg-primary {
-    background-color: #5d9cec !important;
+    background-color: var(--ui-color-theme-blue) !important;
     color: #fff;
 }
 :where(.eventCalendar) .bg-pink {
@@ -97,7 +97,7 @@
     color: #fff;
 }
 :where(.eventCalendar) .bg-info {
-    background-color: #34d3eb !important;
+    background-color: var(--ui-color-info) !important;
     color: #fff;
 }
 :where(.eventCalendar) .bg-purple {
@@ -105,19 +105,19 @@
     color: #fff;
 }
 :where(.eventCalendar) .bg-success {
-    background-color: #81c868 !important;
+    background-color: var(--ui-color-success) !important;
     color: #fff;
 }
 :where(.eventCalendar) .bg-danger {
-    background-color: #f05050 !important;
+    background-color: var(--ui-color-danger) !important;
     color: #fff;
 }
 :where(.eventCalendar) .bg-warning {
-    background-color: #ffbd4a !important;
+    background-color: var(--ui-color-warning) !important;
     color: #fff;
 }
 :where(.eventCalendar) .bg-inverse {
-    background-color: #4c5667 !important;
+    background-color: var(--ui-color-inverse) !important;
     color: #fff;
 }
 

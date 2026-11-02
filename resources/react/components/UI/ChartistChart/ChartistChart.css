@@ -21,7 +21,7 @@
 .ct-chart .ct-series.ct-series-a .ct-line,
 .ct-chart .ct-series.ct-series-a .ct-point,
 .ct-chart .ct-series.ct-series-a .ct-slice-donut {
-    stroke: #5d9cec;
+    stroke: var(--ui-color-theme-blue);
 }
 .ct-chart .ct-series.ct-series-b .ct-bar,
 .ct-chart .ct-series.ct-series-b .ct-line,
@@ -33,13 +33,13 @@
 .ct-chart .ct-series.ct-series-c .ct-line,
 .ct-chart .ct-series.ct-series-c .ct-point,
 .ct-chart .ct-series.ct-series-c .ct-slice-donut {
-    stroke: #34d3eb;
+    stroke: var(--ui-color-info);
 }
 .ct-chart .ct-series.ct-series-d .ct-bar,
 .ct-chart .ct-series.ct-series-d .ct-line,
 .ct-chart .ct-series.ct-series-d .ct-point,
 .ct-chart .ct-series.ct-series-d .ct-slice-donut {
-    stroke: #5fbeaa;
+    stroke: var(--ui-color-custom);
 }
 .ct-chart .ct-series.ct-series-e .ct-bar,
 .ct-chart .ct-series.ct-series-e .ct-line,
@@ -57,11 +57,11 @@
 .ct-chart .ct-series.ct-series-g .ct-line,
 .ct-chart .ct-series.ct-series-g .ct-point,
 .ct-chart .ct-series.ct-series-g .ct-slice-donut {
-    stroke: #81c868;
+    stroke: var(--ui-color-success);
 }
 .ct-series-a .ct-area,
 .ct-series-a .ct-slice-pie {
-    fill: #5d9cec;
+    fill: var(--ui-color-theme-blue);
 }
 .ct-series-b .ct-area,
 .ct-series-b .ct-slice-pie {
@@ -69,9 +69,9 @@
 }
 .ct-series-c .ct-area,
 .ct-series-c .ct-slice-pie {
-    fill: #34d3eb;
+    fill: var(--ui-color-info);
 }
 .ct-series-d .ct-area,
 .ct-series-d .ct-slice-pie {
-    fill: #5fbeaa;
+    fill: var(--ui-color-custom);
 }

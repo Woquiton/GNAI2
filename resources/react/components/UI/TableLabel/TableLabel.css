@@ -12,22 +12,22 @@
     border-radius: 0.25em;
 }
 .tableLabel--success {
-    background: var(--ui-color-success, #81c868);
+    background: var(--ui-color-success);
 }
 .tableLabel--primary {
-    background: var(--ui-color-primary, #5d9cec);
+    background: var(--ui-color-theme-blue);
 }
 .tableLabel--inverse {
-    background: #4c5667;
+    background: var(--ui-color-inverse);
 }
 .tableLabel--danger {
-    background: var(--ui-color-danger, #f05050);
+    background: var(--ui-color-danger);
 }
 .tableLabel--warning {
-    background: #ffbd4a;
+    background: var(--ui-color-warning);
 }
 .tableLabel--info {
-    background: var(--ui-color-info, #34d3eb);
+    background: var(--ui-color-info);
 }
 .tableLabel--purple {
     background: var(--ui-color-purple, #7266ba);

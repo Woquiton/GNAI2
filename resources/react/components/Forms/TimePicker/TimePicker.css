@@ -30,7 +30,7 @@
 .timePicker__error {
     display: block;
     margin-top: 2px;
-    color: var(--ui-color-danger, #f05050);
+    color: var(--ui-color-danger);
     font-size: 12px;
 }
 
@@ -202,7 +202,7 @@
     border-color: transparent;
     border-radius: 4px;
     background-color: transparent;
-    color: #5d9cec;
+    color: var(--ui-color-theme-blue);
     text-decoration: none;
 }
 
@@ -216,7 +216,7 @@
 }
 
 .timePicker .input-group-addon {
-    background: var(--ui-color-custom, #5fbeaa);
+    background: var(--ui-color-custom);
     border: 0;
     color: white;
 }

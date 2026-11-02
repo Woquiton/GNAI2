@@ -266,7 +266,7 @@
     display: block;
     padding: 11px 20px 15px;
     border-bottom: 1px solid var(--ui-color-border-subtle);
-    color: #4c5667;
+    color: var(--ui-color-inverse);
     font-family: var(--ui-font-ui);
     font-size: 15px;
     font-weight: 600;
@@ -389,7 +389,7 @@
 }
 
 .topbarDropdown__profileLink {
-    color: #4c5667;
+    color: var(--ui-color-inverse);
 }
 
 .topbarDropdown__profileIcon {

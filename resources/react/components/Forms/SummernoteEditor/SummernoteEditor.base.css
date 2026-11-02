@@ -1736,11 +1736,11 @@
 }
 :where(.summernoteEditor, .summernoteOverlay) .popover .popover-title {
   background-color: transparent;
-  color: #5fbeaa;
+  color: var(--ui-color-custom);
   font-weight: 600;
 }
 :where(.summernoteEditor, .summernoteOverlay) code {
-  color: #5d9cec;
+  color: var(--ui-color-theme-blue);
   background-color: #f4f8fb;
   border-radius: 4px;
 }
@@ -1767,8 +1767,8 @@
 :where(.summernoteEditor, .summernoteOverlay) .btn-default:focus,
 :where(.summernoteEditor, .summernoteOverlay) .btn-default:hover,
 :where(.summernoteEditor, .summernoteOverlay) .open > .dropdown-toggle.btn-default {
-  background-color: #5fbeaa !important;
-  border: 1px solid #5fbeaa !important;
+  background-color: var(--ui-color-custom) !important;
+  border: 1px solid var(--ui-color-custom) !important;
 }
 :where(.summernoteEditor, .summernoteOverlay) .btn-primary,
 :where(.summernoteEditor, .summernoteOverlay) .btn-primary:hover,
@@ -1780,8 +1780,8 @@
 :where(.summernoteEditor, .summernoteOverlay) .btn-primary:focus,
 :where(.summernoteEditor, .summernoteOverlay) .btn-primary:hover,
 :where(.summernoteEditor, .summernoteOverlay) .open > .dropdown-toggle.btn-primary {
-  background-color: #5d9cec !important;
-  border: 1px solid #5d9cec !important;
+  background-color: var(--ui-color-theme-blue) !important;
+  border: 1px solid var(--ui-color-theme-blue) !important;
 }
 :where(.summernoteEditor, .summernoteOverlay) .btn-group.open .dropdown-toggle {
   box-shadow: none;

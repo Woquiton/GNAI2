@@ -139,27 +139,27 @@
 }
 .checkbox-custom,
 .radio-custom {
-    --choice-color: #5fbeaa;
+    --choice-color: var(--ui-color-custom);
 }
 .checkbox-primary,
 .radio-primary {
-    --choice-color: #5d9cec;
+    --choice-color: var(--ui-color-theme-blue);
 }
 .checkbox-success,
 .radio-success {
-    --choice-color: #81c868;
+    --choice-color: var(--ui-color-success);
 }
 .checkbox-info,
 .radio-info {
-    --choice-color: #34d3eb;
+    --choice-color: var(--ui-color-info);
 }
 .checkbox-warning,
 .radio-warning {
-    --choice-color: #ffbd4a;
+    --choice-color: var(--ui-color-warning);
 }
 .checkbox-danger,
 .radio-danger {
-    --choice-color: #f05050;
+    --choice-color: var(--ui-color-danger);
 }
 .checkbox-purple,
 .radio-purple {
@@ -170,7 +170,7 @@
     --choice-color: #fb6d9d;
 }
 .checkbox-inverse {
-    --choice-color: #4c5667;
+    --choice-color: var(--ui-color-inverse);
 }
 .checkbox input:checked + label::after {
     color: #fff;

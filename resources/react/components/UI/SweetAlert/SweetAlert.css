@@ -1199,7 +1199,7 @@ body.stop-scrolling {
 }
 
 button.confirm {
-    background-color: #5fbeaa !important;
+    background-color: var(--ui-color-custom) !important;
     box-shadow: none !important;
 }
 

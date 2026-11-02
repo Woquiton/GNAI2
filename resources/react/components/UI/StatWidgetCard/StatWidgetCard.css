@@ -20,7 +20,7 @@
 }
 
 .statWidgetCard__icon i.text-info {
-    color: #34d3eb;
+    color: var(--ui-color-info);
 }
 
 .statWidgetCard__icon i.text-pink {
@@ -32,12 +32,12 @@
 }
 
 .statWidgetCard__icon i.text-success {
-    color: #81c868;
+    color: var(--ui-color-success);
 }
 
 .statWidgetCard__icon--info {
-    border: 1px solid #34d3eb;
-    background-color: rgba(52, 211, 235, 0.2);
+    border: 1px solid var(--ui-color-info);
+    background-color: rgba(6, 182, 212, 0.2);
 }
 
 .statWidgetCard__icon--pink {
@@ -51,8 +51,8 @@
 }
 
 .statWidgetCard__icon--success {
-    border: 1px solid #81c868;
-    background-color: rgba(129, 200, 104, 0.2);
+    border: 1px solid var(--ui-color-success);
+    background-color: rgba(22, 163, 74, 0.2);
 }
 
 .statWidgetCard__content {

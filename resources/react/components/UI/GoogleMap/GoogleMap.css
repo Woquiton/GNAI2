@@ -9,7 +9,7 @@
     color: #ffffff;
     font-size: 16px;
     line-height: 40px;
-    background: #5d9cec;
+    background: var(--ui-color-theme-blue);
     border-radius: 4px;
     padding: 10px 20px;
 }
@@ -24,11 +24,11 @@
     bottom: -15px;
     border-left: 16px solid transparent;
     border-right: 16px solid transparent;
-    border-top: 16px solid #5d9cec;
+    border-top: 16px solid var(--ui-color-theme-blue);
 }
 .gmaps-overlay_arrow.below {
     top: -15px;
     border-left: 16px solid transparent;
     border-right: 16px solid transparent;
-    border-bottom: 16px solid #5d9cec;
+    border-bottom: 16px solid var(--ui-color-theme-blue);
 }

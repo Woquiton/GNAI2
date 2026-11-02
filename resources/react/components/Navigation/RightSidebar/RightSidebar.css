@@ -101,9 +101,9 @@
 }
 
 .rightSidebar__contacts i.away {
-    color: #ffbd4a;
+    color: var(--ui-color-warning);
 }
 
 .rightSidebar__contacts i.offline {
-    color: #f05050 !important;
+    color: var(--ui-color-danger) !important;
 }

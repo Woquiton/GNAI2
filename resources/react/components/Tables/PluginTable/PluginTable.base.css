@@ -2373,25 +2373,25 @@
   padding: 0.3em 0.6em 0.3em;
 }
 :where(.tableSurface) .label-default {
-  background-color: #5fbeaa;
+  background-color: var(--ui-color-custom);
 }
 :where(.tableSurface) .label-primary {
-  background-color: #5d9cec;
+  background-color: var(--ui-color-theme-blue);
 }
 :where(.tableSurface) .label-success {
-  background-color: #81c868;
+  background-color: var(--ui-color-success);
 }
 :where(.tableSurface) .label-info {
-  background-color: #34d3eb;
+  background-color: var(--ui-color-info);
 }
 :where(.tableSurface) .label-warning {
-  background-color: #ffbd4a;
+  background-color: var(--ui-color-warning);
 }
 :where(.tableSurface) .label-danger {
-  background-color: #f05050;
+  background-color: var(--ui-color-danger);
 }
 :where(.tableSurface) .label-inverse {
-  background-color: #4c5667;
+  background-color: var(--ui-color-inverse);
 }
 :where(.tableSurface) .pagination > li:first-child > a,
 :where(.tableSurface) .pagination > li:first-child > span {
@@ -2432,8 +2432,8 @@
 :where(.tableSurface) .pagination > .active > span:hover,
 :where(.tableSurface) .pagination > .active > a:focus,
 :where(.tableSurface) .pagination > .active > span:focus {
-  background-color: #5fbeaa;
-  border-color: #5fbeaa;
+  background-color: var(--ui-color-custom);
+  border-color: var(--ui-color-custom);
 }
 :where(.tableSurface) .dropdown-menu-lg {
   width: 300px;
@@ -2464,8 +2464,8 @@
 :where(.tableSurface) .btn-default:focus,
 :where(.tableSurface) .btn-default:hover,
 :where(.tableSurface) .open > .dropdown-toggle.btn-default {
-  background-color: #5fbeaa !important;
-  border: 1px solid #5fbeaa !important;
+  background-color: var(--ui-color-custom) !important;
+  border: 1px solid var(--ui-color-custom) !important;
 }
 :where(.tableSurface) .btn-white,
 :where(.tableSurface) .btn-white:hover,
@@ -2479,7 +2479,7 @@
 :where(.tableSurface) .open > .dropdown-toggle.btn-white {
   border: 1px solid #eaeaea !important;
   background-color: #ffffff;
-  color: #4c5667;
+  color: var(--ui-color-inverse);
 }
 :where(.tableSurface) .btn-white:hover,
 :where(.tableSurface) .btn-white:hover:hover,
@@ -2527,8 +2527,8 @@
 :where(.tableSurface) .btn-primary:focus,
 :where(.tableSurface) .btn-primary:hover,
 :where(.tableSurface) .open > .dropdown-toggle.btn-primary {
-  background-color: #5d9cec !important;
-  border: 1px solid #5d9cec !important;
+  background-color: var(--ui-color-theme-blue) !important;
+  border: 1px solid var(--ui-color-theme-blue) !important;
 }
 :where(.tableSurface) .btn-success,
 :where(.tableSurface) .btn-success:hover,
@@ -2540,8 +2540,8 @@
 :where(.tableSurface) .btn-success:focus,
 :where(.tableSurface) .btn-success:hover,
 :where(.tableSurface) .open > .dropdown-toggle.btn-success {
-  background-color: #81c868 !important;
-  border: 1px solid #81c868 !important;
+  background-color: var(--ui-color-success) !important;
+  border: 1px solid var(--ui-color-success) !important;
 }
 :where(.tableSurface) .btn-info,
 :where(.tableSurface) .btn-info:hover,
@@ -2553,8 +2553,8 @@
 :where(.tableSurface) .btn-info:focus,
 :where(.tableSurface) .btn-info:hover,
 :where(.tableSurface) .open > .dropdown-toggle.btn-info {
-  background-color: #34d3eb !important;
-  border: 1px solid #34d3eb !important;
+  background-color: var(--ui-color-info) !important;
+  border: 1px solid var(--ui-color-info) !important;
 }
 :where(.tableSurface) .btn-warning,
 :where(.tableSurface) .btn-warning:hover,
@@ -2566,8 +2566,8 @@
 :where(.tableSurface) .btn-warning:focus,
 :where(.tableSurface) .btn-warning:hover,
 :where(.tableSurface) .open > .dropdown-toggle.btn-warning {
-  background-color: #ffbd4a !important;
-  border: 1px solid #ffbd4a !important;
+  background-color: var(--ui-color-warning) !important;
+  border: 1px solid var(--ui-color-warning) !important;
 }
 :where(.tableSurface) .btn-danger,
 :where(.tableSurface) .btn-danger:active,
@@ -2579,8 +2579,8 @@
 :where(.tableSurface) .btn-danger:focus,
 :where(.tableSurface) .btn-danger:hover,
 :where(.tableSurface) .open > .dropdown-toggle.btn-danger {
-  background-color: #f05050 !important;
-  border: 1px solid #f05050 !important;
+  background-color: var(--ui-color-danger) !important;
+  border: 1px solid var(--ui-color-danger) !important;
 }
 :where(.tableSurface) .btn-inverse,
 :where(.tableSurface) .btn-inverse:hover,
@@ -2592,8 +2592,8 @@
 :where(.tableSurface) .btn-inverse:focus,
 :where(.tableSurface) .btn-inverse:hover,
 :where(.tableSurface) .open > .dropdown-toggle.btn-inverse {
-  background-color: #4c5667 !important;
-  border: 1px solid #4c5667 !important;
+  background-color: var(--ui-color-inverse) !important;
+  border: 1px solid var(--ui-color-inverse) !important;
   color: #ffffff;
 }
 :where(.tableSurface) .btn-group.open .dropdown-toggle {
@@ -2724,8 +2724,8 @@
   .checkbox-row
   input[type='checkbox']:checked
   + label::before {
-  background-color: #5fbeaa;
-  border-color: #5fbeaa;
+  background-color: var(--ui-color-custom);
+  border-color: var(--ui-color-custom);
 }
 :where(.tableSurface.table-rep-plugin)
   .checkbox-row
@@ -2790,6 +2790,6 @@
   font-size: 20px;
 }
 :where(.tableSurface) .table-actions-bar .table-action-btn:hover {
-  color: #5fbeaa;
-  border-color: #5fbeaa;
+  color: var(--ui-color-custom);
+  border-color: var(--ui-color-custom);
 }

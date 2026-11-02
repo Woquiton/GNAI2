@@ -43,7 +43,7 @@
 }
 
 .badge--primary {
-    background-color: var(--ui-color-primary);
+    background-color: var(--ui-color-theme-blue);
 }
 
 .badge--success {
@@ -55,11 +55,11 @@
 }
 
 .badge--inverse {
-    background-color: #4c5667;
+    background-color: var(--ui-color-inverse);
 }
 
 .badge--warning {
-    background-color: #ffbd4a;
+    background-color: var(--ui-color-warning);
 }
 
 .badge--danger {

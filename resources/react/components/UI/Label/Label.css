@@ -16,7 +16,7 @@
 }
 
 .label--primary {
-    background-color: var(--ui-color-primary);
+    background-color: var(--ui-color-theme-blue);
 }
 
 .label--danger {
@@ -32,7 +32,7 @@
 }
 
 .label--inverse {
-    background-color: #4c5667;
+    background-color: var(--ui-color-inverse);
 }
 
 .label--purple {
@@ -40,9 +40,9 @@
 }
 
 .label--warning {
-    background-color: #ffbd4a;
+    background-color: var(--ui-color-warning);
 }
 
 .label--info {
-    background-color: #34d3eb;
+    background-color: var(--ui-color-info);
 }

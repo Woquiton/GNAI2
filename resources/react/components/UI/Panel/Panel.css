@@ -11,7 +11,7 @@
 }
 
 .panelCard--primary {
-    border-color: #5d9cec;
+    border-color: var(--ui-color-theme-blue);
 }
 
 .panelCard--success {
@@ -82,27 +82,27 @@
 }
 
 .panelCard--custom .panelCard__heading {
-    background-color: #5fbeaa;
+    background-color: var(--ui-color-custom);
 }
 
 .panelCard--primary .panelCard__heading {
-    background-color: #5d9cec;
+    background-color: var(--ui-color-theme-blue);
 }
 
 .panelCard--success .panelCard__heading {
-    background-color: #81c868;
+    background-color: var(--ui-color-success);
 }
 
 .panelCard--info .panelCard__heading {
-    background-color: #34d3eb;
+    background-color: var(--ui-color-info);
 }
 
 .panelCard--warning .panelCard__heading {
-    background-color: #ffbd4a;
+    background-color: var(--ui-color-warning);
 }
 
 .panelCard--danger .panelCard__heading {
-    background-color: #f05050;
+    background-color: var(--ui-color-danger);
 }
 
 .panelCard--purple .panelCard__heading {
@@ -114,7 +114,7 @@
 }
 
 .panelCard--inverse .panelCard__heading {
-    background-color: #4c5667;
+    background-color: var(--ui-color-inverse);
 }
 
 .panelCard--border .panelCard__heading {
@@ -129,33 +129,33 @@
 }
 
 .panelCard--border.panelCard--custom .panelCard__heading {
-    border-color: #5fbeaa !important;
-    color: #5fbeaa !important;
+    border-color: var(--ui-color-custom) !important;
+    color: var(--ui-color-custom) !important;
 }
 
 .panelCard--border.panelCard--primary .panelCard__heading {
-    border-color: #5d9cec !important;
-    color: #5d9cec !important;
+    border-color: var(--ui-color-theme-blue) !important;
+    color: var(--ui-color-theme-blue) !important;
 }
 
 .panelCard--border.panelCard--success .panelCard__heading {
-    border-color: #81c868 !important;
-    color: #81c868 !important;
+    border-color: var(--ui-color-success) !important;
+    color: var(--ui-color-success) !important;
 }
 
 .panelCard--border.panelCard--info .panelCard__heading {
-    border-color: #34d3eb !important;
-    color: #34d3eb !important;
+    border-color: var(--ui-color-info) !important;
+    color: var(--ui-color-info) !important;
 }
 
 .panelCard--border.panelCard--warning .panelCard__heading {
-    border-color: #ffbd4a !important;
-    color: #ffbd4a !important;
+    border-color: var(--ui-color-warning) !important;
+    color: var(--ui-color-warning) !important;
 }
 
 .panelCard--border.panelCard--danger .panelCard__heading {
-    border-color: #f05050 !important;
-    color: #f05050 !important;
+    border-color: var(--ui-color-danger) !important;
+    color: var(--ui-color-danger) !important;
 }
 
 .panelCard--border.panelCard--purple .panelCard__heading {
@@ -169,8 +169,8 @@
 }
 
 .panelCard--border.panelCard--inverse .panelCard__heading {
-    border-color: #4c5667 !important;
-    color: #4c5667 !important;
+    border-color: var(--ui-color-inverse) !important;
+    color: var(--ui-color-inverse) !important;
 }
 
 .panelCard__list.list-group {

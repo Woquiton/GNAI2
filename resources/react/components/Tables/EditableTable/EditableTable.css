@@ -4,7 +4,7 @@
 }
 .editableTable .fa-trash-o,
 .editableTable .fa-times {
-    color: #f05050;
+    color: var(--ui-color-danger);
 }
 .editableTable .fa-pencil {
     color: #29b6f6;
@@ -54,7 +54,7 @@
     border: 0;
 }
 .editableTable__panel header {
-    background: #34d3eb;
+    background: var(--ui-color-info);
     border-radius: 4px 4px 0 0;
     padding: 10px 20px;
 }

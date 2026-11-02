@@ -201,7 +201,7 @@
 
 .notificationToast--black {
     --notification-toast-accent: #212121;
-    --notification-toast-background: #4c5667;
+    --notification-toast-background: var(--ui-color-inverse);
     --notification-toast-text: #fafafa;
 }
 

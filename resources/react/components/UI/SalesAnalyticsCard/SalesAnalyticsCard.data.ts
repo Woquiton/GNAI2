@@ -19,8 +19,8 @@ export interface SalesAnalyticsData {
 export const salesAnalyticsData: SalesAnalyticsData = {
     title: 'Análise de vendas',
     legend: [
-        { label: 'Desktops', color: '#5fbeaa' },
-        { label: 'Tablets', color: '#5d9cec' },
+        { label: 'Desktops', color: '#14b8a6' },
+        { label: 'Tablets', color: '#3b82f6' },
         { label: 'Celulares', color: '#ebeff2' },
     ],
     series: [

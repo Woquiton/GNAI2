@@ -605,7 +605,7 @@ body.custombox-open-contentscale {
 .modalLayer--bootstrap .modalLayer__body--tabs .tabs__button:hover,
 .modalLayer--bootstrap .modalLayer__body--tabs .tabs__item--active .tabs__button {
     background: #fff;
-    color: #5fbeaa;
+    color: var(--ui-color-custom);
 }
 .modalLayer--bootstrap .modalLayer__body--tabs .tabs__item--active .tabs__button::after {
     display: none;
@@ -687,7 +687,7 @@ body.custombox-open-contentscale {
     padding: 10px 20px;
     border: 0 !important;
     border-radius: 3px 3px 0 0;
-    background-color: #5d9cec;
+    background-color: var(--ui-color-theme-blue);
     color: #fff;
 }
 .modalLayer--bootstrap .modalLayer__panel .panelCard__title {

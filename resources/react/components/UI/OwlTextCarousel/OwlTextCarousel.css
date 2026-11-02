@@ -39,11 +39,11 @@
 }
 
 .owlTextCarousel__titleLink--custom {
-    color: #5fbeaa;
+    color: var(--ui-color-custom);
 }
 
 .owlTextCarousel__titleLink--primary {
-    color: #5d9cec;
+    color: var(--ui-color-theme-blue);
 }
 
 .owlTextCarousel__titleLink--pink {

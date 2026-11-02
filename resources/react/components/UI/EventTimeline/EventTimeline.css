@@ -76,22 +76,22 @@
     color: #fff;
 }
 .eventTimeline .cd-timeline-img.cd-success {
-    background: #81c868;
+    background: var(--ui-color-success);
 }
 .eventTimeline .cd-timeline-img.cd-info {
-    background: #34d3eb;
+    background: var(--ui-color-info);
 }
 .eventTimeline .cd-timeline-img.cd-pink {
     background: #fb6d9d;
 }
 .eventTimeline .cd-timeline-img.cd-danger {
-    background: #f05050;
+    background: var(--ui-color-danger);
 }
 .eventTimeline .cd-timeline-img.cd-primary {
-    background: #5d9cec;
+    background: var(--ui-color-theme-blue);
 }
 .eventTimeline .cd-timeline-img.cd-warning {
-    background: #ffbd4a;
+    background: var(--ui-color-warning);
 }
 @media only screen and (min-width: 1170px) {
     .eventTimeline .cd-timeline-img {
