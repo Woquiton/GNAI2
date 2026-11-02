@@ -21,4 +21,5 @@ export interface OwlCollection {
     data(key: string): OwlCarouselInstance | undefined;
     on(events: string, handler: () => void): OwlCollection;
     off(events: string): OwlCollection;
+    trigger(event: string, args?: unknown[]): OwlCollection;
 }

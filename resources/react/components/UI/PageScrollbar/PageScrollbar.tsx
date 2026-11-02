@@ -75,7 +75,8 @@ export default function PageScrollbar({
             aria-valuemax={Math.round(metrics.maxScroll)}
             aria-valuenow={Math.round(metrics.scrollTop)}
             aria-disabled={metrics.locked}
-            tabIndex={metrics.locked ? -1 : 0}
+            // Fora do Tab: as setas e Page Up/Down já rolam a página sem foco. Só o arraste foca a barra.
+            tabIndex={-1}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={stopDrag}

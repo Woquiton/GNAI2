@@ -21,6 +21,7 @@ export default function OwlCarousel({
     label,
 }: OwlCarouselProps): React.JSX.Element {
     const host = useRef<HTMLDivElement>(null);
+    const owl = useRef<OwlCollection | undefined>(undefined);
     const markup = renderToStaticMarkup(<>{children}</>);
     useEffect(() => {
         let cancelled = false;
@@ -44,11 +45,16 @@ export default function OwlCarousel({
             const runtime = (window as unknown as { jQuery: (element: Element) => OwlCollection })
                 .jQuery;
             collection = runtime(carousel);
+            owl.current = collection;
             const update = (): void => {
                 const instance = collection?.data('owl.carousel');
                 if (!instance || !host.current || !carousel) return;
                 host.current.dataset.activeIndex = String(instance.relative(instance.current()));
                 host.current.dataset.visibleItems = String(instance.settings.items);
+                // As cópias do loop saem do Tab e do leitor de tela; os slides originais ficam.
+                carousel.querySelectorAll<HTMLElement>('.owl-item').forEach((item) => {
+                    item.inert = item.classList.contains('cloned');
+                });
                 carousel.querySelectorAll<HTMLElement>('.owl-dot').forEach((dot, index) => {
                     dot.setAttribute('role', 'button');
                     dot.setAttribute('tabindex', '0');
@@ -81,6 +87,7 @@ export default function OwlCarousel({
         void initialize().catch(console.error);
         return () => {
             cancelled = true;
+            owl.current = undefined;
             observer?.disconnect();
             collection?.off('.react');
             collection?.data('owl.carousel')?.destroy();
@@ -95,6 +102,28 @@ export default function OwlCarousel({
             aria-label={label}
             onClick={(event) => {
                 if ((event.target as Element).closest('a[href="#"]')) event.preventDefault();
+            }}
+            // Com o foco dentro do carrossel a rotação para (WCAG 2.2.2) e não tira o slide focado da tela.
+            onFocus={(event) => {
+                if (options.autoplay) owl.current?.trigger('stop.owl.autoplay');
+                const item = (event.target as Element).closest<HTMLElement>('.owl-item');
+                if (!item?.parentElement || item.classList.contains('active')) return;
+                // O Tab chegou a um slide fora da tela: o carrossel vai até ele.
+                const originals = Array.from(
+                    item.parentElement.querySelectorAll(':scope > .owl-item:not(.cloned)'),
+                );
+                const outer = item.closest<HTMLElement>('.owl-stage-outer');
+                if (outer) outer.scrollLeft = 0;
+                const index = originals.indexOf(item);
+                if (index >= 0) owl.current?.trigger('to.owl.carousel', [index, 0]);
+            }}
+            onBlur={(event) => {
+                if (
+                    options.autoplay &&
+                    !event.currentTarget.contains(event.relatedTarget as Node | null)
+                ) {
+                    owl.current?.trigger('play.owl.autoplay');
+                }
             }}
             onKeyDown={(event) => {
                 const dot = (event.target as Element).closest<HTMLElement>('.owl-dot');

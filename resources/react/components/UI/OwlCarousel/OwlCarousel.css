@@ -9,7 +9,8 @@
     -webkit-user-drag: none;
     user-select: none;
 }
-.owlCarouselRuntime .owl-dot:focus-visible {
-    outline: 2px solid var(--ui-color-custom, #5fbeaa);
-    outline-offset: 2px;
+/* A faixa do carrossel corta o que passa da borda: o anel de teclado é desenhado por dentro. */
+.owlCarouselRuntime .owl-item {
+    --ui-focus-keyboard-offset: -4px;
+    --ui-focus-keyboard-shadow: none;
 }

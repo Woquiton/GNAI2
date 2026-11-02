@@ -28,11 +28,6 @@
     color: var(--ui-color-purple);
 }
 
-.inspectionEvidenceCarousel__slide:focus-visible {
-    outline: 2px solid var(--ui-color-purple);
-    outline-offset: 2px;
-}
-
 .inspectionEvidenceCarousel__image {
     display: block;
     width: 100%;
@@ -77,4 +72,23 @@
     .inspectionEvidenceCarousel__slide {
         height: 220px;
     }
+}
+
+/*
+ * O carrossel pinta a imagem em camada própria, por cima do contorno do link: o anel de teclado
+ * vai numa sobreposição acima da imagem e da legenda.
+ */
+html:root[data-focus-mode='keyboard'] .inspectionEvidenceCarousel__slide:focus-visible {
+    outline-color: transparent !important;
+}
+
+html:root[data-focus-mode='keyboard'] .inspectionEvidenceCarousel__slide:focus-visible::after {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    box-shadow:
+        inset 0 0 0 var(--ui-focus-keyboard-width) var(--ui-focus-keyboard-color),
+        inset 0 0 0 calc(var(--ui-focus-keyboard-width) + 2px) var(--color-white);
+    content: '';
+    pointer-events: none;
 }
