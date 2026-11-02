@@ -8,7 +8,6 @@ use App\Domains\Reporting\Infrastructure\Providers\ReportingServiceProvider;
 use App\Domains\Settings\Infrastructure\Providers\SettingsServiceProvider;
 use App\Domains\Website\Infrastructure\Providers\WebsiteServiceProvider;
 use App\Providers\AppServiceProvider;
-use App\Shared\Infrastructure\Providers\ActivityFeedServiceProvider;
 
 return [
     AppServiceProvider::class,
@@ -19,5 +18,4 @@ return [
     ReportingServiceProvider::class,
     SettingsServiceProvider::class,
     WebsiteServiceProvider::class,
-    ActivityFeedServiceProvider::class,
 ];

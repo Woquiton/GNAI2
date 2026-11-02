@@ -23,7 +23,6 @@ use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\UI\Presenters\PaeePagePresenter;
 use App\Shared\Application\Exceptions\AccessDeniedException;
-use App\Shared\Domain\Support\AuditLogger;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -73,8 +72,6 @@ final class PaeeController
     public function show(Paee $paee, ShowPaeeQuery $query, Request $request): InertiaResponse
     {
         $paee = $query->execute($paee);
-
-        AuditLogger::logView($paee);
 
         return Inertia::render('Inclusion/Paees/Show', $this->presenter->show($paee, $request));
     }

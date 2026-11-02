@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Domain\Models;
 
+use App\Domains\Audit\Domain\Contracts\Auditable;
+use App\Domains\Audit\Domain\ValueObjects\AuditedField;
+use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\DTOs\CaseStudies\CaseStudyDTO;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidCaseStudy;
+use App\Shared\Domain\Support\AeeLabels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-final class CaseStudy extends Model
+final class CaseStudy extends Model implements Auditable
 {
+    use AuditsChanges;
     use HasFactory;
 
     public const STATUS_DRAFT = 'draft';
@@ -56,6 +61,53 @@ final class CaseStudy extends Model
         'acceptance_date' => 'date',
         'completed_at' => 'datetime',
     ];
+
+    public static function auditType(): string
+    {
+        return 'case_study';
+    }
+
+    public static function auditLabel(): string
+    {
+        return 'Estudo de Caso';
+    }
+
+    public static function auditedFields(): array
+    {
+        return [
+            // O nome do aluno mora em `people`; o histórico guarda os vínculos pelo id.
+            'student_id' => AuditedField::reference('Aluno', Student::class, 'person.name'),
+            'creator_id' => AuditedField::reference('Criado por', User::class),
+            'semester_id' => AuditedField::reference('Semestre', Semester::class, 'label'),
+            'version' => AuditedField::number('Versão'),
+            'is_current' => AuditedField::boolean('Vigente'),
+            'status' => AuditedField::enum('Status', valueLabels: AeeLabels::CASE_STUDY_STATUSES),
+            'demand_origin' => AuditedField::enum('Origem da demanda', valueLabels: AeeLabels::DEMAND_ORIGINS),
+            'study_date' => AuditedField::date('Data do Estudo de Caso'),
+            'participants_summary' => AuditedField::richText('Participantes (resumo)'),
+            'student_observation' => AuditedField::richText('Observação do estudante'),
+            'student_family_listening' => AuditedField::richText('Escuta do estudante/família'),
+            'teachers_listening' => AuditedField::richText('Escuta dos professores'),
+            'other_info' => AuditedField::richText('Outras informações'),
+            'care_network_notes' => AuditedField::richText('Observações da rede de cuidado'),
+            'favorable_aspects' => AuditedField::richText('Aspectos favoráveis'),
+            'potentials_interests' => AuditedField::richText('Potenciais e interesses'),
+            'needed_supports' => AuditedField::list('Apoios necessários', valueLabels: AeeLabels::NEEDED_SUPPORTS),
+            'needed_supports_justification' => AuditedField::richText('Justificativa dos apoios necessários'),
+            'acceptance_status' => AuditedField::enum('Status de aceite', valueLabels: AeeLabels::ACCEPTANCE_STATUSES),
+            'acceptance_date' => AuditedField::date('Data do aceite'),
+            'completed_at' => AuditedField::dateTime('Concluído em'),
+        ];
+    }
+
+    public function auditDescription(): string
+    {
+        $studentName = $this->student?->person?->name;
+
+        return $studentName !== null
+            ? "o Estudo de Caso #{$this->getKey()} de {$studentName}"
+            : "o Estudo de Caso #{$this->getKey()}";
+    }
 
     public static function register(Student $student, Semester $semester, int $creatorId, int $version, CaseStudyDTO $data): self
     {

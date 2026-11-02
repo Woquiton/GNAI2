@@ -85,19 +85,27 @@ final readonly class AuditedField
     }
 
     /**
-     * Lista de valores de um enum ou de ids de registros (pivôs). Com `$model`, a leitura mostra os nomes.
+     * Lista de valores de um enum, de ids de registros (pivôs) ou de textos fixos. Com `$model`, a leitura
+     * mostra os nomes; com `$valueLabels`, os rótulos dos textos gravados.
      *
      * @param  class-string<BackedEnum>|null  $enum
      * @param  class-string<Model>|null  $model
+     * @param  array<string, string>  $valueLabels
      */
-    public static function list(string $label, ?string $enum = null, ?string $model = null, string $nameColumn = 'name'): self
-    {
+    public static function list(
+        string $label,
+        ?string $enum = null,
+        ?string $model = null,
+        string $nameColumn = 'name',
+        array $valueLabels = [],
+    ): self {
         return new self(
             $label,
             FieldFormat::LIST,
             enumClass: $enum,
             referencedModel: $model,
             nameColumn: $model === null ? null : $nameColumn,
+            valueLabels: $valueLabels,
         );
     }
 

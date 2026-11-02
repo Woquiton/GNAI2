@@ -23,6 +23,12 @@ O desenho segue a auditoria do projeto controle-bar, adaptado ao Gnai: sem multi
 6. `auditDescription()`: como o registro aparece na frase, com artigo ("o aluno Maria Souza").
 7. Registre a classe em `AuditableEntities` no provider do próprio domínio (Auth, Backup, Inclusion, Website). Sem o registro, o tipo não aparece no filtro e os rótulos não são resolvidos.
 
+## Atividades recentes do painel
+
+O feed do painel lê o mesmo histórico, filtrado aos documentos do AEE listados em `ActivityFeedSource` (`app/Domains/Dashboard/Domain/Enums`): Estudo de Caso, PAEE, adaptação curricular do PEI, avaliação individual AEE e atendimento pedagógico. A frase é a mesma da tela de Auditoria. O item vira link quando o documento ainda existe e o usuário tem a permissão de visualizá-lo. Professores veem só os documentos dos alunos com quem têm PEI vigente.
+
+Para incluir um documento no feed, torne o model auditável e acrescente um caso ao enum com permissão, rota e vínculo com o aluno.
+
 ## Escritas fora dos eventos do Eloquent
 
 `sync()`, `attach()` e `detach()` em pivôs sem classe própria, `query()->update()`, `insert` e `DB::table()` não disparam eventos. Nesses casos:

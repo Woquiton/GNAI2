@@ -22,7 +22,6 @@ use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\UI\Presenters\CaseStudyPagePresenter;
 use App\Shared\Application\Exceptions\AccessDeniedException;
-use App\Shared\Domain\Support\AuditLogger;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -79,8 +78,6 @@ final class CaseStudyController
     public function show(CaseStudy $caseStudy, ShowCaseStudyQuery $query, Request $request): InertiaResponse
     {
         $caseStudy = $query->execute($caseStudy);
-
-        AuditLogger::logView($caseStudy);
 
         return Inertia::render('Inclusion/CaseStudies/Show', $this->presenter->show($caseStudy, $request));
     }

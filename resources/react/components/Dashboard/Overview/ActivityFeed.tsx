@@ -10,7 +10,7 @@ import type { ActivityFeedItem, ActivityFeedPage, ActivityFeedProps } from './Ov
 import './Overview.css';
 
 /**
- * Atividades recentes dos documentos do AEE, lidas da auditoria de acesso e
+ * Atividades recentes dos documentos do AEE, lidas do histórico de auditoria e
  * já filtradas pelo vínculo do usuário. Filtros e "Carregar mais" consultam
  * o endpoint JSON do dashboard sem recarregar a página.
  */

@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Domain\Models;
 
+use App\Domains\Audit\Domain\Contracts\Auditable;
+use App\Domains\Audit\Domain\ValueObjects\AuditedField;
+use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\DTOs\Paees\PaeeDTO;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidPaee;
+use App\Shared\Domain\Support\AeeLabels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-final class Paee extends Model
+final class Paee extends Model implements Auditable
 {
+    use AuditsChanges;
     use HasFactory;
 
     public const STATUS_DRAFT = 'draft';
@@ -70,6 +75,62 @@ final class Paee extends Model
         'guide_interpreter_needed' => 'boolean',
         'next_review_date' => 'date',
     ];
+
+    public static function auditType(): string
+    {
+        return 'paee';
+    }
+
+    public static function auditLabel(): string
+    {
+        return 'PAEE';
+    }
+
+    public static function auditedFields(): array
+    {
+        return [
+            // Aluno e Estudo de Caso não têm coluna de nome própria; o histórico guarda os vínculos pelo id.
+            'case_study_id' => AuditedField::number('ID do Estudo de Caso'),
+            'student_id' => AuditedField::reference('Aluno', Student::class, 'person.name'),
+            'creator_id' => AuditedField::reference('Criado por', User::class),
+            'semester_id' => AuditedField::reference('Semestre', Semester::class, 'label'),
+            'version' => AuditedField::number('Versão'),
+            'is_current' => AuditedField::boolean('Vigente'),
+            'status' => AuditedField::enum('Status', valueLabels: AeeLabels::PAEE_STATUSES),
+            'attendance_frequency_per_week' => AuditedField::number('Frequência semanal'),
+            'attendance_duration_minutes' => AuditedField::number('Duração (minutos)'),
+            'attendance_format' => AuditedField::enum('Formato do atendimento', valueLabels: AeeLabels::ATTENDANCE_FORMATS),
+            'attendance_location' => AuditedField::enum('Local do atendimento', valueLabels: AeeLabels::ATTENDANCE_LOCATIONS),
+            'assistive_technology_needed' => AuditedField::boolean('Necessita de tecnologia assistiva'),
+            'assistive_technology_notes' => AuditedField::richText('Observações sobre tecnologia assistiva'),
+            'assistive_technology_availability_capacity' => AuditedField::richText('Capacidade de disponibilização da TA'),
+            'caa_needed' => AuditedField::boolean('Necessita de Comunicação Aumentativa e Alternativa (CAA)'),
+            'caa_notes' => AuditedField::richText('Observações sobre CAA'),
+            'is_assistive_technology_portable_digital_device' => AuditedField::boolean('A tecnologia assistiva é um dispositivo digital portátil'),
+            'assistive_technology_pedagogical_opinion' => AuditedField::richText('Parecer pedagógico sobre a TA portátil'),
+            'support_professional_needed' => AuditedField::boolean('Necessita de profissional de apoio'),
+            'support_professional_justification' => AuditedField::richText('Justificativa do profissional de apoio'),
+            'libras_interpreter_needed' => AuditedField::boolean('Necessita de tradutor/intérprete de Libras'),
+            'libras_interpreter_justification' => AuditedField::richText('Justificativa do intérprete de Libras'),
+            'guide_interpreter_needed' => AuditedField::boolean('Necessita de guia-intérprete'),
+            'guide_interpreter_justification' => AuditedField::richText('Justificativa do guia-intérprete'),
+            'school_professionals_orientation' => AuditedField::richText('Orientação aos profissionais da escola'),
+            'common_teachers_articulation' => AuditedField::richText('Articulação com professores do ensino comum'),
+            'family_articulation' => AuditedField::richText('Como a família será envolvida'),
+            'intersectoral_articulation' => AuditedField::richText('Articulação intersetorial'),
+            'training_demands' => AuditedField::richText('Demandas de formação'),
+            'next_review_date' => AuditedField::date('Próxima revisão'),
+        ];
+    }
+
+    public function auditDescription(): string
+    {
+        $studentName = $this->student?->person?->name;
+
+        return $studentName !== null
+            ? "o PAEE #{$this->getKey()} de {$studentName}"
+            : "o PAEE #{$this->getKey()}";
+    }
 
     public static function register(CaseStudy $caseStudy, Student $student, Semester $semester, int $creatorId, int $version, PaeeDTO $data): self
     {

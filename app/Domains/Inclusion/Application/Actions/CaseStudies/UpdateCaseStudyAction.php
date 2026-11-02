@@ -22,8 +22,9 @@ final class UpdateCaseStudyAction
             $lockedCaseStudy->revise($this->dto($data));
             $lockedCaseStudy->save();
 
-            $lockedCaseStudy->strategies()->delete();
-            $lockedCaseStudy->barriers()->delete();
+            // Um a um, para a auditoria registrar cada exclusão.
+            $lockedCaseStudy->strategies()->get()->each->delete();
+            $lockedCaseStudy->barriers()->get()->each->delete();
 
             $barrierIndexToId = [];
             foreach ($data->barriers as $index => $barrier) {
