@@ -72,7 +72,7 @@ Os caminhos desta tabela são relativos a `resources/react/components/`.
 | Breadcrumbs | `Navigation/PageBreadcrumb/PageBreadcrumb.tsx`; passe `items` com labels e destinos reais |
 | Estrutura semântica e visual comum | `Forms/FormLayout/FormLayout.tsx`; recebe os atributos nativos de `<form>` e encaminha `ref` |
 | Grades e pilhas recorrentes | `Forms/FormGrid/FormGrid.tsx`; use `FormGrid`, `FormGridWide` e `FormStack` sem recriar a mesma grade no CSS do domínio |
-| Card do formulário | `UI/CardBox/CardBox.tsx`, com contorno compartilhado por `--ui-color-card-border` |
+| Card do formulário | `UI/CardBox/CardBox.tsx`, com contorno compartilhado por `--ui-color-card-border` e sombra leve `--ui-shadow-card` |
 | Seções dentro do mesmo card | `Forms/FormSection/FormSection.tsx`; `variant="inline"`, `id`, `title`, `iconClass` |
 | Label, obrigatório, dica e erro | `Forms/FormField/FormField.tsx`; associe o controle ao mesmo `id` |
 | Texto e atributos nativos | `Forms/TextInput/TextInput.tsx`; valores controlados e `invalid` |

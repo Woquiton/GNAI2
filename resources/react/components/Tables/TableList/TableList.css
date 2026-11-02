@@ -4,6 +4,7 @@
     border: 1px solid var(--ui-color-card-border);
     border-radius: 4px;
     background: var(--ui-color-surface);
+    box-shadow: var(--ui-shadow-card);
 }
 
 .tableListCard__loading.panel-disabled {

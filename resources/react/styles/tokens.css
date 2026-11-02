@@ -46,6 +46,7 @@
     --ui-radius-md: 5px;
     --ui-radius-lg: 8px;
     --ui-radius-pill: 999px;
+    --ui-shadow-card: 0 1px 1px rgba(0, 0, 0, 0.05);
     --ui-shadow-sticky: 0 -2px 6px color-mix(in srgb, var(--ui-color-shadow) 45%, transparent);
 
     /* Foco visível compartilhado por botões, links e controles */

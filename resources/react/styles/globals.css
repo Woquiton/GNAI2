@@ -59,6 +59,7 @@ html::-webkit-scrollbar {
     border-radius: var(--ui-radius-md);
     background-clip: padding-box;
     background-color: var(--ui-color-surface);
+    box-shadow: var(--ui-shadow-card);
 }
 
 @media (max-width: 600px) {
