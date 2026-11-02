@@ -6,6 +6,7 @@ export type StatusColor = 'success' | 'warning' | 'primary' | 'danger' | 'info';
 export interface StudentOptions {
     permissions: Permissions;
     studentStatuses: Record<string, string>;
+    followUpTypes: Record<string, string>;
     statusColors: Record<string, StatusColor>;
 }
 export interface Person {
@@ -29,6 +30,7 @@ export interface Student {
     registration: string;
     entry_date: string | null;
     status: string;
+    follow_up_type: string | null;
 }
 /** Opções do cadastro e da edição (`StudentFormQuery`). */
 export interface StudentFormOptions extends StudentOptions {
@@ -42,6 +44,7 @@ export type StudentFilters = Record<
     | 'phone'
     | 'email'
     | 'status'
+    | 'follow_up_type'
     | 'course_id'
     | 'deficiency_id'
     | 'registration'
@@ -126,6 +129,7 @@ export interface StudentCaseStudySummary {
 export interface StudentPaeeSummary {
     id: number;
     version: number;
+    is_current: boolean;
     semester_label: string | null;
     status: string;
     status_label: string;

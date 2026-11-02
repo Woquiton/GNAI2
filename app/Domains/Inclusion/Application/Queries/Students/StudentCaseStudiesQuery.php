@@ -17,17 +17,6 @@ final class StudentCaseStudiesQuery
             ->with(['creator', 'semester'])
             ->where('student_id', $student->getKey())
             ->orderByDesc('version')
-            ->limit(5)
-            ->get();
-    }
-
-    /** @return Collection<int, CaseStudy> */
-    public function history(Student $student): Collection
-    {
-        return CaseStudy::query()
-            ->with(['creator', 'semester', 'barriers', 'strategies'])
-            ->where('student_id', $student->getKey())
-            ->orderBy('version')
             ->get();
     }
 }

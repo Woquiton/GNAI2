@@ -56,22 +56,6 @@ final class PaeePagePresenter
     }
 
     /**
-     * @param  Collection<int, Paee>  $paees
-     * @return array<string, mixed>
-     */
-    public function history(Student $student, Collection $paees, Request $request): array
-    {
-        return [
-            'student' => $this->studentSummary($student),
-            'paees' => $paees
-                ->map(fn (Paee $paee): array => $this->row($paee->setRelation('student', $student)))
-                ->values()
-                ->all(),
-            'can' => $this->listPermissions($request),
-        ];
-    }
-
-    /**
      * @param  EloquentCollection<int, Item>  $assistiveTechnologies
      * @return array<string, mixed>
      */

@@ -14,6 +14,7 @@ export type StudentFormData = {
     address: string;
     registration: string;
     entry_date: string;
+    follow_up_type: string;
     photo: File | null;
     status?: string;
     remove_photo?: boolean;

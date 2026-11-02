@@ -52,6 +52,7 @@ export default function StudentsIndex({
                     courses={courses}
                     deficiencies={deficiencies}
                     studentStatuses={listProps.studentStatuses}
+                    followUpTypes={listProps.followUpTypes}
                     values={filters.values}
                     errors={errors}
                     onUpdate={filters.update}

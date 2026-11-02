@@ -60,13 +60,15 @@ final class StudentPagesTest extends TestCase
             ->component('Inclusion/Students/Create')
             ->where('defaultGender', 'not_specified')
             ->has('genders')
-            ->has('studentStatuses'));
+            ->has('studentStatuses', 4)
+            ->has('followUpTypes', 3));
         $edit->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Inclusion/Students/Edit')
             ->where('student.entry_date', '2025-02-01')
             ->where('student.person.birth_date', $student->person->birth_date->toDateString())
             ->where('student.person.photo_url', $student->person->photo_url)
-            ->where('student.status', 'active'));
+            ->where('student.status', 'active')
+            ->where('student.follow_up_type', 'both'));
     }
 
     public function test_it_creates_and_updates_a_student_with_photo_upload_and_removal(): void
@@ -95,7 +97,12 @@ final class StudentPagesTest extends TestCase
             ->assertSessionHasNoErrors()
             ->assertSessionHas('success', 'Aluno atualizado com sucesso.');
 
-        $this->assertDatabaseHas('students', ['id' => $student->id, 'status' => 'locked', 'entry_date' => null]);
+        $this->assertDatabaseHas('students', [
+            'id' => $student->id,
+            'status' => 'locked',
+            'follow_up_type' => 'aee',
+            'entry_date' => null,
+        ]);
         $this->assertDatabaseHas('people', ['id' => $student->person_id, 'photo' => null]);
         Storage::disk('public')->assertMissing($path);
     }
@@ -113,6 +120,42 @@ final class StudentPagesTest extends TestCase
         $response->assertRedirect(route('specialized-educational-support.students.create'))
             ->assertSessionHasErrors(['name', 'birth_date', 'email', 'document']);
         $this->assertDatabaseCount('students', 0);
+    }
+
+    public function test_it_requires_follow_up_type_when_creating_a_student(): void
+    {
+        $this->post(route('specialized-educational-support.students.store'), array_replace($this->payload(), [
+            'follow_up_type' => '',
+        ]))->assertSessionHasErrors('follow_up_type');
+
+        $this->assertDatabaseCount('students', 0);
+    }
+
+    public function test_it_requires_a_known_follow_up_type_to_reactivate_a_legacy_student(): void
+    {
+        $student = Student::factory()->create(['status' => 'locked', 'follow_up_type' => null]);
+        $url = route('specialized-educational-support.students.update', $student);
+        $payload = array_replace($this->payload(), ['status' => 'locked', 'follow_up_type' => '']);
+
+        $this->put($url, $payload)->assertSessionHasNoErrors();
+        $this->put($url, array_replace($payload, ['status' => 'active']))
+            ->assertSessionHasErrors('follow_up_type');
+        $this->assertDatabaseHas('students', ['id' => $student->id, 'status' => 'locked', 'follow_up_type' => null]);
+
+        $this->put($url, array_replace($payload, ['status' => 'active', 'follow_up_type' => 'pedagogical']))
+            ->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('students', ['id' => $student->id, 'status' => 'active', 'follow_up_type' => 'pedagogical']);
+    }
+
+    public function test_it_rejects_attendance_modalities_as_student_statuses(): void
+    {
+        $student = Student::factory()->active()->create();
+
+        $this->put(route('specialized-educational-support.students.update', $student), array_replace($this->payload(), [
+            'status' => 'aee_only',
+        ]))->assertSessionHasErrors('status');
+
+        $this->assertDatabaseHas('students', ['id' => $student->id, 'status' => 'active', 'follow_up_type' => 'both']);
     }
 
     public function test_it_shows_related_labels_and_a_sanitized_address(): void
@@ -187,6 +230,7 @@ final class StudentPagesTest extends TestCase
             'gender' => 'not_specified',
             'email' => 'aluno@example.test',
             'registration' => 'TEST-001',
+            'follow_up_type' => 'aee',
             'document' => '529.982.247-25',
             'phone' => '(11) 98765-4321',
             'entry_date' => '2025-01-02',

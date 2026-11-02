@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
 use App\Domains\Inclusion\Domain\Enums\Gender;
+use App\Domains\Inclusion\Domain\Enums\StudentFollowUpType;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\Guardian;
 use App\Domains\Inclusion\Domain\Models\Person;
@@ -56,6 +57,11 @@ final class StudentsReportSource extends EloquentReportSource
                 'type' => ReportColumnType::SELECT,
                 'options' => $this->enumOptions(StudentStatus::class),
             ],
+            'follow_up_type' => [
+                'label' => 'Tipo de acompanhamento',
+                'type' => ReportColumnType::SELECT,
+                'options' => $this->enumOptions(StudentFollowUpType::class),
+            ],
             'entry_date' => ['label' => 'Data de ingresso', 'type' => ReportColumnType::DATE],
             'email' => ['label' => 'E-mail', 'path' => 'person.email'],
             'document' => ['label' => 'CPF', 'path' => 'person.document'],
@@ -78,7 +84,7 @@ final class StudentsReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['name', 'registration', 'status', 'entry_date', 'current_course'];
+        return ['name', 'registration', 'status', 'follow_up_type', 'entry_date', 'current_course'];
     }
 
     protected function relationPolicy(string $parentModel, string $relationName): array

@@ -24,11 +24,6 @@ export const caseStudyUrls = {
     complete: (id: number) => `${base}/${id}/concluir`,
     contributions: (id: number) => `${base}/${id}/contribuicoes`,
     pdf: (id: number) => `${base}/${id}/pdf`,
-    /** Listagem do aluno (`students.case-studies.index`). */
-    student: (studentId: number) => `${studentUrls.index}/${studentId}/estudos-de-caso`,
-    /** Histórico completo do aluno (`students.case-studies.history`). */
-    studentHistory: (studentId: number) =>
-        `${studentUrls.index}/${studentId}/estudos-de-caso/historico`,
     /** Aba de Estudos de Caso do prontuário, destino de voltar/cancelar. */
     studentRecord: (studentId: number) => studentRecordUrl(studentId, caseStudiesTab),
     /** Cadastro do PAEE a partir de um Estudo de Caso concluído. */

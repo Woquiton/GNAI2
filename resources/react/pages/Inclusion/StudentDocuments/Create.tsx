@@ -12,7 +12,10 @@ export default function InclusionStudentDocumentsCreatePage({
         <BusinessPage
             title={`Novo Documento para ${student.person.name}`}
             subtitle="Faça o upload de laudos, avaliações ou planos de AEE para este estudante."
-            breadcrumbItems={studentDocumentBreadcrumb({ student, current: 'Cadastrar' })}
+            breadcrumbItems={studentDocumentBreadcrumb({
+                student,
+                current: 'Cadastrar documento do aluno',
+            })}
         >
             <StudentDocumentForm student={student} types={types} semester={semester} />
         </BusinessPage>

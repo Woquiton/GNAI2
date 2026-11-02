@@ -12,7 +12,7 @@ O PAEE organiza o atendimento educacional especializado do aluno: frequência, d
 ## Onde encontro os PAEEs?
 
 - **Planos e acompanhamento → PAEEs** mostra a listagem geral, com filtros por **Aluno**, **Semestre** e **Status**.
-- Na visualização do aluno, a aba **PAEE** mostra as 5 versões mais recentes; o botão **Gerenciar PAEE** abre a lista completa do aluno.
+- Na visualização do aluno, a aba **PAEE** mostra todas as versões, da mais recente para a mais antiga, com filtros, indicação da versão atual e acesso à visualização de cada uma.
 
 ## O que preciso antes de criar um PAEE?
 
@@ -83,7 +83,7 @@ Na visualização, clique em **PDF**, à esquerda do rodapé. O documento abre e
 | Ativo | Situação do PAEE recém-criado. |
 | Em revisão | Uma revisão manual foi registrada. |
 
-A coluna **Atual** das listagens indica qual versão está vigente. No painel **Status do atendimento** do aluno aparece o aviso "O PAEE está com a revisão vencida desde..." quando a data da próxima revisão já passou.
+A coluna **Atual** das listagens indica qual versão está vigente. Na lateral **Status do atendimento** do aluno aparece o aviso "O PAEE está com a revisão vencida desde..." quando a data da próxima revisão já passou.
 
 ## Dúvidas comuns
 

@@ -17,7 +17,6 @@ final class StudentPaeesQuery
             ->with(['creator', 'semester', 'caseStudy'])
             ->where('student_id', $student->getKey())
             ->orderByDesc('version')
-            ->limit(5)
             ->get();
     }
 }

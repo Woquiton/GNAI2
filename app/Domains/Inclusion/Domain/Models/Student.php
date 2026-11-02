@@ -9,6 +9,8 @@ use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Inclusion\Domain\DTOs\Students\CreateStudentDTO;
 use App\Domains\Inclusion\Domain\DTOs\Students\UpdateStudentDTO;
+use App\Domains\Inclusion\Domain\Enums\AttendanceType;
+use App\Domains\Inclusion\Domain\Enums\StudentFollowUpType;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidStudent;
 use Carbon\CarbonImmutable;
@@ -34,10 +36,12 @@ final class Student extends Model implements Auditable
         'registration',
         'entry_date',
         'status',
+        'follow_up_type',
     ];
 
     protected $casts = [
         'status' => StudentStatus::class,
+        'follow_up_type' => StudentFollowUpType::class,
         'entry_date' => 'date',
     ];
 
@@ -57,7 +61,12 @@ final class Student extends Model implements Auditable
             'person_id' => AuditedField::reference('Pessoa', Person::class),
             'registration' => AuditedField::text('Matrícula'),
             'entry_date' => AuditedField::date('Data de Ingresso'),
-            'status' => AuditedField::enum('Status do Aluno', StudentStatus::class),
+            'status' => AuditedField::enum('Situação do Aluno', StudentStatus::class, [
+                'full_attendance' => 'Atendimento Completo',
+                'aee_only' => 'Atendimento Educacional Especializado',
+                'pedagogical_only' => 'Atendimento Pedagógico',
+            ]),
+            'follow_up_type' => AuditedField::enum('Tipo de acompanhamento', StudentFollowUpType::class),
         ];
     }
 
@@ -99,6 +108,12 @@ final class Student extends Model implements Auditable
                 "O aluno {$this->person->name} não está ativo e não pode realizar esta ação."
             );
         }
+    }
+
+    public function allowsAttendanceType(AttendanceType|string $attendanceType): bool
+    {
+        return $this->status->isEnabled()
+            && ($this->follow_up_type?->allowsAttendanceType($attendanceType) ?? false);
     }
 
     /**
@@ -215,10 +230,15 @@ final class Student extends Model implements Auditable
      */
     private static function attributesFrom(CreateStudentDTO|UpdateStudentDTO $data): array
     {
+        if ($data->status->isEnabled() && $data->followUpType === null) {
+            throw new InvalidStudent('Informe o tipo de acompanhamento para manter o aluno ativo.');
+        }
+
         return [
             'registration' => $data->registration->value(),
             'entry_date' => self::normalizeDate($data->entryDate),
             'status' => $data->status->value,
+            'follow_up_type' => $data->followUpType?->value,
         ];
     }
 

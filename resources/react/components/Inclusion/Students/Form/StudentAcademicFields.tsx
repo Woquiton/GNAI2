@@ -11,16 +11,20 @@ import type { StudentFormMode, StudentFormSectionProps } from './StudentForm.typ
 interface StudentAcademicFieldsProps extends StudentFormSectionProps {
     mode: StudentFormMode;
     studentStatuses: Record<string, string>;
+    followUpTypes: Record<string, string>;
 }
 
-/** Matrícula, data de ingresso e, somente na edição, o status do aluno. */
+/** Dados acadêmicos, tipo de acompanhamento e, somente na edição, situação do aluno. */
 export default function StudentAcademicFields({
     form,
     errors,
     disabled,
     mode,
     studentStatuses,
+    followUpTypes,
 }: StudentAcademicFieldsProps): React.JSX.Element {
+    const followUpRequired = mode === 'create' || form.data.status === 'active';
+
     return (
         <FormSection
             id="student-academic"
@@ -52,7 +56,7 @@ export default function StudentAcademicFields({
                     <SelectInputField
                         id="student-status"
                         name="status"
-                        label="Status do Aluno"
+                        label="Situação do aluno"
                         required
                         disabled={disabled}
                         options={optionsFromRecord(studentStatuses)}
@@ -61,6 +65,19 @@ export default function StudentAcademicFields({
                         onChange={(value) => form.setData('status', value)}
                     />
                 ) : null}
+                <SelectInputField
+                    id="student-follow_up_type"
+                    name="follow_up_type"
+                    label="Tipo de acompanhamento"
+                    required={followUpRequired}
+                    disabled={disabled}
+                    hint="Define as modalidades permitidas nos agendamentos. Obrigatório para alunos ativos."
+                    placeholder={followUpRequired ? 'Selecione' : 'Não informado'}
+                    options={optionsFromRecord(followUpTypes)}
+                    value={form.data.follow_up_type}
+                    error={errors.follow_up_type}
+                    onChange={(value) => form.setData('follow_up_type', value)}
+                />
             </FormGrid>
         </FormSection>
     );

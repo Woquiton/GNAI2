@@ -17,10 +17,8 @@ use App\Domains\Inclusion\Application\Queries\Paees\ListPaeesQuery;
 use App\Domains\Inclusion\Application\Queries\Paees\PaeeFormQuery;
 use App\Domains\Inclusion\Application\Queries\Paees\ShowPaeeQuery;
 use App\Domains\Inclusion\Application\Queries\Peis\PeiFilterOptionsQuery;
-use App\Domains\Inclusion\Application\Queries\Students\StudentPaeesQuery;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Paee;
-use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\UI\Presenters\PaeePagePresenter;
 use App\Shared\Application\Exceptions\AccessDeniedException;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
@@ -41,16 +39,6 @@ final class PaeeController
         return Inertia::render(
             'Inclusion/Paees/All',
             $this->presenter->list($query->execute($filters), $options->semesters(), $filters, $request),
-        );
-    }
-
-    public function index(Student $student, ListPaeesData $filters, ListPaeesQuery $query, PeiFilterOptionsQuery $options, Request $request): InertiaResponse
-    {
-        $student->loadMissing('person');
-
-        return Inertia::render(
-            'Inclusion/Paees/Index',
-            $this->presenter->list($query->execute($filters, $student), $options->semesters(), $filters, $request, $student),
         );
     }
 
@@ -97,7 +85,10 @@ final class PaeeController
         $studentId = $paee->student_id;
         $action->execute($paee);
 
-        return redirect()->route('specialized-educational-support.students.paees.index', $studentId)->with('success', 'PAEE removido com sucesso.');
+        return redirect()->route('specialized-educational-support.students.show', [
+            'student' => $studentId,
+            'tab' => 'paees',
+        ])->with('success', 'PAEE removido com sucesso.');
     }
 
     /** @throws Throwable */
@@ -115,16 +106,6 @@ final class PaeeController
         PdfPageNumberer::apply($pdf);
 
         return $pdf->stream("paee-{$paee->getKey()}.pdf");
-    }
-
-    public function studentHistory(Student $student, StudentPaeesQuery $query, Request $request): InertiaResponse
-    {
-        $student->loadMissing('person');
-
-        return Inertia::render(
-            'Inclusion/Paees/History',
-            $this->presenter->history($student, $query->execute($student), $request),
-        );
     }
 
     private function user(Request $request): User

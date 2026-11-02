@@ -1,9 +1,9 @@
 import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import StudentDetailsActions from '@/components/Inclusion/Students/Details/StudentDetailsActions';
+import StudentRecordWorkspace from '@/components/Inclusion/Students/Details/StudentRecordWorkspace';
 import StudentRecordSummary from '@/components/Inclusion/Students/Details/StudentRecordSummary';
 import { createStudentRecordTabs } from '@/components/Inclusion/Students/Details/studentRecordTabs';
-import StudentStatusPanel from '@/components/Inclusion/Students/Details/StudentStatusPanel';
 import StudentDeleteModal from '@/components/Inclusion/Students/StudentDeleteModal';
 import { STUDENT_FAILURE_TEXT } from '@/components/Inclusion/Students/Students.constants';
 import {
@@ -188,20 +188,22 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
             busy={removal.processing}
         >
             <StudentRecordSummary {...props} />
-            <StudentStatusPanel panel={statusPanel} />
-            <Tabs
-                items={tabs}
-                initialActiveId={activeTab}
-                variant="standard"
-                onChange={(tab) => selectTab(tab as StudentRecordTabId)}
-            />
-            <StudentDetailsActions
-                studentId={student.id}
-                studentName={student.person.name}
-                permissions={permissions}
-                deleting={removal.processing}
-                onDelete={() => removal.open(student)}
-            />
+            <StudentRecordWorkspace statusPanel={statusPanel}>
+                <Tabs
+                    items={tabs}
+                    initialActiveId={activeTab}
+                    variant="standard"
+                    dragToScroll
+                    onChange={(tab) => selectTab(tab as StudentRecordTabId)}
+                />
+                <StudentDetailsActions
+                    studentId={student.id}
+                    studentName={student.person.name}
+                    permissions={permissions}
+                    deleting={removal.processing}
+                    onDelete={() => removal.open(student)}
+                />
+            </StudentRecordWorkspace>
             <StudentDeleteModal
                 student={removal.target}
                 processing={removal.processing}

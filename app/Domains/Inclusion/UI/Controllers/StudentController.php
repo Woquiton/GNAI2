@@ -50,7 +50,7 @@ final class StudentController
         return Inertia::render(
             'Inclusion/Students/Index',
             compact('students') + $options->execute() + $this->presenter->shared($request) + [
-                'filters' => $request->only(['name', 'phone', 'email', 'status', 'course_id', 'deficiency_id', 'registration', 'per_page']),
+                'filters' => $request->only(['name', 'phone', 'email', 'status', 'follow_up_type', 'course_id', 'deficiency_id', 'registration', 'per_page']),
             ],
         );
     }

@@ -12,7 +12,7 @@ import { studentColumns } from './studentColumns';
 
 type StudentListProps = Pick<
     StudentIndexProps,
-    'students' | 'permissions' | 'studentStatuses' | 'statusColors'
+    'students' | 'permissions' | 'studentStatuses' | 'statusColors' | 'followUpTypes'
 > & {
     loading: boolean;
     processing: boolean;
@@ -25,6 +25,7 @@ export default function StudentList({
     permissions,
     studentStatuses,
     statusColors,
+    followUpTypes,
     loading,
     processing,
     onDelete,
@@ -34,11 +35,11 @@ export default function StudentList({
     const canDelete = permissions['student.delete'];
     const columns = useMemo<TableListColumn<Student>[]>(
         () => [
-            ...studentColumns({ studentStatuses, statusColors }),
+            ...studentColumns({ studentStatuses, statusColors, followUpTypes }),
             {
                 id: 'actions',
                 label: 'Ações',
-                width: '15%',
+                width: '12%',
                 fixed: 'end',
                 render: (student) => (
                     <TableListRowActions
@@ -59,7 +60,7 @@ export default function StudentList({
                 ),
             },
         ],
-        [studentStatuses, statusColors, canView, canDelete, processing, onDelete],
+        [studentStatuses, statusColors, followUpTypes, canView, canDelete, processing, onDelete],
     );
 
     return (

@@ -1,9 +1,5 @@
 import { inclusionBase } from '@/components/Inclusion/Inclusion.routes';
-import {
-    studentRecordUrl,
-    studentsBase,
-    studentUrl,
-} from '@/components/Inclusion/Students/Students.routes';
+import { studentRecordUrl, studentsBase } from '@/components/Inclusion/Students/Students.routes';
 import type { PageBreadcrumbItem } from '@/components/Navigation/PageBreadcrumb/PageBreadcrumb';
 import { resourceBreadcrumb } from '@/components/Navigation/PageBreadcrumb/resourceBreadcrumb';
 import { paeeTitle } from './Paees.constants';
@@ -25,7 +21,6 @@ export const paeeUrls = {
     destroy: (id: number) => `${base}/${id}`,
     reviews: (id: number) => `${base}/${id}/revisoes`,
     pdf: (id: number) => `${base}/${id}/pdf`,
-    student: (studentId: number) => `${inclusionBase}/alunos/${studentId}/paees`,
     caseStudy: (caseStudyId: number) =>
         `${inclusionBase}/estudos-de-caso/${caseStudyId}/visualizar`,
 };
@@ -36,13 +31,12 @@ export function paeeAllBreadcrumb(): PageBreadcrumbItem[] {
 }
 
 /**
- * Telas abertas a partir do aluno: Home › Alunos › Aluno › [PAEE] › Etapa. A listagem e o
- * histórico voltam à aba de PAEEs do prontuário (`recordTab`); as demais, ao prontuário.
+ * Telas abertas a partir do aluno: Home › Alunos › Aluno › [PAEE] › Etapa.
+ * O aluno leva à aba de PAEEs do prontuário.
  */
 export function paeeStudentBreadcrumb(
     student: PaeeStudentSummary,
     options: {
-        recordTab?: boolean;
         paee?: { id: number; label: string };
         current?: string;
     } = {},
@@ -51,9 +45,7 @@ export function paeeStudentBreadcrumb(
         parents: [{ label: 'Alunos', href: studentsBase }],
         collection: {
             label: student.name,
-            href: options.recordTab
-                ? studentRecordUrl(student.id, studentPaeesTab)
-                : studentUrl(student.id),
+            href: studentRecordUrl(student.id, studentPaeesTab),
         },
         record: options.paee
             ? { label: options.paee.label, href: paeeUrls.show(options.paee.id) }

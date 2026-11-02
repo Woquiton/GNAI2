@@ -11,7 +11,7 @@ O acompanhamento de um aluno no Gnai segue uma cadeia: cada documento usa as inf
 
 ## Qual é a ordem das etapas?
 
-1. **Cadastro do aluno** (**Atendimento → Alunos**), com a situação ativa e a matrícula vigente em um curso (aba **Informações acadêmicas**). O laudo, quando houver, é anexado na aba **Documentos** com o tipo **Laudo**.
+1. **Cadastro do aluno** (**Atendimento → Alunos**), com a situação ativa e a matrícula vigente em um curso (aba **Cursos do aluno**). O laudo, quando houver, é anexado na aba **Documentos** com o tipo **Laudo**.
 2. **Estudo de Caso**: levanta a demanda, escuta, potencialidades, barreiras e estratégias. Depois de concluído, libera a criação do PAEE. Veja [Estudos de Caso](/ajuda/estudos-de-caso).
 3. **PAEE** (Plano de Atendimento Educacional Especializado): define frequência, formato e local do atendimento, recursos, objetivos e apoios. É criado a partir de um Estudo de Caso. Veja [PAEE](/ajuda/paee).
 4. **PEI** (Plano Educacional Individualizado): reúne as adaptações curriculares de cada disciplina, preenchidas pela equipe ou pelos professores. Só pode ser gerado com um PAEE vigente. Veja [PEI](/ajuda/pei).
@@ -28,7 +28,7 @@ O acompanhamento de um aluno no Gnai segue uma cadeia: cada documento usa as inf
 
 ## Onde vejo em que etapa o aluno está?
 
-Na visualização do aluno, o painel **Status do atendimento** mostra, em ordem, **Vínculo com curso**, **Laudo**, **Estudo de Caso**, **PAEE** e **PEI**. Os botões **Ver**, **Continuar** e **Iniciar** aparecem conforme a situação, os pré-requisitos e as permissões do usuário. O painel também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado.
+Na visualização do aluno, a lateral recolhível **Status do atendimento** mostra, em ordem, **Vínculo com curso**, **Laudo**, **Estudo de Caso**, **PAEE** e **PEI**. Os botões **Ver**, **Continuar** e **Iniciar** aparecem conforme a situação, os pré-requisitos e as permissões do usuário. A lateral também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado.
 
 ## Versões
 

@@ -10,12 +10,16 @@ const NOT_INFORMED = 'Não informado';
 export function studentColumns({
     studentStatuses,
     statusColors,
-}: Pick<StudentOptions, 'studentStatuses' | 'statusColors'>): TableListColumn<Student>[] {
+    followUpTypes,
+}: Pick<
+    StudentOptions,
+    'studentStatuses' | 'statusColors' | 'followUpTypes'
+>): TableListColumn<Student>[] {
     return [
         {
             id: 'name',
             label: 'Nome',
-            width: '25%',
+            width: '20%',
             fixed: 'start',
             render: (student) => (
                 <PersonIdentity name={student.person.name} photoUrl={student.person.photo_url} />
@@ -24,18 +28,18 @@ export function studentColumns({
         {
             id: 'phone',
             label: 'Telefone',
-            width: '15%',
+            width: '12%',
             render: (student) => student.person.phone || NOT_INFORMED,
         },
         {
             id: 'email',
             label: 'E-mail',
-            width: '25%',
+            width: '20%',
             render: (student) => student.person.email || NOT_INFORMED,
         },
         {
             id: 'status',
-            label: 'Status',
+            label: 'Situação',
             width: '10%',
             render: (student) => (
                 <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
@@ -44,9 +48,15 @@ export function studentColumns({
             ),
         },
         {
+            id: 'follow_up_type',
+            label: 'Tipo de acompanhamento',
+            width: '18%',
+            render: (student) => followUpTypes[student.follow_up_type ?? ''] ?? NOT_INFORMED,
+        },
+        {
             id: 'entry',
             label: 'Ingresso',
-            width: '10%',
+            width: '8%',
             render: (student) => dateLabel(student.entry_date),
         },
         {

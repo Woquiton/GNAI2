@@ -17,7 +17,6 @@ use App\Domains\Inclusion\Application\Queries\CaseStudies\CaseStudyFormQuery;
 use App\Domains\Inclusion\Application\Queries\CaseStudies\ListCaseStudiesQuery;
 use App\Domains\Inclusion\Application\Queries\CaseStudies\ShowCaseStudyQuery;
 use App\Domains\Inclusion\Application\Queries\Peis\PeiFilterOptionsQuery;
-use App\Domains\Inclusion\Application\Queries\Students\StudentCaseStudiesQuery;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\UI\Presenters\CaseStudyPagePresenter;
@@ -44,19 +43,6 @@ final class CaseStudyController
         return Inertia::render(
             'Inclusion/CaseStudies/All',
             $this->presenter->list($query->execute($filters), $filterOptions->semesters(), $filters, $request),
-        );
-    }
-
-    public function index(
-        Student $student,
-        ListCaseStudiesData $filters,
-        ListCaseStudiesQuery $query,
-        PeiFilterOptionsQuery $filterOptions,
-        Request $request,
-    ): InertiaResponse {
-        return Inertia::render(
-            'Inclusion/CaseStudies/Index',
-            $this->presenter->list($query->execute($filters, $student), $filterOptions->semesters(), $filters, $request, $student),
         );
     }
 
@@ -103,7 +89,10 @@ final class CaseStudyController
         $studentId = $caseStudy->student_id;
         $action->execute($caseStudy);
 
-        return redirect()->route('specialized-educational-support.students.case-studies.index', $studentId)->with('success', 'Estudo de Caso removido com sucesso.');
+        return redirect()->route('specialized-educational-support.students.show', [
+            'student' => $studentId,
+            'tab' => 'case-studies',
+        ])->with('success', 'Estudo de Caso removido com sucesso.');
     }
 
     /** @throws Throwable */
@@ -133,14 +122,6 @@ final class CaseStudyController
         PdfPageNumberer::apply($pdf);
 
         return $pdf->stream("estudo-de-caso-{$caseStudy->getKey()}.pdf");
-    }
-
-    public function studentHistory(Student $student, StudentCaseStudiesQuery $query, Request $request): InertiaResponse
-    {
-        return Inertia::render(
-            'Inclusion/CaseStudies/History',
-            $this->presenter->history($student, $query->history($student), $request),
-        );
     }
 
     private function user(Request $request): User

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Data\Students;
 
+use App\Domains\Inclusion\Domain\Enums\StudentFollowUpType;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
@@ -23,6 +24,7 @@ final class ListStudentsData extends Data
         public ?int $courseId = null,
         public ?int $deficiencyId = null,
         public int $perPage = 10,
+        public ?string $followUpType = null,
     ) {}
 
     public static function prepareForPipeline(array $properties): array
@@ -49,6 +51,10 @@ final class ListStudentsData extends Data
             'email' => ['nullable', 'string', 'max:255'],
             'registration' => ['nullable', 'string', 'max:50'],
             'status' => ['nullable', Rule::enum(StudentStatus::class)],
+            'follow_up_type' => [
+                'nullable',
+                Rule::in([...array_column(StudentFollowUpType::cases(), 'value'), 'not_informed']),
+            ],
             'course_id' => [
                 'nullable',
                 'integer',
@@ -82,7 +88,8 @@ final class ListStudentsData extends Data
             'email.max' => 'O filtro de e-mail não pode ultrapassar 255 caracteres.',
             'registration.string' => 'O filtro de matrícula deve ser um texto válido.',
             'registration.max' => 'O filtro de matrícula não pode ultrapassar 50 caracteres.',
-            'status.enum' => 'O filtro de status é inválido.',
+            'status.enum' => 'O filtro de situação é inválido.',
+            'follow_up_type.in' => 'O filtro de tipo de acompanhamento é inválido.',
             'course_id.exists' => 'O curso selecionado é inválido.',
             'deficiency_id.exists' => 'O perfil de atendimento selecionado é inválido.',
         ];

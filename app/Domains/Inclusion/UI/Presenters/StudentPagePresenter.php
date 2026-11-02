@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\Enums\DeficiencySeverity;
+use App\Domains\Inclusion\Domain\Enums\StudentFollowUpType;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
@@ -42,6 +43,9 @@ final class StudentPagePresenter
         ];
 
         return [
+            'followUpTypes' => collect(StudentFollowUpType::cases())->mapWithKeys(
+                fn (StudentFollowUpType $type): array => [$type->value => $type->label()],
+            )->all(),
             'permissions' => collect($abilities)->mapWithKeys(
                 fn (string $ability): array => [$ability => $request->user()?->can($ability) ?? false],
             )->all(),
@@ -144,7 +148,7 @@ final class StudentPagePresenter
     }
 
     /**
-     * Últimas versões do Estudo de Caso exibidas no prontuário.
+     * Todas as versões do Estudo de Caso exibidas no prontuário.
      *
      * @param  Collection<int, CaseStudy>  $caseStudies
      * @return list<array<string, mixed>>
@@ -162,7 +166,7 @@ final class StudentPagePresenter
     }
 
     /**
-     * Últimas versões do PAEE exibidas no prontuário.
+     * Todas as versões do PAEE exibidas no prontuário.
      *
      * @param  Collection<int, Paee>  $paees
      * @return list<array<string, mixed>>
@@ -172,6 +176,7 @@ final class StudentPagePresenter
         return $paees->map(fn (Paee $paee): array => [
             'id' => (int) $paee->getKey(),
             'version' => $paee->version,
+            'is_current' => (bool) $paee->is_current,
             'semester_label' => $paee->semester?->label,
             'status' => $paee->status,
             'status_label' => AeeLabels::paeeStatus($paee->status),

@@ -1,21 +1,16 @@
 import { inclusionBase } from '@/components/Inclusion/Inclusion.routes';
-import {
-    studentRecordBreadcrumbParents,
-    studentRecordUrl,
-    studentsBase,
-} from '@/components/Inclusion/Students/Students.routes';
+import { studentRecordUrl, studentsBase } from '@/components/Inclusion/Students/Students.routes';
 import type { PageBreadcrumbItem } from '@/components/Navigation/PageBreadcrumb/PageBreadcrumb';
 import { resourceBreadcrumb } from '@/components/Navigation/PageBreadcrumb/resourceBreadcrumb';
 import type { StudentDocumentStudent } from './StudentDocuments.types';
 
 const documentsBase = `${inclusionBase}/documentos-do-aluno`;
 
-/** Listagem e cadastro ficam no aluno; visualização, download, edição e exclusão no documento. */
+/** Cadastro fica no aluno; visualização, download, edição e exclusão no documento. */
 export function studentDocumentUrls(studentId: number) {
     const base = `${studentsBase}/${studentId}/documentos`;
 
     return {
-        index: base,
         create: `${base}/criar`,
         store: base,
         /** Aba "Documentos" do prontuário, destino de cancelar. */
@@ -32,7 +27,7 @@ export const studentDocumentFileUrls = {
 };
 
 /**
- * Home › Alunos › Aluno › Documentos › [Documento] › [Etapa]. O documento não tem página de
+ * Home › Alunos › Aluno › [Documento] › Etapa. O documento não tem página de
  * visualização própria (o arquivo é aberto diretamente), por isso aparece sem link.
  */
 export function studentDocumentBreadcrumb({
@@ -45,8 +40,11 @@ export function studentDocumentBreadcrumb({
     current?: string;
 }): PageBreadcrumbItem[] {
     const items = resourceBreadcrumb({
-        parents: studentRecordBreadcrumbParents(student),
-        collection: { label: 'Documentos', href: studentDocumentUrls(student.id).record },
+        parents: [{ label: 'Alunos', href: studentsBase }],
+        collection: {
+            label: student.person.name,
+            href: studentDocumentUrls(student.id).record,
+        },
         current: documentTitle ?? current,
     });
 

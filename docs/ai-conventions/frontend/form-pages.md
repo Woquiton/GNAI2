@@ -199,7 +199,7 @@ Nos cadastros com mapa (barreiras, instituições e pontos de referência), o fo
 - “Dados Pessoais” e “Dados Acadêmicos”, seus ícones e campos são do domínio de alunos; outros cadastros devem definir seus próprios agrupamentos.
 - A foto ocupa uma coluna estreita à esquerda, e os seis campos pessoais ficam à direita: nome/e-mail na primeira linha e CPF/nascimento/gênero/telefone na seguinte, quando houver largura. O endereço ocupa toda a linha abaixo das duas colunas.
 - A composição e os respiros especiais dessa área estão em `Students.css`, com media queries e container queries. As medidas da coluna, distâncias e quantidade de campos não são uma grade obrigatória para outros formulários, especialmente os que não têm foto.
-- O status aparece apenas na edição. `StudentForm` não envia `status` nem `remove_photo` na criação. Os defaults de gênero/status vêm das props preparadas para cada operação.
+- A situação aparece apenas na edição. `StudentForm` não envia `status` nem `remove_photo` na criação. O tipo de acompanhamento (`follow_up_type`) é um campo independente, presente no cadastro e na edição, obrigatório para alunos ativos e sem escolha automática em novos cadastros. Os defaults de gênero/status vêm das props preparadas para cada operação.
 - `Create` cancela para a listagem; `Edit` cancela para o prontuário. Ambas mantêm Cancelar somente no rodapé sticky do formulário. Preserve o destino e as ações do cadastro de origem em vez de impor essas rotas a outros módulos.
 - A edição usa `key={student.id}` para reinicializar o formulário/editor quando o registro muda. Não espere que `SummernoteEditor.defaultValue` acompanhe cada alteração de props como um campo controlado.
 

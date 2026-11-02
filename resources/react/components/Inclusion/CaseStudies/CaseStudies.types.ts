@@ -50,11 +50,6 @@ export interface CaseStudyListProps {
     can: CaseStudyListPermissions;
 }
 
-/** Props da listagem aberta a partir do prontuário do aluno (`Inclusion/CaseStudies/Index`). */
-export interface CaseStudyStudentListProps extends Omit<CaseStudyListProps, 'student'> {
-    student: CaseStudyStudent;
-}
-
 export interface CaseStudyBarrierInput {
     type: string;
     observed_situation: string;
@@ -152,10 +147,4 @@ export interface CaseStudyShowProps {
     student: CaseStudyStudent;
     caseStudy: CaseStudyDetail;
     can: CaseStudyShowPermissions;
-}
-
-export interface CaseStudyHistoryProps {
-    student: CaseStudyStudent;
-    caseStudies: CaseStudyRow[];
-    can: CaseStudyListPermissions;
 }

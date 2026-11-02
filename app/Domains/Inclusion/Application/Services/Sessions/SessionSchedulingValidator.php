@@ -154,7 +154,7 @@ final readonly class SessionSchedulingValidator
         }
 
         $incompatibleStudents = $students
-            ->reject(fn (Student $student): bool => $student->status->allowsAttendanceType($attendanceType))
+            ->reject(fn (Student $student): bool => $student->allowsAttendanceType($attendanceType))
             ->pluck('person.name')
             ->toArray();
 
@@ -163,7 +163,7 @@ final readonly class SessionSchedulingValidator
             $attendanceLabel = AttendanceType::labelFor($attendanceType);
 
             throw ValidationException::withMessages([
-                'student_ids' => "O status de atendimento de {$names} não permite agendamentos do tipo {$attendanceLabel}.",
+                'student_ids' => "O tipo de acompanhamento de {$names} não permite agendamentos do tipo {$attendanceLabel}. Confira o cadastro do aluno.",
             ]);
         }
     }

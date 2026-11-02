@@ -52,6 +52,12 @@ final class ListStudentsQuery
             $query->where('students.status', $filters->status->value);
         }
 
+        if ($filters->followUpType === 'not_informed') {
+            $query->whereNull('students.follow_up_type');
+        } elseif (filled($filters->followUpType)) {
+            $query->where('students.follow_up_type', $filters->followUpType);
+        }
+
         if ($filters->courseId === 0) {
             $query->whereDoesntHave('currentCourse');
         } elseif ($filters->courseId !== null) {

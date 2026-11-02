@@ -1,6 +1,6 @@
 ---
 titulo: Alunos e prontuário
-resumo: Como cadastrar e editar alunos, alterar o status, consultar o prontuário com suas abas, vincular cursos, gerar a ficha em PDF e excluir um cadastro.
+resumo: Como cadastrar e editar alunos, definir a situação e o tipo de acompanhamento, consultar o prontuário, vincular cursos, gerar a ficha em PDF e excluir um cadastro.
 categoria: Atendimento
 palavras-chave: aluno, alunos, estudante, cadastrar aluno, novo aluno, matrícula, cpf, foto do aluno, editar aluno, status do aluno, ativo, trancado, concluído, desistente, atendimento completo, prontuário, ficha do aluno, abas, histórico, pdf do aluno, ficha em pdf, curso do aluno, vincular curso, matricular em curso, curso atual, tornar atual, ano letivo, frequência escolar, disciplinas com reprovação, risco de insucesso, excluir aluno, remover aluno, laudo, status do atendimento
 ordem: 10
@@ -11,10 +11,10 @@ O cadastro de alunos reúne os dados pessoais e acadêmicos de cada estudante at
 
 ## Encontrar um aluno na listagem
 
-A listagem mostra **Nome**, **Telefone**, **E-mail**, **Status** e **Ingresso**. Pelo seletor de colunas é possível exibir também **Matrícula**, **CPF**, **Nascimento**, **Idade** e **Gênero**.
+A listagem mostra **Nome**, **Telefone**, **E-mail**, **Situação**, **Tipo de acompanhamento** e **Ingresso**. Pelo seletor de colunas é possível exibir também **Matrícula**, **CPF**, **Nascimento**, **Idade** e **Gênero**.
 
 1. Acesse **Atendimento → Alunos**.
-2. Use os filtros **Nome do aluno**, **Status** e **Curso**. Em **Mais filtros** há **Telefone**, **E-mail** e **Perfil de atendimento**.
+2. Use os filtros **Nome do aluno**, **Situação** e **Curso**. Em **Mais filtros** há **Tipo de acompanhamento**, **Telefone**, **E-mail** e **Perfil de atendimento**. A opção **Não informado** do acompanhamento localiza cadastros que precisam de revisão.
 3. Nos filtros de curso e de perfil, as opções **Sem curso** e **Sem perfil de atendimento** mostram os alunos ainda sem esse vínculo.
 
 > **Importante:** usuários vinculados a um cadastro de professor veem apenas os alunos dos cursos em que lecionam.
@@ -37,40 +37,52 @@ A listagem mostra **Nome**, **Telefone**, **E-mail**, **Status** e **Ingresso**.
 | **Endereço** | Opcional, em editor de texto. |
 | **Matrícula** (obrigatório) | Até 50 caracteres; não pode repetir a de outro aluno. |
 | **Data de Ingresso** | Opcional; não pode ser anterior à data de nascimento. |
+| **Tipo de acompanhamento** (obrigatório) | Somente AEE, Somente pedagógico ou AEE e pedagógico. |
 
-Todo aluno novo começa com o status **Ativo**. O status só pode ser alterado na edição.
+Todo aluno novo começa com a situação **Ativo**. A situação só pode ser alterada na edição. O tipo de acompanhamento é escolhido no cadastro e pode ser alterado na edição.
 
 ### Foto do aluno
 
 Clique no círculo da foto, arraste uma imagem para ele ou use a câmera (no celular abre a câmera do aparelho; no computador, a webcam). A foto deve estar em JPG ou PNG e ter no máximo 2 MB. Enquanto a imagem é preparada, o botão **Salvar** fica indisponível.
 
-## Editar os dados ou o status de um aluno
+## Editar os dados ou a situação de um aluno
 
 1. Abra o prontuário do aluno pela listagem (ação de visualizar).
 2. No rodapé, clique em **Editar**.
-3. Altere os campos necessários. Na edição aparece também o campo **Status do Aluno** (obrigatório).
+3. Altere os campos necessários. Na edição aparece também o campo **Situação do aluno** (obrigatório). O **Tipo de acompanhamento** deve estar preenchido para manter ou tornar o aluno ativo.
 4. Para trocar a foto, envie outra imagem; para retirá-la, use a remoção no próprio campo da foto.
 5. Clique em **Salvar**. O sistema mostra "Aluno atualizado com sucesso.".
 
-### O que significa cada status
+### O que significa cada situação
 
-| Status | Efeito no sistema |
+| Situação | Efeito no sistema |
 | --- | --- |
-| **Ativo** | Aceita qualquer tipo de agendamento e demais registros. |
-| **Atendimento Completo** | Aceita agendamentos de AEE e pedagógicos. |
-| **Atendimento Educacional Especializado** | Aceita somente agendamentos de AEE. |
-| **Atendimento Pedagógico** | Aceita somente agendamentos pedagógicos. |
+| **Ativo** | Permite novos registros e agendamentos compatíveis com o tipo de acompanhamento. |
 | **Trancado**, **Concluído** ou **Desistente** | O aluno fica inativo: não pode ser agendado nem receber novos cursos, responsáveis, perfis de atendimento, documentos ou PEI. |
+
+### O que significa o tipo de acompanhamento
+
+| Tipo de acompanhamento | Modalidades permitidas no agendamento |
+| --- | --- |
+| **Somente AEE** | Atendimento Educacional Especializado. |
+| **Somente pedagógico** | Atendimento Pedagógico. |
+| **AEE e pedagógico** | Ambas as modalidades. |
+
+O acompanhamento é uma configuração atual do aluno, independente da situação e dos perfis de atendimento vinculados. Um aluno trancado pode manter o acompanhamento definido, mas continua impedido de receber novos agendamentos.
+
+Cadastros antigos inativos podem apresentar **Não informado**. Defina uma das modalidades antes de reativá-los. Na conversão dos dados antigos, **Ativo** e **Atendimento Completo** passam a permitir **AEE e pedagógico**, preservando a regra anterior; essa conversão não comprova quais atendimentos foram realizados e deve ser revisada quando necessário.
+
+Mudar o acompanhamento não altera nem cancela agendamentos existentes e não reclassifica registros históricos. A criação e a edição de agendamentos verificam a configuração atual do aluno.
 
 ## Consultar o prontuário do aluno
 
-O prontuário abre ao visualizar um aluno ou logo depois de cadastrá-lo. No topo ficam a faixa compacta de identificação, com foto, matrícula, status e perfis de atendimento, e o painel **Status do atendimento**.
+O prontuário abre ao visualizar um aluno ou logo depois de cadastrá-lo. No topo fica a faixa compacta de identificação, com foto, matrícula, situação, tipo de acompanhamento, data de ingresso e perfis de atendimento. O **Status do atendimento** fica na lateral direita do prontuário.
 
-### Painel Status do atendimento
+### Lateral Status do atendimento
 
-O painel mostra a sequência do acompanhamento e só oferece uma ação quando os pré-requisitos e a permissão do usuário permitem:
+A lateral mostra a sequência do acompanhamento e só oferece uma ação quando os pré-requisitos e a permissão do usuário permitem. Use a seta para expandir ou recolher; o sistema lembra a escolha neste navegador. Em telas menores, ela abre sobre o conteúdo e pode ser fechada pela seta, pelo fundo ou pela tecla Esc.
 
-| Caixa | Como fica "ok" | Atalho |
+| Etapa | Como fica "ok" | Atalho |
 | --- | --- | --- |
 | **Vínculo com curso** | O aluno tem uma matrícula vigente. | **Ver** abre o vínculo atual; **Iniciar** abre o cadastro quando ainda não há curso vigente. |
 | **Laudo** | Há um documento do tipo Laudo anexado. | **Ver** abre a aba **Documentos**; **Iniciar** abre o envio de documento. |
@@ -78,20 +90,20 @@ O painel mostra a sequência do acompanhamento e só oferece uma ação quando o
 | **PAEE** | Há um PAEE ativo. | **Ver** abre o PAEE; **Iniciar** aparece quando o fluxo permite criar um. |
 | **PEI** | Há um PEI atual. | **Ver** abre o PEI; **Iniciar** aparece quando o aluno tem situação ativa, curso e PAEE vigentes e semestre atual. |
 
-O painel também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado.
+A lateral também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado. Quando recolhida, ela continua mostrando quantas etapas estão concluídas e pendentes e se há alertas.
 
 ### Abas do prontuário
 
-Cada aba só aparece para quem tem permissão de consultá-la. As abas com tabelas carregam seus registros quando são abertas pela primeira vez; a estrutura e o indicador de carregamento aparecem imediatamente, e os registros permanecem disponíveis ao voltar para uma aba já consultada. Use os filtros acima de cada tabela para localizar registros dentro da aba.
+Cada aba só aparece para quem tem permissão de consultá-la. O conteúdo aparece diretamente abaixo das abas, sem repetir o título da aba selecionada. Quando houver mais abas do que o espaço disponível, arraste a faixa para os lados ou use as setas das bordas; no celular, deslize com o dedo. As abas com tabelas carregam seus registros quando são abertas pela primeira vez; a estrutura e o indicador de carregamento aparecem imediatamente, e os registros permanecem disponíveis ao voltar para uma aba já consultada. Use os filtros acima de cada tabela para localizar registros dentro da aba.
 
 | Aba | Conteúdo |
 | --- | --- |
 | **Dados pessoais** | Nome, gênero, CPF, nascimento, idade, e-mail, telefone e endereço. |
-| **Informações acadêmicas** | Status atual, data de ingresso e a tabela de cursos do aluno. |
+| **Cursos do aluno** | Vínculos com cursos atuais e históricos do aluno. |
 | **Perfis de atendimento** | Perfis vinculados ao aluno, com severidade. |
 | **Responsáveis** | Responsáveis cadastrados, vínculo e contato. |
-| **Estudos de Caso** | Versões do Estudo de Caso, com **Ver Histórico**. |
-| **PAEE** | Versões do PAEE, com **Gerenciar PAEE**. |
+| **Estudos de Caso** | Todas as versões do Estudo de Caso, da mais recente para a mais antiga. |
+| **PAEE** | Todas as versões do PAEE, da mais recente para a mais antiga, com indicação da atual. |
 | **PEIs** | Planos Educacionais Individualizados por semestre e curso. |
 | **Documentos** | Arquivos do aluno, como laudos e relatórios. |
 | **Atendimentos AEE** | Registros de atendimento AEE do aluno, com **Histórico em PDF**. |
@@ -102,7 +114,7 @@ Responsáveis, perfis de atendimento e documentos são explicados em [Responsáv
 
 ## Vincular um curso ao aluno
 
-1. No prontuário, abra a aba **Informações acadêmicas** e clique em **Cadastrar**.
+1. No prontuário, abra a aba **Cursos do aluno** e clique em **Cadastrar**.
 2. Escolha o **Curso / Série** (obrigatório) e informe o **Ano Letivo** (obrigatório, com 4 dígitos). O **Semestre** é opcional.
 3. Marque **Definir este como o curso atual do aluno** se ele for o curso em andamento. No primeiro curso do aluno essa opção já vem marcada e não pode ser desmarcada.
 4. Para o curso atual, preencha se quiser o **Acompanhamento Acadêmico do Curso Atual**: **Situação da Frequência Escolar**, **Disciplinas com Reprovação** e **Disciplinas com Risco de Insucesso Acadêmico**.
@@ -112,7 +124,7 @@ Ao marcar um novo curso como atual, o curso atual anterior passa para o históri
 
 ## Editar, tornar atual ou excluir um curso do aluno
 
-Na aba **Informações acadêmicas**, visualize o curso desejado. No rodapé:
+Na aba **Cursos do aluno**, visualize o curso desejado. No rodapé:
 
 - **Editar** aparece somente para o curso atual. Cursos do histórico não podem mais ser editados.
 - **Tornar Atual** aparece para cursos do histórico e pede a confirmação "Deseja tornar este o curso atual do aluno? O curso atual será movido para o histórico.".
@@ -132,10 +144,10 @@ O sistema volta para a listagem e mostra "Aluno removido com sucesso.". A exclus
 ## Dúvidas comuns
 
 **Aparece "Este aluno possui registros acadêmicos ou de atendimento vinculados e não pode ser excluído."**
-O aluno tem algum dos vínculos listados acima. Para encerrar o acompanhamento sem perder o histórico, altere o status para **Concluído** ou **Desistente**.
+O aluno tem algum dos vínculos listados acima. Para encerrar o acompanhamento sem perder o histórico, altere a situação para **Concluído** ou **Desistente**.
 
 **Aparece "O aluno ... não está ativo e não pode realizar esta ação."**
-O status do aluno é **Trancado**, **Concluído** ou **Desistente**. Edite o aluno e escolha um status ativo antes de vincular cursos, responsáveis, perfis ou documentos.
+A situação do aluno é **Trancado**, **Concluído** ou **Desistente**. Edite o aluno e escolha **Ativo**, informando também o tipo de acompanhamento, antes de vincular cursos, responsáveis, perfis ou documentos.
 
 **Aparece "Esta matrícula já está cadastrada para outro aluno." ou "Este CPF já está cadastrado para outra pessoa."**
 A matrícula e o CPF são únicos. Procure o aluno na listagem antes de cadastrá-lo novamente.

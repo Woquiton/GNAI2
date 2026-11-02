@@ -15,8 +15,8 @@ O sistema confere estes requisitos ao abrir a tela **Gerar Novo PEI** e novament
 
 | Requisito | Onde resolver | Mensagem quando falta |
 | --- | --- | --- |
-| Aluno com situação ativa (Ativo, Atendimento Completo, Atendimento Educacional Especializado ou Atendimento Pedagógico) | Edição do aluno | "O aluno ... não está ativo e não pode realizar esta ação." |
-| Matrícula vigente em um curso | Aba **Informações acadêmicas** do aluno | "Este aluno não possui matrícula vigente" |
+| Aluno com situação **Ativo** | Edição do aluno, com **Tipo de acompanhamento** informado | "O aluno ... não está ativo e não pode realizar esta ação." |
+| Matrícula vigente em um curso | Aba **Cursos do aluno** no prontuário | "Este aluno não possui matrícula vigente" |
 | PAEE vigente (a versão atual do PAEE do aluno, qualquer que seja o status) | [Criar um PAEE](/ajuda/paee#criar-um-paee) | "É necessário ter um PAEE ativo para criar o PEI." |
 | Semestre atual cadastrado | **Gestão do núcleo → Cadastros → Semestres** | "O sistema não possui semestre atual configurado" |
 | Se já existe PEI atual, ele precisa estar finalizado | [Finalizar um PEI](#finalizar-um-pei) | "O PEI atual ainda está em andamento. Finalize-o antes de criar uma nova versão." |
@@ -154,7 +154,7 @@ Os PDFs abrem em outra aba do navegador.
 ## Dúvidas comuns
 
 - **"É necessário ter um PAEE ativo para criar o PEI."** O aluno ainda não tem PAEE. Conclua o [Estudo de Caso](/ajuda/estudos-de-caso#concluir-um-estudo-de-caso) e [crie o PAEE](/ajuda/paee#criar-um-paee).
-- **"Este aluno não possui matrícula vigente"** Cadastre ou marque a matrícula atual do aluno na aba **Informações acadêmicas**.
+- **"Este aluno não possui matrícula vigente"** Cadastre ou marque a matrícula atual do aluno na aba **Cursos do aluno**.
 - **"O PEI atual ainda está em andamento. Finalize-o antes de criar uma nova versão."** Finalize o PEI atual ou continue preenchendo-o.
 - **"O PEI precisa ter ao menos uma adaptação cadastrada antes de ser finalizado."** Cadastre ao menos uma adaptação na aba **Adaptações curriculares**.
 - **"Não é possível finalizar o PEI. A adaptação da disciplina ... precisa preencher: ..."** A mensagem indica a disciplina e os campos que estão vazios ou com "A preencher.". Lembre que o **Parecer** é opcional ao salvar, mas obrigatório para finalizar.

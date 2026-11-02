@@ -6,7 +6,7 @@ export interface PaeeStudentSummary {
     name: string;
 }
 
-/** Linha das listagens e do histórico (`PaeePagePresenter::list/history`). */
+/** Linha da listagem geral (`PaeePagePresenter::list`). */
 export interface PaeeListRecord {
     id: number;
     version: number | null;
@@ -34,20 +34,12 @@ export interface PaeeListPermissions {
     delete: boolean;
 }
 
-/** Props de `PaeeController@all` (geral) e `@index` (do aluno). */
+/** Props de `PaeeController@all`. */
 export interface PaeeListProps {
     paees: PaeePaginator;
     student: PaeeStudentSummary | null;
     semesters: FieldOption[];
     filters: Partial<PaeeListFilters>;
-    can: PaeeListPermissions;
-}
-
-export type PaeeStudentListProps = PaeeListProps & { student: PaeeStudentSummary };
-
-export interface PaeeHistoryProps {
-    student: PaeeStudentSummary;
-    paees: PaeeListRecord[];
     can: PaeeListPermissions;
 }
 

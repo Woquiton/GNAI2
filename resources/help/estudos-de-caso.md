@@ -12,14 +12,14 @@ O Estudo de Caso é a primeira etapa do acompanhamento do aluno: registra a orig
 ## Onde encontro os Estudos de Caso?
 
 - **Planos e acompanhamento → Estudos de Caso** mostra a listagem geral, com filtros por **Aluno**, **Semestre** e **Status**.
-- Na visualização do aluno (**Atendimento → Alunos**), a aba **Estudos de Caso** mostra as 5 versões mais recentes; o botão **Ver Histórico** abre todas.
+- Na visualização do aluno (**Atendimento → Alunos**), a aba **Estudos de Caso** mostra todas as versões, da mais recente para a mais antiga, com filtros e acesso à visualização de cada uma.
 
 A listagem geral não tem botão de cadastro: o Estudo de Caso é sempre criado a partir do aluno.
 
 ## Criar um Estudo de Caso
 
 1. Abra o aluno em **Atendimento → Alunos** e acesse a aba **Estudos de Caso**.
-2. Clique em **Cadastrar**. Outra opção é o botão **Iniciar** do quadro **Estudo de Caso** no painel **Status do atendimento**.
+2. Clique em **Cadastrar**. Outra opção é o botão **Iniciar** da etapa **Estudo de Caso** na lateral **Status do atendimento**.
 3. Preencha as seções do formulário (campos na tabela abaixo).
 4. Em **Barreiras Identificadas** e **Estratégias Propostas**, use os botões **Barreira** e **Estratégia** para adicionar quantos itens forem necessários.
 5. Clique em **Salvar**. O sistema mostra "Estudo de Caso criado com sucesso." e abre a visualização.

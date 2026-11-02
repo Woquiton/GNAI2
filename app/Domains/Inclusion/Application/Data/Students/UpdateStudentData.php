@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\Application\Data\Students;
 use App\Domains\Inclusion\Application\Data\People\Concerns\NormalizesPersonInput;
 use App\Domains\Inclusion\Application\Rules\ValidCpf;
 use App\Domains\Inclusion\Domain\Enums\Gender;
+use App\Domains\Inclusion\Domain\Enums\StudentFollowUpType;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\Student;
 use Illuminate\Http\UploadedFile;
@@ -27,6 +28,7 @@ final class UpdateStudentData extends Data
         public string $email,
         public string $registration,
         public StudentStatus $status,
+        public ?StudentFollowUpType $followUpType = null,
         public ?string $document = null,
         public ?string $phone = null,
         public ?string $address = null,
@@ -62,6 +64,7 @@ final class UpdateStudentData extends Data
             ],
             'entry_date' => ['nullable', 'date', 'after_or_equal:birth_date'],
             'status' => ['required', Rule::enum(StudentStatus::class)],
+            'follow_up_type' => ['nullable', 'required_if:status,active', Rule::enum(StudentFollowUpType::class)],
             'photo' => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
             'remove_photo' => ['sometimes', 'boolean'],
         ];
@@ -94,8 +97,10 @@ final class UpdateStudentData extends Data
             'registration.unique' => 'Esta matrícula já está cadastrada para outro aluno.',
             'entry_date.date' => 'A data de ingresso do aluno deve ser válida.',
             'entry_date.after_or_equal' => 'A data de ingresso não pode ser anterior à data de nascimento.',
-            'status.required' => 'Selecione o status do aluno.',
-            'status.enum' => 'O status selecionado é inválido.',
+            'status.required' => 'Selecione a situação do aluno.',
+            'status.enum' => 'A situação selecionada é inválida.',
+            'follow_up_type.required_if' => 'Informe o tipo de acompanhamento para manter o aluno ativo.',
+            'follow_up_type.enum' => 'O tipo de acompanhamento selecionado é inválido.',
             'photo.image' => 'O arquivo da foto deve ser uma imagem válida.',
             'photo.mimes' => 'A foto deve estar nos formatos JPEG, JPG ou PNG.',
             'photo.max' => 'A foto não pode ultrapassar 2 MB.',

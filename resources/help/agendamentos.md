@@ -59,6 +59,8 @@ Os filtros valem para as duas abas: **Dia de referência**, **Aluno**, **Profess
 
 O e-mail é enviado aos alunos e ao profissional que tenham e-mail cadastrado.
 
+Os alunos precisam estar na situação **Ativo** e ter um **Tipo de acompanhamento** que permita a modalidade escolhida. Essa configuração fica no cadastro do aluno e também é verificada ao editar um agendamento. Alterar o acompanhamento não cancela agendamentos nem modifica atendimentos já registrados.
+
 ### Disponibilidade do dia
 
 Depois de escolher alunos, profissional e data, a seção **Disponibilidade do Dia** mostra os horários do dia como livres ou ocupados, indicando quem está ocupado. Clique em um horário livre para usá-lo como início. Se a grade não aparecer, a mensagem "Selecione aluno(s), profissional e data para ver a disponibilidade." indica o que falta preencher.
@@ -106,10 +108,10 @@ O botão só aparece para o profissional do agendamento, com status **Agendada**
 Algum aluno ou o profissional já tem atendimento nesse horário. Consulte a **Disponibilidade do Dia** e escolha um horário livre.
 
 **Aparece "Não é possível agendar ou editar agendamento para aluno inativo: ..."**
-O aluno está **Trancado**, **Concluído** ou **Desistente**. Altere o status no cadastro do aluno, se for o caso.
+O aluno está **Trancado**, **Concluído** ou **Desistente**. Altere a situação no cadastro do aluno, se for o caso.
 
-**Aparece "O status de atendimento de ... não permite agendamentos do tipo ..."**
-O status do aluno restringe o tipo de atendimento (por exemplo, **Atendimento Pedagógico** só aceita agendamentos pedagógicos). Confira o status em [Alunos](/ajuda/alunos#o-que-significa-cada-status).
+**Aparece "O tipo de acompanhamento de ... não permite agendamentos do tipo ..."**
+O acompanhamento do aluno está incompatível com a modalidade escolhida ou não foi informado. Confira **Tipo de acompanhamento** em [Alunos](/ajuda/alunos#o-que-significa-o-tipo-de-acompanhamento). **Somente AEE** aceita AEE, **Somente pedagógico** aceita atendimentos pedagógicos e **AEE e pedagógico** aceita ambos.
 
 **Aparece "Atendimentos pedagógicos devem possuir exatamente um aluno."**
 O atendimento pedagógico é sempre individual. Para atender vários alunos juntos, use o Atendimento Educacional Especializado no formato Grupo.

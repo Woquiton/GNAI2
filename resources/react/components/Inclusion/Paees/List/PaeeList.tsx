@@ -9,12 +9,10 @@ import {
 import { paeeName } from '../Paees.constants';
 import { paeeUrls } from '../Paees.routes';
 import type { PaeeListPermissions, PaeeListRecord, PaeePaginator } from '../Paees.types';
-import { paeeAllColumns, paeeStudentColumns } from './paeeColumns';
+import { paeeAllColumns } from './paeeColumns';
 
 interface PaeeListProps {
     paees: PaeePaginator;
-    /** Listagem de um aluno: troca a coluna do aluno pela indicação da versão atual. */
-    byStudent: boolean;
     permissions: PaeeListPermissions;
     loading: boolean;
     processing: boolean;
@@ -24,7 +22,6 @@ interface PaeeListProps {
 
 export default function PaeeList({
     paees,
-    byStudent,
     permissions,
     loading,
     processing,
@@ -33,11 +30,11 @@ export default function PaeeList({
 }: PaeeListProps): React.JSX.Element {
     const columns = useMemo<TableListColumn<PaeeListRecord>[]>(
         () => [
-            ...(byStudent ? paeeStudentColumns : paeeAllColumns),
+            ...paeeAllColumns,
             {
                 id: 'actions',
                 label: 'Ações',
-                width: byStudent ? '16%' : '14%',
+                width: '14%',
                 fixed: 'end',
                 render: (paee) => (
                     <TableListRowActions
@@ -64,7 +61,7 @@ export default function PaeeList({
                 ),
             },
         ],
-        [byStudent, permissions.view, permissions.update, permissions.delete, processing, onDelete],
+        [permissions.view, permissions.update, permissions.delete, processing, onDelete],
     );
 
     return (

@@ -63,7 +63,7 @@ Os perfis vinculados aparecem na identificação do prontuário e podem ser usad
 4. Em **Selecionar Arquivo**, escolha o arquivo (obrigatório): PDF, DOC, DOCX, JPG, JPEG ou PNG, com até 10 MB.
 5. Clique em **Realizar Upload**. O sistema volta ao prontuário e mostra "Documento enviado com sucesso.".
 
-O campo **Semestre Atual** é preenchido automaticamente com o semestre atual do sistema. Documentos do tipo **Laudo** marcam a caixa **Laudo** do painel **Status do atendimento** como anexada.
+O campo **Semestre Atual** é preenchido automaticamente com o semestre atual do sistema. Documentos do tipo **Laudo** marcam a etapa **Laudo** da lateral **Status do atendimento** como anexada.
 
 ## Visualizar, baixar, editar ou excluir um documento
 

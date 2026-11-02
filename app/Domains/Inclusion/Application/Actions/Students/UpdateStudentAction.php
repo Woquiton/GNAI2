@@ -69,6 +69,7 @@ final readonly class UpdateStudentAction
                 $studentDTO = new UpdateStudentDTO(
                     registration: Registration::from($data->registration),
                     status: $data->status,
+                    followUpType: $data->followUpType,
                     entryDate: $data->entryDate,
                 );
 

@@ -49,6 +49,7 @@ final readonly class CreateStudentAction
 
                 $studentDTO = new CreateStudentDTO(
                     registration: Registration::from($data->registration),
+                    followUpType: $data->followUpType,
                     entryDate: $data->entryDate,
                 );
 

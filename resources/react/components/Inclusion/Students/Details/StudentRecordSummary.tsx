@@ -2,6 +2,7 @@ import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import RecordSummary from '@/components/UI/RecordSummary/RecordSummary';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
+import { dateLabel } from '@/utils/formatters';
 import type { StudentOptions, StudentRecord } from '../Students.types';
 
 type StudentRecordSummaryProps = StudentOptions & {
@@ -9,12 +10,13 @@ type StudentRecordSummaryProps = StudentOptions & {
     profileNames: string[];
 };
 
-/** Identificação compacta no topo do prontuário: foto, nome, matrícula, status e perfis. */
+/** Identificação compacta com situação e tipo de acompanhamento separados. */
 export default function StudentRecordSummary({
     student,
     permissions,
     studentStatuses,
     statusColors,
+    followUpTypes,
     profileNames,
 }: StudentRecordSummaryProps): React.JSX.Element {
     const person = student.person;
@@ -29,10 +31,16 @@ export default function StudentRecordSummary({
                 className="studentDetails__summary"
             >
                 <DetailField label="Matrícula">{student.registration || '---'}</DetailField>
-                <DetailField label="Status">
+                <DetailField label="Situação">
                     <TableLabel tone={statusColors[student.status] ?? 'inverse'}>
                         {studentStatuses[student.status] ?? student.status}
                     </TableLabel>
+                </DetailField>
+                <DetailField label="Tipo de acompanhamento">
+                    {followUpTypes[student.follow_up_type ?? ''] ?? 'Não informado'}
+                </DetailField>
+                <DetailField label="Data de ingresso">
+                    {dateLabel(student.entry_date)}
                 </DetailField>
                 {canViewProfiles ? (
                     <DetailField label="Perfil de atendimento" wide>

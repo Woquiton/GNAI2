@@ -1,5 +1,3 @@
-import type { TableListPage } from '@/components/Tables/TableList/TableList';
-
 export interface StudentDeficiencyStudent {
     id: number;
     person: { name: string };
@@ -19,7 +17,7 @@ export interface DeficiencyOption {
     name: string;
 }
 
-/** Linha da listagem, com rótulo e tom da severidade (`StudentDeficiencyController@index`). */
+/** Dados do vínculo com rótulo e tom da severidade. */
 export type StudentDeficiencyListRecord = StudentDeficiencyRecord & {
     severity_label: string | null;
     severity_color: string | null;
@@ -30,29 +28,6 @@ export type StudentDeficiencyShowRecord = StudentDeficiencyListRecord & {
     /** Observações já sanitizadas pelo `RichTextSanitizer`. */
     notes_html: string;
 };
-
-export interface StudentDeficiencyPaginator extends TableListPage {
-    data: StudentDeficiencyListRecord[];
-}
-
-export type StudentDeficiencyFilters = {
-    deficiency_id: string;
-    severity: string;
-};
-
-export interface StudentDeficiencyListPermissions {
-    create: boolean;
-    view: boolean;
-    delete: boolean;
-}
-
-export interface StudentDeficiencyIndexProps {
-    student: StudentDeficiencyStudent;
-    deficiencies: StudentDeficiencyPaginator;
-    filterDeficiencies: { value: string; label: string }[];
-    filters: Partial<StudentDeficiencyFilters>;
-    can: StudentDeficiencyListPermissions;
-}
 
 export interface StudentDeficiencyCreateProps {
     student: StudentDeficiencyStudent;

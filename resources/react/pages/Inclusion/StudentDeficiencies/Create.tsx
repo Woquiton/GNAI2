@@ -11,7 +11,10 @@ export default function InclusionStudentDeficienciesCreatePage({
         <BusinessPage
             title="Vincular Perfil de Atendimento"
             subtitle={`Aluno: ${student.person.name}`}
-            breadcrumbItems={studentDeficiencyBreadcrumb({ student, current: 'Cadastrar' })}
+            breadcrumbItems={studentDeficiencyBreadcrumb({
+                student,
+                current: 'Cadastrar perfil de atendimento',
+            })}
         >
             <StudentDeficiencyForm
                 mode="create"

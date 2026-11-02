@@ -44,7 +44,6 @@ export default function InclusionPaeesAllPage({
         >
             <PaeeList
                 paees={paees}
-                byStudent={false}
                 permissions={can}
                 loading={filters.loading}
                 processing={removal.processing}

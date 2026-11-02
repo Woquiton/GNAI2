@@ -5,6 +5,7 @@ import {
     useRef,
     useState,
     type KeyboardEvent,
+    type PointerEvent,
     type ReactNode,
 } from 'react';
 import './Tabs.css';
@@ -30,6 +31,8 @@ interface TabsProps {
         | 'pills';
     /** Informa a aba escolhida pelo usuário; combine com initialActiveId para controlar a aba ativa. */
     onChange?: (id: string) => void;
+    /** Permite arrastar horizontalmente a faixa de abas e mostra controles nas bordas. */
+    dragToScroll?: boolean;
 }
 
 export default function Tabs({
@@ -37,6 +40,7 @@ export default function Tabs({
     initialActiveId,
     variant = 'standard',
     onChange,
+    dragToScroll = false,
 }: TabsProps): React.JSX.Element {
     const [activeId, setActiveId] = useState<string>(initialActiveId ?? items[0]?.id ?? '');
     const activeItem = items.find((item: TabItem) => item.id === activeId) ?? items[0];
@@ -46,8 +50,13 @@ export default function Tabs({
     const previousInitialActiveId = useRef(initialActiveId);
     const previousMeasuredActiveId = useRef(activeId);
     const navigationRef = useRef<HTMLUListElement>(null);
+    const navigationViewportRef = useRef<HTMLDivElement>(null);
     const tabRefs = useRef(new Map<string, HTMLButtonElement>());
+    const dragState = useRef({ pointerId: -1, startX: 0, scrollLeft: 0, moved: false });
+    const lastDragEnd = useRef(0);
     const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
+    const [isDragging, setIsDragging] = useState(false);
+    const [scrollCues, setScrollCues] = useState({ left: false, right: false });
 
     useEffect(() => {
         const initialActiveIdChanged = previousInitialActiveId.current !== initialActiveId;
@@ -109,6 +118,45 @@ export default function Tabs({
         };
     }, [activeId, isVertical, items.length, variant]);
 
+    useLayoutEffect(() => {
+        if (isVertical || !dragToScroll) {
+            setScrollCues({ left: false, right: false });
+            return;
+        }
+
+        const viewport = navigationViewportRef.current;
+        const navigation = navigationRef.current;
+        if (!viewport || !navigation) return;
+
+        function updateScrollCues(): void {
+            const maximumScroll = viewport.scrollWidth - viewport.clientWidth;
+            const nextCues = {
+                left: viewport.scrollLeft > 1,
+                right: maximumScroll > 1 && viewport.scrollLeft < maximumScroll - 1,
+            };
+
+            setScrollCues((current) =>
+                current.left === nextCues.left && current.right === nextCues.right
+                    ? current
+                    : nextCues,
+            );
+        }
+
+        updateScrollCues();
+        viewport.addEventListener('scroll', updateScrollCues, { passive: true });
+        const observer =
+            typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updateScrollCues);
+        observer?.observe(viewport);
+        observer?.observe(navigation);
+        window.addEventListener('resize', updateScrollCues);
+
+        return () => {
+            viewport.removeEventListener('scroll', updateScrollCues);
+            observer?.disconnect();
+            window.removeEventListener('resize', updateScrollCues);
+        };
+    }, [dragToScroll, isVertical, items.length]);
+
     function selectTab(id: string): void {
         setActiveId(id);
         onChange?.(id);
@@ -140,6 +188,70 @@ export default function Tabs({
         nextTab?.focus();
     }
 
+    function handleDragStart(event: PointerEvent<HTMLDivElement>): void {
+        if (!dragToScroll || event.pointerType !== 'mouse' || event.button !== 0) return;
+
+        dragState.current = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            scrollLeft: event.currentTarget.scrollLeft,
+            moved: false,
+        };
+    }
+
+    function handleDragMove(event: PointerEvent<HTMLDivElement>): void {
+        const drag = dragState.current;
+        if (drag.pointerId !== event.pointerId) return;
+        if ((event.buttons & 1) === 0) {
+            dragState.current.pointerId = -1;
+            setIsDragging(false);
+            return;
+        }
+
+        const distance = event.clientX - drag.startX;
+        if (!drag.moved && Math.abs(distance) < 5) return;
+
+        if (!drag.moved) {
+            drag.moved = true;
+            event.currentTarget.setPointerCapture(event.pointerId);
+            setIsDragging(true);
+        }
+
+        event.preventDefault();
+        event.currentTarget.scrollLeft = drag.scrollLeft - distance;
+    }
+
+    function finishDrag(event: PointerEvent<HTMLDivElement>): void {
+        const drag = dragState.current;
+        if (drag.pointerId !== event.pointerId) return;
+
+        if (drag.moved) lastDragEnd.current = Date.now();
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+        }
+
+        dragState.current.pointerId = -1;
+        setIsDragging(false);
+    }
+
+    function scrollNavigation(direction: -1 | 1): void {
+        const viewport = navigationViewportRef.current;
+        if (!viewport) return;
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        viewport.scrollBy({
+            left: direction * Math.max(viewport.clientWidth * 0.7, 160),
+            behavior: reduceMotion ? 'auto' : 'smooth',
+        });
+    }
+
+    const navigationViewportClassName = [
+        'tabs__navViewport',
+        dragToScroll ? 'tabs__navViewport--draggable' : '',
+        isDragging ? 'tabs__navViewport--dragging' : '',
+    ]
+        .filter(Boolean)
+        .join(' ');
     const navigationList = (
         <ul
             ref={navigationRef}
@@ -196,7 +308,46 @@ export default function Tabs({
     const navigation = isVertical ? (
         navigationList
     ) : (
-        <div className="tabs__navViewport">{navigationList}</div>
+        <div className="tabs__navScroller">
+            {dragToScroll && scrollCues.left ? (
+                <button
+                    type="button"
+                    className="tabs__scrollCue tabs__scrollCue--left"
+                    aria-label="Mostrar abas anteriores"
+                    title="Mostrar abas anteriores"
+                    onClick={() => scrollNavigation(-1)}
+                >
+                    <span aria-hidden="true">‹</span>
+                </button>
+            ) : null}
+            <div
+                ref={navigationViewportRef}
+                className={navigationViewportClassName}
+                onPointerDown={handleDragStart}
+                onPointerMove={handleDragMove}
+                onPointerUp={finishDrag}
+                onPointerCancel={finishDrag}
+                onClickCapture={(event) => {
+                    if (Date.now() - lastDragEnd.current < 100) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }}
+            >
+                {navigationList}
+            </div>
+            {dragToScroll && scrollCues.right ? (
+                <button
+                    type="button"
+                    className="tabs__scrollCue tabs__scrollCue--right"
+                    aria-label="Mostrar próximas abas"
+                    title="Mostrar próximas abas"
+                    onClick={() => scrollNavigation(1)}
+                >
+                    <span aria-hidden="true">›</span>
+                </button>
+            ) : null}
+        </div>
     );
 
     if (isVertical) {

@@ -17,6 +17,23 @@ final class ListStudentsQueryTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_it_filters_follow_up_type_independently_from_student_status(): void
+    {
+        $aee = Student::factory()->active()->create(['follow_up_type' => 'aee']);
+        $locked = Student::factory()->create(['status' => 'locked', 'follow_up_type' => 'aee']);
+        Student::factory()->active()->create(['follow_up_type' => 'both']);
+        $unknown = Student::factory()->create(['status' => 'dropped', 'follow_up_type' => null]);
+        $query = app(ListStudentsQuery::class);
+
+        $aeeStudents = $query->execute(ListStudentsData::from(['follow_up_type' => 'aee']));
+        $activeAee = $query->execute(ListStudentsData::from(['status' => 'active', 'follow_up_type' => 'aee']));
+        $notInformed = $query->execute(ListStudentsData::from(['follow_up_type' => 'not_informed']));
+
+        self::assertEqualsCanonicalizing([$aee->id, $locked->id], $aeeStudents->pluck('id')->all());
+        self::assertSame([$aee->id], $activeAee->pluck('id')->all());
+        self::assertSame([$unknown->id], $notInformed->pluck('id')->all());
+    }
+
     public function test_it_filters_students_by_current_course_or_deficiency_including_missing_ones(): void
     {
         $course = Course::factory()->create();

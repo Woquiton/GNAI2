@@ -12,12 +12,10 @@ import type {
     CaseStudyPaginator,
     CaseStudyRow,
 } from '../CaseStudies.types';
-import { caseStudyColumns, studentCaseStudyColumns } from './caseStudyColumns';
+import { caseStudyColumns } from './caseStudyColumns';
 
 interface CaseStudyListProps {
     caseStudies: CaseStudyPaginator;
-    /** Listagem do prontuário do aluno, sem a coluna Aluno. */
-    byStudent: boolean;
     permissions: CaseStudyListPermissions;
     loading: boolean;
     processing: boolean;
@@ -26,10 +24,9 @@ interface CaseStudyListProps {
     onPageSelect: (page: number) => void;
 }
 
-/** Tabela paginada de Estudos de Caso, geral ou de um aluno. */
+/** Tabela paginada da listagem geral de Estudos de Caso. */
 export default function CaseStudyList({
     caseStudies,
-    byStudent,
     permissions,
     loading,
     processing,
@@ -39,11 +36,11 @@ export default function CaseStudyList({
 }: CaseStudyListProps): React.JSX.Element {
     const columns = useMemo<TableListColumn<CaseStudyRow>[]>(
         () => [
-            ...(byStudent ? studentCaseStudyColumns : caseStudyColumns),
+            ...caseStudyColumns,
             {
                 id: 'actions',
                 label: 'Ações',
-                width: byStudent ? '20%' : '16%',
+                width: '16%',
                 fixed: 'end',
                 render: (caseStudy) => (
                     <TableListRowActions
@@ -73,7 +70,7 @@ export default function CaseStudyList({
                 ),
             },
         ],
-        [byStudent, permissions, processing, rowName, onDelete],
+        [permissions, processing, rowName, onDelete],
     );
 
     return (

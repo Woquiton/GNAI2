@@ -7,6 +7,62 @@
     overflow-x: auto;
     overflow-y: hidden;
 }
+.tabs__navScroller {
+    position: relative;
+    min-width: 0;
+}
+.tabs__navViewport--draggable {
+    cursor: grab;
+    scrollbar-width: none;
+}
+.tabs__navViewport--draggable::-webkit-scrollbar {
+    display: none;
+}
+.tabs__navViewport--draggable .tabs__button {
+    cursor: grab;
+}
+.tabs__navViewport--dragging,
+.tabs__navViewport--dragging .tabs__button {
+    cursor: grabbing;
+    user-select: none;
+}
+.tabs__scrollCue {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    bottom: 8px;
+    display: flex;
+    align-items: center;
+    width: 42px;
+    padding: 0;
+    border: 0;
+    color: var(--ui-color-gnai-primary);
+    cursor: pointer;
+    font: 700 28px/1 var(--ui-font-ui);
+}
+.tabs__scrollCue--left {
+    left: 0;
+    justify-content: flex-start;
+    padding-left: 8px;
+    background: linear-gradient(
+        90deg,
+        var(--ui-color-surface-alt) 50%,
+        rgba(235, 239, 242, 0)
+    );
+}
+.tabs__scrollCue--right {
+    right: 0;
+    justify-content: flex-end;
+    padding-right: 8px;
+    background: linear-gradient(
+        270deg,
+        var(--ui-color-surface-alt) 50%,
+        rgba(235, 239, 242, 0)
+    );
+}
+.tabs__scrollCue:hover {
+    color: var(--ui-color-heading);
+}
 .tabs__navViewport > .tabs__nav {
     width: max-content;
     min-width: 100%;
@@ -393,6 +449,9 @@
 }
 .tabs--standard .tabs__navViewport {
     scrollbar-width: thin;
+}
+.tabs--standard .tabs__navViewport--draggable {
+    scrollbar-width: none;
 }
 .tabs--standard .tabs__nav {
     justify-content: flex-start;

@@ -80,6 +80,7 @@ export default function StudentForm({
                         {...sectionProps}
                         mode={mode}
                         studentStatuses={options.studentStatuses}
+                        followUpTypes={options.followUpTypes}
                     />
                 </fieldset>
             </CardBox>

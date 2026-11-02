@@ -14,7 +14,6 @@ export default function InclusionCaseStudiesAllPage({
     can,
 }: CaseStudyListProps): React.JSX.Element {
     const { errors, filters, rowName, removal } = useCaseStudyList({
-        student: null,
         initialFilters,
     });
 
@@ -50,7 +49,6 @@ export default function InclusionCaseStudiesAllPage({
         >
             <CaseStudyList
                 caseStudies={caseStudies}
-                byStudent={false}
                 permissions={can}
                 loading={filters.loading}
                 processing={removal.processing}

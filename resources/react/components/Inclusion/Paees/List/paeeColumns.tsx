@@ -30,29 +30,3 @@ export const paeeAllColumns: PaeeColumn[] = [
     { id: 'status', label: 'Status', width: '14%', render: status },
     { id: 'next_review', label: 'Próxima revisão', width: '16%', render: nextReview },
 ];
-
-/** PAEEs de um aluno: indica qual versão é a atual. */
-export const paeeStudentColumns: PaeeColumn[] = [
-    { id: 'semester', label: 'Semestre', width: '26%', fixed: 'start', render: semester },
-    { id: 'version', label: 'Versão', width: '12%', render: version },
-    {
-        id: 'current',
-        label: 'Atual',
-        width: '12%',
-        render: (paee) => (
-            <TableLabel tone={paee.is_current ? 'success' : 'inverse'}>
-                {paee.is_current ? 'Sim' : 'Não'}
-            </TableLabel>
-        ),
-    },
-    { id: 'status', label: 'Status', width: '16%', render: status },
-    { id: 'next_review', label: 'Próxima revisão', width: '18%', render: nextReview },
-];
-
-/** Histórico completo de versões do aluno. */
-export const paeeHistoryColumns: PaeeColumn[] = [
-    { id: 'version', label: 'Versão', width: '16%', fixed: 'start', render: version },
-    { id: 'semester', label: 'Semestre', width: '28%', render: semester },
-    { id: 'status', label: 'Status', width: '20%', render: status },
-    { id: 'next_review', label: 'Próxima revisão', width: '22%', render: nextReview },
-];

@@ -8,11 +8,8 @@ use App\Domains\Inclusion\Application\Actions\StudentDeficiencies\CreateStudentD
 use App\Domains\Inclusion\Application\Actions\StudentDeficiencies\DeleteStudentDeficiencyAction;
 use App\Domains\Inclusion\Application\Actions\StudentDeficiencies\UpdateStudentDeficiencyAction;
 use App\Domains\Inclusion\Application\Data\StudentDeficiencies\CreateStudentDeficiencyData;
-use App\Domains\Inclusion\Application\Data\StudentDeficiencies\ListStudentDeficienciesData;
 use App\Domains\Inclusion\Application\Data\StudentDeficiencies\UpdateStudentDeficiencyData;
-use App\Domains\Inclusion\Application\Queries\StudentDeficiencies\ListStudentDeficienciesQuery;
 use App\Domains\Inclusion\Application\Queries\StudentDeficiencies\ShowStudentDeficiencyQuery;
-use App\Domains\Inclusion\Application\Queries\StudentDeficiencies\StudentDeficiencyFilterOptionsQuery;
 use App\Domains\Inclusion\Application\Queries\StudentDeficiencies\StudentDeficiencyFormQuery;
 use App\Domains\Inclusion\Domain\Enums\DeficiencySeverity;
 use App\Domains\Inclusion\Domain\Models\Student;
@@ -26,44 +23,6 @@ use Throwable;
 
 final class StudentDeficiencyController
 {
-    public function index(
-        ListStudentDeficienciesData $filters,
-        Student $student,
-        ListStudentDeficienciesQuery $query,
-        StudentDeficiencyFilterOptionsQuery $filterOptions,
-        Request $request,
-    ): InertiaResponse {
-        $deficiencies = $query->execute($student, $filters)->through(
-            static function (StudentDeficiency $studentDeficiency): array {
-                $severity = DeficiencySeverity::tryFrom((string) $studentDeficiency->severity);
-
-                return [
-                    ...$studentDeficiency->toArray(),
-                    'severity_label' => $severity?->label(),
-                    'severity_color' => $severity?->color(),
-                ];
-            },
-        );
-        $user = $request->user();
-
-        return Inertia::render('Inclusion/StudentDeficiencies/Index', [
-            'student' => $student->loadMissing('person'),
-            'deficiencies' => $deficiencies,
-            'filterDeficiencies' => collect($filterOptions->execute($student))
-                ->map(static fn (mixed $name, int|string $id): array => ['value' => (string) $id, 'label' => (string) $name])
-                ->values(),
-            'filters' => [
-                'deficiency_id' => $filters->deficiencyId === null ? '' : (string) $filters->deficiencyId,
-                'severity' => $filters->severity?->value ?? '',
-            ],
-            'can' => [
-                'create' => $user?->can('student-deficiency.create') ?? false,
-                'view' => $user?->can('student-deficiency.view') ?? false,
-                'delete' => $user?->can('student-deficiency.delete') ?? false,
-            ],
-        ]);
-    }
-
     public function show(
         Student $student,
         StudentDeficiency $student_deficiency,

@@ -1,4 +1,3 @@
-import FormSection from '@/components/Forms/FormSection/FormSection';
 import { caseStudyUrls } from '@/components/Inclusion/CaseStudies/CaseStudies.routes';
 import { guardianShowUrl, guardianUrls } from '@/components/Inclusion/Guardians/Guardians.routes';
 import { paeeUrls } from '@/components/Inclusion/Paees/Paees.routes';
@@ -12,7 +11,6 @@ import {
     TableListRowActions,
     type TableListColumn,
 } from '@/components/Tables/TableList/TableList';
-import Button from '@/components/UI/Button/Button';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import DeleteStudentRecord from '../DeleteStudentRecord';
@@ -222,13 +220,23 @@ const paeeColumns: TableListColumn<StudentPaeeSummary>[] = [
     {
         id: 'semester',
         label: 'Semestre',
-        width: '26%',
+        width: '22%',
         render: (paee) => paee.semester_label ?? '—',
+    },
+    {
+        id: 'current',
+        label: 'Atual',
+        width: '12%',
+        render: (paee) => (
+            <TableLabel tone={paee.is_current ? 'success' : 'inverse'}>
+                {paee.is_current ? 'Sim' : 'Não'}
+            </TableLabel>
+        ),
     },
     {
         id: 'status',
         label: 'Status',
-        width: '22%',
+        width: '18%',
         render: (paee) => (
             <TableLabel tone={paeeStatusTones[paee.status] ?? 'inverse'}>
                 {paee.status_label}
@@ -238,13 +246,13 @@ const paeeColumns: TableListColumn<StudentPaeeSummary>[] = [
     {
         id: 'review',
         label: 'Próxima revisão',
-        width: '20%',
+        width: '18%',
         render: (paee) => dateLabel(paee.next_review_date),
     },
     {
         id: 'actions',
         label: 'Ações',
-        width: '18%',
+        width: '16%',
         fixed: 'end',
         render: (paee) => (
             <TableListRowActions
@@ -277,12 +285,7 @@ function StudentProfiles({
     ) : undefined;
 
     return (
-        <FormSection
-            id="deficiencias"
-            title="Perfis de Atendimento do Aluno"
-            iconClass="fa fa-wheelchair"
-            variant="inline"
-        >
+        <div id="deficiencias">
             <StudentRecordTable
                 ariaLabel="Perfis de atendimento do aluno"
                 columns={profileColumns({ student, permissions })}
@@ -305,7 +308,7 @@ function StudentProfiles({
                     />
                 }
             />
-        </FormSection>
+        </div>
     );
 }
 
@@ -336,7 +339,7 @@ function StudentGuardians({
     ) : undefined;
 
     return (
-        <FormSection id="guardians" title="Responsáveis" iconClass="fa fa-users" variant="inline">
+        <div id="guardians">
             <StudentRecordTable
                 ariaLabel="Responsáveis do aluno"
                 columns={guardianColumns({ student, permissions })}
@@ -360,7 +363,7 @@ function StudentGuardians({
                     />
                 }
             />
-        </FormSection>
+        </div>
     );
 }
 
@@ -388,12 +391,7 @@ function StudentCaseStudies({
     ) : undefined;
 
     return (
-        <FormSection
-            id="case-studies"
-            title="Estudos de Caso"
-            iconClass="fa fa-stethoscope"
-            variant="inline"
-        >
+        <div id="case-studies">
             <StudentRecordTable
                 ariaLabel="Estudos de caso do aluno"
                 columns={caseStudyColumns}
@@ -417,31 +415,14 @@ function StudentCaseStudies({
                     />
                 }
             />
-            <div className="studentDetails__recordFooter">
-                <small>
-                    São exibidas até 5 versões mais recentes. Para consultar o histórico completo,
-                    clique em “Ver Histórico”.
-                </small>
-                <Button
-                    href={caseStudyUrls.studentHistory(student.id)}
-                    tone="white"
-                    size="sm"
-                    leftIconClass="fa fa-history"
-                    label="Ver Histórico"
-                    title="Ver histórico de Estudos de Caso"
-                    aria-label="Ver histórico de Estudos de Caso"
-                />
-            </div>
-        </FormSection>
+        </div>
     );
 }
 
 function StudentPaees({
-    student,
     paees,
     loading = false,
 }: {
-    student: StudentRecord;
     paees: StudentPaeeSummary[];
     loading?: boolean;
 }): React.JSX.Element {
@@ -454,7 +435,7 @@ function StudentPaees({
     );
 
     return (
-        <FormSection id="paees" title="PAEE" iconClass="fa fa-sitemap" variant="inline">
+        <div id="paees">
             <StudentRecordTable
                 ariaLabel="PAEEs do aluno"
                 columns={paeeColumns}
@@ -477,22 +458,7 @@ function StudentPaees({
                     />
                 }
             />
-            <div className="studentDetails__recordFooter">
-                <small>
-                    São exibidas até 5 versões mais recentes. Para consultar o histórico completo,
-                    clique em “Gerenciar PAEE”.
-                </small>
-                <Button
-                    href={paeeUrls.student(student.id)}
-                    tone="white"
-                    size="sm"
-                    leftIconClass="fa fa-folder-open"
-                    label="Gerenciar PAEE"
-                    title="Gerenciar PAEEs do aluno"
-                    aria-label="Gerenciar PAEEs do aluno"
-                />
-            </div>
-        </FormSection>
+        </div>
     );
 }
 
@@ -559,7 +525,6 @@ export function createStudentSupportTabs({
             icon: 'fa fa-sitemap',
             content: (
                 <StudentPaees
-                    student={student}
                     paees={paees}
                     loading={loadingTab === 'paees'}
                 />

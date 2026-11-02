@@ -1,0 +1,439 @@
+/* Lateral "Status do atendimento" do prontuário: faixa recolhida e painel com linha do tempo. */
+.studentStatusSidebar {
+    --status-rail-width: 56px;
+    --status-panel-width: 312px;
+    --status-max-height: calc(100dvh - var(--ui-topbar-height) - var(--ui-space-8));
+    --status-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --status-duration: 0.3s;
+    --status-ok-bg: color-mix(in srgb, var(--ui-color-success) 7%, var(--ui-color-surface));
+    --status-ok-border: color-mix(in srgb, var(--ui-color-success) 32%, var(--ui-color-card-border));
+    --status-pending-bg: color-mix(in srgb, var(--ui-color-danger) 7%, var(--ui-color-surface));
+    --status-pending-border: color-mix(in srgb, var(--ui-color-danger) 30%, var(--ui-color-card-border));
+
+    position: sticky;
+    top: calc(var(--ui-topbar-height) + var(--ui-space-4));
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    max-height: var(--status-max-height);
+    overflow: hidden;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--ui-color-shadow) 45%, transparent);
+}
+
+/*
+ * Faixa e painel ocupam a mesma célula e se alternam com fade enquanto a largura anima. A coluna
+ * acompanha a largura da lateral; o painel tem largura fixa e fica ancorado à direita pela margem,
+ * para não reflowar durante a animação.
+ */
+.studentStatusSidebar__rail,
+.studentStatusSidebar__panel {
+    grid-area: 1 / 1;
+    transition:
+        opacity 0.18s ease,
+        visibility 0s linear 0.18s;
+}
+.studentStatusSidebar__rail {
+    min-width: 0;
+    transition-delay: 0.12s, 0s;
+}
+.studentStatusSidebar--expanded .studentStatusSidebar__rail {
+    visibility: hidden;
+    opacity: 0;
+    transition-delay: 0s, 0.18s;
+}
+.studentStatusSidebar__panel {
+    display: flex;
+    flex-direction: column;
+    width: var(--status-panel-width);
+    margin-left: min(0px, calc(100% - var(--status-panel-width)));
+    max-height: var(--status-max-height);
+    visibility: hidden;
+    opacity: 0;
+}
+.studentStatusSidebar--expanded .studentStatusSidebar__panel {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0.1s, 0s;
+}
+
+/* Faixa recolhida */
+.studentStatusSidebar__railButton {
+    --ui-focus-keyboard-offset: -3px;
+    --ui-focus-keyboard-shadow: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ui-space-3);
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    padding: 0 0 var(--ui-space-3);
+    border: 0;
+    background: var(--ui-color-surface);
+    color: var(--ui-color-gnai-primary);
+    cursor: pointer;
+    font: inherit;
+}
+.studentStatusSidebar__railButton:hover {
+    background: var(--ui-color-surface-hover-alt);
+}
+/* Topo roxo da faixa: a seta fica no mesmo lugar e com o mesmo visual do botão de recolher. */
+.studentStatusSidebar__railHeader {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: var(--ui-space-3) 0;
+    background: var(--ui-color-gnai-primary);
+    color: var(--ui-color-surface);
+}
+.studentStatusSidebar__railCounts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.studentStatusSidebar__count {
+    display: grid;
+    place-items: center;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 4px;
+    border-radius: var(--ui-radius-sm);
+    color: var(--ui-color-surface);
+    font-size: var(--ui-font-size-xs);
+    font-weight: 700;
+}
+.studentStatusSidebar__count--ok {
+    background: var(--ui-color-success);
+}
+.studentStatusSidebar__count--pending {
+    background: var(--color-danger-text);
+}
+.studentStatusSidebar__railAlert {
+    color: var(--ui-color-warning-strong);
+    font-size: 14px;
+}
+.studentStatusSidebar__railSteps {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: var(--ui-space-1) 0;
+}
+.studentStatusSidebar__railSteps::before {
+    position: absolute;
+    inset: 0 auto 0 50%;
+    width: 2px;
+    margin-left: -1px;
+    background: color-mix(in srgb, var(--ui-color-gnai-primary) 30%, transparent);
+    content: '';
+}
+.studentStatusSidebar__railDot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--ui-color-gnai-primary);
+    border-radius: 50%;
+    background: var(--ui-color-surface);
+}
+.studentStatusSidebar__railDot--ok {
+    border-color: var(--ui-color-success);
+    background: var(--ui-color-success);
+}
+
+/* Painel aberto */
+.studentStatusSidebar__header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: flex-start;
+    gap: var(--ui-space-3);
+    padding: var(--ui-space-3);
+    background: var(--ui-color-gnai-primary);
+    color: var(--ui-color-surface);
+}
+.studentStatusSidebar__headerIcon {
+    margin-top: 2px;
+    font-size: 20px;
+}
+.studentStatusSidebar__heading {
+    flex: 1;
+    min-width: 0;
+}
+.studentStatusSidebar__title {
+    margin: 0;
+    color: inherit;
+    font: 700 var(--ui-font-size-lg) / 1.25 var(--ui-font-gnai-heading);
+}
+.studentStatusSidebar__subtitle {
+    margin: 2px 0 0;
+    color: color-mix(in srgb, var(--ui-color-surface) 85%, transparent);
+    font-size: var(--ui-font-size-xs);
+    line-height: 1.35;
+}
+.studentStatusSidebar__toggle {
+    --ui-focus-keyboard-color: var(--ui-color-surface);
+    --ui-focus-keyboard-offset: 2px;
+    --ui-focus-keyboard-gap-color: var(--ui-color-gnai-primary);
+
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--ui-color-surface) 35%, transparent);
+    border-radius: var(--ui-radius-sm);
+    background: color-mix(in srgb, var(--ui-color-surface) 14%, transparent);
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+.studentStatusSidebar__toggle:hover,
+.studentStatusSidebar__railButton:hover .studentStatusSidebar__toggle {
+    background: color-mix(in srgb, var(--ui-color-surface) 26%, transparent);
+}
+.studentStatusSidebar__body {
+    --ui-focus-keyboard-offset: 1px;
+
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--ui-space-3);
+    overscroll-behavior: contain;
+}
+.studentStatusSidebar__summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 0 var(--ui-space-3);
+    overflow: hidden;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-md);
+}
+.studentStatusSidebar__summaryItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px var(--ui-space-2);
+    font-size: var(--ui-font-size-sm);
+    font-weight: 700;
+}
+.studentStatusSidebar__summaryItem i {
+    font-size: 15px;
+}
+.studentStatusSidebar__summaryItem--ok {
+    background: var(--status-ok-bg);
+    color: var(--color-success-text);
+}
+.studentStatusSidebar__summaryItem--ok i {
+    color: var(--ui-color-success);
+}
+.studentStatusSidebar__summaryItem--pending {
+    border-left: 1px solid var(--ui-color-card-border);
+    background: var(--status-pending-bg);
+    color: var(--color-danger-text);
+}
+
+/* Linha do tempo */
+.studentStatusSidebar__steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.studentStatusSidebar__step {
+    position: relative;
+    padding: 0 0 var(--ui-space-2) 28px;
+    opacity: 0;
+    transform: translateX(12px);
+    transition:
+        opacity 0.25s ease,
+        transform 0.3s var(--status-ease);
+}
+.studentStatusSidebar--expanded .studentStatusSidebar__step {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(0.14s + var(--step-index, 0) * 0.045s);
+}
+.studentStatusSidebar__step:last-child {
+    padding-bottom: 0;
+}
+.studentStatusSidebar__step::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 8px;
+    width: 2px;
+    background: color-mix(in srgb, var(--ui-color-gnai-primary) 30%, transparent);
+    content: '';
+}
+.studentStatusSidebar__step:first-child::before {
+    top: 16px;
+}
+.studentStatusSidebar__step:last-child::before {
+    bottom: auto;
+    height: 16px;
+}
+.studentStatusSidebar__marker {
+    position: absolute;
+    top: 7px;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--ui-color-gnai-primary);
+    border-radius: 50%;
+    background: var(--ui-color-surface);
+    color: var(--ui-color-surface);
+    font-size: 10px;
+}
+.studentStatusSidebar__step--ok .studentStatusSidebar__marker {
+    border-color: var(--ui-color-success);
+    background: var(--ui-color-success);
+}
+.studentStatusSidebar__card {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr) auto;
+    gap: var(--ui-space-2);
+    align-items: start;
+    padding: var(--ui-space-2) 10px;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+.studentStatusSidebar__card:hover {
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--ui-color-shadow) 40%, transparent);
+}
+.studentStatusSidebar__step--ok .studentStatusSidebar__card {
+    border-color: var(--status-ok-border);
+    background: var(--status-ok-bg);
+}
+.studentStatusSidebar__stepIcon {
+    margin-top: 2px;
+    color: var(--ui-color-page-title);
+    font-size: 15px;
+    text-align: center;
+}
+.studentStatusSidebar__stepTitle {
+    margin: 0;
+    color: var(--ui-color-page-title);
+    font-size: var(--ui-font-size-md);
+    font-weight: 700;
+    line-height: 1.3;
+}
+.studentStatusSidebar__stepDescription {
+    margin: 2px 0 0;
+    color: var(--ui-color-heading);
+    font-size: var(--ui-font-size-xs);
+    line-height: 1.35;
+}
+.studentStatusSidebar__stepUpdated {
+    display: block;
+    margin-top: 2px;
+    color: var(--ui-color-text-muted);
+    font-size: 11px;
+}
+.studentStatusSidebar__stepAside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+.studentStatusSidebar__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 6px;
+    border: 1px solid var(--status-pending-border);
+    border-radius: var(--ui-radius-sm);
+    background: var(--status-pending-bg);
+    color: var(--color-danger-text);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.studentStatusSidebar__step--ok .studentStatusSidebar__status {
+    border-color: var(--status-ok-border);
+    background: var(--ui-color-surface);
+    color: var(--color-success-text);
+}
+.button.studentStatusSidebar__action {
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 24px;
+    padding: 0;
+    font-size: 12px;
+}
+.studentStatusSidebar__alerts {
+    display: grid;
+    gap: var(--ui-space-2);
+    margin-top: var(--ui-space-3);
+}
+.studentStatusSidebar__alerts .inlineAlert {
+    margin: 0;
+    font-size: var(--ui-font-size-xs);
+}
+
+/* Sem espaço para duas colunas, a lateral fica fixa à direita e abre sobre o conteúdo. */
+@media (max-width: 1279px) {
+    .studentStatusSidebar {
+        --status-panel-width: min(340px, calc(100vw - var(--ui-space-4)));
+        --status-max-height: calc(100dvh - var(--ui-topbar-height) - var(--ui-space-6));
+
+        position: fixed;
+        top: calc(var(--ui-topbar-height) + var(--ui-space-3));
+        right: 0;
+        z-index: 27;
+        width: var(--status-rail-width);
+        border-right: 0;
+        border-radius: var(--ui-radius-md) 0 0 var(--ui-radius-md);
+        box-shadow: 0 4px 18px color-mix(in srgb, var(--ui-color-shadow) 65%, transparent);
+        transition: width var(--status-duration) var(--status-ease);
+    }
+    .studentStatusSidebar--expanded {
+        width: var(--status-panel-width);
+    }
+    .studentStatusSidebar__railButton {
+        min-height: 200px;
+    }
+    /* Recolhida, a faixa não herda a altura do painel para não cobrir o conteúdo. */
+    .studentStatusSidebar:not(.studentStatusSidebar--expanded) .studentStatusSidebar__panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .studentStatusSidebar {
+        --status-rail-width: 48px;
+        --status-max-height: calc(100dvh - var(--ui-topbar-height) - var(--ui-space-4));
+
+        top: calc(var(--ui-topbar-height) + var(--ui-space-2));
+    }
+    .studentStatusSidebar__railButton {
+        min-height: 0;
+    }
+    .studentStatusSidebar__railSteps {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .studentStatusSidebar,
+    .studentStatusSidebar__rail,
+    .studentStatusSidebar__panel,
+    .studentStatusSidebar__step,
+    .studentStatusSidebar--expanded .studentStatusSidebar__step {
+        transition: none;
+    }
+}

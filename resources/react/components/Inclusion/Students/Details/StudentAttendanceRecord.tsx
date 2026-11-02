@@ -1,4 +1,3 @@
-import FormSection from '@/components/Forms/FormSection/FormSection';
 import {
     pedagogicalRecordUrls,
 } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.routes';
@@ -39,7 +38,6 @@ type AttendanceKind = 'aee' | 'pedagogical';
 interface AttendancePanelProps {
     kind: AttendanceKind;
     title: string;
-    iconClass: string;
     emptyMessage: string;
     rows: AttendanceRow[];
     studentId: number;
@@ -206,7 +204,6 @@ function attendanceColumns(
 function AttendancePanel({
     kind,
     title,
-    iconClass,
     emptyMessage,
     rows,
     studentId,
@@ -241,7 +238,7 @@ function AttendancePanel({
     ) : undefined;
 
     return (
-        <FormSection id={texts.sectionId} title={title} iconClass={iconClass} variant="inline">
+        <div id={texts.sectionId}>
             <StudentRecordTable
                 ariaLabel={title}
                 columns={attendanceColumns(kind, permissions)}
@@ -272,7 +269,7 @@ function AttendancePanel({
                     />
                 }
             />
-        </FormSection>
+        </div>
     );
 }
 
@@ -301,7 +298,6 @@ export function createStudentAttendanceTabs({
                 <AttendancePanel
                     kind="aee"
                     title="Registros de Atendimentos AEE"
-                    iconClass="fa fa-calendar-check-o"
                     emptyMessage="Nenhum registro de atendimento AEE encontrado."
                     studentId={student.id}
                     permissions={permissions}
@@ -331,7 +327,6 @@ export function createStudentAttendanceTabs({
                 <AttendancePanel
                     kind="pedagogical"
                     title="Atendimentos Pedagógicos"
-                    iconClass="fa fa-comments-o"
                     emptyMessage="Nenhum atendimento pedagógico encontrado."
                     studentId={student.id}
                     permissions={permissions}

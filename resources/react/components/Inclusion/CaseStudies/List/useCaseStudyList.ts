@@ -1,5 +1,4 @@
 import { usePage } from '@inertiajs/react';
-import { useMemo } from 'react';
 import { useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 import {
@@ -8,25 +7,18 @@ import {
     emptyCaseStudyFilters,
 } from '../CaseStudies.constants';
 import { caseStudyUrls } from '../CaseStudies.routes';
-import type { CaseStudyListFilters, CaseStudyRow, CaseStudyStudent } from '../CaseStudies.types';
+import type { CaseStudyListFilters, CaseStudyRow } from '../CaseStudies.types';
 
 interface UseCaseStudyListOptions {
-    /** Aluno da listagem do prontuário; `null` na listagem geral. */
-    student: CaseStudyStudent | null;
     initialFilters: Partial<CaseStudyListFilters>;
 }
 
-/** Filtros, paginação e exclusão confirmada compartilhados pelas listagens de Estudos de Caso. */
-export function useCaseStudyList({ student, initialFilters }: UseCaseStudyListOptions) {
+/** Filtros, paginação e exclusão confirmada da listagem geral de Estudos de Caso. */
+export function useCaseStudyList({ initialFilters }: UseCaseStudyListOptions) {
     const errors = usePage().props.errors as Record<string, string | undefined>;
-    // A listagem do aluno não filtra por nome; a busca nunca é enviada nela.
-    const studentFilters = useMemo(
-        () => (student ? { ...initialFilters, search: '' } : initialFilters),
-        [student, initialFilters],
-    );
     const filters = useTableListFilters({
-        url: student ? caseStudyUrls.student(student.id) : caseStudyUrls.all,
-        initialFilters: studentFilters,
+        url: caseStudyUrls.all,
+        initialFilters,
         emptyFilters: emptyCaseStudyFilters,
         failureText: caseStudyFailureTexts.list,
     });
@@ -34,9 +26,8 @@ export function useCaseStudyList({ student, initialFilters }: UseCaseStudyListOp
         failureText: caseStudyFailureTexts.delete,
     });
 
-    /** Nome acessível da linha; na listagem do aluno, o dono vem do prontuário. */
     function rowName(caseStudy: CaseStudyRow): string {
-        return caseStudyName({ version: caseStudy.version, student: caseStudy.student ?? student });
+        return caseStudyName({ version: caseStudy.version, student: caseStudy.student });
     }
 
     function openRemoval(caseStudy: CaseStudyRow): void {

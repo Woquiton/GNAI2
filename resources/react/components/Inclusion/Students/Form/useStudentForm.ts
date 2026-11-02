@@ -22,6 +22,7 @@ function initialData(
         address: person?.address ?? '',
         registration: student?.registration ?? '',
         entry_date: student?.entry_date?.slice(0, 10) ?? '',
+        follow_up_type: student?.follow_up_type ?? '',
         photo: null,
     };
 

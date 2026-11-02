@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Queries\Students;
 
 use App\Domains\Inclusion\Domain\Enums\Gender;
+use App\Domains\Inclusion\Domain\Enums\StudentFollowUpType;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\Student;
 
@@ -37,6 +38,9 @@ final class StudentFormQuery
     private function formOptions(): array
     {
         return [
+            'followUpTypes' => collect(StudentFollowUpType::cases())->mapWithKeys(
+                static fn (StudentFollowUpType $type): array => [$type->value => $type->label()],
+            )->all(),
             'genders' => collect(Gender::cases())
                 ->mapWithKeys(
                     static fn (Gender $gender): array => [

@@ -1,4 +1,3 @@
-import FormSection from '@/components/Forms/FormSection/FormSection';
 import { loanUrls } from '@/components/Inclusion/Loans/Loans.routes';
 import type { LoanRecord } from '@/components/Inclusion/Loans/Loans.types';
 import type { TabItem } from '@/components/Navigation/Tabs/Tabs';
@@ -111,7 +110,7 @@ function StudentLoans({
     ) : undefined;
 
     return (
-        <FormSection id="loans" title="Empréstimos" iconClass="fa fa-exchange" variant="inline">
+        <div id="loans">
             <StudentRecordTable
                 ariaLabel="Empréstimos do aluno"
                 columns={loanColumns(permissions)}
@@ -135,7 +134,7 @@ function StudentLoans({
                     />
                 }
             />
-        </FormSection>
+        </div>
     );
 }
 

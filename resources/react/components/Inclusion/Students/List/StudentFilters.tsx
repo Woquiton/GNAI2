@@ -10,7 +10,7 @@ import type { StudentFilters as StudentFilterValues, StudentIndexProps } from '.
 
 type StudentFiltersProps = Pick<
     StudentIndexProps,
-    'courses' | 'deficiencies' | 'studentStatuses'
+    'courses' | 'deficiencies' | 'studentStatuses' | 'followUpTypes'
 > & {
     values: StudentFilterValues;
     errors: Record<string, string | undefined>;
@@ -19,11 +19,12 @@ type StudentFiltersProps = Pick<
     onSubmit: () => void;
 };
 
-/** Nome, status e curso sempre visíveis; telefone, e-mail e perfil em "Mais filtros". */
+/** Nome, situação e curso visíveis; acompanhamento e contatos em "Mais filtros". */
 export default function StudentFilters({
     courses,
     deficiencies,
     studentStatuses,
+    followUpTypes,
     values,
     errors,
     onUpdate,
@@ -44,6 +45,19 @@ export default function StudentFilters({
     ];
     const moreFilters = (
         <>
+            <SelectInputField
+                id="filter-follow_up_type"
+                name="follow_up_type"
+                label="Tipo de acompanhamento"
+                placeholder="Tipo de acompanhamento (Todos)"
+                options={[
+                    ...optionsFromRecord(followUpTypes),
+                    { value: 'not_informed', label: 'Não informado' },
+                ]}
+                value={values.follow_up_type}
+                error={errors.follow_up_type}
+                onChange={(value) => onUpdate('follow_up_type', value)}
+            />
             <TextInputField
                 id="filter-phone"
                 name="phone"
@@ -97,8 +111,8 @@ export default function StudentFilters({
             <SelectInputField
                 id="filter-status"
                 name="status"
-                label="Status"
-                placeholder="Status (Todos)"
+                label="Situação"
+                placeholder="Situação (Todas)"
                 options={statusOptions}
                 value={values.status}
                 error={errors.status}

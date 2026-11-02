@@ -373,7 +373,6 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::put('/professores/{teacher}/disciplinas', [TeacherController::class, 'updateDisciplines'])->name('teachers.disciplines.update')->middleware('can:teacher.update');
 
         /* 6. STUDENT DEFICIENCIES */
-        Route::get('alunos/{student}/deficiencias', [StudentDeficiencyController::class, 'index'])->name('student-deficiencies.index')->middleware('can:student-deficiency.view');
         Route::get('alunos/{student}/deficiencias/criar', [StudentDeficiencyController::class, 'create'])->name('student-deficiencies.create')->middleware('can:student-deficiency.create');
         Route::post('alunos/{student}/deficiencias', [StudentDeficiencyController::class, 'store'])->name('student-deficiencies.store')->middleware('can:student-deficiency.create');
         Route::get('alunos/{student}/deficiencias/{student_deficiency}', [StudentDeficiencyController::class, 'show'])->name('student-deficiencies.show')->middleware('can:student-deficiency.view');
@@ -480,12 +479,6 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::get('estudos-de-caso/{caseStudy}/pdf', [CaseStudyController::class, 'pdf'])
             ->name('case-study.pdf')
             ->middleware('can:case-study.view');
-        Route::get('alunos/{student}/estudos-de-caso', [CaseStudyController::class, 'index'])
-            ->name('students.case-studies.index')
-            ->middleware('can:case-study.view');
-        Route::get('alunos/{student}/estudos-de-caso/historico', [CaseStudyController::class, 'studentHistory'])
-            ->name('students.case-studies.history')
-            ->middleware('can:case-study.view');
 
         /* 8.3 PAEE */
         Route::get('paees', [PaeeController::class, 'all'])
@@ -514,12 +507,6 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
             ->middleware('can:paee.update');
         Route::get('paees/{paee}/pdf', [PaeeController::class, 'pdf'])
             ->name('paee.pdf')
-            ->middleware('can:paee.view');
-        Route::get('alunos/{student}/paees', [PaeeController::class, 'index'])
-            ->name('students.paees.index')
-            ->middleware('can:paee.view');
-        Route::get('alunos/{student}/paees/historico', [PaeeController::class, 'studentHistory'])
-            ->name('students.paees.history')
             ->middleware('can:paee.view');
 
         /* 9. STUDENT COURSES */
@@ -567,7 +554,6 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::get('/peis/{pei}/disciplinas-do-professor', [PeiController::class, 'teacherDisciplines'])->name('teacher-disciplines');
 
         /* 13. STUDENT DOCUMENTS */
-        Route::get('/alunos/{student}/documentos', [StudentDocumentController::class, 'index'])->name('student-documents.index')->middleware('can:student-document.view');
         Route::get('/alunos/{student}/documentos/criar', [StudentDocumentController::class, 'create'])->name('student-documents.create')->middleware('can:student-document.create');
         Route::post('/alunos/{student}/documentos', [StudentDocumentController::class, 'store'])->name('student-documents.store')->middleware('can:student-document.create');
         Route::get('/documentos-do-aluno/{student_document}/editar', [StudentDocumentController::class, 'edit'])->name('student-documents.edit')->middleware('can:student-document.update');

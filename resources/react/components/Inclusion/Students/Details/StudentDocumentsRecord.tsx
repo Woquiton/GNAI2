@@ -1,4 +1,3 @@
-import FormSection from '@/components/Forms/FormSection/FormSection';
 import { peiUrls } from '@/components/Inclusion/Peis/Peis.routes';
 import {
     studentDocumentFileUrls,
@@ -234,12 +233,7 @@ function StudentPeis({
     ) : undefined;
 
     return (
-        <FormSection
-            id="peis"
-            title="PEIs (Plano Educacional Individualizado)"
-            iconClass="fa fa-map-o"
-            variant="inline"
-        >
+        <div id="peis">
             <StudentRecordTable
                 ariaLabel="Planos Educacionais Individualizados do aluno"
                 columns={peiColumns(permissions)}
@@ -270,7 +264,7 @@ function StudentPeis({
                     />
                 }
             />
-        </FormSection>
+        </div>
     );
 }
 
@@ -301,12 +295,7 @@ function StudentDocuments({
     ) : undefined;
 
     return (
-        <FormSection
-            id="documents"
-            title="Documentos do Aluno"
-            iconClass="fa fa-folder-open-o"
-            variant="inline"
-        >
+        <div id="documents">
             <StudentRecordTable
                 ariaLabel="Documentos do aluno"
                 columns={documentColumns(permissions)}
@@ -330,7 +319,7 @@ function StudentDocuments({
                     />
                 }
             />
-        </FormSection>
+        </div>
     );
 }
 

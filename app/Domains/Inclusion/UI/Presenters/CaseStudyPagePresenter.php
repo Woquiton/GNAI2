@@ -95,22 +95,6 @@ final class CaseStudyPagePresenter
     }
 
     /**
-     * @param  Collection<int, CaseStudy>  $caseStudies
-     * @return array<string, mixed>
-     */
-    public function history(Student $student, Collection $caseStudies, Request $request): array
-    {
-        return [
-            'student' => $this->student($student),
-            'caseStudies' => $caseStudies
-                ->map(fn (CaseStudy $caseStudy): array => $this->row($caseStudy))
-                ->values()
-                ->all(),
-            'can' => $this->listPermissions($request),
-        ];
-    }
-
-    /**
      * @return array<string, mixed>
      */
     public function form(Student $student, ?CaseStudy $caseStudy = null): array

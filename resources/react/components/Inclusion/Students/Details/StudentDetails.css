@@ -21,18 +21,10 @@
     flex-wrap: wrap;
     gap: var(--ui-space-2) var(--ui-space-6);
 }
-.studentDetails__subheading {
-    margin: 0 0 var(--ui-space-3);
-    color: var(--ui-color-heading);
-    font: 600 1rem/1.4 var(--ui-font-ui);
-}
 .studentDetails__recordStack {
     display: grid;
     min-width: 0;
     gap: var(--ui-space-5);
-}
-.studentDetails__recordDetailsCard .formSection {
-    margin-bottom: 0;
 }
 .studentDetails__secondary {
     display: block;
@@ -42,19 +34,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-.studentDetails__recordFooter {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ui-space-2);
-    margin-top: var(--ui-space-3);
-    padding-top: var(--ui-space-3);
-    border-top: 1px solid var(--ui-color-card-border);
-}
-.studentDetails__recordFooter small {
-    color: var(--ui-color-text-muted);
 }
 .studentDetails__recordFilters {
     margin-bottom: var(--ui-space-5);

@@ -129,8 +129,14 @@ $relationshipMap = [
                 <strong>Gênero:</strong> {{ $student->person->gender_label }}
             </td>
             <td class="pdf-cell" colspan="2">
-                <strong>Status:</strong>
+                <strong>Situação:</strong>
                 {{ $student->status?->label() ?? '---' }}
+            </td>
+        </tr>
+        <tr>
+            <td class="pdf-cell" colspan="4">
+                <strong>Tipo de acompanhamento:</strong>
+                {{ $student->follow_up_type?->label() ?? 'Não informado' }}
             </td>
         </tr>
         <tr>

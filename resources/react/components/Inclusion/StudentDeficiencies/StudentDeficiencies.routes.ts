@@ -1,8 +1,4 @@
-import {
-    studentRecordUrl,
-    studentsBase,
-    studentUrl,
-} from '@/components/Inclusion/Students/Students.routes';
+import { studentRecordUrl, studentsBase } from '@/components/Inclusion/Students/Students.routes';
 import { resourceBreadcrumb } from '@/components/Navigation/PageBreadcrumb/resourceBreadcrumb';
 import { STUDENT_DEFICIENCY_RECORD_TAB } from './StudentDeficiencies.constants';
 
@@ -10,7 +6,6 @@ const base = (studentId: number) => `${studentsBase}/${studentId}/deficiencias`;
 
 /** Endereços das rotas `specialized-educational-support.student-deficiencies.*`. */
 export const studentDeficiencyUrls = {
-    index: base,
     create: (studentId: number) => `${base(studentId)}/criar`,
     store: base,
     show: (studentId: number, id: number) => `${base(studentId)}/${id}`,
@@ -27,19 +22,16 @@ interface StudentDeficiencyBreadcrumbOptions {
     current?: string;
 }
 
-/** Home › Alunos › Aluno › Perfis de Atendimento (aba do prontuário) › [Perfil] › [Etapa]. */
+/** Home › Alunos › Aluno › [Perfil] › Etapa. O aluno leva à aba de perfis do prontuário. */
 export function studentDeficiencyBreadcrumb({
     student,
     studentDeficiency,
     current,
 }: StudentDeficiencyBreadcrumbOptions) {
     return resourceBreadcrumb({
-        parents: [
-            { label: 'Alunos', href: studentsBase },
-            { label: student.person.name, href: studentUrl(student.id) },
-        ],
+        parents: [{ label: 'Alunos', href: studentsBase }],
         collection: {
-            label: 'Perfis de Atendimento',
+            label: student.person.name,
             href: studentDeficiencyUrls.record(student.id),
         },
         record: studentDeficiency?.deficiency
