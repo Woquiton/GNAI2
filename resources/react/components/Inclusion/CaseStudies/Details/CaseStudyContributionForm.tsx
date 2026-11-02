@@ -3,6 +3,7 @@ import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/For
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import Button from '@/components/UI/Button/Button';
+import '@/components/Forms/RemovableField/RemovableField.css';
 import { caseStudyFailureTexts } from '../CaseStudies.constants';
 import { caseStudyUrls } from '../CaseStudies.routes';
 import './CaseStudyContributionForm.css';
@@ -61,8 +62,9 @@ export default function CaseStudyContributionForm({
                 <div className="caseStudyContributionForm__submit">
                     <Button
                         type="submit"
-                        tone="save"
-                        leftIconClass="fa fa-plus"
+                        tone="white"
+                        className="removableField__add"
+                        labelIconClass={form.processing ? 'fa fa-spinner fa-spin' : 'fa fa-plus'}
                         label={submitLabel}
                         title="Adicionar contribuição"
                         aria-label="Adicionar contribuição"

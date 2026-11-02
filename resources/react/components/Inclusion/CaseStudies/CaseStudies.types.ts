@@ -130,7 +130,9 @@ export interface CaseStudyDetail extends CaseStudyRow {
     }>;
     contributions: Array<{
         id: number;
+        author_id: number | null;
         author_name: string | null;
+        author_photo_url: string | null;
         role: string;
         content: string;
         created_at: string | null;

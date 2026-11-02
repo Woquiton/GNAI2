@@ -211,7 +211,9 @@ final class CaseStudyPagePresenter
                     ->sortBy('created_at')
                     ->map(static fn (CaseStudyContribution $contribution): array => [
                         'id' => (int) $contribution->getKey(),
+                        'author_id' => $contribution->author_id === null ? null : (int) $contribution->author_id,
                         'author_name' => $contribution->author?->name,
+                        'author_photo_url' => $contribution->author?->photo_url,
                         'role' => (string) $contribution->role,
                         'content' => (string) $contribution->content,
                         'created_at' => $contribution->created_at?->toIso8601String(),

@@ -1,0 +1,177 @@
+/* Chat do Ubold (Dashboard 2) com os tokens do Gnai. */
+.chatConversation {
+    --chat-conversation-height: 320px;
+    --chat-conversation-bubble: var(--ui-color-surface-hover-alt);
+
+    min-width: 0;
+    container: chatConversation / inline-size;
+}
+
+.chatConversation__pane {
+    min-width: 0;
+    position: relative;
+}
+
+.chatConversation__scroll {
+    height: var(--chat-conversation-height);
+    padding: var(--ui-space-1) var(--ui-space-3);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+}
+
+.chatConversation__scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.chatConversation__list {
+    display: grid;
+    gap: var(--ui-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.chatConversation__message {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ui-space-3);
+    min-width: 0;
+}
+
+.chatConversation__message--own {
+    flex-direction: row-reverse;
+}
+
+.chatConversation__avatar {
+    flex: 0 0 36px;
+}
+
+.chatConversation__avatar img {
+    display: block;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chatConversation__bubble {
+    position: relative;
+    min-width: 0;
+    max-width: 85%;
+    padding: var(--ui-space-3);
+    border-radius: 3px;
+    background: var(--chat-conversation-bubble);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    color: var(--ui-color-legacy-text);
+    font-size: var(--ui-font-size-sm);
+    line-height: 1.55;
+}
+
+.chatConversation__bubble::after {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    margin-left: -1px;
+    border: 8px solid transparent;
+    border-top-color: var(--chat-conversation-bubble);
+    border-right-color: var(--chat-conversation-bubble);
+    content: '';
+    pointer-events: none;
+}
+
+.chatConversation__message--own .chatConversation__bubble::after {
+    right: auto;
+    left: 100%;
+    margin-right: -1px;
+    margin-left: 0;
+    border-right-color: transparent;
+    border-left-color: var(--chat-conversation-bubble);
+}
+
+.chatConversation__bubble p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.chatConversation__author strong {
+    color: var(--ui-color-heading);
+}
+
+.chatConversation__meta,
+.chatConversation__time {
+    color: var(--ui-color-text-muted);
+}
+
+.chatConversation__text {
+    padding-top: 3px;
+    white-space: pre-line;
+}
+
+.chatConversation__time {
+    margin-top: var(--ui-space-1) !important;
+    font-size: 12px;
+}
+
+.chatConversation__message--own .chatConversation__time {
+    text-align: right;
+}
+
+/* Conversa vazia: a área mantém a altura e o aviso fica no centro dela. */
+.chatConversation__empty {
+    display: grid;
+    height: 100%;
+    margin: 0;
+    place-items: center;
+    color: var(--ui-color-text-muted);
+    text-align: center;
+}
+
+.chatConversation__scrollbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: var(--chat-conversation-height);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.chatConversation__scrollbar--visible {
+    opacity: 1;
+}
+
+.chatConversation__thumb {
+    width: 6px;
+    margin-left: auto;
+    border: 1px solid var(--ui-color-surface);
+    border-radius: 5px;
+    background-color: var(--ui-color-legacy-muted);
+}
+
+.chatConversation__composer {
+    min-width: 0;
+    margin-top: var(--ui-space-4);
+}
+
+/* Com espaço, o envio fica à direita da conversa, na mesma linha. */
+@container chatConversation (min-width: 640px) {
+    .chatConversation__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr) minmax(260px, 2fr);
+        align-items: start;
+        gap: var(--ui-space-5);
+    }
+
+    .chatConversation__composer {
+        margin-top: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chatConversation__scrollbar {
+        transition: none;
+    }
+}
