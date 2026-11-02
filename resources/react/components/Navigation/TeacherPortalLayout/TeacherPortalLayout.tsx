@@ -6,7 +6,6 @@ import SkipLinks, { type SkipLinkItem } from '@/components/Navigation/SkipLinks/
 import Button from '@/components/UI/Button/Button';
 import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
 import PageErrorBoundary from '@/components/UI/PageErrorBoundary/PageErrorBoundary';
-import { useHighContrast } from '@/hooks/useHighContrast';
 import './TeacherPortalLayout.css';
 
 const HOME_HREF = '/professor';
@@ -37,8 +36,6 @@ export default function TeacherPortalLayout({
 }): React.JSX.Element {
     const { props, url } = usePage<TeacherPortalLayoutProps>();
     const { auth, impersonating, impersonationReadOnly } = props;
-    const contrast = useHighContrast();
-    const contrastTitle = contrast.enabled ? 'Desativar alto contraste' : 'Ativar alto contraste';
 
     // A falha de renderização troca o portal inteiro pela tela de erro avulsa.
     return (
@@ -77,16 +74,6 @@ export default function TeacherPortalLayout({
                                 onClick={() => router.post('/autenticacao/acessar-como/encerrar')}
                             />
                         ) : null}
-                        <Button
-                            tone="white"
-                            size="sm"
-                            leftIconClass="fa fa-adjust"
-                            label="Contraste"
-                            title={contrastTitle}
-                            aria-label="Alto contraste"
-                            aria-pressed={contrast.enabled}
-                            onClick={contrast.toggle}
-                        />
                         <Button
                             tone="white"
                             size="sm"

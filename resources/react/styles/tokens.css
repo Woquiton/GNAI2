@@ -65,11 +65,6 @@
     --ui-focus-keyboard-halo-size: 4px;
     --ui-focus-keyboard-halo-strength: 30%;
 
-    /* Alto contraste (modelo gov.br): fundo preto, texto branco, links e foco amarelos */
-    --ui-contrast-bg: #000000;
-    --ui-contrast-text: #ffffff;
-    --ui-contrast-link: #ffff00;
-
     /* Barra de atalhos de acessibilidade */
     --ui-skip-links-bg: var(--ui-color-gnai-primary);
     --ui-skip-links-text: #ffffff;

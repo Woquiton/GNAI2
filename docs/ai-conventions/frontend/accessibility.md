@@ -65,15 +65,6 @@ Regras de uso:
 - **Interruptor:** `Forms/ToggleControl` expõe `role="switch"` e alterna com Espaço e Enter.
 - **Radio:** mantém o padrão nativo. As setas mudam a opção do grupo e Espaço marca a opção focada.
 
-## Alto contraste
-
-`UI/ContrastToggle`, na topbar, e o botão "Contraste" do Portal do Professor alternam `<html data-contrast="high">`. A preferência fica salva no navegador (`gnai.highContrast`) e `main.tsx` a aplica antes da primeira renderização, inclusive no login.
-
-- **Aparência, no modelo do gov.br:** fundo preto, texto branco, bordas brancas, links e foco amarelos, imagens em tons de cinza.
-- **Indicadores:** o item atual (`aria-current`) é sublinhado, e botões com `aria-pressed="true"` ficam com fundo amarelo.
-- **Marcadores visuais:** marcadores desenhados só com cor de fundo, como o ponto do radio e o botão do interruptor, recebem regra própria em `styles/accessibility.css`. Ao criar um controle desse tipo, confira se ele continua perceptível nesse modo.
-- Use `hooks/useHighContrast` para novos pontos de alternância. Não crie outro armazenamento nem outro tema escuro.
-
 ## Foco não encoberto
 
 `styles/accessibility.css` aplica `scroll-padding` ao documento quando há topbar fixa (`AppLayout` e Portal do Professor) ou rodapé fixo de ações (`Forms/FormActions`). Assim, o foco pelo Tab e os alvos dos atalhos não ficam escondidos atrás dessas barras. Novas barras fixas devem entrar nessa regra.
@@ -90,4 +81,3 @@ Com `prefers-reduced-motion: reduce` ativo no sistema, animações, transições
 - **Percepção:** estados não dependem só de cor. O contraste mínimo é 4,5:1 para texto e 3:1 para ícones, bordas de controles e anel de foco.
 - **Estrutura:** há um único `<main>` por tela (`BusinessPage`), títulos em ordem e imagens informativas com `alt`; as decorativas usam `alt=""`.
 - **Foco:** o anel de teclado aparece em todos os controles novos, inclusive em fundos escuros e áreas com rolagem.
-- **Contraste:** o conteúdo continua legível e operável com o alto contraste ligado.

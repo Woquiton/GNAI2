@@ -8,7 +8,6 @@ import SidebarPrimary from '@/components/Navigation/SidebarPrimary/SidebarPrimar
 import SkipLinks, { type SkipLinkItem } from '@/components/Navigation/SkipLinks/SkipLinks';
 import TopBarPrimary from '@/components/Navigation/TopBarPrimary/TopBarPrimary';
 import type { ProfileLink } from '@/components/Navigation/TopBarPrimary/TopBarPrimary.data';
-import ContrastToggle from '@/components/UI/ContrastToggle/ContrastToggle';
 import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
 import PageErrorBoundary from '@/components/UI/PageErrorBoundary/PageErrorBoundary';
 import PageScrollbar from '@/components/UI/PageScrollbar/PageScrollbar';
@@ -84,17 +83,12 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
                     notificationsHref="/notificacoes"
                     showSettings={false}
                     actionsContent={
-                        <>
-                            {impersonating ? (
-                                <ImpersonationIndicator
-                                    name={auth.user.name}
-                                    readOnly={impersonationReadOnly}
-                                />
-                            ) : null}
-                            <li className="topbar__navItem">
-                                <ContrastToggle className="topbar__navLink" />
-                            </li>
-                        </>
+                        impersonating ? (
+                            <ImpersonationIndicator
+                                name={auth.user.name}
+                                readOnly={impersonationReadOnly}
+                            />
+                        ) : null
                     }
                     leadingContent={
                         <InstitutionBrand
