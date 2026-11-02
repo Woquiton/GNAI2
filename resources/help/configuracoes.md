@@ -1,13 +1,13 @@
 ---
 titulo: Configurações
-resumo: Como configurar o envio de e-mails do Gnai, testar a conta de envio definir os horários e a retenção dos backups automáticos e configurar os domínios aceitos no acesso de professores.
+resumo: Como configurar o envio de e-mails do Gnai, testar a conta de envio definir os horários e a retenção dos backups automáticos e configurar os domínios aceitos no acesso de professores e personalizar o cabeçalho dos PDFs.
 categoria: Sistema
 palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, senha de app, senha de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos
 ordem: 10
 permissoes: setting.view
 ---
 
-Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **Backups** e **Acesso dos professores**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
+Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **Backups**, **Acesso dos professores** e **PDFs**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
 
 ## Para que serve a configuração de e-mail?
 
@@ -75,3 +75,16 @@ Sem configuração salva, o Gnai faz um backup por dia às 12:05 e mantém os 30
 Com a lista vazia, qualquer domínio é aceito, desde que o e-mail esteja cadastrado como professor. Para liberar todos os domínios, remova todas as linhas e salve. Uma linha adicionada precisa ser preenchida ou removida.
 
 A restrição vale para novos pedidos de link de acesso do professor, sem alterar o login com senha ou a recuperação de senha. A tela de acesso mostra os domínios configurados abaixo do campo de e-mail. Cada domínio é comparado por inteiro: `escola.edu.br` não inclui `campus.escola.edu.br`; cadastre cada um separadamente. Não são aceitos curingas como `*.edu.br`.
+
+## Personalizar o cabeçalho dos PDFs
+
+1. Acesse **Sistema → Configurações → PDFs**.
+2. Em **Identificação**, selecione o **Logotipo da instituição** e preencha **Nome da instituição** (obrigatório).
+3. Se desejar, preencha **Núcleo ou setor emissor** e **Texto complementar**, com endereço, CNPJ, telefone ou outras informações. As quebras de linha são mantidas.
+4. Confira a **Prévia do cabeçalho** e clique em **Salvar**.
+
+O logotipo deve estar em JPG ou PNG, com até 4 MB e até 4000 pixels de largura e altura. **Remover** deixa o cabeçalho sem logotipo após salvar; selecionar outra imagem substitui a anterior.
+
+O modelo coloca o logotipo à esquerda e os textos à direita, seguido pelo título específico de cada documento. Vale para os próximos PDFs de alunos, PEIs, atendimentos, publicações, itens, empréstimos, barreiras, fila de espera e relatórios. Arquivos já baixados permanecem como foram emitidos.
+
+Enquanto a configuração não for salva, os documentos mantêm o cabeçalho atual do Gnai. A prévia representa o cabeçalho; a paginação final varia conforme o documento e a quantidade de texto informada.

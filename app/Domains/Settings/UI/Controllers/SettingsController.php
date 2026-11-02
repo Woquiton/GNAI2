@@ -15,6 +15,8 @@ use App\Domains\Settings\Application\Data\UpdateBackupSettingsData;
 use App\Domains\Settings\Application\Data\UpdateMailSettingsData;
 use App\Domains\Settings\Application\Queries\SettingsFormQuery;
 use App\Domains\Settings\Domain\Exceptions\MailTestFailed;
+use App\Domains\Settings\Application\Actions\UpdatePdfHeaderSettingsAction;
+use App\Domains\Settings\Application\Data\UpdatePdfHeaderSettingsData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -98,5 +100,24 @@ final class SettingsController
         return redirect()
             ->route('settings.teacher-access.edit')
             ->with('success', 'Configurações de acesso dos professores salvas com sucesso.');
+    }
+
+    public function editPdf(
+        SettingsFormQuery $form,
+        Request $request,
+    ): InertiaResponse {
+        return Inertia::render('Settings/Pdf', [
+            ...$form->forPdf(),
+            'canUpdate' => $request->user()?->can('setting.update') === true,
+        ]);
+    }
+
+    public function updatePdf(UpdatePdfHeaderSettingsData $data, UpdatePdfHeaderSettingsAction $action): RedirectResponse
+    {
+        $action->execute($data);
+
+        return redirect()
+            ->route('settings.pdf.edit')
+            ->with('success', 'Cabeçalho dos PDFs salvo com sucesso.');
     }
 }

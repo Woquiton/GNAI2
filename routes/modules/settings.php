@@ -28,3 +28,9 @@ Route::get('/acesso-dos-professores', [SettingsController::class, 'editTeacherAc
 
 Route::put('/acesso-dos-professores', [SettingsController::class, 'updateTeacherAccess'])
     ->name('teacher-access.update')->middleware('can:setting.update');
+
+Route::get('/pdfs', [SettingsController::class, 'editPdf'])
+    ->name('pdf.edit')->middleware('can:setting.view');
+
+Route::put('/pdfs', [SettingsController::class, 'updatePdf'])
+    ->name('pdf.update')->middleware('can:setting.update');

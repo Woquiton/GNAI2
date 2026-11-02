@@ -23,4 +23,11 @@ export const settingsCategories = [
         href: settingsUrls.teacherAccess,
         iconClass: 'fa fa-graduation-cap',
     },
+    {
+        key: 'pdf',
+        component: 'Settings/Pdf',
+        label: 'PDFs',
+        href: settingsUrls.pdf,
+        iconClass: 'fa fa-file-pdf-o',
+    },
 ] as const;
