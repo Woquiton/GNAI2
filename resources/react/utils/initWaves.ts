@@ -1,5 +1,8 @@
 let wavesInitialized = false;
 
+/** Eventos já tratados, para que um contêiner ligado à parte e o body não criem duas ondas. */
+const handledEvents = new WeakSet<Event>();
+
 function isWindowObject(obj: Window | null): boolean {
     return obj !== null && obj === obj.window;
 }
@@ -180,6 +183,11 @@ function getWavesEffectElement(event: MouseEvent | TouchEvent): HTMLElement | nu
 }
 
 function showEffect(event: MouseEvent | TouchEvent): void {
+    if (handledEvents.has(event)) {
+        return;
+    }
+
+    handledEvents.add(event);
     const element = getWavesEffectElement(event);
 
     if (!element) {
@@ -208,4 +216,25 @@ export function initWaves(): void {
 
     document.body.addEventListener('mousedown', showEffect as EventListener, false);
     wavesInitialized = true;
+}
+
+/**
+ * Liga o efeito num contêiner cujos cliques não chegam ao body, como os popups do Leaflet, que
+ * interrompem a propagação do `mousedown`. Devolve a função que desliga.
+ */
+export function bindWaves(container: HTMLElement): () => void {
+    const listener = showEffect as EventListener;
+    const touch = 'ontouchstart' in window;
+
+    container.addEventListener('mousedown', listener, false);
+    if (touch) {
+        container.addEventListener('touchstart', listener, false);
+    }
+
+    return () => {
+        container.removeEventListener('mousedown', listener, false);
+        if (touch) {
+            container.removeEventListener('touchstart', listener, false);
+        }
+    };
 }

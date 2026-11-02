@@ -1,8 +1,9 @@
-/* Popover do Ubold aplicado ao contêiner de posicionamento do Leaflet. */
+/* Caixa no estilo do custombox Ubold (como o ConfirmActionModal), aplicada ao popup do Leaflet. */
 .barrierPopup .leaflet-popup-content-wrapper {
-    padding: 1px;
+    padding: 0;
+    overflow: hidden;
     border: 0;
-    border-radius: 3px;
+    border-radius: 4px;
     background: var(--ui-color-surface);
     color: var(--ui-color-legacy-text);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -10,35 +11,42 @@
 .barrierPopup .leaflet-popup-content {
     margin: 0;
     width: 240px !important;
-    font: 400 14px/1.42857143 var(--ui-font-body);
+    font: 400 14px/20px var(--ui-font-body);
     overflow-wrap: anywhere;
 }
 .barrierPopup__title {
     margin: 0;
-    padding: 8px 30px 8px 14px;
-    border-bottom: 1px solid var(--ui-color-border-control);
-    color: var(--ui-color-custom);
-    font: 600 14px/1.5 var(--ui-font-ui);
+    padding: 12px 40px 12px 16px;
+    background-color: var(--ui-color-text);
+    color: #ffffff;
+    font: 500 16px/22px var(--ui-font-ui);
 }
 .barrierPopup__content {
-    padding: 9px 14px;
+    padding: 16px;
+    text-align: center;
 }
 .barrierPopup .barrierPopup__category {
     margin: 0 0 10px;
 }
 .barrierPopup__actions {
-    margin-top: 14px;
+    margin-top: 16px;
 }
 .barrierPopup .leaflet-popup-tip {
     background: var(--ui-color-surface);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
+/* Fechar claro sobre o cabeçalho grafite, mais opaco que o do custombox para manter o contraste. */
 .barrierPopup a.leaflet-popup-close-button {
-    top: 7px;
-    right: 5px;
-    color: var(--ui-color-legacy-muted);
-    font-size: 20px;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    color: #eeeeee;
+    font: 700 21px/22px var(--ui-font-body);
+    opacity: 0.7;
 }
-.barrierPopup a.leaflet-popup-close-button:hover {
-    color: var(--ui-color-heading);
+.barrierPopup a.leaflet-popup-close-button:hover,
+.barrierPopup a.leaflet-popup-close-button:focus-visible {
+    color: #ffffff;
+    opacity: 1;
 }

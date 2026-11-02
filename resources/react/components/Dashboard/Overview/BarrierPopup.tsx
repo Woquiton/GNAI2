@@ -1,10 +1,17 @@
+import { useEffect, useRef } from 'react';
 import { router } from '@inertiajs/react';
 import Button from '@/components/UI/Button/Button';
 import Label from '@/components/UI/Label/Label';
+import { bindWaves } from '@/utils/initWaves';
 import type { Barrier } from './Overview.types';
 import './BarrierPopup.css';
 
 export default function BarrierPopup({ barrier }: { barrier: Barrier }): React.JSX.Element {
+    const ref = useRef<HTMLElement>(null);
+
+    // O Leaflet não deixa o clique do popup chegar ao body, onde o efeito waves é escutado.
+    useEffect(() => (ref.current ? bindWaves(ref.current) : undefined), []);
+
     const tones = {
         secondary: 'default',
         info: 'info',
@@ -14,7 +21,7 @@ export default function BarrierPopup({ barrier }: { barrier: Barrier }): React.J
     } as const;
     const tone = tones[barrier.color as keyof typeof tones] ?? 'default';
     return (
-        <section aria-label={`Barreira: ${barrier.name}`}>
+        <section ref={ref} aria-label={`Barreira: ${barrier.name}`}>
             <h3 className="barrierPopup__title">{barrier.name}</h3>
             <div className="barrierPopup__content">
                 <p className="barrierPopup__category">{barrier.category_name}</p>
@@ -23,7 +30,10 @@ export default function BarrierPopup({ barrier }: { barrier: Barrier }): React.J
                     <Button
                         href={barrier.url}
                         size="sm"
-                        tone="default"
+                        tone="dark-blue"
+                        leftIconClass="fa fa-eye"
+                        label="Visualizar"
+                        title={`Visualizar barreira ${barrier.name}`}
                         onClick={(event) => {
                             if (
                                 event.button !== 0 ||
@@ -38,9 +48,7 @@ export default function BarrierPopup({ barrier }: { barrier: Barrier }): React.J
                             event.preventDefault();
                             router.visit(barrier.url);
                         }}
-                    >
-                        Ver detalhes
-                    </Button>
+                    />
                 </div>
             </div>
         </section>

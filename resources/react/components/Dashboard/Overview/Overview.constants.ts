@@ -7,7 +7,13 @@ export const STATUS_TONE_COLORS: Record<string, string> = {
     warning: '#ffbd4a',
     danger: '#f05050',
     purple: '#7266ba',
+    inverse: '#4c5667',
 };
+
+/** Cor do tom enviado pelo backend (`dark` equivale ao `inverse` das etiquetas); sem tom, a cor padrão. */
+export function toneColor(tone: string | undefined, fallback: string): string {
+    return STATUS_TONE_COLORS[tone === 'dark' ? 'inverse' : (tone ?? '')] ?? fallback;
+}
 
 /** Paleta dos gráficos de rosca, na ordem dos exemplos Morris/C3 do Ubold. */
 export const DONUT_PALETTE = ['#5fbeaa', '#5d9cec', '#ebeff2', '#7266ba', '#fb6d9d'];

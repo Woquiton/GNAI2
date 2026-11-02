@@ -6,28 +6,24 @@ import './Overview.css';
 
 interface OverviewStatGridProps {
     stats: OverviewStat[];
-    /** Grade do radar, com quatro colunas em telas muito largas. */
-    radar?: boolean;
+    /** Todos os cards numa linha só quando a área do painel comporta; abaixo disso, três por linha. */
+    singleRow?: boolean;
 }
 
 /** Indicadores do painel; cada card é um link para a listagem filtrada correspondente. */
 export default function OverviewStatGrid({
     stats,
-    radar = false,
+    singleRow = false,
 }: OverviewStatGridProps): React.JSX.Element {
-    return (
+    const grid = (
         <div
             className={joinClassNames(
                 'gnaiDashboard__stats',
-                radar && 'gnaiDashboard__stats--radar',
+                singleRow && 'gnaiDashboard__stats--singleRow',
             )}
         >
             {stats.map((item) => (
-                <Link
-                    key={item.title}
-                    href={item.href}
-                    aria-label={`${item.title}: ${item.value}`}
-                >
+                <Link key={item.title} href={item.href} aria-label={`${item.title}: ${item.value}`}>
                     <StatWidgetCard
                         title={item.title}
                         value={String(item.value)}
@@ -38,4 +34,7 @@ export default function OverviewStatGrid({
             ))}
         </div>
     );
+
+    // A largura útil muda com a sidebar recolhida; a consulta mede a área do painel, não a janela.
+    return singleRow ? <div className="gnaiDashboard__statsArea">{grid}</div> : grid;
 }

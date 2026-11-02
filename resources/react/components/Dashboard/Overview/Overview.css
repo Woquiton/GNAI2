@@ -32,10 +32,6 @@
     margin: 0 0 24px;
     font-size: 16px;
 }
-.gnaiDashboard__heading {
-    margin: 12px 0 20px;
-    font-size: 20px;
-}
 .gnaiDashboard__total {
     border-top: 1px solid var(--ui-color-surface-alt);
     padding-top: 16px;
@@ -52,27 +48,80 @@
 }
 .gnaiDashboard__map {
     height: 360px;
+    /* Mesmo contorno do mapa dos formulários (GeoMap). */
+    border: 1px solid var(--ui-color-card-border);
     border-radius: 4px;
     z-index: 0;
 }
-.gnaiDashboard__filters {
+.gnaiDashboard__mapFrame {
+    position: relative;
+}
+/* Acima dos controles do Leaflet (z-index 1000), que ficam no contexto do próprio mapa. */
+.gnaiDashboard__mapNotice {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+.gnaiDashboard__mapSheet {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px 20px;
-    border: 0;
-    padding: 16px 0 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    /* Contorno do card: o mapa bloqueado não parece um vão no painel. */
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(3px);
+    pointer-events: auto;
+    text-align: center;
+    animation: gnaiDashboardSheetIn 0.25s ease-out;
 }
-.gnaiDashboard__filters legend {
-    font-size: 14px;
-    padding-top: 16px;
+.gnaiDashboard__mapSheet .sweetAlertErrorIcon {
+    margin: 0 auto 16px;
 }
-.gnaiDashboard__filters .checkbox-inline {
+.gnaiDashboard__mapNoticeTitle {
+    margin: 0 0 6px;
+    color: var(--ui-color-danger);
+    font: 600 22px/1.3 var(--ui-font-ui);
+}
+.gnaiDashboard__mapNoticeText {
     margin: 0;
+    color: var(--ui-color-legacy-text);
+    font-size: 15px;
 }
-@media (min-width: 1400px) {
-    .gnaiDashboard__stats--radar {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+.gnaiDashboard__mapSheet--leaving {
+    pointer-events: none;
+    animation: gnaiDashboardSheetOut 0.5s ease-in forwards;
+}
+@keyframes gnaiDashboardSheetOut {
+    0%,
+    40% {
+        opacity: 1;
     }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes gnaiDashboardSheetIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.gnaiDashboard__filters {
+    margin: 16px 0 0;
+}
+/* Seis opções curtas: colunas mais estreitas que as dos formulários. */
+.gnaiDashboard__filters .choiceGroup .checkbox {
+    min-width: 120px;
+}
+.gnaiDashboard__radarMetrics {
+    margin-bottom: 20px;
 }
 @media (max-width: 1100px) {
     .gnaiDashboard__stats {
@@ -88,6 +137,36 @@
 
 .gnaiDashboard__charts > * {
     min-width: 0;
+}
+
+/* Seis indicadores numa linha só quando a área comporta: card mais compacto, mesmo desenho. */
+.gnaiDashboard__statsArea {
+    container-type: inline-size;
+}
+@container (min-width: 1240px) {
+    .gnaiDashboard__stats--singleRow {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 16px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard {
+        padding: 16px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__icon {
+        width: 56px;
+        height: 56px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__icon i {
+        font-size: 24px;
+        line-height: 56px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__value {
+        margin: 2px 0 6px;
+    }
+    .gnaiDashboard__stats--singleRow .statWidgetCard__title {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.4;
+    }
 }
 
 .gnaiDashboard__feed {

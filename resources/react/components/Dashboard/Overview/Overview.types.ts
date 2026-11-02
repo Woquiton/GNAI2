@@ -3,6 +3,13 @@ export interface Metric {
     count: number;
     color?: string;
 }
+/** Agendamentos de um mês (`AAAA-MM`) por status. */
+export interface SessionMonth {
+    month: string;
+    completed: number;
+    cancelled: number;
+    scheduled: number;
+}
 export interface Barrier {
     id: number;
     name: string;
@@ -40,6 +47,7 @@ export interface OverviewProps {
         totalOverduePendencies: number;
         pendenciesByPriority: Metric[];
         sessionsByStatus: Metric[];
+        sessionsByMonth: SessionMonth[];
     };
     inclusiveRadar: {
         totalAt: number;

@@ -2,13 +2,14 @@ import RevenueSummaryCard from '@/components/UI/RevenueSummaryCard/RevenueSummar
 import DistributionChart from './DistributionChart';
 import type { OverviewProps } from './Overview.types';
 import { finishedPeisPercentage } from './Overview.utils';
+import SessionsTimelineChart from './SessionsTimelineChart';
 import './Overview.css';
 
 interface SupportOverviewChartsProps {
     support: OverviewProps['specializedEducationalSupport'];
 }
 
-/** Gráficos do AEE: status dos PEIs, pendências por prioridade e agendamentos por status. */
+/** Gráficos do AEE: status dos PEIs, pendências por prioridade e agendamentos por status e por mês. */
 export default function SupportOverviewCharts({
     support,
 }: SupportOverviewChartsProps): React.JSX.Element {
@@ -42,11 +43,14 @@ export default function SupportOverviewCharts({
                     variant="rotated"
                 />
             </div>
-            <DistributionChart
-                title="Agendamentos por status"
-                items={support.sessionsByStatus}
-                variant="donut"
-            />
+            <div className="gnaiDashboard__charts">
+                <DistributionChart
+                    title="Agendamentos por status"
+                    items={support.sessionsByStatus}
+                    variant="donut"
+                />
+                <SessionsTimelineChart months={support.sessionsByMonth} />
+            </div>
         </>
     );
 }

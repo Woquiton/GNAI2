@@ -25,7 +25,7 @@ export default function Overview({
             subtitle={overviewWelcome(auth.user)}
             breadcrumbItems={dashboardBreadcrumb()}
         >
-            <OverviewStatGrid stats={supportStats(specializedEducationalSupport)} />
+            <OverviewStatGrid stats={supportStats(specializedEducationalSupport)} singleRow />
             <ActivityFeed feed={activityFeed} />
             <SupportOverviewCharts support={specializedEducationalSupport} />
             <InclusiveRadarOverview radar={inclusiveRadar} />

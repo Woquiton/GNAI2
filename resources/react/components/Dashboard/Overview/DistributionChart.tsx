@@ -1,7 +1,12 @@
 import CardBox from '@/components/UI/CardBox/CardBox';
 import C3Chart from '@/components/UI/C3Chart/C3Chart';
 import '@/components/UI/SalesAnalyticsCard/SalesAnalyticsCard.css';
-import { BAR_CHART_COLOR, C3_DONUT_PALETTE, EMPTY_CHART_TEXT } from './Overview.constants';
+import {
+    BAR_CHART_COLOR,
+    C3_DONUT_PALETTE,
+    EMPTY_CHART_TEXT,
+    toneColor,
+} from './Overview.constants';
 import type { Metric } from './Overview.types';
 import './Overview.css';
 
@@ -18,14 +23,21 @@ export default function DistributionChart({
     variant,
 }: DistributionChartProps): React.JSX.Element {
     const total = items.reduce((sum, item) => sum + item.count, 0);
+    // Cada barra na cor do seu item, como a prioridade nas etiquetas das pendências.
+    const barColors = items.map((item) => toneColor(item.color, BAR_CHART_COLOR));
     const options =
         variant === 'rotated'
             ? {
                   data: {
                       columns: [['Quantidade', ...items.map((item) => item.count)]],
                       type: 'bar',
-                      colors: { Quantidade: BAR_CHART_COLOR },
+                      color: (color: string, point: { index?: number } | string) =>
+                          typeof point === 'object' && point.index !== undefined
+                              ? (barColors[point.index] ?? color)
+                              : color,
                   },
+                  // Série única: as categorias no eixo já identificam as barras.
+                  legend: { show: false },
                   axis: {
                       rotated: true,
                       x: { type: 'category', categories: items.map((item) => item.label) },
@@ -46,7 +58,14 @@ export default function DistributionChart({
                       width: 15,
                       label: { show: false },
                   },
-                  color: { pattern: C3_DONUT_PALETTE },
+                  // Com o tom de cada status (como nos agendamentos), as fatias seguem as cores do sistema.
+                  color: {
+                      pattern: items.map((item, index) =>
+                          item.color
+                              ? toneColor(item.color, C3_DONUT_PALETTE[index])
+                              : C3_DONUT_PALETTE[index % C3_DONUT_PALETTE.length],
+                      ),
+                  },
               };
     return (
         <CardBox className="salesAnalyticsCard">

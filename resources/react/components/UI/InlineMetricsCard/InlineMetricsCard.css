@@ -1,0 +1,86 @@
+/* Widget "inline" do Ubold (Components > Widgets): indicadores lado a lado num único card. */
+.card-box.inlineMetricsCard {
+    padding: 20px 0;
+}
+.inlineMetricsCard__list {
+    display: grid;
+    grid-template-columns: repeat(var(--inline-metrics-columns, 4), minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.inlineMetricsCard__item + .inlineMetricsCard__item {
+    border-left: 1px solid var(--ui-color-border-soft);
+}
+.inlineMetricsCard__box {
+    display: block;
+    height: 100%;
+    padding: 20px;
+    border-radius: var(--ui-radius-sm);
+    color: inherit;
+    text-align: center;
+    text-decoration: none;
+}
+a.inlineMetricsCard__box:hover .inlineMetricsCard__value b {
+    color: var(--ui-color-gnai-primary);
+}
+.inlineMetricsCard__value {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    color: #505458;
+    font: 600 24px/1.1 var(--ui-font-ui);
+}
+.inlineMetricsCard__value b {
+    font-weight: 600;
+    transition: color 0.15s ease;
+}
+.inlineMetricsCard__value i {
+    font-size: 32px;
+}
+.inlineMetricsCard__label {
+    display: block;
+    margin: 10px 0 0;
+    color: var(--ui-color-legacy-muted);
+    font: 400 16px/1.4 var(--ui-font-ui);
+}
+.inlineMetricsCard__icon--info {
+    color: var(--ui-color-info);
+}
+.inlineMetricsCard__icon--pink {
+    color: var(--ui-color-pink);
+}
+.inlineMetricsCard__icon--purple {
+    color: var(--ui-color-purple);
+}
+.inlineMetricsCard__icon--success {
+    color: var(--ui-color-success);
+}
+
+/* Duas colunas: divisória só entre os pares e linha entre as fileiras. */
+@media (max-width: 991px) {
+    .inlineMetricsCard__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .inlineMetricsCard__item + .inlineMetricsCard__item {
+        border-left: 0;
+    }
+    .inlineMetricsCard__item:nth-child(even) {
+        border-left: 1px solid var(--ui-color-border-soft);
+    }
+    .inlineMetricsCard__item:nth-child(n + 3) {
+        border-top: 1px solid var(--ui-color-border-soft);
+    }
+}
+@media (max-width: 575px) {
+    .inlineMetricsCard__list {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .inlineMetricsCard__item:nth-child(even) {
+        border-left: 0;
+    }
+    .inlineMetricsCard__item + .inlineMetricsCard__item {
+        border-top: 1px solid var(--ui-color-border-soft);
+    }
+}
