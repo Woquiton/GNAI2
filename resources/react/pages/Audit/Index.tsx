@@ -42,7 +42,6 @@ export default function AuditIndexPage({
                     values={filters.values}
                     options={options}
                     errors={errors}
-                    moreFiltersActive={Boolean(initialFilters.type || initialFilters.event)}
                     onUpdate={filters.update}
                     onClear={filters.clear}
                     onSubmit={filters.submit}

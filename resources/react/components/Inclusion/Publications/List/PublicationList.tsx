@@ -64,7 +64,7 @@ export default function PublicationList({
                                 tone="list-action"
                                 iconOnly
                                 leftIconClass="fa fa-external-link"
-                                title={`Abrir ${publication.title} no site`}
+                                title="Abrir no site"
                                 aria-label={`Abrir ${publication.title} no site (nova aba)`}
                             />
                         ) : null}

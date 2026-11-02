@@ -70,6 +70,7 @@ function StudentDocumentRowActions({
                         tone="warning"
                         iconOnly
                         leftIconClass="fa fa-pencil"
+                        title="Editar"
                         aria-label={`Editar documento ${document.title}`}
                     />
                 ) : null}

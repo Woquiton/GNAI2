@@ -91,6 +91,7 @@ function AttendanceRowActions({
                 tone="cancel"
                 iconOnly
                 leftIconClass="fa fa-file-pdf-o"
+                title="PDF"
                 aria-label={`Gerar PDF do atendimento de ${sessionDate}`}
             />
         ) : null;
@@ -105,6 +106,7 @@ function AttendanceRowActions({
                         tone="warning"
                         iconOnly
                         leftIconClass="fa fa-pencil"
+                        title="Editar"
                         aria-label={`Editar atendimento de ${sessionDate}`}
                     />
                 ) : null}

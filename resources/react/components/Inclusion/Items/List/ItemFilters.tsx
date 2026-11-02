@@ -52,7 +52,6 @@ export default function ItemFilters({
         <TableListFilters
             label="Filtrar itens"
             moreFilters={moreFilters}
-            moreFiltersActive={Boolean(values.is_active || values.available)}
             onClear={onClear}
             onSubmit={onSubmit}
         >

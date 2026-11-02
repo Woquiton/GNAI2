@@ -56,6 +56,7 @@ export default function AeeRecordList({
                                     tone="cancel"
                                     iconOnly
                                     leftIconClass="fa fa-file-pdf-o"
+                                    title="PDF"
                                     aria-label={`Gerar PDF do atendimento de ${date}`}
                                 />
                             ) : null}

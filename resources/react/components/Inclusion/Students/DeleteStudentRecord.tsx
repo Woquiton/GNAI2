@@ -33,7 +33,7 @@ export default function DeleteStudentRecord({
                 iconOnly
                 leftIconClass="fa fa-trash-o"
                 disabled={removal.processing}
-                title={ariaLabel}
+                title="Excluir"
                 aria-label={ariaLabel}
                 onClick={() => removal.open(action)}
             />

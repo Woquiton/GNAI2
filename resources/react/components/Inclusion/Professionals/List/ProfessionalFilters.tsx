@@ -55,7 +55,6 @@ export default function ProfessionalFilters({
         <TableListFilters
             label="Filtrar profissionais"
             moreFilters={moreFilters}
-            moreFiltersActive={Boolean(values.email || values.registration)}
             onClear={onClear}
             onSubmit={onSubmit}
         >

@@ -81,7 +81,6 @@ export default function StudentFilters({
         <TableListFilters
             label="Filtrar alunos"
             moreFilters={moreFilters}
-            moreFiltersActive={Boolean(values.phone || values.email || values.deficiency_id)}
             onClear={onClear}
             onSubmit={onSubmit}
         >

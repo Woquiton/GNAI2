@@ -34,6 +34,7 @@ export default function AuditList({
                             tone="dark-blue"
                             iconOnly
                             leftIconClass="fa fa-eye"
+                            title="Visualizar"
                             aria-label={`Ver detalhes: ${record.plain.summary}`}
                             onClick={() => onSelect(record)}
                         />

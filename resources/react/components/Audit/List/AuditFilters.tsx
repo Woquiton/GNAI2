@@ -7,8 +7,6 @@ interface AuditFiltersProps {
     values: AuditFilterValues;
     options: AuditOptions;
     errors: Record<string, string | undefined>;
-    /** Abre "Mais filtros" quando a listagem chega com tipo ou ação filtrados. */
-    moreFiltersActive: boolean;
     onUpdate: (name: keyof AuditFilterValues, value: string) => void;
     onClear: () => void;
     onSubmit: () => void;
@@ -18,7 +16,6 @@ export default function AuditFilters({
     values,
     options,
     errors,
-    moreFiltersActive,
     onUpdate,
     onClear,
     onSubmit,
@@ -60,7 +57,6 @@ export default function AuditFilters({
         <TableListFilters
             label="Filtrar histórico de alterações"
             moreFilters={moreFilters}
-            moreFiltersActive={moreFiltersActive}
             clearDisabled={!hasFilters}
             onClear={onClear}
             onSubmit={onSubmit}

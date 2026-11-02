@@ -35,7 +35,6 @@ export default function WaitlistFilters({
         <TableListFilters
             label="Filtrar fila de espera"
             moreFilters={moreFilters}
-            moreFiltersActive={Boolean(values.status)}
             onClear={onClear}
             onSubmit={onSubmit}
         >

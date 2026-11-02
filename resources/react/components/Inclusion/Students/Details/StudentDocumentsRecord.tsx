@@ -122,6 +122,7 @@ function DocumentActions({
                         tone="dark-blue"
                         iconOnly
                         leftIconClass="fa fa-eye"
+                        title="Visualizar"
                         aria-label={`Visualizar documento ${document.title}`}
                     />
                     <Button
@@ -132,6 +133,7 @@ function DocumentActions({
                         tone="cancel"
                         iconOnly
                         leftIconClass="fa fa-download"
+                        title="Baixar"
                         aria-label={`Baixar documento ${document.title}`}
                     />
                 </>
@@ -143,6 +145,7 @@ function DocumentActions({
                     tone="warning"
                     iconOnly
                     leftIconClass="fa fa-pencil"
+                    title="Editar"
                     aria-label={`Editar documento ${document.title}`}
                 />
             ) : null}

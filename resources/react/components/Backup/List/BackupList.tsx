@@ -66,6 +66,7 @@ function BackupRowActions({
                     tone="dark-blue"
                     iconOnly
                     leftIconClass="fa fa-eye"
+                    title="Visualizar"
                     aria-label={`Visualizar ${backup.file_name}`}
                 />
             ) : null}

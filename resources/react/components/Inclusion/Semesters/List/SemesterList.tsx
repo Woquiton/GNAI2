@@ -75,6 +75,7 @@ export default function SemesterList({
                                     tone="success"
                                     iconOnly
                                     leftIconClass="fa fa-check"
+                                    title="Definir como atual"
                                     aria-label={`Definir semestre ${name} como atual`}
                                     disabled={settingCurrent}
                                     onClick={() => onSetCurrent(semester)}

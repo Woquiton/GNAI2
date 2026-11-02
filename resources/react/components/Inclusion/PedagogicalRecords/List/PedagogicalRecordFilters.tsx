@@ -97,7 +97,6 @@ export default function PedagogicalRecordFilters({
         <TableListFilters
             label="Filtrar atendimentos pedagógicos"
             moreFilters={moreFilters}
-            moreFiltersActive={more.some((name) => Boolean(values[name]))}
             onClear={onClear}
             onSubmit={onSubmit}
         >

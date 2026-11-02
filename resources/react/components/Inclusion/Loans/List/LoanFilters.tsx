@@ -35,7 +35,6 @@ export default function LoanFilters({
         <TableListFilters
             label="Filtrar empréstimos"
             moreFilters={moreFilters}
-            moreFiltersActive={Boolean(values.status)}
             onClear={onClear}
             onSubmit={onSubmit}
         >

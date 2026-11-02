@@ -199,6 +199,8 @@
 .tableListFrame {
     min-width: 100%;
     margin-top: 20px;
+    /* As ações da linha viram "⋮" pela largura da listagem, não da janela (a sidebar ocupa espaço). */
+    container: tableList / inline-size;
 }
 
 .tableListToolbar {
@@ -572,11 +574,155 @@
     }
 }
 
-@media (max-width: 600px) {
+/*
+ * Barra estreita (celular), como no controle-bar: só o primeiro campo fica à vista; "Filtros" abre
+ * os demais campos e o "Mais filtros", e a borracha sobe para o lado dele. Na barra larga, a região
+ * recolhível some do layout (`display: contents`) e os campos voltam para a grade de sempre.
+ */
+.tableListFilters {
+    container: tableListFilters / inline-size;
+}
+
+.tableListFilters__bar {
+    display: none;
+}
+
+.tableListFilters__region,
+.tableListFilters__regionContent {
+    display: contents;
+}
+
+@container tableListFilters (max-width: 600px) {
     .tableListFilters__grid,
     .tableListFilters__grid--single,
     .tableListFilters__more {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tableListFilters__bar {
+        display: flex;
+        min-height: var(--ui-list-control-height);
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--ui-space-3);
+        margin-bottom: var(--ui-space-3);
+    }
+
+    .tableListFilters__grid {
+        row-gap: 0;
+    }
+
+    .tableListFilters__grid > .tableListFilterActions {
+        display: none;
+    }
+
+    /* Recolhe animando a altura; fechada, sai do foco e do leitor de tela (visibility). */
+    .tableListFilters__region {
+        display: grid;
+        grid-template-rows: 0fr;
+        margin: 0 -4px;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+        transition:
+            grid-template-rows 250ms ease,
+            opacity 180ms ease,
+            visibility 0s linear 250ms;
+    }
+
+    .tableListFilters__region[data-open='true'] {
+        grid-template-rows: 1fr;
+        visibility: visible;
+        opacity: 1;
+        transition:
+            grid-template-rows 250ms ease,
+            opacity 180ms ease;
+    }
+
+    /* O respiro lateral evita cortar o contorno de foco dos campos. */
+    .tableListFilters__regionContent {
+        display: block;
+        min-height: 0;
+        padding: 0 4px 4px;
+    }
+
+    .tableListFilters__regionContent--fields {
+        display: grid;
+        gap: var(--ui-space-4);
+        padding-top: var(--ui-space-4);
+    }
+}
+
+.tableListFilters__title,
+.tableListFilters__toggle {
+    color: var(--ui-color-heading);
+    font: 600 12px/1.4 var(--ui-font-body);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.tableListFilters__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 0 -4px;
+    padding: 3px 4px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.tableListFilters__toggle:hover {
+    color: var(--ui-color-gnai-primary);
+}
+
+.tableListFilters__toggle:focus-visible {
+    outline: 2px solid var(--ui-color-input-focus-border);
+    outline-offset: 1px;
+}
+
+.tableListFilters__toggle .tableListFilters__chevron {
+    width: 7px;
+    height: 7px;
+    margin: -3px 0 0 2px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 160ms ease;
+}
+
+.tableListFilters__toggle[aria-expanded='true'] .tableListFilters__chevron {
+    margin-top: 3px;
+    transform: rotate(-135deg);
+}
+
+.tableListFilters__badge {
+    min-width: 18px;
+    padding: 1px 6px;
+    border-radius: 9px;
+    background: var(--ui-color-gnai-primary);
+    color: var(--ui-color-text-inverse);
+    font-size: 11px;
+    letter-spacing: 0;
+    line-height: 16px;
+    text-align: center;
+}
+
+.tableListFilters__srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tableListFilters__region,
+    .tableListFilters__region[data-open='true'],
+    .tableListFilters__toggle .tableListFilters__chevron {
+        transition: none;
     }
 }
 
@@ -603,4 +749,103 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+/*
+ * Ações da linha (TableListRowActions): em linha na listagem larga; reunidas no "⋮" quando a
+ * listagem fica estreita, como no controle-bar. A coluna de ações encolhe para o botão.
+ */
+.tableRowActions {
+    display: inline-flex;
+    justify-content: flex-end;
+}
+.tableRowActions__trigger {
+    display: none;
+    width: 32px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 3px;
+    background: var(--ui-color-surface);
+    color: var(--ui-color-heading);
+    cursor: pointer;
+    font-size: 15px;
+}
+.tableRowActions__trigger:hover,
+.tableRowActions__trigger[aria-expanded='true'] {
+    background: var(--ui-color-surface-alt);
+}
+@container tableList (max-width: 640px) {
+    .tableRowActions__inline {
+        display: none;
+    }
+    .tableRowActions__trigger {
+        display: inline-block;
+    }
+    .tableListTable:has(> tbody > tr > td:last-child .tableRowActions) col:last-child {
+        width: 52px;
+    }
+    .tableListTable.table-condensed > tbody > tr > td:last-child:has(.tableRowActions) {
+        padding-right: 10px;
+    }
+}
+
+/* Caixinha das ações: cada ação numa linha, com o ícone na cor da ação e o nome escrito. */
+.tableRowActions__menu {
+    position: fixed;
+    z-index: 1050;
+    display: flex;
+    min-width: 180px;
+    flex-direction: column;
+    padding: 6px 0;
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: 4px;
+    background: var(--ui-color-surface);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    animation: tableRowActionsIn 0.12s ease-out;
+}
+.tableRowActions__menu .button.button {
+    display: flex;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 9px 14px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--button-bg);
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: left;
+}
+.tableRowActions__menu .button.button:is(:hover, :focus-visible) {
+    background: var(--ui-color-surface-alt);
+}
+.tableRowActions__menu .button.button:disabled,
+.tableRowActions__menu .button.button[aria-disabled='true'] {
+    opacity: 0.5;
+}
+.tableRowActions__menu .button i {
+    width: 16px;
+    text-align: center;
+}
+/* Ações só com ícone mostram o próprio título (nome da ação) ao lado do ícone. */
+.tableRowActions__menu .button--iconOnly::after {
+    color: var(--ui-color-text);
+    content: attr(title);
+}
+.tableRowActions__menu .button > span:not(.button__label) {
+    color: var(--ui-color-text);
+}
+@keyframes tableRowActionsIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
