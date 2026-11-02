@@ -19,13 +19,13 @@ export default function PositionDetails({
         <CardBox>
             <FormSection
                 id="position-show-information"
-                title="Informações do Cargo"
+                title="Identificação"
                 variant="inline"
                 iconClass="fa fa-briefcase"
             >
                 <DetailGrid>
                     <DetailField label="Nome do Cargo / Função">
-                        <strong>{position.name}</strong>
+                        {position.name}
                     </DetailField>
                     <DetailField label="Status de Disponibilidade">
                         <TableLabel tone={position.is_active ? 'success' : 'inverse'}>
@@ -36,15 +36,6 @@ export default function PositionDetails({
                             {position.is_active ? 'Ativo' : 'Desativado'}
                         </TableLabel>
                     </DetailField>
-                </DetailGrid>
-            </FormSection>
-            <FormSection
-                id="position-show-description"
-                title="Atribuições e Descrição"
-                variant="inline"
-                iconClass="fa fa-file-text-o"
-            >
-                <DetailGrid>
                     <DetailField label="Descrição da Função" wide>
                         <RichTextContent html={descriptionHtml} />
                     </DetailField>

@@ -2,5 +2,6 @@
 export type PositionFormData = {
     name: string;
     description: string;
+    is_active: boolean;
     permissions: number[];
 };

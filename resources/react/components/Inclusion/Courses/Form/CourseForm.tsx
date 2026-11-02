@@ -1,15 +1,13 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import {
-    RichTextField,
-    SelectInputField,
-    TextInputField,
-} from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import FieldError from '@/components/Forms/FormField/FieldError';
+import { fieldErrorId } from '@/components/Forms/FormField/fieldDescription';
+import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
-import { courseStatusOptions } from '../Courses.constants';
 import { courseUrls } from '../Courses.routes';
 import type { CourseDisciplineOption, CourseRecord } from '../Courses.types';
 import CourseCurriculumFields from './CourseCurriculumFields';
@@ -48,7 +46,7 @@ export default function CourseForm({ disciplines, course }: CourseFormProps): Re
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="course-information"
-                        title={editing ? 'Informações Básicas' : 'Dados do Curso'}
+                        title="Identificação"
                         variant="inline"
                         iconClass="fa fa-university"
                     >
@@ -80,17 +78,26 @@ export default function CourseForm({ disciplines, course }: CourseFormProps): Re
                                 />
                             </FormGridWide>
                             {editing ? (
-                                <SelectInputField
-                                    id="course-status"
-                                    name="is_active"
-                                    label="Status do Curso"
-                                    required
-                                    options={courseStatusOptions}
-                                    value={form.data.is_active ?? ''}
-                                    disabled={form.processing}
-                                    error={errors.is_active}
-                                    onChange={(value) => form.setData('is_active', value)}
-                                />
+                                <div>
+                                    <ToggleControl
+                                        id="course-status"
+                                        name="is_active"
+                                        label="Curso Ativo"
+                                        size="small"
+                                        checked={form.data.is_active === '1'}
+                                        disabled={form.processing}
+                                        invalid={Boolean(errors.is_active)}
+                                        describedBy={
+                                            errors.is_active
+                                                ? fieldErrorId('course-status')
+                                                : undefined
+                                        }
+                                        onChange={(checked) =>
+                                            form.setData('is_active', checked ? '1' : '0')
+                                        }
+                                    />
+                                    <FieldError id="course-status" error={errors.is_active} />
+                                </div>
                             ) : null}
                         </FormGrid>
                     </FormSection>

@@ -49,13 +49,13 @@ export default function CourseDetails({
         <CardBox>
             <FormSection
                 id="course-show-general"
-                title="Informações Gerais"
+                title="Identificação"
                 variant="inline"
                 iconClass="fa fa-graduation-cap"
             >
                 <DetailGrid>
                     <DetailField label="Nome do Curso">
-                        <strong>{course.name}</strong>
+                        {course.name}
                     </DetailField>
                     <DetailField label="Status">
                         <TableLabel tone={course.is_active ? 'success' : 'danger'}>

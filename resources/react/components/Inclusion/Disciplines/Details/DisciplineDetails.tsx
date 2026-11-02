@@ -20,13 +20,13 @@ export default function DisciplineDetails({
         <CardBox>
             <FormSection
                 id="discipline-show-general"
-                title="Informações Gerais"
+                title="Identificação"
                 variant="inline"
                 iconClass="fa fa-book"
             >
                 <DetailGrid>
                     <DetailField label="Nome da Disciplina">
-                        <strong>{discipline.name}</strong>
+                        {discipline.name}
                     </DetailField>
                     <DetailField label="Status">
                         <TableLabel tone={discipline.is_active ? 'success' : 'danger'}>

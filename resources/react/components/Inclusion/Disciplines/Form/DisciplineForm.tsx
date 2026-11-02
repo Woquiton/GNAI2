@@ -1,15 +1,13 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import {
-    RichTextField,
-    SelectInputField,
-    TextInputField,
-} from '@/components/Forms/FormFields/FormFields';
+import { RichTextField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import FieldError from '@/components/Forms/FormField/FieldError';
+import { fieldErrorId } from '@/components/Forms/FormField/fieldDescription';
+import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
-import { disciplineStatusOptions } from '../Disciplines.constants';
 import { disciplineUrls } from '../Disciplines.routes';
 import type { DisciplineRecord } from '../Disciplines.types';
 import { useDisciplineForm } from './useDisciplineForm';
@@ -46,7 +44,7 @@ export default function DisciplineForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="discipline-information"
-                        title={editing ? 'Dados da Disciplina' : 'Informações Básicas'}
+                        title="Identificação"
                         variant="inline"
                         iconClass="fa fa-book"
                     >
@@ -77,17 +75,26 @@ export default function DisciplineForm({
                                     onChange={(html) => form.setData('description', html)}
                                 />
                             </FormGridWide>
-                            <SelectInputField
-                                id="discipline-status"
-                                name="is_active"
-                                label="Status"
-                                required
-                                options={disciplineStatusOptions}
-                                value={form.data.is_active}
-                                disabled={form.processing}
-                                error={errors.is_active}
-                                onChange={(value) => form.setData('is_active', value)}
-                            />
+                            <div>
+                                <ToggleControl
+                                    id="discipline-status"
+                                    name="is_active"
+                                    label="Disciplina Ativa"
+                                    size="small"
+                                    checked={form.data.is_active === '1'}
+                                    disabled={form.processing}
+                                    invalid={Boolean(errors.is_active)}
+                                    describedBy={
+                                        errors.is_active
+                                            ? fieldErrorId('discipline-status')
+                                            : undefined
+                                    }
+                                    onChange={(checked) =>
+                                        form.setData('is_active', checked ? '1' : '0')
+                                    }
+                                />
+                                <FieldError id="discipline-status" error={errors.is_active} />
+                            </div>
                         </FormGrid>
                     </FormSection>
                 </fieldset>

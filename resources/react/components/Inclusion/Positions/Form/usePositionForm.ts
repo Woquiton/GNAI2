@@ -18,6 +18,7 @@ export function usePositionForm(position?: PositionRecord) {
     const form = useForm<PositionFormData>({
         name: position?.name ?? '',
         description: position?.description ?? '',
+        is_active: position?.is_active ?? true,
         permissions: position?.permissions?.map((permission) => permission.id) ?? [],
     });
     const { formRef, submit } = useFormSubmission(form);

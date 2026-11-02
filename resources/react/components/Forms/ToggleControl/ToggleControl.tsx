@@ -21,6 +21,8 @@ interface ToggleControlProps {
     description?: string;
     checked: boolean;
     disabled?: boolean;
+    invalid?: boolean;
+    describedBy?: string;
     size?: 'small' | 'default' | 'large';
     onChange: (checked: boolean) => void;
 }
@@ -34,6 +36,8 @@ export default function ToggleControl({
     checked,
     disabled = false,
     size = 'default',
+    invalid = false,
+    describedBy,
     onChange,
 }: ToggleControlProps): React.JSX.Element {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -143,6 +147,8 @@ export default function ToggleControl({
                     id={id}
                     name={name}
                     type="checkbox"
+                    aria-invalid={invalid || undefined}
+                    aria-describedby={describedBy}
                     defaultChecked={checked}
                     disabled={disabled}
                 />

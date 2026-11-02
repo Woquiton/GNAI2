@@ -20,6 +20,7 @@ final class UpdateDeficiencyData extends Data
         #[Unique('deficiencies', 'cid_code', ignore: new RouteParameterReference('deficiency', 'id'))]
         public ?string $cidCode = null,
         public ?string $description = null,
+        public ?bool $isActive = null,
     ) {}
 
     public static function rules(): array
@@ -28,6 +29,7 @@ final class UpdateDeficiencyData extends Data
             'name' => ['required', 'string', 'max:255'],
             'cid_code' => ['nullable', 'string', 'max:20'],
             'description' => ['nullable', 'string'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 
@@ -41,6 +43,7 @@ final class UpdateDeficiencyData extends Data
             'cid_code.unique' => 'O código CID informado já está cadastrado.',
             'cid_code.max' => 'O código CID deve ter no máximo 20 caracteres.',
             'description.string' => 'A descrição deve ser um texto válido.',
+            'is_active.boolean' => 'O status deve ser verdadeiro ou falso.',
         ];
     }
 }
