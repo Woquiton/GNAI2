@@ -25,6 +25,7 @@ final class BarrierPdfQuery
                     ->orderByDesc('inspection_date')
                     ->orderByDesc('created_at');
             },
+            'registeredBy',
             'affectedStudent.person',
             'affectedProfessional.person',
         ]);

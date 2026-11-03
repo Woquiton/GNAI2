@@ -10,6 +10,12 @@ final class PublicationPdfQuery
 {
     public function execute(Publication $publication): Publication
     {
-        return $publication;
+        return $publication->load([
+            'author',
+            'media',
+            'speakers.professional.person',
+            'speakers.professional.position',
+            'tags',
+        ]);
     }
 }

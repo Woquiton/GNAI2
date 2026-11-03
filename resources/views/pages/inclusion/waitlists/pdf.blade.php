@@ -6,66 +6,64 @@
     <x-pdf.styles />
 </head>
 <body>
-{{-- 1. Adicionado componente de numeração de páginas --}}
+
+@php
+    $notInformed = 'Não informado';
+    $statusClass = match ($waitlist->status?->value) {
+        'fulfilled' => 'pdf-status-success',
+        'waiting' => 'pdf-status-warning',
+        'cancelled' => 'pdf-status-danger',
+        default => '',
+    };
+@endphp
 
 <x-pdf.header
     title="Comprovante de Fila de Espera"
+    :status="$waitlist->status?->label()"
     :meta="[
         'Protocolo' => '#' . $waitlist->id,
         'Emissão' => now()->format('d/m/Y H:i'),
     ]"
 />
 
-{{-- Seção 1: Beneficiário --}}
-<x-pdf.section-title title="Identificação do Solicitante" />
-<x-pdf.table>
-    <x-pdf.row>
-        @php
-            $beneficiario = 'Não informado';
-            $documento = '---';
-            if($waitlist->student) {
-                $beneficiario = $waitlist->student->person->name;
-                $documento = "Matrícula: " . $waitlist->student->registration;
-            } elseif($waitlist->professional) {
-                $beneficiario = $waitlist->professional->person->name;
-                $documento = "Profissional";
-            }
-        @endphp
-        <x-pdf.info-item label="Nome Completo" :value="$beneficiario" colspan="3" />
-        <x-pdf.info-item label="Vínculo / Registro" :value="$documento" colspan="1" />
-    </x-pdf.row>
-</x-pdf.table>
-
-{{-- Seção 2: Detalhes do Item Solicitado (Corrigida a estrutura de colunas) --}}
 <x-pdf.section-title title="Recurso Solicitado" />
 <x-pdf.table>
     <x-pdf.row>
-        <x-pdf.info-item
-            label="Item / Recurso"
-            :value="$waitlist->waitlistable?->name ?? 'Item Removido'"
-            colspan="2"
-        />
-        <x-pdf.info-item
-            label="Data da Solicitação"
-            :value="$waitlist->requested_at->format('d/m/Y')"
-        />
-        <x-pdf.info-item label="Status Atual" :value="$waitlist->status->label()" />
+        <x-pdf.info-item label="Tipo do Item" :value="$waitlist->waitlistable?->item_type?->label() ?? '---'" />
+        <x-pdf.info-item label="Recurso Solicitado" :value="e($waitlist->waitlistable?->name ?? 'Item removido')" />
     </x-pdf.row>
-</x-pdf.table>
-
-{{-- Seção 3: Observações --}}
-<x-pdf.section-title title="Informações Complementares" />
-<x-pdf.text-area label="Observações Técnicas" :value="$waitlist->observation ?? 'Sem observações registradas.'" />
-
-{{-- Tabela de registro --}}
-<x-pdf.table class="pdf-mt-15">
     <x-pdf.row>
-        <x-pdf.info-item label="Registrado por" :value="$waitlist->user->name ?? 'Sistema'" colspan="3" />
-        <x-pdf.info-item label="Protocolo ID" :value="'#' . $waitlist->id" colspan="1" />
+        <x-pdf.info-item label="Patrimônio / Tombamento" :value="e($waitlist->waitlistable?->asset_code ?: 'Não se aplica')" colspan="2" />
     </x-pdf.row>
 </x-pdf.table>
 
-{{-- 2. Melhoria na Assinatura: Usando seus componentes de assinatura em tabela --}}
+<x-pdf.section-title title="Identificação do Solicitante" />
+<x-pdf.table>
+    <x-pdf.row>
+        <x-pdf.info-item label="Estudante (Beneficiário)" :value="e($waitlist->student ? ($waitlist->student->person?->name ?? 'Sem nome') : $notInformed)" />
+        <x-pdf.info-item label="Matrícula" :value="e($waitlist->student?->registration ?: $notInformed)" />
+    </x-pdf.row>
+    <x-pdf.row>
+        <x-pdf.info-item label="Profissional (Beneficiário)" :value="e($waitlist->professional ? ($waitlist->professional->person?->name ?? 'Sem nome') : $notInformed)" />
+        <x-pdf.info-item label="Registro" :value="e($waitlist->professional?->registration ?: $notInformed)" />
+    </x-pdf.row>
+</x-pdf.table>
+
+<x-pdf.section-title title="Solicitação" />
+<x-pdf.table>
+    <x-pdf.row>
+        <x-pdf.info-item label="Data da Solicitação" :value="$waitlist->requested_at?->format('d/m/Y H:i') ?? $notInformed" />
+        <td>
+            <span class="label">Status da Solicitação:</span>
+            <span class="value {{ $statusClass }}">{{ $waitlist->status?->label() ?? '---' }}</span>
+        </td>
+    </x-pdf.row>
+    <x-pdf.row>
+        <x-pdf.info-item label="Usuário Responsável" :value="e($waitlist->user?->name ?? $notInformed)" colspan="2" />
+    </x-pdf.row>
+</x-pdf.table>
+<x-pdf.text-area label="Observações" :value="$waitlist->observation" empty="Nenhuma observação registrada." />
+
 <div class="pdf-mt-60">
     <x-pdf.table-signatures>
         <x-pdf.table-signature-label label="Assinatura do Solicitante" />

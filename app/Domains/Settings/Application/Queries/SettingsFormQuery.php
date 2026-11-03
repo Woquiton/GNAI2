@@ -7,6 +7,7 @@ namespace App\Domains\Settings\Application\Queries;
 use App\Domains\Settings\Domain\Enums\BackupRetentionMode;
 use App\Domains\Settings\Domain\Enums\MailEncryption;
 use App\Domains\Settings\Domain\Enums\MailTransport;
+use App\Domains\Settings\Domain\Enums\PdfLogoShape;
 use App\Domains\Settings\Domain\ValueObjects\BackupSettings;
 use App\Domains\Settings\Domain\ValueObjects\MailSettings;
 use App\Domains\Settings\Infrastructure\Storage\PdfHeaderLogoStorage;
@@ -72,7 +73,9 @@ final readonly class SettingsFormQuery
                 'issuing_unit' => $settings->issuingUnit,
                 'details' => $settings->details,
                 'logo_url' => $this->pdfLogoStorage->url($settings),
+                'logo_shape' => $settings->logoShape->value,
             ],
+            'logoShapes' => $this->options(PdfLogoShape::cases()),
         ];
     }
 
@@ -98,13 +101,13 @@ final readonly class SettingsFormQuery
     }
 
     /**
-     * @param  list<MailTransport|MailEncryption|BackupRetentionMode>  $cases
+     * @param  list<MailTransport|MailEncryption|BackupRetentionMode|PdfLogoShape>  $cases
      * @return Collection<string, string>
      */
     private function options(array $cases): Collection
     {
         return collect($cases)->mapWithKeys(
-            static fn (MailTransport|MailEncryption|BackupRetentionMode $case): array => [
+            static fn (MailTransport|MailEncryption|BackupRetentionMode|PdfLogoShape $case): array => [
                 $case->value => $case->label(),
             ],
         );

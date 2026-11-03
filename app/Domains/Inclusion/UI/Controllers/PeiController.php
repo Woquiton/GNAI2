@@ -209,9 +209,10 @@ final class PeiController
             'paee',
             'course',
             'semester',
+            'creator',
         ]);
 
-        $peiDiscipline->load(['discipline', 'teacher.person']);
+        $peiDiscipline->load(['discipline', 'teacher.person', 'revisions.reviewer']);
 
         $pdf = Pdf::loadView('pages.inclusion.peis.pdf', [
             'pei' => $pei,
@@ -233,10 +234,11 @@ final class PeiController
             'paee',
             'course',
             'semester',
+            'creator',
         ]);
 
         $peiDisciplines = $pei->peiDisciplines()
-            ->with(['discipline', 'teacher.person', 'creator'])
+            ->with(['discipline', 'teacher.person', 'creator', 'revisions.reviewer'])
             ->orderBy('id')
             ->get();
 

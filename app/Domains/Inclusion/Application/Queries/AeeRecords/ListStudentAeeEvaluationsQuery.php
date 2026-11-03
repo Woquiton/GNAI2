@@ -28,7 +28,7 @@ final class ListStudentAeeEvaluationsQuery
 
     public function show(Student $student, AeeStudentEvaluation $evaluation, User $user): AeeStudentEvaluation
     {
-        $evaluation->load(['student.person', 'aeeRecord.attendanceSession.professional.person']);
+        $evaluation->load(['student.person', 'guardians.person', 'aeeRecord.attendanceSession.professional.person']);
         if ((int) $evaluation->student_id !== (int) $student->getKey() || (! $user->can('aee-record.view-all') && (int) $evaluation->aeeRecord->attendanceSession->professional_id !== (int) $user->professional_id)) {
             throw new InvalidAeeRecord('A avaliação AEE informada não está disponível para este usuário.');
         }

@@ -7,114 +7,85 @@
 </head>
 <body>
 
+@php
+    $notApplicable = 'Não se aplica';
+    $lastInspection = $item->inspections->sortByDesc('inspection_date')->first();
+@endphp
+
 <x-pdf.header
     title="Ficha de Item"
-    :status="$item->is_active ? 'Ativo' : 'Inativo'"
+    :subtitle="e($item->item_type?->label() ?? '')"
+    :status="$item->status?->label()"
     :meta="[
-        'Tipo' => $item->item_type?->label() ?? '---',
-        'Descrição' => $item->name,
+        'Registro' => '#' . $item->id,
         'Gerado em' => now()->format('d/m/Y H:i'),
     ]"
 />
 
-<x-pdf.section-title title="Identificação do Recurso" />
-
+<x-pdf.section-title title="Identificação" />
 <x-pdf.table>
     <x-pdf.row>
         <x-pdf.info-item label="Tipo do Item" :value="$item->item_type?->label() ?? '---'" />
-        <x-pdf.info-item label="Descrição" :value="$item->name" />
-        <x-pdf.info-item label="Natureza" :value="$item->is_digital ? 'Recurso Digital' : 'Recurso Físico'" colspan="2" />
+        <x-pdf.info-item label="Descrição do Item" :value="e($item->name)" />
     </x-pdf.row>
     <x-pdf.row>
-        <x-pdf.info-item label="Patrimônio / Tombamento" :value="$item->asset_code ?? '---'" colspan="2" />
-        <x-pdf.info-item label="Quantidade Total" :value="$item->quantity" colspan="2" />
+        <x-pdf.info-item label="Natureza do Recurso" :value="$item->is_digital ? 'Recurso Digital' : 'Recurso Físico'" />
+        <x-pdf.info-item label="Patrimônio / Tombamento" :value="e($item->asset_code ?: $notApplicable)" />
+    </x-pdf.row>
+    <x-pdf.row>
+        <x-pdf.info-item label="Recursos de Acessibilidade" :value="e($item->accessibilityFeatures->pluck('name')->join(', ') ?: 'Nenhum recurso definido.')" colspan="2" />
     </x-pdf.row>
 </x-pdf.table>
-<x-pdf.text-area label="Descrição Detalhada" :value="$item->notes ?: '---'" />
+<x-pdf.text-area label="Descrição Detalhada" :value="$item->notes" empty="Nenhuma descrição registrada." />
 
-<x-pdf.section-title title="Gestão e Público" />
-
+<x-pdf.section-title title="Gestão" />
 <x-pdf.table>
     <x-pdf.row>
+        <x-pdf.info-item label="Quantidade Total" :value="$item->is_digital ? $notApplicable : ($item->quantity ?? '---')" />
+        <x-pdf.info-item label="Quantidade Disponível" :value="$item->is_digital ? $notApplicable : ($item->quantity_available ?? '---')" />
         <x-pdf.info-item label="Status do Recurso" :value="$item->status?->label() ?? '---'" />
-        <x-pdf.info-item label="Permite Empréstimos" :value="$item->is_loanable ? 'Sim' : 'Não'" />
-        <x-pdf.info-item label="Quantidade Disponível" :value="$item->quantity_available ?? '---'" colspan="2" />
     </x-pdf.row>
-
     <x-pdf.row>
-        <x-pdf.info-item label="Público-Alvo (Deficiências Atendidas)" :value="$item->deficiencies->pluck('name')->join(', ') ?: '---'" colspan="2" />
-        <x-pdf.info-item label="Recursos de Acessibilidade" :value="$item->accessibilityFeatures->pluck('name')->join(', ') ?: '---'" colspan="2" />
+        <x-pdf.info-item label="Permite Empréstimos" :value="$item->is_loanable ? 'Sim' : 'Não'" />
+        <x-pdf.info-item label="Status no Sistema" :value="$item->is_active ? 'Ativo' : 'Inativo'" colspan="2" />
+    </x-pdf.row>
+    <x-pdf.row>
+        <x-pdf.info-item label="Público Alvo" :value="e($item->deficiencies->pluck('name')->join(', ') ?: 'Nenhum público-alvo definido.')" colspan="3" />
     </x-pdf.row>
 </x-pdf.table>
 
 <x-pdf.section-title title="Última Vistoria" />
-@php
-    $lastInspection = $item->inspections->sortByDesc('inspection_date')->first();
-@endphp
-
 @if($lastInspection)
     <x-pdf.table>
         <x-pdf.row>
             <x-pdf.info-item label="Data" :value="$lastInspection->inspection_date?->format('d/m/Y') ?? '---'" />
-            <x-pdf.info-item label="Tipo de Vistoria" :value="$lastInspection->type?->label() ?? '---'" />
+            <x-pdf.info-item label="Tipo" :value="$lastInspection->type?->label() ?? '---'" />
             <x-pdf.info-item label="Estado de Conservação" :value="$lastInspection->state?->label() ?? '---'" />
         </x-pdf.row>
     </x-pdf.table>
+    <x-pdf.text-area label="Parecer Técnico" :value="$lastInspection->description" empty="Nenhum parecer técnico registrado." />
 
-    <x-pdf.text-area label="Parecer Técnico" :value="$lastInspection->description ?: 'Sem descrição registrada.'" />
-
-    <x-pdf.section-title title="Evidências" />
-    <div class="inspection-evidences">
-        @if($lastInspection->evidences->count() > 0)
+    <div class="pdf-field-label">Evidências</div>
+    @if($lastInspection->evidences->isNotEmpty())
+        {{-- Fora de tabela para permitir quebra de página entre as imagens. --}}
+        <div class="inspection-evidences">
             @foreach($lastInspection->evidences as $evidence)
                 @php
-                    $base64 = null;
-                    $ratio = null;
+                    $evidencePath = $evidence->path ? \Illuminate\Support\Facades\Storage::disk('public')->path($evidence->path) : null;
+                    $evidenceSize = $evidence->isImage() && $evidencePath && is_file($evidencePath) ? @getimagesize($evidencePath) : false;
+                    $evidenceClass = '';
 
-                    if ($evidence->isImage() && Storage::disk('public')->exists($evidence->path)) {
-                        $imageData = Storage::disk('public')->get($evidence->path);
-                        $src = @imagecreatefromstring($imageData);
-
-                        if ($src !== false) {
-                            $width = imagesx($src);
-                            $height = imagesy($src);
-                            $ratio = $width / $height;
-
-                            $maxSize = 1000;
-                            if ($ratio > 1) {
-                                $newWidth = $maxSize;
-                                $newHeight = intval($height * $maxSize / $width);
-                            } else {
-                                $newHeight = $maxSize;
-                                $newWidth = intval($width * $maxSize / $height);
-                            }
-
-                            $resized = imagecreatetruecolor($newWidth, $newHeight);
-                            imagecopyresampled($resized, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-                            ob_start();
-                            imagejpeg($resized, null, 80);
-                            $base64 = 'data:image/jpeg;base64,' . base64_encode(ob_get_clean());
-
-                            imagedestroy($src);
-                            imagedestroy($resized);
-                        }
-                    }
-
-                    if ($base64 && $ratio) {
-                        if ($ratio > 1.5) $evidenceClass = 'wide';
-                        elseif ($ratio < 0.67) $evidenceClass = 'tall';
-                        else $evidenceClass = 'square';
-                    } else {
-                        $evidenceClass = null;
+                    if ($evidenceSize && $evidenceSize[1] > 0) {
+                        $ratio = $evidenceSize[0] / $evidenceSize[1];
+                        $evidenceClass = $ratio > 1.5 ? 'wide' : ($ratio < 0.67 ? 'tall' : '');
                     }
                 @endphp
 
-                @if($base64)
+                @if($evidenceSize)
                     <div class="evidence-card {{ $evidenceClass }}">
-                        <img class="evidence-image" src="{{ $base64 }}" alt="Evidência da vistoria">
+                        <img class="evidence-image" src="{{ $evidencePath }}" alt="Evidência {{ $loop->iteration }} da vistoria">
                         <div class="evidence-caption">
-                            Evidência {{ $loop->iteration }} de {{ $lastInspection->evidences->count() }}
+                            Evidência {{ $loop->iteration }} de {{ $lastInspection->evidences->count() }}: {{ $evidence->displayName() }}
                         </div>
                     </div>
                 @else
@@ -123,12 +94,32 @@
                     </div>
                 @endif
             @endforeach
-        @else
-            <div class="evidence-placeholder">Nenhuma evidência registrada.</div>
-        @endif
-    </div>
+        </div>
+    @else
+        <p class="pdf-empty">Nenhuma evidência registrada.</p>
+    @endif
 @else
-    <x-pdf.text-area label="Última Vistoria" :value="'Nenhuma vistoria registrada.'" />
+    <p class="pdf-empty">Nenhuma vistoria registrada.</p>
+@endif
+
+@if($item->inspections->count() > 1)
+    <x-pdf.section-title title="Histórico de Vistorias" />
+    <table class="pdf-table pdf-data-table">
+        <tr>
+            <th class="pdf-w-18">Data</th>
+            <th>Tipo</th>
+            <th>Estado de Conservação</th>
+            <th class="pdf-w-16">Evidências</th>
+        </tr>
+        @foreach($item->inspections as $inspection)
+            <tr>
+                <td class="pdf-text-center">{{ $inspection->inspection_date?->format('d/m/Y') ?? '---' }}</td>
+                <td>{{ $inspection->type?->label() ?? '---' }}</td>
+                <td>{{ $inspection->state?->label() ?? '---' }}</td>
+                <td class="pdf-text-center">{{ $inspection->evidences->count() }}</td>
+            </tr>
+        @endforeach
+    </table>
 @endif
 
 </body>

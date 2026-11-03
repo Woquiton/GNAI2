@@ -1,129 +1,180 @@
-/* Configurações de Página e Impressão */
+/*
+ * Padrão visual dos PDFs institucionais (DomPDF).
+ * Paleta neutra: texto quase preto, seções em cinza claro, bordas cinza e o azul institucional
+ * apenas nas linhas do cabeçalho e do rodapé. Estados usam texto, não só cor.
+ * DomPDF não interpreta variáveis CSS: as cores ficam repetidas e documentadas aqui.
+ *   Texto: #1d2939 | Texto secundário: #475467 | Seção: #e4e7ec | Cabeçalho de tabela: #f2f4f7
+ *   Bordas: #d0d5dd | Institucional: #322b75
+ */
+
+/* Configurações de Página e Impressão; o rodapé é desenhado por PdfPageNumberer. */
 @page {
-    margin: 80px 50px 80px 50px;
+    margin: 42px 45px 72px 45px;
 }
 
 body {
     font-family: 'Helvetica', sans-serif;
     font-size: 10px;
-    color: #212529;
+    color: #1d2939;
     line-height: 1.4;
     margin: 0;
     padding: 0;
 }
 
-/* Cabeçalho do Relatório */
-.header {
-    border: none;
-    border-bottom: 2pt solid #322b75;
-    border-radius: 0;
-    margin-bottom: 18px;
-    padding: 0 0 10px 0;
-    background: transparent;
-    color: #212529;
-    page-break-inside: avoid;
-    text-align: center;
-    position: relative;
-    min-height: 42px;
+strong,
+b {
+    font-weight: bold;
 }
 
-.pdf-header-corner-logo {
-    position: absolute;
-    top: -50px;
-    left: 0;
-    width: 40px;
-    height: auto;
+/* Cabeçalho: logotipo, identificação da instituição e título do documento. */
+.pdf-header {
+    margin: 0 0 14px 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1.5pt solid #322b75;
+    page-break-inside: avoid;
+}
+
+.pdf-header .pdf-header-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    margin: 0;
+}
+
+/* Cada célula define o próprio espaçamento; uma regra genérica para td anularia o recuo e a divisória. */
+.pdf-header .pdf-header-table td {
+    background: transparent;
+    vertical-align: middle;
+}
+
+.pdf-header .pdf-header-logo {
+    width: 58px;
+    padding: 0 14px 0 0;
+    border: 0;
+}
+
+.pdf-header-logo img {
+    width: 58px;
+    max-height: 58px;
+}
+
+.pdf-header-logo .pdf-logo-rounded {
+    border-radius: 10px;
+}
+
+.pdf-header-logo .pdf-logo-circle {
+    border-radius: 29px;
+}
+
+.pdf-header .pdf-header-identity {
+    padding: 0 14px 0 0;
+    border: 0;
+    color: #322b75;
+    font-size: 9.5px;
+    line-height: 1.3;
+    word-wrap: break-word;
 }
 
 .pdf-header-eyebrow {
-    position: absolute;
-    top: -45px;
-    left: 58px;
-    width: 170px;
-    margin: 0;
-    color: #4D44B5;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: bold;
-    letter-spacing: .8px;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+}
+
+.pdf-header-institution {
+    display: block;
+    color: #1d2939;
+    font-size: 11.5px;
+    font-weight: bold;
+}
+
+.pdf-header-unit {
+    color: #322b75;
+    font-weight: bold;
+}
+
+.pdf-header-details {
+    color: #475467;
+    font-size: 8.5px;
+}
+
+.pdf-header .pdf-header-title {
+    width: 34%;
+    padding: 2px 0 2px 14px;
+    border: 0;
+    border-left: 1pt solid #98a2b3;
+    text-align: center;
+}
+
+.pdf-header-title h1 {
+    margin: 0;
+    color: #1d2939;
+    font-size: 13px;
+    font-weight: bold;
     line-height: 1.25;
     text-transform: uppercase;
-    text-align: left;
 }
 
-.header h2 {
-    margin: 8px 0 0 0;
-    text-transform: uppercase;
-    font-size: 15px;
-    font-weight: bold;
-    color: #322b75;
-    line-height: 1.2;
-}
-
-.header h1 {
-    margin: 0;
-    text-transform: uppercase;
-    font-size: 15px;
-    font-weight: bold;
-    color: #322b75;
-    line-height: 1.2;
-}
-
-.header p {
+.pdf-header-title p {
     margin: 3px 0 0 0;
-    font-size: 9.5px;
-    color: #667085;
+    color: #475467;
+    font-size: 9px;
 }
 
+/* Identificação resumida do documento, logo abaixo do cabeçalho. */
 .pdf-header-meta {
-    margin-top: 6px;
-    padding-top: 6px;
-    border-top: 1pt solid #d9d6ef;
-    text-align: center;
+    margin: -6px 0 12px 0;
+    padding: 0 0 6px 0;
+    border-bottom: 0.75pt solid #d0d5dd;
+    font-size: 9px;
+    color: #1d2939;
 }
 
 .pdf-meta-item {
     display: inline-block;
-    margin-right: 12px;
-    margin-bottom: 2px;
-    color: #212529;
-    font-size: 9px;
+    margin-right: 14px;
 }
 
 .pdf-meta-label {
-    color: #322b75;
     font-weight: bold;
-    text-transform: uppercase;
 }
 
-.pdf-status-meta {
-    margin-right: 0;
-}
-
-/* Títulos de Seção (Ex: 1. Identificação Técnica) */
+/* Divisor de blocos maiores, como cada atendimento de um histórico. */
 .category-header {
-    background-color: #2d3748;
-    color: #ffffff;
-    padding: 8px 12px;
-    margin-top: 10px;
-    margin-bottom: 6px;
-    border-radius: 3px;
-    font-size: 13pt;
+    margin: 14px 0 6px 0;
+    padding: 0 0 4px 0;
+    border-bottom: 1pt solid #98a2b3;
+    color: #1d2939;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
-    text-align: center;
+    page-break-after: avoid;
 }
 
+/* Títulos de seção: faixa cinza clara. */
 .section-title {
-    background: #322b75;
-    color: #ffffff;
-    padding: 7px 10px;
+    background: #e4e7ec;
+    color: #101828;
+    padding: 6px 10px;
+    margin: 12px 0 4px 0;
+    border-radius: 3px;
+    font-size: 10.5px;
     font-weight: bold;
     text-transform: uppercase;
-    border: 1pt solid #322b75;
-    margin-top: 3px;
-    margin-bottom: 0;
-    font-size: 11px;
     letter-spacing: .2px;
+    page-break-after: avoid;
+}
+
+.pdf-subject-header {
+    background: #f2f4f7;
+    color: #101828;
+    padding: 6px 10px;
+    border: 0.75pt solid #d0d5dd;
+    border-radius: 3px;
+    margin: 10px 0 4px 0;
+    font-size: 10px;
+    font-weight: bold;
     page-break-after: avoid;
 }
 
@@ -133,60 +184,123 @@ table {
     border-collapse: collapse;
     margin-bottom: 0;
     table-layout: fixed;
-    page-break-inside: avoid;
 }
 
-td {
-    border: 1pt solid #d9d6ef;
-    padding: 6px;
+td,
+th {
+    padding: 5px 8px;
     vertical-align: top;
     word-wrap: break-word;
+    text-align: left;
+}
+
+tr {
     page-break-inside: avoid;
 }
 
-tr,
-th {
-    page-break-inside: avoid;
+/* Linhas de informação: apenas réguas horizontais e divisórias entre colunas. */
+.pdf-table td,
+.pdf-table th,
+.info-table td {
+    border: 0;
+    border-bottom: 0.75pt solid #d0d5dd;
 }
 
-/* Rótulos (Labels) e Valores */
+.pdf-table td + td,
+.pdf-table th + th,
+.pdf-table th + td,
+.pdf-table td + th,
+.info-table td + td {
+    border-left: 0.75pt solid #d0d5dd;
+}
+
+/* Tabelas de dados (com cabeçalho de coluna): grade completa e cabeçalho cinza. */
+.pdf-table th,
+.pdf-data-table th,
+.report-table th {
+    background: #f2f4f7;
+    color: #101828;
+    font-weight: bold;
+}
+
+.pdf-data-table td,
+.pdf-data-table th,
+.pdf-data-table td + td,
+.pdf-data-table th + th {
+    border: 0.75pt solid #d0d5dd;
+}
+
+.pdf-data-table th {
+    text-align: center;
+}
+
+.pdf-cell {
+    border-color: #d0d5dd;
+}
+
+/* Rótulos e valores: "Rótulo: valor", como nas fichas impressas. */
 .label {
     font-weight: bold;
-    font-size: 8px;
-    color: #322b75;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 2px;
+    color: #101828;
 }
 
 .value {
-    font-size: 11px;
-    color: #212529;
-    font-weight: normal; /* Garante que o valor não herde negrito do label */
+    color: #1d2939;
+    font-weight: normal;
 }
 
-/* Áreas de Texto (Observações) */
+.value p,
+.text-box p {
+    margin: 0 0 4px 0;
+}
+
+/* Textos longos: rótulo acima e conteúdo em caixa de borda leve. */
+.pdf-field-label {
+    margin: 8px 0 3px 0;
+    color: #101828;
+    font-weight: bold;
+    page-break-after: avoid;
+}
+
 .text-box {
-    border: 1pt solid #d9d6ef;
-    padding: 8px;
+    border: 0.75pt solid #d0d5dd;
+    border-radius: 2px;
+    padding: 6px 8px;
     background: #fff;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 10px;
     text-align: justify;
-    min-height: 30px;
-    font-weight: normal;
+    min-height: 16px;
+}
+
+.text-box ul,
+.text-box ol,
+.value ul,
+.value ol {
+    margin: 0 0 4px 0;
+    padding-left: 16px;
+}
+
+/* Avisos curtos dentro do documento (ex.: resumo destinado à família). */
+.pdf-notice {
+    margin: 0 0 10px 0;
+    padding: 6px 10px;
+    border: 0.75pt solid #d0d5dd;
+    border-left: 3pt solid #667085;
+    background: #f9fafb;
+    font-size: 9.5px;
+}
+
+.pdf-empty {
+    padding: 6px 8px;
+    border-bottom: 0.75pt solid #d0d5dd;
+    color: #475467;
+    font-style: italic;
 }
 
 /* Área de Assinaturas */
 .signature-wrapper {
     margin-top: 50px;
     width: 100%;
-}
-
-.signature-box {
-    text-align: center;
-    border: none !important;
+    page-break-inside: avoid;
 }
 
 .signature-table-wrapper {
@@ -194,24 +308,22 @@ th {
     width: 100%;
 }
 
-.signature-table-row {
-    border: none;
+.signature-table-wrapper td,
+.signature-box {
+    text-align: center;
+    border: 0;
+}
+
+.signature-box .label {
+    font-weight: normal;
+    font-size: 9px;
+    color: #344054;
 }
 
 .line {
-    border-top: 1pt solid #322b75;
+    border-top: 0.75pt solid #344054;
     width: 220px;
     margin: 0 auto 5px auto;
-}
-
-th,
-.pdf-cell th {
-    background: #f6f4ff;
-    color: #322b75;
-}
-
-.pdf-cell {
-    border-color: #d9d6ef !important;
 }
 
 .text-muted {
@@ -267,16 +379,17 @@ th,
     margin-bottom: 12px;
 }
 
-.pdf-page-break {
-    page-break-after: always;
-}
-
+.pdf-page-break,
 .page-break {
     page-break-after: always;
 }
 
 .clear {
     clear: both;
+}
+
+.pdf-w-12 {
+    width: 12%;
 }
 
 .pdf-w-16 {
@@ -329,20 +442,20 @@ th,
 
 .pdf-divider-strong {
     width: 100%;
-    height: 4px;
-    background-color: #000;
+    height: 1.5pt;
+    background-color: #322b75;
     margin-top: 25px;
     margin-bottom: 25px;
 }
 
 .pdf-signature-line-black {
-    border-top: 1px solid #000;
+    border-top: 0.75pt solid #344054;
     width: 300px;
     margin: 0 auto;
 }
 
 .pdf-signature-caption {
-    font-size: 10px;
+    font-size: 9px;
     text-transform: uppercase;
 }
 
@@ -355,94 +468,69 @@ th,
     width: 100%;
 }
 
-.pdf-subject-header {
-    background: #f6f4ff;
-    color: #322b75;
-    padding: 8px 10px;
-    border: 1pt solid #d9d6ef;
-    margin-top: 8px;
-    margin-bottom: 0;
-    font-size: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    page-break-after: avoid;
-}
-
+/* Estados: sempre acompanhados do texto do estado. */
 .pdf-status-danger {
-    color: #d9534f;
+    color: #b42318;
     font-weight: bold;
-    text-transform: uppercase;
 }
 
 .pdf-status-success {
-    color: #155724;
+    color: #067647;
     font-weight: bold;
 }
 
 .pdf-status-warning {
-    color: #856404;
+    color: #93370d;
     font-weight: bold;
 }
 
 .pdf-priority-high {
-    color: #e74c3c;
+    color: #b42318;
     font-weight: bold;
 }
 
 .pdf-priority-medium {
-    color: #f39c12;
+    color: #93370d;
     font-weight: bold;
 }
 
 .pdf-priority-default {
-    color: #7f8c8d;
+    color: #475467;
     font-weight: bold;
 }
 
-/* Estrutura legada/PEI migrada para CSS centralizado */
+/* Estrutura de PEI: rótulos em linha e caixas de conteúdo. */
 .field-label {
     font-weight: bold;
-    display: block;
-    margin-top: 10px;
-    text-transform: uppercase;
-    font-size: 10px;
-    color: #322b75;
+    color: #101828;
 }
 
 .content-box {
-    border: 1px solid #d9d6ef;
-    padding: 8px 16px 8px 10px;
-    min-height: 40px;
-    margin-top: 5px;
+    border: 0.75pt solid #d0d5dd;
+    border-radius: 2px;
+    padding: 6px 10px;
+    min-height: 16px;
+    margin: 3px 0 0 0;
     width: 100%;
-    max-width: 100%;
     box-sizing: border-box;
     text-align: justify;
-    overflow: hidden;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
 }
 
 .content-box p {
-    margin: 0 0 8px 0;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    margin: 0 0 6px 0;
 }
 
 .content-box ul,
 .content-box ol {
-    margin: 0 0 8px 18px;
-    padding-left: 18px;
-    max-width: 100%;
+    margin: 0 0 6px 0;
+    padding-left: 16px;
 }
 
 .content-box li {
-    margin-bottom: 4px;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    margin-bottom: 3px;
 }
 
 .content-box h1,
@@ -451,54 +539,38 @@ th,
 .content-box h4,
 .content-box h5,
 .content-box h6 {
-    margin: 0 0 8px 0;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    margin: 0 0 6px 0;
+    font-size: 11px;
 }
 
 .content-box table {
     width: 100% !important;
-    max-width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
 }
 
 .content-box table td,
 .content-box table th {
-    border: 1px solid #d9d6ef;
-    padding: 4px 10px 4px 6px;
-    vertical-align: top;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    border: 0.75pt solid #d0d5dd;
+    padding: 4px 6px;
 }
 
-.content-box img {
+.content-box img,
+.text-box img,
+.value img {
     max-width: 100%;
     height: auto;
-    display: block;
-}
-
-.content-box * {
-    max-width: 100%;
-    box-sizing: border-box;
 }
 
 .info-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     table-layout: fixed;
 }
 
 .info-table td {
-    border: 1px solid #d9d6ef;
-    padding: 8px 16px 8px 10px;
-    vertical-align: top;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    box-sizing: border-box;
-    overflow: hidden;
+    padding: 5px 8px;
 }
 
 .signature-table {
@@ -506,6 +578,7 @@ th,
     margin-top: 40px;
     border-collapse: collapse;
     table-layout: fixed;
+    page-break-inside: avoid;
 }
 
 .signature-table td {
@@ -513,133 +586,77 @@ th,
     padding: 20px 10px 0 10px;
     text-align: center;
     vertical-align: top;
+    border: 0;
 }
 
 .sig-line {
-    border-top: 1px solid #322b75;
+    border-top: 0.75pt solid #344054;
     font-size: 9px;
     text-transform: uppercase;
     padding-top: 5px;
 }
 
 .disc-card {
-    border: 1px solid #d9d6ef;
-    padding: 14px 18px 16px 14px;
     margin-top: 12px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
     page-break-inside: avoid;
-    overflow: hidden;
-}
-
-.disc-card * {
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.disc-card .info-table {
-    width: 100%;
-    table-layout: fixed;
-}
-
-.disc-card .info-table td {
-    overflow: hidden;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    padding: 8px 16px 8px 10px;
-}
-
-.disc-card .content-box {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    padding: 8px 16px 8px 10px;
 }
 
 .disc-head {
     font-weight: bold;
     text-transform: uppercase;
-    margin-bottom: 0;
-    font-size: 11px;
-    line-height: 1.3;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    font-size: 10.5px;
 }
 
 .muted {
-    font-size: 10px;
+    font-size: 9.5px;
     font-style: italic;
+    color: #475467;
 }
 
 /* Relatórios genéricos */
 .report-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 4px;
     font-size: 9px;
-    page-break-inside: auto;
+    table-layout: auto;
 }
 
 .report-table thead {
     display: table-header-group;
 }
 
-.report-table tbody {
-    display: table-row-group;
-    page-break-inside: auto;
-}
-
 .report-table th,
 .report-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-    vertical-align: top;
+    border: 0.75pt solid #d0d5dd;
+    padding: 5px 6px;
 }
-
-.report-table th {
-    background-color: #f6f4ff;
-    color: #322b75;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
 
 .new-val {
-    color: #198754;
+    color: #067647;
     font-weight: bold;
-    background-color: #f2fff2;
-    padding: 1px 2px;
 }
 
 .action-label {
     font-weight: bold;
     display: block;
     margin-bottom: 2px;
-    font-size: 10px;
 }
 
-.action-created {
-    color: #0d6efd;
-}
-
-.action-updated {
-    color: #6610f2;
-}
-
+.action-created,
+.action-updated,
 .action-deleted {
-    color: #dc3545;
+    color: #101828;
 }
 
 .module-badge {
     display: inline-block;
-    padding: 2px 5px;
-    background: #333;
-    color: #fff;
+    padding: 1px 5px;
+    border: 0.75pt solid #98a2b3;
     border-radius: 3px;
+    color: #344054;
     font-size: 8px;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .detail-list {
@@ -650,36 +667,29 @@ th,
 
 .detail-item {
     margin-bottom: 6px;
-    border-bottom: 0.5pt solid #eee;
+    border-bottom: 0.5pt solid #e4e7ec;
     padding-bottom: 2px;
 }
 
 .field-name {
     font-weight: bold;
-    color: #444;
+    color: #344054;
 }
 
 /* Evidências da vistoria */
 .inspection-evidences,
 .evidence-container {
-    border: 1px solid #d9d6ef;
+    border: 0.75pt solid #d0d5dd;
     padding: 6px;
     background: #fff;
-    margin-bottom: 0;
-    overflow: hidden;
 }
 
 .evidence-card {
     width: 100%;
     margin: 0 0 8px 0;
     page-break-inside: avoid;
-    border: 1px solid #d9d6ef;
-    background: #f9f9ff;
-}
-
-.evidence-card.tall,
-.evidence-card.wide {
-    width: 100%;
+    border: 0.75pt solid #d0d5dd;
+    background: #f9fafb;
 }
 
 .evidence-image {
@@ -699,65 +709,24 @@ th,
 }
 
 .evidence-caption {
-    border-top: 1px solid #d9d6ef;
+    border-top: 0.75pt solid #d0d5dd;
     padding: 4px 6px;
-    color: #667085;
+    color: #475467;
     font-size: 8px;
     text-align: center;
 }
 
-.evidence-placeholder,
 .evidence-placeholder {
     font-size: 10px;
-    color: #999;
-    padding: 20px;
-    border: 1px solid #d9d6ef;
-    background: #f9f9ff;
-    margin-bottom: 0;
+    color: #667085;
+    padding: 16px;
+    border: 0.75pt solid #d0d5dd;
+    background: #f9fafb;
     text-align: center;
 }
 
 .anonymous-text {
     font-style: italic;
-    color: #7f8c8d;
-    font-size: 10px;
+    color: #475467;
     padding-top: 15px;
-}
-
-/* Identificação da instituição, configurada para todos os documentos PDF. */
-.header .pdf-institution-header {
-    width: 100%;
-    margin: 0 0 10px;
-    border: 0;
-    border-collapse: collapse;
-    page-break-inside: avoid;
-}
-
-.header .pdf-institution-header td {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    vertical-align: middle;
-}
-
-.header .pdf-institution-header .pdf-institution-header-logo {
-    width: 85px;
-    padding-right: 14px;
-}
-
-.pdf-institution-header-logo img {
-    max-width: 85px;
-    max-height: 70px;
-}
-
-.header .pdf-institution-header-text {
-    color: #212529;
-    text-align: left;
-    font-size: 10px;
-    line-height: 1.4;
-    overflow-wrap: break-word;
-}
-
-.pdf-institution-header-text strong {
-    font-size: 12px;
 }

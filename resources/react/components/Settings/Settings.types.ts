@@ -45,6 +45,8 @@ export interface PdfHeaderSettingsProps {
         issuing_unit: string | null;
         details: string | null;
         logo_url: string | null;
+        logo_shape: string;
     };
+    logoShapes: SettingsOptions;
     canUpdate: boolean;
 }

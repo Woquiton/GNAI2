@@ -15,6 +15,9 @@ final class StudentPdfQuery
             'person',
             'deficiencies',
             'currentCourse.course',
+            'currentCourse.semester',
+            'currentCourse.failedDisciplines',
+            'currentCourse.atRiskDisciplines',
             'guardians.person',
             'documents' => function ($query): void {
                 $query->with('semester')->orderByDesc('created_at');

@@ -36,6 +36,7 @@ final class StudentAeeEvaluationsQuery
     public function history(Student $student, User $user): Collection
     {
         return $this->query($student, $user)
+            ->with(['student.person', 'guardians.person'])
             ->orderBy(
                 Session::query()
                     ->select('session_date')

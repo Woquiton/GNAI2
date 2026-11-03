@@ -81,12 +81,12 @@ A restrição vale para novos pedidos de link de acesso do professor, sem altera
 ## Personalizar o cabeçalho dos PDFs
 
 1. Acesse **Sistema → Configurações → PDFs**.
-2. Em **Identificação**, selecione o **Logotipo da instituição** e preencha **Nome da instituição** (obrigatório).
-3. Se desejar, preencha **Núcleo ou setor emissor** e **Texto complementar**, com endereço, CNPJ, telefone ou outras informações. As quebras de linha são mantidas.
+2. Em **Identificação**, selecione o **Logotipo da instituição**, escolha o **Formato do logotipo** (quadrada, cantos arredondados ou redonda) e preencha **Nome da instituição** (obrigatório).
+3. Se desejar, preencha **Núcleo ou setor emissor** e **Texto complementar**, com endereço, CNPJ, telefone ou outras informações. Em todos esses campos, pressione Enter para quebrar a linha no PDF.
 4. Confira a **Prévia do cabeçalho** e clique em **Salvar**.
 
-O logotipo deve estar em JPG ou PNG, com até 4 MB e até 4000 pixels de largura e altura. **Remover** deixa o cabeçalho sem logotipo após salvar; selecionar outra imagem substitui a anterior.
+O logotipo deve estar em JPG ou PNG, com até 4 MB e até 4000 pixels de largura e altura. Os formatos redondo e com cantos arredondados ficam melhores com imagens quadradas. **Remover** deixa o cabeçalho sem logotipo após salvar; selecionar outra imagem substitui a anterior.
 
-O modelo coloca o logotipo à esquerda e os textos à direita, seguido pelo título específico de cada documento. Vale para os próximos PDFs de alunos, solicitações de atendimento, PEIs, atendimentos, publicações, itens, empréstimos, barreiras, fila de espera e relatórios. Arquivos já baixados permanecem como foram emitidos.
+O modelo coloca o logotipo à esquerda, os textos da instituição ao lado e, separado por uma linha vertical, o título específico de cada documento. Vale para os próximos PDFs de alunos, solicitações de atendimento, PEIs, atendimentos, publicações, itens, empréstimos, barreiras, fila de espera e relatórios. Arquivos já baixados permanecem como foram emitidos.
 
-Enquanto a configuração não for salva, os documentos mantêm o cabeçalho atual do Gnai. A prévia representa o cabeçalho; a paginação final varia conforme o documento e a quantidade de texto informada.
+Enquanto a configuração não for salva, os documentos usam o logotipo redondo do Gnai e o nome do sistema. A prévia representa o cabeçalho; a paginação final varia conforme o documento e a quantidade de texto informada.

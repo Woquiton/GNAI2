@@ -1,75 +1,118 @@
+@use('App\Shared\Domain\Support\AeeLabels')
+@php
+    $student = $pei->student;
+    $studentName = $student?->person?->name ?? 'Não informado';
+    $studentDocument = $student?->person?->document;
+    $disciplineName = $item->discipline?->name ? mb_strtoupper($item->discipline->name, 'UTF-8') : 'Não informado';
+    $versionLabel = $pei->version ? 'v' . $pei->version : 'Não informada';
+    $responsible = $pei->creator?->is_admin ? 'Administrador' : ($pei->creator?->name ?? 'Não informado');
+    $deficiencies = $student?->deficiencies?->pluck('name')->filter()->implode(', ');
+    $paee = $pei->paee;
+@endphp
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>PEI - {{ $item->discipline->name }} - {{ $pei->student->person->name }}</title>
+    <meta charset="utf-8">
+    <title>PEI - {{ $item->discipline?->name ?? 'Adaptação' }} - {{ $studentName }}</title>
     <x-pdf.styles />
 </head>
 <body>
 
     <x-pdf.header
         title="Plano Educacional Individualizado (PEI)"
-        :status="$pei->is_current ? 'PEI Atual' : 'Histórico'"
+        :status="$pei->is_finished ? 'Finalizado' : 'Em preenchimento'"
         :meta="[
-            'Estudante' => $pei->student->person->name,
-            'Componente Curricular' => mb_strtoupper($item->discipline->name, 'UTF-8'),
-            'Versão' => $pei->version ?? 'Não informada',
+            'Estudante' => $studentName,
+            'Componente curricular' => $disciplineName,
+            'Versão' => $versionLabel,
         ]"
     />
 
-    <table class="info-table">
-        <tr>
-            <td colspan="2"><span class="field-label">Nome do Estudante:</span> {{ $pei->student->person->name }}</td>
-        </tr>
-        <tr>
-            <td class="pdf-w-60"><span class="field-label">Curso:</span> {{ $pei->course->name }}</td>
-            <td class="pdf-w-40"><span class="field-label">Ano - Semestre:</span> {{ $pei->semester->label }}</td>
-        </tr>
-        <tr>
-            <td class="pdf-w-60"><span class="field-label">Componente Curricular:</span> {{ mb_strtoupper($item->discipline->name, 'UTF-8') }}</td>
-            <td class="pdf-w-40"><span class="field-label">Docente:</span> {{ $item->teacher->person->name }}</td>
-        </tr>
-        <tr>
-            <td class="pdf-w-60"><span class="field-label">Versão do PEI:</span> {{ $pei->version ?? 'Não informada' }}</td>
-            <td class="pdf-w-40"><span class="field-label">PEI Atual:</span> {{ $pei->is_current ? 'Sim' : 'Não' }}</td>
-        </tr>
-    </table>
+    <x-pdf.section-title title="Identificação" />
+    <x-pdf.table>
+        <x-pdf.row>
+            <x-pdf.info-item label="Estudante" :value="$studentName" />
+            <x-pdf.info-item label="Matrícula" :value="$student?->registration ?? 'Não informada'" />
+        </x-pdf.row>
+        <x-pdf.row>
+            <x-pdf.info-item label="Curso" :value="$pei->course?->name ?? 'Não informado'" />
+            <x-pdf.info-item label="Semestre" :value="$pei->semester?->label ?? 'Não informado'" />
+        </x-pdf.row>
+        <x-pdf.row>
+            <x-pdf.info-item label="Componente curricular" :value="$disciplineName" />
+            <x-pdf.info-item label="Docente" :value="$item->teacher?->person?->name ?? 'Não informado'" />
+        </x-pdf.row>
+        <x-pdf.row>
+            <x-pdf.info-item label="Versão do PEI" :value="$versionLabel" />
+            <x-pdf.info-item label="PEI vigente" :value="$pei->is_current ? 'Sim' : 'Não (histórico)'" />
+        </x-pdf.row>
+        <x-pdf.row>
+            <x-pdf.info-item label="Responsável pelo PEI" :value="$responsible" />
+            <x-pdf.info-item label="Criado em" :value="$pei->created_at?->format('d/m/Y') ?? 'Não informado'" />
+        </x-pdf.row>
+        <x-pdf.row>
+            <x-pdf.info-item label="Perfis de atendimento" :value="$deficiencies ?: 'Nenhum perfil de atendimento registrado'" colspan="2" />
+        </x-pdf.row>
+    </x-pdf.table>
 
-    <div class="section-title">Informações de Apoio Pedagógico (NAPNE)</div>
+    <x-pdf.section-title title="PAEE Vinculado" />
+    @if($paee)
+        <x-pdf.table>
+            <x-pdf.row>
+                <x-pdf.info-item label="Versão" :value="$paee->version ? 'v' . $paee->version : 'Não informada'" />
+                <x-pdf.info-item label="Status" :value="AeeLabels::paeeStatus($paee->status)" />
+            </x-pdf.row>
+            <x-pdf.row>
+                <x-pdf.info-item label="Frequência semanal" :value="$paee->attendance_frequency_per_week !== null ? $paee->attendance_frequency_per_week . 'x por semana' : 'Não informada'" />
+                <x-pdf.info-item label="Duração" :value="$paee->attendance_duration_minutes !== null ? $paee->attendance_duration_minutes . ' min' : 'Não informada'" />
+            </x-pdf.row>
+            <x-pdf.row>
+                <x-pdf.info-item label="Formato de atendimento" :value="AeeLabels::attendanceFormat($paee->attendance_format)" />
+                <x-pdf.info-item label="Local de atendimento" :value="AeeLabels::attendanceLocation($paee->attendance_location)" />
+            </x-pdf.row>
+        </x-pdf.table>
+        <x-pdf.text-area label="Articulação com o professor regente" :value="$paee->common_teachers_articulation" empty="Não informado." />
+    @else
+        <p class="pdf-empty">Nenhum PAEE vinculado a este PEI.</p>
+    @endif
 
-    <span class="field-label">PAEE Vinculado (versão):</span>
-    <div class="content-box">{{ $pei->paee->version ?? 'Não informada' }}</div>
+    <x-pdf.section-title title="Adaptações Razoáveis e/ou Acessibilidades Curriculares" />
 
-    <span class="field-label">Frequência de Atendimento:</span>
-    <div class="content-box">{{ $pei->paee->attendance_frequency_per_week ?? 'Não informada' }}</div>
+    <x-pdf.text-area label="Objetivos Específicos" :value="$item->specific_objectives" empty="Não informado." />
+    <x-pdf.text-area label="Prazo das metas/objetivos" :value="$item->objectives_deadline" empty="Não informado." />
+    <x-pdf.text-area label="Conteúdo Programático" :value="$item->content_programmatic" empty="Não informado." />
+    <x-pdf.text-area label="Referência curricular" :value="$item->curricular_reference" empty="Não informada." />
+    <x-pdf.text-area label="Metodologias e Estratégias" :value="$item->methodologies" empty="Não informado." />
+    <x-pdf.text-area label="Recursos didáticos e tecnologia assistiva" :value="$item->materials_and_assistive_technology" empty="Não informado." />
+    <x-pdf.text-area label="Processo de Avaliação" :value="$item->evaluations" empty="Não informado." />
+    <x-pdf.text-area label="Registros Complementares" :value="$item->complementary_records" empty="Nenhum registro complementar informado." />
+    <x-pdf.text-area label="Parecer" :value="$item->opinion" empty="Não informado." />
 
-    <span class="field-label">Formato de Atendimento:</span>
-    <div class="content-box">{{ $pei->paee ? \App\Shared\Domain\Support\AeeLabels::attendanceFormat($pei->paee->attendance_format) : 'Não informado' }}</div>
-
-    <span class="field-label">Status do PAEE:</span>
-    <div class="content-box">{{ $pei->paee ? match($pei->paee->status) { 'active' => 'Ativo', 'under_review' => 'Em revisão', default => 'Rascunho' } : 'Não informado' }}</div>
-
-    <div class="section-title">Adaptações Razoáveis e/ou Acessibilidades Curriculares</div>
-
-    <span class="field-label">Objetivos Específicos:</span>
-    <div class="content-box">{!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $item->specific_objectives) !!}</div>
-
-    <span class="field-label">Conteúdos Programáticos:</span>
-    <div class="content-box">{!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $item->content_programmatic) !!}</div>
-
-    <span class="field-label">Metodologia:</span>
-    <div class="content-box">{!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $item->methodologies) !!}</div>
-
-    <span class="field-label">Avaliação:</span>
-    <div class="content-box">{!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $item->evaluations) !!}</div>
-
-    <span class="field-label">Registros Complementares:</span>
-    <div class="content-box">{!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($item->complementary_records ?? '')) !!}</div>
-
-    <span class="field-label">Parecer:</span>
-    <div class="content-box">{!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $item->opinion) !!}</div>
-
-   
+    <x-pdf.section-title title="Revisões desta Adaptação" />
+    @if($item->revisions->isNotEmpty())
+        <table class="pdf-table pdf-data-table">
+            <thead>
+                <tr>
+                    <th class="pdf-w-16">Data</th>
+                    <th class="pdf-w-18">Revisado por</th>
+                    <th>O que mudou</th>
+                    <th>Por quê</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($item->revisions as $revision)
+                    <tr>
+                        <td>{{ $revision->reviewed_at?->format('d/m/Y') ?? 'Sem data' }}</td>
+                        <td>{{ $revision->reviewer?->name ?? 'Não informado' }}</td>
+                        <td>{!! nl2br(e((string) $revision->what_changed)) !!}</td>
+                        <td>{!! nl2br(e((string) $revision->why)) !!}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p class="pdf-empty">Nenhuma revisão registrada.</p>
+    @endif
 
     <table class="signature-table">
         <tr>
@@ -84,21 +127,21 @@
 
     {{-- Anexo II anexado ao final do documento individual --}}
     <div class="page-break"></div>
-    
+
     <x-pdf.header
         title="Declaração"
         :meta="[
-            'Estudante' => $pei->student->person->name,
-            'Documento' => $pei->student->person->document ?? '___________',
+            'Estudante' => $studentName,
+            'CPF' => $studentDocument ?? 'Não informado',
         ]"
     />
 
     <div class="pdf-text-justify pdf-mt-40 pdf-line-height-2">
         <p>
-            Declaro para os devidos fins que eu, <strong>{{ $pei->student->person->name }}</strong>, 
-            CPF nº <strong>{{ $pei->student->person->document ?? '___________' }}</strong>, na condição de pessoa com deficiência 
-            e tendo ingressado por reserva de vagas nesta instituição, estou ciente de que tenho direito ao apoio, 
-            acompanhamentos e demais procedimentos previstos no processo de acessibilidade curricular - 
+            Declaro para os devidos fins que eu, <strong>{{ $studentName }}</strong>,
+            CPF nº <strong>{{ $studentDocument ?? '___________' }}</strong>, na condição de pessoa com deficiência
+            e tendo ingressado por reserva de vagas nesta instituição, estou ciente de que tenho direito ao apoio,
+            acompanhamentos e demais procedimentos previstos no processo de acessibilidade curricular -
             Plano Educacional Individualizado (PEI).
         </p>
 
@@ -110,7 +153,7 @@
         </p>
 
         <div class="pdf-mt-50 pdf-text-right">
-            {{ config('app.city', 'Guanambi - BA') }}, {{ date('d') }} de {{ date('m') }} de {{ date('Y') }}.
+            {{ config('app.city', 'Guanambi - BA') }}, {{ now()->locale('pt_BR')->translatedFormat('d \d\e F \d\e Y') }}.
         </div>
 
         <div class="pdf-mt-80 pdf-text-center">

@@ -1,7 +1,11 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import FormField from '@/components/Forms/FormField/FormField';
 import { fieldDescribedBy } from '@/components/Forms/FormField/fieldDescription';
-import { TextAreaField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import {
+    optionsFromRecord,
+    SelectInputField,
+    TextAreaField,
+} from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -77,25 +81,45 @@ export default function PdfHeaderSettingsForm(props: PdfHeaderSettingsProps): Re
                                     />
                                 </FormField>
                             </FormGridWide>
-                            <TextInputField
-                                id="pdf-institution-name"
-                                name="institution_name"
-                                label="Nome da instituição"
+                            <SelectInputField
+                                id="pdf-logo-shape"
+                                name="logo_shape"
+                                label="Formato do logotipo"
                                 required
-                                maxLength={180}
-                                value={form.data.institution_name}
-                                error={errors.institution_name}
-                                onChange={(value) => form.setData('institution_name', value)}
+                                hint="Redonda e cantos arredondados funcionam melhor com imagens quadradas."
+                                disabled={disabled}
+                                options={optionsFromRecord(props.logoShapes)}
+                                value={form.data.logo_shape}
+                                error={errors.logo_shape}
+                                onChange={(value) => form.setData('logo_shape', value)}
                             />
-                            <TextInputField
-                                id="pdf-issuing-unit"
-                                name="issuing_unit"
-                                label="Núcleo ou setor emissor"
-                                maxLength={180}
-                                value={form.data.issuing_unit}
-                                error={errors.issuing_unit}
-                                onChange={(value) => form.setData('issuing_unit', value)}
-                            />
+                            <FormGridWide>
+                                <TextAreaField
+                                    id="pdf-institution-name"
+                                    name="institution_name"
+                                    label="Nome da instituição"
+                                    required
+                                    hint="Pressione Enter para quebrar a linha no PDF."
+                                    rows={2}
+                                    maxLength={180}
+                                    value={form.data.institution_name}
+                                    error={errors.institution_name}
+                                    onChange={(value) => form.setData('institution_name', value)}
+                                />
+                            </FormGridWide>
+                            <FormGridWide>
+                                <TextAreaField
+                                    id="pdf-issuing-unit"
+                                    name="issuing_unit"
+                                    label="Núcleo ou setor emissor"
+                                    hint="Pressione Enter para quebrar a linha no PDF."
+                                    rows={2}
+                                    maxLength={180}
+                                    value={form.data.issuing_unit}
+                                    error={errors.issuing_unit}
+                                    onChange={(value) => form.setData('issuing_unit', value)}
+                                />
+                            </FormGridWide>
                             <FormGridWide>
                                 <TextAreaField
                                     id="pdf-header-details"

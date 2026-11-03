@@ -2,410 +2,215 @@
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
-    <title>Ficha do Aluno - {{ $student->person->name }}</title>
+    <title>Ficha do Aluno - {{ $student->person?->name ?? $student->registration }}</title>
     <x-pdf.styles />
 </head>
 <body>
 @php
-
-$map = [
-    'eval' => [
-        'initial' => 'Inicial',
-        'periodic_review' => 'Periódica',
-        'pei_review' => 'Revisão PEI',
-        'specific_demand' => 'Demanda Específica',
-    ],
-
-    'levels' => [
-        'very_low' => 'Muito Baixo',
-        'low' => 'Baixo',
-        'adequate' => 'Adequado',
-        'good' => 'Bom',
-        'excellent' => 'Excelente',
-        'moderate' => 'Moderado',
-        'high' => 'Alto',
-    ],
-
-    'reason' => [
-        'concrete' => 'Concreto',
-        'mixed' => 'Misto',
-        'abstract' => 'Abstrato',
-    ],
-
-    'comm' => [
-        'verbal' => 'Verbal',
-        'non_verbal' => 'Não Verbal',
-        'mixed' => 'Mista',
-    ],
-
-    'social' => [
-        'isolated' => 'Isolado',
-        'selective' => 'Seletivo',
-        'participative' => 'Participativo',
-    ],
-
-    'auto' => [
-        'dependent' => 'Dependente',
-        'partial' => 'Parcial',
-        'independent' => 'Independente',
-    ],
-];
-
-$boolLabel = fn ($value) =>
-    filled($value)
-        ? ($value ? 'SIM' : 'Não')
-        : '<span class="text-muted">---</span>';
-
-$boolStrong = fn ($value) =>
-    filled($value)
-        ? ($value ? '<strong>SIM</strong>' : 'Não')
-        : '<span class="text-muted">---</span>';
-
-$renderHtml = fn ($value) =>
-    filled($value)
+    // Texto simples é escapado por {{ }}; texto rico passa pelo sanitizador antes de {!! !!}.
+    $plain = fn ($value): string => filled($value) ? (string) $value : '---';
+    $rich = fn ($value): string => filled($value)
         ? \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) $value)
-        : '<span class="text-muted">---</span>';
+        : '---';
+    $date = fn ($value): string => filled($value) ? \Carbon\Carbon::parse($value)->format('d/m/Y') : '---';
+    $dateTime = fn ($value): string => filled($value) ? \Carbon\Carbon::parse($value)->format('d/m/Y H:i') : '---';
+    $yesNo = fn ($value): string => $value === null ? '---' : ($value ? 'Sim' : 'Não');
+    $upper = fn ($value): string => filled($value) ? mb_strtoupper((string) $value, 'UTF-8') : '---';
 
-$renderText = fn ($value) =>
-    filled($value)
-        ? e($value)
-        : '<span class="text-muted">---</span>';
-
-$formatDate = fn ($date) =>
-    filled($date)
-        ? \Carbon\Carbon::parse($date)->format('d/m/Y')
-        : '<span class="text-muted">---</span>';
-
-$severityMap = [
-    'mild' => 'Leve',
-    'moderate' => 'Moderada',
-    'severe' => 'Severa'
-];
-
-$relationshipMap = [
-    'father' => 'Pai',
-    'mother' => 'Mãe',
-    'grandfather' => 'Avô',
-    'grandmother' => 'Avó',
-    'guardian' => 'Responsável Legal',
-    'other' => 'Outro',
-];
-
+    $person = $student->person;
+    $currentCourse = $student->currentCourse;
+    $deficiencies = $student->deficiencies ?? collect();
+    $guardians = $student->guardians ?? collect();
 @endphp
 
     <x-pdf.header
         title="Ficha do Aluno"
         :status="$student->status?->label()"
         :meta="[
-            'Aluno(a)' => $student->person->name ?? '---',
+            'Aluno(a)' => $person?->name ?? '---',
             'Matrícula' => $student->registration ?? '---',
             'Gerado em' => now()->format('d/m/Y H:i'),
         ]"
     />
 
-    <div class="category-header">Informações do Aluno</div>
-
-    {{-- ================= DADOS BÁSICOS ================= --}}
-    <div class="section-title">Dados Básicos</div>
+    {{-- ================= INFORMAÇÕES DO ALUNO ================= --}}
+    <x-pdf.section-title title="Informações do Aluno" />
     <table class="pdf-table">
         <tr>
+            <td class="pdf-cell" colspan="2"><strong>Nome:</strong> {{ $plain($person?->name) }}</td>
+            <td class="pdf-cell" colspan="2"><strong>Matrícula:</strong> {{ $plain($student->registration) }}</td>
+        </tr>
+        <tr>
+            <td class="pdf-cell" colspan="2"><strong>CPF:</strong> {{ $plain($person?->document) }}</td>
+            <td class="pdf-cell" colspan="2"><strong>Gênero:</strong> {{ $plain($person?->gender?->label()) }}</td>
+        </tr>
+        <tr>
+            <td class="pdf-cell" colspan="2"><strong>Data de Nascimento:</strong> {{ $date($person?->birth_date) }}</td>
             <td class="pdf-cell" colspan="2">
-                <strong>Nome:</strong> {!! $renderHtml($student->person->name ?? null) !!}
-            </td>
-            <td class="pdf-cell" colspan="2">
-                <strong>Matrícula:</strong> {!! $renderHtml($student->registration ?? null) !!}
+                <strong>Idade:</strong>
+                {{ $person?->birth_date ? $person->birth_date->age.' anos' : '---' }}
             </td>
         </tr>
         <tr>
+            <td class="pdf-cell" colspan="2"><strong>E-mail:</strong> {{ $plain($person?->email) }}</td>
+            <td class="pdf-cell" colspan="2"><strong>Telefone:</strong> {{ $plain($person?->phone) }}</td>
+        </tr>
+        <tr>
+            <td class="pdf-cell" colspan="4"><strong>Endereço:</strong> {!! $rich($person?->address) !!}</td>
+        </tr>
+        <tr>
+            <td class="pdf-cell" colspan="2"><strong>Situação:</strong> {{ $plain($student->status?->label()) }}</td>
             <td class="pdf-cell" colspan="2">
-                <strong>Documento:</strong> {!! $renderHtml($student->person->document ?? null) !!}
-            </td>
-            <td class="pdf-cell" colspan="2">
-                <strong>Data de Nascimento:</strong> {{ $formatDate($student->person->birth_date ?? null) }}
+                <strong>Tipo de acompanhamento:</strong> {{ $student->follow_up_type?->label() ?? 'Não informado' }}
             </td>
         </tr>
         <tr>
+            <td class="pdf-cell" colspan="2"><strong>Data de Ingresso:</strong> {{ $date($student->entry_date) }}</td>
             <td class="pdf-cell" colspan="2">
-                <strong>Gênero:</strong> {{ $student->person->gender_label }}
-            </td>
-            <td class="pdf-cell" colspan="2">
-                <strong>Situação:</strong>
-                {{ $student->status?->label() ?? '---' }}
-            </td>
-        </tr>
-        <tr>
-            <td class="pdf-cell" colspan="4">
-                <strong>Tipo de acompanhamento:</strong>
-                {{ $student->follow_up_type?->label() ?? 'Não informado' }}
-            </td>
-        </tr>
-        <tr>
-            <td class="pdf-cell" colspan="2">
-                <strong>E-mail:</strong> {!! $renderHtml($student->person->email ?? null) !!}
-            </td>
-            <td class="pdf-cell" colspan="2">
-                <strong>Telefone:</strong> {!! $renderHtml($student->person->phone ?? null) !!}
-            </td>
-        </tr>
-        <tr>
-            <td class="pdf-cell" colspan="4">
-                <strong>Endereço:</strong> {!! $renderHtml($student->person->address ?? null) !!}
-            </td>
-        </tr>
-        <tr>
-            <td class="pdf-cell" colspan="2">
-                <strong>Data de Ingresso:</strong> {{ $formatDate($student->entry_date ?? null) }}
-            </td>
-            <td class="pdf-cell" colspan="2">
-                <strong>Quantidade de Perfis de Atendimento:</strong> {{ $student->deficiencies?->count() ?? 0 }}
+                <strong>Quantidade de Perfis de Atendimento:</strong> {{ $deficiencies->count() }}
             </td>
         </tr>
     </table>
 
     {{-- ================= PERFIS DE ATENDIMENTO ================= --}}
-    <div class="section-title">Perfis de Atendimento</div>
-
-    @if($student->deficiencies && $student->deficiencies->count())
-        <table class="pdf-table">
+    <x-pdf.section-title title="Perfis de Atendimento" />
+    @if($deficiencies->isNotEmpty())
+        <table class="pdf-table pdf-data-table">
             <tr>
-                <th class="pdf-cell pdf-w-24">Perfil de Atendimento</th>
+                <th class="pdf-cell pdf-w-24">Perfil</th>
                 <th class="pdf-cell pdf-w-16">Severidade</th>
                 <th class="pdf-cell">Observações</th>
             </tr>
-            @foreach($student->deficiencies as $deficiency)
+            @foreach($deficiencies as $deficiency)
                 <tr>
+                    <td class="pdf-cell">{{ $plain($deficiency->name) }}</td>
                     <td class="pdf-cell">
-                        {!! $renderHtml($deficiency->name ?? null) !!}
+                        {{ \App\Domains\Inclusion\Domain\Enums\DeficiencySeverity::tryFrom((string) ($deficiency->pivot?->severity ?? ''))?->label() ?? 'Não informada' }}
                     </td>
-                    <td class="pdf-cell">
-                        {{ $severityMap[$deficiency->pivot->severity ?? null] ?? '---' }}
-                    </td>
-                    <td class="pdf-cell">
-                        {!! $renderHtml($deficiency->pivot->notes ?? null) !!}
-                    </td>
+                    <td class="pdf-cell">{!! $rich($deficiency->pivot?->notes) !!}</td>
                 </tr>
             @endforeach
         </table>
     @else
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum perfil de atendimento vinculado a este aluno.</td>
-            </tr>
-        </table>
+        <p class="pdf-empty">Nenhum perfil de atendimento vinculado a este aluno.</p>
     @endif
 
-        {{-- ================= CURSO ATUAL ================= --}}
-    <div class="section-title">Curso Atual</div>
-
-    @if($student->currentCourse && $student->currentCourse->course)
+    {{-- ================= CURSO ATUAL ================= --}}
+    <x-pdf.section-title title="Curso Atual" />
+    @if($currentCourse)
         <table class="pdf-table">
             <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Curso:</strong> {!! $renderHtml($student->currentCourse->course->name ?? null) !!}
+                <td class="pdf-cell" colspan="4">
+                    <strong>Curso / Série:</strong> {{ $currentCourse->course?->name ?? 'Curso não identificado' }}
                 </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Ano Acadêmico:</strong> {!! $renderHtml($student->currentCourse->academic_year ?? null) !!}
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="2"><strong>Ano Letivo:</strong> {{ $plain($currentCourse->academic_year) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Semestre:</strong> {{ $plain($currentCourse->semester?->label) }}</td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="4">
+                    <strong>Disciplinas com Reprovação:</strong>
+                    {{ $plain(($currentCourse->failedDisciplines ?? collect())->pluck('name')->join(', ')) }}
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="4">
+                    <strong>Disciplinas com Risco de Insucesso Acadêmico:</strong>
+                    {{ $plain(($currentCourse->atRiskDisciplines ?? collect())->pluck('name')->join(', ')) }}
                 </td>
             </tr>
         </table>
+        <x-pdf.text-area
+            label="Situação da Frequência Escolar"
+            :value="$currentCourse->school_attendance_status"
+            empty="Não informada."
+        />
     @else
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum curso atual vinculado a este aluno.</td>
-            </tr>
-        </table>
+        <p class="pdf-empty">Nenhum curso atual vinculado a este aluno.</p>
     @endif
 
-        {{-- ================= RESPONSÁVEIS ================= --}}
-    <div class="section-title">Responsáveis</div>
-
-    @if($student->guardians && $student->guardians->count())
-        @foreach($student->guardians as $guardian)
-            <table class="pdf-table pdf-mb-12">
-                <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Relação com o aluno:</strong> {!! $renderHtml($guardian->relationshipLabel()) !!}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pdf-cell" colspan="2">
-                        <strong>Nome:</strong> {!! $renderHtml($guardian->person->name ?? null) !!}
-                    </td>
-                    <td class="pdf-cell" colspan="2">
-                        <strong>Documento:</strong> {!! $renderHtml($guardian->person->document ?? null) !!}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pdf-cell" colspan="2">
-                        <strong>Data de Nascimento:</strong> {{ $formatDate($guardian->person->birth_date ?? null) }}
-                    </td>
-                    <td class="pdf-cell" colspan="2">
-                        <strong>Gênero:</strong> {{ $guardian->person->gender_label }}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pdf-cell" colspan="2">
-                        <strong>E-mail:</strong> {!! $renderHtml($guardian->person->email ?? null) !!}
-                    </td>
-                    <td class="pdf-cell" colspan="2">
-                        <strong>Telefone:</strong> {!! $renderHtml($guardian->person->phone ?? null) !!}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Endereço:</strong> {!! $renderHtml($guardian->person->address ?? null) !!}
-                    </td>
-                </tr>
-            </table>
-        @endforeach
-    @else
-        <table class="pdf-table">
+    {{-- ================= RESPONSÁVEIS ================= --}}
+    <x-pdf.section-title title="Responsáveis" />
+    @forelse($guardians as $guardian)
+        @php $guardianPerson = $guardian->person; @endphp
+        <table class="pdf-table pdf-mb-12">
             <tr>
-                <td class="pdf-cell">Nenhum responsável vinculado a este aluno.</td>
+                <td class="pdf-cell" colspan="2"><strong>Nome:</strong> {{ $plain($guardianPerson?->name) }}</td>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Vínculo:</strong> {{ $plain($guardian->relationship?->label()) }}
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="2"><strong>CPF:</strong> {{ $plain($guardianPerson?->document) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Gênero:</strong> {{ $plain($guardianPerson?->gender?->label()) }}</td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="2"><strong>Data de Nascimento:</strong> {{ $date($guardianPerson?->birth_date) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Telefone:</strong> {{ $plain($guardianPerson?->phone) }}</td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="4"><strong>E-mail:</strong> {{ $plain($guardianPerson?->email) }}</td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="4"><strong>Endereço:</strong> {!! $rich($guardianPerson?->address) !!}</td>
             </tr>
         </table>
-    @endif
+    @empty
+        <p class="pdf-empty">Nenhum responsável vinculado a este aluno.</p>
+    @endforelse
 
-    {{-- ================= LAUDO E DOCUMENTOS ================= --}}
-    <div class="category-header">Documentos do Aluno</div>
-
-    <div class="section-title">Possui Laudo Técnico?</div>
-    <table class="pdf-table">
-        <tr>
-            <td class="pdf-cell">
-                {!! $boolStrong($student->documents->contains(fn ($d) => $d->type === \App\Domains\Inclusion\Domain\Enums\StudentDocumentType::TECHNICAL_REPORT)) !!}
-            </td>
-        </tr>
-    </table>
-
-    <div class="section-title">Documentos Anexados</div>
-    @if($student->documents && $student->documents->count())
+    {{-- ================= ESTUDO DE CASO ATUAL ================= --}}
+    <x-pdf.section-title title="Estudo de Caso Atual" />
+    @if($caseStudy = $student->currentCaseStudy)
         <table class="pdf-table">
             <tr>
-                <th class="pdf-cell pdf-w-24">Tipo</th>
-                <th class="pdf-cell">Título</th>
-                <th class="pdf-cell pdf-w-16">Semestre</th>
-                <th class="pdf-cell pdf-w-16">Enviado em</th>
-            </tr>
-            @foreach($student->documents as $document)
-                <tr>
-                    <td class="pdf-cell">{{ $document->type->label() }}</td>
-                    <td class="pdf-cell">{!! $renderHtml($document->title) !!}</td>
-                    <td class="pdf-cell">{!! $renderHtml($document->semester->label ?? null) !!}</td>
-                    <td class="pdf-cell">{{ $formatDate($document->created_at) }}</td>
-                </tr>
-            @endforeach
-        </table>
-    @else
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum documento anexado para este aluno.</td>
-            </tr>
-        </table>
-    @endif
-
-    <div class="category-header">Estudo de Caso e PAEE do Aluno</div>
-
-    <div class="section-title">Estudo de Caso Atual</div>
-
-    @if($student->currentCaseStudy)
-        @php
-            $caseStudy = $student->currentCaseStudy;
-        @endphp
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Versão:</strong> {!! $renderHtml($caseStudy->version ?? null) !!}
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Semestre:</strong> {!! $renderHtml($caseStudy->semester->label ?? $caseStudy->semester->name ?? null) !!}
-                </td>
+                <td class="pdf-cell" colspan="2"><strong>Versão:</strong> {{ $plain($caseStudy->version) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Semestre:</strong> {{ $plain($caseStudy->semester?->label) }}</td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Status:</strong> {!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::caseStudyStatus($caseStudy->status)) !!}
+                    <strong>Status:</strong> {{ \App\Shared\Domain\Support\AeeLabels::caseStudyStatus($caseStudy->status) }}
                 </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Criado por:</strong> {!! $renderHtml($caseStudy->creator->name ?? null) !!}
-                </td>
+                <td class="pdf-cell" colspan="2"><strong>Criado por:</strong> {{ $plain($caseStudy->creator?->name) }}</td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Origem da Demanda:</strong> {!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::demandOrigin($caseStudy->demand_origin)) !!}
+                    <strong>Origem da Demanda:</strong> {{ \App\Shared\Domain\Support\AeeLabels::demandOrigin($caseStudy->demand_origin) }}
                 </td>
+                <td class="pdf-cell" colspan="2"><strong>Data do Estudo de Caso:</strong> {{ $date($caseStudy->study_date) }}</td>
+            </tr>
+            <tr>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Última Atualização:</strong> {{ optional($caseStudy->updated_at)->format('d/m/Y H:i') ?? '---' }}
+                    <strong>Status de Aceite:</strong> {{ \App\Shared\Domain\Support\AeeLabels::acceptanceStatus($caseStudy->acceptance_status) }}
                 </td>
+                <td class="pdf-cell" colspan="2"><strong>Data do Aceite:</strong> {{ $date($caseStudy->acceptance_date) }}</td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="2"><strong>Concluído em:</strong> {{ $dateTime($caseStudy->completed_at) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Última Atualização:</strong> {{ $dateTime($caseStudy->updated_at) }}</td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="4">
-                    <strong>Resumo dos Participantes</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->participants_summary) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Observação do Estudante</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->student_observation) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Escuta do Estudante/Família</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->student_family_listening) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Escuta dos Professores</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->teachers_listening) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Outras Informações</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->other_info) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Notas da Rede de Cuidado</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->care_network_notes) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Aspectos Favoráveis</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->favorable_aspects) !!}</div>
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Potenciais e Interesses</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->potentials_interests) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Apoios Necessários</strong>
-                    <div class="long-text">{!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::neededSupportsList($caseStudy->needed_supports)) !!}</div>
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Justificativa dos Apoios</strong>
-                    <div class="long-text">{!! $renderHtml($caseStudy->needed_supports_justification) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Status de Aceite:</strong> {!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::acceptanceStatus($caseStudy->acceptance_status)) !!}
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Data do Aceite:</strong> {{ $formatDate($caseStudy->acceptance_date) }}
+                    <strong>Apoios Necessários:</strong>
+                    {{ $plain(\App\Shared\Domain\Support\AeeLabels::neededSupportsList($caseStudy->needed_supports)) }}
                 </td>
             </tr>
         </table>
 
-        <div class="section-title">Barreiras Identificadas</div>
-        @if($caseStudy->barriers->count())
-            <table class="pdf-table">
+        <x-pdf.text-area label="Resumo dos Participantes" :value="$caseStudy->participants_summary" empty="Não informado." />
+        <x-pdf.text-area label="Observação do Estudante" :value="$caseStudy->student_observation" empty="Não informado." />
+        <x-pdf.text-area label="Escuta do Estudante/Família" :value="$caseStudy->student_family_listening" empty="Não informado." />
+        <x-pdf.text-area label="Escuta dos Professores" :value="$caseStudy->teachers_listening" empty="Não informado." />
+        <x-pdf.text-area label="Outras Informações" :value="$caseStudy->other_info" empty="Não informado." />
+        <x-pdf.text-area label="Observações da Rede de Cuidado" :value="$caseStudy->care_network_notes" empty="Não informado." />
+        <x-pdf.text-area label="Aspectos Favoráveis" :value="$caseStudy->favorable_aspects" empty="Não informado." />
+        <x-pdf.text-area label="Potenciais e Interesses" :value="$caseStudy->potentials_interests" empty="Não informado." />
+        <x-pdf.text-area label="Justificativa dos Apoios Necessários" :value="$caseStudy->needed_supports_justification" empty="Não informado." />
+
+        <x-pdf.section-title title="Barreiras Identificadas" />
+        @if($caseStudy->barriers->isNotEmpty())
+            <table class="pdf-table pdf-data-table">
                 <tr>
                     <th class="pdf-cell pdf-w-16">Tipo</th>
                     <th class="pdf-cell">Situação Observada</th>
@@ -413,152 +218,138 @@ $relationshipMap = [
                 </tr>
                 @foreach($caseStudy->barriers as $barrier)
                     <tr>
-                        <td class="pdf-cell">{!! $renderHtml($barrier->type) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($barrier->observed_situation) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($barrier->participation_implication) !!}</td>
+                        <td class="pdf-cell">{{ $plain($barrier->type) }}</td>
+                        <td class="pdf-cell">{!! $rich($barrier->observed_situation) !!}</td>
+                        <td class="pdf-cell">{!! $rich($barrier->participation_implication) !!}</td>
                     </tr>
                 @endforeach
             </table>
         @else
-            <table class="pdf-table"><tr><td class="pdf-cell">Nenhuma barreira registrada.</td></tr></table>
+            <p class="pdf-empty">Nenhuma barreira registrada.</p>
         @endif
 
-        <div class="section-title">Estratégias</div>
-        @if($caseStudy->strategies->count())
-            <table class="pdf-table">
+        <x-pdf.section-title title="Estratégias" />
+        @if($caseStudy->strategies->isNotEmpty())
+            <table class="pdf-table pdf-data-table">
                 <tr>
                     <th class="pdf-cell">Descrição</th>
                     <th class="pdf-cell pdf-w-24">Barreira Relacionada</th>
                 </tr>
                 @foreach($caseStudy->strategies as $strategy)
                     <tr>
-                        <td class="pdf-cell">{!! $renderHtml($strategy->description) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($strategy->linkedBarrier ? $strategy->linkedBarrier->type : null) !!}</td>
+                        <td class="pdf-cell">{!! $rich($strategy->description) !!}</td>
+                        <td class="pdf-cell">{{ $plain($strategy->linkedBarrier?->type) }}</td>
                     </tr>
                 @endforeach
             </table>
         @else
-            <table class="pdf-table"><tr><td class="pdf-cell">Nenhuma estratégia registrada.</td></tr></table>
+            <p class="pdf-empty">Nenhuma estratégia registrada.</p>
         @endif
 
-        <div class="section-title">Contribuições</div>
-        @if($caseStudy->contributions->count())
-            <table class="pdf-table">
+        <x-pdf.section-title title="Contribuições" />
+        @if($caseStudy->contributions->isNotEmpty())
+            <table class="pdf-table pdf-data-table">
                 <tr>
+                    <th class="pdf-cell pdf-w-18">Autor</th>
                     <th class="pdf-cell pdf-w-16">Papel</th>
                     <th class="pdf-cell">Conteúdo</th>
-                    <th class="pdf-cell pdf-w-16">Data</th>
+                    <th class="pdf-cell pdf-w-12">Data</th>
                 </tr>
                 @foreach($caseStudy->contributions as $contribution)
                     <tr>
-                        <td class="pdf-cell">{!! $renderHtml($contribution->role) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($contribution->content) !!}</td>
-                        <td class="pdf-cell">{{ $formatDate($contribution->created_at) }}</td>
+                        <td class="pdf-cell">{{ $plain($contribution->author?->name) }}</td>
+                        <td class="pdf-cell">{{ $plain($contribution->role) }}</td>
+                        <td class="pdf-cell">{!! $rich($contribution->content) !!}</td>
+                        <td class="pdf-cell">{{ $date($contribution->created_at) }}</td>
                     </tr>
                 @endforeach
             </table>
         @else
-            <table class="pdf-table"><tr><td class="pdf-cell">Nenhuma contribuição registrada.</td></tr></table>
+            <p class="pdf-empty">Nenhuma contribuição registrada.</p>
         @endif
     @else
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum Estudo de Caso atual encontrado para este aluno.</td>
-            </tr>
-        </table>
+        <p class="pdf-empty">Nenhum Estudo de Caso atual encontrado para este aluno.</p>
     @endif
 
-    <div class="section-title">PAEE Atual</div>
-
-    @if($student->currentPaee)
-        @php
-            $paee = $student->currentPaee;
-        @endphp
+    {{-- ================= PAEE ATUAL ================= --}}
+    <x-pdf.section-title title="PAEE Atual" />
+    @if($paee = $student->currentPaee)
         <table class="pdf-table">
             <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Versão:</strong> {!! $renderHtml($paee->version ?? null) !!}
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Status:</strong> {!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::paeeStatus($paee->status)) !!}
-                </td>
+                <td class="pdf-cell" colspan="2"><strong>Versão:</strong> {{ $plain($paee->version) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Semestre:</strong> {{ $plain($paee->semester?->label) }}</td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Frequência Semanal:</strong> {!! $renderHtml($paee->attendance_frequency_per_week ?? null) !!}
+                    <strong>Status:</strong> {{ \App\Shared\Domain\Support\AeeLabels::paeeStatus($paee->status) }}
                 </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Duração (min):</strong> {!! $renderHtml($paee->attendance_duration_minutes ?? null) !!}
-                </td>
+                <td class="pdf-cell" colspan="2"><strong>Criado por:</strong> {{ $plain($paee->creator?->name) }}</td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="2"><strong>Frequência Semanal:</strong> {{ $plain($paee->attendance_frequency_per_week) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Duração (minutos):</strong> {{ $plain($paee->attendance_duration_minutes) }}</td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Formato de Atendimento:</strong> {!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::attendanceFormat($paee->attendance_format)) !!}
+                    <strong>Formato do Atendimento:</strong> {{ \App\Shared\Domain\Support\AeeLabels::attendanceFormat($paee->attendance_format) }}
                 </td>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Local de Atendimento:</strong> {!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::attendanceLocation($paee->attendance_location)) !!}
+                    <strong>Local do Atendimento:</strong> {{ \App\Shared\Domain\Support\AeeLabels::attendanceLocation($paee->attendance_location) }}
                 </td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Necessita Tecnologia Assistiva:</strong> {!! $boolLabel($paee->assistive_technology_needed) !!}
+                    <strong>Necessita de Tecnologia Assistiva:</strong> {{ $yesNo($paee->assistive_technology_needed) }}
                 </td>
                 <td class="pdf-cell" colspan="2">
-                    <strong>Necessita Profissional de Apoio:</strong> {!! $boolLabel($paee->support_professional_needed) !!}
+                    <strong>TA é Dispositivo Digital Portátil:</strong> {{ $yesNo($paee->is_assistive_technology_portable_digital_device) }}
                 </td>
             </tr>
             <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Observações sobre Tecnologia Assistiva</strong>
-                    <div class="long-text">{!! $renderHtml($paee->assistive_technology_notes) !!}</div>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Necessita de CAA:</strong> {{ $yesNo($paee->caa_needed) }}
+                </td>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Necessita de Profissional de Apoio:</strong> {{ $yesNo($paee->support_professional_needed) }}
                 </td>
             </tr>
             <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Justificativa do Profissional de Apoio</strong>
-                    <div class="long-text">{!! $renderHtml($paee->support_professional_justification) !!}</div>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Necessita de Intérprete de Libras:</strong> {{ $yesNo($paee->libras_interpreter_needed) }}
+                </td>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Necessita de Guia-Intérprete:</strong> {{ $yesNo($paee->guide_interpreter_needed) }}
                 </td>
             </tr>
             <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Orientações aos Profissionais da Escola</strong>
-                    <div class="long-text">{!! $renderHtml($paee->school_professionals_orientation) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Articulação com Professores Comuns</strong>
-                    <div class="long-text">{!! $renderHtml($paee->common_teachers_articulation) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Articulação com a Família</strong>
-                    <div class="long-text">{!! $renderHtml($paee->family_articulation) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Articulação Intersetorial</strong>
-                    <div class="long-text">{!! $renderHtml($paee->intersectoral_articulation) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Demandas de Formação</strong>
-                    <div class="long-text">{!! $renderHtml($paee->training_demands) !!}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="4">
-                    <strong>Próxima Revisão:</strong> {{ $formatDate($paee->next_review_date) }}
-                </td>
+                <td class="pdf-cell" colspan="4"><strong>Próxima Revisão:</strong> {{ $date($paee->next_review_date) }}</td>
             </tr>
         </table>
 
-        <div class="section-title">Objetivos do PAEE</div>
-        @if($paee->objectives->count())
-            <table class="pdf-table">
+        <x-pdf.text-area label="Observações sobre Tecnologia Assistiva" :value="$paee->assistive_technology_notes" empty="Não informado." />
+        <x-pdf.text-area label="Capacidade de Disponibilização da TA" :value="$paee->assistive_technology_availability_capacity" empty="Não informado." />
+        @if($paee->is_assistive_technology_portable_digital_device)
+            <x-pdf.text-area label="Parecer Pedagógico sobre a TA Portátil" :value="$paee->assistive_technology_pedagogical_opinion" empty="Não informado." />
+        @endif
+        @if($paee->caa_needed)
+            <x-pdf.text-area label="Observações sobre CAA" :value="$paee->caa_notes" empty="Não informado." />
+        @endif
+        <x-pdf.text-area label="Justificativa do Profissional de Apoio" :value="$paee->support_professional_justification" empty="Não informado." />
+        @if($paee->libras_interpreter_needed)
+            <x-pdf.text-area label="Justificativa do Intérprete de Libras" :value="$paee->libras_interpreter_justification" empty="Não informado." />
+        @endif
+        @if($paee->guide_interpreter_needed)
+            <x-pdf.text-area label="Justificativa do Guia-Intérprete" :value="$paee->guide_interpreter_justification" empty="Não informado." />
+        @endif
+        <x-pdf.text-area label="Orientações aos Profissionais da Escola" :value="$paee->school_professionals_orientation" empty="Não informado." />
+        <x-pdf.text-area label="Articulação com Professores do Ensino Comum" :value="$paee->common_teachers_articulation" empty="Não informado." />
+        <x-pdf.text-area label="Articulação com a Família" :value="$paee->family_articulation" empty="Não informado." />
+        <x-pdf.text-area label="Articulação Intersetorial" :value="$paee->intersectoral_articulation" empty="Não informado." />
+        <x-pdf.text-area label="Demandas de Formação" :value="$paee->training_demands" empty="Não informado." />
+
+        <x-pdf.section-title title="Objetivos do PAEE" />
+        @if($paee->objectives->isNotEmpty())
+            <table class="pdf-table pdf-data-table">
                 <tr>
                     <th class="pdf-cell">Descrição</th>
                     <th class="pdf-cell pdf-w-16">Prazo</th>
@@ -566,346 +357,150 @@ $relationshipMap = [
                 </tr>
                 @foreach($paee->objectives as $objective)
                     <tr>
-                        <td class="pdf-cell">{!! $renderHtml($objective->description) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::objectiveTerm($objective->term)) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($objective->linkedBarrier ? $objective->linkedBarrier->type : null) !!}</td>
+                        <td class="pdf-cell">{!! $rich($objective->description) !!}</td>
+                        <td class="pdf-cell">{{ \App\Shared\Domain\Support\AeeLabels::objectiveTerm($objective->term) }}</td>
+                        <td class="pdf-cell">{{ $plain($objective->linkedBarrier?->type) }}</td>
                     </tr>
                 @endforeach
             </table>
         @else
-            <table class="pdf-table"><tr><td class="pdf-cell">Nenhum objetivo registrado.</td></tr></table>
+            <p class="pdf-empty">Nenhum objetivo registrado.</p>
         @endif
 
-        <div class="section-title">Recursos do PAEE</div>
-        @if($paee->resources->count())
-            <table class="pdf-table">
+        <x-pdf.section-title title="Recursos do PAEE" />
+        @if($paee->resources->isNotEmpty())
+            <table class="pdf-table pdf-data-table">
                 <tr>
                     <th class="pdf-cell">Descrição</th>
-                    <th class="pdf-cell pdf-w-16">Tipo</th>
+                    <th class="pdf-cell pdf-w-16">Tipo de Aquisição</th>
                     <th class="pdf-cell pdf-w-24">Tecnologia Assistiva</th>
                 </tr>
                 @foreach($paee->resources as $resource)
                     <tr>
-                        <td class="pdf-cell">{!! $renderHtml($resource->description) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml(\App\Shared\Domain\Support\AeeLabels::acquisitionType($resource->acquisition_type)) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($resource->assistiveTechnology->name ?? null) !!}</td>
+                        <td class="pdf-cell">{!! $rich($resource->description) !!}</td>
+                        <td class="pdf-cell">{{ \App\Shared\Domain\Support\AeeLabels::acquisitionType($resource->acquisition_type) }}</td>
+                        <td class="pdf-cell">{{ $plain($resource->assistiveTechnology?->name) }}</td>
                     </tr>
                 @endforeach
             </table>
         @else
-            <table class="pdf-table"><tr><td class="pdf-cell">Nenhum recurso registrado.</td></tr></table>
+            <p class="pdf-empty">Nenhum recurso registrado.</p>
         @endif
 
-        <div class="section-title">Revisões do PAEE</div>
-        @if($paee->reviews->count())
-            <table class="pdf-table">
+        <x-pdf.section-title title="Revisões do PAEE" />
+        @if($paee->reviews->isNotEmpty())
+            <table class="pdf-table pdf-data-table">
                 <tr>
-                    <th class="pdf-cell pdf-w-16">Data</th>
-                    <th class="pdf-cell pdf-w-16">Revisor</th>
+                    <th class="pdf-cell pdf-w-12">Data</th>
+                    <th class="pdf-cell pdf-w-18">Revisor</th>
                     <th class="pdf-cell">O que mudou</th>
                     <th class="pdf-cell">Por quê</th>
                 </tr>
                 @foreach($paee->reviews as $review)
                     <tr>
-                        <td class="pdf-cell">{{ $formatDate($review->reviewed_at) }}</td>
-                        <td class="pdf-cell">{!! $renderHtml($review->reviewer->name ?? null) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($review->what_changed) !!}</td>
-                        <td class="pdf-cell">{!! $renderHtml($review->why) !!}</td>
+                        <td class="pdf-cell">{{ $date($review->reviewed_at) }}</td>
+                        <td class="pdf-cell">{{ $plain($review->reviewer?->name) }}</td>
+                        <td class="pdf-cell">{!! $rich($review->what_changed) !!}</td>
+                        <td class="pdf-cell">{!! $rich($review->why) !!}</td>
                     </tr>
                 @endforeach
             </table>
         @else
-            <table class="pdf-table"><tr><td class="pdf-cell">Nenhuma revisão registrada.</td></tr></table>
+            <p class="pdf-empty">Nenhuma revisão registrada.</p>
         @endif
     @else
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum PAEE atual encontrado para este aluno.</td>
-            </tr>
-        </table>
+        <p class="pdf-empty">Nenhum PAEE atual encontrado para este aluno.</p>
     @endif
 
-    {{-- ========================= --}}
-    {{-- PEIs e Adaptações por Disciplina --}}
-    {{-- ========================= --}}
-    <div class="category-header">PEIs do Aluno</div>
+    {{-- ================= PEIs VIGENTES (um bloco por PEI) ================= --}}
+    @forelse($student->peis as $pei)
+        <div class="category-header">Plano Educacional Individualizado (PEI) - Versão {{ $plain($pei->version) }}</div>
 
-    <div class="divider"></div>
-
-    @forelse ($student->peis as $pei)
-
-        {{-- Separação entre PEIs --}}
-        @if (!$loop->first)
-
-            <div class="page-break"></div>
-
-            <div class="pdf-divider-strong"></div>
-
+        <x-pdf.section-title title="Dados do PEI" />
+        <table class="pdf-table">
+            <tr>
+                <td class="pdf-cell" colspan="2"><strong>Curso:</strong> {{ $plain($pei->course?->name) }}</td>
+                <td class="pdf-cell" colspan="2"><strong>Semestre/Ano:</strong> {{ $plain($pei->semester?->label) }}</td>
+            </tr>
+            <tr>
+                <td class="pdf-cell" colspan="2">
+                    <strong>Situação:</strong> {{ $pei->is_finished ? 'Finalizado' : 'Em preenchimento' }}
+                </td>
+                <td class="pdf-cell" colspan="2"><strong>Criado por:</strong> {{ $plain($pei->creator?->name) }}</td>
+            </tr>
+        </table>
+        @if(filled($pei->other_relevant_info))
+            <x-pdf.text-area label="Outras Informações Relevantes" :value="$pei->other_relevant_info" empty="Não informado." />
         @endif
 
-        {{-- ========================= --}}
-        {{-- CABEÇALHO DO PEI (UMA VEZ) --}}
-        {{-- ========================= --}}
-        <div class="section-title">
-            PLANO EDUCACIONAL INDIVIDUALIZADO (PEI) - VERSÃO {{ $pei->version }}
-        </div>
-
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Estudante:</strong> {!! $renderHtml($student->person->name ?? null) !!}
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Curso:</strong> {!! $renderHtml($pei->course->name ?? null) !!}
-                </td>
-            </tr>
-            <tr>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Semestre/Ano:</strong> {!! $renderHtml($pei->semester->label ?? null) !!}
-                </td>
-                <td class="pdf-cell" colspan="2">
-                    <strong>Gerado em:</strong> {{ now()->format('d/m/Y H:i') }}
-                </td>
-            </tr>
-        </table>
-
-        {{-- ========================= --}}
-        {{-- INFORMAÇÕES DO NAPNE (UMA VEZ) --}}
-        {{-- ========================= --}}
-        <div class="section-title">Informações de Apoio Pedagógico (NAPNE)</div>
-
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">
-                    <strong>PAEE Vinculado (versão):</strong>
-                    <div class="long-text">
-                        {!! $renderHtml($pei->paee->version ?? null) !!}
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Frequência de Atendimento:</strong>
-                    <div class="long-text">
-                        {!! $renderHtml($pei->paee->attendance_frequency_per_week ?? null) !!}
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Formato de Atendimento:</strong>
-                    <div class="long-text">
-                        {!! $renderHtml($pei->paee ? \App\Shared\Domain\Support\AeeLabels::attendanceFormat($pei->paee->attendance_format) : null) !!}
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="pdf-cell">
-                    <strong>Status do PAEE:</strong>
-                    <div class="long-text">
-                        {!! $renderHtml($pei->paee ? \App\Shared\Domain\Support\AeeLabels::paeeStatus($pei->paee->status) : null) !!}
-                    </div>
-                </td>
-            </tr>
-        </table>
-
-        {{-- ========================= --}}
-        {{-- DISCIPLINAS DO PEI --}}
-        {{-- ========================= --}}
-        @foreach ($pei->peiDisciplines as $item)
-
-            <div class="section-title">
-                Adaptações Razoáveis e/ou Acessibilidades Curriculares,
-                {!! $renderHtml(mb_strtoupper($item->discipline->name, 'UTF-8')) !!}
-                — Adaptações Razoáveis e/ou Acessibilidades Curriculares
-            </div>
-
+        <x-pdf.section-title title="Informações de Apoio Pedagógico (NAPNE)" />
+        @if($pei->paee)
             <table class="pdf-table">
-
+                <tr>
+                    <td class="pdf-cell" colspan="2"><strong>PAEE Vinculado (versão):</strong> {{ $plain($pei->paee->version) }}</td>
+                    <td class="pdf-cell" colspan="2">
+                        <strong>Status do PAEE:</strong> {{ \App\Shared\Domain\Support\AeeLabels::paeeStatus($pei->paee->status) }}
+                    </td>
+                </tr>
                 <tr>
                     <td class="pdf-cell" colspan="2">
-                        <strong>Componente Curricular:</strong>
-                        {!! $renderHtml(mb_strtoupper($item->discipline->name, 'UTF-8')) !!}
+                        <strong>Frequência de Atendimento:</strong> {{ $plain($pei->paee->attendance_frequency_per_week) }}
                     </td>
-
                     <td class="pdf-cell" colspan="2">
-                        <strong>Docente:</strong>
-                        {!! $renderHtml($item->teacher->person->name ?? null) !!}
+                        <strong>Formato de Atendimento:</strong> {{ \App\Shared\Domain\Support\AeeLabels::attendanceFormat($pei->paee->attendance_format) }}
                     </td>
                 </tr>
+            </table>
+        @else
+            <p class="pdf-empty">Nenhum PAEE vinculado a este PEI.</p>
+        @endif
 
+        @forelse($pei->peiDisciplines as $item)
+            @php $disciplineName = $upper($item->discipline?->name); @endphp
+            <x-pdf.section-title :title="'Adaptações Razoáveis e/ou Acessibilidades Curriculares - '.$disciplineName" />
+            <table class="pdf-table">
                 <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Objetivos Específicos</strong>
-                        <div class="long-text">
-                            {!! $renderHtml($item->specific_objectives) !!}
-                        </div>
-                    </td>
+                    <td class="pdf-cell" colspan="2"><strong>Componente Curricular:</strong> {{ $disciplineName }}</td>
+                    <td class="pdf-cell" colspan="2"><strong>Docente:</strong> {{ $plain($item->teacher?->person?->name) }}</td>
                 </tr>
-
-                <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Conteúdos Programáticos</strong>
-                        <div class="long-text">
-                            {!! $renderHtml($item->content_programmatic) !!}
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Metodologia</strong>
-                        <div class="long-text">
-                            {!! $renderHtml($item->methodologies) !!}
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Avaliação</strong>
-                        <div class="long-text">
-                            {!! $renderHtml($item->evaluations) !!}
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Registros Complementares</strong>
-                        <div class="long-text">
-                            {!! $renderHtml($item->complementary_records) !!}
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="pdf-cell" colspan="4">
-                        <strong>Parecer</strong>
-                        <div class="long-text">
-                            {!! $renderHtml($item->opinion) !!}
-                        </div>
-                    </td>
-                </tr>
-
-                
-
             </table>
 
-            @if($item->revisions->count())
-                <div class="section-title">
-                    Revisões — {!! $renderHtml(mb_strtoupper($item->discipline->name, 'UTF-8')) !!}
-                </div>
-                <table class="pdf-table">
+            <x-pdf.text-area label="Objetivos Específicos" :value="$item->specific_objectives" empty="Não informado." />
+            <x-pdf.text-area label="Prazo das Metas/Objetivos" :value="$item->objectives_deadline" empty="Não informado." />
+            <x-pdf.text-area label="Conteúdos Programáticos" :value="$item->content_programmatic" empty="Não informado." />
+            <x-pdf.text-area label="Referência Curricular (BNCC ou Ementa/Unidade)" :value="$item->curricular_reference" empty="Não informado." />
+            <x-pdf.text-area label="Metodologia" :value="$item->methodologies" empty="Não informado." />
+            <x-pdf.text-area label="Recursos Didáticos e Tecnologia Assistiva" :value="$item->materials_and_assistive_technology" empty="Não informado." />
+            <x-pdf.text-area label="Avaliação" :value="$item->evaluations" empty="Não informado." />
+            <x-pdf.text-area label="Registros Complementares" :value="$item->complementary_records" empty="Não informado." />
+            <x-pdf.text-area label="Parecer" :value="$item->opinion" empty="Não informado." />
+
+            @if($item->revisions->isNotEmpty())
+                <x-pdf.section-title :title="'Revisões - '.$disciplineName" />
+                <table class="pdf-table pdf-data-table">
                     <tr>
-                        <th class="pdf-cell pdf-w-16">Data</th>
-                        <th class="pdf-cell pdf-w-16">Revisor</th>
+                        <th class="pdf-cell pdf-w-12">Data</th>
+                        <th class="pdf-cell pdf-w-18">Revisor</th>
                         <th class="pdf-cell">O que mudou</th>
                         <th class="pdf-cell">Por quê</th>
                     </tr>
                     @foreach($item->revisions as $revision)
                         <tr>
-                            <td class="pdf-cell">{{ $formatDate($revision->reviewed_at) }}</td>
-                            <td class="pdf-cell">{!! $renderHtml($revision->reviewer->name ?? null) !!}</td>
-                            <td class="pdf-cell">{!! $renderHtml($revision->what_changed) !!}</td>
-                            <td class="pdf-cell">{!! $renderHtml($revision->why) !!}</td>
+                            <td class="pdf-cell">{{ $date($revision->reviewed_at) }}</td>
+                            <td class="pdf-cell">{{ $plain($revision->reviewer?->name) }}</td>
+                            <td class="pdf-cell">{!! $rich($revision->what_changed) !!}</td>
+                            <td class="pdf-cell">{!! $rich($revision->why) !!}</td>
                         </tr>
                     @endforeach
                 </table>
             @endif
-
-            {{-- quebra entre disciplinas --}}
-            @if (! $loop->last)
-                <div class="page-break"></div>
-            @endif
-
-        @endforeach
-
+        @empty
+            <p class="pdf-empty">Nenhuma disciplina adaptada neste PEI.</p>
+        @endforelse
     @empty
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum PEI atual encontrado para este aluno.</td>
-            </tr>
-        </table>
+        <x-pdf.section-title title="PEIs do Aluno" />
+        <p class="pdf-empty">Nenhum PEI atual encontrado para este aluno.</p>
     @endforelse
-
-    {{-- ========================= --}}
-    {{-- ATENDIMENTOS DO ALUNO (ORDEM DESCRESCENTE) --}}
-    {{-- ========================= --}}
-    <div class="page-break"></div>
-    <div class="category-header">Atendimentos do Aluno</div>
-
-    <div class="section-title">Atendimentos Especializados (AEE)</div>
-    @if(($aeeEvaluations ?? collect())->count())
-        <table class="pdf-table">
-            <tr>
-                <th class="pdf-cell pdf-w-16">Data</th>
-                <th class="pdf-cell pdf-w-24">Profissional</th>
-                <th class="pdf-cell pdf-w-12">Presença</th>
-                <th class="pdf-cell">Participação/Desenvolvimento</th>
-            </tr>
-            @foreach($aeeEvaluations as $evaluation)
-                @php $session = $evaluation->aeeRecord->attendanceSession ?? null; @endphp
-                <tr>
-                    <td class="pdf-cell">{{ $formatDate($session->session_date ?? null) }}</td>
-                    <td class="pdf-cell">{!! $renderHtml($session->professional->person->name ?? null) !!}</td>
-                    <td class="pdf-cell">{!! $boolLabel($evaluation->is_present) !!}</td>
-                    <td class="pdf-cell">
-                        @if($evaluation->is_present)
-                            {!! $renderHtml($evaluation->student_participation) !!}
-                            @if($evaluation->development_evaluation)
-                                <div class="long-text">{!! $renderHtml($evaluation->development_evaluation) !!}</div>
-                            @endif
-                        @else
-                            Falta — {!! $renderHtml($evaluation->absence_reason) !!}
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        </table>
-    @else
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum atendimento especializado registrado para este aluno.</td>
-            </tr>
-        </table>
-    @endif
-
-    <div class="section-title">Atendimentos Pedagógicos</div>
-    @if(($pedagogicalRecords ?? collect())->count())
-        <table class="pdf-table">
-            <tr>
-                <th class="pdf-cell pdf-w-16">Data</th>
-                <th class="pdf-cell pdf-w-24">Profissional</th>
-                <th class="pdf-cell pdf-w-12">Presença</th>
-                <th class="pdf-cell">Acompanhamento</th>
-            </tr>
-            @foreach($pedagogicalRecords as $record)
-                @php $session = $record->attendanceSession; @endphp
-                <tr>
-                    <td class="pdf-cell">{{ $formatDate($session->session_date ?? null) }}</td>
-                    <td class="pdf-cell">{!! $renderHtml($session->professional->person->name ?? null) !!}</td>
-                    <td class="pdf-cell">{!! $boolLabel($record->is_present) !!}</td>
-                    <td class="pdf-cell">
-                        @if($record->is_present)
-                            {!! $renderHtml($record->systematic_pedagogical_follow_up_record) !!}
-                        @else
-                            Falta — {!! $renderHtml($record->absence_reason) !!}
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        </table>
-    @else
-        <table class="pdf-table">
-            <tr>
-                <td class="pdf-cell">Nenhum atendimento pedagógico registrado para este aluno.</td>
-            </tr>
-        </table>
-    @endif
 
 </body>
 </html>

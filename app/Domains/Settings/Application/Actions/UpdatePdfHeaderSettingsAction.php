@@ -39,6 +39,7 @@ final readonly class UpdatePdfHeaderSettingsAction
                     details: $data->details,
                     logoPath: $path,
                     logoHidden: $newPath !== null ? false : ($data->removeLogo || $current->logoHidden),
+                    logoShape: $data->logoShape,
                     configured: true,
                 );
                 Setting::store(SettingCategory::PDF, $settings->toPayload());

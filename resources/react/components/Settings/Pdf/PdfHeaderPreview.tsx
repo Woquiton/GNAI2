@@ -2,7 +2,7 @@ import { useObjectUrl } from '@/components/Forms/ImageUploadField/ImageUploadFie
 import type { PdfHeaderFormData } from './usePdfHeaderSettingsForm';
 import './PdfHeaderPreview.css';
 
-/** Prévia dos dados da instituição; a paginação final depende do documento emitido. */
+/** Prévia do cabeçalho como sai nos PDFs; o título varia conforme o documento emitido. */
 export default function PdfHeaderPreview({
     data,
     currentLogoUrl,
@@ -15,12 +15,21 @@ export default function PdfHeaderPreview({
 
     return (
         <div className="pdfHeaderPreview" aria-label="Prévia do cabeçalho dos PDFs">
-            {logoUrl ? <img src={logoUrl} alt="Logotipo da instituição" /> : null}
+            {logoUrl ? (
+                <img
+                    className={`pdfHeaderPreview__logo pdfHeaderPreview__logo--${data.logo_shape}`}
+                    src={logoUrl}
+                    alt="Logotipo da instituição"
+                />
+            ) : null}
             <div className="pdfHeaderPreview__text">
                 <strong>{data.institution_name || 'Nome da instituição'}</strong>
-                {data.issuing_unit ? <p>{data.issuing_unit}</p> : null}
-                {data.details ? <p>{data.details}</p> : null}
+                {data.issuing_unit ? (
+                    <p className="pdfHeaderPreview__unit">{data.issuing_unit}</p>
+                ) : null}
+                {data.details ? <p className="pdfHeaderPreview__details">{data.details}</p> : null}
             </div>
+            <div className="pdfHeaderPreview__title">Título do documento</div>
         </div>
     );
 }

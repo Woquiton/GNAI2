@@ -7,123 +7,128 @@
 </head>
 <body>
 
+@php
+    // Relator conforme a visualização: anônimo ou o usuário que registrou.
+    $reporter = $barrier->is_anonymous
+        ? 'Contribuidor Anônimo'
+        : ($barrier->registeredBy?->name ?? 'Usuário não identificado');
+
+    // Pessoas impactadas conforme o modo do relato: anônimo, geral (manual) ou cadastrado.
+    if ($barrier->is_anonymous) {
+        $affectedPeople = 'Relato Anônimo';
+    } elseif ($barrier->not_applicable) {
+        $manualPerson = trim(($barrier->affected_person_name ?? '').($barrier->affected_person_role ? ' ('.$barrier->affected_person_role.')' : ''));
+        $affectedPeople = $manualPerson !== '' ? 'Relato Geral, identificação manual: '.$manualPerson : 'Relato Geral';
+    } else {
+        $people = array_filter([
+            $barrier->affectedStudent?->person?->name ? $barrier->affectedStudent->person->name.' (Estudante)' : null,
+            $barrier->affectedProfessional?->person?->name ? $barrier->affectedProfessional->person->name.' (Profissional)' : null,
+        ]);
+        $affectedPeople = $people !== [] ? implode('; ', $people) : 'Não informado';
+    }
+
+    $priorityClass = match ($barrier->priority?->value) {
+        'urgent', 'high' => 'pdf-priority-high',
+        'medium' => 'pdf-priority-medium',
+        default => 'pdf-priority-default',
+    };
+
+    $blocksMap = (bool) $barrier->category?->blocks_map;
+    $lastInspection = $barrier->inspections->sortByDesc('inspection_date')->first();
+    $currentStatus = $lastInspection?->status?->label();
+@endphp
+
 <x-pdf.header
     title="Ficha de Identificação de Barreira"
-    :status="$barrier->is_active ? 'Ativa' : 'Inativa'"
+    :status="$currentStatus"
     :meta="[
-        'Barreira' => $barrier->name,
+        'Registro' => '#' . $barrier->id,
         'Gerado em' => now()->format('d/m/Y H:i'),
     ]"
 />
 
-{{-- Seção 1: Localização --}}
-<x-pdf.section-title title="Localização e Contexto" />
+<x-pdf.section-title title="Identificação" />
 <x-pdf.table>
     <x-pdf.row>
-        <x-pdf.info-item label="Campus / Unidade" :value="$barrier->institution->name ?? '---'" colspan="2" />
-        <x-pdf.info-item label="Local / Ref." :value="$barrier->location->name ?? '---'" colspan="2" />
+        <x-pdf.info-item label="Título do Relato" :value="e($barrier->name)" colspan="2" />
+        <x-pdf.info-item label="Data de Identificação" :value="$barrier->identified_at?->format('d/m/Y') ?? 'Não informada'" />
+        <td>
+            <span class="label">Prioridade:</span>
+            <span class="value {{ $priorityClass }}">{{ $barrier->priority?->label() ?? '---' }}</span>
+        </td>
     </x-pdf.row>
     <x-pdf.row>
-        <x-pdf.info-item label="Coordenadas" :value="($barrier->latitude ?? 'Não informado') . ', ' . ($barrier->longitude ?? 'Não informado')" colspan="4" />
+        <x-pdf.info-item label="Categoria" :value="e($barrier->category?->name ?? 'Não categorizada')" colspan="2" />
+        <x-pdf.info-item label="Relator" :value="e($reporter)" />
+        <x-pdf.info-item label="Status no Sistema" :value="$barrier->is_active ? 'Ativo' : 'Inativo'" />
+    </x-pdf.row>
+    @if($barrier->resolved_at)
+        <x-pdf.row>
+            <x-pdf.info-item label="Data de Resolução" :value="$barrier->resolved_at->format('d/m/Y')" colspan="4" />
+        </x-pdf.row>
+    @endif
+</x-pdf.table>
+<x-pdf.text-area label="Descrição Detalhada" :value="$barrier->description" empty="Sem descrição detalhada." />
+
+<x-pdf.section-title title="Localização" />
+<x-pdf.table>
+    <x-pdf.row>
+        <x-pdf.info-item label="Campus / Unidade" :value="e($barrier->institution?->name ?? 'Não informado')" colspan="2" />
+        <x-pdf.info-item label="Local / Ponto de Referência" :value="e($barrier->location?->name ?? 'Não informado')" colspan="2" />
+    </x-pdf.row>
+    @if(! $blocksMap)
+        <x-pdf.row>
+            <x-pdf.info-item label="Latitude" :value="$barrier->latitude ?? 'Não informado'" colspan="2" />
+            <x-pdf.info-item label="Longitude" :value="$barrier->longitude ?? 'Não informado'" colspan="2" />
+        </x-pdf.row>
+    @endif
+</x-pdf.table>
+@if(filled($barrier->location_specific_details))
+    <x-pdf.text-area label="Complemento" :value="$barrier->location_specific_details" />
+@endif
+
+<x-pdf.section-title title="Público e Pessoas Impactadas" />
+<x-pdf.table>
+    <x-pdf.row>
+        <x-pdf.info-item label="Público Alvo" :value="e($barrier->deficiencies->pluck('name')->join(', ') ?: 'Não informado')" />
+    </x-pdf.row>
+    <x-pdf.row>
+        <x-pdf.info-item label="Pessoa(s) Impactada(s)" :value="e($affectedPeople)" />
     </x-pdf.row>
 </x-pdf.table>
 
-{{-- Seção 2: Ocorrência e Identificação --}}
-<x-pdf.section-title title="Detalhes da Ocorrência" />
-<x-pdf.table>
-    <x-pdf.row>
-        <x-pdf.info-item label="Nome da Barreira" :value="$barrier->name" colspan="2" />
-        <x-pdf.info-item label="Prioridade" :value="$barrier->priority?->label() ?? '---'" />
-        <x-pdf.info-item label="Categoria" :value="$barrier->category->name ?? '---'" />
-    </x-pdf.row>
-    <x-pdf.row>
-        <x-pdf.info-item label="Data Identificação" :value="$barrier->identified_at?->format('d/m/Y') ?? '---'" colspan="2" />
-
-        {{-- Lógica de Hierarquia e Combinação do Relator --}}
-        @php
-            $relatorIdentificado = '---';
-
-            if($barrier->is_anonymous) {
-                $relatorIdentificado = 'Relato Anônimo';
-            } else {
-                $partes = [];
-
-                // Se tiver estudante
-                if($barrier->affectedStudent) {
-                    $partes[] = 'Estudante: ' . $barrier->affectedStudent->person->name;
-                }
-
-                // Se tiver profissional
-                if($barrier->affectedProfessional) {
-                    $partes[] = 'Profissional: ' . $barrier->affectedProfessional->person->name;
-                }
-
-                // Se não tiver nenhum dos dois acima, mas tiver nome manual
-                if(empty($partes) && $barrier->affected_person_name) {
-                    $role = $barrier->affected_person_role ? ' ('.$barrier->affected_person_role.')' : '';
-                    $partes[] = $barrier->affected_person_name . $role;
-                }
-
-                // Une as partes com " / " se houver mais de uma
-                $relatorIdentificado = !empty($partes) ? implode(' / ', $partes) : 'Relato Geral';
-            }
-        @endphp
-        <x-pdf.info-item label="Relator / Identificação" :value="$relatorIdentificado" colspan="2" />
-    </x-pdf.row>
-</x-pdf.table>
-<x-pdf.text-area label="Descrição do Problema" :value="$barrier->description ?? 'Sem descrição.'" />
-
-{{-- Seção 3: Impacto --}}
-<x-pdf.section-title title="Público-Alvo Afetado" />
-<x-pdf.table>
-    <x-pdf.row>
-        <x-pdf.info-item label="Deficiências Relacionadas" :value="$barrier->deficiencies->pluck('name')->join(', ') ?: 'Geral / Não especificado'" colspan="4" />
-    </x-pdf.row>
-</x-pdf.table>
-
-{{-- Seção 4: Última Vistoria --}}
 <x-pdf.section-title title="Última Vistoria" />
-
-@php
-    $lastInspection = $barrier->inspections
-        ->sortByDesc('inspection_date')
-        ->first();
-@endphp
-
 @if($lastInspection)
-    <table class="pdf-table">
-        <tr>
-            <td class="pdf-cell">
-                <strong>Data:</strong> {{ $lastInspection->inspection_date?->format('d/m/Y') ?? '---' }}
-            </td>
-            <td class="pdf-cell">
-                <strong>Estado da Barreira:</strong> {{ $lastInspection->status?->label() ?? '---' }}
-            </td>
-        </tr>
-        <tr>
-            <td class="pdf-cell" colspan="2">
-                <strong>Parecer Técnico</strong>
-                <div class="long-text">
-                    {!! \App\Shared\Infrastructure\Security\RichTextSanitizer::sanitize((string) ($lastInspection->description ?: 'Sem descrição registrada.')) !!}
-                </div>
-            </td>
-        </tr>
-    </table>
+    <x-pdf.table>
+        <x-pdf.row>
+            <x-pdf.info-item label="Data" :value="$lastInspection->inspection_date?->format('d/m/Y') ?? '---'" />
+            <x-pdf.info-item label="Tipo" :value="$lastInspection->type?->label() ?? '---'" />
+            <x-pdf.info-item label="Status da Barreira" :value="$lastInspection->status?->label() ?? '---'" />
+        </x-pdf.row>
+    </x-pdf.table>
+    <x-pdf.text-area label="Parecer Técnico" :value="$lastInspection->description" empty="Nenhum parecer técnico registrado." />
 
-    {{-- Container de evidências FORA da tabela para permitir quebra de página --}}
-    <x-pdf.section-title title="Evidências" />
-    <div class="evidence-container">
-        @if($lastInspection->evidences->count() > 0)
+    <div class="pdf-field-label">Evidências</div>
+    @if($lastInspection->evidences->isNotEmpty())
+        {{-- Fora de tabela para permitir quebra de página entre as imagens. --}}
+        <div class="evidence-container">
             @foreach($lastInspection->evidences as $evidence)
                 @php
-                    $path = public_path('storage/' . $evidence->path);
+                    $evidencePath = $evidence->path ? \Illuminate\Support\Facades\Storage::disk('public')->path($evidence->path) : null;
+                    $evidenceSize = $evidence->isImage() && $evidencePath && is_file($evidencePath) ? @getimagesize($evidencePath) : false;
+                    $evidenceClass = '';
+
+                    if ($evidenceSize && $evidenceSize[1] > 0) {
+                        $ratio = $evidenceSize[0] / $evidenceSize[1];
+                        $evidenceClass = $ratio > 1.5 ? 'wide' : ($ratio < 0.67 ? 'tall' : '');
+                    }
                 @endphp
 
-                @if($evidence->isImage() && file_exists($path))
-                    <div class="evidence-card">
-                        <img class="evidence-image" src="{{ $path }}" alt="Evidência da vistoria">
+                @if($evidenceSize)
+                    <div class="evidence-card {{ $evidenceClass }}">
+                        <img class="evidence-image" src="{{ $evidencePath }}" alt="Evidência {{ $loop->iteration }} da vistoria">
                         <div class="evidence-caption">
-                            Evidência {{ $loop->iteration }} de {{ $lastInspection->evidences->count() }}
+                            Evidência {{ $loop->iteration }} de {{ $lastInspection->evidences->count() }}: {{ $evidence->displayName() }}
                         </div>
                     </div>
                 @else
@@ -132,35 +137,51 @@
                     </div>
                 @endif
             @endforeach
-        @else
-            <span class="value">Nenhuma evidência registrada.</span>
-        @endif
-    </div>
+        </div>
+    @else
+        <p class="pdf-empty">Nenhuma evidência registrada.</p>
+    @endif
 @else
-    <x-pdf.text-area label="Última Vistoria" :value="'Nenhuma vistoria técnica registrada até o momento.'" />
+    <p class="pdf-empty">Nenhuma vistoria técnica registrada até o momento.</p>
+@endif
+
+@if($barrier->inspections->count() > 1)
+    <x-pdf.section-title title="Histórico de Vistorias" />
+    <table class="pdf-table pdf-data-table">
+        <tr>
+            <th class="pdf-w-18">Data</th>
+            <th>Tipo</th>
+            <th>Status da Barreira</th>
+            <th class="pdf-w-16">Evidências</th>
+        </tr>
+        @foreach($barrier->inspections as $inspection)
+            <tr>
+                <td class="pdf-text-center">{{ $inspection->inspection_date?->format('d/m/Y') ?? '---' }}</td>
+                <td>{{ $inspection->type?->label() ?? '---' }}</td>
+                <td>{{ $inspection->status?->label() ?? '---' }}</td>
+                <td class="pdf-text-center">{{ $inspection->evidences->count() }}</td>
+            </tr>
+        @endforeach
+    </table>
 @endif
 
 <div class="pdf-mt-60">
     <x-pdf.table-signatures>
-        @if(!$barrier->is_anonymous)
-            {{-- 1. Se houver Estudante selecionado --}}
+        @if(! $barrier->is_anonymous)
             @if($barrier->affectedStudent)
                 <x-pdf.table-signature-label label="Assinatura do Estudante Contribuidor" />
             @endif
 
-            {{-- 2. Se houver Profissional selecionado --}}
             @if($barrier->affectedProfessional)
                 <x-pdf.table-signature-label label="Assinatura do Profissional Contribuidor" />
             @endif
 
-            {{-- 3. Se não for nenhum dos dois acima, mas for relato manual --}}
-            @if(!$barrier->affectedStudent && !$barrier->affectedProfessional && $barrier->affected_person_name)
+            @if(! $barrier->affectedStudent && ! $barrier->affectedProfessional && $barrier->affected_person_name)
                 <x-pdf.table-signature-label label="Assinatura do Contribuidor" />
             @endif
         @endif
 
-        {{-- 4. Assinatura Técnica (Sempre presente) --}}
-        <x-pdf.table-signature-label label="RESPONSÁVEL PELO SETOR / CARIMBO" />
+        <x-pdf.table-signature-label label="Responsável pelo Setor / Carimbo" />
     </x-pdf.table-signatures>
 </div>
 

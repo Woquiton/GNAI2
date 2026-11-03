@@ -10,6 +10,7 @@ export interface PdfHeaderFormData {
     details: string;
     logo: File | null;
     remove_logo: boolean;
+    logo_shape: string;
 }
 
 export function usePdfHeaderSettingsForm({ pdfHeader, canUpdate }: PdfHeaderSettingsProps) {
@@ -19,6 +20,7 @@ export function usePdfHeaderSettingsForm({ pdfHeader, canUpdate }: PdfHeaderSett
         details: pdfHeader.details ?? '',
         logo: null,
         remove_logo: false,
+        logo_shape: pdfHeader.logo_shape,
     });
     const { formRef, submit } = useFormSubmission(form);
     const errors = form.errors as Record<string, string | undefined>;

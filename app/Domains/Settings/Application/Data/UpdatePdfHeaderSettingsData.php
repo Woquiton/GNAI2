@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Application\Data;
 
+use App\Domains\Settings\Domain\Enums\PdfLogoShape;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -18,6 +20,7 @@ final class UpdatePdfHeaderSettingsData extends Data
         public ?string $details = null,
         public ?UploadedFile $logo = null,
         public bool $removeLogo = false,
+        public PdfLogoShape $logoShape = PdfLogoShape::SQUARE,
     ) {}
 
     public static function rules(): array
@@ -34,6 +37,7 @@ final class UpdatePdfHeaderSettingsData extends Data
                 'dimensions:max_width=4000,max_height=4000',
             ],
             'remove_logo' => ['sometimes', 'boolean'],
+            'logo_shape' => ['required', Rule::enum(PdfLogoShape::class)],
         ];
     }
 
@@ -49,6 +53,8 @@ final class UpdatePdfHeaderSettingsData extends Data
             'logo.max' => 'O logotipo pode ter no máximo 4 MB.',
             'logo.dimensions' => 'O logotipo pode ter no máximo 4000 pixels de largura e altura.',
             'remove_logo.boolean' => 'A opção de remoção do logotipo é inválida.',
+            'logo_shape.required' => 'Selecione o formato do logotipo.',
+            'logo_shape.enum' => 'O formato do logotipo informado é inválido.',
         ];
     }
 }
