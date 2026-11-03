@@ -4,6 +4,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { studentDocumentUrls } from '../StudentDocuments.routes';
 import type { StudentDocumentFormOptions, StudentDocumentRecord } from '../StudentDocuments.types';
+import { STUDENT_DOCUMENT_TOUR_TARGETS } from '../studentDocumentTours';
 import StudentDocumentFileFields from './StudentDocumentFileFields';
 import StudentDocumentInfoFields from './StudentDocumentInfoFields';
 import { useStudentDocumentForm } from './useStudentDocumentForm';
@@ -88,6 +89,7 @@ export default function StudentDocumentForm({
                 </fieldset>
             </CardBox>
             <FormActions
+                tourTarget={STUDENT_DOCUMENT_TOUR_TARGETS.formActions}
                 status={submissionStatus(form.processing, form.progress?.percentage, editing)}
             >
                 <Button

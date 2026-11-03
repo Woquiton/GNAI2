@@ -6,6 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import type { GuardianShowProps } from '../Guardians.types';
+import { GUARDIAN_TOUR_TARGETS } from '../guardianTours';
 import './GuardianDetails.css';
 
 const NOT_INFORMED = 'Não informado';
@@ -30,6 +31,7 @@ export default function GuardianDetails({
                 title="Vínculo Familiar"
                 variant="inline"
                 iconClass="fa fa-users"
+                tourTarget={GUARDIAN_TOUR_TARGETS.detailsRelationship}
             >
                 <div className="guardianDetails__profile">
                     <img
@@ -41,9 +43,7 @@ export default function GuardianDetails({
                     <TableLabel tone="inverse">{relationship}</TableLabel>
                 </div>
                 <DetailGrid>
-                    <DetailField label="Parentesco / Relação">
-                        <strong>{relationship}</strong>
-                    </DetailField>
+                    <DetailField label="Parentesco / Relação">{relationship}</DetailField>
                     <DetailField label="Estudante Vinculado">{student.person.name}</DetailField>
                 </DetailGrid>
             </FormSection>
@@ -52,11 +52,10 @@ export default function GuardianDetails({
                 title="Informações Pessoais"
                 variant="inline"
                 iconClass="fa fa-user"
+                tourTarget={GUARDIAN_TOUR_TARGETS.detailsPersonal}
             >
                 <DetailGrid columns={3}>
-                    <DetailField label="Nome Completo">
-                        <strong>{person.name}</strong>
-                    </DetailField>
+                    <DetailField label="Nome Completo">{person.name}</DetailField>
                     <DetailField label="Gênero">{display.genderLabel || NOT_INFORMED}</DetailField>
                     <DetailField label="CPF / Documento">
                         {person.document || NOT_INFORMED}
@@ -70,6 +69,7 @@ export default function GuardianDetails({
                 title="Canais de Contato"
                 variant="inline"
                 iconClass="fa fa-address-book"
+                tourTarget={GUARDIAN_TOUR_TARGETS.detailsContact}
             >
                 <DetailGrid>
                     <DetailField label="Telefone / WhatsApp">

@@ -1,6 +1,7 @@
 import StudentDeficiencyForm from '@/components/Inclusion/StudentDeficiencies/Form/StudentDeficiencyForm';
 import { studentDeficiencyBreadcrumb } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.routes';
 import type { StudentDeficiencyEditProps } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.types';
+import { studentDeficiencyEditTour } from '@/components/Inclusion/StudentDeficiencies/studentDeficiencyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentDeficienciesEditPage({
@@ -16,6 +17,7 @@ export default function InclusionStudentDeficienciesEditPage({
                 studentDeficiency,
                 current: 'Editar',
             })}
+            tour={studentDeficiencyEditTour}
         >
             <StudentDeficiencyForm
                 key={studentDeficiency.id}

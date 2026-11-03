@@ -3,6 +3,7 @@ import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRe
 import Button from '@/components/UI/Button/Button';
 import { STUDENT_COURSE_RECORD_TAB } from '../StudentCourses.constants';
 import { studentCourseUrls } from '../StudentCourses.routes';
+import { STUDENT_COURSE_TOUR_TARGETS } from '../studentCourseTours';
 import type { StudentCourseDetailsPermissions } from '../StudentCourses.types';
 
 interface StudentCourseDetailsActionsProps {
@@ -33,7 +34,7 @@ export default function StudentCourseDetailsActions({
     const makeCurrentLabel = `Tornar ${courseName} o curso atual`;
 
     return (
-        <FormActions>
+        <FormActions tourTarget={STUDENT_COURSE_TOUR_TARGETS.detailsActions}>
             <StudentRecordReturnButton studentId={studentId} tab={STUDENT_COURSE_RECORD_TAB} />
             {permissions.update && isCurrent ? (
                 <Button

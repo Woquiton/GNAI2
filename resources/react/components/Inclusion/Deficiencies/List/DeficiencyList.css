@@ -6,7 +6,7 @@
     gap: var(--ui-space-2);
 }
 
-.deficiencyList__identity strong,
+.deficiencyList__identity span,
 .deficiencyList__identity small {
     overflow: hidden;
     text-overflow: ellipsis;

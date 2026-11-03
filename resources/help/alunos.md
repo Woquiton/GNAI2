@@ -11,7 +11,7 @@ O cadastro de alunos reúne os dados pessoais e acadêmicos de cada estudante at
 
 ## Conhecer as telas de alunos com o tutorial
 
-A listagem, o cadastro, a edição e o prontuário do aluno têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Na listagem, ele mostra os filtros, o botão de colunas, como ajustar a largura das colunas e a quantidade de registros por página. No prontuário, ele mostra o resumo, as abas, a lateral **Status do atendimento** e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
+A listagem, o cadastro, a edição e o prontuário do aluno têm um tutorial na própria tela, assim como as telas de cursos do aluno. Clique no botão com o ícone de informação, na barra do topo, para abrir. Na listagem, ele mostra os filtros, o botão de colunas, como ajustar a largura das colunas e a quantidade de registros por página. No prontuário, ele mostra o resumo, as abas, a lateral **Status do atendimento** e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Encontrar um aluno na listagem
 

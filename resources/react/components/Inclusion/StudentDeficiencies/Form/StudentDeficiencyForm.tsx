@@ -16,6 +16,7 @@ import type {
     StudentDeficiencyRecord,
     StudentDeficiencyStudent,
 } from '../StudentDeficiencies.types';
+import { STUDENT_DEFICIENCY_TOUR_TARGETS } from '../studentDeficiencyTours';
 import { useStudentDeficiencyForm } from './useStudentDeficiencyForm';
 
 type StudentDeficiencyFormProps = { student: StudentDeficiencyStudent } & (
@@ -83,6 +84,7 @@ export default function StudentDeficiencyForm({
                         title={editing ? 'Atualizar Informações' : 'Identificação do Perfil'}
                         variant="inline"
                         iconClass="fa fa-universal-access"
+                        tourTarget={STUDENT_DEFICIENCY_TOUR_TARGETS.information}
                     >
                         <FormGrid>
                             {profileField}
@@ -113,7 +115,10 @@ export default function StudentDeficiencyForm({
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? processingStatus : undefined}>
+            <FormActions
+                tourTarget={STUDENT_DEFICIENCY_TOUR_TARGETS.formActions}
+                status={form.processing ? processingStatus : undefined}
+            >
                 <Button
                     href={studentDeficiencyUrls.record(student.id)}
                     tone="cancel"

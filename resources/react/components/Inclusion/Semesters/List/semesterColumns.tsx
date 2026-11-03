@@ -11,7 +11,7 @@ export const semesterColumns: TableListColumn<SemesterRecord>[] = [
         fixed: 'start',
         render: (semester) => (
             <span className="semesterList__period">
-                <strong>{semester.year}</strong>
+                <span>{semester.year}</span>
                 <small>{semester.term}º Período</small>
             </span>
         ),

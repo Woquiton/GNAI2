@@ -7,6 +7,7 @@ import {
 } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.routes';
 import type { StudentDeficiencyShowProps } from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencies.types';
 import StudentDeficiencyDeleteModal from '@/components/Inclusion/StudentDeficiencies/StudentDeficiencyDeleteModal';
+import { studentDeficiencyShowTour } from '@/components/Inclusion/StudentDeficiencies/studentDeficiencyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -29,6 +30,7 @@ export default function InclusionStudentDeficienciesShowPage({
                 studentDeficiency: deficiency,
             })}
             busy={removal.processing}
+            tour={studentDeficiencyShowTour}
         >
             <StudentDeficiencyDetails deficiency={deficiency} profileName={profileName} />
             <StudentDeficiencyDetailsActions

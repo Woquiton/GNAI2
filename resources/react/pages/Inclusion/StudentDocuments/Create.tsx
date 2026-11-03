@@ -1,6 +1,7 @@
 import StudentDocumentForm from '@/components/Inclusion/StudentDocuments/Form/StudentDocumentForm';
 import { studentDocumentBreadcrumb } from '@/components/Inclusion/StudentDocuments/StudentDocuments.routes';
 import type { StudentDocumentFormOptions } from '@/components/Inclusion/StudentDocuments/StudentDocuments.types';
+import { studentDocumentCreateTour } from '@/components/Inclusion/StudentDocuments/studentDocumentTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentDocumentsCreatePage({
@@ -16,6 +17,7 @@ export default function InclusionStudentDocumentsCreatePage({
                 student,
                 current: 'Cadastrar documento do aluno',
             })}
+            tour={studentDocumentCreateTour}
         >
             <StudentDocumentForm student={student} types={types} semester={semester} />
         </BusinessPage>

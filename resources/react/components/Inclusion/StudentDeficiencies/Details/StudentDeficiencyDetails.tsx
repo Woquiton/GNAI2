@@ -6,6 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateTimeLabel } from '@/utils/formatters';
 import type { StudentDeficiencyShowRecord } from '../StudentDeficiencies.types';
+import { STUDENT_DEFICIENCY_TOUR_TARGETS } from '../studentDeficiencyTours';
 
 interface StudentDeficiencyDetailsProps {
     deficiency: StudentDeficiencyShowRecord;
@@ -32,6 +33,7 @@ export default function StudentDeficiencyDetails({
                 title="Informações do Diagnóstico"
                 variant="inline"
                 iconClass="fa fa-stethoscope"
+                tourTarget={STUDENT_DEFICIENCY_TOUR_TARGETS.details}
             >
                 <DetailGrid>
                     <DetailField label="Nome do Perfil">{profileName}</DetailField>

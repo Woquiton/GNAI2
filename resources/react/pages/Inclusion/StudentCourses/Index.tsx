@@ -14,6 +14,7 @@ import type {
     StudentCourseIndexProps,
     StudentCourseListRecord,
 } from '@/components/Inclusion/StudentCourses/StudentCourses.types';
+import { studentCourseListTour } from '@/components/Inclusion/StudentCourses/studentCourseTours';
 import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
@@ -76,6 +77,7 @@ export default function InclusionStudentCoursesIndexPage({
                     onSubmit={filters.submit}
                 />
             }
+            tour={studentCourseListTour}
             dialogs={
                 <StudentCourseDeleteModal
                     target={removalTarget}

@@ -8,6 +8,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import { coursePeriodOptions } from '@/components/Inclusion/coursePeriods';
+import { STUDENT_COURSE_TOUR_TARGETS } from '../studentCourseTours';
 import type {
     StudentCourseFormMode,
     StudentCourseFormSectionProps,
@@ -47,6 +48,7 @@ export default function StudentCourseEnrollmentFields({
             title="Dados da Matrícula"
             variant="inline"
             iconClass="fa fa-graduation-cap"
+            tourTarget={STUDENT_COURSE_TOUR_TARGETS.formEnrollment}
         >
             <FormGrid>
                 {creating ? (

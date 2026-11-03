@@ -5,6 +5,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import Button from '@/components/UI/Button/Button';
 import { studentDocumentAcceptedFiles } from '../StudentDocuments.constants';
 import type { StudentDocumentRecord } from '../StudentDocuments.types';
+import { STUDENT_DOCUMENT_TOUR_TARGETS } from '../studentDocumentTours';
 import type { StudentDocumentFormSectionProps } from './StudentDocumentForm.types';
 
 interface StudentDocumentFileFieldsProps extends StudentDocumentFormSectionProps {
@@ -37,6 +38,7 @@ export default function StudentDocumentFileFields({
             title="Arquivo"
             variant="inline"
             iconClass="fa fa-paperclip"
+            tourTarget={STUDENT_DOCUMENT_TOUR_TARGETS.file}
         >
             {studentDocument ? (
                 <div className="studentDocumentForm__current">

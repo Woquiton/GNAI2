@@ -1,6 +1,7 @@
 import StudentCourseForm from '@/components/Inclusion/StudentCourses/Form/StudentCourseForm';
 import { studentCourseBreadcrumb } from '@/components/Inclusion/StudentCourses/StudentCourses.routes';
 import type { StudentCourseEditProps } from '@/components/Inclusion/StudentCourses/StudentCourses.types';
+import { studentCourseEditTour } from '@/components/Inclusion/StudentCourses/studentCourseTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentCoursesEditPage({
@@ -24,6 +25,7 @@ export default function InclusionStudentCoursesEditPage({
                 },
                 current: 'Editar',
             })}
+            tour={studentCourseEditTour}
         >
             <StudentCourseForm
                 key={studentCourse.id}

@@ -9,6 +9,7 @@ import type {
     GuardianIndexProps,
     GuardianRecord,
 } from '@/components/Inclusion/Guardians/Guardians.types';
+import { guardianListTour } from '@/components/Inclusion/Guardians/guardianTours';
 import GuardianFilters from '@/components/Inclusion/Guardians/List/GuardianFilters';
 import GuardianList from '@/components/Inclusion/Guardians/List/GuardianList';
 import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
@@ -56,6 +57,7 @@ export default function InclusionGuardiansIndexPage({
             listLabel="Listagem de responsáveis do aluno"
             loading={filters.loading}
             loadingLabel="Atualizando responsáveis"
+            tour={guardianListTour}
             filters={
                 <GuardianFilters
                     values={filters.values}

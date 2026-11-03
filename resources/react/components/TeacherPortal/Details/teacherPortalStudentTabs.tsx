@@ -4,6 +4,7 @@ import TeacherPortalCaseStudy from './TeacherPortalCaseStudy';
 import TeacherPortalDocuments from './TeacherPortalDocuments';
 import TeacherPortalPaee from './TeacherPortalPaee';
 import TeacherPortalPei from './TeacherPortalPei';
+import { TEACHER_PORTAL_TOUR_TARGETS } from '../teacherPortalTours';
 
 /** Abas do prontuário em modo leitura, na ordem do atendimento: laudo, estudo, PAEE e PEI. */
 export function createTeacherPortalStudentTabs({
@@ -24,6 +25,11 @@ export function createTeacherPortalStudentTabs({
             content: <TeacherPortalCaseStudy caseStudy={caseStudy} />,
         },
         { id: 'paee', label: 'PAEE', content: <TeacherPortalPaee paee={paee} /> },
-        { id: 'pei', label: 'PEI', content: <TeacherPortalPei pei={pei} /> },
+        {
+            id: 'pei',
+            label: 'PEI',
+            content: <TeacherPortalPei pei={pei} />,
+            tourTarget: TEACHER_PORTAL_TOUR_TARGETS.peiTab,
+        },
     ];
 }

@@ -52,9 +52,7 @@ export default function ProfessionalDetails({
                     <p className="professionalDetails__name">{person.name}</p>
                 </div>
                 <DetailGrid columns={3}>
-                    <DetailField label="Nome Completo">
-                        <strong>{person.name}</strong>
-                    </DetailField>
+                    <DetailField label="Nome Completo">{person.name}</DetailField>
                     <DetailField label="CPF">{person.document || '---'}</DetailField>
                     <DetailField label="Data de Nascimento">
                         {dateLabel(person.birth_date)}
@@ -79,7 +77,7 @@ export default function ProfessionalDetails({
             >
                 <DetailGrid columns={3}>
                     <DetailField label="Cargo / Função">
-                        <strong>{professional.position?.name ?? 'Não definido'}</strong>
+                        {professional.position?.name ?? 'Não definido'}
                     </DetailField>
                     <DetailField label="Matrícula">
                         {professional.registration || '---'}

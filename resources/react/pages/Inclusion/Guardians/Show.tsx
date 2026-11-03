@@ -9,6 +9,7 @@ import type {
     GuardianRecord,
     GuardianShowProps,
 } from '@/components/Inclusion/Guardians/Guardians.types';
+import { guardianShowTour } from '@/components/Inclusion/Guardians/guardianTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -28,6 +29,7 @@ export default function InclusionGuardiansShowPage({
             documentTitle={guardian.person.name}
             breadcrumbItems={guardianBreadcrumb({ student, current: guardian.person.name })}
             busy={removal.processing}
+            tour={guardianShowTour}
         >
             <GuardianDetails {...details} />
             <GuardianDetailsActions

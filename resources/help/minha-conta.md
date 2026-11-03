@@ -2,11 +2,15 @@
 titulo: Minha conta e perfil
 resumo: Como abrir o seu perfil, atualizar seus dados pessoais, trocar ou remover a foto e alterar a sua senha.
 categoria: Primeiros passos
-palavras-chave: perfil, meu perfil, minha conta, conta, dados pessoais, editar perfil, alterar dados, atualizar cadastro, nome, e-mail, cpf, telefone, matrícula, endereço, data de nascimento, gênero, foto, foto de perfil, avatar, trocar foto, remover foto, câmera, webcam, senha, trocar senha, alterar senha, mudar senha, nova senha, senha atual, segurança
+palavras-chave: perfil, meu perfil, minha conta, conta, dados pessoais, editar perfil, alterar dados, atualizar cadastro, nome, e-mail, cpf, telefone, matrícula, endereço, data de nascimento, gênero, foto, foto de perfil, avatar, trocar foto, remover foto, câmera, webcam, senha, trocar senha, alterar senha, mudar senha, nova senha, senha atual, segurança, tutorial, tour
 ordem: 3
 ---
 
 Em **Meu Perfil** você mantém atualizados os seus dados, a sua foto e a sua senha. O conteúdo da tela depende do tipo de conta: quem faz parte da equipe ou do corpo docente vê os dados pessoais completos; contas administrativas sem vínculo com a equipe veem apenas os dados de acesso.
+
+## Conhecer a tela com o tutorial
+
+A tela **Meu Perfil** tem um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra a sua foto, os campos dos seus dados, a área da senha e os botões do rodapé. O tutorial só explica cada parte: ele não altera a sua foto, os seus dados nem a sua senha. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Abrir o meu perfil
 

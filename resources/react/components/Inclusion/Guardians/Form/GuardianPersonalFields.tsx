@@ -11,6 +11,7 @@ import PersonPhotoFields from '@/components/Inclusion/People/PersonPhotoFields';
 import { cpfMask } from '@/utils/masks';
 import { guardianPhotoTypes } from '../Guardians.constants';
 import type { GuardianPerson } from '../Guardians.types';
+import { GUARDIAN_TOUR_TARGETS } from '../guardianTours';
 import type { GuardianFormSectionProps } from './GuardianForm.types';
 
 interface GuardianPersonalFieldsProps extends GuardianFormSectionProps {
@@ -47,6 +48,7 @@ export default function GuardianPersonalFields({
             onRemove={onPhotoRemove}
             onValidatingChange={onPhotoValidatingChange}
             onError={(message) => form.setError('photo', message)}
+            tourTarget={GUARDIAN_TOUR_TARGETS.photo}
         />
     );
 
@@ -56,6 +58,7 @@ export default function GuardianPersonalFields({
             title="Dados Pessoais"
             variant="inline"
             iconClass="fa fa-user"
+            tourTarget={GUARDIAN_TOUR_TARGETS.personal}
         >
             <PersonPhotoFields photo={photo}>
                 <FormGrid columns={2}>

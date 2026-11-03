@@ -16,6 +16,7 @@ import type {
     StudentCourseShowProps,
     StudentCourseShowRecord,
 } from '../StudentCourses.types';
+import { STUDENT_COURSE_TOUR_TARGETS } from '../studentCourseTours';
 
 interface StudentCourseDetailsProps {
     studentCourse: StudentCourseShowRecord;
@@ -45,9 +46,7 @@ export default function StudentCourseDetails({
         name: (
             <span
                 title={
-                    discipline.description
-                        ? formatTableListText(discipline.description)
-                        : undefined
+                    discipline.description ? formatTableListText(discipline.description) : undefined
                 }
             >
                 {discipline.name}
@@ -76,11 +75,10 @@ export default function StudentCourseDetails({
                 title="Dados da Matrícula"
                 variant="inline"
                 iconClass="fa fa-graduation-cap"
+                tourTarget={STUDENT_COURSE_TOUR_TARGETS.data}
             >
                 <DetailGrid>
-                    <DetailField label="Aluno">
-                        <strong>{studentName || '---'}</strong>
-                    </DetailField>
+                    <DetailField label="Aluno">{studentName || '---'}</DetailField>
                     <DetailField label="Curso / Série">{courseName}</DetailField>
                     <DetailField label="Ano Letivo">
                         {studentCourse.academic_year ?? '---'}
@@ -111,6 +109,7 @@ export default function StudentCourseDetails({
                 title="Acompanhamento Acadêmico no Curso"
                 variant="inline"
                 iconClass="fa fa-line-chart"
+                tourTarget={STUDENT_COURSE_TOUR_TARGETS.followUp}
             >
                 <DetailGrid>
                     <DetailField label="Situação da Frequência Escolar" wide>
@@ -129,6 +128,7 @@ export default function StudentCourseDetails({
                 title="Reprovações e Riscos por Semestre"
                 variant="inline"
                 iconClass="fa fa-history"
+                tourTarget={STUDENT_COURSE_TOUR_TARGETS.academicHistory}
             >
                 {academicHistory.length ? (
                     <DetailGrid>
@@ -160,6 +160,7 @@ export default function StudentCourseDetails({
                 title="Matriz Curricular"
                 variant="inline"
                 iconClass="fa fa-book"
+                tourTarget={STUDENT_COURSE_TOUR_TARGETS.curriculum}
             >
                 <TagList items={curriculum} emptyMessage="Nenhuma disciplina vinculada ao curso." />
             </FormSection>
@@ -168,6 +169,7 @@ export default function StudentCourseDetails({
                 title="Informações do Sistema"
                 variant="inline"
                 iconClass="fa fa-info-circle"
+                tourTarget={STUDENT_COURSE_TOUR_TARGETS.system}
             >
                 <DetailGrid>
                     <DetailField label="Criado em">

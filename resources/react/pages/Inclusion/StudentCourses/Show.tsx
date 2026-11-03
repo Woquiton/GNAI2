@@ -8,6 +8,7 @@ import {
     studentCourseUrls,
 } from '@/components/Inclusion/StudentCourses/StudentCourses.routes';
 import type { StudentCourseShowProps } from '@/components/Inclusion/StudentCourses/StudentCourses.types';
+import { studentCourseShowTour } from '@/components/Inclusion/StudentCourses/studentCourseTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -38,6 +39,7 @@ export default function InclusionStudentCoursesShowPage({
                 studentCourse: { id: studentCourse.id, courseName },
             })}
             busy={processing}
+            tour={studentCourseShowTour}
         >
             <StudentCourseDetails
                 studentCourse={studentCourse}

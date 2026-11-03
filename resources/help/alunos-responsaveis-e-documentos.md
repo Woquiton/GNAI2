@@ -2,7 +2,7 @@
 titulo: Responsáveis, perfis de atendimento e documentos do aluno
 resumo: Como adicionar responsáveis, vincular perfis de atendimento e enviar documentos como laudos pelo prontuário do aluno.
 categoria: Atendimento
-palavras-chave: responsável, responsáveis, pai, mãe, avô, avó, responsável legal, família, parentesco, vínculo, contato, whatsapp, perfil de atendimento, deficiência, deficiências, necessidade específica, severidade, leve, moderada, severa, documento, documentos, laudo, laudo médico, relatório, avaliação, histórico escolar, plano aee, anexo, anexar, upload, enviar arquivo, baixar documento, visualizar documento
+palavras-chave: responsável, responsáveis, pai, mãe, avô, avó, responsável legal, família, parentesco, vínculo, contato, whatsapp, perfil de atendimento, deficiência, deficiências, necessidade específica, severidade, leve, moderada, severa, documento, documentos, laudo, laudo médico, relatório, avaliação, histórico escolar, plano aee, anexo, anexar, upload, enviar arquivo, baixar documento, visualizar documento, tutorial, tour
 ordem: 15
 permissoes: student.view
 ---
@@ -10,6 +10,10 @@ permissoes: student.view
 Responsáveis, perfis de atendimento e documentos são cadastrados dentro do prontuário do aluno, cada um em sua própria aba. Para abrir o prontuário, acesse **Atendimento → Alunos** e visualize o aluno. Veja também [Alunos e prontuário](/ajuda/alunos).
 
 > **Importante:** só é possível adicionar ou alterar esses registros para alunos ativos. Se o status do aluno for **Trancado**, **Concluído** ou **Desistente**, o sistema mostra "O aluno ... não está ativo e não pode realizar esta ação.".
+
+## Conhecer as telas com o tutorial
+
+As telas de responsáveis (listagem, cadastro, edição e visualização), de perfis de atendimento do aluno (vínculo, edição e visualização) e de documentos (envio e edição) têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Adicionar um responsável
 

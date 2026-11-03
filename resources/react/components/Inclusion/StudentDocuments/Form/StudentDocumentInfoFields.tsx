@@ -5,6 +5,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import TextInput from '@/components/Forms/TextInput/TextInput';
 import type { StudentDocumentFormOptions } from '../StudentDocuments.types';
+import { STUDENT_DOCUMENT_TOUR_TARGETS } from '../studentDocumentTours';
 import type { StudentDocumentFormSectionProps } from './StudentDocumentForm.types';
 
 interface StudentDocumentInfoFieldsProps extends StudentDocumentFormSectionProps {
@@ -27,6 +28,7 @@ export default function StudentDocumentInfoFields({
             title={editing ? 'Informações Gerais' : 'Informações do Documento'}
             variant="inline"
             iconClass="fa fa-file-text-o"
+            tourTarget={STUDENT_DOCUMENT_TOUR_TARGETS.information}
         >
             <FormGrid columns={2}>
                 <FormGridWide>

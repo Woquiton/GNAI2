@@ -9,6 +9,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import { cpfMask, phoneMask } from '@/utils/masks';
 import { genderOptions } from '../Profile.constants';
 import type { ProfileEditProps } from '../Profile.types';
+import { PROFILE_TOUR_TARGETS } from '../profileTours';
 import ProfileIdentity from './ProfileIdentity';
 import type { ProfileFormState } from './useProfileForm';
 
@@ -45,7 +46,7 @@ export default function ProfilePersonalFields({
                     position={position}
                     bond={bond}
                 />
-                <div className="profileForm__fields">
+                <div className="profileForm__fields" data-tour={PROFILE_TOUR_TARGETS.personal}>
                     <FormGrid columns={2}>
                         <TextInputField
                             id="profile-name"

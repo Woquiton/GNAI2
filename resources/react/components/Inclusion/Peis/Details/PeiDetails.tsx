@@ -43,9 +43,7 @@ export default function PeiDetails(props: PeiShowProps): React.JSX.Element {
                                 {student.status_label || NOT_INFORMED}
                             </TableLabel>
                         </DetailField>
-                        <DetailField label="Versão">
-                            <strong>{peiRecordVersionLabel(pei)}</strong>
-                        </DetailField>
+                        <DetailField label="Versão">{peiRecordVersionLabel(pei)}</DetailField>
                         <DetailField label="Status do PEI">
                             <PeiStatusLabel pei={pei} />
                         </DetailField>

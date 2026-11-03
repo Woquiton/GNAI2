@@ -2,6 +2,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import type { StudentCourseStudent } from '../StudentCourses.types';
+import { STUDENT_COURSE_TOUR_TARGETS } from '../studentCourseTours';
 import type { StudentCourseFormMode } from './StudentCourseForm.types';
 
 interface StudentCourseStudentInfoProps {
@@ -25,15 +26,12 @@ export default function StudentCourseStudentInfo({
             title={editing ? 'Dados do Aluno e Curso' : 'Aluno'}
             variant="inline"
             iconClass="fa fa-user"
+            tourTarget={STUDENT_COURSE_TOUR_TARGETS.formStudent}
         >
             <DetailGrid>
-                <DetailField label={editing ? 'Aluno' : 'Nome do Aluno'}>
-                    <strong>{studentName}</strong>
-                </DetailField>
+                <DetailField label={editing ? 'Aluno' : 'Nome do Aluno'}>{studentName}</DetailField>
                 {editing ? (
-                    <DetailField label="Curso / Série">
-                        <strong>{courseName ?? 'Não informado'}</strong>
-                    </DetailField>
+                    <DetailField label="Curso / Série">{courseName ?? 'Não informado'}</DetailField>
                 ) : (
                     <DetailField label="Matrícula">
                         {student?.registration || 'Não informado'}

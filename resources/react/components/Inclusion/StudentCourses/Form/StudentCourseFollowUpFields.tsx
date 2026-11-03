@@ -6,6 +6,7 @@ import {
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { StudentCourseDependency, StudentCourseDiscipline } from '../StudentCourses.types';
+import { STUDENT_COURSE_TOUR_TARGETS } from '../studentCourseTours';
 import type { DisciplineGroupName, StudentCourseFormSectionProps } from './StudentCourseForm.types';
 
 const disciplineGroups: { name: DisciplineGroupName; title: string }[] = [
@@ -65,6 +66,7 @@ export default function StudentCourseFollowUpFields({
             title="Acompanhamento Acadêmico no Semestre"
             variant="inline"
             iconClass="fa fa-line-chart"
+            tourTarget={STUDENT_COURSE_TOUR_TARGETS.formFollowUp}
         >
             <FormGrid>
                 <FormGridWide>

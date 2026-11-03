@@ -2,7 +2,7 @@
 
 O tutorial ao vivo (também chamado de tour guiado) explica a tela sobre ela mesma. O usuário clica no botão com o ícone de informação na barra do topo; a página escurece, a parte explicada fica em destaque com um anel pulsante e um cartão ao lado diz o que ela faz. A Central de Ajuda continua sendo o lugar das explicações completas; o tutorial mostra onde cada coisa está.
 
-**Toda tela de negócio nova deve ter seu tutorial.** Telas existentes ganham o tutorial quando forem alteradas. As referências são o Painel (`components/Dashboard/Overview/overviewTour.ts`) e o módulo de Alunos (`components/Inclusion/Students/studentTours.ts`), com listagem, cadastro, edição e prontuário.
+**Toda tela de negócio nova deve ter seu tutorial.** Ficam fora apenas as telas sem barra do topo: autenticação, erro, catálogo técnico e site público. Telas existentes ganham o tutorial quando forem alteradas. As referências são o Painel (`components/Dashboard/Overview/overviewTour.ts`) e o módulo de Alunos (`components/Inclusion/Students/studentTours.ts`), com listagem, cadastro, edição e prontuário.
 
 ## Como funciona
 
@@ -11,6 +11,7 @@ O tutorial ao vivo (também chamado de tour guiado) explica a tela sobre ela mes
 | `GuidedTourProvider` | `components/UI/GuidedTour/`, montado no `AppLayout` | Guarda o tutorial da tela atual e abre o cartão |
 | `GuidedTour` e `GuidedTourTrail` | `components/UI/GuidedTour/` | Destaque, cartão, progresso e a lista "Ver todos os passos" |
 | `TopBarTourAction` | `components/Navigation/TopBarPrimary/` | Botão da barra do topo; só aparece quando a tela tem tutorial |
+| `PortalTourButton` | `components/Navigation/TeacherPortalLayout/` | Botão **Tutorial** da barra do Portal do Professor, que monta o próprio provedor |
 | Prop `tour` do `BusinessPage` | `components/Navigation/BusinessPage/` | Registra o tutorial da página e acrescenta os passos comuns |
 | Prop `tour` do `TableListLayout` | `components/Tables/TableList/` | Acrescenta os passos padrão das listagens (`tableListTour.ts`) |
 | `openDisclosureDemo` e `pressKey` | `components/UI/GuidedTour/guidedTourDemos.ts` | Ajudam a montar demonstrações que se desfazem sozinhas |

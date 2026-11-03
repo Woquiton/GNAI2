@@ -47,15 +47,9 @@ export default function PeiCreateForm({
                     iconClass="fa fa-file-text-o"
                 >
                     <DetailGrid>
-                        <DetailField label="Estudante">
-                            <strong>{studentName}</strong>
-                        </DetailField>
-                        <DetailField label="Curso Vinculado">
-                            <strong>{course.name}</strong>
-                        </DetailField>
-                        <DetailField label="Semestre Vigente">
-                            <strong>{semester.label}</strong>
-                        </DetailField>
+                        <DetailField label="Estudante">{studentName}</DetailField>
+                        <DetailField label="Curso Vinculado">{course.name}</DetailField>
+                        <DetailField label="Semestre Vigente">{semester.label}</DetailField>
                     </DetailGrid>
                 </FormSection>
             </CardBox>

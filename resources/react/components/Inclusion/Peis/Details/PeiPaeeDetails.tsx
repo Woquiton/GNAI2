@@ -17,9 +17,7 @@ function PaeeSummary({ paee }: { paee: PeiPaeeSummary }): React.JSX.Element {
     return (
         <>
             <DetailGrid columns={4}>
-                <DetailField label="Versão">
-                    <strong>v{paee.version ?? '—'}</strong>
-                </DetailField>
+                <DetailField label="Versão">v{paee.version ?? '—'}</DetailField>
                 <DetailField label="Status">{paee.status_label}</DetailField>
                 <DetailField label="Frequência semanal">
                     {paee.attendance_frequency_per_week ?? '—'}

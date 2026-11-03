@@ -4,6 +4,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { guardianUrls } from '../Guardians.routes';
 import type { GuardianFormOptions, GuardianRecord } from '../Guardians.types';
+import { GUARDIAN_TOUR_TARGETS } from '../guardianTours';
 import GuardianContactFields from './GuardianContactFields';
 import GuardianPersonalFields from './GuardianPersonalFields';
 import type { GuardianFormMode } from './GuardianForm.types';
@@ -85,6 +86,7 @@ export default function GuardianForm({
                 </fieldset>
             </CardBox>
             <FormActions
+                tourTarget={GUARDIAN_TOUR_TARGETS.formActions}
                 status={submissionStatus(
                     photoValidating,
                     form.processing,

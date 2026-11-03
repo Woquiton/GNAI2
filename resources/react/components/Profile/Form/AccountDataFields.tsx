@@ -2,6 +2,7 @@ import { TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { AccountProfile } from '../Profile.types';
+import { PROFILE_TOUR_TARGETS } from '../profileTours';
 import ProfileIdentity from './ProfileIdentity';
 import type { AccountProfileFormState } from './useAccountProfileForm';
 
@@ -44,7 +45,7 @@ export default function AccountDataFields({
                     position={accountRole(account)}
                     bond="Conta administrativa do Gnai"
                 />
-                <div className="profileForm__fields">
+                <div className="profileForm__fields" data-tour={PROFILE_TOUR_TARGETS.accountData}>
                     <FormGrid columns={2}>
                         <TextInputField
                             id="account-name"

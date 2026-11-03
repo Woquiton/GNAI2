@@ -7,6 +7,7 @@ import {
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import { phoneMask } from '@/utils/masks';
+import { GUARDIAN_TOUR_TARGETS } from '../guardianTours';
 import type { GuardianFormSectionProps } from './GuardianForm.types';
 
 interface GuardianContactFieldsProps extends GuardianFormSectionProps {
@@ -28,6 +29,7 @@ export default function GuardianContactFields({
             title="Contato e Vínculo"
             variant="inline"
             iconClass="fa fa-address-book"
+            tourTarget={GUARDIAN_TOUR_TARGETS.contact}
         >
             <FormGrid columns={3}>
                 <TextInputField

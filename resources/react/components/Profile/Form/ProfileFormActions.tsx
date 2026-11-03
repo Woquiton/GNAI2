@@ -1,6 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { profileUrls } from '../Profile.routes';
+import { PROFILE_TOUR_TARGETS } from '../profileTours';
 
 interface ProfileFormActionsProps {
     processing: boolean;
@@ -33,7 +34,7 @@ export default function ProfileFormActions(props: ProfileFormActionsProps): Reac
     const { processing, photoValidating, editorFailed = false } = props;
 
     return (
-        <FormActions status={submissionStatus(props)}>
+        <FormActions status={submissionStatus(props)} tourTarget={PROFILE_TOUR_TARGETS.formActions}>
             <Button
                 href={profileUrls.dashboard}
                 tone="cancel"

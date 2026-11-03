@@ -4,6 +4,7 @@ import TeacherPortalLayout from '@/components/Navigation/TeacherPortalLayout/Tea
 import TeacherAssignmentList from '@/components/TeacherPortal/List/TeacherAssignmentList';
 import { teacherPortalBreadcrumb } from '@/components/TeacherPortal/TeacherPortal.routes';
 import type { TeacherPortalIndexProps } from '@/components/TeacherPortal/TeacherPortal.types';
+import { teacherPortalIndexTour } from '@/components/TeacherPortal/teacherPortalTours';
 
 export default function TeacherPortalIndexPage(props: TeacherPortalIndexProps): React.JSX.Element {
     return (
@@ -11,6 +12,7 @@ export default function TeacherPortalIndexPage(props: TeacherPortalIndexProps): 
             title="Meus Alunos e Adaptações (PEI)"
             subtitle="Aqui estão os alunos com PEI vinculado a você. Você pode editar a sua adaptação e consultar o perfil completo do aluno (em modo leitura)."
             breadcrumbItems={teacherPortalBreadcrumb()}
+            tour={teacherPortalIndexTour}
             className="teacherPortal"
         >
             <TeacherAssignmentList {...props} />

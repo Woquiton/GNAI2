@@ -3,6 +3,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { studentCourseUrls } from '../StudentCourses.routes';
+import { STUDENT_COURSE_TOUR_TARGETS } from '../studentCourseTours';
 import type {
     StudentCourseCourse,
     StudentCourseRecord,
@@ -134,7 +135,10 @@ export default function StudentCourseForm({
                     ) : null}
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? processingStatus : undefined}>
+            <FormActions
+                status={form.processing ? processingStatus : undefined}
+                tourTarget={STUDENT_COURSE_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={studentCourseUrls.record(studentId)}
                     tone="cancel"

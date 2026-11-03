@@ -49,9 +49,7 @@ function PeiDisciplineRow({ peiId, item, canPdf }: PeiDisciplineRowProps): React
 
     return (
         <tr>
-            <td>
-                <strong>{item.discipline_name || NOT_INFORMED}</strong>
-            </td>
+            <td>{item.discipline_name || NOT_INFORMED}</td>
             <td>{item.teacher_name || NOT_INFORMED}</td>
             <td>{dateLabel(item.created_at)}</td>
             <td>

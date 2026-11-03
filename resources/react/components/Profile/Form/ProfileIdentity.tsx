@@ -1,6 +1,7 @@
 import PersonPhotoUpload from '@/components/Forms/PersonPhotoUpload/PersonPhotoUpload';
 import type { PersonPhotoUploadProps } from '@/components/Forms/PersonPhotoUpload/PersonPhotoUpload.types';
 import Badge from '@/components/UI/Badge/Badge';
+import { PROFILE_TOUR_TARGETS } from '../profileTours';
 import '../Profile.css';
 
 type PhotoControl = Omit<PersonPhotoUploadProps, 'id' | 'name' | 'label' | 'current'>;
@@ -25,7 +26,7 @@ export default function ProfileIdentity({
     bond,
 }: ProfileIdentityProps): React.JSX.Element {
     return (
-        <div className="profileForm__identity">
+        <div className="profileForm__identity" data-tour={PROFILE_TOUR_TARGETS.identity}>
             <PersonPhotoUpload
                 {...photo}
                 id={id}

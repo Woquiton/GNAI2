@@ -1,6 +1,7 @@
 import { TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { PROFILE_TOUR_TARGETS } from '../profileTours';
 import type { AccountProfileFormState } from './useAccountProfileForm';
 
 /** Senha atual (exigida para trocar e-mail ou senha), nova senha e confirmação. */
@@ -14,6 +15,7 @@ export default function AccountSecurityFields({
             title="Segurança"
             variant="inline"
             iconClass="fa fa-lock"
+            tourTarget={PROFILE_TOUR_TARGETS.security}
         >
             <FormGrid columns={3}>
                 <TextInputField

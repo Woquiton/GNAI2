@@ -2,11 +2,15 @@
 titulo: Portal do Professor
 resumo: Como o professor entra pelo link enviado ao e-mail cadastrado, consulta os alunos vinculados e edita a adaptação da sua disciplina no PEI.
 categoria: Primeiros passos
-palavras-chave: portal do professor, professor, professora, docente, corpo docente, acesso do professor, link de acesso, link mágico, entrar sem senha, e-mail cadastrado, domínios aceitos, meus alunos, adaptação, adaptação curricular, editar adaptação, minha disciplina, pei, plano educacional individualizado, objetivos específicos, conteúdo programático, metodologias, processo de avaliação, parecer, modo leitura, laudo, estudo de caso, paee, link expirado, link inválido
+palavras-chave: portal do professor, professor, professora, docente, corpo docente, acesso do professor, link de acesso, link mágico, entrar sem senha, e-mail cadastrado, domínios aceitos, meus alunos, adaptação, adaptação curricular, editar adaptação, minha disciplina, pei, plano educacional individualizado, objetivos específicos, conteúdo programático, metodologias, processo de avaliação, parecer, modo leitura, laudo, estudo de caso, paee, link expirado, link inválido, tutorial, tour
 ordem: 6
 ---
 
 O Portal do Professor é a área do Gnai para os professores vinculados ao PEI dos alunos. Nele, o professor consulta a situação dos seus alunos, em modo leitura, e preenche a adaptação da própria disciplina no PEI. O acesso é feito por um link enviado ao e-mail cadastrado, sem senha.
+
+## Conhecer o portal com o tutorial
+
+As telas do portal têm um tutorial que explica cada parte na própria tela. Clique em **Tutorial**, na barra do topo, ao lado de **Sair**. Ele mostra a lista dos seus alunos, a situação do aluno com as abas, onde fica o botão **Editar minha adaptação** e como salvar o planejamento. Use **Próximo** e **Voltar** para seguir, **Ver todos os passos** para pular para uma parte e o **X** ou a tecla **Esc** para sair.
 
 ## O que preciso para acessar o portal?
 

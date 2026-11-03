@@ -32,9 +32,7 @@ export default function PeiGeneralDetails({
                 <DetailField label="Responsável">{pei.responsible}</DetailField>
                 <DetailField label="Curso">{pei.course_name || NOT_INFORMED}</DetailField>
                 <DetailField label="Semestre">{pei.semester_label || NOT_INFORMED}</DetailField>
-                <DetailField label="Versão">
-                    <strong>{peiRecordVersionLabel(pei)}</strong>
-                </DetailField>
+                <DetailField label="Versão">{peiRecordVersionLabel(pei)}</DetailField>
                 <DetailField label="Criado em">{dateLabel(pei.created_at)}</DetailField>
                 <DetailField label="Status">
                     <PeiStatusLabel pei={pei} />

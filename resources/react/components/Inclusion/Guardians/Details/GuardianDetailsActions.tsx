@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { guardianUrls } from '../Guardians.routes';
 import type { GuardianShowProps } from '../Guardians.types';
+import { GUARDIAN_TOUR_TARGETS } from '../guardianTours';
 
 interface GuardianDetailsActionsProps {
     studentId: number;
@@ -22,7 +23,7 @@ export default function GuardianDetailsActions({
     const urls = guardianUrls(studentId);
 
     return (
-        <FormActions>
+        <FormActions tourTarget={GUARDIAN_TOUR_TARGETS.detailsActions}>
             <Button
                 href={urls.record}
                 tone="cancel"

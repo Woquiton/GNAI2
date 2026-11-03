@@ -4,6 +4,7 @@ import Button from '@/components/UI/Button/Button';
 import { STUDENT_DEFICIENCY_RECORD_TAB } from '../StudentDeficiencies.constants';
 import { studentDeficiencyUrls } from '../StudentDeficiencies.routes';
 import type { StudentDeficiencyDetailsPermissions } from '../StudentDeficiencies.types';
+import { STUDENT_DEFICIENCY_TOUR_TARGETS } from '../studentDeficiencyTours';
 
 interface StudentDeficiencyDetailsActionsProps {
     studentId: number;
@@ -22,7 +23,7 @@ export default function StudentDeficiencyDetailsActions({
     onDelete,
 }: StudentDeficiencyDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={STUDENT_DEFICIENCY_TOUR_TARGETS.detailsActions}>
             <StudentRecordReturnButton studentId={studentId} tab={STUDENT_DEFICIENCY_RECORD_TAB} />
             {permissions.update ? (
                 <Button

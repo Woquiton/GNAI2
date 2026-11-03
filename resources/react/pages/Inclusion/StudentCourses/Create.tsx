@@ -1,6 +1,7 @@
 import StudentCourseForm from '@/components/Inclusion/StudentCourses/Form/StudentCourseForm';
 import { studentCourseBreadcrumb } from '@/components/Inclusion/StudentCourses/StudentCourses.routes';
 import type { StudentCourseCreateProps } from '@/components/Inclusion/StudentCourses/StudentCourses.types';
+import { studentCourseCreateTour } from '@/components/Inclusion/StudentCourses/studentCourseTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentCoursesCreatePage({
@@ -19,6 +20,7 @@ export default function InclusionStudentCoursesCreatePage({
                 student: { id: student.id, name: student.person?.name ?? '' },
                 current: 'Cadastrar',
             })}
+            tour={studentCourseCreateTour}
         >
             <StudentCourseForm
                 mode="create"

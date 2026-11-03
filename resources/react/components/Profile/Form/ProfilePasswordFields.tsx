@@ -1,6 +1,7 @@
 import { TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { PROFILE_TOUR_TARGETS } from '../profileTours';
 import type { ProfileFormState } from './useProfileForm';
 
 /** Nova senha e confirmação; em branco, a senha atual é mantida. */
@@ -14,6 +15,7 @@ export default function ProfilePasswordFields({
             title="Alterar Senha"
             variant="inline"
             iconClass="fa fa-lock"
+            tourTarget={PROFILE_TOUR_TARGETS.password}
         >
             <FormGrid columns={2}>
                 <TextInputField

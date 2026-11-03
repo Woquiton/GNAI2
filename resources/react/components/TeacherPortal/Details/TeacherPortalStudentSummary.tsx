@@ -4,6 +4,7 @@ import DetailField from '@/components/UI/DetailField/DetailField';
 import RecordSummary from '@/components/UI/RecordSummary/RecordSummary';
 import type { TeacherPortalStudent, TeacherPortalStudentStatus } from '../TeacherPortal.types';
 import TeacherPortalYesNo from './TeacherPortalYesNo';
+import { TEACHER_PORTAL_TOUR_TARGETS } from '../teacherPortalTours';
 
 interface TeacherPortalStudentSummaryProps {
     student: TeacherPortalStudent;
@@ -20,7 +21,7 @@ export default function TeacherPortalStudentSummary({
         : undefined;
 
     return (
-        <CardBox>
+        <CardBox tourTarget={TEACHER_PORTAL_TOUR_TARGETS.summary}>
             <FormSection
                 id="situacao-do-aluno"
                 title="Situação do aluno"

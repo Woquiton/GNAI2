@@ -14,6 +14,7 @@ import { teacherPortalUrls } from '../TeacherPortal.routes';
 import type { TeacherPortalDisciplineEditProps } from '../TeacherPortal.types';
 import type { TeacherDisciplineField } from './TeacherDisciplineForm.types';
 import { useTeacherDisciplineForm } from './useTeacherDisciplineForm';
+import { TEACHER_PORTAL_TOUR_TARGETS } from '../teacherPortalTours';
 
 /** Adaptação da disciplina no PEI preenchida pelo professor vinculado. */
 export default function TeacherDisciplineForm({
@@ -76,6 +77,7 @@ export default function TeacherDisciplineForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="teacher-portal-discipline-planning"
+                        tourTarget={TEACHER_PORTAL_TOUR_TARGETS.planning}
                         title="Planejamento Adaptado"
                         variant="inline"
                         iconClass="fa fa-book"
@@ -88,7 +90,10 @@ export default function TeacherDisciplineForm({
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? 'Salvando adaptação…' : undefined}>
+            <FormActions
+                status={form.processing ? 'Salvando adaptação…' : undefined}
+                tourTarget={TEACHER_PORTAL_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={teacherPortalUrls.index}
                     tone="cancel"

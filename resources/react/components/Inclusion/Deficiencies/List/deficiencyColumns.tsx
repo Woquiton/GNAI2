@@ -11,7 +11,7 @@ export const deficiencyColumns: TableListColumn<DeficiencyRecord>[] = [
         fixed: 'start',
         render: (deficiency) => (
             <span className="deficiencyList__identity">
-                <strong>{deficiency.name}</strong>
+                <span>{deficiency.name}</span>
                 <small>{deficiency.cid_code || 'S/ CID'}</small>
             </span>
         ),
