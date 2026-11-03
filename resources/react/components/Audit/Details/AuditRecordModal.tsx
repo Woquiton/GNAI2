@@ -4,6 +4,7 @@ import Modal from '@/components/UI/Modal/Modal';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { AuditField, AuditRecord, AuditView } from '../Audit.types';
 import { auditDateTime, auditEventTone } from '../Audit.utils';
+import { AUDIT_TOUR_TARGETS } from '../auditTours';
 import './AuditRecordModal.css';
 
 function FieldValue({ value }: { value: string | null }): React.JSX.Element {
@@ -92,11 +93,15 @@ function PlainFields({ record }: { record: AuditRecord }): React.JSX.Element {
     const valueHeading = record.event === 'deleted' ? 'Valor ao excluir' : 'Valor registrado';
 
     if (!fields.length) {
-        return <p className="auditRecord__noFields">Nenhum campo registrado.</p>;
+        return (
+            <p className="auditRecord__noFields" data-tour={AUDIT_TOUR_TARGETS.modalContent}>
+                Nenhum campo registrado.
+            </p>
+        );
     }
 
     return (
-        <div className="auditRecord__tableWrap">
+        <div className="auditRecord__tableWrap" data-tour={AUDIT_TOUR_TARGETS.modalContent}>
             <table className="auditRecord__table">
                 <thead>
                     <tr>
@@ -151,7 +156,7 @@ export default function AuditRecordModal({
             contentClassName="auditRecordModal"
             onClose={onClose}
             footer={
-                <div className="auditRecord__footer">
+                <div className="auditRecord__footer" data-tour={AUDIT_TOUR_TARGETS.modalFooter}>
                     <Button
                         tone="cancel"
                         label="Fechar"
@@ -164,7 +169,10 @@ export default function AuditRecordModal({
             {record ? (
                 <div className="auditRecord">
                     <div className="auditRecord__meta">
-                        <div className="auditRecord__badges">
+                        <div
+                            className="auditRecord__badges"
+                            data-tour={AUDIT_TOUR_TARGETS.modalSummary}
+                        >
                             <TableLabel tone={auditEventTone(record.event)}>
                                 {record.plain.event}
                             </TableLabel>
@@ -177,6 +185,7 @@ export default function AuditRecordModal({
                             className="auditRecord__views"
                             role="group"
                             aria-label="Forma de exibição"
+                            data-tour={AUDIT_TOUR_TARGETS.modalViews}
                         >
                             <Button
                                 size="sm"
@@ -203,6 +212,7 @@ export default function AuditRecordModal({
                     ) : (
                         <pre
                             className="auditRecord__technical"
+                            data-tour={AUDIT_TOUR_TARGETS.modalContent}
                             tabIndex={0}
                             aria-label="Log técnico do registro"
                         >

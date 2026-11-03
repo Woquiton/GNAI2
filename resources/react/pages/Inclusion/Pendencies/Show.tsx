@@ -10,6 +10,7 @@ import type {
     PendencyDetailsRecord,
     PendencyShowProps,
 } from '@/components/Inclusion/Pendencies/Pendencies.types';
+import { pendencyShowTour } from '@/components/Inclusion/Pendencies/pendencyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -33,6 +34,7 @@ export default function InclusionPendenciesShowPage({
                 record: { id: pendency.id, label: pendency.title },
             })}
             busy={processing}
+            tour={pendencyShowTour}
         >
             <PendencyDetails pendency={pendency} />
             <PendencyDetailsActions

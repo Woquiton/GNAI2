@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { backupUrls } from '../Backup.routes';
 import type { BackupShowProps } from '../Backup.types';
+import { BACKUP_TOUR_TARGETS } from '../backupTours';
 
 interface BackupDetailsActionsProps {
     backupId: number;
@@ -30,7 +31,7 @@ export default function BackupDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={downloadAction}>
+        <FormActions secondary={downloadAction} tourTarget={BACKUP_TOUR_TARGETS.detailsActions}>
             <Button
                 href={backupUrls.index}
                 tone="cancel"

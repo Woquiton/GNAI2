@@ -1,4 +1,5 @@
 import SearchInput from '@/components/UI/SearchInput/SearchInput';
+import { HELP_TOUR_TARGETS } from '../helpTours';
 import './HelpResults.css';
 
 interface HelpSearchProps {
@@ -16,7 +17,7 @@ export default function HelpSearch({
     onSubmit,
 }: HelpSearchProps): React.JSX.Element {
     return (
-        <div className="helpSearch">
+        <div className="helpSearch" data-tour={HELP_TOUR_TARGETS.search}>
             <SearchInput
                 id="help-search"
                 name="busca"

@@ -2,12 +2,16 @@
 titulo: Backups
 resumo: Como gerar, baixar, importar, restaurar e excluir cópias de segurança do Gnai, e como funcionam o backup automático e a retenção.
 categoria: Sistema
-palavras-chave: backup, backups, cópia de segurança, copia de seguranca, salvar dados, gerar backup, fazer backup, baixar backup, download do backup, importar backup, enviar backup, upload, zip, restaurar, restauração, voltar versão, recuperar dados, desfazer, excluir backup, backup automático, agendar backup, retenção, backups antigos, banco de dados, arquivos de mídia
+palavras-chave: backup, backups, cópia de segurança, copia de seguranca, salvar dados, gerar backup, fazer backup, baixar backup, download do backup, importar backup, enviar backup, upload, zip, restaurar, restauração, voltar versão, recuperar dados, desfazer, excluir backup, backup automático, agendar backup, retenção, backups antigos, banco de dados, arquivos de mídia, tutorial, tour
 ordem: 30
 permissoes: backup.index
 ---
 
 Os backups são cópias de segurança do Gnai em arquivo ZIP, com o banco de dados e os arquivos enviados ao sistema (fotos, documentos, imagens do site e demais anexos). Eles podem ser gerados manualmente, feitos automaticamente nos horários configurados, baixados, importados e usados para restaurar o sistema.
+
+## Conhecer as telas com o tutorial
+
+A listagem e os detalhes do backup têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele explica os botões **Gerar Novo** e **Importar Backup**, os filtros, a tabela, as ações de cada linha, o aviso **Política de Armazenamento** e os botões dos detalhes. O tutorial só explica esses botões; ele não gera, restaura nem exclui nenhum backup. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Consultar os backups
 

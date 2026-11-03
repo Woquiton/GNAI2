@@ -1,6 +1,7 @@
 import { TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import { MAIL_HINTS } from './MailSettings.constants';
 import type { MailSettingsFormState } from './useMailSettingsForm';
 
@@ -11,7 +12,13 @@ export default function MailSenderFields({
     form: MailSettingsFormState['form'];
 }): React.JSX.Element {
     return (
-        <FormSection id="mail-sender" title="Remetente" variant="inline" iconClass="fa fa-envelope">
+        <FormSection
+            id="mail-sender"
+            title="Remetente"
+            variant="inline"
+            iconClass="fa fa-envelope"
+            tourTarget={SETTINGS_TOUR_TARGETS.mailSender}
+        >
             <FormGrid>
                 <TextInputField
                     id="mail-from_address"

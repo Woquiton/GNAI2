@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { pendencyUrls } from '../Pendencies.routes';
 import type { PendencyDetailsPermissions } from '../Pendencies.types';
+import { PENDENCY_TOUR_TARGETS } from '../pendencyTours';
 
 interface PendencyDetailsActionsProps {
     pendencyId: number;
@@ -20,7 +21,7 @@ export default function PendencyDetailsActions({
     onDelete,
 }: PendencyDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={PENDENCY_TOUR_TARGETS.detailsActions}>
             <Button
                 href={pendencyUrls.index}
                 tone="cancel"

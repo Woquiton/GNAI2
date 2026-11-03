@@ -2,12 +2,16 @@
 titulo: Pendências
 resumo: Como criar tarefas para um profissional da equipe, acompanhar as suas pendências e marcá-las como concluídas.
 categoria: Comunicação
-palavras-chave: pendência, pendencias, tarefa, tarefas, afazer, a fazer, demanda, atribuir tarefa, delegar, responsável, profissional responsável, minhas pendências, minhas tarefas, concluir pendência, marcar como concluída, finalizar tarefa, prioridade, urgente, vencimento, prazo, data limite, excluir pendência, editar pendência
+palavras-chave: pendência, pendencias, tarefa, tarefas, afazer, a fazer, demanda, atribuir tarefa, delegar, responsável, profissional responsável, minhas pendências, minhas tarefas, concluir pendência, marcar como concluída, finalizar tarefa, prioridade, urgente, vencimento, prazo, data limite, excluir pendência, editar pendência, tutorial, tour
 ordem: 10
 permissoes: pendency.view
 ---
 
 As pendências são tarefas que um usuário registra e direciona a um profissional da equipe. O responsável recebe uma notificação, acompanha a tarefa em **Minhas Pendências** e a marca como concluída quando terminar; quem criou a pendência é avisado da conclusão.
+
+## Conhecer as telas com o tutorial
+
+A listagem, Minhas Pendências, o cadastro, a edição e a visualização da pendência têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela das listagens, os campos do formulário e os botões de cada tela. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Consultar as pendências
 

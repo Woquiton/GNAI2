@@ -35,3 +35,26 @@ export function openDisclosureDemo(
 export function pressKey(element: HTMLElement, key: string): void {
     element.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
 }
+
+/**
+ * Demonstração que continua entre passos seguidos, como uma janela aberta que vários passos
+ * explicam. Cada passo chama `hold` ao entrar e `release` ao sair: se o próximo passo também
+ * participa, ele segura a demonstração; senão, `reset` desfaz tudo logo depois.
+ */
+export function createDemoSession(
+    reset: () => void,
+    delayMs = 80,
+): {
+    hold: () => void;
+    release: () => void;
+} {
+    let timer = 0;
+
+    return {
+        hold: () => window.clearTimeout(timer),
+        release: () => {
+            window.clearTimeout(timer);
+            timer = window.setTimeout(reset, delayMs);
+        },
+    };
+}

@@ -2,12 +2,16 @@
 titulo: Publicações
 resumo: Como cadastrar notícias, eventos, comunicados, artigos e registros que aparecem no site do núcleo, com capa, galeria, participantes e agendamento.
 categoria: Comunicação
-palavras-chave: publicação, publicacoes, notícia, noticia, evento, eventos, comunicado, artigo, registro, agenda, agenda institucional, calendário de eventos, postagem, post, publicar no site, rascunho, despublicar, ocultar do site, destaque, capa, imagem de capa, galeria, fotos, texto alternativo, palestrante, participante, convidado, link de inscrição, transmissão, endereço da página, slug, seo, buscadores, google, agendar publicação, pdf da publicação
+palavras-chave: publicação, publicacoes, notícia, noticia, evento, eventos, comunicado, artigo, registro, agenda, agenda institucional, calendário de eventos, postagem, post, publicar no site, rascunho, despublicar, ocultar do site, destaque, capa, imagem de capa, galeria, fotos, texto alternativo, palestrante, participante, convidado, link de inscrição, transmissão, endereço da página, slug, seo, buscadores, google, agendar publicação, pdf da publicação, tutorial, tour
 ordem: 20
 permissoes: publication.index
 ---
 
 As publicações são o conteúdo exibido no site público do núcleo: notícias, eventos, comunicados, artigos e registros. Elas substituem a antiga agenda institucional; os eventos guardam datas, horários e local apenas como informação exibida no site, sem lembretes automáticos.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a edição e a visualização da publicação têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, o texto completo com **Ver mais** e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Consultar as publicações
 

@@ -32,6 +32,7 @@ import {
     type BuilderFormData,
     type BuilderSection,
 } from '@/components/Website/Builder/websiteBuilder';
+import { WEBSITE_BUILDER_TOUR_TARGETS } from '@/components/Website/Builder/websiteBuilderTours';
 import '@/components/Website/Builder/WebsiteBuilder.css';
 
 type BuilderTab = 'sections' | 'edit';
@@ -356,6 +357,7 @@ export default function WebsiteBuilderForm({
             title="Estrutura da página"
             variant="inline"
             iconClass="fa fa-sitemap"
+            tourTarget={WEBSITE_BUILDER_TOUR_TARGETS.structure}
         >
             <BuilderSectionList
                 sections={sections}
@@ -381,7 +383,7 @@ export default function WebsiteBuilderForm({
           : null;
 
     const editTab = (
-        <div ref={editorBody}>
+        <div ref={editorBody} data-tour={WEBSITE_BUILDER_TOUR_TARGETS.editor}>
             <div className="websiteBuilder__editBar">
                 <Button
                     size="sm"
@@ -469,17 +471,20 @@ export default function WebsiteBuilderForm({
                             <Tabs
                                 initialActiveId={tab}
                                 onChange={(id) => setTab(id as BuilderTab)}
+                                tourTarget={WEBSITE_BUILDER_TOUR_TARGETS.tabs}
                                 items={[
                                     {
                                         id: 'sections',
                                         label: 'Seções',
                                         icon: 'fa fa-th-list',
+                                        tourTarget: WEBSITE_BUILDER_TOUR_TARGETS.sectionsTabLabel,
                                         content: sectionsTab,
                                     },
                                     {
                                         id: 'edit',
                                         label: 'Edição',
                                         icon: 'fa fa-pencil',
+                                        tourTarget: WEBSITE_BUILDER_TOUR_TARGETS.editTabLabel,
                                         content: editTab,
                                     },
                                 ]}
@@ -496,6 +501,7 @@ export default function WebsiteBuilderForm({
                 </div>
             </CardBox>
             <FormActions
+                tourTarget={WEBSITE_BUILDER_TOUR_TARGETS.actions}
                 secondary={
                     <Button
                         href={publicUrl}

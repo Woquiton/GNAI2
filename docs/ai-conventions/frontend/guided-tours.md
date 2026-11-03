@@ -22,7 +22,7 @@ O `BusinessPage` começa todo tutorial pela moldura: trilha de navegação (`pag
 
 1. Crie `<recurso>Tour.ts` (uma tela) ou `<recurso>Tours.ts` (várias telas do recurso) na pasta do recurso, com os alvos e um `GuidedTourPageConfig` por tela, exportado como constante de módulo.
 2. Marque cada bloco explicado com `data-tour`. `CardBox`, `RevenueSummaryCard`, `InlineMetricsCard`, `FormSection`, `FormActions`, `PersonPhotoUpload`, `Tabs` e `PageTabs` aceitam `tourTarget`, e cada item de `Tabs` aceita `tourTarget` no botão da aba, que continua visível no celular; `EventCalendar` aceita `tourTargets` para a navegação, os botões de visão e a grade; em marcação própria, use o atributo direto. Os nomes dos alvos ficam num objeto de constantes, nunca repetidos como texto solto.
-3. Passe a constante ao `BusinessPage` pela prop `tour`. Não monte o tutorial dentro do componente: um objeto novo a cada renderização registra o tutorial de novo e fecha o cartão aberto.
+3. Passe a constante ao `BusinessPage` pela prop `tour`. Não monte o tutorial dentro do componente: um objeto novo a cada renderização registra o tutorial de novo e fecha o cartão aberto. Em layouts persistentes, como `SettingsLayout`, que renderiza o `BusinessPage` e não recebe props das páginas, o layout escolhe o tutorial pela aba aberta (`Settings/settingsTours.ts`).
 4. Quando os botões do cabeçalho não são só "Cadastrar", troque o texto do passo comum "Ações da tela" com `actions`.
 5. Informe `helpHref` com o artigo da tela (`helpUrls.show('<slug>', '<âncora da seção>')`) quando ele existir.
 
@@ -93,6 +93,7 @@ A tela troca só os textos que falam dos próprios registros (`filters`, `moreFi
 - Controles que fecham ao clicar fora devem ignorar cliques dentro de `[data-guided-tour]`, como faz o menu de colunas.
 - Quando a demonstração depende de plugins (Select2, editores) ou de estado assíncrono, não simule cliques: o componente expõe as próprias ações ao tutorial por uma ponte, como `Reports/Form/reportTourBridge.ts`. O gerador de relatórios monta um exemplo só com o formulário vazio, mantém o exemplo entre passos seguidos e o desfaz ao sair do último passo ou fechar o tutorial (`Reports/reportTours.ts`).
 - Formulários com abas: o tutorial descarta, ao abrir, passos cujo alvo está numa aba fechada. Destaque o card das abas ou use `availableWith` com o card e um `onEnter` que abre a aba, lendo a aba atual depois de um `setTimeout`, para a volta do passo anterior já ter acontecido.
+- Janelas (`UI/Modal`) podem ser abertas pela demonstração: o cartão do tutorial fica acima delas e o controle de foco do diálogo não puxa o foco do cartão nem prende o Tab enquanto o usuário estiver nele. Abra a janela pelo mesmo botão do usuário e use `createDemoSession` (`guidedTourDemos.ts`) para mantê-la aberta entre os passos que a explicam e fechá-la ao sair do último. Não feche janelas que o usuário abriu. Exemplo: detalhes da Auditoria (`Audit/auditTours.ts`).
 - Não demonstre controles que viram diálogo modal em telas menores, como a lateral de status do prontuário abaixo de 1280 px.
 
 ## Acessibilidade

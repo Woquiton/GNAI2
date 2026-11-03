@@ -10,6 +10,7 @@ import RepeaterField from '@/components/Forms/RepeaterField/RepeaterField';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { settingsCancelUrl } from '../Settings.routes';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import type { TeacherAccessSettingsProps } from '../Settings.types';
 import { useTeacherAccessSettingsForm } from './useTeacherAccessSettingsForm';
 
@@ -40,6 +41,7 @@ export default function TeacherAccessSettingsForm({
                         title="Domínios de e-mail aceitos"
                         variant="inline"
                         iconClass="fa fa-envelope"
+                        tourTarget={SETTINGS_TOUR_TARGETS.teacherDomains}
                         description="Informe somente o domínio, por exemplo escola.edu.br. Cadastre um ou mais domínios para restringir o acesso por link. Sem domínios, qualquer e-mail de professor cadastrado pode solicitar o link. Esta regra não altera o login com senha nem a recuperação de senha."
                     >
                         <FieldError id="teacher-access-domains" error={errors.domains} />
@@ -92,7 +94,10 @@ export default function TeacherAccessSettingsForm({
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? 'Salvando configurações…' : undefined}>
+            <FormActions
+                status={form.processing ? 'Salvando configurações…' : undefined}
+                tourTarget={SETTINGS_TOUR_TARGETS.teacherActions}
+            >
                 <Button
                     href={settingsCancelUrl}
                     tone="cancel"

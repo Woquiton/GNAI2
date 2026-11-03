@@ -9,6 +9,7 @@ import {
     sectionTypeIcons,
     type BuilderSection,
 } from '@/components/Website/Builder/websiteBuilder';
+import { WEBSITE_BUILDER_TOUR_TARGETS } from '@/components/Website/Builder/websiteBuilderTours';
 import './WebsiteBuilder.css';
 
 type Props = {
@@ -54,6 +55,7 @@ export default function BuilderSectionList({
         <div className="websiteBuilder__structure">
             <ol className="websiteBuilder__sectionList" aria-label="Itens da página inicial">
                 <li
+                    data-tour={WEBSITE_BUILDER_TOUR_TARGETS.identity}
                     className={joinClassNames(
                         'websiteBuilder__sectionRow',
                         identitySelected && 'websiteBuilder__sectionRow--selected',
@@ -125,7 +127,14 @@ export default function BuilderSectionList({
                                     </TableLabel>
                                 ) : null}
                             </button>
-                            <div className="websiteBuilder__sectionActions">
+                            <div
+                                className="websiteBuilder__sectionActions"
+                                data-tour={
+                                    index === 0
+                                        ? WEBSITE_BUILDER_TOUR_TARGETS.sectionActions
+                                        : undefined
+                                }
+                            >
                                 <Button
                                     size="xs"
                                     tone="white"
@@ -178,7 +187,10 @@ export default function BuilderSectionList({
                     A página inicial ainda não tem seções. Adicione a primeira abaixo.
                 </p>
             ) : null}
-            <div className="websiteBuilder__add">
+            <div
+                className="websiteBuilder__add"
+                data-tour={WEBSITE_BUILDER_TOUR_TARGETS.addSection}
+            >
                 <div className="websiteBuilder__addSelect">
                     <label htmlFor="website-new-section" className="websiteBuilder__addLabel">
                         Nova seção

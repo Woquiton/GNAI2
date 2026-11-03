@@ -11,6 +11,7 @@ import type {
     PendencyListProps,
     PendencyListRecord,
 } from '@/components/Inclusion/Pendencies/Pendencies.types';
+import { pendencyIndexTour } from '@/components/Inclusion/Pendencies/pendencyTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import Button from '@/components/UI/Button/Button';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
@@ -57,6 +58,7 @@ export default function InclusionPendenciesIndexPage({
             actions={myPendencies}
             create={can.create && { href: pendencyUrls.create, label: 'Cadastrar pendência' }}
             listLabel="Listagem de pendências"
+            tour={pendencyIndexTour}
             loading={filters.loading}
             loadingLabel="Atualizando pendências"
             filters={

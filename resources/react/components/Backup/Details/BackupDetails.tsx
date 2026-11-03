@@ -3,6 +3,7 @@ import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import type { BackupRecord } from '../Backup.types';
+import { BACKUP_TOUR_TARGETS } from '../backupTours';
 import BackupStatusLabel from '../BackupStatusLabel';
 import './BackupDetails.css';
 
@@ -15,17 +16,14 @@ export default function BackupDetails({ backup }: { backup: BackupRecord }): Rea
                 title="Informações do Backup"
                 variant="inline"
                 iconClass="fa fa-file-archive-o"
+                tourTarget={BACKUP_TOUR_TARGETS.details}
             >
                 <DetailGrid columns={3}>
-                    <DetailField label="Arquivo ZIP">
-                        {backup.file_name}
-                    </DetailField>
+                    <DetailField label="Arquivo ZIP">{backup.file_name}</DetailField>
                     <DetailField label="Caminho no Servidor">
                         <code className="backupDetails__path">{backup.file_path}</code>
                     </DetailField>
-                    <DetailField label="Nome de Exibição (Alias)">
-                        {backup.file_name}
-                    </DetailField>
+                    <DetailField label="Nome de Exibição (Alias)">{backup.file_name}</DetailField>
                     <DetailField label="Tamanho do Arquivo">{backup.size}</DetailField>
                     <DetailField label="Data de Geração">{backup.created_at_label}</DetailField>
                     <DetailField label="Responsável">{backup.user?.name ?? 'Sistema'}</DetailField>

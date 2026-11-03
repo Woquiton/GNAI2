@@ -10,6 +10,11 @@ const FOCUSABLE = [
     '[contenteditable="true"]',
 ].join(', ');
 
+/** O cartão do tutorial ao vivo fica por cima do diálogo e mantém o próprio foco. */
+function isInGuidedTour(element: Element | null): boolean {
+    return Boolean(element?.closest('[data-guided-tour]'));
+}
+
 function focusableElements(dialog: HTMLElement): HTMLElement[] {
     return Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
         (element) => element.offsetParent !== null || element === document.activeElement,
@@ -40,7 +45,11 @@ export function useDialogFocus(
         function moveFocusInside(): void {
             const dialog = dialogRef.current;
 
-            if (!dialog || dialog.contains(document.activeElement)) {
+            if (
+                !dialog ||
+                dialog.contains(document.activeElement) ||
+                isInGuidedTour(document.activeElement)
+            ) {
                 return;
             }
 
@@ -61,7 +70,7 @@ export function useDialogFocus(
         function trapFocus(event: KeyboardEvent): void {
             const dialog = dialogRef.current;
 
-            if (event.key !== 'Tab' || !dialog) {
+            if (event.key !== 'Tab' || !dialog || isInGuidedTour(document.activeElement)) {
                 return;
             }
 

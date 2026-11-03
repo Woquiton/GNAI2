@@ -1,7 +1,12 @@
-import { optionsFromRecord, SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import {
+    optionsFromRecord,
+    SelectInputField,
+    TextInputField,
+} from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SettingsOptions } from '../Settings.types';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import type { BackupSettingsFormState } from './useBackupSettingsForm';
 
 interface BackupRetentionFieldsProps {
@@ -28,6 +33,7 @@ export default function BackupRetentionFields({
             title="Retenção"
             variant="inline"
             iconClass="fa fa-history"
+            tourTarget={SETTINGS_TOUR_TARGETS.backupRetention}
         >
             <FormGrid>
                 <SelectInputField

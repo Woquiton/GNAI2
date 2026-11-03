@@ -3,6 +3,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { settingsCancelUrl } from '../Settings.routes';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import type { BackupSettingsProps } from '../Settings.types';
 import BackupRetentionFields from './BackupRetentionFields';
 import BackupScheduleFields from './BackupScheduleFields';
@@ -39,7 +40,10 @@ export default function BackupSettingsForm({
                     <BackupScheduleFields state={state} timezone={timezone} canUpdate={canUpdate} />
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? 'Salvando configurações de backup...' : ''}>
+            <FormActions
+                status={form.processing ? 'Salvando configurações de backup...' : ''}
+                tourTarget={SETTINGS_TOUR_TARGETS.backupActions}
+            >
                 <Button
                     href={settingsCancelUrl}
                     tone="cancel"

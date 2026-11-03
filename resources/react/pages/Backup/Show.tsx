@@ -1,6 +1,7 @@
 import BackupDeleteModal from '@/components/Backup/BackupDeleteModal';
 import { backupBreadcrumb, backupUrls } from '@/components/Backup/Backup.routes';
 import type { BackupShowProps } from '@/components/Backup/Backup.types';
+import { backupShowTour } from '@/components/Backup/backupTours';
 import BackupDetails from '@/components/Backup/Details/BackupDetails';
 import BackupDetailsActions from '@/components/Backup/Details/BackupDetailsActions';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
@@ -17,6 +18,7 @@ export default function BackupShowPage({ backup, can }: BackupShowProps): React.
             subtitle="Informações técnicas e metadados da cópia de segurança."
             breadcrumbItems={backupBreadcrumb({ fileName: backup.file_name })}
             busy={removal.processing}
+            tour={backupShowTour}
         >
             <BackupDetails backup={backup} />
             <BackupDetailsActions

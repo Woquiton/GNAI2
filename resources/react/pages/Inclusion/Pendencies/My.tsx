@@ -7,6 +7,7 @@ import {
     pendencyUrls,
 } from '@/components/Inclusion/Pendencies/Pendencies.routes';
 import type { PendencyListProps } from '@/components/Inclusion/Pendencies/Pendencies.types';
+import { pendencyMyTour } from '@/components/Inclusion/Pendencies/pendencyTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import Button from '@/components/UI/Button/Button';
 
@@ -41,6 +42,7 @@ export default function InclusionPendenciesMyPage({
                 />
             }
             listLabel="Listagem das minhas pendências"
+            tour={pendencyMyTour}
             loading={filters.loading}
             loadingLabel="Atualizando pendências"
             filters={

@@ -1,6 +1,7 @@
 import PendencyForm from '@/components/Inclusion/Pendencies/Form/PendencyForm';
 import { pendencyBreadcrumb } from '@/components/Inclusion/Pendencies/Pendencies.routes';
 import type { PendencyEditProps } from '@/components/Inclusion/Pendencies/Pendencies.types';
+import { pendencyEditTour } from '@/components/Inclusion/Pendencies/pendencyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPendenciesEditPage({
@@ -17,6 +18,7 @@ export default function InclusionPendenciesEditPage({
                 record: { id: pendency.id, label: 'Pendência' },
                 current: 'Editar',
             })}
+            tour={pendencyEditTour}
         >
             <PendencyForm
                 key={pendency.id}

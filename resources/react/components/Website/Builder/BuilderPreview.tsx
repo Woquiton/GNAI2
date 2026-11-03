@@ -8,6 +8,7 @@ import type {
     WebsiteSite,
 } from '@/components/Website/Website.types';
 import { IDENTITY_ID, type BuilderEditTarget } from '@/components/Website/Builder/websiteBuilder';
+import { WEBSITE_BUILDER_TOUR_TARGETS } from '@/components/Website/Builder/websiteBuilderTours';
 import './WebsiteBuilder.css';
 
 type Device = 'desktop' | 'mobile';
@@ -346,6 +347,7 @@ export default function BuilderPreview({
             ref={panel}
             className="websiteBuilder__preview"
             aria-labelledby="website-preview-title"
+            data-tour={WEBSITE_BUILDER_TOUR_TARGETS.preview}
             style={panelHeight ? { height: panelHeight } : undefined}
         >
             <div className="websiteBuilder__previewBar">
@@ -356,6 +358,7 @@ export default function BuilderPreview({
                     className="websiteBuilder__devices"
                     role="group"
                     aria-label="Dispositivo da prévia"
+                    data-tour={WEBSITE_BUILDER_TOUR_TARGETS.devices}
                 >
                     <Button
                         size="sm"

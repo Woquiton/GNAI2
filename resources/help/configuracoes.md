@@ -2,12 +2,16 @@
 titulo: Configurações
 resumo: Como configurar o envio de e-mails do Gnai, testar a conta de envio definir os horários e a retenção dos backups automáticos e configurar os domínios aceitos no acesso de professores e personalizar o cabeçalho dos PDFs.
 categoria: Sistema
-palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, chave de app, chave de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos
+palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, chave de app, chave de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos, tutorial, tour
 ordem: 10
 permissoes: setting.view
 ---
 
 Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **Backups**, **Acesso dos professores** e **PDFs**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
+
+## Conhecer as configurações com o tutorial
+
+As abas **E-mail**, **Backups**, **Acesso dos professores** e **PDFs** têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra as abas de configuração, cada seção do formulário da aba aberta e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Para que serve a configuração de e-mail?
 

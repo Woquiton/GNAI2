@@ -3,6 +3,7 @@ import BackupDeleteModal from '@/components/Backup/BackupDeleteModal';
 import { emptyBackupFilters } from '@/components/Backup/Backup.constants';
 import { backupBreadcrumb, backupUrls } from '@/components/Backup/Backup.routes';
 import type { BackupIndexProps } from '@/components/Backup/Backup.types';
+import { backupListTour } from '@/components/Backup/backupTours';
 import BackupFilters from '@/components/Backup/List/BackupFilters';
 import BackupHeaderActions from '@/components/Backup/List/BackupHeaderActions';
 import BackupList from '@/components/Backup/List/BackupList';
@@ -40,6 +41,7 @@ export default function BackupIndexPage({
                 />
             }
             listLabel="Histórico de backups"
+            tour={backupListTour}
             loading={filters.loading}
             loadingLabel="Atualizando histórico de backups"
             filters={

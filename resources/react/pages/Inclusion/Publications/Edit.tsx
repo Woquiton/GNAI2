@@ -1,6 +1,7 @@
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import PublicationForm from '@/components/Inclusion/Publications/Form/PublicationForm';
 import { publicationBreadcrumb } from '@/components/Inclusion/Publications/Publications.routes';
+import { publicationEditTour } from '@/components/Inclusion/Publications/publicationTours';
 import type { PublicationEditProps } from '@/components/Inclusion/Publications/Publications.types';
 export default function InclusionPublicationsEditPage({
     publication,
@@ -10,6 +11,7 @@ export default function InclusionPublicationsEditPage({
     return (
         <BusinessPage
             title="Editar publicação"
+            tour={publicationEditTour}
             subtitle="Escreva o conteúdo, anexe as mídias e defina como a publicação vai ao ar no site."
             breadcrumbItems={publicationBreadcrumb({
                 current: 'Editar',

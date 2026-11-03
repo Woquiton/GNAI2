@@ -5,6 +5,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import RemovableField from '@/components/Forms/RemovableField/RemovableField';
 import Button from '@/components/UI/Button/Button';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import { MAX_BACKUP_TIMES, type BackupSettingsFormState } from './useBackupSettingsForm';
 import './BackupSettings.css';
 
@@ -36,6 +37,7 @@ export default function BackupScheduleFields({
             variant="inline"
             iconClass="fa fa-clock-o"
             titleAddon={tooltip}
+            tourTarget={SETTINGS_TOUR_TARGETS.backupSchedule}
         >
             <div className="backupSettings__times">
                 {form.data.times.map((time, index) => {

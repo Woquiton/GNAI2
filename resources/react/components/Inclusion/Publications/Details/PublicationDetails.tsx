@@ -7,6 +7,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { scheduleStatusLabels } from '../Publications.constants';
 import type { PublicationRecord } from '../Publications.types';
+import { PUBLICATION_TOUR_TARGETS } from '../publicationTours';
 import './PublicationDetails.css';
 export default function PublicationDetails({
     publication,
@@ -20,14 +21,13 @@ export default function PublicationDetails({
         <CardBox className="publicationShow__card">
             <FormSection
                 id="publication-show-main"
+                tourTarget={PUBLICATION_TOUR_TARGETS.showContent}
                 title="Conteúdo"
                 variant="inline"
                 iconClass="fa fa-file-text-o"
             >
                 <DetailGrid columns={3}>
-                    <DetailField label="Título">
-                        {publication.title}
-                    </DetailField>
+                    <DetailField label="Título">{publication.title}</DetailField>
                     <DetailField label="Resumo">
                         {publication.summary || 'Nenhum resumo informado.'}
                     </DetailField>
@@ -53,12 +53,14 @@ export default function PublicationDetails({
                     </DetailField>
                     <DetailField label="Texto da publicação" wide>
                         {publication.description_html ? (
-                            <ExpandableContent>
-                                <RichTextContent
-                                    html={publication.description_html}
-                                    className="publicationShow__richText"
-                                />
-                            </ExpandableContent>
+                            <div data-tour={PUBLICATION_TOUR_TARGETS.showDescription}>
+                                <ExpandableContent>
+                                    <RichTextContent
+                                        html={publication.description_html}
+                                        className="publicationShow__richText"
+                                    />
+                                </ExpandableContent>
+                            </div>
                         ) : (
                             'Nenhum texto fornecido.'
                         )}
@@ -67,6 +69,7 @@ export default function PublicationDetails({
             </FormSection>
             <FormSection
                 id="publication-show-details"
+                tourTarget={PUBLICATION_TOUR_TARGETS.showSchedule}
                 title="Datas e local"
                 variant="inline"
                 iconClass="fa fa-calendar"
@@ -134,6 +137,7 @@ export default function PublicationDetails({
             </FormSection>
             <FormSection
                 id="publication-show-media"
+                tourTarget={PUBLICATION_TOUR_TARGETS.showMedia}
                 title="Mídia"
                 variant="inline"
                 iconClass="fa fa-picture-o"
@@ -171,6 +175,7 @@ export default function PublicationDetails({
             </FormSection>
             <FormSection
                 id="publication-show-visibility"
+                tourTarget={PUBLICATION_TOUR_TARGETS.showVisibility}
                 title="Publicação no site"
                 variant="inline"
                 iconClass="fa fa-bullhorn"

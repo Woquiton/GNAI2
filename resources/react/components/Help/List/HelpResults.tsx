@@ -2,6 +2,7 @@ import Tabs, { type TabItem } from '@/components/Navigation/Tabs/Tabs';
 import Badge from '@/components/UI/Badge/Badge';
 import EmptyText from '@/components/UI/EmptyText/EmptyText';
 import type { HelpCategoryTab, HelpResult } from '../Help.types';
+import { HELP_TOUR_TARGETS } from '../helpTours';
 import HelpResultItem from './HelpResultItem';
 import './HelpResults.css';
 
@@ -14,7 +15,7 @@ interface HelpResultsProps {
 
 function resultList(results: HelpResult[]): React.JSX.Element {
     return (
-        <div className="helpResults__list">
+        <div className="helpResults__list" data-tour={HELP_TOUR_TARGETS.resultList}>
             {results.map((result) => (
                 <HelpResultItem
                     key={`${result.slug}-${result.section?.anchor ?? ''}`}
@@ -69,8 +70,9 @@ export default function HelpResults({
             icon: 'ti-search',
             content: resultList(results),
         },
-        ...categories.map((category) => ({
+        ...categories.map((category, index) => ({
             id: category.id,
+            tourTarget: index === 0 ? HELP_TOUR_TARGETS.categoryTab : undefined,
             accessibleLabel: `${category.label}, ${category.count === 1 ? '1 artigo' : `${category.count} artigos`}`,
             label: tabLabel(category.label, category.count),
             icon: category.icon_class,
@@ -86,7 +88,7 @@ export default function HelpResults({
                     ? `Nenhum artigo tem todas as palavras pesquisadas. Mostrando ${countText} com parte delas.`
                     : `${countText} encontrado${results.length === 1 ? '' : 's'}.`}
             </p>
-            <Tabs items={tabs} variant="bootstrap" />
+            <Tabs items={tabs} variant="bootstrap" tourTarget={HELP_TOUR_TARGETS.resultTabs} />
         </div>
     );
 }

@@ -2,12 +2,16 @@
 titulo: Site do núcleo
 resumo: Como montar a página inicial do site público, ajustar nome, logo, cor e contatos, organizar as seções e acompanhar o resultado na prévia antes de salvar.
 categoria: Comunicação
-palavras-chave: site, site público, página inicial, home, portal, construtor, construtor do site, editor do site, montar site, white label, identidade visual, nome do site, logo, logotipo, cor principal, slogan, rodapé, contato, redes sociais, instagram, facebook, youtube, banner, carrossel, seção, seções, ocultar seção, ordem das seções, sobre nós, equipe no site, próximos eventos, últimas publicações, perguntas frequentes, faq, prévia, pré-visualização, ver site
+palavras-chave: site, site público, página inicial, home, portal, construtor, construtor do site, editor do site, montar site, white label, identidade visual, nome do site, logo, logotipo, cor principal, slogan, rodapé, contato, redes sociais, instagram, facebook, youtube, banner, carrossel, seção, seções, ocultar seção, ordem das seções, sobre nós, equipe no site, próximos eventos, últimas publicações, perguntas frequentes, faq, prévia, pré-visualização, ver site, tutorial, tour
 ordem: 30
 permissoes: website.edit
 ---
 
 O Gnai possui um site público do núcleo, aberto a qualquer pessoa sem login, com a página inicial, a página da equipe e a página de publicações. Em **Comunicação → Site** você monta a página inicial: identidade (topo e rodapé) e seções, com uma prévia que mostra o resultado em tempo real antes de salvar.
+
+## Conhecer a administração do site com o tutorial
+
+A administração do site tem um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra as abas **Seções** e **Edição**, a identidade, a ordem e a visibilidade das seções, a prévia em **Computador** e **Celular** e os botões do rodapé. Durante o tutorial, as abas e a prévia mudam sozinhas para mostrar cada parte e voltam ao sair do passo, sem alterar nada do site. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que o site público mostra?
 

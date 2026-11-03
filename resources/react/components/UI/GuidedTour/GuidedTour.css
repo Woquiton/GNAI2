@@ -5,7 +5,8 @@
     --guided-tour-motion: 280ms cubic-bezier(0.22, 1, 0.36, 1);
     position: fixed;
     inset: 0;
-    z-index: 1100;
+    /* Acima dos modais (9999999), para explicar também o conteúdo de uma janela aberta. */
+    z-index: 10000000;
     pointer-events: none;
 }
 

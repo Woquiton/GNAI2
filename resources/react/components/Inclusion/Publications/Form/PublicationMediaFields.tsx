@@ -11,6 +11,7 @@ import TextInput from '@/components/Forms/TextInput/TextInput';
 import type { NewGalleryImage } from './PublicationForm.types';
 import { fieldDescribedBy } from '@/components/Forms/FormField/fieldDescription';
 import type { PublicationFieldsProps } from './PublicationForm.types';
+import { PUBLICATION_TOUR_TARGETS } from '../publicationTours';
 
 const maxImageBytes = 4 * 1024 * 1024;
 const maxGallery = 30;
@@ -81,6 +82,7 @@ export default function PublicationMediaFields({
         <>
             <FormSection
                 id="publication-cover"
+                tourTarget={PUBLICATION_TOUR_TARGETS.cover}
                 title="Imagem de capa"
                 variant="inline"
                 iconClass="fa fa-picture-o"
@@ -149,6 +151,7 @@ export default function PublicationMediaFields({
             </FormSection>
             <FormSection
                 id="publication-gallery"
+                tourTarget={PUBLICATION_TOUR_TARGETS.gallery}
                 title="Galeria de fotos"
                 variant="inline"
                 iconClass="fa fa-th"

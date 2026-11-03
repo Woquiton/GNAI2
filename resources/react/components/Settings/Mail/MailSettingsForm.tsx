@@ -3,6 +3,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { settingsCancelUrl } from '../Settings.routes';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import type { MailSettingsProps } from '../Settings.types';
 import MailConfigurationStatus from './MailConfigurationStatus';
 import MailSenderFields from './MailSenderFields';
@@ -54,7 +55,10 @@ export default function MailSettingsForm({
                     {canUpdate ? <MailTestSection state={state} /> : null}
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, testForm.processing)}>
+            <FormActions
+                status={submissionStatus(form.processing, testForm.processing)}
+                tourTarget={SETTINGS_TOUR_TARGETS.mailActions}
+            >
                 <Button
                     href={settingsCancelUrl}
                     tone="cancel"

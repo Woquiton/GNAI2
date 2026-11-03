@@ -8,6 +8,7 @@ import {
     publicationBreadcrumb,
     publicationUrls,
 } from '@/components/Inclusion/Publications/Publications.routes';
+import { publicationListTour } from '@/components/Inclusion/Publications/publicationTours';
 import type {
     PublicationIndexProps,
     PublicationRecord,
@@ -52,6 +53,7 @@ export default function InclusionPublicationsIndexPage({
             breadcrumbItems={publicationBreadcrumb()}
             create={can.create && { href: publicationUrls.create, label: 'Cadastrar publicação' }}
             listLabel="Listagem de publicações"
+            tour={publicationListTour}
             loading={filters.loading}
             loadingLabel="Atualizando as publicações"
             filters={

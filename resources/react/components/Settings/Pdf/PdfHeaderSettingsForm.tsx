@@ -13,6 +13,7 @@ import ImageUploadField from '@/components/Forms/ImageUploadField/ImageUploadFie
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { settingsCancelUrl } from '../Settings.routes';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import type { PdfHeaderSettingsProps } from '../Settings.types';
 import PdfHeaderPreview from './PdfHeaderPreview';
 import { usePdfHeaderSettingsForm } from './usePdfHeaderSettingsForm';
@@ -37,6 +38,7 @@ export default function PdfHeaderSettingsForm(props: PdfHeaderSettingsProps): Re
                         title="Identificação"
                         variant="inline"
                         iconClass="fa fa-file-pdf-o"
+                        tourTarget={SETTINGS_TOUR_TARGETS.pdfIdentification}
                         description="Defina a instituição e o núcleo que emitem os documentos. Este cabeçalho será usado nos próximos PDFs gerados pelo sistema."
                     >
                         <FormGrid columns={2}>
@@ -141,11 +143,15 @@ export default function PdfHeaderSettingsForm(props: PdfHeaderSettingsProps): Re
                     title="Prévia do cabeçalho"
                     variant="inline"
                     iconClass="fa fa-eye"
+                    tourTarget={SETTINGS_TOUR_TARGETS.pdfPreview}
                 >
                     <PdfHeaderPreview data={form.data} currentLogoUrl={props.pdfHeader.logo_url} />
                 </FormSection>
             </CardBox>
-            <FormActions status={form.processing ? 'Salvando cabeçalho…' : undefined}>
+            <FormActions
+                status={form.processing ? 'Salvando cabeçalho…' : undefined}
+                tourTarget={SETTINGS_TOUR_TARGETS.pdfActions}
+            >
                 <Button
                     href={settingsCancelUrl}
                     tone="cancel"

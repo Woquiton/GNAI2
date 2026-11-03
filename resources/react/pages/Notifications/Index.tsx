@@ -1,7 +1,18 @@
 import NotificationList from '@/components/Notifications/List/NotificationList';
-import { notificationBreadcrumb, notificationUrls } from '@/components/Notifications/Notifications.routes';
-import type { NotificationRecord, NotificationsIndexProps } from '@/components/Notifications/Notifications.types';
-import { TableListLayout, useTableListAction, useTableListVisit } from '@/components/Tables/TableList/TableList';
+import { notificationListTour } from '@/components/Notifications/notificationTours';
+import {
+    notificationBreadcrumb,
+    notificationUrls,
+} from '@/components/Notifications/Notifications.routes';
+import type {
+    NotificationRecord,
+    NotificationsIndexProps,
+} from '@/components/Notifications/Notifications.types';
+import {
+    TableListLayout,
+    useTableListAction,
+    useTableListVisit,
+} from '@/components/Tables/TableList/TableList';
 import Button from '@/components/UI/Button/Button';
 
 export default function NotificationsIndexPage({
@@ -50,6 +61,7 @@ export default function NotificationsIndexPage({
             listLabel="Listagem de notificações"
             loading={list.loading}
             loadingLabel="Atualizando notificações"
+            tour={notificationListTour}
         >
             <NotificationList
                 notifications={notifications}

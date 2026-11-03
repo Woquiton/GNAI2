@@ -13,6 +13,7 @@ import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import type { PublicationFormOptions } from '../Publications.types';
+import { PUBLICATION_TOUR_TARGETS } from '../publicationTours';
 import { newSpeakerRow } from './PublicationForm.utils';
 import type { PublicationFieldsProps, SpeakerRow } from './PublicationForm.types';
 
@@ -37,6 +38,7 @@ export function PublicationTextFields({
     return (
         <FormSection
             id="publication-content"
+            tourTarget={PUBLICATION_TOUR_TARGETS.content}
             title="Conteúdo"
             variant="inline"
             iconClass="fa fa-file-text-o"
@@ -172,6 +174,7 @@ export function PublicationScheduleFields({
     return (
         <FormSection
             id="publication-schedule"
+            tourTarget={PUBLICATION_TOUR_TARGETS.schedule}
             title="Datas e local"
             variant="inline"
             iconClass="fa fa-calendar"
@@ -351,6 +354,7 @@ export function PublicationPeopleFields({
     return (
         <FormSection
             id="publication-people"
+            tourTarget={PUBLICATION_TOUR_TARGETS.people}
             title="Participantes e link"
             variant="inline"
             iconClass="fa fa-microphone"

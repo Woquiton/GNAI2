@@ -8,6 +8,7 @@ import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import { fieldDescribedBy } from '@/components/Forms/FormField/fieldDescription';
 import type { PublicationFieldsProps } from './PublicationForm.types';
+import { PUBLICATION_TOUR_TARGETS } from '../publicationTours';
 
 export function slugify(value: string): string {
     return value
@@ -36,6 +37,7 @@ export default function PublicationPublishingFields({
         <>
             <FormSection
                 id="publication-status"
+                tourTarget={PUBLICATION_TOUR_TARGETS.status}
                 title="Publicação"
                 variant="inline"
                 iconClass="fa fa-bullhorn"
@@ -102,6 +104,7 @@ export default function PublicationPublishingFields({
             </FormSection>
             <FormSection
                 id="publication-seo"
+                tourTarget={PUBLICATION_TOUR_TARGETS.seo}
                 title="Endereço e buscadores"
                 variant="inline"
                 iconClass="fa fa-globe"

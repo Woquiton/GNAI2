@@ -1,6 +1,7 @@
 import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
 import type { AlertVariant } from '@/components/UI/InlineAlert/InlineAlert.types';
 import type { MailSettingsProps } from '../Settings.types';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 
 interface StatusContent {
     title: string;
@@ -77,27 +78,29 @@ export default function MailConfigurationStatus({
     const applicationKey = mail.has_application_key ? 'Cadastrada' : 'Não cadastrada';
 
     return (
-        <InlineAlert variant={content.variant} className="mailSettings__configurationStatus">
-            <div className="mailSettings__configurationStatusHeading">
-                <i className={content.iconClass} aria-hidden="true" />
-                <strong>{content.title}</strong>
-            </div>
-            <dl className="mailSettings__configurationDetails">
-                <div>
-                    <dt>Usuário de autenticação</dt>
-                    <dd>{account}</dd>
+        <div data-tour={SETTINGS_TOUR_TARGETS.mailStatus}>
+            <InlineAlert variant={content.variant} className="mailSettings__configurationStatus">
+                <div className="mailSettings__configurationStatusHeading">
+                    <i className={content.iconClass} aria-hidden="true" />
+                    <strong>{content.title}</strong>
                 </div>
-                <div>
-                    <dt>Chave de aplicativo</dt>
-                    <dd>{applicationKey}</dd>
-                </div>
-                <div>
-                    <dt>Remetente exibido</dt>
-                    <dd>
-                        {mail.from_name} &lt;{mail.from_address}&gt;
-                    </dd>
-                </div>
-            </dl>
-        </InlineAlert>
+                <dl className="mailSettings__configurationDetails">
+                    <div>
+                        <dt>Usuário de autenticação</dt>
+                        <dd>{account}</dd>
+                    </div>
+                    <div>
+                        <dt>Chave de aplicativo</dt>
+                        <dd>{applicationKey}</dd>
+                    </div>
+                    <div>
+                        <dt>Remetente exibido</dt>
+                        <dd>
+                            {mail.from_name} &lt;{mail.from_address}&gt;
+                        </dd>
+                    </div>
+                </dl>
+            </InlineAlert>
+        </div>
     );
 }

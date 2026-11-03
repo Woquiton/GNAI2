@@ -1,11 +1,12 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { helpUrls } from '../Help.routes';
+import { HELP_TOUR_TARGETS } from '../helpTours';
 
 /** Rodapé fixo da visualização do artigo: voltar para a busca da Central de Ajuda. */
 export default function HelpArticleActions(): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={HELP_TOUR_TARGETS.articleActions}>
             <Button
                 href={helpUrls.index}
                 tone="cancel"

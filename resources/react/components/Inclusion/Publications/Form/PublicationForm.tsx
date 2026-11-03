@@ -5,6 +5,7 @@ import CardBox from '@/components/UI/CardBox/CardBox';
 import { notify } from '@/components/UI/NotificationToast/notify';
 import type { PublicationRecord, PublicationFormOptions } from '../Publications.types';
 import { publicationUrls } from '../Publications.routes';
+import { PUBLICATION_TOUR_TARGETS } from '../publicationTours';
 import type { PublicationFormData } from './PublicationForm.types';
 import {
     PublicationPeopleFields,
@@ -83,7 +84,10 @@ export default function PublicationForm({
                     />
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus}>
+            <FormActions
+                status={submissionStatus}
+                tourTarget={PUBLICATION_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={backRoute}
                     tone="cancel"

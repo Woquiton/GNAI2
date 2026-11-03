@@ -2,11 +2,15 @@
 titulo: Notificações
 resumo: Onde ver os avisos do sistema, o que gera cada notificação e como marcá-las como lidas.
 categoria: Comunicação
-palavras-chave: notificação, notificacoes, aviso, avisos, alerta, alertas, sino, sininho, mensagens do sistema, não lidas, marcar como lida, marcar todas como lidas, limpar notificações, empréstimo atrasado, atraso, item disponível, fila de espera, próximo da fila, nova pendência, pendência concluída, histórico de notificações
+palavras-chave: notificação, notificacoes, aviso, avisos, alerta, alertas, sino, sininho, mensagens do sistema, não lidas, marcar como lida, marcar todas como lidas, limpar notificações, empréstimo atrasado, atraso, item disponível, fila de espera, próximo da fila, nova pendência, pendência concluída, histórico de notificações, tutorial, tour
 ordem: 40
 ---
 
 As notificações são avisos internos do Gnai sobre acontecimentos que pedem a sua atenção, como uma pendência atribuída a você ou um empréstimo em atraso. Elas aparecem no sino da barra superior e no histórico em **Comunicação → Notificações**.
+
+## Conhecer a tela com o tutorial
+
+A tela de notificações tem um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra o botão **Marcar todas como lidas**, a tabela com os botões de cada linha e a troca de páginas. O tutorial não marca nenhuma notificação como lida. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Ver as notificações pelo sino
 

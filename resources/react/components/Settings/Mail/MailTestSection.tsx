@@ -1,6 +1,7 @@
 import { TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import Button from '@/components/UI/Button/Button';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import { MAIL_HINTS } from './MailSettings.constants';
 import type { MailSettingsFormState } from './useMailSettingsForm';
 
@@ -22,6 +23,7 @@ export default function MailTestSection({
             title="Enviar e-mail de teste"
             variant="inline"
             iconClass="fa fa-paper-plane"
+            tourTarget={SETTINGS_TOUR_TARGETS.mailTest}
         >
             <div className="mailSettings__test">
                 <TextInputField

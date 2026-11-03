@@ -2,6 +2,7 @@ import { router } from '@inertiajs/react';
 import { useEffect, type MouseEvent } from 'react';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
+import { HELP_TOUR_TARGETS } from '../helpTours';
 
 interface HelpArticleBodyProps {
     slug: string;
@@ -44,7 +45,11 @@ export default function HelpArticleBody({ slug, html }: HelpArticleBodyProps): R
     }, [slug]);
 
     return (
-        <CardBox as="article" className="helpArticle__body">
+        <CardBox
+            as="article"
+            className="helpArticle__body"
+            tourTarget={HELP_TOUR_TARGETS.articleBody}
+        >
             {/* O clique é delegado aos links do HTML; o teclado já os aciona como links nativos. */}
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div onClick={handleInternalLink}>

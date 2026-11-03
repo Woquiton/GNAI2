@@ -6,6 +6,7 @@ import {
     publicationBreadcrumb,
     publicationUrls,
 } from '@/components/Inclusion/Publications/Publications.routes';
+import { publicationShowTour } from '@/components/Inclusion/Publications/publicationTours';
 import type {
     PublicationShowProps,
     PublicationRecord,
@@ -28,6 +29,7 @@ export default function InclusionPublicationsShowPage({
             title="Detalhes da publicação"
             subtitle="Visualize o conteúdo, as mídias e a situação da publicação no site."
             busy={removal.processing}
+            tour={publicationShowTour}
             breadcrumbItems={publicationBreadcrumb({
                 publicationId: publication.id,
                 publicationTitle: publication.title,

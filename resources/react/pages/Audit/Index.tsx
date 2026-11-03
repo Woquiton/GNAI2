@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { emptyAuditFilters } from '@/components/Audit/Audit.constants';
 import { auditBreadcrumb, auditUrls } from '@/components/Audit/Audit.routes';
 import type { AuditIndexProps, AuditRecord } from '@/components/Audit/Audit.types';
+import { auditListTour } from '@/components/Audit/auditTours';
 import AuditRecordModal from '@/components/Audit/Details/AuditRecordModal';
 import AuditFilters from '@/components/Audit/List/AuditFilters';
 import AuditList from '@/components/Audit/List/AuditList';
@@ -35,6 +36,7 @@ export default function AuditIndexPage({
             subtitle="Consulte quem criou, alterou, excluiu ou restaurou registros do sistema, e o que mudou em cada operação."
             breadcrumbItems={auditBreadcrumb()}
             listLabel="Histórico de alterações"
+            tour={auditListTour}
             loading={filters.loading}
             loadingLabel="Atualizando histórico de alterações"
             filters={

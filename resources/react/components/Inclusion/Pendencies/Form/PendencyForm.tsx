@@ -12,6 +12,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { pendencyUrls } from '../Pendencies.routes';
+import { PENDENCY_TOUR_TARGETS } from '../pendencyTours';
 import type {
     PendencyFormOptions,
     PendencyProfessionalOption,
@@ -62,6 +63,7 @@ export default function PendencyForm({
                         title="Dados da Pendência"
                         variant="inline"
                         iconClass="fa fa-tasks"
+                        tourTarget={PENDENCY_TOUR_TARGETS.formData}
                     >
                         <FormGrid columns={4}>
                             <FormGridWide>
@@ -126,7 +128,10 @@ export default function PendencyForm({
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? 'Salvando pendência...' : undefined}>
+            <FormActions
+                status={form.processing ? 'Salvando pendência...' : undefined}
+                tourTarget={PENDENCY_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={pendencyUrls.index}
                     tone="cancel"

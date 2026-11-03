@@ -1,6 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { publicationUrls } from '../Publications.routes';
+import { PUBLICATION_TOUR_TARGETS } from '../publicationTours';
 import type { PublicationRecord, PublicationDetailsPermissions } from '../Publications.types';
 export default function PublicationDetailsActions({
     publication,
@@ -17,6 +18,7 @@ export default function PublicationDetailsActions({
 }): React.JSX.Element {
     return (
         <FormActions
+            tourTarget={PUBLICATION_TOUR_TARGETS.showActions}
             secondary={
                 can.pdf || publication.public_url ? (
                     <>

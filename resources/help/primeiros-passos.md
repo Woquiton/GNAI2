@@ -60,7 +60,7 @@ Em **Agendamentos**, **Atendimentos Especializados** e **Atendimentos Pedagógic
 
 ## Conhecer a tela com o tutorial
 
-Algumas telas têm um tutorial que explica, na própria tela, para que serve cada parte. Ele está disponível no **Painel**, nas telas dos grupos **Atendimento**, **Planos e acompanhamento** e **Recursos e acessibilidade** do menu e em **Relatórios**, **Equipe**, **Professores** e **Cadastros**.
+As telas do Gnai têm um tutorial que explica, na própria tela, para que serve cada parte. Ele está disponível no **Painel** e nas telas de todos os grupos do menu, inclusive nesta Central de Ajuda. A página **Sobre o Sistema** não tem tutorial.
 
 1. Clique no botão com o ícone de informação, na barra do topo.
 2. A tela escurece e a parte explicada fica em destaque, com um quadro ao lado contando o que ela faz.

@@ -6,6 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { priorityTone } from '../Pendencies.constants';
 import type { PendencyDetailsRecord } from '../Pendencies.types';
+import { PENDENCY_TOUR_TARGETS } from '../pendencyTours';
 import './PendencyDetails.css';
 
 const NOT_INFORMED = 'Não informado';
@@ -31,6 +32,7 @@ export default function PendencyDetails({
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-tasks"
+                tourTarget={PENDENCY_TOUR_TARGETS.details}
             >
                 <DetailGrid columns={3}>
                     <DetailField label="Título" className="pendencyDetails__title">
@@ -56,6 +58,7 @@ export default function PendencyDetails({
                 title="Informações do Sistema"
                 variant="inline"
                 iconClass="fa fa-info-circle"
+                tourTarget={PENDENCY_TOUR_TARGETS.detailsSystem}
             >
                 <DetailGrid columns={3}>
                     <DetailField label="Criado por">{pendency.creator_name}</DetailField>

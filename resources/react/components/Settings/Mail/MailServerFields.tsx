@@ -1,7 +1,12 @@
-import { optionsFromRecord, SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import {
+    optionsFromRecord,
+    SelectInputField,
+    TextInputField,
+} from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SettingsOptions } from '../Settings.types';
+import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import { MAIL_HINTS, MAIL_HOST_OPTIONS, MAIL_PORT_OPTIONS } from './MailSettings.constants';
 import type { MailSettingsFormState } from './useMailSettingsForm';
 
@@ -158,6 +163,7 @@ export default function MailServerFields({
         <FormSection
             id="mail-server"
             title="Servidor de envio"
+            tourTarget={SETTINGS_TOUR_TARGETS.mailServer}
             variant="inline"
             iconClass="fa fa-server"
         >
