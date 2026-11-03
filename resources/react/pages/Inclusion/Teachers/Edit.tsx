@@ -1,6 +1,7 @@
 import TeacherForm from '@/components/Inclusion/Teachers/Form/TeacherForm';
 import { teacherBreadcrumb } from '@/components/Inclusion/Teachers/Teachers.routes';
 import type { TeacherEditProps } from '@/components/Inclusion/Teachers/Teachers.types';
+import { teacherEditTour } from '@/components/Inclusion/Teachers/teacherTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionTeachersEditPage({
@@ -14,6 +15,7 @@ export default function InclusionTeachersEditPage({
                 teacher: { id: teacher.id, name: teacher.person.name },
                 current: 'Editar',
             })}
+            tour={teacherEditTour}
         >
             <TeacherForm key={teacher.id} mode="edit" teacher={teacher} />
         </BusinessPage>

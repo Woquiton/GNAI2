@@ -14,6 +14,7 @@ import type {
     TeacherDisciplinesProps,
     TeacherSemesterOption,
 } from '@/components/Inclusion/Teachers/Teachers.types';
+import { TEACHER_TOUR_TARGETS } from '../teacherTours';
 import TeacherSelectionGroup from './TeacherSelectionGroup';
 
 export default function TeacherDisciplinesForm({
@@ -101,6 +102,7 @@ export default function TeacherDisciplinesForm({
                     title="Semestre letivo"
                     variant="inline"
                     iconClass="fa fa-calendar"
+                    tourTarget={TEACHER_TOUR_TARGETS.disciplinesSemester}
                 >
                     {semester ? (
                         <>
@@ -140,6 +142,7 @@ export default function TeacherDisciplinesForm({
                     title="Atribuição de disciplinas por curso"
                     variant="inline"
                     iconClass="fa fa-book"
+                    tourTarget={TEACHER_TOUR_TARGETS.disciplinesIntro}
                 >
                     <p>
                         {semester
@@ -151,7 +154,7 @@ export default function TeacherDisciplinesForm({
                         <p>Nenhum curso ou disciplina disponível para atribuição.</p>
                     ) : null}
                 </FormSection>
-                {availableCourses.map((course) => {
+                {availableCourses.map((course, courseIndex) => {
                     const selected = form.data.assignments[course.id] ?? [];
                     const itemErrors = Object.fromEntries(
                         selected.map((id, index) => [
@@ -165,6 +168,11 @@ export default function TeacherDisciplinesForm({
                             id={`teacher-course-${course.id}`}
                             title={course.name}
                             iconClass="fa fa-graduation-cap"
+                            tourTarget={
+                                courseIndex === 0
+                                    ? TEACHER_TOUR_TARGETS.disciplinesCourse
+                                    : undefined
+                            }
                             name={`assignments[${course.id}]`}
                             options={course.disciplines}
                             selected={selected}
@@ -181,7 +189,10 @@ export default function TeacherDisciplinesForm({
                     );
                 })}
             </CardBox>
-            <FormActions status={form.processing ? 'Salvando matriz curricular...' : undefined}>
+            <FormActions
+                tourTarget={TEACHER_TOUR_TARGETS.disciplinesFormActions}
+                status={form.processing ? 'Salvando matriz curricular...' : undefined}
+            >
                 <Button
                     href={teacherUrls.show(teacher.id)}
                     tone="cancel"

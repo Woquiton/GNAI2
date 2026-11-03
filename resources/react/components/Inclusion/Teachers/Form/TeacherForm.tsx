@@ -6,6 +6,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import AccessPasswordFields from '@/components/Inclusion/People/AccessPasswordFields';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import { TEACHER_TOUR_TARGETS } from '../teacherTours';
 import { teacherUrls } from '../Teachers.routes';
 import type { TeacherRecord } from '../Teachers.types';
 import TeacherPersonFields from './TeacherPersonFields';
@@ -85,6 +86,7 @@ export default function TeacherForm({ mode, teacher }: TeacherFormProps): React.
                         title="Dados Docentes"
                         variant="inline"
                         iconClass="fa fa-graduation-cap"
+                        tourTarget={TEACHER_TOUR_TARGETS.teaching}
                     >
                         <FormGrid>
                             <TextInputField
@@ -105,6 +107,7 @@ export default function TeacherForm({ mode, teacher }: TeacherFormProps): React.
                             title="Acesso ao Sistema"
                             variant="inline"
                             iconClass="fa fa-lock"
+                            tourTarget={TEACHER_TOUR_TARGETS.access}
                         >
                             <AccessPasswordFields
                                 idPrefix="teacher"
@@ -118,6 +121,7 @@ export default function TeacherForm({ mode, teacher }: TeacherFormProps): React.
                 </fieldset>
             </CardBox>
             <FormActions
+                tourTarget={TEACHER_TOUR_TARGETS.formActions}
                 status={submissionStatus(
                     photoValidating,
                     form.processing,

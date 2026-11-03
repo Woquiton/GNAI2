@@ -2,6 +2,7 @@ import { usePage } from '@inertiajs/react';
 import TeacherFilters from '@/components/Inclusion/Teachers/List/TeacherFilters';
 import TeacherList from '@/components/Inclusion/Teachers/List/TeacherList';
 import TeacherDeleteModal from '@/components/Inclusion/Teachers/TeacherDeleteModal';
+import { teacherListTour } from '@/components/Inclusion/Teachers/teacherTours';
 import { emptyTeacherFilters } from '@/components/Inclusion/Teachers/Teachers.constants';
 import { teacherBreadcrumb, teacherUrls } from '@/components/Inclusion/Teachers/Teachers.routes';
 import type {
@@ -73,6 +74,7 @@ export default function InclusionTeachersIndexPage({
             listLabel="Listagem de professores"
             loading={filters.loading}
             loadingLabel="Atualizando professores"
+            tour={teacherListTour}
             filters={
                 <TeacherFilters
                     values={filters.values}

@@ -8,6 +8,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import PersonPhotoUpload from '@/components/Forms/PersonPhotoUpload/PersonPhotoUpload';
 import { cpfMask, phoneMask } from '@/utils/masks';
+import { TEACHER_TOUR_TARGETS } from '../teacherTours';
 import { teacherGenderOptions } from '../Teachers.constants';
 import type { TeacherPerson } from '../Teachers.types';
 import type { TeacherFormMode, TeacherFormSectionProps } from './TeacherForm.types';
@@ -37,12 +38,14 @@ export default function TeacherPersonFields({
             title="Dados Pessoais"
             variant="inline"
             iconClass="fa fa-user"
+            tourTarget={TEACHER_TOUR_TARGETS.personal}
         >
             <div className="teacherForm__personal">
                 <PersonPhotoUpload
                     id="teacher-photo"
                     name="photo"
                     label="Foto do Professor"
+                    tourTarget={TEACHER_TOUR_TARGETS.photo}
                     current={person?.photo ? person.photo_url : undefined}
                     file={form.data.photo}
                     removed={form.data.remove_photo}

@@ -2,12 +2,16 @@
 titulo: Professores: cadastro, disciplinas e acesso ao Portal do Professor
 resumo: Como cadastrar professores, atribuir as disciplinas de cada curso, dar acesso ao Portal do Professor com senha ou link por e-mail.
 categoria: Gestão do núcleo
-palavras-chave: professor, professores, semestre do professor, copiar vínculos, copiar do semestre anterior, virada de semestre, docente, docentes, corpo docente, cadastrar professor, novo professor, matrícula, disciplinas do professor, gerenciar disciplinas, matriz curricular, atribuir disciplina, vincular disciplina, disciplina por curso, curso, portal do professor, acesso do professor, link de acesso, e-mail institucional, senha do professor, adaptação do pei, excluir professor, foto
+palavras-chave: professor, professores, semestre do professor, copiar vínculos, copiar do semestre anterior, virada de semestre, docente, docentes, corpo docente, cadastrar professor, novo professor, matrícula, disciplinas do professor, gerenciar disciplinas, matriz curricular, atribuir disciplina, vincular disciplina, disciplina por curso, curso, portal do professor, acesso do professor, link de acesso, e-mail institucional, senha do professor, adaptação do pei, excluir professor, foto, tutorial, tour
 ordem: 30
 permissoes: teacher.view
 ---
 
 Os **Professores** são os docentes que recebem as adaptações dos PEIs dos alunos. Cada professor tem uma **matriz curricular**, com as disciplinas que leciona em cada curso, e uma conta de acesso ao **Portal do Professor**, onde consulta seus alunos e preenche as adaptações. A tela fica em **Gestão do núcleo → Professores**.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a edição, a visualização do professor e a tela **Gerenciar Disciplinas** têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, a escolha do semestre e das disciplinas por curso e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Cadastrar um professor
 

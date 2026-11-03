@@ -15,11 +15,14 @@ import ReportFilters from '@/components/Reports/Form/ReportFilterRow';
 import ReportPreview from '@/components/Reports/Form/ReportPreview';
 import useReportBuilder from '@/components/Reports/Form/useReportBuilder';
 import ReportRelations from '@/components/Reports/Form/ReportRelationsSection';
+import { useReportTourBridge } from '@/components/Reports/Form/reportTourBridge';
+import { REPORT_TOUR_TARGETS } from '@/components/Reports/reportTours';
 
 import '@/components/Reports/Form/ReportBuilderForm.css';
 
 export default function ReportBuilderForm({ can }: ReportBuilderProps): React.JSX.Element {
     const report = useReportBuilder(can);
+    useReportTourBridge(report, can);
     const busy = report.operation !== null;
     const unavailable = !can.sources || !can.metadata;
     const relations = report.metadata?.relations ?? [];
@@ -55,6 +58,7 @@ export default function ReportBuilderForm({ can }: ReportBuilderProps): React.JS
                         variant="inline"
                         title="Assunto do relatório"
                         iconClass="fa fa-bar-chart"
+                        tourTarget={REPORT_TOUR_TARGETS.source}
                         titleAddon={
                             <InfoTooltip
                                 text="Primeiro, escolha sobre o que será o relatório. Depois, mostraremos as informações que você poderá incluir."
@@ -112,6 +116,7 @@ export default function ReportBuilderForm({ can }: ReportBuilderProps): React.JS
                         variant="inline"
                         title="Informações do relatório"
                         iconClass="fa fa-list"
+                        tourTarget={REPORT_TOUR_TARGETS.columns}
                         titleAddon={
                             <InfoTooltip
                                 text="Marque as informações principais e complementares que deseja visualizar."
@@ -152,6 +157,7 @@ export default function ReportBuilderForm({ can }: ReportBuilderProps): React.JS
                         variant="inline"
                         title="Critérios de busca"
                         iconClass="fa fa-filter"
+                        tourTarget={REPORT_TOUR_TARGETS.filters}
                         titleAddon={
                             <InfoTooltip
                                 text="Esta etapa é opcional. Use critérios para encontrar informações específicas, como um nome, uma data ou uma situação."
@@ -199,6 +205,7 @@ export default function ReportBuilderForm({ can }: ReportBuilderProps): React.JS
                     variant="inline"
                     title="Prévia do relatório"
                     iconClass="fa fa-table"
+                    tourTarget={REPORT_TOUR_TARGETS.preview}
                     titleAddon={
                         <InfoTooltip
                             text="Escolha as informações e clique em Gerar prévia. Confira o conteúdo antes de exportar ou copiar a tabela."
@@ -215,6 +222,7 @@ export default function ReportBuilderForm({ can }: ReportBuilderProps): React.JS
             </CardBox>
             <FormActions
                 status={status}
+                tourTarget={REPORT_TOUR_TARGETS.actions}
                 secondary={
                     can.pdf ? (
                         <Button

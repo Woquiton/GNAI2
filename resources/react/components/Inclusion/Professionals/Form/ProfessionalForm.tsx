@@ -4,6 +4,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import AccessPasswordFields from '@/components/Inclusion/People/AccessPasswordFields';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import { PROFESSIONAL_TOUR_TARGETS } from '../professionalTours';
 import { professionalUrls } from '../Professionals.routes';
 import type { ProfessionalFormOptions, ProfessionalRecord } from '../Professionals.types';
 import ProfessionalPersonFields from './ProfessionalPersonFields';
@@ -90,6 +91,7 @@ export default function ProfessionalForm({
                             title="Acesso ao Sistema"
                             variant="inline"
                             iconClass="fa fa-lock"
+                            tourTarget={PROFESSIONAL_TOUR_TARGETS.access}
                         >
                             <AccessPasswordFields
                                 idPrefix="professional"
@@ -103,6 +105,7 @@ export default function ProfessionalForm({
                 </fieldset>
             </CardBox>
             <FormActions
+                tourTarget={PROFESSIONAL_TOUR_TARGETS.formActions}
                 status={submissionStatus(
                     photoValidating,
                     form.processing,

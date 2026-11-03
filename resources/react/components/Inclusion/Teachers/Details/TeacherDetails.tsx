@@ -4,6 +4,7 @@ import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import { dateLabel } from '@/utils/formatters';
+import { TEACHER_TOUR_TARGETS } from '../teacherTours';
 import type { TeacherShowProps } from '../Teachers.types';
 import TeacherAssignments from './TeacherAssignments';
 import './TeacherDetails.css';
@@ -24,6 +25,7 @@ export default function TeacherDetails({
                 title="Identificação Pessoal"
                 variant="inline"
                 iconClass="fa fa-user"
+                tourTarget={TEACHER_TOUR_TARGETS.detailsIdentification}
             >
                 <div className="teacherDetails__profile">
                     <img
@@ -35,9 +37,7 @@ export default function TeacherDetails({
                     <p className="teacherDetails__role">Professor(a) / Docente</p>
                 </div>
                 <DetailGrid columns={3}>
-                    <DetailField label="Nome Completo">
-                        {person.name}
-                    </DetailField>
+                    <DetailField label="Nome Completo">{person.name}</DetailField>
                     <DetailField label="CPF / Documento">{person.document || '---'}</DetailField>
                     <DetailField label="Data de Nascimento">
                         {dateLabel(person.birth_date)}
@@ -58,11 +58,10 @@ export default function TeacherDetails({
                 title="Vínculo Docente"
                 variant="inline"
                 iconClass="fa fa-graduation-cap"
+                tourTarget={TEACHER_TOUR_TARGETS.detailsAssignment}
             >
                 <DetailGrid columns={3}>
-                    <DetailField label="Matrícula">
-                        {teacher.registration}
-                    </DetailField>
+                    <DetailField label="Matrícula">{teacher.registration}</DetailField>
                     <DetailField label="Data de Cadastro">{display.createdAt || '---'}</DetailField>
                 </DetailGrid>
                 <h3 className="teacherDetails__subheading">Disciplinas atribuídas</h3>

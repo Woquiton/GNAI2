@@ -1,6 +1,7 @@
 import ProfessionalForm from '@/components/Inclusion/Professionals/Form/ProfessionalForm';
 import { professionalBreadcrumb } from '@/components/Inclusion/Professionals/Professionals.routes';
 import type { ProfessionalEditProps } from '@/components/Inclusion/Professionals/Professionals.types';
+import { professionalEditTour } from '@/components/Inclusion/Professionals/professionalTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionProfessionalsEditPage({
@@ -10,6 +11,7 @@ export default function InclusionProfessionalsEditPage({
     return (
         <BusinessPage
             title="Editar Profissional"
+            tour={professionalEditTour}
             subtitle="Edite os dados pessoais e funcionais do profissional ou tutor de pares. Mesmo com o título “Profissionais”, esta seção permite a atualização de informações de tutores de pares."
             breadcrumbItems={professionalBreadcrumb({
                 professional: { id: professional.id, name: professional.person.name },

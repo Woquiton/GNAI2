@@ -6,6 +6,7 @@ import Button from '@/components/UI/Button/Button';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import type { ReportOptions, ReportRelation } from '../Reports.types';
 import ReportColumns from './ReportColumns';
+import { REPORT_TOUR_TARGETS } from '../reportTours';
 
 /** Prefixa as chaves das colunas com o caminho da relação, como o backend espera. */
 function prefixedOptions(options: ReportOptions, prefix: string): ReportOptions {
@@ -99,6 +100,7 @@ export default function ReportRelationsSection({
     return (
         <FormSection
             id="report-relations"
+            tourTarget={REPORT_TOUR_TARGETS.relations}
             variant="inline"
             title="Informações complementares"
             iconClass="fa fa-link"

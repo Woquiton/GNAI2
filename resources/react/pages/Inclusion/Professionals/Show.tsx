@@ -9,6 +9,7 @@ import {
     professionalUrls,
 } from '@/components/Inclusion/Professionals/Professionals.routes';
 import type { ProfessionalShowProps } from '@/components/Inclusion/Professionals/Professionals.types';
+import { professionalShowTour } from '@/components/Inclusion/Professionals/professionalTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -28,6 +29,7 @@ export default function InclusionProfessionalsShowPage({
     return (
         <BusinessPage
             title="Perfil do Profissional"
+            tour={professionalShowTour}
             subtitle="Visualize os dados pessoais e funcionais do profissional ou tutor de pares. Embora esta seção esteja sob o título “Profissionais”, os tutores de pares também são exibidos e gerenciados aqui."
             documentTitle={name}
             breadcrumbItems={professionalBreadcrumb({ current: name })}

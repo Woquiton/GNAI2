@@ -17,6 +17,8 @@ interface TeacherSelectionGroupProps {
     itemErrors?: Record<number, string | undefined>;
     disabled: boolean;
     onChange: (ids: number[], checked: boolean) => void;
+    /** Valor de `data-tour` do bloco, usado pelo tutorial da tela. */
+    tourTarget?: string;
 }
 
 /** Seleção por módulo ou curso, incluindo marcar/desmarcar todo o grupo. */
@@ -32,6 +34,7 @@ export default function TeacherSelectionGroup({
     itemErrors = {},
     disabled,
     onChange,
+    tourTarget,
 }: TeacherSelectionGroupProps): React.JSX.Element {
     const ids = options.map((option) => option.id);
     const allChecked = ids.length > 0 && ids.every((value) => selected.includes(value));
@@ -39,7 +42,13 @@ export default function TeacherSelectionGroup({
     const hasItemErrors = ids.some((value) => Boolean(itemErrors[value]));
 
     return (
-        <FormSection id={id} title={title} variant="inline" iconClass={iconClass}>
+        <FormSection
+            id={id}
+            title={title}
+            variant="inline"
+            iconClass={iconClass}
+            tourTarget={tourTarget}
+        >
             <FormStack>
                 <ChoiceControl
                     id={`${id}-all`}

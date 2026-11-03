@@ -10,6 +10,7 @@ import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { PROFESSIONAL_TOUR_TARGETS } from '../professionalTours';
 import type { ProfessionalFormOptions } from '../Professionals.types';
 import type { ProfessionalFormMode, ProfessionalFormSectionProps } from './ProfessionalForm.types';
 
@@ -43,6 +44,7 @@ export default function ProfessionalWorkFields({
             title="Dados do Profissional"
             variant="inline"
             iconClass="fa fa-id-badge"
+            tourTarget={PROFESSIONAL_TOUR_TARGETS.work}
         >
             <FormGrid columns={editing ? 4 : 3}>
                 <SelectInputField

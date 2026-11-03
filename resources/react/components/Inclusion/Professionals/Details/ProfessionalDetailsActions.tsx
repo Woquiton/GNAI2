@@ -1,6 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import ImpersonationAction from '@/components/Navigation/ImpersonationAction/ImpersonationAction';
 import Button from '@/components/UI/Button/Button';
+import { PROFESSIONAL_TOUR_TARGETS } from '../professionalTours';
 import { professionalUrls } from '../Professionals.routes';
 import type { ProfessionalDetailsPermissions } from '../Professionals.types';
 
@@ -38,7 +39,10 @@ export default function ProfessionalDetailsActions({
         ) : undefined;
 
     return (
-        <FormActions secondary={impersonation}>
+        <FormActions
+            secondary={impersonation}
+            tourTarget={PROFESSIONAL_TOUR_TARGETS.detailsActions}
+        >
             <Button
                 href={professionalUrls.index}
                 tone="cancel"

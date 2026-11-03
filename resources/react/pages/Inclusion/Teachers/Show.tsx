@@ -4,6 +4,7 @@ import TeacherDetailsActions from '@/components/Inclusion/Teachers/Details/Teach
 import TeacherDeleteModal from '@/components/Inclusion/Teachers/TeacherDeleteModal';
 import { teacherBreadcrumb, teacherUrls } from '@/components/Inclusion/Teachers/Teachers.routes';
 import type { TeacherShowProps } from '@/components/Inclusion/Teachers/Teachers.types';
+import { teacherShowTour } from '@/components/Inclusion/Teachers/teacherTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -27,6 +28,7 @@ export default function InclusionTeachersShowPage({
             documentTitle={name}
             breadcrumbItems={teacherBreadcrumb({ current: name })}
             busy={busy}
+            tour={teacherShowTour}
         >
             <TeacherDetails teacher={teacher} display={display} />
             <TeacherDetailsActions

@@ -5,6 +5,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
+import { PROFESSIONAL_TOUR_TARGETS } from '../professionalTours';
 import type { ProfessionalShowProps } from '../Professionals.types';
 import './ProfessionalDetails.css';
 
@@ -40,6 +41,7 @@ export default function ProfessionalDetails({
                 title="Identificação Pessoal"
                 variant="inline"
                 iconClass="fa fa-user"
+                tourTarget={PROFESSIONAL_TOUR_TARGETS.identification}
             >
                 <div className="professionalDetails__profile">
                     <img
@@ -73,6 +75,7 @@ export default function ProfessionalDetails({
                 title="Vínculo Profissional"
                 variant="inline"
                 iconClass="fa fa-briefcase"
+                tourTarget={PROFESSIONAL_TOUR_TARGETS.employment}
             >
                 <DetailGrid columns={3}>
                     <DetailField label="Cargo / Função">

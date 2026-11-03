@@ -1,6 +1,7 @@
 import { usePage } from '@inertiajs/react';
 import ProfessionalFilters from '@/components/Inclusion/Professionals/List/ProfessionalFilters';
 import ProfessionalList from '@/components/Inclusion/Professionals/List/ProfessionalList';
+import { professionalListTour } from '@/components/Inclusion/Professionals/professionalTours';
 import ProfessionalDeleteModal from '@/components/Inclusion/Professionals/ProfessionalDeleteModal';
 import { emptyProfessionalFilters } from '@/components/Inclusion/Professionals/Professionals.constants';
 import {
@@ -45,6 +46,7 @@ export default function InclusionProfessionalsIndexPage({
             title="Profissionais"
             subtitle="Cadastre profissionais ou tutores de pares no sistema. Embora esta seção seja denominada “Profissionais”, também é possível cadastrar e gerenciar tutores de pares, utilizando a mesma estrutura de dados e funcionalidades disponíveis."
             breadcrumbItems={professionalBreadcrumb()}
+            tour={professionalListTour}
             create={
                 can.create && { href: professionalUrls.create, label: 'Cadastrar profissional' }
             }

@@ -2,12 +2,16 @@
 titulo: Relatórios: gerador de relatórios e consultas
 resumo: Como montar um relatório escolhendo o assunto, as informações e os critérios de busca, conferir a prévia, copiar a tabela e exportar em PDF.
 categoria: Gestão do núcleo
-palavras-chave: relatório, relatórios, gerador de relatórios, construtor de relatórios, consulta, consultas, montar relatório, gerar relatório, exportar, exportação, pdf, imprimir, copiar tabela, planilha, excel, colar no excel, assunto do relatório, fonte, módulo, colunas, campos, informações principais, informações complementares, vínculo, relacionamento, filtro, filtros, critério de busca, prévia, estatística, levantamento, quantitativo, listagem personalizada
+palavras-chave: relatório, relatórios, gerador de relatórios, construtor de relatórios, consulta, consultas, montar relatório, gerar relatório, exportar, exportação, pdf, imprimir, copiar tabela, planilha, excel, colar no excel, assunto do relatório, fonte, módulo, colunas, campos, informações principais, informações complementares, vínculo, relacionamento, filtro, filtros, critério de busca, prévia, estatística, levantamento, quantitativo, listagem personalizada, tutorial, tour
 ordem: 10
 permissoes: report.index
 ---
 
 O gerador de relatórios permite montar consultas sob medida sobre os dados do Gnai, como alunos, atendimentos, PEIs, itens, empréstimos, barreiras, equipe e outros cadastros, escolhendo quais informações aparecem e quais registros entram. O resultado aparece em uma prévia na própria tela e pode ser copiado para uma planilha ou aberto em PDF. A tela fica em **Gestão do núcleo → Relatórios**, com o título **Gerador de Relatórios e Consultas**.
+
+## Conhecer o gerador com o tutorial
+
+Clique no botão com o ícone de informação, na barra do topo, para abrir o tutorial do gerador de relatórios. Se o formulário estiver vazio, o tutorial monta um relatório de exemplo enquanto explica cada parte: escolhe um assunto, marca algumas informações, adiciona uma informação complementar e um critério de busca e clica em **Gerar prévia**. No fim do tutorial, o formulário volta a ficar vazio. Se você já tiver começado um relatório, o tutorial só explica as partes, sem mexer no que você preencheu. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Montar um relatório
 

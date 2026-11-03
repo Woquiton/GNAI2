@@ -2,12 +2,16 @@
 titulo: Equipe: profissionais e tutores de pares
 resumo: Como cadastrar profissionais da equipe, vincular o cargo que define suas permissões, criar o acesso ao sistema, enviar foto, inativar e excluir.
 categoria: Gestão do núcleo
-palavras-chave: equipe, profissional, profissionais, tutor de pares, tutores, servidor, funcionário, colaborador, cadastrar profissional, novo profissional, cargo, função, matrícula, data de ingresso, admissão, foto, senha, senha inicial, link de definição de senha, acesso ao sistema, criar usuário, conta, login do profissional, administrador, administrador interno, aparece no site, página de equipe, inativar profissional, desativar, status, excluir profissional, entrar como
+palavras-chave: equipe, profissional, profissionais, tutor de pares, tutores, servidor, funcionário, colaborador, cadastrar profissional, novo profissional, cargo, função, matrícula, data de ingresso, admissão, foto, senha, senha inicial, link de definição de senha, acesso ao sistema, criar usuário, conta, login do profissional, administrador, administrador interno, aparece no site, página de equipe, inativar profissional, desativar, status, excluir profissional, entrar como, tutorial, tour
 ordem: 20
 permissoes: professional.view
 ---
 
 A **Equipe** reúne os profissionais do núcleo e também os tutores de pares, que usam o mesmo cadastro. Cada profissional tem um **cargo**, e é o cargo que define o que ele pode ver e fazer no Gnai. Ao cadastrar um profissional, o sistema já cria a conta de acesso dele. A tela fica em **Gestão do núcleo → Equipe**, com o título **Profissionais**.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a edição e o perfil do profissional têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, a criação do acesso ao sistema e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que preciso antes de cadastrar um profissional?
 

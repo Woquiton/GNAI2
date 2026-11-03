@@ -9,6 +9,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import PersonPhotoUpload from '@/components/Forms/PersonPhotoUpload/PersonPhotoUpload';
 import { cpfMask, phoneMask } from '@/utils/masks';
+import { PROFESSIONAL_TOUR_TARGETS } from '../professionalTours';
 import type { ProfessionalPerson } from '../Professionals.types';
 import type { ProfessionalFormMode, ProfessionalFormSectionProps } from './ProfessionalForm.types';
 
@@ -37,6 +38,7 @@ export default function ProfessionalPersonFields({
             title="Dados da Pessoa"
             variant="inline"
             iconClass="fa fa-user"
+            tourTarget={PROFESSIONAL_TOUR_TARGETS.person}
         >
             <div className="professionalForm__personal">
                 <PersonPhotoUpload
@@ -65,6 +67,7 @@ export default function ProfessionalPersonFields({
                     }}
                     onValidatingChange={onPhotoValidatingChange}
                     onError={(message) => form.setError('photo', message)}
+                    tourTarget={PROFESSIONAL_TOUR_TARGETS.photo}
                 />
                 <div className="professionalForm__personalFields">
                     <FormGrid>

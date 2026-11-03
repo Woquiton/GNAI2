@@ -91,6 +91,7 @@ A tela troca só os textos que falam dos próprios registros (`filters`, `moreFi
 - Demonstrações usam `onEnter` e desfazem tudo ao sair do passo. As preferências salvas do usuário precisam ficar como estavam: abrir e fechar de novo um controle que lembra o estado é aceitável; trocar a quantidade por página, que recarrega a lista e grava a preferência no servidor, não é.
 - `openDisclosureDemo` abre um controle com `aria-expanded` e o fecha ao sair, só se o tutorial o abriu. `pressKey` simula o teclado, como no arraste da coluna. Toques seguidos precisam de intervalo, para o componente medir a tela já atualizada.
 - Controles que fecham ao clicar fora devem ignorar cliques dentro de `[data-guided-tour]`, como faz o menu de colunas.
+- Quando a demonstração depende de plugins (Select2, editores) ou de estado assíncrono, não simule cliques: o componente expõe as próprias ações ao tutorial por uma ponte, como `Reports/Form/reportTourBridge.ts`. O gerador de relatórios monta um exemplo só com o formulário vazio, mantém o exemplo entre passos seguidos e o desfaz ao sair do último passo ou fechar o tutorial (`Reports/reportTours.ts`).
 - Formulários com abas: o tutorial descarta, ao abrir, passos cujo alvo está numa aba fechada. Destaque o card das abas ou use `availableWith` com o card e um `onEnter` que abre a aba, lendo a aba atual depois de um `setTimeout`, para a volta do passo anterior já ter acontecido.
 - Não demonstre controles que viram diálogo modal em telas menores, como a lateral de status do prontuário abaixo de 1280 px.
 

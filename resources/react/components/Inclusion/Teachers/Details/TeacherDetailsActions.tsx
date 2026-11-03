@@ -1,6 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import ImpersonationAction from '@/components/Navigation/ImpersonationAction/ImpersonationAction';
 import Button from '@/components/UI/Button/Button';
+import { TEACHER_TOUR_TARGETS } from '../teacherTours';
 import { teacherUrls } from '../Teachers.routes';
 import type { TeacherDetailsPermissions } from '../Teachers.types';
 
@@ -39,7 +40,7 @@ export default function TeacherDetailsActions({
         ) : undefined;
 
     return (
-        <FormActions secondary={impersonation}>
+        <FormActions secondary={impersonation} tourTarget={TEACHER_TOUR_TARGETS.detailsActions}>
             <Button
                 href={teacherUrls.index}
                 tone="cancel"
