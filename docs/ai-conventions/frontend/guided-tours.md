@@ -2,7 +2,7 @@
 
 O tutorial ao vivo (também chamado de tour guiado) explica a tela sobre ela mesma. O usuário clica no botão com o ícone de informação na barra do topo; a página escurece, a parte explicada fica em destaque com um anel pulsante e um cartão ao lado diz o que ela faz. A Central de Ajuda continua sendo o lugar das explicações completas; o tutorial mostra onde cada coisa está.
 
-**Toda tela de negócio nova deve ter seu tutorial.** Telas existentes ganham o tutorial quando forem alteradas. A referência é o Painel (`components/Dashboard/Overview/overviewTour.ts`).
+**Toda tela de negócio nova deve ter seu tutorial.** Telas existentes ganham o tutorial quando forem alteradas. As referências são o Painel (`components/Dashboard/Overview/overviewTour.ts`) e o módulo de Alunos (`components/Inclusion/Students/studentTours.ts`), com listagem, cadastro, edição e prontuário.
 
 ## Como funciona
 
@@ -12,16 +12,18 @@ O tutorial ao vivo (também chamado de tour guiado) explica a tela sobre ela mes
 | `GuidedTour` e `GuidedTourTrail` | `components/UI/GuidedTour/` | Destaque, cartão, progresso e a lista "Ver todos os passos" |
 | `TopBarTourAction` | `components/Navigation/TopBarPrimary/` | Botão da barra do topo; só aparece quando a tela tem tutorial |
 | Prop `tour` do `BusinessPage` | `components/Navigation/BusinessPage/` | Registra o tutorial da página e acrescenta os passos comuns |
+| Prop `tour` do `TableListLayout` | `components/Tables/TableList/` | Acrescenta os passos padrão das listagens (`tableListTour.ts`) |
+| `openDisclosureDemo` e `pressKey` | `components/UI/GuidedTour/guidedTourDemos.ts` | Ajudam a montar demonstrações que se desfazem sozinhas |
 | Passos de componentes | Junto do componente, em `<componente>Tour.ts` | Explicação padrão do componente, igual em todas as telas |
 
 O `BusinessPage` começa todo tutorial pela moldura: trilha de navegação (`pageBreadcrumbTour.ts`), nome da tela e ações do cabeçalho (`pageTitleTour.ts`). Depois vêm os passos da página. O último passo, "Pronto!", é acrescentado sozinho e oferece o artigo da Central de Ajuda quando a página informa `helpHref`.
 
 ## Escrever o tutorial de uma tela
 
-1. Crie `<Recurso>Tour.ts` (ou `<recurso>Tour.ts`) na pasta do recurso, com os alvos e um `GuidedTourPageConfig` exportado como constante de módulo.
-2. Marque cada bloco explicado com `data-tour`. `CardBox`, `RevenueSummaryCard` e `InlineMetricsCard` aceitam `tourTarget`; em marcação própria, use o atributo direto. Os nomes dos alvos ficam num objeto de constantes, nunca repetidos como texto solto.
+1. Crie `<recurso>Tour.ts` (uma tela) ou `<recurso>Tours.ts` (várias telas do recurso) na pasta do recurso, com os alvos e um `GuidedTourPageConfig` por tela, exportado como constante de módulo.
+2. Marque cada bloco explicado com `data-tour`. `CardBox`, `RevenueSummaryCard`, `InlineMetricsCard`, `FormSection`, `FormActions`, `PersonPhotoUpload` e `Tabs` aceitam `tourTarget`; em marcação própria, use o atributo direto. Os nomes dos alvos ficam num objeto de constantes, nunca repetidos como texto solto.
 3. Passe a constante ao `BusinessPage` pela prop `tour`. Não monte o tutorial dentro do componente: um objeto novo a cada renderização registra o tutorial de novo e fecha o cartão aberto.
-4. Informe `helpHref` com o artigo da tela (`helpUrls.show('<slug>')`) quando ele existir.
+4. Informe `helpHref` com o artigo da tela (`helpUrls.show('<slug>', '<âncora da seção>')`) quando ele existir.
 
 ```ts
 export const overviewTour: GuidedTourPageConfig = {
@@ -47,7 +49,7 @@ Campos de cada passo (`GuidedTourStep`):
 | `title` | Nome curto da parte destacada, igual ao rótulo da tela quando houver |
 | `content` | Explicação; cada item da lista vira um parágrafo |
 | `group` | Agrupa passos em "Ver todos os passos" |
-| `onEnter` | Demonstração ao entrar no passo; devolve a função que desfaz ao sair |
+| `onEnter` | Demonstração ao entrar no passo. Devolve a função que desfaz ao sair ou um `GuidedTourDemo` com `undo` e `note`, a frase em destaque sobre o que aconteceu na tela |
 
 ## Ordem e conteúdo
 
@@ -70,7 +72,24 @@ O tutorial é lido por qualquer pessoa da equipe, sem conhecimento técnico.
 
 Um componente usado em várias telas guarda sua explicação junto dele, em `<componente>Tour.ts`, e exporta o alvo e o passo. A tela inclui o passo pronto em vez de reescrever o texto. Hoje existem `pageBreadcrumbTour.ts` e `pageTitleTour.ts`.
 
-Para as listagens, `TableListLayout` deve ganhar um `tableListTour.ts` quando a primeira listagem receber o tutorial: filtros, pesquisa e limpar filtros (borracha), seletor de colunas, redimensionamento, registros por página, paginação e ações da linha. Passos com demonstração, como abrir o seletor de colunas ou arrastar uma coluna, usam `onEnter` e sempre desfazem a demonstração na função devolvida, sem alterar as preferências salvas do usuário.
+### Listagens
+
+`TableListLayout` recebe `tour` do tipo `TableListTourConfig` e monta, depois da moldura, os passos de `tableListTour.ts`:
+
+| Grupo | Passos |
+| --- | --- |
+| Filtros | Filtros e pesquisa; Mais filtros, que abre a área para mostrar; Limpar filtros, a borracha |
+| Tabela | Colunas; Escolher colunas, que abre o menu e explica que a escolha fica salva; Tabela; Largura das colunas, numa linha de redimensionar sorteada a cada visita; Veja como funciona, que arrasta a linha para um lado sorteado e conta o que mudou; Ações de cada linha |
+| Páginas | Registros por página, que fica salvo para a tela; Páginas |
+
+A tela troca só os textos que falam dos próprios registros (`filters`, `moreFilters` e `table`), informa `helpHref` e pode acrescentar passos em `steps`. Os demais textos são padrão e não devem ser reescritos por tela.
+
+### Demonstrações
+
+- Demonstrações usam `onEnter` e desfazem tudo ao sair do passo. As preferências salvas do usuário precisam ficar como estavam: abrir e fechar de novo um controle que lembra o estado é aceitável; trocar a quantidade por página, que recarrega a lista e grava a preferência no servidor, não é.
+- `openDisclosureDemo` abre um controle com `aria-expanded` e o fecha ao sair, só se o tutorial o abriu. `pressKey` simula o teclado, como no arraste da coluna. Toques seguidos precisam de intervalo, para o componente medir a tela já atualizada.
+- Controles que fecham ao clicar fora devem ignorar cliques dentro de `[data-guided-tour]`, como faz o menu de colunas.
+- Não demonstre controles que viram diálogo modal em telas menores, como a lateral de status do prontuário abaixo de 1280 px.
 
 ## Acessibilidade
 

@@ -3,6 +3,8 @@ import type { CSSProperties } from 'react';
 export type PersonPhotoType = 'image/jpeg' | 'image/png' | 'image/webp';
 
 export interface PersonPhotoUploadProps {
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o componente. */
+    tourTarget?: string;
     id?: string;
     name?: string;
     label?: string;

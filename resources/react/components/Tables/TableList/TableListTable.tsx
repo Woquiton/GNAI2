@@ -1,9 +1,21 @@
-import { Children, cloneElement, isValidElement, useMemo, useRef, useState, type Key, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import {
+    Children,
+    cloneElement,
+    isValidElement,
+    useMemo,
+    useRef,
+    useState,
+    type Key,
+    type KeyboardEvent,
+    type PointerEvent,
+    type ReactNode,
+} from 'react';
 import Table from '@/components/Tables/Table/Table';
 import { joinClassNames } from '@/utils/joinClassNames';
 import TableListColumnsMenu from './TableListColumnsMenu';
 import { formatTableListRange } from './TableList.utils';
 import type { TableListColumn, TableListTableProps } from './TableList.types';
+import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 import { useTableColumnPreferences } from './useTableColumnPreferences';
 import './TableList.css';
 
@@ -124,6 +136,8 @@ export default function TableListTable<T>({
     const { visibility: columnVisibility, update: updateColumnVisibility } =
         useTableColumnPreferences(columns.map((column) => column.id));
     const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
+    // Sorteio da linha de redimensionar que o tutorial ao vivo destaca nesta visita.
+    const [resizeTourDraw] = useState(Math.random);
 
     const hiddenColumns = useMemo(
         () =>
@@ -144,6 +158,17 @@ export default function TableListTable<T>({
         () => columns.filter((column) => !hiddenColumns.has(column.id)),
         [columns, hiddenColumns],
     );
+
+    // Linhas de redimensionar existem entre colunas vizinhas, exceto junto das fixas no fim.
+    const resizableColumnIds = visibleColumns
+        .filter((column, index) => {
+            const leftColumn = visibleColumns[index - 1];
+
+            return leftColumn && column.fixed !== 'end' && leftColumn.fixed !== 'end';
+        })
+        .map((column) => column.id);
+    const resizeTourColumnId =
+        resizableColumnIds[Math.floor(resizeTourDraw * resizableColumnIds.length)];
 
     const visibleRows = useMemo(
         () =>
@@ -293,7 +318,7 @@ export default function TableListTable<T>({
                     onToggle={toggleColumn}
                 />
             </div>
-            <div className="tableListViewport">
+            <div className="tableListViewport" data-tour={TABLE_LIST_TOUR_TARGETS.table}>
                 <Table
                     {...props}
                     ref={tableRef}
@@ -336,6 +361,11 @@ export default function TableListTable<T>({
                                                 aria-valuemin={32}
                                                 aria-valuenow={columnWidths[leftColumn.id] ?? 32}
                                                 tabIndex={0}
+                                                data-tour={
+                                                    column.id === resizeTourColumnId
+                                                        ? TABLE_LIST_TOUR_TARGETS.resize
+                                                        : undefined
+                                                }
                                                 onPointerDown={(event) =>
                                                     beginResize(event, leftColumn, rightColumn)
                                                 }

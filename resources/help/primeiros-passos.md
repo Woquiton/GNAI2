@@ -60,13 +60,15 @@ Em **Agendamentos**, **Atendimentos Especializados** e **Atendimentos Pedagógic
 
 ## Conhecer a tela com o tutorial
 
-Algumas telas têm um tutorial que explica, na própria tela, para que serve cada parte. Por enquanto, ele está disponível no **Painel**.
+Algumas telas têm um tutorial que explica, na própria tela, para que serve cada parte. Por enquanto, ele está disponível no **Painel** e nas telas de **Alunos**: listagem, cadastro, edição e prontuário.
 
 1. Clique no botão com o ícone de informação, na barra do topo.
 2. A tela escurece e a parte explicada fica em destaque, com um quadro ao lado contando o que ela faz.
 3. Clique em **Próximo** para seguir e em **Voltar** para rever o passo anterior. Com o quadro em foco, as setas do teclado fazem o mesmo.
 4. Para pular direto para uma parte, clique em **Ver todos os passos** e escolha o passo.
 5. Para sair, clique no **X** do quadro, aperte **Esc** ou clique de novo no botão do topo. No último passo, clique em **Concluir**.
+
+Em alguns passos, o próprio tutorial mostra como a tela funciona: abre o menu de colunas, abre **Mais filtros** ou arrasta a linha entre duas colunas. Tudo volta ao normal no passo seguinte, sem mudar as suas preferências.
 
 Durante o tutorial, a tela continua funcionando: você pode clicar na parte destacada para experimentar.
 

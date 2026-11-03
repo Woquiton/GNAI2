@@ -23,6 +23,7 @@ export default function PersonPhotoUpload({
     onRemove,
     onError,
     onValidatingChange,
+    tourTarget,
 }: PersonPhotoUploadProps): React.JSX.Element {
     const generatedId = useId();
     const inputId = id ?? `person-photo-${generatedId}`;
@@ -88,7 +89,7 @@ export default function PersonPhotoUpload({
     }
 
     return (
-        <div className="personPhotoUpload">
+        <div className="personPhotoUpload" data-tour={tourTarget}>
             <label htmlFor={inputId} className="personPhotoUpload__label">
                 {label}
             </label>

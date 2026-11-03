@@ -31,7 +31,10 @@ function isRendered(element: HTMLElement): boolean {
     return rect.width > 0 || rect.height > 0;
 }
 
-/** Elementos destacados pelo passo: o primeiro de cada alvo que estiver visível. */
+/**
+ * Elementos destacados pelo passo: para cada alvo, o primeiro que estiver visível. Um mesmo alvo
+ * pode marcar versões diferentes do controle, como a de telas largas e a do celular.
+ */
 export function findTourTargets(target: GuidedTourStep['target']): HTMLElement[] {
     if (!target) {
         return [];
@@ -40,8 +43,12 @@ export function findTourTargets(target: GuidedTourStep['target']): HTMLElement[]
     const ids = Array.isArray(target) ? target : [target];
 
     return ids
-        .map((id) => document.querySelector<HTMLElement>(`[data-tour="${CSS.escape(id)}"]`))
-        .filter((element): element is HTMLElement => element !== null && isRendered(element));
+        .map((id) =>
+            Array.from(
+                document.querySelectorAll<HTMLElement>(`[data-tour="${CSS.escape(id)}"]`),
+            ).find(isRendered),
+        )
+        .filter((element): element is HTMLElement => element !== undefined);
 }
 
 /** O passo entra no tutorial quando não tem alvo ou quando ao menos um alvo está na tela. */
@@ -68,9 +75,25 @@ function clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), Math.max(min, max));
 }
 
+/** Área do cartão na tela, para medir quanto ele cobre do alvo. */
+function overlapArea(
+    card: { top: number; left: number; width: number; height: number },
+    target: TourRect,
+): number {
+    const width =
+        Math.min(card.left + card.width, target.left + target.width) -
+        Math.max(card.left, target.left);
+    const height =
+        Math.min(card.top + card.height, target.top + target.height) -
+        Math.max(card.top, target.top);
+
+    return Math.max(0, width) * Math.max(0, height);
+}
+
 /**
- * Posiciona o destaque e o cartão: abaixo do alvo quando cabe, acima como segunda opção e,
- * para alvos maiores que a tela, no canto inferior direito, sobre o próprio alvo.
+ * Posiciona o destaque e o cartão sem cobrir o alvo: abaixo dele, acima, à esquerda ou à direita,
+ * nessa ordem. Quando nenhum lado comporta o cartão (alvo maior que a tela), ele vai para o canto
+ * inferior do lado oposto ao alvo, a posição que cobre a menor parte dele.
  */
 export function computeTourLayout(
     target: TourRect | null,
@@ -91,45 +114,59 @@ export function computeTourLayout(
         return { spotlight, card: { docked: true, top: 0, left: 0 } };
     }
 
+    const minLeft = VIEWPORT_MARGIN;
     const maxLeft = viewport.width - card.width - VIEWPORT_MARGIN;
-
-    if (!spotlight) {
-        return {
-            spotlight,
-            card: {
-                docked: false,
-                top: Math.round(Math.max(topOffset, (viewport.height - card.height) / 2)),
-                left: Math.round(
-                    clamp((viewport.width - card.width) / 2, VIEWPORT_MARGIN, maxLeft),
-                ),
-            },
-        };
-    }
-
-    const bottom = spotlight.top + spotlight.height;
-    const spaceBelow = viewport.height - bottom - CARD_GAP - VIEWPORT_MARGIN;
-    const spaceAbove = spotlight.top - topOffset - CARD_GAP - VIEWPORT_MARGIN;
-    const left = Math.round(clamp(spotlight.left, VIEWPORT_MARGIN, maxLeft));
-
-    if (spaceBelow >= card.height) {
-        return { spotlight, card: { docked: false, top: Math.round(bottom + CARD_GAP), left } };
-    }
-
-    if (spaceAbove >= card.height) {
-        return {
-            spotlight,
-            card: { docked: false, top: Math.round(spotlight.top - CARD_GAP - card.height), left },
-        };
-    }
-
-    return {
+    const minTop = topOffset;
+    const maxTop = viewport.height - card.height - VIEWPORT_MARGIN;
+    const place = (top: number, left: number): TourLayout => ({
         spotlight,
         card: {
             docked: false,
-            top: Math.round(Math.max(topOffset, viewport.height - card.height - VIEWPORT_MARGIN)),
-            left: Math.round(Math.max(VIEWPORT_MARGIN, maxLeft)),
+            top: Math.round(clamp(top, minTop, maxTop)),
+            left: Math.round(clamp(left, minLeft, maxLeft)),
         },
-    };
+    });
+
+    if (!spotlight) {
+        return place((viewport.height - card.height) / 2, (viewport.width - card.width) / 2);
+    }
+
+    const right = spotlight.left + spotlight.width;
+    const bottom = spotlight.top + spotlight.height;
+    const fitsBelow = viewport.height - bottom - CARD_GAP - VIEWPORT_MARGIN >= card.height;
+    const fitsAbove = spotlight.top - topOffset - CARD_GAP >= card.height;
+    const fitsLeft = spotlight.left - CARD_GAP - VIEWPORT_MARGIN >= card.width;
+    const fitsRight = viewport.width - right - CARD_GAP - VIEWPORT_MARGIN >= card.width;
+
+    if (fitsBelow) {
+        return place(bottom + CARD_GAP, spotlight.left);
+    }
+
+    if (fitsAbove) {
+        return place(spotlight.top - CARD_GAP - card.height, spotlight.left);
+    }
+
+    if (fitsLeft) {
+        return place(spotlight.top, spotlight.left - CARD_GAP - card.width);
+    }
+
+    if (fitsRight) {
+        return place(spotlight.top, right + CARD_GAP);
+    }
+
+    const corners = [
+        place(maxTop, minLeft),
+        place(maxTop, maxLeft),
+        place(minTop, minLeft),
+        place(minTop, maxLeft),
+    ];
+
+    return corners.reduce((best, candidate) =>
+        overlapArea({ ...candidate.card, ...card }, spotlight) <
+        overlapArea({ ...best.card, ...card }, spotlight)
+            ? candidate
+            : best,
+    );
 }
 
 /** Altura da barra fixa do topo, para o cartão nunca ficar escondido atrás dela. */

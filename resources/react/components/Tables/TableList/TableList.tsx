@@ -20,7 +20,7 @@ export {
 export { default as TableListFilters } from './TableListFilters';
 export { default as TableListMoreFilters } from './TableListMoreFilters';
 export { default as TableListPersonCell } from './TableListPersonCell';
-export { default as TableListLayout } from './TableListLayout';
+export { default as TableListLayout, type TableListTourConfig } from './TableListLayout';
 export { default as TableListRowActions } from './TableListRowActions';
 export { default as TableListTable } from './TableListTable';
 export { formatTableListDate, formatTableListRange, formatTableListText } from './TableList.utils';

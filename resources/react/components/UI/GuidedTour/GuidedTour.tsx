@@ -70,6 +70,7 @@ export default function GuidedTour({ tour, onClose }: GuidedTourProps): React.JS
     ]);
     const [index, setIndex] = useState(0);
     const [layout, setLayout] = useState<TourLayout | null>(null);
+    const [note, setNote] = useState<string | null>(null);
     const cardRef = useRef<HTMLElement | null>(null);
     const headingRef = useRef<HTMLHeadingElement | null>(null);
     const openerRef = useRef<HTMLElement | null>(
@@ -97,7 +98,9 @@ export default function GuidedTour({ tour, onClose }: GuidedTourProps): React.JS
     // Entrada no passo: prepara a demonstração e mostra o alvo. O foco continua no botão usado
     // para avançar; vai ao título ao abrir ou quando esse botão some ou fica desabilitado.
     useEffect(() => {
-        const undo = step.onEnter?.(findTourTargets(step.target)[0] ?? null);
+        const result = step.onEnter?.(findTourTargets(step.target)[0] ?? null);
+        const undo = typeof result === 'function' ? result : result?.undo;
+        setNote(result && typeof result === 'object' ? (result.note ?? null) : null);
         const frame = requestAnimationFrame(() => {
             revealTargets(findTourTargets(step.target));
             const focused = document.activeElement;
@@ -115,9 +118,7 @@ export default function GuidedTour({ tour, onClose }: GuidedTourProps): React.JS
         return () => {
             cancelAnimationFrame(frame);
 
-            if (typeof undo === 'function') {
-                undo();
-            }
+            undo?.();
         };
     }, [step]);
 
@@ -184,7 +185,7 @@ export default function GuidedTour({ tour, onClose }: GuidedTourProps): React.JS
     const counter = `Passo ${index + 1} de ${steps.length}`;
 
     return createPortal(
-        <div className="guidedTour">
+        <div className="guidedTour" data-guided-tour="">
             {spotlight ? (
                 <div className="guidedTour__spotlight" style={spotlight} aria-hidden="true" />
             ) : (
@@ -219,7 +220,7 @@ export default function GuidedTour({ tour, onClose }: GuidedTourProps): React.JS
                     </button>
                 </div>
                 <p className="guidedTour__announcement" aria-live="polite">
-                    {`${counter}: ${step.title}. ${paragraphs.join(' ')}`}
+                    {`${counter}: ${step.title}. ${paragraphs.join(' ')} ${note ?? ''}`}
                 </p>
                 <p className="guidedTour__counter" aria-hidden="true">
                     {counter}
@@ -235,6 +236,12 @@ export default function GuidedTour({ tour, onClose }: GuidedTourProps): React.JS
                     {paragraphs.map((paragraph) => (
                         <p key={paragraph}>{paragraph}</p>
                     ))}
+                    {note ? (
+                        <p className="guidedTour__note">
+                            <i className="fa fa-magic" aria-hidden="true" />
+                            {note}
+                        </p>
+                    ) : null}
                 </div>
                 {isLast && tour.helpHref ? (
                     <Link href={tour.helpHref} className="guidedTour__helpLink">

@@ -2,6 +2,7 @@ import { Children } from 'react';
 import TableActions from '@/components/Tables/TableActions/TableActions';
 import Button from '@/components/UI/Button/Button';
 import TableListRowActionsMenu from './TableListRowActionsMenu';
+import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 
 interface RowLinkAction {
     href: string;
@@ -123,7 +124,7 @@ export default function TableListRowActions({
     );
 
     return (
-        <span className="tableRowActions">
+        <span className="tableRowActions" data-tour={TABLE_LIST_TOUR_TARGETS.rowActions}>
             <span className="tableRowActions__inline">
                 <TableActions>{actions}</TableActions>
             </span>

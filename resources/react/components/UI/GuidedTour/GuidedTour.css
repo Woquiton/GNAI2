@@ -160,6 +160,22 @@
     line-height: 1.55;
 }
 
+.guidedTour__content .guidedTour__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ui-space-2);
+    padding: var(--ui-space-2) var(--ui-space-3);
+    border-left: 3px solid var(--guided-tour-accent);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-table-header);
+    color: var(--ui-color-form-label);
+    font-weight: 600;
+}
+
+.guidedTour__note i {
+    margin-top: 3px;
+}
+
 .guidedTour__helpLink {
     display: inline-flex;
     align-items: center;

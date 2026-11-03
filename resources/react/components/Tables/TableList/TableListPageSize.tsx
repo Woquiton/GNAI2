@@ -7,6 +7,7 @@ import {
 } from '@/components/UI/NotificationToast/operationFeedback';
 import { TABLE_LIST_DEFAULT_PAGE_SIZE, TABLE_LIST_PAGE_SIZES } from './TableList.preferences';
 import { TableListBusyContext } from './TableListBusyContext';
+import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 
 const options = TABLE_LIST_PAGE_SIZES.map((size) => ({
     value: String(size),
@@ -65,7 +66,11 @@ export default function TableListPageSize({
     }
 
     return (
-        <span className="tableListPageSize" title="Registros por página">
+        <span
+            className="tableListPageSize"
+            title="Registros por página"
+            data-tour={TABLE_LIST_TOUR_TARGETS.pageSize}
+        >
             <SelectField
                 id={`${id}-per-page`}
                 name="per_page"

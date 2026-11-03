@@ -6,6 +6,7 @@ import {
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { STUDENT_TOUR_TARGETS } from '../studentTours';
 import type { StudentFormSectionProps } from './StudentForm.types';
 
 interface StudentAcademicFieldsProps extends StudentFormSectionProps {
@@ -29,6 +30,7 @@ export default function StudentAcademicFields({
             title="Dados Acadêmicos"
             variant="inline"
             iconClass="fa fa-graduation-cap"
+            tourTarget={STUDENT_TOUR_TARGETS.academic}
         >
             <FormGrid columns={3}>
                 <TextInputField

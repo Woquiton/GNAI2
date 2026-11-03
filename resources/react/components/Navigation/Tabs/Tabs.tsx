@@ -1,11 +1,4 @@
-import {
-    useEffect,
-    useId,
-    useRef,
-    useState,
-    type KeyboardEvent,
-    type ReactNode,
-} from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import TabNavigation from './TabNavigation';
 import './Tabs.css';
 
@@ -32,6 +25,8 @@ interface TabsProps {
     onChange?: (id: string) => void;
     /** Permite arrastar horizontalmente a faixa de abas e mostra controles nas bordas. */
     dragToScroll?: boolean;
+    /** Valor de `data-tour` da faixa de abas, para o tutorial ao vivo destacá-la. */
+    tourTarget?: string;
 }
 
 export default function Tabs({
@@ -40,6 +35,7 @@ export default function Tabs({
     variant = 'standard',
     onChange,
     dragToScroll = true,
+    tourTarget,
 }: TabsProps): React.JSX.Element {
     const [activeId, setActiveId] = useState<string>(initialActiveId ?? items[0]?.id ?? '');
     const activeItem = items.find((item: TabItem) => item.id === activeId) ?? items[0];
@@ -126,14 +122,17 @@ export default function Tabs({
                 onKeyDown={(event) => handleKeyDown(event, index)}
             >
                 <span className="tabs__label">{item.label}</span>
-                {item.icon ? (
-                    <i className={`tabs__icon ${item.icon}`} aria-hidden="true" />
-                ) : null}
+                {item.icon ? <i className={`tabs__icon ${item.icon}`} aria-hidden="true" /> : null}
             </button>
         </li>
     ));
     const navigation = isVertical ? (
-        <ul className={navigationClassName} role="tablist" aria-orientation="vertical">
+        <ul
+            className={navigationClassName}
+            role="tablist"
+            aria-orientation="vertical"
+            data-tour={tourTarget}
+        >
             {navigationItems}
         </ul>
     ) : (
@@ -144,6 +143,7 @@ export default function Tabs({
             role="tablist"
             animated={variant === 'standard' || variant === 'material'}
             dragToScroll={dragToScroll}
+            tourTarget={tourTarget}
         >
             {navigationItems}
         </TabNavigation>

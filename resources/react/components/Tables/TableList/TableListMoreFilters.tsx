@@ -1,6 +1,7 @@
 import { useId, type ReactNode } from 'react';
 
 import { joinClassNames } from '@/utils/joinClassNames';
+import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 import { useRememberedOpen } from './useRememberedOpen';
 
 interface TableListMoreFiltersProps {
@@ -23,6 +24,7 @@ export default function TableListMoreFilters({
     return (
         <section
             className={joinClassNames('tableListMoreFilters', open && 'tableListMoreFilters--open')}
+            data-tour={TABLE_LIST_TOUR_TARGETS.moreFilters}
         >
             <button
                 type="button"

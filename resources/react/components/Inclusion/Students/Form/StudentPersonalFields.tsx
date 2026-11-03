@@ -11,6 +11,7 @@ import PersonPhotoUpload from '@/components/Forms/PersonPhotoUpload/PersonPhotoU
 import PersonPhotoFields from '@/components/Inclusion/People/PersonPhotoFields';
 import { cpfMask, phoneMask } from '@/utils/masks';
 import type { Person } from '../Students.types';
+import { STUDENT_TOUR_TARGETS } from '../studentTours';
 import type { StudentFormSectionProps } from './StudentForm.types';
 
 interface StudentPersonalFieldsProps extends StudentFormSectionProps {
@@ -48,6 +49,7 @@ export default function StudentPersonalFields({
             onRemove={onPhotoRemove}
             onValidatingChange={onPhotoValidatingChange}
             onError={(message) => form.setError('photo', message)}
+            tourTarget={STUDENT_TOUR_TARGETS.photo}
         />
     );
 
@@ -57,6 +59,7 @@ export default function StudentPersonalFields({
             title="Dados Pessoais"
             variant="inline"
             iconClass="fa fa-user"
+            tourTarget={STUDENT_TOUR_TARGETS.personal}
         >
             <PersonPhotoFields className="studentForm__personal" photo={photo}>
                 <FormGrid>

@@ -6,6 +6,7 @@ import type { TableListPage } from './TableList.types';
 import { formatTableListRange } from './TableList.utils';
 import { TableListBusyContext } from './TableListBusyContext';
 import TableListPageSize from './TableListPageSize';
+import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 import './TableList.css';
 
 export function TableListCard({
@@ -27,7 +28,9 @@ export function TableListCard({
             {...props}
             aria-busy={showLoading || props['aria-busy']}
         >
-            <TableListBusyContext.Provider value={setBusy}>{children}</TableListBusyContext.Provider>
+            <TableListBusyContext.Provider value={setBusy}>
+                {children}
+            </TableListBusyContext.Provider>
             {showLoading ? (
                 <div
                     className="tableListCard__loading panel-disabled"
@@ -56,7 +59,11 @@ export function TableListCreateButton({
 }
 
 export function TableListFilterActions({ children }: { children: ReactNode }): React.JSX.Element {
-    return <div className="tableListFilterActions">{children}</div>;
+    return (
+        <div className="tableListFilterActions" data-tour={TABLE_LIST_TOUR_TARGETS.clear}>
+            {children}
+        </div>
+    );
 }
 
 export function TableListClearButton({
@@ -144,7 +151,7 @@ export function TableListFooter({
                     <TableListPageSize value={page.per_page} disabled={disabled} />
                 ) : null}
             </div>
-            <nav aria-label={paginationLabel}>
+            <nav aria-label={paginationLabel} data-tour={TABLE_LIST_TOUR_TARGETS.pagination}>
                 <Pagination
                     currentPage={page.current_page}
                     pageCount={page.last_page}

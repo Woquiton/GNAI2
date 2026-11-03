@@ -11,6 +11,10 @@ import {
     studentRecordUrl,
     studentUrls,
 } from '@/components/Inclusion/Students/Students.routes';
+import {
+    STUDENT_TOUR_TARGETS,
+    studentRecordTour,
+} from '@/components/Inclusion/Students/studentTours';
 import type {
     Permissions,
     StudentRecord,
@@ -192,6 +196,7 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
             documentTitle={student.person.name}
             breadcrumbItems={studentBreadcrumb({ student })}
             busy={removal.processing}
+            tour={studentRecordTour}
         >
             <StudentRecordSummary {...props} />
             <StudentRecordWorkspace statusPanel={statusPanel}>
@@ -200,6 +205,7 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
                     initialActiveId={activeTab}
                     variant="standard"
                     dragToScroll
+                    tourTarget={STUDENT_TOUR_TARGETS.tabs}
                     onChange={(tab) => selectTab(tab as StudentRecordTabId)}
                 />
                 <StudentDetailsActions

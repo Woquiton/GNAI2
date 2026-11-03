@@ -8,6 +8,8 @@ interface TabNavigationProps {
     role?: 'tablist';
     animated?: boolean;
     dragToScroll?: boolean;
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o componente. */
+    tourTarget?: string;
 }
 
 /** Faixa compartilhada por abas locais e links entre páginas. */
@@ -19,6 +21,7 @@ export default function TabNavigation({
     role,
     animated = true,
     dragToScroll = true,
+    tourTarget,
 }: TabNavigationProps): React.JSX.Element {
     const viewportRef = useRef<HTMLDivElement>(null);
     const navigationRef = useRef<HTMLUListElement>(null);
@@ -95,7 +98,9 @@ export default function TabNavigation({
                 viewport.scrollBy({
                     left: distance,
                     behavior:
-                        previousActiveKey.current !== activeKey && !reduceMotion ? 'smooth' : 'auto',
+                        previousActiveKey.current !== activeKey && !reduceMotion
+                            ? 'smooth'
+                            : 'auto',
                 });
             }
         }
@@ -185,7 +190,7 @@ export default function TabNavigation({
         .join(' ');
 
     return (
-        <div className="tabs__navScroller">
+        <div className="tabs__navScroller" data-tour={tourTarget}>
             {dragToScroll && scrollCues.left ? (
                 <button
                     type="button"

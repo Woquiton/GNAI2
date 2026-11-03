@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import type { TableListColumn } from './TableList.types';
+import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 
 interface TableListColumnsMenuProps {
     columns: ReadonlyArray<Omit<TableListColumn, 'render'>>;
@@ -21,7 +22,13 @@ export default function TableListColumnsMenu({
     useEffect(() => {
         function closeOnOutsidePointer(event: globalThis.PointerEvent): void {
             const menu = menuRef.current;
-            if (open && menu && !menu.contains(event.target as Node)) {
+            const target = event.target as Element;
+            // O cartão do tutorial abre o menu para demonstrar; usá-lo não fecha as opções.
+            if (target.closest?.('[data-guided-tour]')) {
+                return;
+            }
+
+            if (open && menu && !menu.contains(target)) {
                 setOpen(false);
             }
         }
@@ -49,6 +56,7 @@ export default function TableListColumnsMenu({
         <div
             ref={menuRef}
             className={`tableListColumnsMenu${open ? ' tableListColumnsMenu--open' : ''}`}
+            data-tour={TABLE_LIST_TOUR_TARGETS.columns}
         >
             <button
                 type="button"
@@ -65,6 +73,7 @@ export default function TableListColumnsMenu({
                 id={`${controlId}-options`}
                 className="tableListColumnsMenu__collapse"
                 aria-hidden={!open}
+                data-tour={TABLE_LIST_TOUR_TARGETS.columnsOptions}
             >
                 <fieldset className="tableListColumnsMenu__options" disabled={!open}>
                     <legend>Colunas visíveis</legend>

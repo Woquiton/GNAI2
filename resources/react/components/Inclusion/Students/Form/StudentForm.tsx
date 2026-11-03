@@ -4,6 +4,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { studentUrls } from '../Students.routes';
 import type { Student, StudentFormOptions } from '../Students.types';
+import { STUDENT_TOUR_TARGETS } from '../studentTours';
 import StudentAcademicFields from './StudentAcademicFields';
 import StudentPersonalFields from './StudentPersonalFields';
 import type { StudentFormMode } from './StudentForm.types';
@@ -84,6 +85,7 @@ export default function StudentForm({
                 </fieldset>
             </CardBox>
             <FormActions
+                tourTarget={STUDENT_TOUR_TARGETS.formActions}
                 status={submissionStatus(
                     photoValidating,
                     form.processing,

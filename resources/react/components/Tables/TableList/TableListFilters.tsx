@@ -11,6 +11,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import { joinClassNames } from '@/utils/joinClassNames';
 import TableListMoreFilters, { TableListActiveBadge } from './TableListMoreFilters';
 import { TableListClearButton, TableListFilterActions } from './TableListControls';
+import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 import { useRememberedOpen } from './useRememberedOpen';
 
 interface TableListFiltersProps {
@@ -31,9 +32,9 @@ function countActiveFields(region: HTMLElement | null): number {
     const active = new Set<string>();
 
     region
-        ?.querySelectorAll<
-            HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-        >('input[name], select[name], textarea[name]')
+        ?.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+            'input[name], select[name], textarea[name]',
+        )
         .forEach((field) => {
             if (field.disabled || field.type === 'hidden') return;
             const filled =
@@ -93,14 +94,13 @@ export default function TableListFilters({
         );
     });
 
-    const controls = [rest.length > 0 && fieldsId, moreFilters && moreId]
-        .filter(Boolean)
-        .join(' ');
+    const controls = [rest.length > 0 && fieldsId, moreFilters && moreId].filter(Boolean).join(' ');
 
     return (
         <FormLayout
             className={joinClassNames('tableListFilters', className)}
             aria-label={label}
+            data-tour={TABLE_LIST_TOUR_TARGETS.filters}
             onSubmit={(event) => {
                 event.preventDefault();
                 onSubmit();
@@ -149,7 +149,12 @@ export default function TableListFilters({
                 </TableListFilterActions>
             </div>
             {moreFilters ? (
-                <div id={moreId} ref={moreRef} className="tableListFilters__region" data-open={open}>
+                <div
+                    id={moreId}
+                    ref={moreRef}
+                    className="tableListFilters__region"
+                    data-open={open}
+                >
                     <div className="tableListFilters__regionContent">
                         <TableListMoreFilters activeCount={counts.more}>
                             <div className="tableListFilters__more">{moreFilters}</div>

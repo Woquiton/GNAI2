@@ -1,8 +1,19 @@
-import type { ReactNode } from 'react';
-import BusinessPage, { type BusinessPageProps } from '@/components/Navigation/BusinessPage/BusinessPage';
+import { useMemo, type ReactNode } from 'react';
+import BusinessPage, {
+    type BusinessPageProps,
+} from '@/components/Navigation/BusinessPage/BusinessPage';
+import type { GuidedTourStep } from '@/components/UI/GuidedTour/GuidedTour.types';
 import { TableListCard, TableListCreateButton } from './TableListControls';
+import { tableListTourSteps, type TableListTourTexts } from './tableListTour';
 
-interface TableListLayoutProps extends Omit<BusinessPageProps, 'actions' | 'children'> {
+/** Tutorial da listagem: textos próprios da tela, passos extras e o artigo da Central de Ajuda. */
+export interface TableListTourConfig extends TableListTourTexts {
+    helpHref?: string;
+    /** Passos da tela, exibidos depois dos passos padrão da listagem. */
+    steps?: GuidedTourStep[];
+}
+
+interface TableListLayoutProps extends Omit<BusinessPageProps, 'actions' | 'children' | 'tour'> {
     /** Cadastro exibido à direita do título quando o usuário tem permissão. */
     create?: { href: string; label: string } | false;
     /** Ações adicionais ao lado de "Cadastrar". */
@@ -17,6 +28,11 @@ interface TableListLayoutProps extends Omit<BusinessPageProps, 'actions' | 'chil
     children: ReactNode;
     /** Modais de confirmação e diálogos que pertencem à listagem. */
     dialogs?: ReactNode;
+    /**
+     * Tutorial ao vivo. Os passos padrão (filtros, colunas, tabela e páginas) entram sozinhos;
+     * use uma constante de módulo para não registrar o tutorial de novo a cada renderização.
+     */
+    tour?: TableListTourConfig;
 }
 
 /**
@@ -32,8 +48,19 @@ export default function TableListLayout({
     filters,
     children,
     dialogs,
+    tour,
     ...pageProps
 }: TableListLayoutProps): React.JSX.Element {
+    const pageTour = useMemo(
+        () =>
+            tour
+                ? {
+                      helpHref: tour.helpHref,
+                      steps: [...tableListTourSteps(tour), ...(tour.steps ?? [])],
+                  }
+                : undefined,
+        [tour],
+    );
     const headerActions =
         create || actions ? (
             <>
@@ -45,7 +72,7 @@ export default function TableListLayout({
         ) : undefined;
 
     return (
-        <BusinessPage {...pageProps} actions={headerActions}>
+        <BusinessPage {...pageProps} actions={headerActions} tour={pageTour}>
             <TableListCard aria-label={listLabel} loading={loading} loadingLabel={loadingLabel}>
                 {filters}
                 {children}

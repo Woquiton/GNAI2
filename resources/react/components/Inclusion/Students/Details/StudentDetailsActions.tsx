@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { studentUrls } from '../Students.routes';
 import type { Permissions } from '../Students.types';
+import { STUDENT_TOUR_TARGETS } from '../studentTours';
 
 interface StudentDetailsActionsProps {
     studentId: number;
@@ -33,7 +34,7 @@ export default function StudentDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={STUDENT_TOUR_TARGETS.recordActions}>
             <Button
                 href={studentUrls.index}
                 tone="cancel"

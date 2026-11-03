@@ -8,6 +8,7 @@ import {
 } from '@/components/Inclusion/Students/Students.constants';
 import { studentBreadcrumb, studentUrls } from '@/components/Inclusion/Students/Students.routes';
 import type { Student, StudentIndexProps } from '@/components/Inclusion/Students/Students.types';
+import { studentListTour } from '@/components/Inclusion/Students/studentTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -38,6 +39,7 @@ export default function StudentsIndex({
             title="Alunos"
             subtitle="Gerencie os estudantes e seus documentos de apoio especializado."
             breadcrumbItems={studentBreadcrumb()}
+            tour={studentListTour}
             create={
                 listProps.permissions['student.create'] && {
                     href: studentUrls.create,

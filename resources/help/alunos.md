@@ -2,12 +2,16 @@
 titulo: Alunos e prontuário
 resumo: Como cadastrar e editar alunos, definir a situação e o tipo de acompanhamento, consultar o prontuário, vincular cursos, gerar a ficha em PDF e excluir um cadastro.
 categoria: Atendimento
-palavras-chave: aluno, alunos, estudante, cadastrar aluno, novo aluno, matrícula, cpf, foto do aluno, editar aluno, status do aluno, ativo, trancado, concluído, desistente, atendimento completo, prontuário, ficha do aluno, abas, histórico, pdf do aluno, ficha em pdf, curso do aluno, vincular curso, matricular em curso, curso atual, tornar atual, ano letivo, período do curso, semestre do aluno, frequência escolar, disciplinas com reprovação, risco de insucesso, dependência, dependências, aprovada na dependência, reprovação por semestre, excluir aluno, remover aluno, laudo, status do atendimento
+palavras-chave: aluno, alunos, estudante, cadastrar aluno, novo aluno, matrícula, cpf, foto do aluno, editar aluno, status do aluno, ativo, trancado, concluído, desistente, atendimento completo, prontuário, ficha do aluno, abas, histórico, pdf do aluno, ficha em pdf, curso do aluno, vincular curso, matricular em curso, curso atual, tornar atual, ano letivo, período do curso, semestre do aluno, frequência escolar, disciplinas com reprovação, risco de insucesso, dependência, dependências, aprovada na dependência, reprovação por semestre, excluir aluno, remover aluno, laudo, status do atendimento, tutorial, tour, como usar a tela de alunos
 ordem: 10
 permissoes: student.view
 ---
 
 O cadastro de alunos reúne os dados pessoais e acadêmicos de cada estudante atendido pelo núcleo e dá acesso ao prontuário, onde ficam responsáveis, perfis de atendimento, cursos, documentos, planos e o histórico de atendimentos. A tela fica em **Atendimento → Alunos**.
+
+## Conhecer as telas de alunos com o tutorial
+
+A listagem, o cadastro, a edição e o prontuário do aluno têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Na listagem, ele mostra os filtros, o botão de colunas, como ajustar a largura das colunas e a quantidade de registros por página. No prontuário, ele mostra o resumo, as abas, a lateral **Status do atendimento** e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Encontrar um aluno na listagem
 

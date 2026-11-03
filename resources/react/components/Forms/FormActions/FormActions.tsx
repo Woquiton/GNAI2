@@ -7,6 +7,8 @@ interface FormActionsProps {
     secondary?: ReactNode;
     status?: ReactNode;
     className?: string;
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o componente. */
+    tourTarget?: string;
 }
 
 export default function FormActions({
@@ -14,6 +16,7 @@ export default function FormActions({
     secondary,
     status,
     className,
+    tourTarget,
 }: FormActionsProps): React.JSX.Element {
     const containerRef = useRef<HTMLDivElement>(null);
     const barRef = useRef<HTMLElement>(null);
@@ -59,6 +62,7 @@ export default function FormActions({
             <footer
                 ref={barRef}
                 className={joinClassNames('formActions__bar', fixed && 'formActions__bar--fixed')}
+                data-tour={tourTarget}
             >
                 <div className="formActions__leading">
                     {secondary ? <div className="formActions__secondary">{secondary}</div> : null}

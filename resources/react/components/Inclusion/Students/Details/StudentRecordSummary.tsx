@@ -4,6 +4,7 @@ import RecordSummary from '@/components/UI/RecordSummary/RecordSummary';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import type { StudentOptions, StudentRecord } from '../Students.types';
+import { STUDENT_TOUR_TARGETS } from '../studentTours';
 
 type StudentRecordSummaryProps = StudentOptions & {
     student: StudentRecord;
@@ -24,7 +25,7 @@ export default function StudentRecordSummary({
     const profileSummary = profileNames.join(', ');
 
     return (
-        <CardBox className="studentDetails__summaryCard">
+        <CardBox className="studentDetails__summaryCard" tourTarget={STUDENT_TOUR_TARGETS.summary}>
             <RecordSummary
                 photo={{ src: person.photo_url, alt: `Foto de ${person.name}` }}
                 name={person.name}
@@ -39,9 +40,7 @@ export default function StudentRecordSummary({
                 <DetailField label="Tipo de acompanhamento">
                     {followUpTypes[student.follow_up_type ?? ''] ?? 'Não informado'}
                 </DetailField>
-                <DetailField label="Data de ingresso">
-                    {dateLabel(student.entry_date)}
-                </DetailField>
+                <DetailField label="Data de ingresso">{dateLabel(student.entry_date)}</DetailField>
                 {canViewProfiles ? (
                     <DetailField label="Perfil de atendimento" wide>
                         {profileSummary || 'Nenhum perfil cadastrado'}

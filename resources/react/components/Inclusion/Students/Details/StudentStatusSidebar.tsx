@@ -5,6 +5,7 @@ import { useDialogFocus } from '@/components/UI/Modal/useDialogFocus';
 import { joinClassNames } from '@/utils/joinClassNames';
 import { studentStatusStepDescriptions } from '../Students.constants';
 import type { StudentStatusItem, StudentStatusPanelData } from '../Students.types';
+import { STUDENT_TOUR_TARGETS } from '../studentTours';
 import './StudentStatusSidebar.css';
 
 interface StudentStatusSidebarProps {
@@ -99,6 +100,7 @@ export default function StudentStatusSidebar({
                 modal && 'studentStatusSidebar--modal',
             )}
             aria-labelledby={titleId}
+            data-tour={STUDENT_TOUR_TARGETS.statusSidebar}
             aria-modal={modal || undefined}
             role={modal ? 'dialog' : undefined}
             tabIndex={modal ? -1 : undefined}

@@ -10,6 +10,8 @@ interface FormSectionProps {
     children: ReactNode;
     variant?: 'card' | 'inline';
     iconClass?: string;
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o componente. */
+    tourTarget?: string;
 }
 export default function FormSection({
     id,
@@ -19,6 +21,7 @@ export default function FormSection({
     children,
     variant = 'card',
     iconClass = 'fa fa-list-alt',
+    tourTarget,
 }: FormSectionProps): React.JSX.Element {
     const generatedId = useId();
     const titleId = `${id ?? generatedId}-title`;
@@ -35,11 +38,18 @@ export default function FormSection({
         </>
     );
     return variant === 'inline' ? (
-        <section id={id} aria-labelledby={titleId} className="formSection formSection--inline">
+        <section
+            id={id}
+            aria-labelledby={titleId}
+            className="formSection formSection--inline"
+            data-tour={tourTarget}
+        >
             {content}
         </section>
     ) : (
-        <CardBox className="formSection">{content}</CardBox>
+        <CardBox className="formSection" tourTarget={tourTarget}>
+            {content}
+        </CardBox>
     );
 }
 
