@@ -25,7 +25,7 @@ final readonly class CreateCourseAction
 
             $course = Course::register($courseDTO);
             $course->save();
-            $course->assignCurriculum($data->disciplineIds);
+            $course->assignCurriculum($data->disciplineIds, $data->disciplinePeriods);
 
             return $course->load('disciplines');
         });

@@ -22,13 +22,19 @@ final class ListStudentsQuery
             ->with(['person', 'currentCourse.course']);
 
         if ($teacherId !== null) {
-            $query->whereHas('courses', function (Builder $courseQuery) use ($teacherId): void {
-                $courseQuery->whereIn('courses.id', function ($teacherCourseDisciplinesQuery) use ($teacherId): void {
-                    $teacherCourseDisciplinesQuery
-                        ->select('course_id')
-                        ->from('teacher_course_disciplines')
-                        ->where('teacher_id', $teacherId);
-                });
+            // Professores veem os alunos matriculados hoje nos cursos em que lecionam no semestre atual.
+            $query->whereHas('studentCourses', function (Builder $enrollments) use ($teacherId): void {
+                $enrollments
+                    ->where('is_current', true)
+                    ->whereIn('course_id', function ($assignments) use ($teacherId): void {
+                        $assignments
+                            ->select('course_id')
+                            ->from('teacher_course_disciplines')
+                            ->where('teacher_id', $teacherId)
+                            ->whereIn('semester_id', function ($semesters): void {
+                                $semesters->select('id')->from('semesters')->where('is_current', true);
+                            });
+                    });
             });
         }
 

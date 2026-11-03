@@ -90,6 +90,13 @@ final class Semester extends Model implements Auditable
         $this->fill(self::attributesFrom($data));
     }
 
+    /** Indica se este semestre vem antes do informado, pela ordem de ano e período. */
+    public function isBefore(self $other): bool
+    {
+        return $this->year < $other->year
+            || ($this->year === $other->year && $this->term < $other->term);
+    }
+
     public function markAsCurrent(): void
     {
         $this->is_current = true;

@@ -10,6 +10,7 @@ use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\DTOs\Teachers\CreateTeacherDTO;
 use App\Domains\Inclusion\Domain\DTOs\Teachers\UpdateTeacherDTO;
+use App\Domains\Inclusion\Domain\Exceptions\InvalidCourse;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidTeacher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -65,14 +66,16 @@ class Teacher extends Model implements Auditable
     }
 
     /**
-     * Sincroniza as disciplinas do professor por curso, incluindo e removendo
-     * um registro por vez para que cada alteração entre na auditoria.
+     * Define as disciplinas do professor em cada curso no semestre informado, incluindo e removendo
+     * um registro por vez para que cada alteração entre na auditoria. Vínculos com cursos ou
+     * disciplinas inativos não aparecem no formulário, então são preservados.
      *
-     * @param  array<int|string, list<int|string>>  $assignments
+     * @param  array<int|string, list<int|string>>  $assignments  ids de disciplinas por id de curso
      *
+     * @throws InvalidCourse
      * @throws InvalidTeacher
      */
-    public function assignCourseDisciplines(array $assignments): void
+    public function assignCourseDisciplines(Semester $semester, array $assignments): void
     {
         $assignments = self::normalizeAssignments($assignments);
         $courseIds = array_keys($assignments);
@@ -110,12 +113,15 @@ class Teacher extends Model implements Auditable
                     'teacher_id' => $this->id,
                     'course_id' => $course->id,
                     'discipline_id' => $disciplineId,
+                    'semester_id' => $semester->getKey(),
                 ];
             }
         }
 
         TeacherCourseDiscipline::query()
+            ->with(['course', 'discipline'])
             ->where('teacher_id', $this->id)
+            ->where('semester_id', $semester->getKey())
             ->get()
             ->each(function (TeacherCourseDiscipline $assignment) use (&$rows): void {
                 $key = "{$assignment->course_id}:{$assignment->discipline_id}";
@@ -126,12 +132,60 @@ class Teacher extends Model implements Auditable
                     return;
                 }
 
-                $assignment->delete();
+                $hiddenFromForm = ! $assignment->course?->is_active || ! $assignment->discipline?->is_active;
+
+                if (! $hiddenFromForm) {
+                    $assignment->delete();
+                }
             });
 
         foreach ($rows as $row) {
             TeacherCourseDiscipline::query()->create($row);
         }
+    }
+
+    /**
+     * Copia para `$target` os vínculos que o professor tinha em `$source`, ignorando os que já existem e
+     * os que deixaram de valer (curso ou disciplina inativos, ou disciplina fora da matriz).
+     *
+     * @return int quantidade de vínculos criados
+     */
+    public function copyCourseDisciplines(Semester $source, Semester $target): int
+    {
+        $existingKeys = TeacherCourseDiscipline::query()
+            ->where('teacher_id', $this->id)
+            ->where('semester_id', $target->getKey())
+            ->get()
+            ->map(fn (TeacherCourseDiscipline $assignment): string => "{$assignment->course_id}:{$assignment->discipline_id}")
+            ->flip();
+        $created = 0;
+
+        TeacherCourseDiscipline::query()
+            ->where('teacher_id', $this->id)
+            ->where('semester_id', $source->getKey())
+            ->whereHas('course', fn ($query) => $query->where('is_active', true))
+            ->whereHas('discipline', fn ($query) => $query->where('is_active', true))
+            ->whereExists(fn ($query) => $query
+                ->selectRaw('1')
+                ->from('course_disciplines')
+                ->whereColumn('course_disciplines.course_id', 'teacher_course_disciplines.course_id')
+                ->whereColumn('course_disciplines.discipline_id', 'teacher_course_disciplines.discipline_id'))
+            ->get()
+            ->each(function (TeacherCourseDiscipline $assignment) use ($existingKeys, $target, &$created): void {
+                if ($existingKeys->has("{$assignment->course_id}:{$assignment->discipline_id}")) {
+                    return;
+                }
+
+                TeacherCourseDiscipline::query()->create([
+                    'teacher_id' => $this->id,
+                    'course_id' => $assignment->course_id,
+                    'discipline_id' => $assignment->discipline_id,
+                    'semester_id' => $target->getKey(),
+                ]);
+                $created++;
+            });
+
+        return $created;
     }
 
     public function person(): BelongsTo
@@ -151,7 +205,7 @@ class Teacher extends Model implements Auditable
             'teacher_course_disciplines',
             'teacher_id',
             'discipline_id',
-        );
+        )->distinct();
     }
 
     public function courseDisciplines(): HasMany

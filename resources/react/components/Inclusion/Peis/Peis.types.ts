@@ -213,12 +213,21 @@ export interface PeiDisciplineRevision {
 export interface PeiBulkDiscipline {
     id: number;
     name: string;
+    /** Período do curso em que a disciplina é cursada, conforme a matriz. */
+    course_period: number | null;
+    /** Disciplina do período do aluno no semestre do PEI ou dependência pendente. */
+    suggested: boolean;
+    /** Semestre da reprovação, quando a disciplina é dependência pendente. */
+    dependency_semester_label: string | null;
     teachers: SelectFieldOption[];
 }
 
 /** Cadastro em lote das adaptações (`PeiDisciplineFormQuery@forCreation`). */
 export interface PeiDisciplineBulkProps {
     pei: { id: number };
+    semesterLabel: string | null;
+    /** Período do curso do aluno no semestre do PEI; nulo quando não informado na matrícula. */
+    studentPeriod: number | null;
     disciplines: PeiBulkDiscipline[];
 }
 

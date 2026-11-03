@@ -319,6 +319,8 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::get('/cursos/{course}/editar', [CourseController::class, 'edit'])->name('courses.edit')->middleware('can:course.update');
         Route::put('/cursos/{course}', [CourseController::class, 'update'])->name('courses.update')->middleware('can:course.update');
         Route::delete('/cursos/{course}', [CourseController::class, 'destroy'])->name('courses.destroy')->middleware('can:course.delete');
+        Route::get('/cursos/{course}/virada-de-semestre', [CourseController::class, 'rollover'])->name('courses.rollover')->middleware('can:student-course.update');
+        Route::post('/cursos/{course}/virada-de-semestre/salvar', [CourseController::class, 'storeRollover'])->name('courses.rollover.store')->middleware('can:student-course.update');
 
         // Disciplines
         Route::get('/disciplinas', [DisciplineController::class, 'index'])->name('disciplines.index')->middleware('can:discipline.view');
@@ -381,6 +383,8 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::delete('/professores/{teacher}', [TeacherController::class, 'destroy'])->name('teachers.destroy')->middleware('can:teacher.delete');
         Route::get('/professores/{teacher}/disciplinas', [TeacherController::class, 'disciplines'])->name('teachers.disciplines')->middleware('can:teacher.update');
         Route::put('/professores/{teacher}/disciplinas', [TeacherController::class, 'updateDisciplines'])->name('teachers.disciplines.update')->middleware('can:teacher.update');
+        Route::post('/professores/{teacher}/disciplinas/copiar', [TeacherController::class, 'copyDisciplines'])->name('teachers.disciplines.copy')->middleware('can:teacher.update');
+        Route::post('/professores/vinculos/copiar', [TeacherController::class, 'copyAllDisciplines'])->name('teachers.disciplines.copy-all')->middleware('can:teacher.update');
 
         /* 6. STUDENT DEFICIENCIES */
         Route::get('alunos/{student}/deficiencias/criar', [StudentDeficiencyController::class, 'create'])->name('student-deficiencies.create')->middleware('can:student-deficiency.create');

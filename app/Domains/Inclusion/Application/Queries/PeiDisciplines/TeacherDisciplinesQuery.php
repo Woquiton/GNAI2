@@ -18,6 +18,7 @@ final class TeacherDisciplinesQuery
         return TeacherCourseDiscipline::query()
             ->where('teacher_id', $teacherId)
             ->where('course_id', $pei->course_id)
+            ->where('semester_id', $pei->semester_id)
             ->whereHas('discipline', function ($query): void {
                 $query->where('is_active', true);
             })

@@ -57,6 +57,7 @@ class PeiSeeder extends Seeder
 
             // Pega apenas disciplinas que possuem professor vinculado neste curso
             $disciplineIdsWithTeachers = TeacherCourseDiscipline::where('course_id', $course->id)
+                ->where('semester_id', $semester->id)
                 ->distinct()
                 ->pluck('discipline_id');
 
@@ -75,6 +76,7 @@ class PeiSeeder extends Seeder
                 // Professores que realmente ministram esta disciplina neste curso
                 $teacherIds = TeacherCourseDiscipline::where('course_id', $course->id)
                     ->where('discipline_id', $discipline->id)
+                    ->where('semester_id', $semester->id)
                     ->pluck('teacher_id')
                     ->unique()
                     ->values();

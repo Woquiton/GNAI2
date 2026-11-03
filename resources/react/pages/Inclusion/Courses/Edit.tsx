@@ -6,6 +6,7 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 export default function InclusionCoursesEditPage({
     course,
     disciplines,
+    maxCoursePeriod,
 }: CourseEditProps): React.JSX.Element {
     return (
         <BusinessPage
@@ -13,7 +14,12 @@ export default function InclusionCoursesEditPage({
             subtitle="Atualize as informações do curso e sua matriz curricular."
             breadcrumbItems={courseBreadcrumb({ course, current: 'Editar' })}
         >
-            <CourseForm key={course.id} course={course} disciplines={disciplines} />
+            <CourseForm
+                key={course.id}
+                course={course}
+                disciplines={disciplines}
+                maxCoursePeriod={maxCoursePeriod}
+            />
         </BusinessPage>
     );
 }

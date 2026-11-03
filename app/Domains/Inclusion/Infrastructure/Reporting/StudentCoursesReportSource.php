@@ -46,8 +46,8 @@ final class StudentCoursesReportSource extends EloquentReportSource
             'academic_year' => ['label' => 'Ano letivo'],
             'is_current' => ['label' => 'Matrícula atual', 'type' => ReportColumnType::BOOLEAN],
             'school_attendance_status' => ['label' => 'Situação da frequência escolar'],
-            'failed_disciplines' => ['label' => 'Disciplinas com reprovação', 'path' => 'failed_discipline_names'],
-            'at_risk_disciplines' => ['label' => 'Disciplinas com risco de insucesso acadêmico', 'path' => 'at_risk_discipline_names'],
+            'failed_disciplines' => ['label' => 'Disciplinas com reprovação no semestre da matrícula', 'path' => 'failed_discipline_names'],
+            'at_risk_disciplines' => ['label' => 'Disciplinas com risco de insucesso no semestre da matrícula', 'path' => 'at_risk_discipline_names'],
         ];
     }
 

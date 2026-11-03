@@ -6,6 +6,9 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 export default function InclusionStudentCoursesEditPage({
     studentCourse,
     semesters,
+    coursePeriod,
+    maxCoursePeriod,
+    academicRecordsBySemester,
 }: StudentCourseEditProps): React.JSX.Element {
     const studentId = studentCourse.student?.id ?? studentCourse.student_id;
 
@@ -29,6 +32,9 @@ export default function InclusionStudentCoursesEditPage({
                 student={studentCourse.student}
                 semesters={semesters}
                 studentCourse={studentCourse}
+                coursePeriod={coursePeriod}
+                maxCoursePeriod={maxCoursePeriod}
+                academicRecordsBySemester={academicRecordsBySemester}
             />
         </BusinessPage>
     );

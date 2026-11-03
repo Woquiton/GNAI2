@@ -15,6 +15,7 @@ import { useCourseForm } from './useCourseForm';
 
 interface CourseFormProps {
     disciplines: CourseDisciplineOption[];
+    maxCoursePeriod: number;
     course?: CourseRecord;
 }
 
@@ -27,9 +28,21 @@ function submissionStatus(processing: boolean, editing: boolean): string | undef
 }
 
 /** Cadastro e edição de cursos: dados básicos, status (na edição) e matriz curricular. */
-export default function CourseForm({ disciplines, course }: CourseFormProps): React.JSX.Element {
-    const { form, errors, disciplinesError, formRef, save, editorFailed, reportEditorFailure } =
-        useCourseForm(disciplines, course);
+export default function CourseForm({
+    disciplines,
+    maxCoursePeriod,
+    course,
+}: CourseFormProps): React.JSX.Element {
+    const {
+        form,
+        errors,
+        disciplinesError,
+        disciplinePeriodErrors,
+        formRef,
+        save,
+        editorFailed,
+        reportEditorFailure,
+    } = useCourseForm(disciplines, course);
     const editing = Boolean(course);
 
     return (
@@ -105,9 +118,21 @@ export default function CourseForm({ disciplines, course }: CourseFormProps): Re
                         editing={editing}
                         disciplines={disciplines}
                         value={form.data.discipline_ids}
+                        periods={form.data.discipline_periods}
+                        maxCoursePeriod={maxCoursePeriod}
                         error={disciplinesError}
+                        periodErrors={disciplinePeriodErrors}
                         disabled={form.processing}
                         onChange={(ids) => form.setData('discipline_ids', ids)}
+                        onPeriodChange={(disciplineId, period) =>
+                            form.setData((data) => ({
+                                ...data,
+                                discipline_periods: {
+                                    ...data.discipline_periods,
+                                    [String(disciplineId)]: period,
+                                },
+                            }))
+                        }
                     />
                 </fieldset>
             </CardBox>

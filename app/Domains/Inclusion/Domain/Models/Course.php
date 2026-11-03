@@ -23,6 +23,9 @@ final class Course extends Model implements Auditable
     use AuditsChanges;
     use HasFactory;
 
+    /** Maior período (semestre ou série) aceito na matriz curricular. */
+    public const MAX_COURSE_PERIOD = 12;
+
     protected $table = 'courses';
 
     protected $fillable = [
@@ -52,6 +55,7 @@ final class Course extends Model implements Auditable
             'description' => AuditedField::richText('Descrição'),
             'is_active' => AuditedField::boolean('Ativo'),
             'disciplines' => AuditedField::list('Disciplinas do curso', model: Discipline::class),
+            'curriculum_periods' => AuditedField::text('Períodos da matriz curricular'),
         ];
     }
 
@@ -63,7 +67,12 @@ final class Course extends Model implements Auditable
     /** @return array<string, mixed> */
     public function auditExtraValues(): array
     {
-        return $this->exists ? ['disciplines' => $this->disciplines()->pluck('disciplines.id')->all()] : [];
+        return $this->exists
+            ? [
+                'disciplines' => $this->disciplines()->pluck('disciplines.id')->all(),
+                'curriculum_periods' => $this->curriculumPeriodsSummary(),
+            ]
+            : [];
     }
 
     public static function register(CreateCourseDTO $data): self
@@ -85,11 +94,15 @@ final class Course extends Model implements Auditable
     }
 
     /**
-     * @param  list<int>  $disciplineIds
+     * Define a matriz curricular. `$periods` informa, por id da disciplina, o período do curso em que ela
+     * é cursada; sem período, a disciplina fica fora das sugestões por período.
+     *
+     * @param  list<int|string>  $disciplineIds
+     * @param  array<int|string, int|string|null>  $periods
      *
      * @throws InvalidCourse
      */
-    public function assignCurriculum(array $disciplineIds): void
+    public function assignCurriculum(array $disciplineIds, array $periods = []): void
     {
         if (! $this->exists) {
             throw new InvalidCourse(
@@ -97,9 +110,78 @@ final class Course extends Model implements Auditable
             );
         }
 
-        $before = $this->disciplines()->pluck('disciplines.id')->all();
-        $this->disciplines()->sync(array_values(array_unique($disciplineIds)));
+        $disciplineIds = array_values(array_unique(array_map('intval', $disciplineIds)));
+        $before = array_map('intval', $this->disciplines()->pluck('disciplines.id')->all());
+        $periodsBefore = $this->curriculumPeriodsSummary();
+        $removedIds = array_values(array_diff($before, $disciplineIds));
+
+        if ($removedIds !== []) {
+            // Sem a disciplina na matriz, o vínculo do professor com ela neste curso deixa de valer.
+            TeacherCourseDiscipline::query()
+                ->where('course_id', $this->getKey())
+                ->whereIn('discipline_id', $removedIds)
+                ->get()
+                ->each->delete();
+        }
+
+        $rows = [];
+
+        foreach ($disciplineIds as $disciplineId) {
+            $rows[$disciplineId] = ['course_period' => self::normalizePeriod($periods[$disciplineId] ?? null)];
+        }
+
+        $this->disciplines()->sync($rows);
         $this->recordAuditFieldChange('disciplines', $before, $this->disciplines()->pluck('disciplines.id')->all());
+        $this->recordAuditFieldChange('curriculum_periods', $periodsBefore, $this->curriculumPeriodsSummary());
+    }
+
+    /**
+     * Disciplinas com adaptações de PEI ou com reprovação e risco de alunos do curso não podem sair da
+     * matriz curricular.
+     *
+     * @param  list<string>  $disciplineNamesInUse  disciplinas retiradas que ainda estão em uso
+     *
+     * @throws InvalidCourse
+     */
+    public function ensureDisciplinesCanLeaveCurriculum(array $disciplineNamesInUse): void
+    {
+        if ($disciplineNamesInUse === []) {
+            return;
+        }
+
+        $names = implode(', ', $disciplineNamesInUse);
+
+        throw new InvalidCourse(
+            "Não é possível retirar da matriz: {$names}. Há adaptações de PEI ou registros de reprovação e risco dos alunos deste curso nessas disciplinas."
+        );
+    }
+
+    /** Texto legível dos períodos da matriz para o histórico de alterações. */
+    private function curriculumPeriodsSummary(): ?string
+    {
+        $summary = $this->disciplines()
+            ->orderBy('disciplines.name')
+            ->get()
+            ->filter(fn (Discipline $discipline): bool => $discipline->pivot->course_period !== null)
+            ->map(fn (Discipline $discipline): string => "{$discipline->name}: {$discipline->pivot->course_period}º")
+            ->implode('; ');
+
+        return $summary === '' ? null : $summary;
+    }
+
+    private static function normalizePeriod(int|string|null $period): ?int
+    {
+        if ($period === null || $period === '') {
+            return null;
+        }
+
+        $period = (int) $period;
+
+        if ($period < 1 || $period > self::MAX_COURSE_PERIOD) {
+            throw new InvalidCourse('O período da disciplina deve estar entre 1 e '.self::MAX_COURSE_PERIOD.'.');
+        }
+
+        return $period;
     }
 
     /**
@@ -117,11 +199,17 @@ final class Course extends Model implements Auditable
     /**
      * @throws InvalidCourse
      */
-    public function ensureCanBeDeleted(bool $hasStudents): void
+    public function ensureCanBeDeleted(bool $hasStudents, bool $hasPeis = false): void
     {
         if ($hasStudents) {
             throw new InvalidCourse(
                 'Este curso está vinculado a um ou mais alunos e não pode ser excluído.'
+            );
+        }
+
+        if ($hasPeis) {
+            throw new InvalidCourse(
+                'Este curso possui PEIs vinculados e não pode ser excluído.'
             );
         }
     }
@@ -150,7 +238,9 @@ final class Course extends Model implements Auditable
             'course_disciplines',
             'course_id',
             'discipline_id',
-        )->withTimestamps();
+        )
+            ->withPivot('course_period')
+            ->withTimestamps();
     }
 
     private static function normalizeName(string $name): string

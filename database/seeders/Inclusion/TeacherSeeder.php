@@ -5,6 +5,7 @@ namespace Database\Seeders\Inclusion;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\Models\Course;
 use App\Domains\Inclusion\Domain\Models\Person;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Teacher;
 use App\Domains\Inclusion\Domain\Models\TeacherCourseDiscipline;
 use Illuminate\Database\Seeder;
@@ -22,8 +23,12 @@ class TeacherSeeder extends Seeder
             ['name' => 'Marcio Lima', 'gender' => 'male', 'course' => 'Técnico em Informática'],
         ];
 
+        // Os vínculos professor–disciplina valem por semestre: usa o semestre atual ou o mais recente.
+        $semesterId = Semester::query()->where('is_current', true)->value('id')
+            ?? Semester::query()->orderByDesc('year')->orderByDesc('term')->value('id');
+
         foreach ($teachersData as $index => $data) {
-            DB::transaction(function () use ($data, $index) {
+            DB::transaction(function () use ($data, $index, $semesterId) {
                 $cpf = $this->generateValidCpf($index + 1);
 
                 $person = Person::firstOrCreate(
@@ -45,7 +50,7 @@ class TeacherSeeder extends Seeder
 
                 $course = Course::where('name', $data['course'])->first();
 
-                if ($course) {
+                if ($course && $semesterId !== null) {
                     // O vínculo com o curso vem da matriz (teacher_course_disciplines).
                     $disciplineIds = $course->disciplines()
                         ->orderBy('name')
@@ -58,6 +63,7 @@ class TeacherSeeder extends Seeder
                             'teacher_id' => $teacher->id,
                             'course_id' => $course->id,
                             'discipline_id' => $disciplineId,
+                            'semester_id' => $semesterId,
                         ]);
                     }
                 }

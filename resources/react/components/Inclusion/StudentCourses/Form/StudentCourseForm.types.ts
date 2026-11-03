@@ -5,10 +5,13 @@ export type StudentCourseFormData = {
     course_id: string;
     academic_year: string;
     semester_id: string;
+    course_period: string;
     is_current: boolean;
     school_attendance_status: string;
     failed_discipline_ids: number[];
     at_risk_discipline_ids: number[];
+    /** Dependências de semestres anteriores aprovadas no semestre escolhido (somente na edição). */
+    resolved_dependency_ids: number[];
 };
 
 export type StudentCourseFormMode = 'create' | 'edit';

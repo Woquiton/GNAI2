@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Actions\Courses;
 
 use App\Domains\Inclusion\Application\Data\Courses\UpdateCourseData;
+use App\Domains\Inclusion\Application\Queries\Courses\CourseDisciplinesInUseQuery;
 use App\Domains\Inclusion\Application\Queries\Courses\CourseHasStudentsQuery;
 use App\Domains\Inclusion\Domain\DTOs\Courses\UpdateCourseDTO;
 use App\Domains\Inclusion\Domain\Models\Course;
@@ -15,6 +16,7 @@ final readonly class UpdateCourseAction
 {
     public function __construct(
         private CourseHasStudentsQuery $hasStudents,
+        private CourseDisciplinesInUseQuery $disciplinesInUse,
     ) {}
 
     /**
@@ -39,9 +41,17 @@ final readonly class UpdateCourseAction
                 description: $data->description,
             );
 
+            $removedDisciplineIds = array_values(array_diff(
+                $lockedCourse->disciplines()->pluck('disciplines.id')->map(static fn (mixed $id): int => (int) $id)->all(),
+                array_map('intval', $data->disciplineIds),
+            ));
+            $lockedCourse->ensureDisciplinesCanLeaveCurriculum(
+                $this->disciplinesInUse->execute($lockedCourse, $removedDisciplineIds),
+            );
+
             $lockedCourse->revise($courseDTO);
             $lockedCourse->save();
-            $lockedCourse->assignCurriculum($data->disciplineIds);
+            $lockedCourse->assignCurriculum($data->disciplineIds, $data->disciplinePeriods);
 
             return $lockedCourse->load('disciplines');
         });

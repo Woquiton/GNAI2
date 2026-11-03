@@ -1,4 +1,5 @@
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { coursePeriodLabel } from '@/components/Inclusion/coursePeriods';
 import {
     TableListScroll,
     TableListTable,
@@ -9,15 +10,21 @@ import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
-import type { CourseDisciplineOption, CourseRecord } from '../Courses.types';
+import type { CourseCurriculumDiscipline, CourseRecord } from '../Courses.types';
 
-const disciplineColumns: TableListColumn<CourseDisciplineOption>[] = [
+const disciplineColumns: TableListColumn<CourseCurriculumDiscipline>[] = [
     {
         id: 'name',
         label: 'Disciplina',
-        width: '75%',
+        width: '55%',
         fixed: 'start',
         render: (discipline) => discipline.name,
+    },
+    {
+        id: 'period',
+        label: 'Período',
+        width: '20%',
+        render: (discipline) => coursePeriodLabel(discipline.pivot?.course_period),
     },
     {
         id: 'type',
@@ -43,7 +50,13 @@ export default function CourseDetails({
     course,
     descriptionHtml,
 }: CourseDetailsProps): React.JSX.Element {
-    const disciplines = course.disciplines ?? [];
+    // Ordem da matriz: por período e, dentro dele, por nome; disciplinas sem período ficam no fim.
+    const disciplines = [...(course.disciplines ?? [])].sort(
+        (first, second) =>
+            (first.pivot?.course_period ?? Number.MAX_SAFE_INTEGER) -
+                (second.pivot?.course_period ?? Number.MAX_SAFE_INTEGER) ||
+            first.name.localeCompare(second.name, 'pt-BR'),
+    );
 
     return (
         <CardBox>

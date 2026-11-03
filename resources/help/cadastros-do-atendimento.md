@@ -2,7 +2,7 @@
 titulo: Cadastros do atendimento: perfis de atendimento, cargos, semestres, disciplinas e cursos
 resumo: Para que servem os cadastros de apoio do atendimento, onde são usados, como criá-los, ativá-los ou desativá-los e por que a exclusão pode ser bloqueada.
 categoria: Gestão do núcleo
-palavras-chave: cadastros, cadastros de apoio, tabelas auxiliares, perfil de atendimento, perfis de atendimento, deficiência, deficiências, cid, código cid, tea, tdah, altas habilidades, cargo, cargos, função, permissões do cargo, semestre, semestres, semestre atual, período letivo, ano letivo, disciplina, disciplinas, matéria, curso, cursos, séries, matriz curricular, grade curricular, ativar, desativar, inativar, excluir cadastro, não pode ser excluído
+palavras-chave: cadastros, cadastros de apoio, tabelas auxiliares, perfil de atendimento, perfis de atendimento, deficiência, deficiências, cid, código cid, tea, tdah, altas habilidades, cargo, cargos, função, permissões do cargo, semestre, semestres, semestre atual, período letivo, ano letivo, disciplina, disciplinas, matéria, curso, cursos, séries, matriz curricular, grade curricular, período do curso, período da disciplina, nome repetido, virada de semestre, avançar alunos, novo semestre, retido, promover alunos, ativar, desativar, inativar, excluir cadastro, não pode ser excluído
 ordem: 40
 permissoes: deficiency.view, position.view, semester.view, discipline.view, course.view
 ---
@@ -81,7 +81,7 @@ Na listagem, clique no botão **Definir como atual** da linha do semestre. O sis
 
 ### Excluir um semestre
 
-Use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando o semestre é o atual ("Não é possível excluir o semestre atual do sistema.") ou quando já tem PEIs ou documentos de alunos vinculados ("Este semestre possui registros vinculados e não pode ser excluído.").
+Use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando o semestre é o atual ("Não é possível excluir o semestre atual do sistema.") ou quando já tem registros vinculados ("Este semestre possui registros vinculados e não pode ser excluído."). Contam como registros vinculados: PEIs, PAEEs, estudos de caso, documentos de alunos, matrículas, períodos, reprovações, riscos e dependências aprovadas de alunos nesse semestre e vínculos de professores com disciplinas no semestre.
 
 ## Disciplinas
 
@@ -92,7 +92,7 @@ O catálogo de disciplinas (matérias) da instituição.
 ### Cadastrar uma disciplina
 
 1. Acesse **Gestão do núcleo → Cadastros → Disciplinas** e clique em **Cadastrar disciplina**.
-2. Preencha **Nome da Disciplina** (obrigatório, até 255 caracteres), **Descrição** e **Disciplina Ativa** (já vem ligado).
+2. Preencha **Nome da Disciplina** (obrigatório, até 255 caracteres, sem repetir o nome de outra disciplina), **Descrição** e **Disciplina Ativa** (já vem ligado).
 3. Clique em **Salvar**. O sistema mostra "Disciplina cadastrada com sucesso."
 
 Para que a disciplina possa ser usada, inclua-a na matriz de um curso (veja [Cursos](#cursos)). A visualização da disciplina mostra os cursos a que ela está vinculada.
@@ -100,7 +100,7 @@ Para que a disciplina possa ser usada, inclua-a na matriz de um curso (veja [Cur
 ### Inativar ou excluir uma disciplina
 
 - **Inativar**: edite a disciplina e desligue **Disciplina Ativa** e clique em **Salvar**. Não é possível inativar uma disciplina que ainda está na matriz de algum curso ou atribuída a professores.
-- **Excluir**: use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando a disciplina tem registros no histórico de cursos de alunos, está atribuída a professores ou está vinculada a cursos.
+- **Excluir**: use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando a disciplina tem adaptações em PEIs, tem registros no histórico de cursos de alunos, está atribuída a professores ou está vinculada a cursos.
 
 Para liberar a disciplina, retire-a antes da matriz dos cursos (editando o curso) e das matrizes dos professores (em **Professores → Gerenciar Disciplinas**).
 
@@ -113,16 +113,40 @@ Os cursos (e séries) da instituição, cada um com sua **matriz curricular**, i
 ### Cadastrar um curso
 
 1. Acesse **Gestão do núcleo → Cadastros → Cursos** e clique em **Cadastrar curso**.
-2. Preencha **Nome do Curso** (obrigatório, até 255 caracteres) e, se quiser, a **Descrição**.
+2. Preencha **Nome do Curso** (obrigatório, até 255 caracteres, sem repetir o nome de outro curso) e, se quiser, a **Descrição**.
 3. Em **Disciplinas do curso**, marque as disciplinas que compõem a matriz. Use **Buscar disciplina** para filtrar a lista; só aparecem disciplinas ativas.
-4. Clique em **Salvar**. O sistema mostra "Curso cadastrado com sucesso."
+4. Em **Períodos das Disciplinas**, escolha para cada disciplina marcada o período (semestre ou série) do curso em que ela é cursada, de 1º a 12º. O campo é opcional; sem período, a disciplina fica como **Sem período definido**.
+5. Clique em **Salvar**. O sistema mostra "Curso cadastrado com sucesso."
 
-O curso é criado ativo. Na edição aparece também o toggle **Curso Ativo**, e a matriz pode ser alterada a qualquer momento.
+O curso é criado ativo. Na edição aparece também o toggle **Curso Ativo**, e a matriz pode ser alterada a qualquer momento. A visualização do curso lista as disciplinas ordenadas por período.
+
+### Para que serve o período da disciplina?
+
+Quando a matrícula do aluno informa em que período do curso ele está no semestre, o PEI mostra primeiro as disciplinas desse período ao cadastrar as adaptações. Assim a equipe não precisa procurar na lista inteira do curso. Veja [PEI](/ajuda/pei#cadastrar-as-adaptacoes-por-disciplina).
+
+### Fazer a virada de semestre dos alunos
+
+No início de cada semestre, registre de uma vez o período de todos os alunos do curso, em vez de editar matrícula por matrícula.
+
+1. Abra o curso em **Gestão do núcleo → Cadastros → Cursos** e clique em **Virada de semestre** no rodapé. O botão aparece para quem pode editar matrículas de alunos.
+2. Em **Registrar os alunos em**, confira o semestre de destino. A tela abre no semestre atual; ao trocar de semestre, as escolhas não salvas são descartadas.
+3. A lista mostra os alunos ativos com matrícula vigente no curso e o período de cada um no último semestre anterior. Por padrão, todos avançam um período.
+4. Marque só as exceções: **Permanece**, para quem fica no mesmo período, ou **Não registrar**, para quem não deve entrar no semestre, como quem trancou. Use **Todos avançam** ou **Nenhum registrado** para mudar a lista inteira.
+5. Para alunos sem período registrado antes, escolha o **Período** no novo semestre.
+6. Clique em **Salvar**. O sistema mostra, por exemplo, "32 alunos registrados em 2026.2."
+
+A virada grava o período de cada aluno no semestre e passa a matrícula para esse semestre e o ano dele. Alunos que já tinham período no semestre de destino aparecem como **Não registrar** e com o aviso **Já registrado**; escolha outra opção só se quiser substituir o período. Quem já está no último período aceito, o 12º, aparece como **Permanece**.
+
+Reprovações, riscos e dependências continuam sendo informados na matrícula de cada aluno. Veja [Reprovações, riscos e dependências por semestre](/ajuda/alunos#reprovacoes-riscos-e-dependencias-por-semestre). Para os professores, use também **Copiar vínculos de** na listagem de professores. Veja [Copiar os vínculos do semestre anterior](/ajuda/professores#copiar-os-vinculos-do-semestre-anterior).
+
+### Retirar uma disciplina da matriz
+
+Desmarque a disciplina na edição do curso e salve. Os vínculos de professores com essa disciplina naquele curso são removidos junto. A retirada é bloqueada quando há adaptações de PEI ou registros de reprovação e risco dos alunos do curso nessa disciplina.
 
 ### Inativar ou excluir um curso
 
 - **Inativar**: edite o curso e desligue **Curso Ativo** e clique em **Salvar**. Não é possível quando há alunos vinculados ao curso ("Este curso está vinculado a um ou mais alunos e não pode ser desativado.").
-- **Excluir**: use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando há alunos vinculados ao curso ("Este curso está vinculado a um ou mais alunos e não pode ser excluído.").
+- **Excluir**: use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando há alunos vinculados ao curso ("Este curso está vinculado a um ou mais alunos e não pode ser excluído.") ou PEIs do curso ("Este curso possui PEIs vinculados e não pode ser excluído.").
 
 ## Dúvidas comuns
 
@@ -131,5 +155,10 @@ O curso é criado ativo. Na edição aparece também o toggle **Curso Ativo**, e
 - **"Não é possível inativar a disciplina '...' pois ela está vinculada a um ou mais cursos."**: Retire a disciplina da matriz dos cursos antes de inativá-la.
 - **"Não é possível inativar a disciplina '...' pois ela está atribuída a professores."**: Retire a disciplina das matrizes dos professores.
 - **"Não é possível excluir a disciplina '...' pois ela possui registros no histórico de cursos de alunos."**: A disciplina já tem histórico e não pode ser excluída; mantenha-a cadastrada.
+- **"Não é possível excluir a disciplina '...' pois ela possui adaptações em PEIs."**: A disciplina já foi usada em PEIs e precisa ser mantida.
+- **"Não é possível retirar da matriz: ..."**: As disciplinas citadas têm adaptações de PEI ou registros de reprovação e risco de alunos do curso. Mantenha-as na matriz.
+- **"A lista mudou enquanto você editava: um dos alunos não tem mais matrícula vigente neste curso. Recarregue a página e tente novamente."**: Algum aluno mudou de curso ou de situação durante a virada. Abra a tela de novo.
+- **"O aluno já está no último período aceito. Escolha "Permanece" ou "Não registrar"."**: O aluno não pode avançar além do 12º período.
+- **"Já existe um curso com esse nome."** ou **"Já existe uma disciplina com esse nome."**: Use o cadastro existente ou escolha outro nome.
 - **"Este cargo está desativado e não pode ser vinculado a um profissional."**: Ative o cargo antes de usá-lo no cadastro da equipe.
 - **Um cadastro não aparece em um formulário**: Confira se ele está ativo. Perfis, cargos, disciplinas e cursos desativados não são oferecidos em novos vínculos.

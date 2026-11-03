@@ -20,7 +20,7 @@ final class DeletePeiAction
             $lockedPei = Pei::query()
                 ->lockForUpdate()
                 ->findOrFail($pei->getKey());
-            $lockedPei->ensureCanBeManagedBy((int) $user->getKey());
+            $lockedPei->ensureCanBeManagedBy((int) $user->getKey(), $user->isAdmin());
 
             $studentId = (int) $lockedPei->student_id;
             $lockedPei->delete();

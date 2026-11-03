@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\Application\Actions\Teachers;
 
 use App\Domains\Inclusion\Application\Data\Teachers\UpdateTeacherDisciplinesData;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidTeacher;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Teacher;
 use DomainException;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,9 @@ final readonly class UpdateTeacherDisciplinesAction
                     ->lockForUpdate()
                     ->findOrFail($teacher->getKey());
 
-                $lockedTeacher->assignCourseDisciplines($data->assignments);
+                $semester = Semester::query()->findOrFail($data->semesterId);
+
+                $lockedTeacher->assignCourseDisciplines($semester, $data->assignments);
             });
         } catch (DomainException $exception) {
             throw new InvalidTeacher($exception->getMessage(), previous: $exception);

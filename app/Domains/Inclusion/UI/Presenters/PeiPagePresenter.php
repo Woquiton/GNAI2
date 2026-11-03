@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\UI\Presenters;
 
+use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Application\Data\Peis\ListPeisData;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
@@ -91,7 +92,9 @@ final class PeiPagePresenter
         $canViewDisciplines = $user?->can('pei-discipline.view') ?? false;
         $canUpdateDiscipline = $user?->can('pei-discipline.update') ?? false;
         $canDeleteDiscipline = $user?->can('pei-discipline.delete') ?? false;
-        $isCreator = $userId !== null && (int) $pei->creator_id === $userId;
+        $isAdministrator = $user instanceof User && $user->isAdmin();
+        // Criador ou administrador: as Actions aplicam a mesma regra.
+        $isCreator = $isAdministrator || ($userId !== null && (int) $pei->creator_id === $userId);
 
         $pei->loadMissing([
             'student.person',
@@ -112,9 +115,9 @@ final class PeiPagePresenter
                 ->with(['discipline', 'teacher.person'])
                 ->latest()
                 ->get()
-                ->map(function (PeiDiscipline $item) use ($pei, $userId, $canUpdateDiscipline, $canDeleteDiscipline): array {
+                ->map(function (PeiDiscipline $item) use ($pei, $userId, $isAdministrator, $canUpdateDiscipline, $canDeleteDiscipline): array {
                     // A adaptação continua editável após finalizar o PEI; só a exclusão é bloqueada.
-                    $isCreator = $userId !== null && (int) $item->creator_id === $userId;
+                    $isCreator = $isAdministrator || ($userId !== null && (int) $item->creator_id === $userId);
 
                     return [
                         'id' => (int) $item->getKey(),
@@ -182,7 +185,8 @@ final class PeiPagePresenter
     {
         $user = $request->user();
         $userId = $user?->getKey() === null ? null : (int) $user->getKey();
-        $isCreator = $userId !== null && (int) $peiDiscipline->creator_id === $userId;
+        $isCreator = ($user instanceof User && $user->isAdmin())
+            || ($userId !== null && (int) $peiDiscipline->creator_id === $userId);
 
         $pei->loadMissing('student.person');
         $peiDiscipline->loadMissing(['discipline', 'teacher.person', 'revisions.reviewer']);

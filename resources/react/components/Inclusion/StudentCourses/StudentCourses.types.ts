@@ -24,6 +24,32 @@ export interface StudentCourseStudent {
     person: { name: string };
 }
 
+/** Reprovação de semestre anterior ainda pendente a partir de um semestre. */
+export interface StudentCourseDependency {
+    discipline_id: number;
+    name: string;
+    failed_semester_label: string | null;
+    /** Aprovada no próprio semestre consultado. */
+    resolved: boolean;
+}
+
+/** Dados acadêmicos da matrícula em um semestre (`StudentCourseFormQuery@forUpdate`). */
+export interface StudentCourseSemesterAcademicRecords {
+    course_period: number | null;
+    failed: number[];
+    at_risk: number[];
+    dependencies: StudentCourseDependency[];
+}
+
+/** Reprovações, riscos e dependências aprovadas de um semestre (`StudentCourseController@show`). */
+export interface StudentCourseAcademicHistoryEntry {
+    semester_id: number;
+    semester_label: string;
+    failed: string[];
+    at_risk: string[];
+    resolved: string[];
+}
+
 /** Matrícula usada na edição (`StudentCourseFormQuery@forUpdate`). */
 export interface StudentCourseRecord {
     id: number;
@@ -36,17 +62,20 @@ export interface StudentCourseRecord {
     school_attendance_status: string | null;
     student: StudentCourseStudent;
     course: StudentCourseCourse;
-    failed_disciplines?: { id: number }[];
-    at_risk_disciplines?: { id: number }[];
+}
+
+/** Período do curso do aluno em um semestre letivo da matrícula. */
+export interface StudentCourseSemesterRecord {
+    id: number;
+    semester_id: number;
+    course_period: number;
+    semester?: StudentCourseSemester | null;
 }
 
 /** Matrícula da visualização (`StudentCourseController@show`). */
-export type StudentCourseShowRecord = Omit<
-    StudentCourseRecord,
-    'failed_disciplines' | 'at_risk_disciplines'
-> & {
-    failed_disciplines: StudentCourseDiscipline[];
-    at_risk_disciplines: StudentCourseDiscipline[];
+export type StudentCourseShowRecord = StudentCourseRecord & {
+    /** Do semestre mais recente para o mais antigo. */
+    semester_records: StudentCourseSemesterRecord[];
     created_at: string | null;
     updated_at: string | null;
 };
@@ -89,11 +118,19 @@ export interface StudentCourseCreateProps {
     courses: StudentCourseCourse[];
     semesters: StudentCourseSemester[];
     mustBeCurrent: boolean;
+    maxCoursePeriod: number;
+    /** Semestre atual, padrão do novo vínculo. */
+    currentSemesterId: number | null;
 }
 
 export interface StudentCourseEditProps {
     studentCourse: StudentCourseRecord;
     semesters: StudentCourseSemester[];
+    /** Período do curso no semestre da matrícula, quando informado. */
+    coursePeriod: number | null;
+    maxCoursePeriod: number;
+    /** Por id do semestre: período, reprovações, riscos e dependências. */
+    academicRecordsBySemester: Record<string, StudentCourseSemesterAcademicRecords>;
 }
 
 export interface StudentCourseDetailsPermissions {
@@ -109,6 +146,10 @@ export interface StudentCourseShowDisplay {
 
 export interface StudentCourseShowProps {
     studentCourse: StudentCourseShowRecord;
+    /** Do semestre mais recente para o mais antigo. */
+    academicHistory: StudentCourseAcademicHistoryEntry[];
+    /** Dependências ainda não aprovadas, a partir do semestre da matrícula. */
+    pendingDependencies: Omit<StudentCourseDependency, 'resolved'>[];
     display: StudentCourseShowDisplay;
     can: StudentCourseDetailsPermissions;
 }

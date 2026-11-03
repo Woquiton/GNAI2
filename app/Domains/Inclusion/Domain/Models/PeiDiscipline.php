@@ -137,27 +137,31 @@ final class PeiDiscipline extends Model implements Auditable
     /**
      * @throws InvalidPeiDiscipline
      */
-    public function ensureCanBeManagedBy(?int $userId): void
+    public function ensureCanBeManagedBy(?int $userId, bool $isAdministrator = false): void
     {
+        if ($isAdministrator) {
+            return;
+        }
+
         if ($userId === null || (int) $this->creator_id !== $userId) {
-            throw new InvalidPeiDiscipline('Apenas o criador desta adaptação pode editá-la ou removê-la.');
+            throw new InvalidPeiDiscipline('Apenas o criador desta adaptação ou um administrador pode editá-la ou removê-la.');
         }
     }
 
     /**
-     * Permite edição (não exclusão) tanto por quem criou o registro quanto
-     * pelo próprio professor responsável pela disciplina — usado pelo acesso
+     * Permite edição (não exclusão) por quem criou o registro, por um administrador
+     * e pelo próprio professor responsável pela disciplina, usado pelo acesso
      * de professor via link único, que só pode ajustar a própria adaptação.
      *
      * @throws InvalidPeiDiscipline
      */
-    public function ensureCanBeEditedBy(?int $userId, ?int $teacherId): void
+    public function ensureCanBeEditedBy(?int $userId, ?int $teacherId, bool $isAdministrator = false): void
     {
         $isCreator = $userId !== null && (int) $this->creator_id === $userId;
         $isResponsibleTeacher = $teacherId !== null && (int) $this->teacher_id === $teacherId;
 
-        if (! $isCreator && ! $isResponsibleTeacher) {
-            throw new InvalidPeiDiscipline('Apenas o criador ou o professor responsável por esta adaptação pode editá-la.');
+        if (! $isAdministrator && ! $isCreator && ! $isResponsibleTeacher) {
+            throw new InvalidPeiDiscipline('Apenas o criador, o professor responsável ou um administrador pode editar esta adaptação.');
         }
     }
 

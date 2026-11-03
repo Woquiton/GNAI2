@@ -17,6 +17,7 @@ use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Course;
 use App\Domains\Inclusion\Domain\Models\Discipline;
 use App\Domains\Inclusion\Domain\Models\Person;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\Teacher;
 use App\Domains\Inclusion\Domain\Models\TeacherCourseDiscipline;
@@ -134,6 +135,7 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                     $pei = $createPei->execute($student, $creator);
 
                     $disciplineIds = TeacherCourseDiscipline::where('course_id', $course->id)
+                        ->where('semester_id', $pei->semester_id)
                         ->distinct()
                         ->pluck('discipline_id');
 
@@ -142,6 +144,7 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                     foreach ($disciplines as $discipline) {
                         $teacherId = TeacherCourseDiscipline::where('course_id', $course->id)
                             ->where('discipline_id', $discipline->id)
+                            ->where('semester_id', $pei->semester_id)
                             ->value('teacher_id');
 
                         if (!$teacherId) {
@@ -223,6 +226,12 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
             ->values();
 
         $teacherCursor = 0;
+        // O PEI é criado no semestre atual; os vínculos do professor precisam estar nele.
+        $semesterId = Semester::query()->where('is_current', true)->value('id');
+
+        if ($semesterId === null) {
+            return;
+        }
 
         foreach ($courseIds as $courseId) {
             $course = Course::find($courseId);
@@ -242,6 +251,7 @@ class CaseStudyPaeePeiRealDataSeeder extends Seeder
                     'teacher_id' => $teacher->id,
                     'course_id' => $course->id,
                     'discipline_id' => $discipline->id,
+                    'semester_id' => $semesterId,
                 ]);
             }
         }

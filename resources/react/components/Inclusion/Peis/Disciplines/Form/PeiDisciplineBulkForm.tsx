@@ -5,6 +5,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import SelectField from '@/components/Forms/SelectField/SelectField';
+import { coursePeriodLabel } from '@/components/Inclusion/coursePeriods';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
@@ -33,6 +34,13 @@ function BulkDisciplineRow({
     onChange,
 }: BulkDisciplineRowProps): React.JSX.Element {
     const id = `pei-discipline-teacher-${discipline.id}`;
+    const details = [
+        discipline.course_period ? coursePeriodLabel(discipline.course_period) : null,
+        discipline.dependency_semester_label
+            ? `dependência, reprovada em ${discipline.dependency_semester_label}`
+            : null,
+    ].filter(Boolean);
+    const label = details.length ? `${discipline.name} (${details.join('; ')})` : discipline.name;
     const control = discipline.teachers.length ? (
         <SelectField
             id={id}
@@ -47,26 +55,50 @@ function BulkDisciplineRow({
     ) : (
         <EmptyText id={id}>
             <i className="fa fa-exclamation-triangle" aria-hidden="true" /> Nenhum professor
-            vinculado a esta disciplina na matriz curricular.
+            vinculado a esta disciplina neste curso no semestre do PEI.
         </EmptyText>
     );
 
     return (
         <li className="peiDisciplineBulk__row">
-            <FormField id={id} label={discipline.name} layout="horizontal">
+            <FormField id={id} label={label} layout="horizontal">
                 {control}
             </FormField>
         </li>
     );
 }
 
+/** Mensagem sobre a sugestão das disciplinas pelo período do aluno e pelas dependências. */
+function suggestionNotice(
+    studentPeriod: number | null,
+    semesterLabel: string | null,
+    hasPeriodSuggestions: boolean,
+    dependencyCount: number,
+): string {
+    const semester = semesterLabel ?? 'do PEI';
+    const dependencies = dependencyCount
+        ? ` ${dependencyCount === 1 ? 'Uma dependência pendente também aparece' : `${dependencyCount} dependências pendentes também aparecem`} entre as sugeridas.`
+        : '';
+
+    if (studentPeriod === null) {
+        return `O período do curso do aluno no semestre ${semester} não foi informado na matrícula, então as disciplinas não são sugeridas pelo período.${dependencies}`;
+    }
+
+    return hasPeriodSuggestions
+        ? `O aluno está no ${coursePeriodLabel(studentPeriod)} em ${semester}. As disciplinas desse período aparecem primeiro.${dependencies}`
+        : `O aluno está no ${coursePeriodLabel(studentPeriod)} em ${semester}, mas nenhuma disciplina sem adaptação está marcada com esse período na matriz do curso.${dependencies}`;
+}
+
 /**
  * Atribuição em lote: para cada disciplina do curso ainda sem adaptação,
- * escolhe-se o professor responsável. O conteúdo pedagógico de cada adaptação
- * é preenchido depois, individualmente.
+ * escolhe-se o professor responsável. As disciplinas do período do aluno vêm
+ * primeiro. O conteúdo pedagógico de cada adaptação é preenchido depois,
+ * individualmente.
  */
 export default function PeiDisciplineBulkForm({
     pei,
+    semesterLabel,
+    studentPeriod,
     disciplines,
 }: PeiDisciplineBulkProps): React.JSX.Element {
     const form = useForm<BulkAssignForm>({ teacher_ids: {} });
@@ -89,18 +121,40 @@ export default function PeiDisciplineBulkForm({
         });
     }
 
+    const suggested = disciplines.filter((discipline) => discipline.suggested);
+    const others = disciplines.filter((discipline) => !discipline.suggested);
+
+    function rows(items: PeiBulkDiscipline[]): React.JSX.Element {
+        return (
+            <ul className="peiDisciplineBulk">
+                {items.map((discipline) => (
+                    <BulkDisciplineRow
+                        key={discipline.id}
+                        discipline={discipline}
+                        value={form.data.teacher_ids[discipline.id] ?? ''}
+                        disabled={form.processing}
+                        onChange={(teacherId) => selectTeacher(discipline.id, teacherId)}
+                    />
+                ))}
+            </ul>
+        );
+    }
+
     const content = hasDisciplines ? (
-        <ul className="peiDisciplineBulk">
-            {disciplines.map((discipline) => (
-                <BulkDisciplineRow
-                    key={discipline.id}
-                    discipline={discipline}
-                    value={form.data.teacher_ids[discipline.id] ?? ''}
-                    disabled={form.processing}
-                    onChange={(teacherId) => selectTeacher(discipline.id, teacherId)}
-                />
-            ))}
-        </ul>
+        <>
+            <InlineAlert variant="info">
+                {suggestionNotice(
+                    studentPeriod,
+                    semesterLabel,
+                    suggested.some(
+                        (discipline) =>
+                            studentPeriod !== null && discipline.course_period === studentPeriod,
+                    ),
+                    suggested.filter((discipline) => discipline.dependency_semester_label).length,
+                )}
+            </InlineAlert>
+            {suggested.length ? rows(suggested) : null}
+        </>
     ) : (
         <InlineAlert variant="info">
             Todas as disciplinas do curso já possuem uma adaptação cadastrada neste PEI.
@@ -118,12 +172,28 @@ export default function PeiDisciplineBulkForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="pei-discipline-identification"
-                        title="Identificação da Disciplina"
+                        title={
+                            suggested.length ? 'Disciplinas Sugeridas' : 'Identificação da Disciplina'
+                        }
                         variant="inline"
                         iconClass="fa fa-graduation-cap"
                     >
                         {content}
                     </FormSection>
+                    {hasDisciplines && others.length ? (
+                        <FormSection
+                            id="pei-discipline-other-disciplines"
+                            title={
+                                suggested.length
+                                    ? 'Outras Disciplinas do Curso'
+                                    : 'Disciplinas do Curso'
+                            }
+                            variant="inline"
+                            iconClass="fa fa-book"
+                        >
+                            {rows(others)}
+                        </FormSection>
+                    ) : null}
                 </fieldset>
             </CardBox>
             <FormActions status={status}>

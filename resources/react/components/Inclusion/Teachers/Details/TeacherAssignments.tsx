@@ -3,32 +3,39 @@ import TagList from '@/components/UI/TagList/TagList';
 import type { TeacherCourseDiscipline } from '../Teachers.types';
 
 interface CourseGroup {
+    key: string;
+    semester: string;
     course: string;
     items: TeacherCourseDiscipline[];
 }
 
-function groupByCourse(items: readonly TeacherCourseDiscipline[]): CourseGroup[] {
-    const groups = new Map<string, TeacherCourseDiscipline[]>();
+/** Agrupa por semestre e curso, mantendo a ordem recebida (semestre mais recente primeiro). */
+function groupBySemesterAndCourse(items: readonly TeacherCourseDiscipline[]): CourseGroup[] {
+    const groups = new Map<string, CourseGroup>();
 
     items.forEach((item) => {
+        const semester = item.semester?.label ?? '';
         const course = item.course?.name ?? '';
-        groups.set(course, [...(groups.get(course) ?? []), item]);
+        const key = `${item.semester?.id ?? ''}:${item.course?.id ?? ''}`;
+        const group = groups.get(key) ?? { key, semester, course, items: [] };
+        group.items.push(item);
+        groups.set(key, group);
     });
 
-    return Array.from(groups, ([course, groupItems]) => ({ course, items: groupItems }));
+    return Array.from(groups.values());
 }
 
 function disciplineCount(total: number): string {
     return `${total} ${total === 1 ? 'disciplina' : 'disciplinas'}`;
 }
 
-/** Disciplinas atribuídas ao professor, agrupadas por curso. */
+/** Disciplinas atribuídas ao professor, agrupadas por semestre e curso. */
 export default function TeacherAssignments({
     assignments,
 }: {
     assignments: readonly TeacherCourseDiscipline[];
 }): React.JSX.Element {
-    const courses = groupByCourse(assignments);
+    const courses = groupBySemesterAndCourse(assignments);
 
     if (!courses.length) {
         return (
@@ -47,6 +54,7 @@ export default function TeacherAssignments({
         <ul className="teacherAssignments">
             {courses.map((group) => {
                 const courseName = group.course || 'Curso não identificado';
+                const semesterName = group.semester || 'Semestre não identificado';
                 const disciplines = group.items.map((assignment) => ({
                     id: assignment.id,
                     name: (
@@ -58,11 +66,11 @@ export default function TeacherAssignments({
                 }));
 
                 return (
-                    <li key={group.course} className="teacherAssignments__course">
+                    <li key={group.key} className="teacherAssignments__course">
                         <div className="teacherAssignments__header">
                             <strong className="teacherAssignments__courseName">
                                 <i className="fa fa-graduation-cap" aria-hidden="true" />{' '}
-                                {courseName}
+                                {`${semesterName}: ${courseName}`}
                             </strong>
                             <TableLabel tone="inverse">
                                 {disciplineCount(group.items.length)}

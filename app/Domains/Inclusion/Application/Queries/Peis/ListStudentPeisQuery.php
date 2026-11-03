@@ -10,22 +10,19 @@ use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\Student;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-final class ListStudentPeisQuery
+final readonly class ListStudentPeisQuery
 {
+    public function __construct(
+        private TeacherPeiAccessQuery $teacherAccess,
+    ) {}
+
     public function execute(Student $student, ListPeisData $filters, ?User $user): LengthAwarePaginator
     {
         $query = Pei::query()
             ->where('student_id', $student->getKey())
             ->with(['student.person', 'semester', 'course']);
 
-        if ($user?->teacher_id !== null) {
-            $teacherCourseIds = $user->teacher
-                ?->courseDisciplines()
-                ->distinct()
-                ->pluck('course_id') ?? collect();
-
-            $query->whereIn('course_id', $teacherCourseIds);
-        }
+        $this->teacherAccess->scope($query, $user);
 
         if ($filters->semesterId !== null) {
             $query->where('semester_id', $filters->semesterId);

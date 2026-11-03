@@ -73,10 +73,11 @@ final readonly class CreatePeiDisciplineAction
                 ->where('teacher_id', $teacher->getKey())
                 ->where('course_id', $lockedPei->course_id)
                 ->where('discipline_id', $discipline->getKey())
+                ->where('semester_id', $lockedPei->semester_id)
                 ->exists();
 
             if (! $teacherBelongsToCourseAndDiscipline) {
-                throw new InvalidPeiDiscipline('O professor selecionado não está vinculado à disciplina neste curso.');
+                throw new InvalidPeiDiscipline('O professor selecionado não está vinculado à disciplina neste curso no semestre do PEI.');
             }
 
             $peiDisciplineDTO = new CreatePeiDisciplineDTO(

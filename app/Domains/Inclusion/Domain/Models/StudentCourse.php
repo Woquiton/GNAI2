@@ -14,7 +14,9 @@ use App\Domains\Inclusion\Domain\Exceptions\InvalidStudentCourse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Collection;
 
 final class StudentCourse extends Pivot implements Auditable
 {
@@ -60,8 +62,12 @@ final class StudentCourse extends Pivot implements Auditable
             'semester_id' => AuditedField::reference('Semestre', Semester::class, 'label'),
             'is_current' => AuditedField::boolean('Curso atual'),
             'school_attendance_status' => AuditedField::richText('Situação da Frequência Escolar'),
+            // Formato anterior, sem semestre: mantido para a leitura do histórico de alterações.
             'failed_disciplines' => AuditedField::list('Disciplinas com Reprovação', model: Discipline::class),
             'at_risk_disciplines' => AuditedField::list('Disciplinas com Risco de Insucesso Acadêmico', model: Discipline::class),
+            'failed_disciplines_by_semester' => AuditedField::text('Disciplinas com Reprovação por semestre'),
+            'at_risk_disciplines_by_semester' => AuditedField::text('Disciplinas com Risco de Insucesso Acadêmico por semestre'),
+            'resolved_dependencies' => AuditedField::text('Dependências aprovadas'),
         ];
     }
 
@@ -78,8 +84,9 @@ final class StudentCourse extends Pivot implements Auditable
     {
         return $this->exists
             ? [
-                'failed_disciplines' => $this->failedDisciplines()->pluck('disciplines.id')->all(),
-                'at_risk_disciplines' => $this->atRiskDisciplines()->pluck('disciplines.id')->all(),
+                'failed_disciplines_by_semester' => $this->academicRecordsSummary(StudentCourseDisciplineCategory::FAILED),
+                'at_risk_disciplines_by_semester' => $this->academicRecordsSummary(StudentCourseDisciplineCategory::AT_ACADEMIC_RISK),
+                'resolved_dependencies' => $this->resolvedDependenciesSummary(),
             ]
             : [];
     }
@@ -143,40 +150,146 @@ final class StudentCourse extends Pivot implements Auditable
         return $this->belongsTo(Semester::class);
     }
 
+    /** Período do curso do aluno em cada semestre letivo desta matrícula. */
+    public function semesterRecords(): HasMany
+    {
+        return $this->hasMany(StudentCourseSemester::class, 'student_course_id');
+    }
+
+    /** Grava ou remove o período do aluno no semestre informado. */
+    public function syncCoursePeriod(?int $semesterId, ?int $coursePeriod): void
+    {
+        if ($semesterId === null) {
+            return;
+        }
+
+        if ($coursePeriod === null) {
+            $this->semesterRecords()->where('semester_id', $semesterId)->get()->each->delete();
+
+            return;
+        }
+
+        StudentCourseSemester::record($this, Semester::query()->findOrFail($semesterId), $coursePeriod);
+    }
+
+    /** Registro de período mais recente em um semestre anterior ao informado. */
+    public function semesterRecordBefore(Semester $semester): ?StudentCourseSemester
+    {
+        $this->loadMissing('semesterRecords.semester');
+
+        return $this->semesterRecords
+            ->filter(fn (StudentCourseSemester $record): bool => $record->semester?->isBefore($semester) ?? false)
+            ->sortByDesc(fn (StudentCourseSemester $record): int => $record->semester->year * 10 + $record->semester->term)
+            ->first();
+    }
+
+    /**
+     * Situação sugerida na virada de semestre: quem já tem período no destino fica como está, quem está
+     * no último período permanece e os demais avançam.
+     */
+    public function defaultRolloverAction(Semester $target): string
+    {
+        $this->loadMissing('semesterRecords');
+
+        if ($this->semesterRecords->contains('semester_id', $target->getKey())) {
+            return 'skip';
+        }
+
+        $previousPeriod = $this->semesterRecordBefore($target)?->course_period;
+
+        return $previousPeriod !== null && $previousPeriod >= Course::MAX_COURSE_PERIOD ? 'retain' : 'advance';
+    }
+
+    /**
+     * Período do aluno no semestre de destino da virada: o anterior mais um (`advance`) ou o mesmo
+     * (`retain`). Sem período anterior, vale o período informado.
+     */
+    public function rolloverCoursePeriod(Semester $target, string $action, ?int $informedPeriod): ?int
+    {
+        $previous = $this->semesterRecordBefore($target);
+
+        if ($previous === null) {
+            return $informedPeriod;
+        }
+
+        return $action === 'advance' ? $previous->course_period + 1 : $previous->course_period;
+    }
+
+    public function coursePeriodIn(?int $semesterId): ?int
+    {
+        if ($semesterId === null) {
+            return null;
+        }
+
+        $period = $this->relationLoaded('semesterRecords')
+            ? $this->semesterRecords->firstWhere('semester_id', $semesterId)?->course_period
+            : $this->semesterRecords()->where('semester_id', $semesterId)->value('course_period');
+
+        return $period === null ? null : (int) $period;
+    }
+
+    /** Reprovações de todos os semestres; o pivô traz `semester_id` e `resolved_semester_id`. */
     public function failedDisciplines(): BelongsToMany
     {
         return $this->disciplinesByCategory(StudentCourseDisciplineCategory::FAILED);
     }
 
+    /** Riscos de insucesso de todos os semestres; o pivô traz `semester_id`. */
     public function atRiskDisciplines(): BelongsToMany
     {
         return $this->disciplinesByCategory(StudentCourseDisciplineCategory::AT_ACADEMIC_RISK);
     }
 
     /** @param list<int> $disciplineIds */
-    public function syncFailedDisciplines(array $disciplineIds): void
+    public function syncFailedDisciplines(int $semesterId, array $disciplineIds): void
     {
-        $before = $this->failedDisciplines()->pluck('disciplines.id')->all();
-        $this->failedDisciplines()->sync(array_values(array_unique($disciplineIds)));
-        $this->recordAuditFieldChange('failed_disciplines', $before, $this->failedDisciplines()->pluck('disciplines.id')->all());
+        $before = $this->academicRecordsSummary(StudentCourseDisciplineCategory::FAILED);
+        $this->failedDisciplines()
+            ->withPivotValue('semester_id', $semesterId)
+            ->sync(array_values(array_unique(array_map('intval', $disciplineIds))));
+        $this->recordAuditFieldChange(
+            'failed_disciplines_by_semester',
+            $before,
+            $this->academicRecordsSummary(StudentCourseDisciplineCategory::FAILED),
+        );
     }
 
     /** @param list<int> $disciplineIds */
-    public function syncAtRiskDisciplines(array $disciplineIds): void
+    public function syncAtRiskDisciplines(int $semesterId, array $disciplineIds): void
     {
-        $before = $this->atRiskDisciplines()->pluck('disciplines.id')->all();
-        $this->atRiskDisciplines()->sync(array_values(array_unique($disciplineIds)));
-        $this->recordAuditFieldChange('at_risk_disciplines', $before, $this->atRiskDisciplines()->pluck('disciplines.id')->all());
+        $before = $this->academicRecordsSummary(StudentCourseDisciplineCategory::AT_ACADEMIC_RISK);
+        $this->atRiskDisciplines()
+            ->withPivotValue('semester_id', $semesterId)
+            ->sync(array_values(array_unique(array_map('intval', $disciplineIds))));
+        $this->recordAuditFieldChange(
+            'at_risk_disciplines_by_semester',
+            $before,
+            $this->academicRecordsSummary(StudentCourseDisciplineCategory::AT_ACADEMIC_RISK),
+        );
     }
 
     /**
+     * Grava reprovações e riscos do semestre informado. Os outros semestres não mudam.
+     *
      * @param  list<int>  $failedDisciplineIds
      * @param  list<int>  $atRiskDisciplineIds
      *
      * @throws InvalidStudentCourse
      */
-    public function syncDisciplines(Course $course, array $failedDisciplineIds, array $atRiskDisciplineIds): void
-    {
+    public function syncDisciplines(
+        Course $course,
+        ?int $semesterId,
+        array $failedDisciplineIds,
+        array $atRiskDisciplineIds,
+    ): void {
+        if ($semesterId === null) {
+            if ([...$failedDisciplineIds, ...$atRiskDisciplineIds] !== []) {
+                throw new InvalidStudentCourse('Informe o semestre das reprovações e dos riscos de insucesso.');
+            }
+
+            return;
+        }
+
         $allowedIds = $course->disciplines()
             ->pluck('disciplines.id')
             ->map(static fn (mixed $id): int => (int) $id)
@@ -186,18 +299,115 @@ final class StudentCourse extends Pivot implements Auditable
             throw new InvalidStudentCourse('As disciplinas selecionadas devem pertencer ao curso do aluno.');
         }
 
-        $this->syncFailedDisciplines($failedDisciplineIds);
-        $this->syncAtRiskDisciplines($atRiskDisciplineIds);
+        $this->syncFailedDisciplines($semesterId, $failedDisciplineIds);
+        $this->syncAtRiskDisciplines($semesterId, $atRiskDisciplineIds);
     }
 
+    /**
+     * Marca como aprovadas no semestre as dependências informadas e desfaz as que deixaram de ser
+     * informadas. `$dependencyIds` são as dependências do aluno vistas a partir desse semestre.
+     *
+     * @param  list<int>  $disciplineIds
+     * @param  list<int>  $dependencyIds
+     *
+     * @throws InvalidStudentCourse
+     */
+    public function resolveDependencies(Semester $semester, array $disciplineIds, array $dependencyIds): void
+    {
+        $disciplineIds = array_values(array_unique(array_map('intval', $disciplineIds)));
+
+        if (array_diff($disciplineIds, $dependencyIds) !== []) {
+            throw new InvalidStudentCourse('Só é possível aprovar dependências de reprovações de semestres anteriores.');
+        }
+
+        $before = $this->resolvedDependenciesSummary();
+        $failed = $this->failedDisciplines()->get();
+        $semesters = Semester::query()
+            ->whereIn('id', $failed->pluck('pivot.semester_id')->unique())
+            ->get()
+            ->keyBy('id');
+
+        foreach ($failed as $discipline) {
+            $failedIn = $semesters->get($discipline->pivot->semester_id);
+            $resolvedIn = $discipline->pivot->resolved_semester_id;
+            $selected = in_array((int) $discipline->getKey(), $disciplineIds, true);
+            $resolution = match (true) {
+                $selected && $resolvedIn === null && ($failedIn?->isBefore($semester) ?? false) => $semester->getKey(),
+                ! $selected && (int) $resolvedIn === (int) $semester->getKey() => null,
+                default => false,
+            };
+
+            if ($resolution === false) {
+                continue;
+            }
+
+            $this->failedDisciplines()
+                ->wherePivot('semester_id', $discipline->pivot->semester_id)
+                ->updateExistingPivot($discipline->getKey(), ['resolved_semester_id' => $resolution]);
+        }
+
+        $this->recordAuditFieldChange('resolved_dependencies', $before, $this->resolvedDependenciesSummary());
+    }
+
+    /** Reprovações do semestre de referência da matrícula, para relatórios e PDFs. */
     public function getFailedDisciplineNamesAttribute(): string
     {
-        return $this->failedDisciplines->pluck('name')->join(', ');
+        return $this->namesInReferenceSemester($this->failedDisciplines);
     }
 
+    /** Riscos de insucesso do semestre de referência da matrícula, para relatórios e PDFs. */
     public function getAtRiskDisciplineNamesAttribute(): string
     {
-        return $this->atRiskDisciplines->pluck('name')->join(', ');
+        return $this->namesInReferenceSemester($this->atRiskDisciplines);
+    }
+
+    /** @param  Collection<int, Discipline>  $disciplines */
+    private function namesInReferenceSemester(Collection $disciplines): string
+    {
+        return $disciplines
+            ->filter(fn (Discipline $discipline): bool => $this->semester_id === null
+                || (int) $discipline->pivot->semester_id === (int) $this->semester_id)
+            ->pluck('name')
+            ->unique()
+            ->join(', ');
+    }
+
+    /** Texto legível por semestre, para o histórico de alterações. */
+    private function academicRecordsSummary(StudentCourseDisciplineCategory $category): ?string
+    {
+        $disciplines = $this->disciplinesByCategory($category)->orderBy('disciplines.name')->get();
+        $labels = Semester::query()
+            ->whereIn('id', $disciplines->pluck('pivot.semester_id')->unique())
+            ->orderBy('year')
+            ->orderBy('term')
+            ->pluck('label', 'id');
+
+        $summary = $labels
+            ->map(fn (mixed $label, mixed $semesterId): string => "{$label}: ".$disciplines
+                ->filter(fn (Discipline $discipline): bool => (int) $discipline->pivot->semester_id === (int) $semesterId)
+                ->pluck('name')
+                ->join(', '))
+            ->implode('; ');
+
+        return $summary === '' ? null : $summary;
+    }
+
+    private function resolvedDependenciesSummary(): ?string
+    {
+        $resolved = $this->failedDisciplines()
+            ->wherePivotNotNull('resolved_semester_id')
+            ->orderBy('disciplines.name')
+            ->get();
+        $labels = Semester::query()
+            ->whereIn('id', $resolved->pluck('pivot.resolved_semester_id')->unique())
+            ->pluck('label', 'id');
+
+        $summary = $resolved
+            ->map(fn (Discipline $discipline): string => "{$discipline->name} (aprovada em {$labels->get($discipline->pivot->resolved_semester_id)})")
+            ->unique()
+            ->implode('; ');
+
+        return $summary === '' ? null : $summary;
     }
 
     /**
@@ -223,6 +433,7 @@ final class StudentCourse extends Pivot implements Auditable
             'discipline_id',
         )
             ->withPivotValue('category', $category->value)
+            ->withPivot(['semester_id', 'resolved_semester_id'])
             ->withTimestamps();
     }
 

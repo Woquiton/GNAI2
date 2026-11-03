@@ -21,7 +21,7 @@ final class FinishPeiAction
                 ->with(['peiDisciplines.discipline'])
                 ->lockForUpdate()
                 ->findOrFail($pei->getKey());
-            $lockedPei->ensureCanBeManagedBy((int) $user->getKey());
+            $lockedPei->ensureCanBeManagedBy((int) $user->getKey(), $user->isAdmin());
             $lockedPei->ensureCanBeFinished();
             $lockedPei->markAsFinished();
             $lockedPei->save();

@@ -111,13 +111,13 @@
             <tr>
                 <td class="pdf-cell" colspan="4">
                     <strong>Disciplinas com Reprovação:</strong>
-                    {{ $plain(($currentCourse->failedDisciplines ?? collect())->pluck('name')->join(', ')) }}
+                    {{ $plain($currentCourse->failed_discipline_names) }}
                 </td>
             </tr>
             <tr>
                 <td class="pdf-cell" colspan="4">
                     <strong>Disciplinas com Risco de Insucesso Acadêmico:</strong>
-                    {{ $plain(($currentCourse->atRiskDisciplines ?? collect())->pluck('name')->join(', ')) }}
+                    {{ $plain($currentCourse->at_risk_discipline_names) }}
                 </td>
             </tr>
         </table>

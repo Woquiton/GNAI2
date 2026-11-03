@@ -12,6 +12,10 @@ export const courseUrls = {
     edit: (id: number) => `${base}/${id}/editar`,
     update: (id: number) => `${base}/${id}`,
     destroy: (id: number) => `${base}/${id}`,
+    rollover: (id: number) => `${base}/${id}/virada-de-semestre`,
+    rolloverInSemester: (id: number, semesterId: number) =>
+        `${base}/${id}/virada-de-semestre?semestre=${semesterId}`,
+    rolloverStore: (id: number) => `${base}/${id}/virada-de-semestre/salvar`,
 };
 
 export function courseBreadcrumb(

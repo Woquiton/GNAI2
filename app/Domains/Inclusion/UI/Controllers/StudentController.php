@@ -153,7 +153,7 @@ final class StudentController
                 'peis' => $tabProp(
                     'peis',
                     fn (): array => $request->user()?->can('pei.view')
-                        ? $this->presenter->peis($showStudent->peis($student))
+                        ? $this->presenter->peis($showStudent->peis($student, $authenticatedUser?->teacher_id))
                         : [],
                 ),
                 'documents' => $tabProp(

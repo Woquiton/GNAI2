@@ -34,7 +34,6 @@ final readonly class CreatePeiAction
             $lockedStudent->ensureIsActive();
 
             $currentPei = Pei::query()
-                ->with('course')
                 ->where('student_id', $lockedStudent->getKey())
                 ->where('is_current', true)
                 ->lockForUpdate()
@@ -42,22 +41,21 @@ final readonly class CreatePeiAction
 
             if ($currentPei instanceof Pei) {
                 $currentPei->ensureCanCreateNewVersion();
-                $course = $currentPei->course;
-                $version = ((int) $currentPei->version) + 1;
-            } else {
-                $studentCourse = StudentCourse::query()
-                    ->with('course')
-                    ->where('student_id', $lockedStudent->getKey())
-                    ->where('is_current', true)
-                    ->first();
-
-                if (! $studentCourse instanceof StudentCourse) {
-                    throw new InvalidPei('Este aluno não possui matrícula vigente');
-                }
-
-                $course = $studentCourse->course;
-                $version = 1;
             }
+
+            // A nova versão segue a matrícula vigente: se o aluno mudou de curso, o PEI acompanha.
+            $studentCourse = StudentCourse::query()
+                ->with('course')
+                ->where('student_id', $lockedStudent->getKey())
+                ->where('is_current', true)
+                ->first();
+
+            if (! $studentCourse instanceof StudentCourse) {
+                throw new InvalidPei('Este aluno não possui matrícula vigente');
+            }
+
+            $course = $studentCourse->course;
+            $version = $currentPei instanceof Pei ? ((int) $currentPei->version) + 1 : 1;
 
             $semester = $this->currentSemesterQuery->execute();
             if ($semester === null) {

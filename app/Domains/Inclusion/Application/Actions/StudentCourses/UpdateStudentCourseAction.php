@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Actions\StudentCourses;
 
 use App\Domains\Inclusion\Application\Data\StudentCourses\UpdateStudentCourseData;
+use App\Domains\Inclusion\Application\Queries\StudentCourses\StudentCourseDependenciesQuery;
 use App\Domains\Inclusion\Domain\DTOs\StudentCourses\UpdateStudentCourseDTO;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidCourse;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidStudent;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidStudentCourse;
 use App\Domains\Inclusion\Domain\Models\Course;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\StudentCourse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -18,6 +20,10 @@ use Throwable;
 
 final readonly class UpdateStudentCourseAction
 {
+    public function __construct(
+        private StudentCourseDependenciesQuery $dependencies,
+    ) {}
+
     /**
      * @throws InvalidCourse
      * @throws InvalidStudent
@@ -71,11 +77,26 @@ final readonly class UpdateStudentCourseAction
                 );
             }
 
+            $lockedStudentCourse->syncCoursePeriod($data->semesterId, $data->coursePeriod);
+
             $lockedStudentCourse->syncDisciplines(
                 course: $course,
+                semesterId: $data->semesterId,
                 failedDisciplineIds: $data->failedDisciplineIds,
                 atRiskDisciplineIds: $data->atRiskDisciplineIds,
             );
+
+            if ($data->semesterId !== null) {
+                $semester = Semester::query()->findOrFail($data->semesterId);
+
+                $lockedStudentCourse->resolveDependencies(
+                    semester: $semester,
+                    disciplineIds: $data->resolvedDependencyIds,
+                    dependencyIds: $this->dependencies->execute($lockedStudentCourse, $semester)
+                        ->pluck('discipline_id')
+                        ->all(),
+                );
+            }
 
             return $lockedStudentCourse->load(['student.person', 'course', 'failedDisciplines', 'atRiskDisciplines']);
         });

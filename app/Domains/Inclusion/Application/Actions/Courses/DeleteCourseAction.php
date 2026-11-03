@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Actions\Courses;
 
+use App\Domains\Inclusion\Application\Queries\Courses\CourseHasPeisQuery;
 use App\Domains\Inclusion\Application\Queries\Courses\CourseHasStudentsQuery;
 use App\Domains\Inclusion\Domain\Models\Course;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ final readonly class DeleteCourseAction
 {
     public function __construct(
         private CourseHasStudentsQuery $hasStudents,
+        private CourseHasPeisQuery $hasPeis,
     ) {}
 
     /**
@@ -27,6 +29,7 @@ final readonly class DeleteCourseAction
 
             $lockedCourse->ensureCanBeDeleted(
                 $this->hasStudents->execute($lockedCourse),
+                $this->hasPeis->execute($lockedCourse),
             );
 
             $lockedCourse->delete();

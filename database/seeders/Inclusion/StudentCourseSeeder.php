@@ -3,6 +3,7 @@
 namespace Database\Seeders\Inclusion;
 
 use App\Domains\Inclusion\Domain\Models\Course;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\StudentCourse;
 use Illuminate\Database\Seeder;
@@ -44,10 +45,20 @@ class StudentCourseSeeder extends Seeder
                 ->shuffle()
                 ->values();
 
+            // Reprovação e risco são registrados por semestre: usa o semestre atual.
+            $semesterId = Semester::query()->where('is_current', true)->value('id');
+
+            if ($semesterId === null) {
+                continue;
+            }
+
+            $studentCourse->update(['semester_id' => $semesterId]);
             $studentCourse->syncFailedDisciplines(
+                (int) $semesterId,
                 $disciplineIds->take(1)->map(static fn (mixed $id): int => (int) $id)->all()
             );
             $studentCourse->syncAtRiskDisciplines(
+                (int) $semesterId,
                 $disciplineIds->slice(1, 2)->map(static fn (mixed $id): int => (int) $id)->all()
             );
         }

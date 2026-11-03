@@ -23,14 +23,29 @@ export interface TeacherEditProps {
     teacher: TeacherRecord;
 }
 
+export interface TeacherSemesterOption {
+    id: number;
+    label: string;
+}
+
 export interface TeacherDisciplinesProps {
     teacher: TeacherRecord;
     courses: Array<{
         id: number;
         name: string;
-        disciplines: Array<{ id: number; name: string }>;
+        disciplines: Array<{
+            id: number;
+            name: string;
+            pivot?: { course_period: number | null } | null;
+        }>;
     }>;
+    /** Vínculos do professor no semestre exibido. */
     selectedByCourse: Record<string, Array<number | string>>;
+    semesters: TeacherSemesterOption[];
+    /** Semestre exibido; nulo quando ainda não há semestre cadastrado. */
+    semester: TeacherSemesterOption | null;
+    /** Semestre anterior mais recente com vínculos deste professor, para copiar. */
+    previousSemester: TeacherSemesterOption | null;
 }
 
 export type TeacherFilters = {
@@ -54,12 +69,18 @@ export interface TeacherIndexProps {
     teachers: TeacherPaginator;
     filters: Partial<TeacherFilters>;
     can: TeacherListPermissions;
+    /** Cópia dos vínculos de todos os professores do semestre anterior para o atual. */
+    assignmentCopy: {
+        target: TeacherSemesterOption | null;
+        source: TeacherSemesterOption | null;
+    };
 }
 
 export interface TeacherCourseDiscipline {
     id: number;
     course: { id: number; name: string } | null;
     discipline: { id: number; name: string } | null;
+    semester: TeacherSemesterOption | null;
 }
 
 export interface TeacherDetailsPermissions {

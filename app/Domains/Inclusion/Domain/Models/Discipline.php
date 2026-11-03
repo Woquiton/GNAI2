@@ -97,8 +97,18 @@ final class Discipline extends Model implements Auditable
     /**
      * @throws InvalidDiscipline
      */
-    public function ensureCanBeDeleted(bool $hasTeachers, bool $hasCourses, bool $hasStudentCourseRecords): void
-    {
+    public function ensureCanBeDeleted(
+        bool $hasTeachers,
+        bool $hasCourses,
+        bool $hasStudentCourseRecords,
+        bool $hasPeiAdaptations = false,
+    ): void {
+        if ($hasPeiAdaptations) {
+            throw new InvalidDiscipline(
+                "Não é possível excluir a disciplina '{$this->name}' pois ela possui adaptações em PEIs."
+            );
+        }
+
         if ($hasStudentCourseRecords) {
             throw new InvalidDiscipline(
                 "Não é possível excluir a disciplina '{$this->name}' pois ela possui registros no histórico de cursos de alunos."
@@ -138,7 +148,9 @@ final class Discipline extends Model implements Auditable
             'course_disciplines',
             'discipline_id',
             'course_id',
-        )->withTimestamps();
+        )
+            ->withPivot('course_period')
+            ->withTimestamps();
     }
 
     public function teachers(): BelongsToMany

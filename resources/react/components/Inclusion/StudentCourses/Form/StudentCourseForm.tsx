@@ -7,6 +7,7 @@ import type {
     StudentCourseCourse,
     StudentCourseRecord,
     StudentCourseSemester,
+    StudentCourseSemesterAcademicRecords,
     StudentCourseStudent,
 } from '../StudentCourses.types';
 import StudentCourseEnrollmentFields from './StudentCourseEnrollmentFields';
@@ -26,6 +27,13 @@ interface StudentCourseFormProps {
     mustBeCurrent?: boolean;
     /** Somente na edição. */
     studentCourse?: StudentCourseRecord;
+    /** Período do curso já gravado para o semestre da matrícula (edição). */
+    coursePeriod?: number | null;
+    maxCoursePeriod: number;
+    /** Somente no cadastro: semestre atual, sugerido como padrão. */
+    currentSemesterId?: number | null;
+    /** Somente na edição: dados acadêmicos por semestre. */
+    academicRecordsBySemester?: Record<string, StudentCourseSemesterAcademicRecords>;
 }
 
 /** Matrícula do aluno em um curso/série, com o acompanhamento acadêmico do curso atual. */
@@ -37,6 +45,10 @@ export default function StudentCourseForm({
     courses = [],
     mustBeCurrent = false,
     studentCourse,
+    coursePeriod = null,
+    maxCoursePeriod,
+    currentSemesterId = null,
+    academicRecordsBySemester = {},
 }: StudentCourseFormProps): React.JSX.Element {
     const {
         form,
@@ -46,10 +58,21 @@ export default function StudentCourseForm({
         showFollowUp,
         selectedCourse,
         disciplines,
+        dependencies,
+        changeSemester,
         save,
         editorFailed,
         reportEditorFailure,
-    } = useStudentCourseForm({ mode, studentId, studentCourse, courses, mustBeCurrent });
+    } = useStudentCourseForm({
+        mode,
+        studentId,
+        studentCourse,
+        courses,
+        mustBeCurrent,
+        coursePeriod,
+        currentSemesterId,
+        academicRecordsBySemester,
+    });
     const editing = mode === 'edit';
     const sectionProps = { form, errors, disabled: form.processing };
     const courseOptions = courses.map((course) => ({
@@ -60,6 +83,9 @@ export default function StudentCourseForm({
         value: String(semester.id),
         label: semester.label,
     }));
+    const semesterLabel = semesters.find(
+        (semester) => String(semester.id) === form.data.semester_id,
+    )?.label;
     const cancelLabel = editing ? 'Cancelar edição da matrícula' : 'Cancelar criação de matrícula';
     const saveLabel = editing ? 'Salvar alterações da matrícula' : 'Efetivar matrícula do aluno';
     const processingStatus = editing
@@ -87,6 +113,8 @@ export default function StudentCourseForm({
                         mode={mode}
                         courseOptions={courseOptions}
                         semesterOptions={semesterOptions}
+                        maxCoursePeriod={maxCoursePeriod}
+                        onSemesterChange={changeSemester}
                         isCurrent={isCurrent}
                         mustBeCurrent={mustBeCurrent}
                     />
@@ -94,6 +122,8 @@ export default function StudentCourseForm({
                         <StudentCourseFollowUpFields
                             {...sectionProps}
                             disciplines={selectedCourse ? disciplines : null}
+                            semesterLabel={semesterLabel}
+                            dependencies={editing ? dependencies : []}
                             onEditorFailure={() =>
                                 reportEditorFailure(
                                     'school_attendance_status',

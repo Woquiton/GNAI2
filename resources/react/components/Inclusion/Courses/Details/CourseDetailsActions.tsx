@@ -10,7 +10,7 @@ interface CourseDetailsActionsProps {
     onDelete: () => void;
 }
 
-/** Rodapé fixo da visualização: voltar, editar e excluir. */
+/** Rodapé fixo da visualização: voltar, virada de semestre, editar e excluir. */
 export default function CourseDetailsActions({
     courseId,
     permissions,
@@ -27,6 +27,17 @@ export default function CourseDetailsActions({
                 aria-label="Voltar para cursos"
                 disabled={deleting}
             />
+            {permissions.rollover ? (
+                <Button
+                    href={courseUrls.rollover(courseId)}
+                    tone="purple"
+                    leftIconClass="fa fa-forward"
+                    label="Virada de semestre"
+                    title="Registrar os alunos do curso no novo semestre"
+                    aria-label="Registrar os alunos do curso no novo semestre"
+                    disabled={deleting}
+                />
+            ) : null}
             {permissions.update ? (
                 <Button
                     href={courseUrls.edit(courseId)}

@@ -71,10 +71,21 @@ final class ShowStudentQuery
             ->get();
     }
 
-    /** @return Collection<int, Pei> */
-    public function peis(Student $student): Collection
+    /**
+     * Para professores, somente os PEIs com adaptações sob sua responsabilidade.
+     *
+     * @return Collection<int, Pei>
+     */
+    public function peis(Student $student, ?int $teacherId = null): Collection
     {
         return $student->peis()
+            ->when(
+                $teacherId !== null,
+                fn ($query) => $query->whereHas(
+                    'peiDisciplines',
+                    fn ($adaptations) => $adaptations->where('teacher_id', $teacherId),
+                ),
+            )
             ->with([
                 'semester',
                 'course',

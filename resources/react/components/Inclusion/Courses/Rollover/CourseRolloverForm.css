@@ -1,0 +1,45 @@
+.courseRollover {
+    display: grid;
+    gap: var(--ui-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.courseRollover__row {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) minmax(280px, 2fr);
+    gap: var(--ui-space-3);
+    align-items: start;
+    padding: var(--ui-space-3) var(--ui-space-4);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-sm);
+}
+
+.courseRollover__row:nth-child(odd) {
+    background: var(--ui-color-table-header);
+}
+
+.courseRollover__student {
+    display: grid;
+    gap: var(--ui-space-1);
+}
+
+.courseRollover__choices {
+    display: grid;
+    gap: var(--ui-space-2);
+}
+
+.courseRollover__bulk {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-2);
+    align-items: center;
+    margin-bottom: var(--ui-space-3);
+}
+
+@media (max-width: 768px) {
+    .courseRollover__row {
+        grid-template-columns: 1fr;
+    }
+}

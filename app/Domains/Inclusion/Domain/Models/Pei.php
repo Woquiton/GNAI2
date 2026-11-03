@@ -109,10 +109,15 @@ final class Pei extends Model implements Auditable
     /**
      * @throws InvalidPei
      */
-    public function ensureCanBeManagedBy(?int $userId): void
+    /** Administradores também gerenciam, para que o PEI não fique travado quando o autor deixa o núcleo. */
+    public function ensureCanBeManagedBy(?int $userId, bool $isAdministrator = false): void
     {
+        if ($isAdministrator) {
+            return;
+        }
+
         if ($userId === null || (int) $this->creator_id !== $userId) {
-            throw new InvalidPei('Acesso negado: apenas o criador do PEI pode gerenciar este registro.');
+            throw new InvalidPei('Acesso negado: apenas o criador do PEI ou um administrador pode gerenciar este registro.');
         }
     }
 

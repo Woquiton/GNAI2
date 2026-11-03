@@ -40,6 +40,7 @@ use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Session;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\StudentCourse;
+use App\Domains\Inclusion\Domain\Models\StudentCourseSemester;
 use App\Domains\Inclusion\Domain\Models\StudentDeficiency;
 use App\Domains\Inclusion\Domain\Models\StudentDocument;
 use App\Domains\Inclusion\Domain\Models\SupportRequest;
@@ -100,6 +101,7 @@ final class InclusionServiceProvider extends ServiceProvider
             Session::class,
             Student::class,
             StudentCourse::class,
+            StudentCourseSemester::class,
             StudentDeficiency::class,
             StudentDocument::class,
             SupportRequest::class,

@@ -18,6 +18,7 @@ final class TeacherCourseDiscipline extends Model implements Auditable
         'teacher_id',
         'course_id',
         'discipline_id',
+        'semester_id',
     ];
 
     public static function auditType(): string
@@ -36,6 +37,7 @@ final class TeacherCourseDiscipline extends Model implements Auditable
             'teacher_id' => AuditedField::reference('Professor', Teacher::class, 'person.name'),
             'course_id' => AuditedField::reference('Curso', Course::class),
             'discipline_id' => AuditedField::reference('Disciplina', Discipline::class),
+            'semester_id' => AuditedField::reference('Semestre', Semester::class, 'label'),
         ];
     }
 
@@ -45,7 +47,9 @@ final class TeacherCourseDiscipline extends Model implements Auditable
         $disciplineName = $this->discipline?->name ?? "#{$this->discipline_id}";
         $courseName = $this->course?->name ?? "#{$this->course_id}";
 
-        return "a disciplina {$disciplineName} do professor {$teacherName} em {$courseName}";
+        $semesterLabel = $this->semester?->label ?? "#{$this->semester_id}";
+
+        return "a disciplina {$disciplineName} do professor {$teacherName} em {$courseName} ({$semesterLabel})";
     }
 
     public function teacher(): BelongsTo
@@ -61,5 +65,10 @@ final class TeacherCourseDiscipline extends Model implements Auditable
     public function discipline(): BelongsTo
     {
         return $this->belongsTo(Discipline::class);
+    }
+
+    public function semester(): BelongsTo
+    {
+        return $this->belongsTo(Semester::class);
     }
 }

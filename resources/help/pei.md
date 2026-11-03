@@ -2,7 +2,7 @@
 titulo: PEI: Plano Educacional Individualizado
 resumo: Como gerar o PEI, o que ele exige antes, como cadastrar as adaptações por disciplina, envolver os professores, finalizar, criar novas versões e gerar os PDFs.
 categoria: Planos e acompanhamento
-palavras-chave: pei, plano educacional individualizado, plano educacional, plano individual, gerar pei, criar pei, cadastrar pei, adaptação curricular, adaptações curriculares, adaptação razoável, acessibilidade curricular, disciplina, planejamento adaptado, professor, professor responsável, portal do professor, matriz curricular, finalizar pei, nova versão, versão do pei, revisão da adaptação, a preencher, pdf do pei, pdf para a família, devolutiva, acompanhamento do semestre, paee ativo, matrícula vigente
+palavras-chave: pei, plano educacional individualizado, plano educacional, plano individual, gerar pei, criar pei, cadastrar pei, adaptação curricular, adaptações curriculares, adaptação razoável, acessibilidade curricular, disciplina, planejamento adaptado, professor, professor responsável, portal do professor, matriz curricular, finalizar pei, nova versão, versão do pei, revisão da adaptação, a preencher, pdf do pei, pdf para a família, devolutiva, acompanhamento do semestre, paee ativo, matrícula vigente, período do aluno, disciplinas do período, semestre do professor
 ordem: 30
 permissoes: pei.view
 ---
@@ -26,12 +26,14 @@ Como o PAEE nasce de um Estudo de Caso concluído, na prática a sequência é: 
 Para cadastrar as adaptações depois, também é preciso que:
 
 - as disciplinas estejam vinculadas ao curso do aluno (**Gestão do núcleo → Cadastros → Cursos**) e ativas;
-- cada professor esteja vinculado à disciplina naquele curso, em **Gestão do núcleo → Professores**, botão **Gerenciar Disciplinas** (matriz curricular).
+- cada professor esteja vinculado à disciplina naquele curso no semestre do PEI, em **Gestão do núcleo → Professores**, botão **Gerenciar Disciplinas** (matriz curricular). Na virada de semestre, use **Copiar vínculos de** na listagem de professores. Veja [Copiar os vínculos do semestre anterior](/ajuda/professores#copiar-os-vinculos-do-semestre-anterior).
+
+Para que o PEI sugira as disciplinas certas, informe também o período de cada disciplina na matriz do curso e o **Período do Curso** do aluno na matrícula, no semestre do PEI.
 
 ## Onde encontro os PEIs?
 
 - Na visualização do aluno (**Atendimento → Alunos**), aba **PEIs**: lista as versões do aluno, com as colunas **Semestre**, **Curso**, **Status**, **Atual** e **Versão**. É aqui que fica o botão **Cadastrar**.
-- **Planos e acompanhamento → PEIs** abre a **Listagem Geral de PEIs**, com filtros por **Estudante**, **Semestre**, **Versão** e **Status**. Ela não tem botão de cadastro. Usuários vinculados a um professor veem apenas os PEIs dos cursos em que esse professor tem disciplinas.
+- **Planos e acompanhamento → PEIs** abre a **Listagem Geral de PEIs**, com filtros por **Estudante**, **Semestre**, **Versão** e **Status**. Ela não tem botão de cadastro. Usuários vinculados a um professor veem apenas os PEIs em que esse professor é responsável por alguma adaptação, inclusive na aba **PEIs** do aluno, na visualização e nos PDFs.
 
 ## Criar um PEI
 
@@ -57,9 +59,10 @@ A visualização mostra a identificação do aluno (matrícula, situação, vers
 ## Cadastrar as adaptações por disciplina
 
 1. Na visualização do PEI, abra a aba **Adaptações curriculares** e clique em **Cadastrar**.
-2. A tela **Cadastrar Adaptação Curricular** lista as disciplinas do curso que ainda não têm adaptação neste PEI. Para cada disciplina que deve ter adaptação, escolha o professor responsável.
-3. Deixe em branco as disciplinas que não terão adaptação agora. Disciplinas sem professor vinculado na matriz curricular mostram o aviso "Nenhum professor vinculado a esta disciplina na matriz curricular."
-4. Clique em **Salvar**.
+2. A tela **Cadastrar Adaptação Curricular** lista as disciplinas do curso que ainda não têm adaptação neste PEI. As disciplinas do período do aluno no semestre do PEI e as dependências pendentes, isto é, reprovações de semestres anteriores ainda não aprovadas, aparecem primeiro em **Disciplinas Sugeridas**. As demais ficam em **Outras Disciplinas do Curso**. Dependências mostram ao lado do nome o semestre da reprovação. Um aviso no topo informa o período usado ou explica por que não há sugestão.
+3. Para cada disciplina que deve ter adaptação, escolha o professor responsável. Só aparecem os professores vinculados à disciplina no curso, no semestre do PEI.
+4. Deixe em branco as disciplinas que não terão adaptação agora. Disciplinas sem professor nesse semestre mostram o aviso "Nenhum professor vinculado a esta disciplina neste curso no semestre do PEI."
+5. Clique em **Salvar**.
 
 O sistema cria todas as adaptações de uma vez e mostra, por exemplo, "2 adaptação(ões) criada(s) com sucesso. Preencha o conteúdo pedagógico de cada uma em seguida." Se alguma disciplina não puder ser usada (por exemplo, disciplina inativa), a mensagem informa os itens ignorados.
 
@@ -127,7 +130,7 @@ Depois de finalizado:
 1. Finalize o PEI atual.
 2. Na aba **PEIs** do aluno, clique em **Cadastrar** e depois em **Gerar PEI**. O sistema mostra "PEI gerado com sucesso."
 
-A nova versão recebe o próximo número, é vinculada ao PAEE vigente e ao semestre atual e mantém o curso do PEI anterior. Ela começa sem adaptações: cadastre-as novamente. A versão anterior deixa de ser a atual (coluna **Atual** = Não) e os professores deixam de vê-la no Portal do Professor.
+A nova versão recebe o próximo número e é vinculada ao PAEE vigente, ao semestre atual e ao curso da matrícula vigente do aluno. Se o aluno mudou de curso, a nova versão já nasce no curso novo. Ela começa sem adaptações: cadastre-as novamente. A versão anterior deixa de ser a atual (coluna **Atual** = Não) e os professores deixam de vê-la no Portal do Professor.
 
 ## Gerar os PDFs do PEI
 
@@ -158,10 +161,11 @@ Os PDFs abrem em outra aba do navegador.
 - **"O PEI atual ainda está em andamento. Finalize-o antes de criar uma nova versão."** Finalize o PEI atual ou continue preenchendo-o.
 - **"O PEI precisa ter ao menos uma adaptação cadastrada antes de ser finalizado."** Cadastre ao menos uma adaptação na aba **Adaptações curriculares**.
 - **"Não é possível finalizar o PEI. A adaptação da disciplina ... precisa preencher: ..."** A mensagem indica a disciplina e os campos que estão vazios ou com "A preencher.". Lembre que o **Parecer** é opcional ao salvar, mas obrigatório para finalizar.
-- **"Acesso negado: apenas o criador do PEI pode gerenciar este registro."** Só o responsável pelo PEI pode finalizá-lo ou excluí-lo.
-- **"Apenas o criador ou o professor responsável por esta adaptação pode editá-la."** ou **"Apenas o criador desta adaptação pode editá-la ou removê-la."** Peça a quem cadastrou a adaptação ou ao professor responsável que faça o ajuste.
+- **"Acesso negado: apenas o criador do PEI ou um administrador pode gerenciar este registro."** Só o responsável pelo PEI ou um administrador pode finalizá-lo ou excluí-lo. Se o responsável deixou o núcleo, peça a um administrador.
+- **"Apenas o criador, o professor responsável ou um administrador pode editar esta adaptação."** ou **"Apenas o criador desta adaptação ou um administrador pode editá-la ou removê-la."** Peça a quem cadastrou a adaptação, ao professor responsável ou a um administrador que faça o ajuste.
 - **"Nenhuma adaptação foi criada. Selecione ao menos um professor."** Escolha o professor de pelo menos uma disciplina antes de salvar.
 - **A disciplina não aparece para cadastrar adaptação.** Ela já tem adaptação neste PEI ou não está vinculada ao curso do aluno.
-- **"O professor selecionado não está vinculado à disciplina neste curso."** ou nenhum professor aparece para a disciplina: vincule o professor à disciplina no curso em **Gestão do núcleo → Professores → Gerenciar Disciplinas**.
+- **"O professor selecionado não está vinculado à disciplina neste curso no semestre do PEI."** ou nenhum professor aparece para a disciplina: vincule o professor à disciplina no curso e no semestre do PEI em **Gestão do núcleo → Professores → Gerenciar Disciplinas**. Ao editar uma adaptação antiga sem trocar professor nem disciplina, essa verificação não é feita.
+- **"Este PEI não possui adaptações sob sua responsabilidade."** O professor tentou abrir um PEI em que não tem adaptação.
 - **"Não é possível adicionar disciplinas a um PEI finalizado."** ou **"Este PEI já foi finalizado e não permite alterações."** Após finalizar, as adaptações não podem ser cadastradas nem excluídas; para uma nova estrutura, gere uma nova versão.
 - **O professor não encontra a adaptação no portal.** Confira se ele é o professor responsável pela adaptação e se ela pertence à versão atual do PEI. Adaptações de versões antigas mostram "Esta adaptação pertence a uma versão antiga do PEI e não pode mais ser editada por aqui."

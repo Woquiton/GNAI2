@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Actions\Disciplines;
 
 use App\Domains\Inclusion\Application\Queries\Disciplines\DisciplineHasCoursesQuery;
+use App\Domains\Inclusion\Application\Queries\Disciplines\DisciplineHasPeiAdaptationsQuery;
 use App\Domains\Inclusion\Application\Queries\Disciplines\DisciplineHasStudentCourseRecordsQuery;
 use App\Domains\Inclusion\Application\Queries\Disciplines\DisciplineHasTeachersQuery;
 use App\Domains\Inclusion\Domain\Models\Discipline;
@@ -17,6 +18,7 @@ final readonly class DeleteDisciplineAction
         private DisciplineHasTeachersQuery $hasTeachers,
         private DisciplineHasCoursesQuery $hasCourses,
         private DisciplineHasStudentCourseRecordsQuery $hasStudentCourseRecords,
+        private DisciplineHasPeiAdaptationsQuery $hasPeiAdaptations,
     ) {}
 
     /**
@@ -33,6 +35,7 @@ final readonly class DeleteDisciplineAction
                 hasTeachers: $this->hasTeachers->execute($lockedDiscipline),
                 hasCourses: $this->hasCourses->execute($lockedDiscipline),
                 hasStudentCourseRecords: $this->hasStudentCourseRecords->execute($lockedDiscipline),
+                hasPeiAdaptations: $this->hasPeiAdaptations->execute($lockedDiscipline),
             );
 
             $lockedDiscipline->delete();

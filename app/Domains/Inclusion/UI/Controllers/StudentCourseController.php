@@ -65,6 +65,8 @@ final class StudentCourseController
 
         return Inertia::render('Inclusion/StudentCourses/Show', [
             'studentCourse' => $studentCourse,
+            'academicHistory' => $query->academicHistory($studentCourse),
+            'pendingDependencies' => $query->pendingDependencies($studentCourse),
             'display' => [
                 'courseDescriptionHtml' => RichTextSanitizer::sanitize(
                     (string) ($studentCourse->course?->description ?: 'Não informado'),

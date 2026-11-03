@@ -83,9 +83,12 @@ final readonly class CreateStudentCourseAction
                 );
             }
 
+            $studentCourse->syncCoursePeriod($data->semesterId, $data->coursePeriod);
+
             if ($isCurrent) {
                 $studentCourse->syncDisciplines(
                     course: $course,
+                    semesterId: $data->semesterId,
                     failedDisciplineIds: $data->failedDisciplineIds,
                     atRiskDisciplineIds: $data->atRiskDisciplineIds,
                 );

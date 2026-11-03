@@ -17,6 +17,7 @@ final class CourseFormQuery
     {
         return [
             'disciplines' => $this->activeDisciplines(),
+            'maxCoursePeriod' => Course::MAX_COURSE_PERIOD,
         ];
     }
 
@@ -30,6 +31,7 @@ final class CourseFormQuery
         return [
             'course' => $course,
             'disciplines' => $this->activeDisciplines(),
+            'maxCoursePeriod' => Course::MAX_COURSE_PERIOD,
         ];
     }
 

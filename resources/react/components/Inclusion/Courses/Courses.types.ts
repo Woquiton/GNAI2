@@ -6,13 +6,18 @@ export interface CourseDisciplineOption {
     name: string;
 }
 
+/** Disciplina da matriz, com o período do curso em que é cursada (`course_disciplines`). */
+export interface CourseCurriculumDiscipline extends CourseDisciplineOption {
+    pivot?: { course_period: number | null } | null;
+}
+
 /** Registro usado na edição e na visualização. */
 export interface CourseRecord {
     id: number;
     name: string;
     description: string | null;
     is_active: boolean;
-    disciplines?: CourseDisciplineOption[];
+    disciplines?: CourseCurriculumDiscipline[];
 }
 
 /** Linha da listagem (`CourseController@index`). */
@@ -44,6 +49,7 @@ export interface CourseIndexProps {
 
 export interface CourseCreateProps {
     disciplines: CourseDisciplineOption[];
+    maxCoursePeriod: number;
 }
 
 export type CourseEditProps = CourseCreateProps & { course: CourseRecord };
@@ -51,6 +57,33 @@ export type CourseEditProps = CourseCreateProps & { course: CourseRecord };
 export interface CourseDetailsPermissions {
     update: boolean;
     delete: boolean;
+    /** Virada de semestre dos alunos (`student-course.update`). */
+    rollover: boolean;
+}
+
+/** Situação do aluno na virada: avança um período, permanece no mesmo ou não é registrado. */
+export type CourseRolloverAction = 'advance' | 'retain' | 'skip';
+
+/** Aluno ativo com matrícula vigente no curso (`CourseRolloverQuery`). */
+export interface CourseRolloverStudent {
+    student_course_id: number;
+    student_name: string;
+    registration: string | null;
+    /** Período no último semestre anterior ao de destino; nulo quando não há registro. */
+    previous_period: number | null;
+    previous_semester_label: string | null;
+    /** Período já registrado no semestre de destino, quando houver. */
+    target_period: number | null;
+    default_action: CourseRolloverAction;
+}
+
+export interface CourseRolloverProps {
+    course: { id: number; name: string };
+    semesters: Array<{ id: number; label: string }>;
+    /** Semestre de destino; nulo quando não há semestre cadastrado. */
+    semester: { id: number; label: string } | null;
+    maxCoursePeriod: number;
+    students: CourseRolloverStudent[];
 }
 
 export interface CourseShowProps {

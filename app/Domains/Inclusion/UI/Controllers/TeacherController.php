@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\UI\Controllers;
 
+use App\Domains\Inclusion\Application\Actions\Teachers\CopyTeacherCourseDisciplinesAction;
 use App\Domains\Inclusion\Application\Actions\Teachers\CreateTeacherAction;
 use App\Domains\Inclusion\Application\Actions\Teachers\DeleteTeacherAction;
 use App\Domains\Inclusion\Application\Actions\Teachers\UpdateTeacherAction;
 use App\Domains\Inclusion\Application\Actions\Teachers\UpdateTeacherDisciplinesAction;
+use App\Domains\Inclusion\Application\Data\Teachers\CopyTeacherDisciplinesData;
 use App\Domains\Inclusion\Application\Data\Teachers\CreateTeacherData;
 use App\Domains\Inclusion\Application\Data\Teachers\ListTeachersData;
 use App\Domains\Inclusion\Application\Data\Teachers\UpdateTeacherData;
 use App\Domains\Inclusion\Application\Data\Teachers\UpdateTeacherDisciplinesData;
+use App\Domains\Inclusion\Application\Queries\Semesters\CurrentSemesterQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\ListTeachersQuery;
+use App\Domains\Inclusion\Application\Queries\Teachers\PreviousAssignmentSemesterQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\ShowTeacherQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\TeacherDisciplinesFormQuery;
 use App\Domains\Inclusion\Application\Queries\Teachers\TeacherFormQuery;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Teacher;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
@@ -26,9 +31,18 @@ use Throwable;
 
 final class TeacherController
 {
-    public function index(ListTeachersData $filters, ListTeachersQuery $query, Request $request): InertiaResponse
-    {
+    public function index(
+        ListTeachersData $filters,
+        ListTeachersQuery $query,
+        CurrentSemesterQuery $currentSemesterQuery,
+        PreviousAssignmentSemesterQuery $previousSemesterQuery,
+        Request $request,
+    ): InertiaResponse {
         $teachers = $query->execute($filters);
+        $currentSemester = $currentSemesterQuery->execute();
+        $copySource = $currentSemester instanceof Semester
+            ? $previousSemesterQuery->execute($currentSemester)
+            : null;
         $teachers->through(static function (Teacher $teacher): Teacher {
             $teacher->person?->append('photo_url');
 
@@ -49,6 +63,11 @@ final class TeacherController
                     'view' => $request->user()?->can('teacher.view') ?? false,
                     'update' => $request->user()?->can('teacher.update') ?? false,
                     'delete' => $request->user()?->can('teacher.delete') ?? false,
+                ],
+                // Cópia dos vínculos de todos os professores para o semestre atual.
+                'assignmentCopy' => [
+                    'target' => $currentSemester?->only(['id', 'label']),
+                    'source' => $copySource?->only(['id', 'label']),
                 ],
             ],
         );
@@ -133,11 +152,13 @@ final class TeacherController
             ->with('success', 'Professor removido com sucesso.');
     }
 
-    public function disciplines(Teacher $teacher, TeacherDisciplinesFormQuery $query): InertiaResponse
+    public function disciplines(Teacher $teacher, TeacherDisciplinesFormQuery $query, Request $request): InertiaResponse
     {
+        $semesterId = $request->integer('semestre');
+
         return Inertia::render(
             'Inclusion/Teachers/Disciplines',
-            $query->execute($teacher),
+            $query->execute($teacher, $semesterId > 0 ? $semesterId : null),
         );
     }
 
@@ -154,5 +175,54 @@ final class TeacherController
         return redirect()
             ->route('specialized-educational-support.teachers.show', $teacher)
             ->with('success', 'Matriz curricular atualizada com sucesso!');
+    }
+
+    /**
+     * Copia para o semestre informado os vínculos do professor no semestre anterior.
+     *
+     * @throws Throwable
+     */
+    public function copyDisciplines(
+        CopyTeacherDisciplinesData $data,
+        Teacher $teacher,
+        CopyTeacherCourseDisciplinesAction $action,
+    ): RedirectResponse {
+        $target = Semester::query()->findOrFail($data->semesterId);
+        $result = $action->execute($target, $teacher);
+
+        return redirect()
+            ->route('specialized-educational-support.teachers.disciplines', [
+                'teacher' => $teacher,
+                'semestre' => $target->getKey(),
+            ])
+            ->with('success', $this->copyMessage($result['created'], $result['source'], $target));
+    }
+
+    /**
+     * Copia para o semestre informado os vínculos de todos os professores no semestre anterior.
+     *
+     * @throws Throwable
+     */
+    public function copyAllDisciplines(
+        CopyTeacherDisciplinesData $data,
+        CopyTeacherCourseDisciplinesAction $action,
+    ): RedirectResponse {
+        $target = Semester::query()->findOrFail($data->semesterId);
+        $result = $action->execute($target);
+
+        return redirect()
+            ->route('specialized-educational-support.teachers.index')
+            ->with('success', $this->copyMessage($result['created'], $result['source'], $target));
+    }
+
+    private function copyMessage(int $created, Semester $source, Semester $target): string
+    {
+        if ($created === 0) {
+            return "Os vínculos de {$source->label} já estavam em {$target->label}. Nada foi copiado.";
+        }
+
+        $label = $created === 1 ? '1 vínculo copiado' : "{$created} vínculos copiados";
+
+        return "{$label} de {$source->label} para {$target->label}.";
     }
 }

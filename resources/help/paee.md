@@ -77,7 +77,7 @@ Na visualização, clique em **PDF**, à esquerda do rodapé. O documento abre e
 1. Na visualização, clique em **Excluir** (ou use a ação de excluir na listagem).
 2. Confirme em **Confirmar exclusão**. O sistema mostra "PAEE removido com sucesso."
 
-> **Importante:** a exclusão apaga também os objetivos, recursos e revisões do PAEE, e os PEIs vinculados a esse PAEE. Confira a aba **PEIs** do aluno antes de excluir.
+A exclusão apaga também os objetivos, recursos e revisões do PAEE. Ela é bloqueada quando já existe PEI vinculado ao PAEE: "Não é possível excluir um PAEE que já possui PEI vinculado."
 
 ## Status do PAEE
 

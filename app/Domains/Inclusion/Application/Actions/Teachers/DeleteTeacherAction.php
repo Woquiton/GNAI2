@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Actions\Teachers;
 
+use App\Domains\Inclusion\Application\Queries\Authorship\UserHasAuthoredPedagogicalRecordsQuery;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidTeacher;
 use App\Domains\Inclusion\Domain\Models\Teacher;
 use App\Domains\Inclusion\Infrastructure\Storage\TeacherPhotoStorage;
@@ -14,6 +15,7 @@ final readonly class DeleteTeacherAction
 {
     public function __construct(
         private TeacherPhotoStorage $photoStorage,
+        private UserHasAuthoredPedagogicalRecordsQuery $hasAuthoredPedagogicalRecords,
     ) {}
 
     /**
@@ -30,6 +32,14 @@ final readonly class DeleteTeacherAction
             if ($lockedTeacher->peiDisciplines()->exists()) {
                 throw new InvalidTeacher(
                     'Não é possível excluir este professor pois ele possui registros de acompanhamento em Planos Educacionais Individualizados (PEI).'
+                );
+            }
+
+            $userId = $lockedTeacher->user()->value('id');
+
+            if ($this->hasAuthoredPedagogicalRecords->execute($userId === null ? null : (int) $userId)) {
+                throw new InvalidTeacher(
+                    'Não é possível excluir este professor pois o usuário dele é autor de registros de PEI, PAEE ou estudo de caso.'
                 );
             }
 

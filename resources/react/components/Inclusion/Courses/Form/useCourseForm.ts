@@ -14,6 +14,14 @@ function initialData(disciplines: CourseDisciplineOption[], course?: CourseRecor
         discipline_ids: (course?.disciplines ?? [])
             .map((discipline) => discipline.id)
             .filter((id) => availableIds.has(id)),
+        discipline_periods: Object.fromEntries(
+            (course?.disciplines ?? [])
+                .filter((discipline) => availableIds.has(discipline.id))
+                .map((discipline) => [
+                    String(discipline.id),
+                    discipline.pivot?.course_period ? String(discipline.pivot.course_period) : '',
+                ]),
+        ),
     };
 
     return course ? { ...data, is_active: course.is_active ? '1' : '0' } : data;
@@ -24,6 +32,17 @@ function disciplinesError(errors: Record<string, string | undefined>): string | 
     return (
         errors.discipline_ids ??
         Object.entries(errors).find(([key]) => key.startsWith('discipline_ids.'))?.[1]
+    );
+}
+
+/** Erro do período de uma disciplina (`discipline_periods.{id}`). */
+function periodErrors(
+    errors: Record<string, string | undefined>,
+): Record<string, string | undefined> {
+    return Object.fromEntries(
+        Object.entries(errors)
+            .filter(([key]) => key.startsWith('discipline_periods.'))
+            .map(([key, message]) => [key.slice('discipline_periods.'.length), message]),
     );
 }
 
@@ -39,6 +58,20 @@ export function useCourseForm(disciplines: CourseDisciplineOption[], course?: Co
             url: course ? courseUrls.update(course.id) : courseUrls.store,
             method: course ? 'put' : 'post',
             blocked: editorFailed,
+            // Envia o período somente das disciplinas que continuam marcadas.
+            transform: (data) => {
+                const formData = data as CourseFormData;
+                const selected = new Set(formData.discipline_ids.map(String));
+
+                return {
+                    ...formData,
+                    discipline_periods: Object.fromEntries(
+                        Object.entries(formData.discipline_periods).filter(([id]) =>
+                            selected.has(id),
+                        ),
+                    ),
+                };
+            },
             failureText: course
                 ? 'Não foi possível salvar o curso. Tente novamente.'
                 : 'Não foi possível cadastrar o curso. Tente novamente.',
@@ -49,6 +82,7 @@ export function useCourseForm(disciplines: CourseDisciplineOption[], course?: Co
         form,
         errors,
         disciplinesError: disciplinesError(errors),
+        disciplinePeriodErrors: periodErrors(errors),
         formRef,
         save,
         editorFailed,

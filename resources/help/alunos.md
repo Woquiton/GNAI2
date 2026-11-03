@@ -2,7 +2,7 @@
 titulo: Alunos e prontuário
 resumo: Como cadastrar e editar alunos, definir a situação e o tipo de acompanhamento, consultar o prontuário, vincular cursos, gerar a ficha em PDF e excluir um cadastro.
 categoria: Atendimento
-palavras-chave: aluno, alunos, estudante, cadastrar aluno, novo aluno, matrícula, cpf, foto do aluno, editar aluno, status do aluno, ativo, trancado, concluído, desistente, atendimento completo, prontuário, ficha do aluno, abas, histórico, pdf do aluno, ficha em pdf, curso do aluno, vincular curso, matricular em curso, curso atual, tornar atual, ano letivo, frequência escolar, disciplinas com reprovação, risco de insucesso, excluir aluno, remover aluno, laudo, status do atendimento
+palavras-chave: aluno, alunos, estudante, cadastrar aluno, novo aluno, matrícula, cpf, foto do aluno, editar aluno, status do aluno, ativo, trancado, concluído, desistente, atendimento completo, prontuário, ficha do aluno, abas, histórico, pdf do aluno, ficha em pdf, curso do aluno, vincular curso, matricular em curso, curso atual, tornar atual, ano letivo, período do curso, semestre do aluno, frequência escolar, disciplinas com reprovação, risco de insucesso, dependência, dependências, aprovada na dependência, reprovação por semestre, excluir aluno, remover aluno, laudo, status do atendimento
 ordem: 10
 permissoes: student.view
 ---
@@ -126,11 +126,30 @@ Ao final das abas do prontuário, **Solicitações** mostra todos os registros d
 
 1. No prontuário, abra a aba **Cursos do aluno** e clique em **Cadastrar**.
 2. Escolha o **Curso / Série** (obrigatório) e informe o **Ano Letivo** (obrigatório, com 4 dígitos). O **Semestre** é opcional.
-3. Marque **Definir este como o curso atual do aluno** se ele for o curso em andamento. No primeiro curso do aluno essa opção já vem marcada e não pode ser desmarcada.
-4. Para o curso atual, preencha se quiser o **Acompanhamento Acadêmico do Curso Atual**: **Situação da Frequência Escolar**, **Disciplinas com Reprovação** e **Disciplinas com Risco de Insucesso Acadêmico**.
-5. Clique em **Salvar**. O sistema mostra "Matrícula realizada com sucesso.".
+3. Em **Período do Curso**, informe se quiser o período (semestre ou série) em que o aluno está no semestre escolhido. Para informar o período, o **Semestre** passa a ser obrigatório.
+4. Marque **Definir este como o curso atual do aluno** se ele for o curso em andamento. No primeiro curso do aluno essa opção já vem marcada e não pode ser desmarcada.
+5. Para o curso atual, preencha se quiser o **Acompanhamento Acadêmico no Semestre**: **Situação da Frequência Escolar**, **Disciplinas com Reprovação** e **Disciplinas com Risco de Insucesso Acadêmico**. Reprovações e riscos ficam registrados no **Semestre** escolhido, que no cadastro já vem com o semestre atual. Marque só as exceções: as disciplinas não marcadas são consideradas sem reprovação.
+6. Clique em **Salvar**. O sistema mostra "Matrícula realizada com sucesso.".
 
 Ao marcar um novo curso como atual, o curso atual anterior passa para o histórico.
+
+### Período do aluno em cada semestre
+
+O período fica guardado por semestre. Na virada de semestre, use **Virada de semestre** na visualização do curso para registrar todos os alunos de uma vez. Veja [Fazer a virada de semestre dos alunos](/ajuda/cadastros-do-atendimento#fazer-a-virada-de-semestre-dos-alunos). Para um aluno só, edite o curso atual, escolha o novo **Semestre** e o novo **Período do Curso** e salve: o registro do semestre anterior é mantido. A visualização do curso do aluno mostra o **Período do Curso** no semestre da matrícula e o histórico em **Períodos por Semestre**. Deixar o período como **Sem período definido** apaga o registro daquele semestre.
+
+Com o período informado, o PEI mostra primeiro as disciplinas desse período do curso. Veja [PEI](/ajuda/pei#cadastrar-as-adaptacoes-por-disciplina).
+
+## Reprovações, riscos e dependências por semestre
+
+Reprovações e riscos de insucesso são registrados por semestre. Na edição do curso atual, ao trocar o **Semestre**, a tela carrega o período, as reprovações e os riscos já registrados nele; os outros semestres não mudam ao salvar.
+
+Uma reprovação de um semestre anterior que ainda não foi aprovada é uma **dependência**. Não é preciso registrar as aprovações de todas as disciplinas, só as das dependências:
+
+1. Edite o curso atual do aluno e escolha o semestre em que ele foi aprovado.
+2. Em **Dependências aprovadas neste semestre**, marque as disciplinas que ele concluiu. Cada uma mostra o semestre da reprovação.
+3. Clique em **Salvar**.
+
+A visualização do curso do aluno mostra as **Dependências Pendentes** e o histórico em **Reprovações e Riscos por Semestre**, com as dependências aprovadas em cada semestre. O PEI sugere as dependências pendentes junto com as disciplinas do período.
 
 ## Editar, tornar atual ou excluir um curso do aluno
 

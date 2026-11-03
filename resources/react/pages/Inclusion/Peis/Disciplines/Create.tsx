@@ -5,19 +5,26 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPeisDisciplinesCreatePage({
     pei,
+    semesterLabel,
+    studentPeriod,
     disciplines,
 }: PeiDisciplineBulkProps): React.JSX.Element {
     return (
         <BusinessPage
             title="Cadastrar Adaptação Curricular"
-            subtitle="Para cada disciplina do curso, escolha o professor responsável. As adaptações são criadas de uma vez; o conteúdo pedagógico (objetivos, metodologias etc.) de cada uma é preenchido em seguida, individualmente."
+            subtitle="Para cada disciplina do curso, escolha o professor responsável. As disciplinas do período do aluno aparecem primeiro. As adaptações são criadas de uma vez; o conteúdo pedagógico (objetivos, metodologias etc.) de cada uma é preenchido em seguida, individualmente."
             breadcrumbItems={peiDisciplineBreadcrumb({
                 peiId: pei.id,
                 peiLabel: 'PEI',
                 current: 'Cadastrar Adaptação',
             })}
         >
-            <PeiDisciplineBulkForm pei={pei} disciplines={disciplines} />
+            <PeiDisciplineBulkForm
+                pei={pei}
+                semesterLabel={semesterLabel}
+                studentPeriod={studentPeriod}
+                disciplines={disciplines}
+            />
         </BusinessPage>
     );
 }

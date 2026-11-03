@@ -43,7 +43,7 @@ final readonly class UpdatePeiDisciplineAction
                 ->where('pei_id', $lockedPei->getKey())
                 ->findOrFail($peiDiscipline->getKey());
 
-            $lockedPeiDiscipline->ensureCanBeEditedBy((int) $user->getKey(), $user->teacher_id);
+            $lockedPeiDiscipline->ensureCanBeEditedBy((int) $user->getKey(), $user->teacher_id, $user->isAdmin());
 
             // Um PEI finalizado continua editável: finalização é um checkpoint de
             // completude (todas as disciplinas preenchidas), não um bloqueio
@@ -55,9 +55,15 @@ final readonly class UpdatePeiDisciplineAction
 
             $discipline = Discipline::query()
                 ->findOrFail($data->disciplineId);
-            $discipline->ensureIsActive();
 
-            if ((int) $lockedPeiDiscipline->discipline_id !== (int) $discipline->getKey()) {
+            $disciplineChanged = (int) $lockedPeiDiscipline->discipline_id !== (int) $discipline->getKey();
+            $teacherChanged = (int) $lockedPeiDiscipline->teacher_id !== (int) $teacher->getKey();
+
+            // Disciplina e professor só são revalidados quando mudam: uma adaptação antiga continua
+            // editável mesmo depois da troca de professor ou da inativação da disciplina.
+            if ($disciplineChanged) {
+                $discipline->ensureIsActive();
+
                 $peiAlreadyHasDiscipline = PeiDiscipline::query()
                     ->where('pei_id', $lockedPeiDiscipline->pei_id)
                     ->where('discipline_id', $discipline->getKey())
@@ -66,25 +72,28 @@ final readonly class UpdatePeiDisciplineAction
                 if ($peiAlreadyHasDiscipline) {
                     throw new InvalidPeiDiscipline('Já existe uma adaptação para essa disciplina nesse PEI.');
                 }
+
+                $disciplineBelongsToCourse = $lockedPei->course
+                    ->disciplines()
+                    ->where('disciplines.id', $discipline->getKey())
+                    ->exists();
+
+                if (! $disciplineBelongsToCourse) {
+                    throw new InvalidPeiDiscipline('A disciplina selecionada não faz parte do curso do aluno.');
+                }
             }
 
-            $disciplineBelongsToCourse = $lockedPei->course
-                ->disciplines()
-                ->where('disciplines.id', $discipline->getKey())
-                ->exists();
+            if ($disciplineChanged || $teacherChanged) {
+                $teacherTeachesDiscipline = TeacherCourseDiscipline::query()
+                    ->where('teacher_id', $teacher->getKey())
+                    ->where('course_id', $lockedPei->course_id)
+                    ->where('discipline_id', $discipline->getKey())
+                    ->where('semester_id', $lockedPei->semester_id)
+                    ->exists();
 
-            if (! $disciplineBelongsToCourse) {
-                throw new InvalidPeiDiscipline('A disciplina selecionada não faz parte do curso do aluno.');
-            }
-
-            $teacherBelongsToCourseAndDiscipline = TeacherCourseDiscipline::query()
-                ->where('teacher_id', $teacher->getKey())
-                ->where('course_id', $lockedPei->course_id)
-                ->where('discipline_id', $discipline->getKey())
-                ->exists();
-
-            if (! $teacherBelongsToCourseAndDiscipline) {
-                throw new InvalidPeiDiscipline('O professor selecionado não está vinculado à disciplina neste curso.');
+                if (! $teacherTeachesDiscipline) {
+                    throw new InvalidPeiDiscipline('O professor selecionado não está vinculado à disciplina neste curso no semestre do PEI.');
+                }
             }
 
             $fieldLabels = [

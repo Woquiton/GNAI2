@@ -13,6 +13,10 @@ export const teacherUrls = {
     update: (id: number) => `${base}/${id}`,
     destroy: (id: number) => `${base}/${id}`,
     disciplines: (id: number) => `${base}/${id}/disciplinas`,
+    disciplinesInSemester: (id: number, semesterId: number) =>
+        `${base}/${id}/disciplinas?semestre=${semesterId}`,
+    copyDisciplines: (id: number) => `${base}/${id}/disciplinas/copiar`,
+    copyAllDisciplines: `${base}/vinculos/copiar`,
 };
 
 export function teacherBreadcrumb(

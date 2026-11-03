@@ -6,14 +6,18 @@ namespace App\Domains\Inclusion\UI\Controllers;
 
 use App\Domains\Inclusion\Application\Actions\Courses\CreateCourseAction;
 use App\Domains\Inclusion\Application\Actions\Courses\DeleteCourseAction;
+use App\Domains\Inclusion\Application\Actions\Courses\RolloverCourseSemesterAction;
 use App\Domains\Inclusion\Application\Actions\Courses\UpdateCourseAction;
 use App\Domains\Inclusion\Application\Data\Courses\CreateCourseData;
 use App\Domains\Inclusion\Application\Data\Courses\ListCoursesData;
+use App\Domains\Inclusion\Application\Data\Courses\RolloverCourseSemesterData;
 use App\Domains\Inclusion\Application\Data\Courses\UpdateCourseData;
 use App\Domains\Inclusion\Application\Queries\Courses\CourseFormQuery;
+use App\Domains\Inclusion\Application\Queries\Courses\CourseRolloverQuery;
 use App\Domains\Inclusion\Application\Queries\Courses\ListCoursesQuery;
 use App\Domains\Inclusion\Application\Queries\Courses\ShowCourseQuery;
 use App\Domains\Inclusion\Domain\Models\Course;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -58,6 +62,7 @@ final class CourseController
                 'can' => [
                     'update' => $request->user()?->can('course.update') ?? false,
                     'delete' => $request->user()?->can('course.delete') ?? false,
+                    'rollover' => $request->user()?->can('student-course.update') ?? false,
                 ],
             ],
         );
@@ -113,5 +118,35 @@ final class CourseController
         return redirect()
             ->route('specialized-educational-support.courses.index')
             ->with('success', 'Curso removido com sucesso.');
+    }
+
+    /** Virada de semestre: período de cada aluno ativo do curso no semestre escolhido. */
+    public function rollover(Course $course, CourseRolloverQuery $query, Request $request): InertiaResponse
+    {
+        $semesterId = $request->integer('semestre');
+
+        return Inertia::render(
+            'Inclusion/Courses/Rollover',
+            $query->execute($course, $semesterId > 0 ? $semesterId : null),
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function storeRollover(
+        RolloverCourseSemesterData $data,
+        Course $course,
+        RolloverCourseSemesterAction $action,
+    ): RedirectResponse {
+        $registered = $action->execute($course, $data);
+        $label = (string) Semester::query()->whereKey($data->semesterId)->value('label');
+        $message = $registered === 1
+            ? "1 aluno registrado em {$label}."
+            : "{$registered} alunos registrados em {$label}.";
+
+        return redirect()
+            ->route('specialized-educational-support.courses.show', $course)
+            ->with('success', $message);
     }
 }

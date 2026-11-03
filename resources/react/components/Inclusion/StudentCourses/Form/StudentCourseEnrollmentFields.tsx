@@ -7,6 +7,7 @@ import {
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
+import { coursePeriodOptions } from '@/components/Inclusion/coursePeriods';
 import type {
     StudentCourseFormMode,
     StudentCourseFormSectionProps,
@@ -16,11 +17,13 @@ interface StudentCourseEnrollmentFieldsProps extends StudentCourseFormSectionPro
     mode: StudentCourseFormMode;
     courseOptions: FieldOption[];
     semesterOptions: FieldOption[];
+    maxCoursePeriod: number;
+    onSemesterChange: (semesterId: string) => void;
     isCurrent: boolean;
     mustBeCurrent: boolean;
 }
 
-/** Curso (no cadastro), ano letivo, semestre e definição do curso atual (no cadastro). */
+/** Curso (no cadastro), ano letivo, semestre, período do curso e definição do curso atual (no cadastro). */
 export default function StudentCourseEnrollmentFields({
     form,
     errors,
@@ -28,6 +31,8 @@ export default function StudentCourseEnrollmentFields({
     mode,
     courseOptions,
     semesterOptions,
+    maxCoursePeriod,
+    onSemesterChange,
     isCurrent,
     mustBeCurrent,
 }: StudentCourseEnrollmentFieldsProps): React.JSX.Element {
@@ -76,7 +81,21 @@ export default function StudentCourseEnrollmentFields({
                     disabled={disabled}
                     value={form.data.semester_id}
                     error={errors.semester_id}
-                    onChange={(value) => form.setData('semester_id', value)}
+                    hint="Período do curso, reprovações e riscos são registrados neste semestre."
+                    onChange={onSemesterChange}
+                />
+                <SelectInputField
+                    id="student-course-course-period"
+                    name="course_period"
+                    label="Período do Curso"
+                    hint="Semestre ou série em que o aluno está no semestre informado. Usado para sugerir as disciplinas do PEI."
+                    options={coursePeriodOptions(maxCoursePeriod)}
+                    placeholder={null}
+                    searchable={false}
+                    disabled={disabled}
+                    value={form.data.course_period}
+                    error={errors.course_period}
+                    onChange={(value) => form.setData('course_period', value)}
                 />
                 {creating ? (
                     <FormGridWide>

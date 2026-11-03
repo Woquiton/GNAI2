@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Data\StudentCourses;
 
+use App\Domains\Inclusion\Domain\Models\Course;
 use App\Domains\Inclusion\Domain\Models\StudentCourse;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -20,6 +21,8 @@ final class UpdateStudentCourseData extends Data
         public ?string $schoolAttendanceStatus = null,
         public array $failedDisciplineIds = [],
         public array $atRiskDisciplineIds = [],
+        public ?int $coursePeriod = null,
+        public array $resolvedDependencyIds = [],
     ) {}
 
     public static function rules(): array
@@ -42,12 +45,15 @@ final class UpdateStudentCourseData extends Data
                     ->ignore($studentCourseId),
             ],
             'academic_year' => ['required', 'digits:4'],
-            'semester_id' => ['nullable', 'integer', Rule::exists('semesters', 'id')],
+            'semester_id' => ['nullable', 'required_with:course_period,failed_discipline_ids,at_risk_discipline_ids,resolved_dependency_ids', 'integer', Rule::exists('semesters', 'id')],
+            'course_period' => ['nullable', 'integer', 'between:1,'.Course::MAX_COURSE_PERIOD],
             'school_attendance_status' => ['nullable', 'string', 'max:100000'],
             'failed_discipline_ids' => ['nullable', 'array'],
             'failed_discipline_ids.*' => ['integer', 'distinct', 'exists:disciplines,id'],
             'at_risk_discipline_ids' => ['nullable', 'array'],
             'at_risk_discipline_ids.*' => ['integer', 'distinct', 'exists:disciplines,id'],
+            'resolved_dependency_ids' => ['nullable', 'array'],
+            'resolved_dependency_ids.*' => ['integer', 'distinct', 'exists:disciplines,id'],
         ];
     }
 
@@ -60,6 +66,9 @@ final class UpdateStudentCourseData extends Data
             'course_id.unique' => 'Este aluno já possui vínculo com o curso selecionado.',
             'academic_year.required' => 'O ano letivo é obrigatório.',
             'academic_year.digits' => 'O ano letivo deve conter 4 dígitos.',
+            'semester_id.required_with' => 'Informe o semestre do período do curso, das reprovações e dos riscos de insucesso.',
+            'course_period.integer' => 'Informe o período do curso como um número.',
+            'course_period.between' => 'O período do curso deve estar entre 1 e '.Course::MAX_COURSE_PERIOD.'.',
         ];
     }
 }

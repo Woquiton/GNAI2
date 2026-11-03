@@ -33,7 +33,7 @@ final readonly class DeletePeiDisciplineAction
                 ->where('pei_id', $lockedPei->getKey())
                 ->findOrFail($peiDiscipline->getKey());
 
-            $lockedPeiDiscipline->ensureCanBeManagedBy((int) $user->getKey());
+            $lockedPeiDiscipline->ensureCanBeManagedBy((int) $user->getKey(), $user->isAdmin());
 
             if ($lockedPei->is_finished) {
                 throw new InvalidPei('Este PEI já foi finalizado e não permite alterações.');

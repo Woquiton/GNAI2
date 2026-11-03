@@ -97,6 +97,49 @@ Princípios para não sobrecarregar o NAPNE:
 
 A fase 0 é urgente e não muda nada para o usuário final. As fases 1 a 4 alteram banco e regras de negócio e dependem de decisão do projeto.
 
+## Situação da implementação
+
+Atualizado em 2026-11-03. As fases 0 a 4 foram implementadas no código e aguardam homologação manual. A integração com o SUAP continua opcional e pendente.
+
+**Fase 0, riscos imediatos.** A migration `2026_11_03_100000_protect_pedagogical_records_from_cascading_deletes` troca as cascatas de PEI, adaptações, revisões, PAEE, pareceres, estudos de caso e contribuições por bloqueio, e remove a tabela `discipline_teacher`. Guardas novas:
+
+- semestre: PAEE, estudo de caso, matrícula, período do aluno e vínculo de professor também bloqueiam;
+- curso: PEIs bloqueiam a exclusão; retirar disciplina da matriz é bloqueado quando há adaptação de PEI ou reprovação e risco no curso, e remove os vínculos de professor daquela disciplina no curso;
+- disciplina: adaptações de PEI bloqueiam a exclusão;
+- PAEE: PEI vinculado bloqueia a exclusão;
+- professor e profissional: a autoria de PEI, PAEE, estudo de caso, revisões e contribuições bloqueia a exclusão (`UserHasAuthoredPedagogicalRecordsQuery`).
+
+Também mudou:
+
+- a nova versão do PEI usa o curso da matrícula vigente;
+- a edição de adaptação só revalida professor e disciplina quando eles mudam;
+- o professor vê apenas PEIs com adaptação sob sua responsabilidade, nas listagens, na aba do aluno, na visualização e nos PDFs (`TeacherPeiAccessQuery`);
+- administradores podem finalizar, excluir e editar PEIs e adaptações de outros autores;
+- cursos e disciplinas não aceitam nomes repetidos na validação;
+- a tela de disciplinas do professor preserva vínculos com cursos ou disciplinas inativos;
+- a edição de adaptação oferece só as disciplinas do curso, mais a atual.
+
+**Fase 1, período do curso.** A migration `2026_11_03_110000_add_course_periods_and_student_course_semesters` cria `course_disciplines.course_period` e a tabela `student_course_semesters`, com um registro por matrícula e semestre. O formulário do curso pede o período de cada disciplina marcada. A matrícula ganhou o campo **Período do Curso**, gravado para o semestre informado, e a visualização mostra o histórico por semestre. O cadastro de adaptações do PEI mostra primeiro as disciplinas do período do aluno no semestre do PEI.
+
+**Fase 2, professor por semestre.** A migration `2026_11_03_120000_add_semester_to_teacher_course_disciplines` torna `semester_id` obrigatório no vínculo, com os registros existentes levados ao semestre atual ou ao mais recente e repetidos nos semestres que já têm PEI, para que os PEIs antigos continuem aceitando os mesmos professores. A migration falha de propósito se houver vínculos e nenhum semestre cadastrado. A tela **Gerenciar Disciplinas** escolhe o semestre e copia os vínculos do semestre anterior; a listagem de professores copia os vínculos de todos para o semestre atual. O PEI valida e lista professores pelo semestre do PEI. A listagem de alunos do professor considera as matrículas vigentes nos cursos em que ele leciona no semestre atual.
+
+**Fase 3, reprovação e risco por semestre.** A migration `2026_11_03_130000_add_semester_to_student_course_disciplines` torna `semester_id` obrigatório em `student_course_disciplines` e cria `resolved_semester_id`, o semestre em que uma reprovação foi aprovada. Os registros existentes vão para o semestre da matrícula ou, sem ele, para o atual ou o mais recente. Regras:
+
+- reprovação e risco são gravados no semestre escolhido na matrícula, sem alterar os outros semestres; o cadastro já vem com o semestre atual;
+- dependência é a reprovação de semestre anterior sem aprovação antes do semestre consultado; ela é aprovada pelo campo **Dependências aprovadas neste semestre**, sem registrar aprovações das demais disciplinas;
+- a visualização da matrícula mostra as dependências pendentes e o histórico por semestre;
+- o PEI sugere as dependências pendentes no semestre do PEI junto com as disciplinas do período;
+- relatório de matrículas e PDF do aluno mostram reprovação e risco do semestre da matrícula;
+- o histórico de alterações passa a registrar reprovações, riscos e dependências aprovadas por semestre, mantendo a leitura dos registros antigos.
+
+**Fase 4, virada de semestre em lote.** A tela **Virada de semestre**, aberta pela visualização do curso (`courses.rollover`, permissão `student-course.update`), lista os alunos ativos com matrícula vigente no curso e o período no último semestre anterior ao de destino. Por padrão todos avançam um período; a equipe marca só quem permanece ou não deve ser registrado e escolhe o período de quem não tem histórico. Ao salvar, `RolloverCourseSemesterAction` grava o período no semestre de destino e passa a matrícula para esse semestre e o ano dele, um registro por vez, para a auditoria. Não houve migration nesta fase.
+
+**Pontos para a homologação.**
+
+- Rodar as migrations numa cópia do banco de produção antes, porque elas alteram chaves estrangeiras e preenchem o semestre dos vínculos.
+- Depois de migrar, conferir os vínculos dos professores no semestre atual. Os semestres com PEI recebem uma cópia dos vínculos atuais, que pode ser ajustada em **Gerenciar Disciplinas**.
+- Rodar `php artisan permissions:sync` não é necessário: as novas rotas usam a permissão existente `teacher.update`.
+
 ## Fontes
 
 - SUAP, API pública: https://suap.ifrn.edu.br/api/openapi.json

@@ -2,7 +2,7 @@
 titulo: Professores: cadastro, disciplinas e acesso ao Portal do Professor
 resumo: Como cadastrar professores, atribuir as disciplinas de cada curso, dar acesso ao Portal do Professor com senha ou link por e-mail.
 categoria: Gestão do núcleo
-palavras-chave: professor, professores, docente, docentes, corpo docente, cadastrar professor, novo professor, matrícula, disciplinas do professor, gerenciar disciplinas, matriz curricular, atribuir disciplina, vincular disciplina, disciplina por curso, curso, portal do professor, acesso do professor, link de acesso, e-mail institucional, senha do professor, adaptação do pei, excluir professor, foto
+palavras-chave: professor, professores, semestre do professor, copiar vínculos, copiar do semestre anterior, virada de semestre, docente, docentes, corpo docente, cadastrar professor, novo professor, matrícula, disciplinas do professor, gerenciar disciplinas, matriz curricular, atribuir disciplina, vincular disciplina, disciplina por curso, curso, portal do professor, acesso do professor, link de acesso, e-mail institucional, senha do professor, adaptação do pei, excluir professor, foto
 ordem: 30
 permissoes: teacher.view
 ---
@@ -37,19 +37,31 @@ Depois do cadastro, atribua as disciplinas do professor (veja a próxima seção
 
 ## Atribuir disciplinas ao professor
 
-As disciplinas são atribuídas por curso, porque o mesmo professor pode lecionar disciplinas diferentes em cada curso.
+As disciplinas são atribuídas por curso e por semestre letivo, porque o mesmo professor pode lecionar disciplinas diferentes em cada curso e mudar de disciplina a cada semestre.
 
 1. Abra o professor na listagem e clique em **Gerenciar Disciplinas**.
-2. Na tela **Matriz curricular**, cada curso aparece em um bloco com as suas disciplinas. Marque as que o professor leciona naquele curso, ou use **Selecionar todas**.
-3. Clique em **Salvar**. O sistema mostra "Matriz curricular atualizada com sucesso!".
+2. Em **Semestre dos vínculos**, confira o semestre. A tela abre no semestre atual; ao trocar de semestre, as alterações não salvas são descartadas.
+3. Cada curso aparece em um bloco com as suas disciplinas. Marque as que o professor leciona naquele curso no semestre escolhido, ou use **Selecionar todas**.
+4. Clique em **Salvar**. O sistema mostra "Matriz curricular atualizada com sucesso!".
 
-Só aparecem cursos ativos e, em cada um, as disciplinas ativas que fazem parte da matriz curricular do curso. Se a tela mostrar "Nenhum curso ou disciplina disponível para atribuição.", cadastre ou ative cursos e disciplinas em **Gestão do núcleo → Cadastros** e inclua as disciplinas no curso. Veja [Cursos](/ajuda/cadastros-do-atendimento#cursos) e [Disciplinas](/ajuda/cadastros-do-atendimento#disciplinas).
+Só aparecem cursos ativos e, em cada um, as disciplinas ativas que fazem parte da matriz curricular do curso. Vínculos com cursos ou disciplinas que foram inativados não aparecem na tela e são mantidos ao salvar. Se a tela mostrar "Nenhum curso ou disciplina disponível para atribuição.", cadastre ou ative cursos e disciplinas em **Gestão do núcleo → Cadastros** e inclua as disciplinas no curso. Veja [Cursos](/ajuda/cadastros-do-atendimento#cursos) e [Disciplinas](/ajuda/cadastros-do-atendimento#disciplinas).
 
-As atribuições aparecem na visualização do professor, agrupadas por curso.
+As atribuições aparecem na visualização do professor, agrupadas por semestre e curso, do semestre mais recente para o mais antigo.
+
+## Copiar os vínculos do semestre anterior
+
+Na virada de semestre, não é preciso marcar tudo de novo.
+
+- **De todos os professores**: na listagem de **Professores**, clique em **Copiar vínculos de** seguido do semestre anterior e confirme. As disciplinas que cada professor tinha no semestre anterior mais recente com vínculos são copiadas para o semestre atual.
+- **De um professor**: em **Gerenciar Disciplinas**, com o semestre de destino escolhido, clique em **Copiar vínculos de** seguido do semestre anterior e confirme.
+
+A cópia mantém os vínculos que já existem no semestre de destino e não copia vínculos com cursos ou disciplinas inativos, nem com disciplinas que saíram da matriz do curso. Depois de copiar, ajuste em **Gerenciar Disciplinas** apenas o que mudou. O botão só aparece quando existe um semestre anterior com vínculos.
 
 ### Para que serve a matriz do professor?
 
-Ao cadastrar as adaptações curriculares de um PEI, cada disciplina só aceita como responsável um professor que tenha essa disciplina atribuída no curso do PEI. Disciplinas sem professor na matriz mostram o aviso "Nenhum professor vinculado a esta disciplina na matriz curricular." Veja [PEI](/ajuda/pei#cadastrar-as-adaptacoes-por-disciplina).
+Ao cadastrar as adaptações curriculares de um PEI, cada disciplina só aceita como responsável um professor que tenha essa disciplina atribuída no curso do PEI, no mesmo semestre do PEI. Disciplinas sem professor nesse semestre mostram o aviso "Nenhum professor vinculado a esta disciplina neste curso no semestre do PEI." Veja [PEI](/ajuda/pei#cadastrar-as-adaptacoes-por-disciplina).
+
+Professores que entram no Gnai veem na listagem de alunos somente os alunos matriculados hoje nos cursos em que lecionam no semestre atual. Nos PEIs, veem apenas os PEIs em que são responsáveis por alguma adaptação.
 
 ## Como o professor acessa o Gnai?
 
@@ -69,14 +81,16 @@ Mais detalhes em [Portal do Professor](/ajuda/portal-do-professor).
 - **Editar**: abra o professor, clique em **Editar**, altere os dados e clique em **Salvar**. O sistema mostra "Professor atualizado com sucesso." Alterar o e-mail muda também o login do professor.
 - **Excluir**: clique em **Excluir** na listagem ou na visualização e confirme. O sistema mostra "Professor removido com sucesso." A exclusão remove também a conta de acesso e a matriz curricular do professor.
 
-A exclusão é bloqueada quando o professor já tem adaptações registradas em algum PEI.
+A exclusão é bloqueada quando o professor já tem adaptações registradas em algum PEI ou quando a conta dele é autora de PEI, PAEE ou estudo de caso. Esses registros guardam quem os criou e não podem perder essa informação.
 
 ## Dúvidas comuns
 
 - **"Este e-mail já está cadastrado para outra pessoa."**: O e-mail já pertence a outro professor, profissional, aluno ou responsável. Cada conta precisa de um e-mail próprio.
 - **"Esta matrícula já está em uso."**: Outro professor já tem essa matrícula.
 - **"Não é possível excluir este professor pois ele possui registros de acompanhamento em Planos Educacionais Individualizados (PEI)."**: O professor já tem adaptações em PEIs e o cadastro precisa ser mantido.
-- **"O professor selecionado não está vinculado à disciplina neste curso."**: Ao montar o PEI, atribua antes a disciplina ao professor no curso do aluno, em **Gerenciar Disciplinas**.
+- **"Não é possível excluir este professor pois o usuário dele é autor de registros de PEI, PAEE ou estudo de caso."**: A conta do professor criou registros pedagógicos e o cadastro precisa ser mantido.
+- **"O professor selecionado não está vinculado à disciplina neste curso no semestre do PEI."**: Ao montar o PEI, atribua antes a disciplina ao professor no curso do aluno e no semestre do PEI, em **Gerenciar Disciplinas**, ou copie os vínculos do semestre anterior.
+- **"Não há vínculos de professores em semestres anteriores a ... para copiar."**: Ainda não existe semestre anterior com vínculos. Atribua as disciplinas em **Gerenciar Disciplinas**.
 - **"Uma ou mais disciplinas informadas não pertencem ao curso ... ou estão inativas."**: A matriz do curso ou o status da disciplina mudou enquanto você editava. Abra **Gerenciar Disciplinas** novamente.
 - **"Este link de acesso é inválido, já foi usado ou expirou."**: O professor deve pedir um novo link pela opção **Sou professor(a): entrar com e-mail**.
 - **O professor não vê um aluno no portal**: Confira se o PEI do aluno é o vigente e se tem uma disciplina atribuída a esse professor.

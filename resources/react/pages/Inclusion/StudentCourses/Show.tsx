@@ -13,6 +13,8 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 
 export default function InclusionStudentCoursesShowPage({
     studentCourse,
+    academicHistory,
+    pendingDependencies,
     display,
     can,
 }: StudentCourseShowProps): React.JSX.Element {
@@ -41,6 +43,8 @@ export default function InclusionStudentCoursesShowPage({
                 studentCourse={studentCourse}
                 studentName={studentName}
                 courseName={courseName}
+                academicHistory={academicHistory}
+                pendingDependencies={pendingDependencies}
                 display={display}
             />
             <StudentCourseDetailsActions

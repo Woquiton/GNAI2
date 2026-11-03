@@ -8,6 +8,8 @@ export default function InclusionStudentCoursesCreatePage({
     courses,
     semesters,
     mustBeCurrent,
+    maxCoursePeriod,
+    currentSemesterId,
 }: StudentCourseCreateProps): React.JSX.Element {
     return (
         <BusinessPage
@@ -25,6 +27,8 @@ export default function InclusionStudentCoursesCreatePage({
                 courses={courses}
                 semesters={semesters}
                 mustBeCurrent={mustBeCurrent}
+                maxCoursePeriod={maxCoursePeriod}
+                currentSemesterId={currentSemesterId}
             />
         </BusinessPage>
     );

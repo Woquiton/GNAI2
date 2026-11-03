@@ -5,6 +5,7 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionCoursesCreatePage({
     disciplines,
+    maxCoursePeriod,
 }: CourseCreateProps): React.JSX.Element {
     return (
         <BusinessPage
@@ -12,7 +13,7 @@ export default function InclusionCoursesCreatePage({
             subtitle="Defina as informações do curso e sua matriz curricular inicial."
             breadcrumbItems={courseBreadcrumb({ current: 'Cadastrar' })}
         >
-            <CourseForm disciplines={disciplines} />
+            <CourseForm disciplines={disciplines} maxCoursePeriod={maxCoursePeriod} />
         </BusinessPage>
     );
 }

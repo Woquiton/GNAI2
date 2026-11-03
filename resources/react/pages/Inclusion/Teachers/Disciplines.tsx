@@ -10,13 +10,18 @@ export default function InclusionTeachersDisciplinesPage({
     return (
         <BusinessPage
             title={`Matriz curricular: ${teacher.person.name}`}
-            subtitle="Selecione as disciplinas por curso. Os vínculos são organizados separadamente por curso."
+            subtitle="Selecione as disciplinas por curso em cada semestre letivo."
             breadcrumbItems={teacherBreadcrumb({
                 teacher: { id: teacher.id, name: teacher.person.name },
                 current: 'Matriz curricular',
             })}
         >
-            <TeacherDisciplinesForm key={teacher.id} teacher={teacher} {...props} />
+            {/* O formulário reinicia ao trocar de professor ou de semestre. */}
+            <TeacherDisciplinesForm
+                key={`${teacher.id}-${props.semester?.id ?? 'none'}`}
+                teacher={teacher}
+                {...props}
+            />
         </BusinessPage>
     );
 }

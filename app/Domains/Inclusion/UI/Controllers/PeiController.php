@@ -25,6 +25,7 @@ use App\Domains\Inclusion\Application\Queries\Peis\PeiAttendanceSummaryQuery;
 use App\Domains\Inclusion\Application\Queries\Peis\PeiFilterOptionsQuery;
 use App\Domains\Inclusion\Application\Queries\Peis\PeiFormQuery;
 use App\Domains\Inclusion\Application\Queries\Peis\ShowPeiQuery;
+use App\Domains\Inclusion\Application\Queries\Peis\TeacherPeiAccessQuery;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidStudent;
 use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
@@ -42,6 +43,10 @@ use Throwable;
 
 final class PeiController
 {
+    public function __construct(
+        private readonly TeacherPeiAccessQuery $teacherAccess,
+    ) {}
+
     /**
      * @throws Throwable
      */
@@ -88,6 +93,7 @@ final class PeiController
         PeiPagePresenter $presenter,
         Request $request,
     ): InertiaResponse {
+        $this->ensureCanView($pei, $request);
         $pei = $query->execute($pei);
 
         return Inertia::render(
@@ -197,11 +203,13 @@ final class PeiController
             ->with('success', 'Nova versão criada com sucesso.');
     }
 
-    public function generateDisciplinePdf(Pei $pei, PeiDiscipline $peiDiscipline): Response
+    public function generateDisciplinePdf(Pei $pei, PeiDiscipline $peiDiscipline, Request $request): Response
     {
         if ($peiDiscipline->pei_id !== $pei->id) {
             abort(404);
         }
+
+        $this->ensureCanView($pei, $request);
 
         $pei->load([
             'student.person',
@@ -226,8 +234,10 @@ final class PeiController
         return $pdf->stream("PEI_{$disciplineName}.pdf");
     }
 
-    public function generateCompletePdf(Pei $pei): Response
+    public function generateCompletePdf(Pei $pei, Request $request): Response
     {
+        $this->ensureCanView($pei, $request);
+
         $pei->load([
             'student.person',
             'student.deficiencies',
@@ -255,8 +265,10 @@ final class PeiController
     }
 
     /** @throws Throwable */
-    public function generateFamilyPdf(Pei $pei, PeiAttendanceSummaryQuery $attendanceSummaryQuery): Response
+    public function generateFamilyPdf(Pei $pei, PeiAttendanceSummaryQuery $attendanceSummaryQuery, Request $request): Response
     {
+        $this->ensureCanView($pei, $request);
+
         $pei->load(['student.person', 'paee', 'course', 'semester']);
 
         $peiDisciplines = $pei->peiDisciplines()
@@ -285,6 +297,8 @@ final class PeiController
         PeiPagePresenter $presenter,
         Request $request,
     ): InertiaResponse {
+        $this->ensureCanView($pei, $request);
+
         return Inertia::render(
             'Inclusion/Peis/Disciplines/Show',
             $presenter->discipline($pei, $peiDiscipline, $request),
@@ -422,5 +436,17 @@ final class PeiController
         }
 
         return response()->json($query->execute($pei, $teacherId));
+    }
+
+    /** Professores só abrem os PEIs em que são responsáveis por alguma adaptação. */
+    private function ensureCanView(Pei $pei, Request $request): void
+    {
+        $user = $request->user();
+
+        abort_unless(
+            $this->teacherAccess->canView($pei, $user instanceof User ? $user : null),
+            403,
+            'Este PEI não possui adaptações sob sua responsabilidade.',
+        );
     }
 }

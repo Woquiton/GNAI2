@@ -80,7 +80,7 @@ Profissionais inativos deixam de aparecer na página de equipe do site.
 1. Na listagem ou na visualização do profissional, clique em **Excluir**.
 2. Confirme na janela **Excluir Profissional**. O sistema mostra "Profissional removido com sucesso."
 
-A exclusão remove também a conta de acesso do profissional. Ela é bloqueada quando o profissional tem atendimentos, pendências atribuídas, empréstimos, registros na fila de espera, barreiras em que aparece como afetado ou documentos de alunos enviados por ele. Nesses casos, prefira inativá-lo. Ninguém pode excluir o próprio registro de profissional.
+A exclusão remove também a conta de acesso do profissional. Ela é bloqueada quando o profissional tem atendimentos, pendências atribuídas, empréstimos, registros na fila de espera, barreiras em que aparece como afetado, documentos de alunos enviados por ele ou quando a conta dele é autora de PEI, PAEE, estudo de caso, contribuições, revisões ou adaptações. Nesses casos, prefira inativá-lo. Ninguém pode excluir o próprio registro de profissional.
 
 ## Encontrar um profissional
 
