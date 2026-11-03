@@ -17,7 +17,7 @@ Você precisa de permissão para consultar e cadastrar solicitações. A ediçã
 
 ## Registrar uma solicitação
 
-1. Acesse **Atendimento → Solicitações de Atendimento** e clique em **Cadastrar**. Você também pode abrir **Solicitações** no rodapé do prontuário e clicar em **Cadastrar** na listagem filtrada pelo aluno.
+1. Acesse **Atendimento → Solicitações de Atendimento** e clique em **Cadastrar**. Você também pode abrir a aba **Solicitações**, ao final do prontuário, e clicar em **Cadastrar** acima da tabela.
 2. Preencha **Identificação**, selecionando o aluno e informando a data e quem apresentou a demanda.
 3. Em **Solicitação**, descreva o motivo e, se houver, as dificuldades e os apoios solicitados.
 4. Em **Documentos**, adicione os anexos opcionais.
@@ -88,7 +88,7 @@ A alteração da situação é manual. A solicitação não entra em fila de esp
 
 Na listagem, filtre por **Buscar**, **Situação** ou **Aluno**. A busca localiza nome do aluno, nome do solicitante ou número do protocolo. O seletor de colunas permite mostrar matrícula, vínculo do solicitante, responsável pelo registro e última atualização.
 
-No rodapé do prontuário, **Solicitações** abre a listagem filtrada pelo aluno.
+A aba **Solicitações**, ao final do prontuário, reúne todos os registros daquele aluno e oferece filtros por protocolo, solicitante e situação. Os fluxos abertos por ela preservam o retorno à aba. Na lateral **Status do atendimento**, **Solicitação de atendimento** informa apenas **Registrada** ou **Não registrada**, sem usar o andamento da solicitação e sem criar uma pendência obrigatória.
 
 Use **PDF** na visualização para abrir o documento em uma nova aba. Ele inclui os dados da solicitação, a análise, os encaminhamentos e os nomes dos anexos, com o cabeçalho institucional definido em **Sistema → Configurações → PDFs**. Os arquivos anexos devem ser baixados separadamente.
 

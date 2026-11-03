@@ -1,3 +1,4 @@
+import { studentRecordUrl } from '@/components/Inclusion/Students/Students.routes';
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import Button from '@/components/UI/Button/Button';
@@ -14,9 +15,14 @@ export default function SupportRequestForm(props: SupportRequestFormProps): Reac
     const { form, formRef, errors, save, update } = useSupportRequestForm(props);
     const editing = Boolean(props.supportRequest);
     const fields = { data: form.data, errors, disabled: form.processing, update };
-    const cancelUrl = props.supportRequest
+    const studentId = props.supportRequest?.student_id ?? Number(props.selectedStudentId);
+    const fallbackUrl = props.supportRequest
         ? supportRequestUrls.show(props.supportRequest.id)
         : supportRequestUrls.index;
+    const cancelUrl =
+        props.fromStudent && studentId
+            ? studentRecordUrl(studentId, 'support-requests')
+            : fallbackUrl;
 
     const previousCourseName = props.supportRequest?.course_id
         ? undefined
@@ -41,7 +47,7 @@ export default function SupportRequestForm(props: SupportRequestFormProps): Reac
                     <SupportRequestIdentificationFields
                         {...fields}
                         options={props.options}
-                        editing={editing}
+                        editing={editing || Boolean(props.fromStudent)}
                         previousCourseName={previousCourseName}
                     />
                     <SupportRequestDemandFields {...fields} options={props.options} />

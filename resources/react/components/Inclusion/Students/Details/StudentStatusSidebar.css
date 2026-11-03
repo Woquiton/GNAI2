@@ -6,9 +6,17 @@
     --status-ease: cubic-bezier(0.4, 0, 0.2, 1);
     --status-duration: 0.3s;
     --status-ok-bg: color-mix(in srgb, var(--ui-color-success) 7%, var(--ui-color-surface));
-    --status-ok-border: color-mix(in srgb, var(--ui-color-success) 32%, var(--ui-color-card-border));
+    --status-ok-border: color-mix(
+        in srgb,
+        var(--ui-color-success) 32%,
+        var(--ui-color-card-border)
+    );
     --status-pending-bg: color-mix(in srgb, var(--ui-color-danger) 7%, var(--ui-color-surface));
-    --status-pending-border: color-mix(in srgb, var(--ui-color-danger) 30%, var(--ui-color-card-border));
+    --status-pending-border: color-mix(
+        in srgb,
+        var(--ui-color-danger) 30%,
+        var(--ui-color-card-border)
+    );
 
     position: sticky;
     top: calc(var(--ui-topbar-height) + var(--ui-space-4));
@@ -436,4 +444,15 @@
     .studentStatusSidebar--expanded .studentStatusSidebar__step {
         transition: none;
     }
+}
+
+/* Solicitação inicial é opcional: a ausência não representa uma pendência. */
+.studentStatusSidebar__railDot--optional,
+.studentStatusSidebar__step--optional .studentStatusSidebar__marker {
+    border-color: var(--ui-color-text-muted);
+}
+.studentStatusSidebar__step--optional .studentStatusSidebar__status {
+    border-color: var(--ui-color-card-border);
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text-muted);
 }

@@ -8,6 +8,7 @@ export function useSupportRequestForm({
     selectedStudentId = '',
     today = '',
     defaults,
+    fromStudent = false,
 }: SupportRequestFormProps) {
     const form = useForm<SupportRequestFormData>({
         student_id: record ? String(record.student_id) : selectedStudentId,
@@ -35,9 +36,12 @@ export function useSupportRequestForm({
     const errors = form.errors as Record<string, string | undefined>;
     function save(): void {
         submit({
-            url: record ? supportRequestUrls.update(record.id) : supportRequestUrls.store,
+            url: record
+                ? supportRequestUrls.update(record.id, fromStudent)
+                : supportRequestUrls.store,
             method: record ? 'put' : 'post',
             files: true,
+            transform: (data) => ({ ...data, from_student: fromStudent ? 1 : 0 }),
             failureText: 'Não foi possível salvar a solicitação de atendimento. Tente novamente.',
         });
     }

@@ -1,5 +1,4 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { supportRequestUrls } from '@/components/Inclusion/SupportRequests/SupportRequests.routes';
 import Button from '@/components/UI/Button/Button';
 import { studentUrls } from '../Students.routes';
 import type { Permissions } from '../Students.types';
@@ -34,22 +33,7 @@ export default function StudentDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions
-            secondary={
-                <>
-                    {pdfAction}
-                    {permissions['support-request.view'] ? (
-                        <Button
-                            href={supportRequestUrls.forStudent(studentId)}
-                            tone="dark-blue"
-                            leftIconClass="ti-receipt"
-                            label="Solicitações"
-                            title="Ver solicitações de atendimento do aluno"
-                        />
-                    ) : null}
-                </>
-            }
-        >
+        <FormActions secondary={pdfAction}>
             <Button
                 href={studentUrls.index}
                 tone="cancel"

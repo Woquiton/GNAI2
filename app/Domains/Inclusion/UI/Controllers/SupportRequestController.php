@@ -45,49 +45,54 @@ final readonly class SupportRequestController
 
     public function create(SupportRequestContextData $context, SupportRequestFormQuery $form): InertiaResponse
     {
-        return Inertia::render('Inclusion/SupportRequests/Create', $form->forCreation($context->studentId));
+        return Inertia::render('Inclusion/SupportRequests/Create', $form->forCreation($context->studentId) + ['fromStudent' => $context->fromStudent]);
     }
 
     /** @throws Throwable */
-    public function store(CreateSupportRequestData $data, CreateSupportRequestAction $action, Request $request): RedirectResponse
+    public function store(CreateSupportRequestData $data, CreateSupportRequestAction $action, SupportRequestContextData $context, Request $request): RedirectResponse
     {
         $record = $action->execute($data, (int) $request->user()->getAuthIdentifier());
 
-        return redirect()->route('specialized-educational-support.support-requests.show', $record)
+        return redirect()->route('specialized-educational-support.support-requests.show', ['supportRequest' => $record, ...($context->fromStudent ? ['from_student' => 1] : [])])
             ->with('success', 'Solicitação de atendimento registrada com sucesso.');
     }
 
-    public function show(SupportRequest $supportRequest, ShowSupportRequestQuery $query, Request $request): InertiaResponse
+    public function show(SupportRequest $supportRequest, ShowSupportRequestQuery $query, SupportRequestContextData $context, Request $request): InertiaResponse
     {
         return Inertia::render('Inclusion/SupportRequests/Show', [
             'supportRequest' => $this->presenter->details($query->execute($supportRequest)),
             'can' => $this->presenter->permissions($request),
+            'fromStudent' => $context->fromStudent,
         ]);
     }
 
-    public function edit(SupportRequest $supportRequest, ShowSupportRequestQuery $query, SupportRequestFormQuery $form): InertiaResponse
+    public function edit(SupportRequest $supportRequest, ShowSupportRequestQuery $query, SupportRequestFormQuery $form, SupportRequestContextData $context): InertiaResponse
     {
         return Inertia::render('Inclusion/SupportRequests/Edit', [
             'supportRequest' => $this->presenter->details($query->execute($supportRequest)),
+            'fromStudent' => $context->fromStudent,
         ] + $form->forUpdate($supportRequest));
     }
 
     /** @throws Throwable */
-    public function update(SupportRequest $supportRequest, UpdateSupportRequestData $data, UpdateSupportRequestAction $action): RedirectResponse
+    public function update(SupportRequest $supportRequest, UpdateSupportRequestData $data, UpdateSupportRequestAction $action, SupportRequestContextData $context): RedirectResponse
     {
         $record = $action->execute($supportRequest, $data);
 
-        return redirect()->route('specialized-educational-support.support-requests.show', $record)
+        return redirect()->route('specialized-educational-support.support-requests.show', ['supportRequest' => $record, ...($context->fromStudent ? ['from_student' => 1] : [])])
             ->with('success', 'Solicitação de atendimento atualizada com sucesso.');
     }
 
     /** @throws Throwable */
-    public function destroy(SupportRequest $supportRequest, DeleteSupportRequestAction $action): RedirectResponse
+    public function destroy(SupportRequest $supportRequest, DeleteSupportRequestAction $action, SupportRequestContextData $context): RedirectResponse
     {
         $action->execute($supportRequest);
 
-        return redirect()->route('specialized-educational-support.support-requests.index')
-            ->with('success', 'Solicitação de atendimento excluída com sucesso.');
+        $redirect = $context->fromStudent
+            ? redirect()->route('specialized-educational-support.students.show', ['student' => $supportRequest->student_id, 'tab' => 'support-requests'])
+            : redirect()->route('specialized-educational-support.support-requests.index');
+
+        return $redirect->with('success', 'Solicitação de atendimento excluída com sucesso.');
     }
 
     public function attachment(SupportRequest $supportRequest, SupportRequestAttachment $attachment, SupportRequestAttachmentStorage $storage): StreamedResponse

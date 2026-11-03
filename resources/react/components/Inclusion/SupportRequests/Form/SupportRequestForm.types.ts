@@ -27,6 +27,7 @@ export type SupportRequestFormData = {
     remove_attachment_ids: number[];
 };
 export interface SupportRequestFormProps {
+    fromStudent?: boolean;
     options: SupportRequestOptions;
     supportRequest?: SupportRequestRecord;
     selectedStudentId?: string;

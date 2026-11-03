@@ -15,6 +15,7 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 export default function SupportRequestShow({
     supportRequest: record,
     can,
+    fromStudent,
 }: SupportRequestShowProps): React.JSX.Element {
     const removal = useConfirmedAction<SupportRequestRecord>({
         failureText: 'Não foi possível excluir a solicitação. Tente novamente.',
@@ -23,13 +24,18 @@ export default function SupportRequestShow({
         <BusinessPage
             title={`Solicitação de Atendimento #${record.id}`}
             subtitle={record.student_name}
-            breadcrumbItems={supportRequestBreadcrumb(record)}
+            breadcrumbItems={supportRequestBreadcrumb(
+                record,
+                undefined,
+                fromStudent ? { id: record.student_id, name: record.student_name } : undefined,
+            )}
             busy={removal.processing}
         >
             <SupportRequestDetails record={record} />
             <SupportRequestDetailsActions
                 record={record}
                 can={can}
+                fromStudent={fromStudent}
                 busy={removal.processing}
                 onDelete={() => removal.open(record)}
             />
@@ -37,7 +43,9 @@ export default function SupportRequestShow({
                 target={removal.target}
                 processing={removal.processing}
                 onClose={removal.close}
-                onConfirm={() => removal.submit('delete', supportRequestUrls.destroy(record.id))}
+                onConfirm={() =>
+                    removal.submit('delete', supportRequestUrls.destroy(record.id, fromStudent))
+                }
             />
         </BusinessPage>
     );
