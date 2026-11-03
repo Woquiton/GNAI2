@@ -44,6 +44,12 @@ export default function InclusionAeeRecordsMyRecordsPage({
             title="Meus Atendimentos Especializados"
             subtitle="Histórico de registros dos seus atendimentos AEE."
             breadcrumbItems={aeeRecordListBreadcrumb('Atendimentos AEE')}
+            create={
+                can.create && {
+                    href: aeeRecordUrls.directCreate,
+                    label: 'Cadastrar atendimento especializado',
+                }
+            }
             actions={allRecordsAction}
             listLabel="Listagem de atendimentos especializados"
             loading={filters.loading}

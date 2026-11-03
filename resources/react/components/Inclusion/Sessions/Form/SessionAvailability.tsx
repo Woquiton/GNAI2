@@ -28,6 +28,8 @@ interface SessionAvailabilityProps {
     studentIds: string[];
     selectedTime: string;
     disabled?: boolean;
+    /** Explica por que a data não pode ser usada; substitui a grade e dispensa a consulta. */
+    blockedMessage?: string;
     onSelect: (time: string) => void;
 }
 
@@ -136,6 +138,7 @@ export default function SessionAvailability({
     studentIds,
     selectedTime,
     disabled = false,
+    blockedMessage,
     onSelect,
 }: SessionAvailabilityProps): React.JSX.Element {
     const [state, setState] = useState<AvailabilityState>({ status: 'idle' });
@@ -143,7 +146,7 @@ export default function SessionAvailability({
     const idsKey = ids.join(',');
 
     useEffect(() => {
-        if (!date || !professionalId || ids.length === 0) {
+        if (blockedMessage || !date || !professionalId || ids.length === 0) {
             setState({ status: 'idle' });
             return undefined;
         }
@@ -175,11 +178,18 @@ export default function SessionAvailability({
 
         return () => controller.abort();
         // idsKey representa a lista de alunos selecionados.
-    }, [date, professionalId, idsKey]);
+    }, [blockedMessage, date, professionalId, idsKey]);
 
-    return (
-        <div className="sessionAvailability">
-            {availabilityContent(state, { selectedTime, disabled, onSelect })}
-        </div>
+    const content = blockedMessage ? (
+        <p
+            className="sessionAvailability__message sessionAvailability__message--error"
+            role="status"
+        >
+            <i className="fa fa-exclamation-circle" aria-hidden="true" /> {blockedMessage}
+        </p>
+    ) : (
+        availabilityContent(state, { selectedTime, disabled, onSelect })
     );
+
+    return <div className="sessionAvailability">{content}</div>;
 }

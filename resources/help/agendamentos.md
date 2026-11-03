@@ -102,6 +102,12 @@ Quando a data do atendimento chega, o profissional responsável abre o agendamen
 
 O botão só aparece para o profissional do agendamento, com status **Agendada** e a partir do dia marcado. Ao salvar o registro, o agendamento passa para **Realizada** e o botão vira **Ver Atendimento AEE** ou **Ver Atendimento Pedagógico**. Nos atendimentos pedagógicos registrados aparece também o botão **PDF Pedagógico**.
 
+## Atendimentos registrados sem agendamento
+
+Um atendimento que já aconteceu sem ter sido agendado pode ser registrado direto em **Atendimentos Especializados** ou **Atendimentos Pedagógicos**, pelo botão **Cadastrar**. O sistema cria o agendamento junto, já como **Realizada**, para que ele apareça na agenda, nos relatórios e no histórico do aluno. Na visualização desse agendamento, o campo **Origem** mostra **Registro direto do atendimento**.
+
+Se o registro for excluído, esse agendamento é excluído junto, porque só existia por causa dele.
+
 ## Dúvidas comuns
 
 **Aparece "Conflito de agenda para: ..." ou "O profissional já possui um agendamento neste horário."**

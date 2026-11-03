@@ -1,4 +1,10 @@
-export interface PedagogicalRecordFormData {
+import type { AttendanceDetailsValues } from '@/components/Inclusion/Sessions/Form/AttendanceDetailsFields';
+
+/**
+ * Estado do atendimento pedagógico. O cabeçalho (data, horário, local e aluno) só é enviado no
+ * registro direto e, sem o aluno, na edição; a criação pelo agendamento envia o id dele.
+ */
+export interface PedagogicalRecordFormData extends AttendanceDetailsValues {
     with_guardians: boolean;
     guardian_ids: number[];
     follow_up_reason: string;

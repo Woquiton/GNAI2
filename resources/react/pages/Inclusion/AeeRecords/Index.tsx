@@ -45,6 +45,12 @@ export default function InclusionAeeRecordsIndexPage({
             title="Todos os Atendimentos Especializados"
             subtitle="Visão geral dos registros de atendimento AEE dos profissionais permitidos."
             breadcrumbItems={aeeRecordListBreadcrumb('Atendimentos Especializados')}
+            create={
+                can.create && {
+                    href: aeeRecordUrls.directCreate,
+                    label: 'Cadastrar atendimento especializado',
+                }
+            }
             actions={myRecordsAction}
             listLabel="Listagem de atendimentos especializados"
             loading={filters.loading}

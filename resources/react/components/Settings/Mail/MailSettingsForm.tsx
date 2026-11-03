@@ -4,10 +4,12 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { settingsCancelUrl } from '../Settings.routes';
 import type { MailSettingsProps } from '../Settings.types';
+import MailConfigurationStatus from './MailConfigurationStatus';
 import MailSenderFields from './MailSenderFields';
 import MailServerFields from './MailServerFields';
 import MailTestSection from './MailTestSection';
 import { useMailSettingsForm } from './useMailSettingsForm';
+import './MailSettings.css';
 
 function submissionStatus(saving: boolean, testing: boolean): string {
     if (saving) {
@@ -23,7 +25,7 @@ export default function MailSettingsForm({
     transports,
     encryptions,
     canUpdate,
-}: Omit<MailSettingsProps, 'configured'>): React.JSX.Element {
+}: MailSettingsProps): React.JSX.Element {
     const state = useMailSettingsForm({ mail, canUpdate });
     const { form, testForm, formRef, save } = state;
     const disabled = !canUpdate || form.processing;
@@ -39,6 +41,7 @@ export default function MailSettingsForm({
             }}
         >
             <CardBox>
+                <MailConfigurationStatus mail={mail} />
                 <fieldset disabled={disabled}>
                     <MailServerFields
                         state={state}

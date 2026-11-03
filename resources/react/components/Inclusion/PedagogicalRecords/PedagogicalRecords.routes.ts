@@ -24,6 +24,9 @@ export const pedagogicalRecordUrls = {
     myRecords: `${inclusionBase}/meus-atendimentos-pedagogicos`,
     create: (sessionId: number) => `${base}/${sessionId}/criar`,
     store: `${base}/salvar`,
+    /** Registro direto, sem agendamento prévio (`pedagogical-records.direct.*`). */
+    directCreate: `${base}/registro-direto/criar`,
+    directStore: `${base}/registro-direto/salvar`,
     show: (id: number, studentId?: number) => withStudent(`${base}/${id}/visualizar`, studentId),
     edit: (id: number, studentId?: number) => withStudent(`${base}/${id}/editar`, studentId),
     update: (id: number, studentId?: number) => withStudent(`${base}/${id}`, studentId),
@@ -44,6 +47,14 @@ export function pedagogicalRecordReturnUrl(sessionId: number, studentId?: number
 export function pedagogicalRecordListBreadcrumb(): PageBreadcrumbItem[] {
     return resourceBreadcrumb({
         collection: { label: 'Atendimentos Pedagógicos', href: pedagogicalRecordUrls.index },
+    });
+}
+
+/** Home › Atendimentos Pedagógicos › Cadastrar, no registro direto. */
+export function pedagogicalRecordDirectBreadcrumb(listUrl: string): PageBreadcrumbItem[] {
+    return resourceBreadcrumb({
+        collection: { label: 'Atendimentos Pedagógicos', href: listUrl },
+        current: 'Cadastrar',
     });
 }
 

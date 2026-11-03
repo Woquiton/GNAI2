@@ -18,7 +18,7 @@ final class MailTestFailed extends BusinessRuleException
         $matches = static fn (array $needles): bool => Str::contains($normalized, $needles);
 
         return new self('E-mail de teste não enviado: '.match (true) {
-            $matches(['authenticat', '"535', ' 535', 'username and password']) => 'o servidor recusou o usuário ou a senha. Confira o usuário e, no Gmail ou Microsoft, gere uma nova senha de app.',
+            $matches(['authenticat', '"535', ' 535', 'username and password']) => 'o servidor recusou o usuário ou a chave de aplicativo. Confira o usuário e gere uma nova chave de aplicativo.',
             $matches(['getaddrinfo', 'name or service not known', 'connection refused', 'timed out', 'network is unreachable', 'no route to host']) => 'não foi possível conectar ao servidor SMTP. Confira o servidor e a porta.',
             $matches(['ssl operation failed', 'starttls', 'certificate', 'crypto', 'wrong version number', 'tls']) => 'falha na conexão segura. Confira a segurança e a porta (587 com STARTTLS ou 465 com SSL/TLS).',
             $matches(['connection could not be established']) => 'não foi possível conectar ao servidor SMTP. Confira o servidor, a porta e a segurança.',

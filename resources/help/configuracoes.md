@@ -2,7 +2,7 @@
 titulo: Configurações
 resumo: Como configurar o envio de e-mails do Gnai, testar a conta de envio definir os horários e a retenção dos backups automáticos e configurar os domínios aceitos no acesso de professores e personalizar o cabeçalho dos PDFs.
 categoria: Sistema
-palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, senha de app, senha de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos
+palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, chave de app, chave de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos
 ordem: 10
 permissoes: setting.view
 ---
@@ -26,15 +26,17 @@ A conta configurada em **E-mail** é usada em todos os e-mails que o Gnai envia,
 | **Servidor SMTP** | Escolha o provedor (Gmail / Google Workspace, Outlook.com / Hotmail, Microsoft 365, Yahoo Mail, Zoho Mail, Hostinger ou Locaweb) para preencher servidor, porta e segurança automaticamente. Para outro serviço, escolha **Outro servidor** e informe o **Endereço do servidor SMTP**. Obrigatório no SMTP. |
 | **Porta** | 587 (STARTTLS), 465 (SSL/TLS), 25 ou 2525. Em **Outra porta**, informe o **Número da porta** (de 1 a 65535). Obrigatória no SMTP. |
 | **Segurança da conexão** | **STARTTLS** (geralmente porta 587), **SSL/TLS** (geralmente porta 465) ou **Sem criptografia**. Obrigatório. |
-| **Usuário de autenticação** | Normalmente, o endereço completo da conta que envia os e-mails. |
-| **Senha ou chave de aplicativo** | Senha de envio da conta. Depois de salva, deixe em branco para manter a senha atual. |
+| **Usuário de autenticação** | Conta usada pelo Gnai para entrar no servidor SMTP. Normalmente, é o endereço completo da caixa de e-mail. Obrigatório no SMTP. |
+| **Chave de aplicativo** | Chave criada nas configurações de segurança da conta. É obrigatória no primeiro cadastro, fica armazenada de forma criptografada e nunca é exibida novamente. Depois de salva, deixe o campo em branco para manter a chave atual. |
 
 4. Em **Remetente**, preencha:
-   - **E-mail de envio** (obrigatório): endereço que as pessoas verão como remetente;
+   - **E-mail de envio** (obrigatório): endereço que as pessoas verão como remetente. Pode ser diferente do usuário de autenticação somente quando o provedor permitir o uso desse endereço ou alias;
    - **Nome do remetente** (obrigatório): por exemplo, o nome do núcleo ou da instituição.
 5. Clique em **Salvar**. O sistema mostra "Configurações de e-mail salvas com sucesso. Os próximos envios usarão estes dados.".
 
-> **Importante:** no Gmail e no Yahoo, use uma senha de app criada nas configurações de segurança da conta (no Gmail, ela exige a verificação em duas etapas ativa). No Microsoft 365, o administrador da conta precisa autorizar o envio por aplicativos.
+> **Importante:** no Gmail e no Yahoo, use uma chave de app criada nas configurações de segurança da conta (no Gmail, ela exige a verificação em duas etapas ativa). No Microsoft 365, o administrador da conta precisa autorizar o envio por aplicativos.
+
+No início da tela, o quadro identifica a conta, o remetente e se a chave de aplicativo está cadastrada, sem mostrar a chave. A situação aparece como **Envio ainda não verificado**, **Envio confirmado no último teste** ou **Falha no último teste**, com a data e a hora da tentativa. O resultado corresponde ao último teste realizado.
 
 ## Enviar um e-mail de teste
 
@@ -58,7 +60,7 @@ Sem configuração salva, o Gnai faz um backup por dia às 12:05 e mantém os 30
 
 ## Dúvidas comuns
 
-- **"E-mail de teste não enviado: o servidor recusou o usuário ou a senha..."**: confira o usuário e, no Gmail ou na Microsoft, gere uma nova senha de app.
+- **"E-mail de teste não enviado: o servidor recusou o usuário ou a chave de aplicativo..."**: confira o usuário e gere uma nova chave de app.
 - **"E-mail de teste não enviado: não foi possível conectar ao servidor SMTP..."**: confira o servidor e a porta.
 - **"E-mail de teste não enviado: falha na conexão segura..."**: combine a segurança com a porta (587 com STARTTLS ou 465 com SSL/TLS).
 - **"E-mail de teste não enviado: o servidor recusou o remetente ou o destinatário..."**: confira o **E-mail de envio**; muitos provedores só aceitam o endereço da própria conta.

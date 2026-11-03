@@ -1,4 +1,8 @@
 .modalLayer {
+    /* Textos auxiliares dentro do diálogo mantêm o contraste do texto principal. */
+    --ui-color-text-muted: var(--ui-color-text);
+    --ui-color-legacy-text: var(--ui-color-text);
+
     position: fixed;
     inset: 0;
     z-index: 9999999;
@@ -117,7 +121,8 @@ body.custombox-open-contentscale {
     max-height: calc(100vh - 40px);
     border: 1px solid #ddd;
     border-radius: 2px;
-    background: #fff;
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text);
     box-shadow: none;
 }
 .modalLayer__header {
@@ -135,7 +140,7 @@ body.custombox-open-contentscale {
     padding: 0;
     border: 0;
     background: transparent;
-    color: #98a6ad;
+    color: var(--ui-color-text);
     cursor: pointer;
     font:
         300 24px/20px Arial,
@@ -146,7 +151,7 @@ body.custombox-open-contentscale {
 }
 .modalLayer__body {
     padding: 20px 25px;
-    color: #797979;
+    color: var(--ui-color-text);
     font: 14px/1.6 var(--ui-font-body);
 }
 .modalLayer__body h4 {
@@ -184,8 +189,8 @@ body.custombox-open-contentscale {
     overflow: visible;
     border: 0;
     border-radius: 4px;
-    background: #fff;
-    color: #797979;
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text);
     font: 400 14px/20px var(--ui-font-body);
     text-align: center;
 }
@@ -209,22 +214,21 @@ body.custombox-open-contentscale {
     padding: 0;
     border: 0;
     background: transparent;
-    color: #eee;
+    color: var(--ui-color-text-inverse);
     cursor: pointer;
-    opacity: 0.2;
-    text-shadow: 0 1px 0 #fff;
+    opacity: 1;
     font: 700 21px/21px var(--ui-font-body);
 }
 .modalLayer--custombox .modalLayer__close:hover,
 .modalLayer--custombox .modalLayer__close:focus {
-    color: #eee;
-    opacity: 0.5;
+    color: var(--ui-color-text-inverse);
+    opacity: 1;
     outline: 0;
     text-decoration: none;
 }
 .modalLayer--custombox .modalLayer__body {
     padding: 20px;
-    color: #797979;
+    color: var(--ui-color-text);
     font: 400 14px/20px var(--ui-font-body);
     text-align: center;
 }
@@ -512,7 +516,7 @@ body.custombox-open-contentscale {
     max-height: none;
     overflow: visible;
     padding: 25px;
-    color: #797979;
+    color: var(--ui-color-text);
     font: 400 14px/20px var(--ui-font-body);
 }
 .modalLayer--bootstrap .modalLayer__header {
@@ -522,18 +526,18 @@ body.custombox-open-contentscale {
 .modalLayer--bootstrap .modalLayer__close {
     margin-top: -2px;
     color: #000;
-    opacity: 0.2;
+    opacity: 1;
     font: 700 21px/21px var(--ui-font-body);
 }
 .modalLayer--bootstrap .modalLayer__close:hover,
 .modalLayer--bootstrap .modalLayer__close:focus {
     color: #000;
     text-decoration: none;
-    opacity: 0.5;
+    opacity: 1;
 }
 .modalLayer--bootstrap .modalLayer__body {
     padding: 20px 0;
-    color: #797979;
+    color: var(--ui-color-text);
     font: 14px/20px var(--ui-font-body);
 }
 .modalLayer--bootstrap .modalLayer__body h4 {
@@ -1872,12 +1876,10 @@ body.custombox-open-contentscale {
 @keyframes modalBlur {
     from {
         opacity: 0;
-        filter: blur(5px);
         transform: translateY(-5%);
     }
     to {
         opacity: 1;
-        filter: none;
         transform: none;
     }
 }

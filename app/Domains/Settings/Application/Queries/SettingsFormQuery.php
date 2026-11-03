@@ -37,6 +37,9 @@ final readonly class SettingsFormQuery
             'mail' => [
                 ...$settings->toPayload(),
                 'has_password' => $configured && filled($settings->password),
+                'has_application_key' => $configured
+                    ? filled($settings->password)
+                    : filled(config('mail.mailers.smtp.password')),
             ],
             'transports' => $this->options(MailTransport::cases()),
             'encryptions' => $this->options(MailEncryption::cases()),

@@ -22,9 +22,9 @@ Telas com poucos grupos de informação devem permanecer em um card com seções
 Quando uma visualização reúne muitos grupos independentes e provoca rolagem excessiva:
 
 1. Mostre primeiro um card compacto de identificação, contendo apenas os dados essenciais já existentes no contrato, como foto, nome, código ou matrícula, status e classificação principal.
-2. Organize os demais grupos com `Navigation/Tabs`, usando a variante vertical em telas largas. Cada aba representa uma seção funcional completa, não um campo isolado.
-3. A navegação lateral permanece neutra; somente o texto da aba ativa e seus estados de interação usam `--ui-color-gnai-primary`. Não aplique fundo roxo à aba ativa.
-4. Em telas estreitas ou quando houver muitas abas, transforme a navegação em uma faixa horizontal acima do conteúdo. Preserve a rolagem nativa por toque e trackpad; no mouse, permita arrastar com cursores `grab`/`grabbing` e mostre controles de borda somente nas direções que ainda têm conteúdo. O painel continua ocupando a largura disponível.
+2. Organize os demais grupos com `Navigation/Tabs` na variante `standard`, diretamente ou por `Navigation/RecordTabs`. Cada aba representa uma seção funcional completa, não um campo isolado.
+3. A faixa horizontal segue as dimensões de `PageTabs` de Configurações e Agendamentos, com linha por toda a largura disponível e indicador elástico somente sob a aba selecionada. Texto e indicador ativos usam `--ui-color-gnai-primary`.
+4. Quando houver muitas abas, preserve a rolagem nativa por toque e trackpad; no mouse, o componente compartilhado permite arrastar com cursores `grab`/`grabbing` e mostra controles de borda somente nas direções que ainda têm conteúdo. O painel continua ocupando a largura disponível.
 5. Monte somente as abas permitidas ao usuário. A ocultação visual acompanha as permissões recebidas, sem substituir a autorização do servidor.
 6. Quando a aba representa uma coleção própria do registro, apresente sua listagem completa dentro da aba com os componentes de `Tables/TableList`. Não mantenha um resumo limitado acompanhado por botão “Gerenciar” se a aba já comporta a tabela integral.
 7. A tabela embutida preserva primeira e última colunas fixas, seletor de colunas, redimensionamento apenas das colunas intermediárias, estado vazio, contagem e ações compactas conforme a convenção de listagens. Como todos os registros já pertencem à aba, a contagem estática substitui paginação artificial.

@@ -21,6 +21,8 @@ interface AeeRecordEvaluationFieldsProps {
     tabFocus: { id?: string; version: number };
     collectionErrors: string[];
     disabled: boolean;
+    /** Texto sem alunos; o padrão descreve o agendamento sem alunos vinculados. */
+    emptyMessage?: string;
     errorFor: (index: number, field: string) => string | undefined;
     hasErrors: (index: number) => boolean;
     onChange: (index: number, changes: Partial<AeeEvaluationFormData>) => void;
@@ -37,6 +39,7 @@ export default function AeeRecordEvaluationFields({
     tabFocus,
     collectionErrors,
     disabled,
+    emptyMessage = 'Nenhum aluno vinculado a este agendamento.',
     errorFor,
     hasErrors,
     onChange,
@@ -100,7 +103,7 @@ export default function AeeRecordEvaluationFields({
                 key={tabFocus.version}
                 items={tabs}
                 initialActiveId={tabFocus.id}
-                emptyMessage="Nenhum aluno vinculado a este agendamento."
+                emptyMessage={emptyMessage}
                 errors={collectionErrors}
             />
         </FormSection>

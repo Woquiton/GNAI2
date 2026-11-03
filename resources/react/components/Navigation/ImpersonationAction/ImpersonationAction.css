@@ -10,6 +10,6 @@
 }
 
 .impersonationAction__description {
-    color: var(--ui-color-text-muted);
+    color: inherit;
     font-size: 13px;
 }

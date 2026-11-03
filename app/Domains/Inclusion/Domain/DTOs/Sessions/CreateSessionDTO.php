@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Domain\DTOs\Sessions;
 
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
+use App\Domains\Inclusion\Domain\Enums\SessionOrigin;
 use App\Domains\Inclusion\Domain\Enums\SessionStatus;
 use App\Domains\Inclusion\Domain\Enums\SessionType;
 
@@ -25,5 +26,6 @@ final readonly class CreateSessionDTO
         public string $location,
         public string $sessionObjective,
         public string $status = SessionStatus::SCHEDULED_DATABASE_VALUE,
+        public SessionOrigin $origin = SessionOrigin::SCHEDULING,
     ) {}
 }

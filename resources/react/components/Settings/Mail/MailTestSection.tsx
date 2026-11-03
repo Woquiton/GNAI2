@@ -3,7 +3,6 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import Button from '@/components/UI/Button/Button';
 import { MAIL_HINTS } from './MailSettings.constants';
 import type { MailSettingsFormState } from './useMailSettingsForm';
-import './MailSettings.css';
 
 /**
  * Envio de um e-mail de teste com a configuração salva. Fica bloqueado enquanto houver alterações

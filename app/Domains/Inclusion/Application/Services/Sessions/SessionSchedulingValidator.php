@@ -171,9 +171,12 @@ final readonly class SessionSchedulingValidator
     }
 
     /**
+     * Bloqueia horários que se sobrepõem a outro agendamento não cancelado do profissional ou de
+     * algum dos alunos.
+     *
      * @param  array<string, mixed>  $data
      */
-    private function ensureNoConflict(array $data, ?int $ignoreId = null): void
+    public function ensureNoConflict(array $data, ?int $ignoreId = null): void
     {
         $conflict = $this->detectSessionConflict->execute($data, $ignoreId);
 

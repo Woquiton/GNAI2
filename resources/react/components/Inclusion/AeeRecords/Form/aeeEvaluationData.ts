@@ -1,3 +1,4 @@
+import { isBlankText } from '@/components/Inclusion/AttendanceRecordTabs/useAttendanceRecordTabs';
 import type { AeeStudentEvaluationRecord } from '../AeeRecords.types';
 import type { AeeEvaluationFormData } from './AeeRecordForm.types';
 
@@ -45,6 +46,22 @@ export function evaluationFromRecord(
         recommendations: evaluation.recommendations ?? '',
         next_session_adjustments: evaluation.next_session_adjustments ?? '',
     };
+}
+
+/**
+ * Obrigatórios sem resposta na avaliação, conforme a presença: participação e desenvolvimento
+ * (e os responsáveis, se marcados) para o aluno presente; o motivo da ausência para o ausente.
+ */
+export function pendingEvaluationFields(evaluation: AeeEvaluationFormData): number {
+    if (!evaluation.is_present) {
+        return isBlankText(evaluation.absence_reason) ? 1 : 0;
+    }
+
+    return (
+        [evaluation.student_participation, evaluation.development_evaluation].filter((value) =>
+            isBlankText(value),
+        ).length + (evaluation.with_guardians && evaluation.guardian_ids.length === 0 ? 1 : 0)
+    );
 }
 
 /**

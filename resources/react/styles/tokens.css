@@ -106,10 +106,10 @@
     --ui-color-primary-hover: var(--ui-color-gnai-primary-hover);
     --ui-color-theme-blue: #3b82f6;
     --ui-color-custom: #14b8a6;
-    --ui-color-list-action: var(--ui-color-save);
-    --ui-color-list-action-hover: var(--ui-color-save-hover);
-    --ui-color-save: var(--ui-color-gnai-primary);
-    --ui-color-save-hover: var(--ui-color-gnai-primary-hover);
+    --ui-color-list-action: var(--ui-color-gnai-primary);
+    --ui-color-list-action-hover: var(--ui-color-gnai-primary-hover);
+    --ui-color-save: var(--ui-color-success);
+    --ui-color-save-hover: var(--ui-color-success-hover);
     --ui-color-cancel: var(--button-secondary-bg);
     --ui-color-cancel-hover: var(--button-secondary-hover);
     --ui-color-cancel-text: var(--button-secondary-text);
@@ -128,7 +128,8 @@
     --ui-color-info: #06b6d4;
     --ui-color-info-light: var(--color-info-light);
     --ui-color-info-text: var(--color-info-text);
-    --ui-color-success: #16a34a;
+    --ui-color-success: var(--color-success);
+    --ui-color-success-hover: var(--color-success-hover);
     --ui-color-warning: #f59e0b;
     /* Âmbar dos títulos de aviso: legível como texto grande (3:1) sobre o branco. */
     --ui-color-warning-strong: #b45309;

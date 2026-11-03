@@ -1,8 +1,51 @@
+.mailSettings__configurationStatus {
+    margin-bottom: var(--ui-space-6);
+}
+
+.mailSettings__configurationStatusHeading {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+}
+
+.mailSettings__configurationStatusHeading > i {
+    font-size: var(--ui-font-size-lg);
+    line-height: 1;
+}
+
+.mailSettings__configurationDetails {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--ui-space-3) var(--ui-space-5);
+    margin: var(--ui-space-3) 0 0;
+}
+
+.mailSettings__configurationDetails div {
+    min-width: 0;
+}
+
+.mailSettings__configurationDetails dt {
+    margin-bottom: var(--ui-space-1);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.mailSettings__configurationDetails dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
 .mailSettings__test {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
     gap: 16px;
+}
+
+@media (max-width: 767px) {
+    .mailSettings__configurationDetails {
+        grid-template-columns: 1fr;
+    }
 }
 
 .mailSettings__test .formField {

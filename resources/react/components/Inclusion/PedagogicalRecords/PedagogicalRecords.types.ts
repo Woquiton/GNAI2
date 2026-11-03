@@ -1,3 +1,8 @@
+import type {
+    AttendanceCorrectionProps,
+    DirectAttendanceProps,
+} from '@/components/Inclusion/Sessions/Sessions.types';
+
 export interface PedagogicalRecordGuardianOption {
     id: number;
     name: string;
@@ -7,7 +12,9 @@ export interface PedagogicalRecordGuardianOption {
 export interface PedagogicalRecordFormContext {
     session_id: number;
     session_objective: string | null;
+    student_id: number | null;
     student_name: string | null;
+    professional_id: number;
     professional_name: string | null;
     session_date: string | null;
     start_time: string;
@@ -70,6 +77,8 @@ export interface PedagogicalRecordListAbilities {
     view: boolean;
     view_all: boolean;
     view_own: boolean;
+    /** Registro direto, sem agendamento prévio. */
+    create: boolean;
     update: boolean;
     delete: boolean;
 }
@@ -122,8 +131,14 @@ export interface PedagogicalRecordCreateProps {
     context: PedagogicalRecordFormContext;
 }
 
-export interface PedagogicalRecordEditProps {
+/** Edição: além do registro, data, horário e local do atendimento podem ser corrigidos. */
+export interface PedagogicalRecordEditProps extends AttendanceCorrectionProps {
     pedagogicalRecord: PedagogicalRecordFormRecord;
     context: PedagogicalRecordFormContext;
     returnStudentId?: number;
+}
+
+/** Registro direto de atendimento já realizado (`PedagogicalRecordController@createDirect`). */
+export interface PedagogicalRecordCreateDirectProps extends DirectAttendanceProps {
+    backUrl: string;
 }

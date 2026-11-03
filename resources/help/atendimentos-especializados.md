@@ -1,8 +1,8 @@
 ---
 titulo: Atendimentos Especializados (AEE)
-resumo: Como registrar o atendimento educacional especializado de um agendamento, avaliar cada aluno, indicar a participação de responsáveis e consultar, editar ou excluir os registros.
+resumo: Como registrar o atendimento educacional especializado de um agendamento ou direto, sem agendamento, avaliar cada aluno, indicar a participação de responsáveis e consultar, editar ou excluir os registros.
 categoria: Atendimento
-palavras-chave: aee, atendimento educacional especializado, atendimento especializado, atendimentos especializados, registro aee, registrar atendimento, criar atendimento aee, relatório de atendimento, evolução, presença, ausência, falta, aluno presente, aluno ausente, motivo da ausência, participação, avaliação do desenvolvimento, indicadores de progresso, recomendações, adaptações, responsável participou, devolutiva à família, meus atendimentos, todos os atendimentos, histórico de atendimentos, pdf do atendimento, histórico em pdf, duração
+palavras-chave: aee, atendimento educacional especializado, cadastrar atendimento, sem agendamento, registro direto, atendimento passado, atendimento retroativo, corrigir data, corrigir horário, atendimento especializado, atendimentos especializados, registro aee, registrar atendimento, criar atendimento aee, relatório de atendimento, evolução, presença, ausência, falta, aluno presente, aluno ausente, motivo da ausência, participação, avaliação do desenvolvimento, indicadores de progresso, recomendações, adaptações, responsável participou, devolutiva à família, meus atendimentos, todos os atendimentos, histórico de atendimentos, pdf do atendimento, histórico em pdf, duração
 ordem: 30
 permissoes: aee-record.view-own, aee-record.view-all
 ---
@@ -14,7 +14,7 @@ O registro de Atendimento Educacional Especializado (AEE) documenta o que aconte
 
 ## O que preciso antes de registrar um atendimento AEE?
 
-Todo registro nasce de um [agendamento](/ajuda/agendamentos). Para registrar:
+O registro pode nascer de um [agendamento](/ajuda/agendamentos) ou ser feito direto, sem agendamento prévio (veja [Registrar um atendimento sem agendamento](#registrar-um-atendimento-sem-agendamento)). Para registrar a partir de um agendamento:
 
 - o agendamento precisa ser do tipo **Atendimento Educacional Especializado**;
 - o status do agendamento precisa ser **Agendada**, sem outro registro vinculado;
@@ -30,6 +30,8 @@ Todo registro nasce de um [agendamento](/ajuda/agendamentos). Para registrar:
 
 Ao salvar, o agendamento passa para o status **Realizada**.
 
+O formulário é dividido nas abas **Informações Gerais da Execução** e **Avaliação Individual por Aluno**. No registro sem agendamento e na edição, a primeira aba é **Dados do Atendimento**. A bolinha vermelha ao lado do nome de cada aba mostra quantos campos obrigatórios dela ainda estão sem resposta. Se o envio voltar com campos a corrigir, o sistema abre a primeira aba com problema, e as abas afetadas mostram um ícone de alerta.
+
 ### Avaliação de cada aluno
 
 Na aba de cada aluno, indique se ele esteve presente pelo controle **Aluno Presente**.
@@ -42,6 +44,19 @@ Na aba de cada aluno, indique se ele esteve presente pelo controle **Aluno Prese
 ### Participação de responsáveis
 
 Se algum responsável participou, marque **Atendimento realizado com participação de responsável** e selecione os **Responsáveis participantes**. Ao marcar a opção, é obrigatório escolher ao menos um responsável. Esse registro é exibido no PEI como devolutiva à família. Se o aluno não tiver responsáveis cadastrados, o sistema avisa "O aluno não possui responsáveis cadastrados no sistema."; cadastre-os no prontuário (veja [Responsáveis do aluno](/ajuda/alunos-responsaveis-e-documentos#adicionar-um-responsavel)).
+
+## Registrar um atendimento sem agendamento
+
+Use quando o atendimento já aconteceu e não foi agendado antes. Você é o profissional responsável pelo registro.
+
+1. Em **Atendimento → Atendimentos Especializados**, clique em **Cadastrar**.
+2. Em **Dados do Atendimento**, escolha o **Formato** (Individual ou Grupo) e os **Alunos Participantes**. No formato Grupo, use **Adicionar outro Aluno** para incluir mais alunos.
+3. Preencha a **Data do Atendimento**, o **Início**, o **Fim** e o **Local**, todos obrigatórios. A data não pode ser futura.
+4. Em **Disponibilidade do Dia**, confira os horários ocupados por você ou pelos alunos. Um horário livre também pode ser escolhido ali como início.
+5. Preencha as **Informações Gerais da Execução** e a avaliação de cada aluno, como no registro a partir do agendamento. As **Atividades Planejadas/Realizadas** também ficam como objetivo do agendamento. Cada aluno escolhido ganha uma aba em **Avaliação Individual por Aluno**.
+6. Clique em **Salvar**.
+
+O sistema cria o agendamento do atendimento já com status **Realizada**. Ele aparece na agenda e nos relatórios, com **Origem** igual a **Registro direto do atendimento**. As mesmas regras do agendamento valem aqui: os alunos precisam estar ativos e com acompanhamento que permita AEE, e o horário não pode coincidir com outro agendamento seu ou dos alunos.
 
 ## Consultar os atendimentos AEE
 
@@ -58,8 +73,8 @@ A visualização do registro mostra a **Execução do Atendimento AEE** e, em **
 
 Somente o profissional responsável pelo agendamento pode editar ou excluir o registro.
 
-- **Editar**: na visualização do registro, clique em **Editar**, altere as informações gerais e as avaliações e clique em **Salvar**. O sistema mostra "Registro do atendimento AEE atualizado com sucesso.".
-- **Excluir**: clique em **Excluir** e confirme "Deseja excluir permanentemente este registro de atendimento?". O registro e todas as avaliações dos alunos são apagados, o agendamento volta para **Agendada** e o sistema mostra "Registro do atendimento AEE removido com sucesso.".
+- **Editar**: na visualização do registro, clique em **Editar**, altere as informações gerais e as avaliações e clique em **Salvar**. O sistema mostra "Registro do atendimento AEE atualizado com sucesso.". Em **Dados do Atendimento** também é possível corrigir a **Data do Atendimento**, o **Início**, o **Fim** e o **Local**; o profissional e os alunos não mudam.
+- **Excluir**: clique em **Excluir** e confirme "Deseja excluir permanentemente este registro de atendimento?". O registro e todas as avaliações dos alunos são apagados e o sistema mostra "Registro do atendimento AEE removido com sucesso.". Se o registro veio de um agendamento, ele volta para **Agendada**. Se foi registrado sem agendamento, o agendamento criado junto também é excluído.
 
 ## Consultar e ajustar a avaliação de um aluno pelo prontuário
 
@@ -89,6 +104,15 @@ Agendamentos pedagógicos recebem um [Atendimento Pedagógico](/ajuda/atendiment
 
 **Aparece "A justificativa é obrigatória para aluno ausente." ou "A participação é obrigatória para aluno presente."**
 Confira a aba de cada aluno: para ausentes, preencha o **Motivo da Ausência**; para presentes, **Participação** e **Avaliação do Desenvolvimento**.
+
+**Aparece "A data do atendimento não pode ser futura."**
+O registro sem agendamento e a correção da data são para atendimentos que já aconteceram. Para um atendimento futuro, crie um [agendamento](/ajuda/agendamentos#cadastrar-um-agendamento).
+
+**Aparece "Conflito de agenda para: ..." ou "O profissional já possui um agendamento neste horário."**
+O horário escolhido coincide com outro agendamento dos alunos ou seu. Confira a **Disponibilidade do Dia** e escolha outro horário, ou corrija o agendamento que está com horário errado.
+
+**Não vejo o botão Cadastrar em Atendimentos Especializados.**
+O botão aparece para quem pode criar registros AEE e tem um profissional vinculado ao usuário.
 
 **Não vejo o botão Criar Atendimento AEE no agendamento.**
 Confira se você é o profissional do agendamento, se o status é **Agendada** e se a data já chegou.

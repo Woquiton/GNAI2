@@ -67,7 +67,7 @@ export default function SessionParticipantsFields({
                     onChange={(value) => form.setData('professional_id', value)}
                 />
                 <SessionStudentRows
-                    form={form}
+                    studentIds={form.data.student_ids}
                     errors={errors}
                     disabled={disabled}
                     studentOptions={personOptions(options.students)}
@@ -78,12 +78,14 @@ export default function SessionParticipantsFields({
                     onRemove={state.removeStudent}
                 />
                 <SessionScheduleFields
-                    form={form}
+                    values={form.data}
                     errors={errors}
                     disabled={disabled}
                     startTimes={options.startTimes}
                     endTimes={options.endTimes}
+                    onDateChange={(value) => form.setData('session_date', value)}
                     onStartTimeChange={state.changeStartTime}
+                    onEndTimeChange={(value) => form.setData('end_time', value)}
                 />
             </FormGrid>
         </FormSection>

@@ -1,0 +1,13 @@
+.attendanceRecordTabs__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+}
+
+.attendanceRecordTabs__invalid {
+    color: var(--ui-color-danger);
+}
+
+.attendanceRecordTabs__pending {
+    margin-top: 0;
+}

@@ -408,6 +408,9 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         /* 8. AEE RECORDS */
         Route::get('atendimentos-aee', [AeeRecordController::class, 'index'])->name('aee-records.index')->middleware('can:aee-record.view-all');
         Route::get('meus-atendimentos-aee', [AeeRecordController::class, 'myRecords'])->name('aee-records.my-records')->middleware('can:aee-record.view-own');
+        // Registro direto de atendimento já realizado, sem agendamento prévio (antes de `{session}/criar`).
+        Route::get('atendimentos-aee/registro-direto/criar', [AeeRecordController::class, 'createDirect'])->name('aee-records.direct.create')->middleware('can:aee-record.create');
+        Route::post('atendimentos-aee/registro-direto/salvar', [AeeRecordController::class, 'storeDirect'])->name('aee-records.direct.store')->middleware('can:aee-record.create');
         Route::get('atendimentos-aee/{session}/criar', [AeeRecordController::class, 'create'])->name('aee-records.create')->middleware('can:aee-record.create');
         Route::post('atendimentos-aee/salvar', [AeeRecordController::class, 'store'])->name('aee-records.store')->middleware('can:aee-record.create');
         Route::get('atendimentos-aee/{aeeRecord}/visualizar', [AeeRecordController::class, 'show'])->name('aee-records.show')->middleware('can:aee-record.view');
@@ -430,6 +433,13 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::get('meus-atendimentos-pedagogicos', [PedagogicalRecordController::class, 'myRecords'])
             ->name('pedagogical-records.my-records')
             ->middleware('can:pedagogical-record.view-own');
+        // Registro direto de atendimento já realizado, sem agendamento prévio (antes de `{session}/criar`).
+        Route::get('atendimentos-pedagogicos/registro-direto/criar', [PedagogicalRecordController::class, 'createDirect'])
+            ->name('pedagogical-records.direct.create')
+            ->middleware('can:pedagogical-record.create');
+        Route::post('atendimentos-pedagogicos/registro-direto/salvar', [PedagogicalRecordController::class, 'storeDirect'])
+            ->name('pedagogical-records.direct.store')
+            ->middleware('can:pedagogical-record.create');
         Route::get('atendimentos-pedagogicos/{session}/criar', [PedagogicalRecordController::class, 'create'])
             ->name('pedagogical-records.create')
             ->middleware('can:pedagogical-record.create');

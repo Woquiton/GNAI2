@@ -120,6 +120,8 @@ export interface SessionDetailsRecord {
     location: string | null;
     attendance_type_label: string;
     type_label: string;
+    /** Agendamento ou registro direto do atendimento (`SessionOrigin`). */
+    origin_label: string;
     session_objective: string | null;
     session_objective_html: string;
     cancellation_reason: string | null;
@@ -201,3 +203,40 @@ export interface SessionAvailabilitySlot {
 }
 
 export type SessionStudentFilterKey = keyof SessionStudentFilterValues;
+
+/* Cabeçalho dos registros de atendimento (AEE e pedagógico) */
+
+/** Data, horário e local corrigíveis na edição do registro (`SessionFormQuery::forAttendanceCorrection`). */
+export interface AttendanceCorrectionValues {
+    session_date: string;
+    start_time: string;
+    end_time: string;
+    location: string;
+}
+
+export interface AttendanceCorrectionProps extends Pick<
+    SessionTimeOptions,
+    'startTimes' | 'endTimes'
+> {
+    attendanceTypeLabel: string;
+    attendanceForm: AttendanceCorrectionValues;
+}
+
+export interface AttendanceGuardianOption {
+    id: number;
+    name: string;
+    relationship_label: string;
+}
+
+/** Registro direto de atendimento já realizado (`SessionFormQuery::forDirectRecord`). */
+export interface DirectAttendanceProps extends Pick<
+    SessionTimeOptions,
+    'startTimes' | 'endTimes' | 'sessionTypes'
+> {
+    attendanceTypeLabel: string;
+    students: SessionPersonOption[];
+    /** Responsáveis de cada aluno elegível, indexados pelo id do aluno. */
+    guardiansByStudent: Record<number, AttendanceGuardianOption[]>;
+    /** Profissional do usuário logado, responsável pelo atendimento. */
+    professional: { id: number; name: string | null };
+}

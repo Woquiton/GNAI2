@@ -11,6 +11,7 @@ use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\DTOs\Sessions\CreateSessionDTO;
 use App\Domains\Inclusion\Domain\DTOs\Sessions\UpdateSessionDTO;
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
+use App\Domains\Inclusion\Domain\Enums\SessionOrigin;
 use App\Domains\Inclusion\Domain\Enums\SessionStatus;
 use App\Domains\Inclusion\Domain\Enums\SessionType;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidSession;
@@ -38,12 +39,14 @@ final class Session extends Model implements Auditable
         'location',
         'session_objective',
         'status',
+        'origin',
         'cancellation_reason',
     ];
 
     protected $casts = [
         'session_date' => 'date',
         'attendance_type' => AttendanceType::class,
+        'origin' => SessionOrigin::class,
     ];
 
     public static function auditType(): string
@@ -71,6 +74,7 @@ final class Session extends Model implements Auditable
             'session_objective' => AuditedField::text('Objetivo do agendamento'),
             // O status é gravado com o rótulo em português ("Agendada").
             'status' => AuditedField::enum('Status', valueLabels: SessionStatus::options()),
+            'origin' => AuditedField::enum('Origem', SessionOrigin::class),
             'cancellation_reason' => AuditedField::text('Motivo do cancelamento'),
             'students' => AuditedField::list('Alunos', model: Student::class, nameColumn: 'person.name'),
         ];
@@ -122,6 +126,7 @@ final class Session extends Model implements Auditable
             'location' => $data->location,
             'session_objective' => $data->sessionObjective,
             'status' => $data->status,
+            'origin' => $data->origin,
         ]);
     }
 
@@ -164,6 +169,26 @@ final class Session extends Model implements Auditable
         if (! $this->isScheduled()) {
             throw new InvalidSession('Apenas agendamentos com status Agendada podem ser editados.');
         }
+    }
+
+    /**
+     * Corrige data, horário e local de um atendimento já registrado, pela edição do próprio
+     * registro; profissional, alunos e tipo continuam os do agendamento.
+     */
+    public function correctAttendanceDetails(string $sessionDate, string $startTime, string $endTime, string $location): void
+    {
+        $this->fill([
+            'session_date' => $sessionDate,
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'location' => $location,
+        ]);
+    }
+
+    /** O agendamento foi criado junto do registro direto e só existe por causa dele. */
+    public function isDirectRecord(): bool
+    {
+        return $this->origin === SessionOrigin::DIRECT_RECORD;
     }
 
     public function cancel(string $reason): void

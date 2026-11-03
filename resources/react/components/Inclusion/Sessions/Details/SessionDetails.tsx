@@ -53,6 +53,7 @@ export default function SessionDetails({ session }: SessionDetailsProps): React.
                         {session.attendance_type_label}
                     </DetailField>
                     <DetailField label="Formato">{session.type_label}</DetailField>
+                    <DetailField label="Origem">{session.origin_label}</DetailField>
                 </DetailGrid>
             </FormSection>
             <FormSection

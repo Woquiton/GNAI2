@@ -86,6 +86,14 @@ export function useMailSettingsForm({
             method: 'put',
             failureText: FAILURE_TEXT,
             blocked: !canUpdate,
+            options: {
+                onSuccess: () => {
+                    const savedData = { ...form.data, password: '' };
+
+                    form.defaults(savedData);
+                    form.setData(savedData);
+                },
+            },
         });
     }
 

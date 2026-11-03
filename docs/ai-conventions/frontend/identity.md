@@ -10,6 +10,7 @@ A migração moderniza a tecnologia e a apresentação do Gnai preservando ident
 - Não fixe cores de marca nas páginas, não crie paletas ou variantes locais de roxo/azul e não importe todo o CSS legado. `UI/Button` define seus tons só por variáveis, sem `!important`.
 - Evite dimensões rígidas que quebrem telas menores; preserve labels, foco, teclado e apresentação acessível dos erros.
 - Uma reprodução temporária de outro tema, pedida pelo usuário, vale apenas para a tela indicada.
+- Modais usam texto principal e auxiliar em `--ui-color-text` sobre superfície opaca; o cabeçalho grafite mantém texto branco. O desfoque fica restrito ao fundo, inclusive durante as animações, e o botão de fechar mantém opacidade integral.
 
 ## Cabeçalho e navegação da página
 
@@ -23,7 +24,8 @@ A migração moderniza a tecnologia e a apresentação do Gnai preservando ident
 - No celular (até 767 px) o rodapé fica colado à base da tela, de ponta a ponta. A ação principal (`tone="save"` ou `tone="warning"`, como Salvar e Editar) mostra o rótulo; as demais ficam só com ícone e usam o `title` como nome.
 - Botões têm ícone pertinente e texto curto (`Salvar`, `Cancelar`, `Voltar`, `Editar`, `Excluir`, `PDF`) e sempre `title`. Ações só com ícone exigem `aria-label`. `iconOnly` só em exceções autorizadas; remova o ícone só quando pedido (`showIcon={false}`).
 - Botões que abrem o site público em nova aba, como **Ver no site**, **Abrir no site** e **Ver site**, usam `tone="dark-blue"` e ícone `fa fa-external-link`.
-- Salvar usa check no roxo institucional (`tone="save"`); cancelar e voltar usam X cinza (`tone="cancel"`). Preserve desabilitação e indicação de processamento durante o envio.
+- Salvar usa check no verde semântico de sucesso (`tone="save"`), o mesmo das etiquetas positivas; cancelar e voltar usam X cinza (`tone="cancel"`). Preserve desabilitação e indicação de processamento durante o envio.
+- Cadastrar usa `tone="create"`, no mesmo verde de Salvar. Ações de navegação de listagens, como Meus Atendimentos e Todos os Atendimentos, usam `tone="list-action"` no roxo institucional; seus tokens não dependem dos de Salvar.
 
 ## Assets próprios confirmados
 

@@ -9,6 +9,10 @@ export interface DateInputFieldProps extends FieldBaseProps {
     value: string;
     onChange: (value: string) => void;
     disabled?: boolean;
+    /** Destaca o dia de hoje no calendário (padrão). */
+    highlightToday?: boolean;
+    /** Última data selecionável no calendário (`AAAA-MM-DD`). */
+    maxDate?: string;
 }
 
 /** `FormField` + `DatePicker` (Bootstrap Datepicker local) com máscara dd/mm/aaaa. */
@@ -25,6 +29,8 @@ export default function DateInputField({
     value,
     onChange,
     disabled = false,
+    highlightToday,
+    maxDate,
 }: DateInputFieldProps): React.JSX.Element {
     return (
         <FormField
@@ -43,6 +49,8 @@ export default function DateInputField({
                 value={value}
                 required={required}
                 disabled={disabled}
+                highlightToday={highlightToday}
+                maxDate={maxDate}
                 invalid={Boolean(error)}
                 describedBy={fieldDescribedBy(id, { error, hint: Boolean(hint && !hintLabel) })}
                 onChange={onChange}

@@ -19,9 +19,8 @@ final readonly class UpdateMailSettingsAction
 
     public function execute(UpdateMailSettingsData $data): MailSettings
     {
-        // Senha em branco mantém a atual; sem usuário, não há autenticação.
+        // Chave em branco mantém a atual; o SMTP sempre usa a conta de autenticação informada.
         $password = match (true) {
-            $data->username === null => null,
             $data->password !== null => $data->password,
             default => $this->mailSettings->execute()?->password,
         };

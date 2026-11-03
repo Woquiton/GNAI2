@@ -29,7 +29,9 @@ export default function MailServerFields({
     const usesSmtp = form.data.transport === 'smtp';
     const passwordHint = [
         MAIL_HINTS.password,
-        hasPassword ? 'Deixe em branco para manter a senha atual.' : null,
+        hasPassword
+            ? 'Uma chave de aplicativo já está cadastrada e protegida. Deixe em branco para mantê-la.'
+            : null,
         provider?.passwordHint,
     ]
         .filter(Boolean)
@@ -125,6 +127,7 @@ export default function MailServerFields({
                 id="mail-username"
                 name="username"
                 label="Usuário de autenticação"
+                required
                 maxLength={255}
                 autoComplete="off"
                 hint={MAIL_HINTS.username}
@@ -137,12 +140,13 @@ export default function MailServerFields({
                 id="mail-password"
                 name="password"
                 type="password"
-                label="Senha ou chave de aplicativo"
+                label="Chave de aplicativo"
+                required={!hasPassword}
                 maxLength={255}
                 autoComplete="new-password"
-                placeholder={hasPassword ? '••••••••' : undefined}
+                placeholder={hasPassword ? 'Chave já cadastrada' : undefined}
                 hint={passwordHint}
-                hintLabel={hintLabel('Senha ou chave de aplicativo')}
+                hintLabel={hintLabel('Chave de aplicativo')}
                 value={form.data.password}
                 error={form.errors.password}
                 onChange={(value) => form.setData('password', value)}

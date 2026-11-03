@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Actions\AeeRecords;
 
 use App\Domains\Inclusion\Application\Data\AeeRecords\UpdateAeeRecordData;
+use App\Domains\Inclusion\Application\Services\Sessions\DirectAttendanceSessionRecorder;
 use App\Domains\Inclusion\Domain\DTOs\AeeRecords\AeeStudentEvaluationDTO;
 use App\Domains\Inclusion\Domain\DTOs\AeeRecords\UpdateAeeRecordDTO;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidAeeRecord;
@@ -14,8 +15,12 @@ use App\Domains\Inclusion\Domain\Models\Session;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-final class UpdateAeeRecordAction
+final readonly class UpdateAeeRecordAction
 {
+    public function __construct(
+        private DirectAttendanceSessionRecorder $sessions,
+    ) {}
+
     /** @throws Throwable */
     public function execute(AeeRecord $aeeRecord, UpdateAeeRecordData $data, int $professionalId): AeeRecord
     {
@@ -23,6 +28,12 @@ final class UpdateAeeRecordAction
             $record = AeeRecord::query()->with('studentEvaluations')->lockForUpdate()->findOrFail($aeeRecord->getKey());
             $session = Session::query()->with('students')->lockForUpdate()->findOrFail($record->attendance_session_id);
             $this->ensureCanManage($session, $professionalId, $data->evaluations);
+            $this->sessions->correct($session, [
+                'session_date' => $data->sessionDate,
+                'start_time' => $data->startTime,
+                'end_time' => $data->endTime,
+                'location' => $data->location,
+            ]);
             $dto = $this->dto($data);
             $record->revise($dto);
             $record->save();

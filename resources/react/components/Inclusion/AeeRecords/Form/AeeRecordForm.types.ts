@@ -1,4 +1,5 @@
 import type { InertiaFormProps } from '@inertiajs/react';
+import type { AttendanceDetailsValues } from '@/components/Inclusion/Sessions/Form/AttendanceDetailsFields';
 
 /** Avaliação individual como é editada no formulário. */
 export interface AeeEvaluationFormData {
@@ -25,9 +26,14 @@ export type AeeEvaluationGuardianChanges = Pick<
     'with_guardians' | 'guardian_ids'
 >;
 
-/** Payload do registro do atendimento (`CreateAeeRecordData`/`UpdateAeeRecordData`). */
-export interface AeeRecordFormData {
-    attendance_session_id: number;
+/**
+ * Estado do registro do atendimento. O cabeçalho (data, horário, local, alunos e formato) só é
+ * enviado no registro direto (`CreateDirectAeeRecordData`) e, em parte, na edição
+ * (`UpdateAeeRecordData`); a criação pelo agendamento envia só `attendance_session_id`.
+ */
+export interface AeeRecordFormData extends AttendanceDetailsValues {
+    attendance_session_id: number | null;
+    type: string;
     duration: string;
     activities_performed: string;
     strategies_used: string;
@@ -36,10 +42,12 @@ export interface AeeRecordFormData {
     evaluations: AeeEvaluationFormData[];
 }
 
-export type AeeRecordGeneralField = Exclude<
-    keyof AeeRecordFormData,
-    'attendance_session_id' | 'evaluations'
->;
+export type AeeRecordGeneralField =
+    | 'duration'
+    | 'activities_performed'
+    | 'strategies_used'
+    | 'resources_used'
+    | 'general_observations';
 
 /** Estado compartilhado pelas seções do formulário do registro. */
 export interface AeeRecordFormSectionProps {

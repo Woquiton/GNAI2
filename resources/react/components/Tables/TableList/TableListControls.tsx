@@ -49,7 +49,7 @@ export function TableListCreateButton({
     ariaLabel: string;
 }): React.JSX.Element {
     return (
-        <Button href={href} tone="list-action" labelIconClass="fa fa-plus" aria-label={ariaLabel}>
+        <Button href={href} tone="create" labelIconClass="fa fa-plus" aria-label={ariaLabel}>
             Cadastrar
         </Button>
     );

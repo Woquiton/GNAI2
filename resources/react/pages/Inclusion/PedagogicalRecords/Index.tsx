@@ -35,6 +35,12 @@ export default function InclusionPedagogicalRecordsIndexPage({
             title="Todos os Atendimentos Pedagógicos"
             subtitle="Visão geral dos registros pedagógicos dos profissionais permitidos."
             breadcrumbItems={pedagogicalRecordListBreadcrumb()}
+            create={
+                can.create && {
+                    href: pedagogicalRecordUrls.directCreate,
+                    label: 'Cadastrar atendimento pedagógico',
+                }
+            }
             actions={can.view_own ? <PedagogicalRecordScopeButton scope="own" /> : undefined}
             listLabel="Listagem de atendimentos pedagógicos"
             loading={filters.loading}

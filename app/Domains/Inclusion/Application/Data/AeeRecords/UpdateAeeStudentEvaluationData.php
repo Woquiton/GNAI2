@@ -39,7 +39,7 @@ final class UpdateAeeStudentEvaluationData extends Data
             'student_id' => ['required', 'integer', 'exists:students,id'],
             'is_present' => ['required', 'boolean'],
             'with_guardians' => ['required', 'boolean'],
-            'guardian_ids' => ['required_if:with_guardians,1', 'nullable', 'array', 'min:1'],
+            'guardian_ids' => ['exclude_unless:with_guardians,1,true', 'required', 'array', 'min:1'],
             'guardian_ids.*' => ['integer', 'distinct', 'exists:student_guardians,id'],
             'absence_reason' => ['required_if:is_present,0', 'nullable', 'string', 'max:100000'],
             'student_participation' => ['required_if:is_present,1', 'nullable', 'string', 'max:100000'],
@@ -48,6 +48,14 @@ final class UpdateAeeStudentEvaluationData extends Data
             'progress_indicators' => ['nullable', 'string', 'max:100000'],
             'recommendations' => ['nullable', 'string', 'max:100000'],
             'next_session_adjustments' => ['nullable', 'string', 'max:100000'],
+        ];
+    }
+
+    public static function messages(): array
+    {
+        return [
+            'guardian_ids.required' => 'Selecione ao menos um responsável participante.',
+            'guardian_ids.min' => 'Selecione ao menos um responsável participante.',
         ];
     }
 }

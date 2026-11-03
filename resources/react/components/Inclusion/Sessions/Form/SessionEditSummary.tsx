@@ -65,12 +65,14 @@ export default function SessionEditSummary({
                 </DetailGrid>
                 <FormGrid columns={2}>
                     <SessionScheduleFields
-                        form={form}
+                        values={form.data}
                         errors={errors}
                         disabled={disabled}
                         startTimes={options.startTimes}
                         endTimes={options.endTimes}
+                        onDateChange={(value) => form.setData('session_date', value)}
                         onStartTimeChange={onStartTimeChange}
+                        onEndTimeChange={(value) => form.setData('end_time', value)}
                     />
                 </FormGrid>
             </FormSection>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
+use App\Domains\Inclusion\Domain\Enums\SessionOrigin;
 use App\Domains\Inclusion\Domain\Enums\SessionStatus;
 use App\Domains\Inclusion\Domain\Enums\SessionType;
 use App\Domains\Inclusion\Domain\Enums\StudentStatus;
@@ -46,6 +47,7 @@ final class SessionShowPresenter
                 'location' => $session->location,
                 'attendance_type_label' => AttendanceType::labelFor($session->attendance_type),
                 'type_label' => SessionType::labelFor($session->type),
+                'origin_label' => ($session->origin ?? SessionOrigin::SCHEDULING)->label(),
                 'session_objective' => $session->session_objective,
                 'session_objective_html' => RichTextSanitizer::sanitize((string) $session->session_objective),
                 'cancellation_reason' => $session->cancellation_reason,

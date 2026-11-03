@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Queries\AeeRecords;
 
+use App\Domains\Inclusion\Application\Queries\Sessions\SessionFormQuery;
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
 use App\Domains\Inclusion\Domain\Enums\SessionStatus;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidAeeRecord;
 use App\Domains\Inclusion\Domain\Models\AeeRecord;
-use App\Domains\Inclusion\Domain\Models\Guardian;
 use App\Domains\Inclusion\Domain\Models\Session;
 use App\Domains\Inclusion\Domain\Models\Student;
 
-final class AeeRecordFormQuery
+final readonly class AeeRecordFormQuery
 {
+    public function __construct(
+        private SessionFormQuery $sessionForm,
+    ) {}
+
     public function forCreation(Session $session, int $professionalId): array
     {
         $session->load(['students.person', 'students.guardians.person', 'aeeRecord', 'pedagogicalRecord']);
@@ -30,6 +34,12 @@ final class AeeRecordFormQuery
         ];
     }
 
+    /** Registro direto, sem agendamento prévio: o profissional é o usuário logado. */
+    public function forDirectCreation(int $professionalId): array
+    {
+        return $this->sessionForm->forDirectRecord(AttendanceType::AEE, $professionalId);
+    }
+
     public function forUpdate(AeeRecord $aeeRecord, int $professionalId): array
     {
         $aeeRecord->load([
@@ -37,6 +47,7 @@ final class AeeRecordFormQuery
             'studentEvaluations.guardians',
             'attendanceSession.students.person',
             'attendanceSession.students.guardians.person',
+            'attendanceSession.professional.person',
         ]);
         if ((int) $aeeRecord->attendanceSession->professional_id !== $professionalId) {
             throw new InvalidAeeRecord('Apenas o profissional vinculado pode editar este registro AEE.');
@@ -46,7 +57,7 @@ final class AeeRecordFormQuery
             'aeeRecord' => $aeeRecord,
             'session' => $aeeRecord->attendanceSession,
             'guardiansByStudent' => $this->guardiansByStudent($aeeRecord->attendanceSession->students),
-        ];
+        ] + $this->sessionForm->forAttendanceCorrection($aeeRecord->attendanceSession);
     }
 
     /**
@@ -57,21 +68,6 @@ final class AeeRecordFormQuery
      */
     public function guardiansByStudent(iterable $students): array
     {
-        $options = [];
-
-        foreach ($students as $student) {
-            $student->loadMissing('guardians.person');
-            $options[(int) $student->getKey()] = $student->guardians
-                ->sortBy('person.name')
-                ->map(fn (Guardian $guardian): array => [
-                    'id' => (int) $guardian->getKey(),
-                    'name' => (string) $guardian->person?->name,
-                    'relationship_label' => $guardian->relationshipLabel(),
-                ])
-                ->values()
-                ->all();
-        }
-
-        return $options;
+        return $this->sessionForm->guardiansByStudent($students);
     }
 }

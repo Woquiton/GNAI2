@@ -7,12 +7,16 @@ export default function InclusionAeeRecordsEditPage({
     aeeRecord,
     session,
     guardiansByStudent,
+    startTimes,
+    endTimes,
+    attendanceTypeLabel,
+    attendanceForm,
 }: AeeRecordEditProps): React.JSX.Element {
     const sessionId = aeeRecord.attendance_session_id;
 
     return (
         <BusinessPage
-            title="Editar Registro de atendimento AEE"
+            title="Editar Registro de Atendimento Educacional Especializado"
             subtitle={`Registro #${aeeRecord.id} • Agendamento #${sessionId}`}
             breadcrumbItems={aeeRecordBreadcrumb({
                 sessionId,
@@ -22,8 +26,10 @@ export default function InclusionAeeRecordsEditPage({
         >
             <AeeRecordForm
                 key={aeeRecord.id}
+                mode="edit"
                 session={session}
                 aeeRecord={aeeRecord}
+                correction={{ startTimes, endTimes, attendanceTypeLabel, attendanceForm }}
                 guardiansByStudent={guardiansByStudent}
             />
         </BusinessPage>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Application\Data;
 
+use App\Domains\Settings\Application\Queries\GetMailSettingsQuery;
 use App\Domains\Settings\Domain\Enums\MailEncryption;
 use App\Domains\Settings\Domain\Enums\MailTransport;
 use Illuminate\Validation\Rule;
@@ -51,8 +52,19 @@ final class UpdateMailSettingsData extends Data
             'host' => ['nullable', 'required_if:transport,smtp', 'string', 'max:255'],
             'port' => ['nullable', 'required_if:transport,smtp', 'integer', 'between:1,65535'],
             'encryption' => ['required', Rule::enum(MailEncryption::class)],
-            'username' => ['nullable', 'string', 'max:255'],
-            'password' => ['nullable', 'string', 'max:255'],
+            'username' => ['nullable', 'required_if:transport,smtp', 'string', 'max:255'],
+            'password' => [
+                'nullable',
+                Rule::requiredIf(static function (): bool {
+                    if (request()->input('transport') !== MailTransport::SMTP->value) {
+                        return false;
+                    }
+
+                    return ! filled(app(GetMailSettingsQuery::class)->execute()?->password);
+                }),
+                'string',
+                'max:255',
+            ],
             'from_address' => ['required', 'string', 'email:rfc', 'max:255'],
             'from_name' => ['required', 'string', 'max:255'],
         ];
@@ -70,8 +82,10 @@ final class UpdateMailSettingsData extends Data
             'port.between' => 'A porta deve estar entre 1 e 65535.',
             'encryption.required' => 'Informe o tipo de segurança da conexão.',
             'encryption.enum' => 'O tipo de segurança selecionado é inválido.',
-            'username.max' => 'O usuário não pode ultrapassar 255 caracteres.',
-            'password.max' => 'A senha não pode ultrapassar 255 caracteres.',
+            'username.required_if' => 'Informe o usuário de autenticação da conta SMTP.',
+            'username.max' => 'O usuário de autenticação não pode ultrapassar 255 caracteres.',
+            'password.required' => 'Informe a chave de aplicativo.',
+            'password.max' => 'A chave de aplicativo não pode ultrapassar 255 caracteres.',
             'from_address.required' => 'Informe o e-mail de envio.',
             'from_address.email' => 'Informe um e-mail de envio válido.',
             'from_address.max' => 'O e-mail de envio não pode ultrapassar 255 caracteres.',

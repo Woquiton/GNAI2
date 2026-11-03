@@ -57,7 +57,7 @@ Os caminhos são relativos a `resources/react/components/`.
 | Ação confirmada | `UI/ConfirmActionModal/useConfirmedAction` + `ConfirmActionModal` (listagens e visualizações) |
 | Visualização | `UI/DetailGrid` + `UI/DetailField` (`wide`, `preserveLineBreaks`), `UI/TagList`, `UI/TableLabel`, `UI/RichTextContent` |
 | Seção, lista ou aba sem registros | `UI/EmptyText` (texto discreto); tabelas usam `TableListEmpty` e valores múltiplos usam `TagList` |
-| Prontuários | `UI/RecordSummary` (foto, nome e dados essenciais) + `Navigation/RecordTabs` (abas verticais) |
+| Prontuários | `UI/RecordSummary` (foto, nome e dados essenciais) + `Navigation/RecordTabs` (faixa horizontal compartilhada) |
 | Diálogos | `UI/Modal` (foco inicial, contenção por Tab e retorno ao disparador; `initialFocus`) e `UI/ConfirmActionModal` |
 | Falhas de operação | `UI/NotificationToast/operationFeedback`: `notifyOperationFailure`, `notifyConnectionFailure` |
 | Controles isolados | `Forms/`: `TextInput`, `TextArea`, `SelectField`, `ChoiceControl`, `ChoiceGroup`, `ToggleControl`, `MaskedInput`, `DatePicker`, `FileUploadButton`, `FileDropzone`, `EvidenceUpload`, `ImageUploadField`, `PersonPhotoUpload`, `FormSection`, `FormActions` |
@@ -68,6 +68,8 @@ Os caminhos são relativos a `resources/react/components/`.
 `useTableListAction` continua disponível como alias de `useConfirmedAction` nas listagens existentes.
 
 Abas que navegam entre URLs usam `Navigation/PageTabs`. Quando representam visualizações do mesmo componente Inertia, como calendário e listagem de agendamentos, passe `preserveState` para manter a navegação montada e permitir o deslizamento do indicador compartilhado. Entre páginas diferentes, a continuidade depende de um layout persistente, como `SettingsLayout`; não replique a animação em CSS do recurso. A preferência do usuário por movimento reduzido desativa a transição.
+
+`Tabs` horizontal e `PageTabs` compartilham `Navigation/Tabs/TabNavigation`: altura mínima de 46 px, texto de 14 px, padding de 10 × 18 px (10 × 14 px no celular), linha na largura disponível e indicador elástico limitado à aba selecionada. Abas ocupam a largura do próprio conteúdo. Quando excedem a faixa, o componente habilita arraste com `grab`/`grabbing`, toque e controles de borda; arrastar não ativa uma aba. Use esse padrão também por `RecordTabs`, sem duplicar medidas ou animações no domínio.
 
 ### Contrato dos campos
 

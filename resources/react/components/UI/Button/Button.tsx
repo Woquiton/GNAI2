@@ -7,6 +7,7 @@ export type ButtonTone =
     | 'white'
     | 'primary'
     | 'list-action'
+    | 'create'
     | 'save'
     | 'cancel'
     | 'dark-blue'
@@ -33,7 +34,7 @@ export type ButtonTone =
     | 'youtube'
     | 'github';
 
-/** Ícones padrão das ações do Gnai: salvar com check roxo e cancelar/voltar com X cinza. */
+/** Ícones padrão das ações do Gnai: salvar com check e cancelar/voltar com X. */
 const DEFAULT_TONE_ICONS: Partial<Record<ButtonTone, string>> = {
     save: 'fa fa-check',
     cancel: 'fa fa-times',

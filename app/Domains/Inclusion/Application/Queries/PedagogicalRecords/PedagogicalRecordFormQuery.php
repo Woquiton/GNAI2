@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Queries\PedagogicalRecords;
 
+use App\Domains\Inclusion\Application\Queries\Sessions\SessionFormQuery;
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
 use App\Domains\Inclusion\Domain\Enums\SessionStatus;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidPedagogicalRecord;
@@ -12,8 +13,12 @@ use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
 use App\Domains\Inclusion\Domain\Models\Session;
 use Carbon\Carbon;
 
-final class PedagogicalRecordFormQuery
+final readonly class PedagogicalRecordFormQuery
 {
+    public function __construct(
+        private SessionFormQuery $sessionForm,
+    ) {}
+
     public function forCreation(Session $session, int $professionalId): array
     {
         $session->load([
@@ -35,6 +40,12 @@ final class PedagogicalRecordFormQuery
         ];
     }
 
+    /** Registro direto, sem agendamento prévio: o profissional é o usuário logado. */
+    public function forDirectCreation(int $professionalId): array
+    {
+        return $this->sessionForm->forDirectRecord(AttendanceType::PEDAGOGICAL, $professionalId);
+    }
+
     public function forUpdate(PedagogicalRecord $pedagogicalRecord, int $professionalId): array
     {
         $pedagogicalRecord->load([
@@ -49,7 +60,7 @@ final class PedagogicalRecordFormQuery
         return [
             'pedagogicalRecord' => $pedagogicalRecord,
             'context' => $this->context($pedagogicalRecord->attendanceSession),
-        ];
+        ] + $this->sessionForm->forAttendanceCorrection($pedagogicalRecord->attendanceSession);
     }
 
     /**
@@ -65,7 +76,9 @@ final class PedagogicalRecordFormQuery
         return [
             'session_id' => (int) $session->id,
             'session_objective' => $session->session_objective,
+            'student_id' => $student !== null ? (int) $student->getKey() : null,
             'student_name' => $student?->person?->name,
+            'professional_id' => (int) $session->professional_id,
             'professional_name' => $session->professional?->person?->name,
             'session_date' => $session->session_date?->format('d/m/Y'),
             'start_time' => Carbon::parse($session->start_time)->format('H:i'),

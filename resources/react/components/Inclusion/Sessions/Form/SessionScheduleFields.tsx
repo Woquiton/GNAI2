@@ -1,35 +1,55 @@
 import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import { DateInputField, SelectInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
+import { localDate } from '../Sessions.constants';
 import type { SessionTimeOptions } from '../Sessions.types';
-import type { SessionFormSectionProps } from './SessionForm.types';
 import { endTimeOptions } from './SessionForm.utils';
 
-interface SessionScheduleFieldsProps
-    extends SessionFormSectionProps, Pick<SessionTimeOptions, 'startTimes' | 'endTimes'> {
+/** Data e horário do agendamento ou do atendimento registrado. */
+export interface SessionScheduleValues {
+    session_date: string;
+    start_time: string;
+    end_time: string;
+}
+
+interface SessionScheduleFieldsProps extends Pick<SessionTimeOptions, 'startTimes' | 'endTimes'> {
+    values: SessionScheduleValues;
+    errors: Record<string, string | undefined>;
+    disabled: boolean;
+    dateLabel?: string;
+    /** Atendimento já realizado: sem datas futuras no calendário e sem o destaque de hoje. */
+    pastOnly?: boolean;
+    onDateChange: (value: string) => void;
     onStartTimeChange: (value: string) => void;
+    onEndTimeChange: (value: string) => void;
 }
 
 /** Data, início e fim do agendamento; o fim acompanha o turno do início escolhido. */
 export default function SessionScheduleFields({
-    form,
+    values,
     errors,
     disabled,
     startTimes,
     endTimes,
+    dateLabel = 'Data do Agendamento',
+    pastOnly = false,
+    onDateChange,
     onStartTimeChange,
+    onEndTimeChange,
 }: SessionScheduleFieldsProps): React.JSX.Element {
     return (
         <>
             <DateInputField
                 id="session-date"
                 name="session_date"
-                label="Data do Agendamento"
+                label={dateLabel}
                 required
                 disabled={disabled}
-                value={form.data.session_date}
+                value={values.session_date}
                 error={errors.session_date}
-                onChange={(value) => form.setData('session_date', value)}
+                highlightToday={!pastOnly}
+                maxDate={pastOnly ? localDate() : undefined}
+                onChange={onDateChange}
             />
             <FormGrid columns={2} className="sessionForm__times">
                 <SelectInputField
@@ -38,7 +58,7 @@ export default function SessionScheduleFields({
                     label="Início"
                     required
                     disabled={disabled}
-                    value={form.data.start_time}
+                    value={values.start_time}
                     options={optionsFromRecord(startTimes)}
                     error={errors.start_time}
                     onChange={onStartTimeChange}
@@ -49,10 +69,10 @@ export default function SessionScheduleFields({
                     label="Fim"
                     required
                     disabled={disabled}
-                    value={form.data.end_time}
-                    options={endTimeOptions(endTimes, form.data.start_time)}
+                    value={values.end_time}
+                    options={endTimeOptions(endTimes, values.start_time)}
                     error={errors.end_time}
-                    onChange={(value) => form.setData('end_time', value)}
+                    onChange={onEndTimeChange}
                 />
             </FormGrid>
         </>

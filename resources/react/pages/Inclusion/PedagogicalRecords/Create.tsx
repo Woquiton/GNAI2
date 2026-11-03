@@ -8,11 +8,11 @@ export default function InclusionPedagogicalRecordsCreatePage({
 }: PedagogicalRecordCreateProps): React.JSX.Element {
     return (
         <BusinessPage
-            title="Novo Atendimento Pedagógico"
+            title="Novo Registro de Atendimento Pedagógico"
             subtitle={`Agendamento #${context.session_id}`}
             breadcrumbItems={pedagogicalRecordBreadcrumb({ sessionId: context.session_id })}
         >
-            <PedagogicalRecordForm context={context} />
+            <PedagogicalRecordForm mode="session" context={context} />
         </BusinessPage>
     );
 }

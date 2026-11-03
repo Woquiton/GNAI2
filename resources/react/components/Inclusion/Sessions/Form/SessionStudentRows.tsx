@@ -3,9 +3,11 @@ import FormField from '@/components/Forms/FormField/FormField';
 import type { FieldOption } from '@/components/Forms/FormFields/FormFields';
 import SelectField from '@/components/Forms/SelectField/SelectField';
 import Button from '@/components/UI/Button/Button';
-import type { SessionFormSectionProps } from './SessionForm.types';
 
-interface SessionStudentRowsProps extends SessionFormSectionProps {
+interface SessionStudentRowsProps {
+    studentIds: string[];
+    errors: Record<string, string | undefined>;
+    disabled: boolean;
     studentOptions: FieldOption[];
     /** Chaves estáveis das linhas; a posição continua definindo `student_ids.N`. */
     rowKeys: number[];
@@ -17,7 +19,7 @@ interface SessionStudentRowsProps extends SessionFormSectionProps {
 
 /** Alunos participantes: um select por aluno, com inclusão em grupo e remoção por linha. */
 export default function SessionStudentRows({
-    form,
+    studentIds,
     errors,
     disabled,
     studentOptions,
@@ -29,6 +31,15 @@ export default function SessionStudentRows({
 }: SessionStudentRowsProps): React.JSX.Element {
     const firstStudentId = `session-student-${rowKeys[0]}`;
     const removable = rowKeys.length > 1;
+
+    /** Cada linha oferece só os alunos que ainda não foram escolhidos nas outras. */
+    function rowOptions(index: number): FieldOption[] {
+        const chosenElsewhere = new Set(
+            studentIds.filter((id, position) => id && position !== index),
+        );
+
+        return studentOptions.filter((option) => !chosenElsewhere.has(String(option.value)));
+    }
 
     return (
         <FormField
@@ -60,8 +71,8 @@ export default function SessionStudentRows({
                                     label={`Aluno participante ${index + 1}`}
                                     required
                                     disabled={disabled}
-                                    value={form.data.student_ids[index] ?? ''}
-                                    options={studentOptions}
+                                    value={studentIds[index] ?? ''}
+                                    options={rowOptions(index)}
                                     aria-invalid={Boolean(rowError || errors.student_ids)}
                                     aria-describedby={describedIds}
                                     onChange={(event) => onChange(index, event.target.value)}

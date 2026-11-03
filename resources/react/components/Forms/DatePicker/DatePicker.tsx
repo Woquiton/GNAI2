@@ -15,6 +15,10 @@ interface DatePickerProps {
     disabled?: boolean;
     invalid?: boolean;
     describedBy?: string;
+    /** Destaca o dia de hoje no calendário (padrão); desligue quando ele já vem preenchido. */
+    highlightToday?: boolean;
+    /** Última data selecionável no calendário (`AAAA-MM-DD`); a validação continua no backend. */
+    maxDate?: string;
 }
 interface DatePickerCollection {
     datepicker: (options: Record<string, unknown> | string) => DatePickerCollection;
@@ -34,6 +38,8 @@ export default function DatePicker({
     disabled = false,
     invalid = false,
     describedBy,
+    highlightToday = true,
+    maxDate,
 }: DatePickerProps): React.JSX.Element {
     const input = useRef<HTMLInputElement>(null);
     const instance = useRef<DatePickerCollection | undefined>(undefined);
@@ -105,7 +111,8 @@ export default function DatePicker({
                 language: 'pt-BR',
                 format: 'dd/mm/yyyy',
                 autoclose: true,
-                todayHighlight: true,
+                todayHighlight: highlightToday,
+                ...(maxDate ? { endDate: displayDate(maxDate) } : {}),
                 clearBtn: true,
                 forceParse: false,
                 enableOnReadonly: false,

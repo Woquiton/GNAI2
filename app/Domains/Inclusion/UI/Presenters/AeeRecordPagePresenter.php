@@ -47,6 +47,8 @@ final class AeeRecordPagePresenter
                 'view' => $user->can('aee-record.view'),
                 'view_all' => $user->can('aee-record.view-all'),
                 'view_own' => $user->can('aee-record.view-own'),
+                // O registro direto exige um profissional vinculado ao usuário.
+                'create' => $user->professional_id !== null && $user->can('aee-record.create'),
             ],
         ];
     }

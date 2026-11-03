@@ -21,8 +21,12 @@
 .tabs__navViewport--draggable .tabs__button {
     cursor: grab;
 }
+.tabs__navViewport--draggable .pageTabs__link {
+    cursor: grab;
+}
 .tabs__navViewport--dragging,
-.tabs__navViewport--dragging .tabs__button {
+.tabs__navViewport--dragging .tabs__button,
+.tabs__navViewport--dragging .pageTabs__link {
     cursor: grabbing;
     user-select: none;
 }
@@ -30,7 +34,7 @@
     position: absolute;
     z-index: 3;
     top: 0;
-    bottom: 8px;
+    bottom: 2px;
     display: flex;
     align-items: center;
     width: 42px;
@@ -118,10 +122,14 @@
     height: 2px;
     background: var(--ui-color-gnai-primary);
     pointer-events: none;
+    opacity: 0;
     transition:
         right 0.28s cubic-bezier(0.4, 0, 0.2, 1),
         left 0.38s cubic-bezier(0.4, 0, 0.2, 1) 0.06s;
     will-change: left, right;
+}
+.tabs__indicator--ready {
+    opacity: 1;
 }
 .tabs__nav--material .tabs__indicator {
     top: 0;
@@ -443,7 +451,8 @@
 }
 
 /* Padrão Gnai para abas horizontais de negócio e prontuários extensos. */
-.tabs--standard {
+.tabs--standard,
+.pageTabs {
     min-width: 0;
     margin: 0;
 }
@@ -453,20 +462,23 @@
 .tabs--standard .tabs__navViewport--draggable {
     scrollbar-width: none;
 }
-.tabs--standard .tabs__nav {
+.tabs--standard .tabs__nav,
+.pageTabs .tabs__nav {
     justify-content: flex-start;
     width: max-content;
     min-width: 100%;
-    margin-bottom: 6px;
+    margin-bottom: 0;
     overflow: visible;
     border-bottom: 2px solid var(--ui-color-card-border);
     background: transparent;
     box-shadow: none;
 }
-.tabs--standard .tabs__nav > li {
+.tabs--standard .tabs__nav > li,
+.pageTabs .tabs__nav > li {
     flex: 0 0 auto;
 }
-.tabs--standard .tabs__button {
+.tabs--standard .tabs__button,
+.pageTabs__link {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -482,6 +494,7 @@
     text-align: center;
     text-transform: none;
     white-space: nowrap;
+    text-decoration: none;
 }
 .tabs--standard .tabs__button:hover,
 .tabs--standard .tabs__item--active .tabs__button {
@@ -490,22 +503,8 @@
 .tabs--standard .tabs__nav--animated .tabs__item--active .tabs__button::after {
     display: none;
 }
-.tabs .tabs__indicator {
-    right: auto;
-    left: 0;
-    width: 0;
-    opacity: 0;
-    transform: translateX(0);
-    transition:
-        width 0.24s ease,
-        transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.12s ease;
-    will-change: width, transform;
-}
-.tabs .tabs__indicator--ready {
-    opacity: 1;
-}
-.tabs--standard .tabs__indicator {
+.tabs--standard .tabs__indicator,
+.pageTabs .tabs__indicator {
     bottom: -2px;
 }
 .tabs--standard .tabs__icon {
@@ -514,10 +513,15 @@
     font-size: 16px;
     line-height: 1;
 }
+.pageTabs__link > i {
+    font-size: 16px;
+    line-height: 1;
+}
 .tabs--standard .tabs__label {
     display: inline;
 }
-.tabs--standard .tabs__button:focus-visible {
+.tabs--standard .tabs__button:focus-visible,
+.pageTabs__link:focus-visible {
     z-index: 1;
     outline: 2px solid var(--ui-color-gnai-primary);
     outline-offset: 2px;
@@ -547,7 +551,8 @@
 }
 
 @media (max-width: 767px) {
-    .tabs--standard .tabs__button {
+    .tabs--standard .tabs__button,
+    .pageTabs__link {
         padding-right: 14px;
         padding-left: 14px;
     }
@@ -557,7 +562,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .tabs .tabs__indicator {
+    .tabs__indicator {
         transition: none;
     }
     .tabs--standard .tabs__content {

@@ -9,12 +9,13 @@ export default function InclusionAeeRecordsCreatePage({
 }: AeeRecordCreateProps): React.JSX.Element {
     return (
         <BusinessPage
-            title="Novo Registro de atendimento AEE"
+            title="Novo Registro de Atendimento Educacional Especializado"
             subtitle={`Agendamento #${session.id}`}
             breadcrumbItems={aeeRecordBreadcrumb({ sessionId: session.id, current: 'Cadastrar' })}
         >
             <AeeRecordForm
                 key={session.id}
+                mode="session"
                 session={session}
                 guardiansByStudent={guardiansByStudent}
             />

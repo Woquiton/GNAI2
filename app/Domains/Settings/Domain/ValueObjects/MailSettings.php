@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Settings\Domain\ValueObjects;
 
 use App\Domains\Settings\Domain\Enums\MailEncryption;
+use App\Domains\Settings\Domain\Enums\MailTestStatus;
 use App\Domains\Settings\Domain\Enums\MailTransport;
 
 final readonly class MailSettings
@@ -18,6 +19,8 @@ final readonly class MailSettings
         public ?string $password,
         public string $fromAddress,
         public string $fromName,
+        public ?MailTestStatus $testStatus = null,
+        public ?string $lastTestedAt = null,
     ) {}
 
     /**
@@ -34,6 +37,8 @@ final readonly class MailSettings
             password: $password,
             fromAddress: (string) ($payload['from_address'] ?? ''),
             fromName: (string) ($payload['from_name'] ?? ''),
+            testStatus: MailTestStatus::tryFrom((string) ($payload['test_status'] ?? '')),
+            lastTestedAt: self::nullableString($payload['last_tested_at'] ?? null),
         );
     }
 
@@ -52,6 +57,8 @@ final readonly class MailSettings
             'username' => $this->username,
             'from_address' => $this->fromAddress,
             'from_name' => $this->fromName,
+            'test_status' => $this->testStatus?->value,
+            'last_tested_at' => $this->lastTestedAt,
         ];
     }
 

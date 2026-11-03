@@ -7,6 +7,10 @@ export default function InclusionPedagogicalRecordsEditPage({
     pedagogicalRecord,
     context,
     returnStudentId,
+    startTimes,
+    endTimes,
+    attendanceTypeLabel,
+    attendanceForm,
 }: PedagogicalRecordEditProps): React.JSX.Element {
     const breadcrumbItems = pedagogicalRecordBreadcrumb({
         sessionId: context.session_id,
@@ -16,14 +20,16 @@ export default function InclusionPedagogicalRecordsEditPage({
 
     return (
         <BusinessPage
-            title="Editar Atendimento Pedagógico"
+            title="Editar Registro de Atendimento Pedagógico"
             subtitle={`Agendamento #${context.session_id}`}
             breadcrumbItems={breadcrumbItems}
         >
             <PedagogicalRecordForm
                 key={pedagogicalRecord.id}
+                mode="edit"
                 record={pedagogicalRecord}
                 context={context}
+                correction={{ startTimes, endTimes, attendanceTypeLabel, attendanceForm }}
                 returnStudentId={returnStudentId || undefined}
             />
         </BusinessPage>

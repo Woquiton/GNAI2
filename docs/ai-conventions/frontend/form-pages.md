@@ -107,7 +107,7 @@ As fontes e cores compartilhadas estão em `resources/react/styles/tokens.css`, 
 | Calendário | Botão e seleção roxos, com os tokens Gnai e estilos do `DatePicker` |
 | Summernote | Toolbar neutra e estados ativos roxos, definidos no componente |
 | Erros de campo | `FormField`, controle com borda vermelha e mensagem logo abaixo em 12 px, peso 400 e vermelho do tema uBold; erro não pode depender somente de cor |
-| Salvar e cancelar | `Button` com `tone="save"`/`tone="cancel"`, ícone, texto visível, `title` e `aria-label`; confirmação no roxo institucional do Gnai com ícone de check e cancelamento cinza com X |
+| Salvar e cancelar | `Button` com `tone="save"`/`tone="cancel"`, ícone, texto visível, `title` e `aria-label`; confirmação no verde semântico de sucesso com ícone de check e cancelamento cinza com X |
 
 `--ui-color-primary` aponta para o roxo institucional; `--ui-color-theme-blue` e `--ui-color-custom` permanecem como cores do tema. Prefira os tokens semânticos (`--ui-color-save`, `--ui-color-form-label`, `--ui-focus-ring-color`) aos nomes genéricos.
 
@@ -160,7 +160,7 @@ O componente sincroniza seleção e desabilitação com os controles gerados pel
 
 ### Datas e máscaras
 
-Quando o campo representar uma data compatível, use `DatePicker` com `id`, `name`, `label`, `value` e `onChange`. Ele exibe e mascara `DD/MM/AAAA`, filtra caracteres não numéricos, rejeita dias/meses fora da faixa e datas inexistentes (incluindo anos bissextos), e recebe/emite datas completas válidas em `AAAA-MM-DD`. Entradas incompletas continuam chegando à validação existente; o componente não aplica limites de idade nem regras de negócio. Associe o erro por `invalid` e `describedBy`. A falha no calendário mantém a digitação disponível e apresenta feedback.
+Quando o campo representar uma data compatível, use `DatePicker` com `id`, `name`, `label`, `value` e `onChange`. Ele exibe e mascara `DD/MM/AAAA`, filtra caracteres não numéricos, rejeita dias/meses fora da faixa e datas inexistentes (incluindo anos bissextos), e recebe/emite datas completas válidas em `AAAA-MM-DD`. Entradas incompletas continuam chegando à validação existente; o componente não aplica limites de idade nem regras de negócio. Quando a tela pede, `maxDate` (`AAAA-MM-DD`) bloqueia no calendário os dias posteriores, sem substituir a validação do backend, e `highlightToday={false}` remove o destaque de hoje, que usa o mesmo roxo da seleção; os registros de atendimento já realizado usam as duas opções. Associe o erro por `invalid` e `describedBy`. A falha no calendário mantém a digitação disponível e apresenta feedback.
 
 Para horário, reutilize `ClockPicker` ou `TimePicker`, conforme o controle visual exigido pelo Ubold. Ambos filtram letras e rejeitam horários fora da faixa configurada; `ClockPicker` usa `HH:mm` de 24 horas, enquanto `TimePicker` respeita `showMeridian`. Mantenha essas máscaras e faixas nos componentes compartilhados, não nas telas.
 

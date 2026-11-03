@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Data\AeeRecords;
 
+use App\Domains\Inclusion\Application\Data\Sessions\Concerns\ValidatesAttendanceDetails;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -11,7 +12,13 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapInputName(SnakeCaseMapper::class)]
 final class UpdateAeeRecordData extends Data
 {
+    use ValidatesAttendanceDetails;
+
     public function __construct(
+        public string $sessionDate,
+        public string $startTime,
+        public ?string $endTime,
+        public string $location,
         public string $duration,
         public string $activitiesPerformed,
         public ?string $strategiesUsed,
@@ -33,6 +40,7 @@ final class UpdateAeeRecordData extends Data
     public static function rules(): array
     {
         return [
+            ...self::attendanceDetailsRules(),
             'duration' => ['required', 'string', 'max:50'],
             'activities_performed' => ['required', 'string', 'max:100000'],
             'strategies_used' => ['nullable', 'string', 'max:100000'],
@@ -42,7 +50,7 @@ final class UpdateAeeRecordData extends Data
             'evaluations.*.student_id' => ['required', 'integer', 'distinct', 'exists:students,id'],
             'evaluations.*.is_present' => ['required', 'boolean'],
             'evaluations.*.with_guardians' => ['required', 'boolean'],
-            'evaluations.*.guardian_ids' => ['required_if:evaluations.*.with_guardians,1', 'nullable', 'array', 'min:1'],
+            'evaluations.*.guardian_ids' => ['exclude_unless:evaluations.*.with_guardians,1,true', 'required', 'array', 'min:1'],
             'evaluations.*.guardian_ids.*' => ['integer', 'exists:student_guardians,id'],
             'evaluations.*.absence_reason' => ['required_if:evaluations.*.is_present,0', 'nullable', 'string', 'max:100000'],
             'evaluations.*.student_participation' => ['required_if:evaluations.*.is_present,1', 'nullable', 'string', 'max:100000'],
@@ -57,14 +65,15 @@ final class UpdateAeeRecordData extends Data
     public static function messages(): array
     {
         return [
-            'attendance_session_id.required' => 'O agendamento do atendimento é obrigatório.',
-            'attendance_session_id.exists' => 'O agendamento informado não existe.',
+            ...self::attendanceDetailsMessages(),
             'duration.required' => 'A duração do atendimento é obrigatória.',
             'duration.max' => 'A duração não pode ultrapassar 50 caracteres.',
             'activities_performed.required' => 'As atividades realizadas são obrigatórias.',
             'evaluations.required' => 'Informe ao menos uma avaliação de aluno.',
             'evaluations.min' => 'Informe ao menos uma avaliação de aluno.',
             'evaluations.*.student_id.distinct' => 'O mesmo aluno não pode aparecer mais de uma vez.',
+            'evaluations.*.guardian_ids.required' => 'Selecione ao menos um responsável participante.',
+            'evaluations.*.guardian_ids.min' => 'Selecione ao menos um responsável participante.',
             'evaluations.*.absence_reason.required_if' => 'A justificativa é obrigatória para aluno ausente.',
             'evaluations.*.student_participation.required_if' => 'A participação é obrigatória para aluno presente.',
             'evaluations.*.development_evaluation.required_if' => 'A avaliação de desenvolvimento é obrigatória para aluno presente.',

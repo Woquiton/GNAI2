@@ -1,77 +1,23 @@
 .recordTabs {
-    margin: 0;
-}
-.recordTabs .tabs__verticalEnv {
     min-width: 0;
     margin: 0;
-    overflow: hidden;
-    border: 1px solid var(--ui-color-card-border);
-    border-radius: 4px 4px 0 0;
-    background: var(--ui-color-surface-alt);
-    box-shadow: 0 1px 1px var(--ui-color-shadow);
-}
-.recordTabs .tabs__nav {
-    flex: 0 0 clamp(190px, 23%, 250px);
-    background: var(--ui-color-surface-alt);
-}
-.recordTabs .tabs__button {
-    min-height: 52px;
-    height: auto;
-    padding: 12px 18px;
-    color: var(--ui-color-heading);
-    font-size: 13px;
-    line-height: 1.35;
-    text-align: left;
-}
-.recordTabs .tabs__button:hover,
-.recordTabs .tabs__item--active .tabs__button {
-    color: var(--ui-color-gnai-primary);
-}
-.recordTabs .tabs__item--active .tabs__button {
-    background: var(--ui-color-surface);
-}
-.recordTabs .tabs__button:focus-visible {
-    z-index: 1;
-    outline: 2px solid var(--ui-color-gnai-primary);
-    outline-offset: -3px;
 }
 .recordTabs .tabs__content {
     min-width: 0;
     min-height: 390px;
-    padding: 28px 30px;
-    box-shadow: none;
-}
-.recordTabs .tabs__content:focus-visible {
-    outline: 2px solid var(--ui-color-gnai-primary);
-    outline-offset: -4px;
+    margin-top: var(--ui-space-5);
+    padding: var(--ui-space-6);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-surface);
 }
 .recordTabs .formSection {
     margin-bottom: 0;
 }
 
 @media (max-width: 767px) {
-    .recordTabs .tabs__verticalEnv {
-        display: block;
-        overflow: visible;
-    }
-
-    .recordTabs .tabs__nav {
-        display: flex;
-        overflow-x: auto;
-        background: var(--ui-color-surface-alt);
-    }
-
-    .recordTabs .tabs__nav > li {
-        flex: 0 0 auto;
-    }
-
-    .recordTabs .tabs__button {
-        min-width: 150px;
-        text-align: center;
-    }
-
     .recordTabs .tabs__content {
         min-height: 0;
-        padding: 20px;
+        padding: var(--ui-space-5);
     }
 }

@@ -62,6 +62,7 @@
 }
 
 /* Ações do produto */
+.button--create,
 .button--save {
     --button-bg: var(--ui-color-save);
     --button-bg-hover: var(--ui-color-save-hover);

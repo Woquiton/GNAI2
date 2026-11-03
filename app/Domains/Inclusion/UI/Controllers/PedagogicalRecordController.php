@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Controllers;
 
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Application\Actions\PedagogicalRecords\CreateDirectPedagogicalRecordAction;
 use App\Domains\Inclusion\Application\Actions\PedagogicalRecords\CreatePedagogicalRecordAction;
 use App\Domains\Inclusion\Application\Actions\PedagogicalRecords\DeletePedagogicalRecordAction;
 use App\Domains\Inclusion\Application\Actions\PedagogicalRecords\UpdatePedagogicalRecordAction;
+use App\Domains\Inclusion\Application\Data\PedagogicalRecords\CreateDirectPedagogicalRecordData;
 use App\Domains\Inclusion\Application\Data\PedagogicalRecords\CreatePedagogicalRecordData;
 use App\Domains\Inclusion\Application\Data\PedagogicalRecords\ListPedagogicalRecordsData;
 use App\Domains\Inclusion\Application\Data\PedagogicalRecords\UpdatePedagogicalRecordData;
@@ -78,6 +80,22 @@ final class PedagogicalRecordController
         return redirect()->route('specialized-educational-support.pedagogical-records.show', $record)->with('success', 'Atendimento pedagógico criado com sucesso.');
     }
 
+    /** Atendimento já realizado sem agendamento prévio: o agendamento é criado junto do registro. */
+    public function createDirect(PedagogicalRecordFormQuery $form, Request $request): InertiaResponse
+    {
+        return Inertia::render('Inclusion/PedagogicalRecords/CreateDirect', $form->forDirectCreation($this->professionalId($request)) + [
+            'backUrl' => route($this->listRoute($request)),
+        ]);
+    }
+
+    /** @throws Throwable */
+    public function storeDirect(CreateDirectPedagogicalRecordData $data, CreateDirectPedagogicalRecordAction $action, Request $request): RedirectResponse
+    {
+        $record = $action->execute($data, $this->professionalId($request), (int) $this->user($request)->getKey());
+
+        return redirect()->route('specialized-educational-support.pedagogical-records.show', $record)->with('success', 'Atendimento pedagógico criado com sucesso.');
+    }
+
     public function show(PedagogicalRecord $pedagogicalRecord, ShowPedagogicalRecordQuery $query, PedagogicalRecordPagePresenter $presenter, Request $request): InertiaResponse
     {
         $user = $this->user($request);
@@ -130,6 +148,11 @@ final class PedagogicalRecordController
             )->with('success', 'Atendimento pedagógico removido com sucesso.');
         }
 
+        // O agendamento do registro direto é excluído junto: volta para a listagem.
+        if ($sessionId === null) {
+            return redirect()->route($this->listRoute($request))->with('success', 'Atendimento pedagógico removido com sucesso.');
+        }
+
         return redirect()->route('specialized-educational-support.sessions.show', $sessionId)->with('success', 'Atendimento pedagógico removido com sucesso.');
     }
 
@@ -166,6 +189,14 @@ final class PedagogicalRecordController
         }
 
         return $user;
+    }
+
+    /** Listagem geral, com `pedagogical-record.view-all`, ou a do próprio profissional. */
+    private function listRoute(Request $request): string
+    {
+        return $this->user($request)->can('pedagogical-record.view-all')
+            ? 'specialized-educational-support.pedagogical-records.index'
+            : 'specialized-educational-support.pedagogical-records.my-records';
     }
 
     private function professionalId(Request $request): int

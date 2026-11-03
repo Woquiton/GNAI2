@@ -13,7 +13,11 @@ import type {
 import './PedagogicalRecordForm.css';
 
 interface PedagogicalRecordIdentificationFieldsProps {
-    context: PedagogicalRecordFormContext;
+    /** Resumo do agendamento; ausente quando os dados do atendimento são editáveis. */
+    context?: PedagogicalRecordFormContext;
+    guardians: PedagogicalRecordGuardianOption[];
+    /** Aviso sem responsáveis; o padrão diz que o aluno não tem responsáveis cadastrados. */
+    emptyGuardiansMessage?: string;
     withGuardians: boolean;
     guardianIds: number[];
     guardianError?: string;
@@ -25,6 +29,8 @@ interface PedagogicalRecordIdentificationFieldsProps {
 /** Dados do agendamento (somente leitura) e responsáveis que participaram do atendimento. */
 export default function PedagogicalRecordIdentificationFields({
     context,
+    guardians,
+    emptyGuardiansMessage = 'O aluno não possui responsáveis cadastrados no sistema.',
     withGuardians,
     guardianIds,
     guardianError,
@@ -32,12 +38,11 @@ export default function PedagogicalRecordIdentificationFields({
     onWithGuardiansChange,
     onGuardianToggle,
 }: PedagogicalRecordIdentificationFieldsProps): React.JSX.Element {
-    const { guardians } = context;
     const hasGuardians = guardians.length > 0;
     const guardiansId = 'pedagogical-record-guardians';
     const guardianDescription = hasGuardians
         ? 'Marque para selecionar os responsáveis que participaram do atendimento.'
-        : 'O aluno não possui responsáveis cadastrados no sistema.';
+        : emptyGuardiansMessage;
 
     function renderGuardian(guardian: PedagogicalRecordGuardianOption): React.JSX.Element {
         const label = (
@@ -66,26 +71,30 @@ export default function PedagogicalRecordIdentificationFields({
         );
     }
 
+    const summary = context ? (
+        <DetailGrid>
+            <DetailField label="Aluno">
+                {context.student_name ?? 'Aluno não informado'}
+            </DetailField>
+            <DetailField label="Profissional">
+                {context.professional_name ?? 'Profissional não informado'}
+            </DetailField>
+            <DetailField label="Data">{context.session_date ?? 'Não informado'}</DetailField>
+            <DetailField label="Horário">
+                {`${context.start_time} às ${context.end_time ?? '--:--'}`}
+            </DetailField>
+            <DetailField label="Tipo">{context.attendance_type_label}</DetailField>
+        </DetailGrid>
+    ) : null;
+
     return (
         <FormSection
             id="pedagogical-record-identification"
-            title="Identificação do Estudante"
+            title={context ? 'Identificação do Estudante' : 'Responsáveis Participantes'}
             variant="inline"
-            iconClass="fa fa-user"
+            iconClass={context ? 'fa fa-user' : 'fa fa-users'}
         >
-            <DetailGrid>
-                <DetailField label="Aluno">
-                    {context.student_name ?? 'Aluno não informado'}
-                </DetailField>
-                <DetailField label="Profissional">
-                    {context.professional_name ?? 'Profissional não informado'}
-                </DetailField>
-                <DetailField label="Data">{context.session_date ?? 'Não informado'}</DetailField>
-                <DetailField label="Horário">
-                    {`${context.start_time} às ${context.end_time ?? '--:--'}`}
-                </DetailField>
-                <DetailField label="Tipo">{context.attendance_type_label}</DetailField>
-            </DetailGrid>
+            {summary}
             <FormGrid columns={2}>
                 <FormGridWide>
                     <FormStack>

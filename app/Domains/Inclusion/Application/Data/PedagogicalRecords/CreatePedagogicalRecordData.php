@@ -41,13 +41,21 @@ final class CreatePedagogicalRecordData extends Data
             'duration' => ['required', 'string', 'max:50'],
             'is_present' => ['required', 'boolean'],
             'with_guardians' => ['required', 'boolean'],
-            'guardian_ids' => ['required_if:with_guardians,1', 'nullable', 'array', 'min:1'],
+            'guardian_ids' => ['exclude_unless:with_guardians,1,true', 'required', 'array', 'min:1'],
             'guardian_ids.*' => ['integer', 'distinct', 'exists:student_guardians,id'],
             'absence_reason' => ['required_if:is_present,0', 'nullable', 'string', 'max:100000'],
             'systematic_pedagogical_follow_up_record' => ['required_if:is_present,1', 'required_if:with_guardians,1', 'nullable', 'string', 'max:100000'],
             'strategies_and_resources_adopted' => ['nullable', 'string', 'max:100000'],
             'referrals_made' => ['nullable', 'string', 'max:100000'],
             'complementary_observations' => ['nullable', 'string', 'max:100000'],
+        ];
+    }
+
+    public static function messages(): array
+    {
+        return [
+            'guardian_ids.required' => 'Selecione ao menos um responsável participante.',
+            'guardian_ids.min' => 'Selecione ao menos um responsável participante.',
         ];
     }
 }

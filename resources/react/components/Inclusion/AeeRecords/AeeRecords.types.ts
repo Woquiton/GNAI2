@@ -1,3 +1,7 @@
+import type {
+    AttendanceCorrectionProps,
+    DirectAttendanceProps,
+} from '@/components/Inclusion/Sessions/Sessions.types';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
 
 export interface AeePerson {
@@ -116,6 +120,8 @@ export interface AeeRecordListProps extends AeeRecordFilterOptions {
         view: boolean;
         view_all: boolean;
         view_own: boolean;
+        /** Registro direto, sem agendamento prévio. */
+        create: boolean;
     };
 }
 
@@ -157,8 +163,14 @@ export interface AeeRecordCreateProps {
     guardiansByStudent: AeeGuardiansByStudent;
 }
 
-export interface AeeRecordEditProps extends AeeRecordCreateProps {
+/** Edição: além do registro, data, horário e local do atendimento podem ser corrigidos. */
+export interface AeeRecordEditProps extends AeeRecordCreateProps, AttendanceCorrectionProps {
     aeeRecord: AeeRecordRecord;
+}
+
+/** Registro direto de atendimento já realizado (`AeeRecordController@createDirect`). */
+export interface AeeRecordCreateDirectProps extends DirectAttendanceProps {
+    backUrl: string;
 }
 
 /** Permissões de autoria das visualizações (`AeeRecordPagePresenter::managementAbilities`). */

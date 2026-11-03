@@ -17,7 +17,7 @@ export const MAIL_PROVIDERS: MailProvider[] = [
         host: 'smtp.gmail.com',
         port: 587,
         encryption: 'tls',
-        passwordHint: 'No Gmail, use uma senha de app (exige a verificação em duas etapas ativa).',
+        passwordHint: 'No Gmail, use uma chave de app (exige a verificação em duas etapas ativa).',
     },
     {
         key: 'outlook',
@@ -43,7 +43,7 @@ export const MAIL_PROVIDERS: MailProvider[] = [
         host: 'smtp.mail.yahoo.com',
         port: 465,
         encryption: 'ssl',
-        passwordHint: 'No Yahoo, gere uma senha de app nas configurações de segurança da conta.',
+        passwordHint: 'No Yahoo, gere uma chave de app nas configurações de segurança da conta.',
     },
     {
         key: 'zoho',
@@ -119,11 +119,11 @@ export const MAIL_HINTS = {
     host: 'Copie o endereço SMTP informado pelo serviço de e-mail. Se não souber qual é, peça ao responsável pela conta.',
     port: 'Informe a porta indicada nas configurações de envio do seu serviço de e-mail. Peça esse número ao responsável pela conta se necessário.',
     username:
-        'Informe o login da conta que enviará os e-mails. Na maioria dos serviços, é o endereço completo dessa conta, por exemplo: atendimento@escola.com.br.',
+        'É a conta que o Gnai usa para entrar no servidor SMTP. Normalmente, é o endereço completo da caixa de e-mail, por exemplo: atendimento@escola.com.br.',
     password:
-        'Informe a senha de envio da conta. Se o serviço pedir uma senha de aplicativo, crie essa senha nas configurações de segurança do e-mail.',
+        'Informe a chave de aplicativo criada nas configurações de segurança da conta de e-mail. A chave é armazenada de forma criptografada e nunca volta a ser exibida.',
     fromAddress:
-        'Informe o endereço que as pessoas verão como remetente das mensagens. Use a conta configurada acima ou um endereço que o serviço permita usar para envio.',
+        'É o endereço que as pessoas verão como remetente. Ele pode ser diferente do usuário de autenticação somente quando o serviço autorizar esse endereço ou alias; caso contrário, use o mesmo e-mail nos dois campos.',
     fromName:
         'Informe o nome que aparecerá para quem receber os e-mails, por exemplo: Equipe Gnai ou o nome da instituição.',
     recipient:

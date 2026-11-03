@@ -6,20 +6,33 @@ interface PedagogicalRecordScopeButtonProps {
     scope: 'all' | 'own';
 }
 
-/** Alterna entre a listagem geral e a pessoal, exibido conforme a permissão da outra visão. */
+/**
+ * Alterna entre a listagem geral e a pessoal, exibido conforme a permissão da outra visão. Segue o
+ * formato dos atalhos dos atendimentos especializados.
+ */
 export default function PedagogicalRecordScopeButton({
     scope,
 }: PedagogicalRecordScopeButtonProps): React.JSX.Element {
     if (scope === 'own') {
         return (
-            <Button href={pedagogicalRecordUrls.myRecords} tone="cancel" leftIconClass="fa fa-user">
+            <Button
+                href={pedagogicalRecordUrls.myRecords}
+                tone="list-action"
+                labelIconClass="fa fa-user"
+                aria-label="Ver meus atendimentos pedagógicos"
+            >
                 Meus Atendimentos
             </Button>
         );
     }
 
     return (
-        <Button href={pedagogicalRecordUrls.index} tone="cancel" leftIconClass="fa fa-users">
+        <Button
+            href={pedagogicalRecordUrls.index}
+            tone="list-action"
+            labelIconClass="fa fa-users"
+            aria-label="Ver todos os atendimentos pedagógicos"
+        >
             Todos os Atendimentos
         </Button>
     );

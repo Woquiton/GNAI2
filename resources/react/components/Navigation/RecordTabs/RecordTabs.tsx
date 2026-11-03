@@ -5,13 +5,12 @@ import './RecordTabs.css';
 type RecordTabsProps = Omit<ComponentProps<typeof Tabs>, 'variant'>;
 
 /**
- * Abas verticais dos prontuários: navegação neutra à esquerda e painel com a seção completa.
- * Em telas estreitas, `Tabs` transforma a navegação em uma faixa horizontal rolável.
+ * Prontuários usam a faixa horizontal compartilhada e um painel para a seção completa.
  */
 export default function RecordTabs(props: RecordTabsProps): React.JSX.Element {
     return (
         <div className="recordTabs">
-            <Tabs {...props} variant="vertical" />
+            <Tabs {...props} variant="standard" />
         </div>
     );
 }

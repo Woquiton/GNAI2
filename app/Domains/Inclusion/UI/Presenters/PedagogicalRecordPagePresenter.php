@@ -60,6 +60,8 @@ final class PedagogicalRecordPagePresenter
                 'view' => $user->can('pedagogical-record.view'),
                 'view_all' => $user->can('pedagogical-record.view-all'),
                 'view_own' => $user->can('pedagogical-record.view-own'),
+                // O registro direto exige um profissional vinculado ao usuário.
+                'create' => $user->professional_id !== null && $user->can('pedagogical-record.create'),
                 'update' => $user->can('pedagogical-record.update'),
                 'delete' => $user->can('pedagogical-record.delete'),
             ],

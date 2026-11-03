@@ -6,7 +6,11 @@ namespace App\Domains\Settings\Application\Actions;
 
 use App\Domains\Settings\Application\Data\SendTestMailData;
 use App\Domains\Settings\Domain\DTOs\TestMailResultDTO;
+use App\Domains\Settings\Domain\Enums\MailTestStatus;
+use App\Domains\Settings\Domain\Enums\SettingCategory;
 use App\Domains\Settings\Domain\Exceptions\MailTestFailed;
+use App\Domains\Settings\Domain\Models\Setting;
+use App\Domains\Settings\Domain\ValueObjects\MailSettings;
 use App\Domains\Settings\Infrastructure\Mail\MailSettingsConfigurator;
 use App\Domains\Settings\Infrastructure\Mail\SettingsTestMail;
 use Illuminate\Contracts\Config\Repository;
@@ -49,12 +53,35 @@ final readonly class SendTestMailAction
                 'error' => $detail,
             ]);
 
+            $this->recordStatus($settings, MailTestStatus::FAILED);
+
             throw MailTestFailed::fromDetail($detail);
         }
+
+        $this->recordStatus($settings, MailTestStatus::SUCCESS);
 
         return new TestMailResultDTO(
             usedStoredSettings: $settings !== null,
             loggedOnly: $this->config->get('mail.default') === 'log',
         );
+    }
+
+    private function recordStatus(?MailSettings $settings, MailTestStatus $status): void
+    {
+        if (! $settings instanceof MailSettings) {
+            return;
+        }
+
+        $payload = Setting::payloadFor(SettingCategory::MAIL);
+
+        if ($payload === null) {
+            return;
+        }
+
+        Setting::store(SettingCategory::MAIL, [
+            ...$payload,
+            'test_status' => $status->value,
+            'last_tested_at' => now()->toIso8601String(),
+        ]);
     }
 }

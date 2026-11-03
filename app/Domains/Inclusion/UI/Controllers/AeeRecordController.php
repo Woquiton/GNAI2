@@ -6,11 +6,13 @@ namespace App\Domains\Inclusion\UI\Controllers;
 
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Application\Actions\AeeRecords\CreateAeeRecordAction;
+use App\Domains\Inclusion\Application\Actions\AeeRecords\CreateDirectAeeRecordAction;
 use App\Domains\Inclusion\Application\Actions\AeeRecords\DeleteAeeRecordAction;
 use App\Domains\Inclusion\Application\Actions\AeeRecords\DeleteAeeStudentEvaluationAction;
 use App\Domains\Inclusion\Application\Actions\AeeRecords\UpdateAeeRecordAction;
 use App\Domains\Inclusion\Application\Actions\AeeRecords\UpdateAeeStudentEvaluationAction;
 use App\Domains\Inclusion\Application\Data\AeeRecords\CreateAeeRecordData;
+use App\Domains\Inclusion\Application\Data\AeeRecords\CreateDirectAeeRecordData;
 use App\Domains\Inclusion\Application\Data\AeeRecords\ListAeeRecordsData;
 use App\Domains\Inclusion\Application\Data\AeeRecords\UpdateAeeRecordData;
 use App\Domains\Inclusion\Application\Data\AeeRecords\UpdateAeeStudentEvaluationData;
@@ -72,6 +74,22 @@ final class AeeRecordController
         return redirect()->route('specialized-educational-support.aee-records.show', $aeeRecord)->with('success', 'Registro do atendimento AEE criado com sucesso.');
     }
 
+    /** Atendimento já realizado sem agendamento prévio: o agendamento é criado junto do registro. */
+    public function createDirect(AeeRecordFormQuery $form, Request $request): InertiaResponse
+    {
+        return Inertia::render('Inclusion/AeeRecords/CreateDirect', $form->forDirectCreation($this->professionalId($request)) + [
+            'backUrl' => route($this->listRoute($request)),
+        ]);
+    }
+
+    /** @throws Throwable */
+    public function storeDirect(CreateDirectAeeRecordData $data, CreateDirectAeeRecordAction $action, Request $request): RedirectResponse
+    {
+        $aeeRecord = $action->execute($data, $this->professionalId($request), (int) $this->user($request)->getKey());
+
+        return redirect()->route('specialized-educational-support.aee-records.show', $aeeRecord)->with('success', 'Registro do atendimento AEE criado com sucesso.');
+    }
+
     public function show(AeeRecord $aeeRecord, ShowAeeRecordQuery $query, AeeRecordPagePresenter $presenter, Request $request): InertiaResponse
     {
         $user = $this->user($request);
@@ -99,6 +117,11 @@ final class AeeRecordController
     public function destroy(AeeRecord $aeeRecord, DeleteAeeRecordAction $action, Request $request): RedirectResponse
     {
         $sessionId = $action->execute($aeeRecord, $this->professionalId($request));
+
+        // O agendamento do registro direto é excluído junto: volta para a listagem.
+        if ($sessionId === null) {
+            return redirect()->route($this->listRoute($request))->with('success', 'Registro do atendimento AEE removido com sucesso.');
+        }
 
         return redirect()->route('specialized-educational-support.sessions.show', $sessionId)->with('success', 'Registro do atendimento AEE removido com sucesso.');
     }
@@ -206,6 +229,14 @@ final class AeeRecordController
         }
 
         return $user;
+    }
+
+    /** Listagem geral, com `aee-record.view-all`, ou a do próprio profissional. */
+    private function listRoute(Request $request): string
+    {
+        return $this->user($request)->can('aee-record.view-all')
+            ? 'specialized-educational-support.aee-records.index'
+            : 'specialized-educational-support.aee-records.my-records';
     }
 
     private function professionalId(Request $request): int

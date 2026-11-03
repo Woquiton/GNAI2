@@ -35,6 +35,12 @@ export default function InclusionPedagogicalRecordsMyRecordsPage({
             title="Meus Atendimentos Pedagógicos"
             subtitle="Histórico dos seus atendimentos pedagógicos."
             breadcrumbItems={pedagogicalRecordListBreadcrumb()}
+            create={
+                can.create && {
+                    href: pedagogicalRecordUrls.directCreate,
+                    label: 'Cadastrar atendimento pedagógico',
+                }
+            }
             actions={can.view_all ? <PedagogicalRecordScopeButton scope="all" /> : undefined}
             listLabel="Listagem de atendimentos pedagógicos"
             loading={filters.loading}

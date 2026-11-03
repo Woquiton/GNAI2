@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import {
@@ -12,6 +12,7 @@ import {
 import { sessionUrls } from '../Sessions.routes';
 import type { SessionFormData, SessionFormProps } from './SessionForm.types';
 import { adjustEndTime } from './SessionForm.utils';
+import { useStudentRows } from './useStudentRows';
 
 function initialData(props: SessionFormProps): SessionFormData {
     if (props.mode === 'edit') {
@@ -52,60 +53,32 @@ function initialData(props: SessionFormProps): SessionFormData {
 export function useSessionForm(props: SessionFormProps) {
     const session = props.mode === 'edit' ? props.session : undefined;
     const editing = props.mode === 'edit';
-    const nextRowKey = useRef(1);
-    const [rowKeys, setRowKeys] = useState<number[]>([0]);
     const [confirmOpen, setConfirmOpen] = useState(false);
     const form = useForm<SessionFormData>(initialData(props));
     const submission = useFormSubmission(form);
     const { editorFailed, reportEditorFailure } = useEditorFailure(form);
     const errors = form.errors as Record<string, string | undefined>;
+    const studentRows = useStudentRows(form.data.student_ids, (studentIds) =>
+        form.setData('student_ids', studentIds),
+    );
     const isPedagogical = form.data.attendance_type === PEDAGOGICAL_ATTENDANCE;
     const canAddStudents = !editing && !isPedagogical && form.data.type === GROUP_SESSION;
 
     function changeAttendanceType(value: string): void {
-        form.setData((data) => {
-            if (value !== PEDAGOGICAL_ATTENDANCE) {
-                return { ...data, attendance_type: value };
-            }
-
-            return {
-                ...data,
-                attendance_type: value,
-                type: INDIVIDUAL_SESSION,
-                student_ids: data.student_ids.slice(0, 1),
-            };
-        });
+        form.setData((data) =>
+            value === PEDAGOGICAL_ATTENDANCE
+                ? { ...data, attendance_type: value, type: INDIVIDUAL_SESSION }
+                : { ...data, attendance_type: value },
+        );
 
         if (value === PEDAGOGICAL_ATTENDANCE) {
-            setRowKeys((keys) => keys.slice(0, 1));
+            studentRows.truncate(1);
         }
     }
 
     function changeStudent(index: number, value: string): void {
-        form.setData((data) => ({
-            ...data,
-            student_ids: data.student_ids.map((id, position) => (position === index ? value : id)),
-        }));
+        studentRows.change(index, value);
         form.clearErrors('student_ids', `student_ids.${index}` as const);
-    }
-
-    function addStudent(): void {
-        const key = nextRowKey.current;
-        nextRowKey.current += 1;
-        setRowKeys((keys) => [...keys, key]);
-        form.setData((data) => ({ ...data, student_ids: [...data.student_ids, ''] }));
-    }
-
-    function removeStudent(index: number): void {
-        if (form.data.student_ids.length <= 1) {
-            return;
-        }
-
-        setRowKeys((keys) => keys.filter((_, position) => position !== index));
-        form.setData((data) => ({
-            ...data,
-            student_ids: data.student_ids.filter((_, position) => position !== index),
-        }));
     }
 
     function changeStartTime(value: string): void {
@@ -182,7 +155,7 @@ export function useSessionForm(props: SessionFormProps) {
         formRef: submission.formRef,
         session,
         editing,
-        rowKeys,
+        rowKeys: studentRows.rowKeys,
         isPedagogical,
         canAddStudents,
         confirmOpen,
@@ -190,8 +163,8 @@ export function useSessionForm(props: SessionFormProps) {
         reportObjectiveEditorFailure,
         changeAttendanceType,
         changeStudent,
-        addStudent,
-        removeStudent,
+        addStudent: studentRows.add,
+        removeStudent: studentRows.remove,
         changeStartTime,
         handleSubmit,
         chooseNotification,

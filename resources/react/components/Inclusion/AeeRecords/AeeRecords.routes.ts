@@ -17,6 +17,9 @@ export const aeeRecordUrls = {
     index: recordsBase,
     myRecords: `${inclusionBase}/meus-atendimentos-aee`,
     store: `${recordsBase}/salvar`,
+    /** Registro direto, sem agendamento prévio (`aee-records.direct.*`). */
+    directCreate: `${recordsBase}/registro-direto/criar`,
+    directStore: `${recordsBase}/registro-direto/salvar`,
     show: (id: number) => `${recordsBase}/${id}/visualizar`,
     edit: (id: number) => `${recordsBase}/${id}/editar`,
     update: (id: number) => `${recordsBase}/${id}`,
@@ -49,6 +52,14 @@ export function studentAeeRecordUrls(studentId: number) {
 /** Home › [Listagem]: as listagens gerais não têm níveis intermediários. */
 export function aeeRecordListBreadcrumb(label: string): PageBreadcrumbItem[] {
     return [DASHBOARD_BREADCRUMB, { label }];
+}
+
+/** Home › Atendimentos Especializados › Cadastrar, no registro direto. */
+export function aeeRecordDirectBreadcrumb(listUrl: string): PageBreadcrumbItem[] {
+    return resourceBreadcrumb({
+        collection: { label: 'Atendimentos Especializados', href: listUrl },
+        current: 'Cadastrar',
+    });
 }
 
 /**

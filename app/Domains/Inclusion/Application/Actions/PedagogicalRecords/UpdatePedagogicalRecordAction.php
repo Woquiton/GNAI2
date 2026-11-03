@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Actions\PedagogicalRecords;
 
 use App\Domains\Inclusion\Application\Data\PedagogicalRecords\UpdatePedagogicalRecordData;
+use App\Domains\Inclusion\Application\Services\Sessions\DirectAttendanceSessionRecorder;
 use App\Domains\Inclusion\Domain\DTOs\PedagogicalRecords\PedagogicalRecordDTO;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidPedagogicalRecord;
 use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-final class UpdatePedagogicalRecordAction
+final readonly class UpdatePedagogicalRecordAction
 {
+    public function __construct(
+        private DirectAttendanceSessionRecorder $sessions,
+    ) {}
+
     /** @throws Throwable */
     public function execute(PedagogicalRecord $pedagogicalRecord, UpdatePedagogicalRecordData $data, int $professionalId): PedagogicalRecord
     {
@@ -25,6 +30,12 @@ final class UpdatePedagogicalRecordAction
             }
             $guardianIds = $data->withGuardians ? $data->guardianIds : [];
             $this->ensureGuardiansBelongToStudent($record, $guardianIds);
+            $this->sessions->correct($record->attendanceSession, [
+                'session_date' => $data->sessionDate,
+                'start_time' => $data->startTime,
+                'end_time' => $data->endTime,
+                'location' => $data->location,
+            ]);
             $record->revise(new PedagogicalRecordDTO(
                 followUpReason: $data->followUpReason,
                 duration: $data->duration,

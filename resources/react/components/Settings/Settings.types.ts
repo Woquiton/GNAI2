@@ -11,6 +11,9 @@ export interface MailSettingsProps {
         from_address: string;
         from_name: string;
         has_password: boolean;
+        has_application_key: boolean;
+        test_status: 'success' | 'failed' | null;
+        last_tested_at: string | null;
     };
     transports: SettingsOptions;
     encryptions: SettingsOptions;
