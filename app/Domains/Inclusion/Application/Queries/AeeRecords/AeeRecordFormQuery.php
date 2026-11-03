@@ -17,6 +17,9 @@ final class AeeRecordFormQuery
     public function forCreation(Session $session, int $professionalId): array
     {
         $session->load(['students.person', 'students.guardians.person', 'aeeRecord', 'pedagogicalRecord']);
+        foreach ($session->students as $student) {
+            $student->ensureNotInIntake();
+        }
         if ((int) $session->professional_id !== $professionalId || ! AttendanceType::isAee($session->attendance_type) || ! SessionStatus::isScheduledValue($session->status) || ! $session->sessionDateHasArrived() || $session->aeeRecord !== null || $session->pedagogicalRecord !== null) {
             throw new InvalidAeeRecord('Este agendamento não está disponível para criação de registro AEE.');
         }

@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\Application\Queries\Loans;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\Enums\ItemType;
 use App\Domains\Inclusion\Domain\Enums\ResourceStatus;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Professional;
@@ -26,6 +27,10 @@ final class LoanFormQuery
         ?int $selectedItemId = null,
         ?string $selectedItemType = null,
     ): array {
+        if ($selectedStudentId !== null) {
+            Student::query()->findOrFail($selectedStudentId)->ensureNotInIntake();
+        }
+
         return $this->baseOptions() + [
             'itemTypes' => ItemType::options(),
             'items' => $this->loanableItems(),
@@ -50,7 +55,7 @@ final class LoanFormQuery
             'professional.person:id,name',
         ]);
 
-        return $this->baseOptions() + [
+        return $this->baseOptions($loan->student_id) + [
             'loan' => $loan,
             'authUser' => $authUser,
         ];
@@ -59,10 +64,16 @@ final class LoanFormQuery
     /**
      * @return array<string, mixed>
      */
-    private function baseOptions(): array
+    private function baseOptions(?int $existingStudentId = null): array
     {
         return [
             'students' => Student::query()
+                ->where(function ($query) use ($existingStudentId): void {
+                    $query->where('status', '!=', StudentStatus::INTAKE->value);
+                    if ($existingStudentId !== null) {
+                        $query->orWhere('id', $existingStudentId);
+                    }
+                })
                 ->with('person:id,name')
                 ->get(['id', 'person_id', 'registration'])
                 ->sortBy('person.name')

@@ -13,8 +13,8 @@ use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\Deficiency;
 use App\Domains\Inclusion\Domain\Models\Guardian;
 use App\Domains\Inclusion\Domain\Models\Paee;
-use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
+use App\Domains\Inclusion\Domain\Models\Pei;
 use App\Domains\Inclusion\Domain\Models\Person;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\StudentCourse;
@@ -26,10 +26,11 @@ use Illuminate\Http\Request;
 
 final class StudentPagePresenter
 {
-    public function shared(Request $request): array
+    public function shared(Request $request, ?Student $student = null): array
     {
         $abilities = [
             'student.view', 'student.create', 'student.update', 'student.delete',
+            'support-request.view', 'support-request.create',
             'student-course.view', 'student-course.create', 'student-course.update', 'student-course.delete',
             'student-deficiency.view', 'student-deficiency.create', 'student-deficiency.update', 'student-deficiency.delete',
             'guardian.view', 'guardian.create', 'guardian.update', 'guardian.delete',
@@ -47,7 +48,12 @@ final class StudentPagePresenter
                 fn (StudentFollowUpType $type): array => [$type->value => $type->label()],
             )->all(),
             'permissions' => collect($abilities)->mapWithKeys(
-                fn (string $ability): array => [$ability => $request->user()?->can($ability) ?? false],
+                fn (string $ability): array => [
+                    $ability => ($request->user()?->can($ability) ?? false)
+                        && ! ($student?->status === StudentStatus::INTAKE
+                            && str_ends_with($ability, '.create')
+                            && ! in_array($ability, ['student.create', 'support-request.create'], true)),
+                ],
             )->all(),
             'studentStatuses' => collect(StudentStatus::cases())->mapWithKeys(
                 fn (StudentStatus $status): array => [$status->value => $status->label()],

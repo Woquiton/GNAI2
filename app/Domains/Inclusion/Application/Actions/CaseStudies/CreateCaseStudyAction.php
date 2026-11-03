@@ -31,6 +31,7 @@ final readonly class CreateCaseStudyAction
     {
         return DB::transaction(function () use ($student, $data, $creator): CaseStudy {
             $lockedStudent = Student::query()->lockForUpdate()->findOrFail($student->getKey());
+            $lockedStudent->ensureNotInIntake();
 
             $currentCaseStudy = CaseStudy::query()
                 ->where('student_id', $lockedStudent->getKey())

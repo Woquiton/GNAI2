@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Application\Data\Paees\ListPaeesData;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\CaseStudyBarrier;
 use App\Domains\Inclusion\Domain\Models\Item;
@@ -134,7 +135,7 @@ final class PaeePagePresenter
     private function formOptions(?CaseStudy $caseStudy, EloquentCollection $assistiveTechnologies): array
     {
         return [
-            'barriers' => ($caseStudy?->barriers ?? new EloquentCollection())
+            'barriers' => ($caseStudy?->barriers ?? new EloquentCollection)
                 ->map(static fn (CaseStudyBarrier $barrier): array => [
                     'value' => (string) $barrier->getKey(),
                     'label' => self::barrierOptionLabel($barrier),
@@ -240,7 +241,7 @@ final class PaeePagePresenter
             ],
             'student' => $this->studentSummary($paee->student),
             'can' => [
-                'update' => $user?->can('paee.update') ?? false,
+                'update' => $paee->student->status !== StudentStatus::INTAKE && ($user?->can('paee.update') ?? false),
                 'delete' => $user?->can('paee.delete') ?? false,
                 'viewCaseStudy' => $user?->can('case-study.view') ?? false,
             ],

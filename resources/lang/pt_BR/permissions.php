@@ -10,6 +10,7 @@ return [
         'discipline' => 'Disciplinas',
 
         'student' => 'Alunos',
+        'support-request' => 'Solicitações de Atendimento',
         'guardian' => 'Responsáveis',
         'professional' => 'Profissionais',
         'teacher' => 'Professores',

@@ -18,6 +18,8 @@ final class AddPaeeReviewAction
         return DB::transaction(function () use ($paee, $data, $reviewer): Paee {
             $lockedPaee = Paee::query()->lockForUpdate()->findOrFail($paee->getKey());
 
+            $lockedPaee->student()->lockForUpdate()->firstOrFail()->ensureNotInIntake();
+
             $lockedPaee->reviews()->create([
                 'reviewed_at' => now()->toDateString(),
                 'what_changed' => $data->whatChanged,

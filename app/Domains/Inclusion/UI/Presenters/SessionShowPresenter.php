@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\UI\Presenters;
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
 use App\Domains\Inclusion\Domain\Enums\SessionStatus;
 use App\Domains\Inclusion\Domain\Enums\SessionType;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\Session;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Carbon\Carbon;
@@ -49,7 +50,8 @@ final class SessionShowPresenter
                 'session_objective_html' => RichTextSanitizer::sanitize((string) $session->session_objective),
                 'cancellation_reason' => $session->cancellation_reason,
             ],
-            'record' => $this->record($session, $can, $isResponsibleProfessional && $isScheduled && $dateHasArrived),
+            'record' => $this->record($session, $can, $isResponsibleProfessional && $isScheduled && $dateHasArrived
+                && ! $session->students->contains(fn ($student): bool => $student->status === StudentStatus::INTAKE)),
             'can' => [
                 'edit' => $can('session.update') && $isScheduled && $isCreator,
                 'cancel' => $can('session.update') && $isScheduled && $dateIsUpcoming && $isCreator,

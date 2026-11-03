@@ -32,13 +32,14 @@ final readonly class CreatePaeeAction
     {
         return DB::transaction(function () use ($data, $creator): Paee {
             $caseStudy = CaseStudy::query()->lockForUpdate()->findOrFail($data->caseStudyId);
-            $student = $caseStudy->student()->lockForUpdate()->first();
+            $student = $caseStudy->student()->lockForUpdate()->firstOrFail();
+            $student->ensureNotInIntake();
 
             $hasLaudo = $student->documents()
                 ->where('type', StudentDocumentType::TECHNICAL_REPORT->value)
                 ->exists();
 
-            if ($caseStudy->status !== CaseStudy::STATUS_COMPLETED && !$hasLaudo) {
+            if ($caseStudy->status !== CaseStudy::STATUS_COMPLETED && ! $hasLaudo) {
                 throw new InvalidPaee('O PAEE só pode ser criado a partir de um Estudo de Caso concluído ou de um Laudo anexado ao aluno.');
             }
 

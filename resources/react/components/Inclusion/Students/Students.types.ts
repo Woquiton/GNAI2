@@ -36,7 +36,7 @@ export interface Student {
 export interface StudentFormOptions extends StudentOptions {
     genders: Record<string, string>;
     defaultGender?: string;
-    defaultStatus?: string;
+    defaultStatus: string;
 }
 export type StudentEditProps = StudentFormOptions & { student: Student };
 export type StudentFilters = Record<

@@ -9,6 +9,9 @@ permissoes: waitlist.index
 
 A fila de espera registra quem precisa de um item do acervo que não pode ser emprestado no momento. Cada solicitação é de um único beneficiário (aluno ou profissional) para um item específico, e a ordem de chegada define quem é chamado primeiro quando o item volta a ficar disponível. A tela fica em **Atendimento → Fila de Espera**.
 
+
+> **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
 ## Quais itens podem entrar na fila?
 
 Só aparecem no cadastro os itens físicos, ativos e emprestáveis que estão sem unidades disponíveis ou com um status que impede o empréstimo (por exemplo, **Em manutenção** ou **Danificado**). Itens digitais nunca entram na fila, porque não têm estoque físico. Se o item ainda tiver unidades disponíveis, registre um [empréstimo](/ajuda/emprestimos) em vez de uma solicitação na fila.

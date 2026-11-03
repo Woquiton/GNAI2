@@ -9,6 +9,9 @@ permissoes: loan.index
 
 O módulo de empréstimos controla a saída e a devolução dos [itens](/ajuda/itens) do acervo para alunos e profissionais. Cada empréstimo baixa uma unidade do estoque do item e a devolve ao ser finalizado. A tela fica em **Recursos e acessibilidade → Empréstimos**.
 
+
+> **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
 ## Registrar um empréstimo
 
 1. Acesse **Recursos e acessibilidade → Empréstimos** e clique em **Cadastrar empréstimo**.

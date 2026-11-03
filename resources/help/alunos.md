@@ -23,7 +23,7 @@ A listagem mostra **Nome**, **Telefone**, **E-mail**, **Situação**, **Tipo de 
 
 1. Acesse **Atendimento → Alunos** e clique em **Cadastrar**.
 2. Preencha a seção **Dados Pessoais** e, se quiser, adicione a **Foto do Aluno**.
-3. Preencha a seção **Dados Acadêmicos**.
+3. Preencha a seção **Dados Acadêmicos**, escolhendo **Em acolhimento** quando estiver registrando a demanda inicial ao núcleo, ou a outra situação adequada.
 4. Clique em **Salvar**. O sistema abre o prontuário do aluno e mostra "Aluno cadastrado com sucesso.".
 
 | Campo | Observação |
@@ -37,9 +37,10 @@ A listagem mostra **Nome**, **Telefone**, **E-mail**, **Situação**, **Tipo de 
 | **Endereço** | Opcional, em editor de texto. |
 | **Matrícula** (obrigatório) | Até 50 caracteres; não pode repetir a de outro aluno. |
 | **Data de Ingresso** | Opcional; não pode ser anterior à data de nascimento. |
-| **Tipo de acompanhamento** (obrigatório) | Somente AEE, Somente pedagógico ou AEE e pedagógico. |
+| **Situação do aluno** | Ativo, Em acolhimento, Trancado, Concluído ou Desistente. |
+| **Tipo de acompanhamento** | Somente AEE, Somente pedagógico ou AEE e pedagógico. Obrigatório para alunos ativos. |
 
-Todo aluno novo começa com a situação **Ativo**. A situação só pode ser alterada na edição. O tipo de acompanhamento é escolhido no cadastro e pode ser alterado na edição.
+A **Situação do aluno** pode ser escolhida no cadastro e alterada na edição. O padrão continua **Ativo**. Use **Em acolhimento** para registrar um aluno cuja demanda inicial ainda está sendo recebida ou analisada pelo núcleo. Para alunos ativos, o **Tipo de acompanhamento** é obrigatório; em acolhimento, pode ficar como **Não informado**.
 
 ### Foto do aluno
 
@@ -49,7 +50,7 @@ Clique no círculo da foto, arraste uma imagem para ele ou use a câmera (no cel
 
 1. Abra o prontuário do aluno pela listagem (ação de visualizar).
 2. No rodapé, clique em **Editar**.
-3. Altere os campos necessários. Na edição aparece também o campo **Situação do aluno** (obrigatório). O **Tipo de acompanhamento** deve estar preenchido para manter ou tornar o aluno ativo.
+3. Altere os campos necessários. O campo **Situação do aluno** (obrigatório) permite alterar a situação escolhida no cadastro. O **Tipo de acompanhamento** deve estar preenchido para manter ou tornar o aluno ativo.
 4. Para trocar a foto, envie outra imagem; para retirá-la, use a remoção no próprio campo da foto.
 5. Clique em **Salvar**. O sistema mostra "Aluno atualizado com sucesso.".
 
@@ -57,6 +58,7 @@ Clique no círculo da foto, arraste uma imagem para ele ou use a câmera (no cel
 
 | Situação | Efeito no sistema |
 | --- | --- |
+| **Em acolhimento** | Permite cadastrar somente solicitações de atendimento, com seus anexos e análise. Bloqueia novos vínculos, empréstimos, fila de recursos, agendamentos, registros de atendimento e planos. A mudança para Ativo é manual, com definição do tipo de acompanhamento. |
 | **Ativo** | Permite novos registros e agendamentos compatíveis com o tipo de acompanhamento. |
 | **Trancado**, **Concluído** ou **Desistente** | O aluno fica inativo: não pode ser agendado nem receber novos cursos, responsáveis, perfis de atendimento, documentos ou PEI. |
 
@@ -112,6 +114,12 @@ Cada aba só aparece para quem tem permissão de consultá-la. O conteúdo apare
 
 Responsáveis, perfis de atendimento e documentos são explicados em [Responsáveis, perfis e documentos do aluno](/ajuda/alunos-responsaveis-e-documentos). Os atendimentos estão em [Atendimentos Especializados](/ajuda/atendimentos-especializados) e [Atendimentos Pedagógicos](/ajuda/atendimentos-pedagogicos).
 
+Concluir uma solicitação não torna o aluno ativo. Enquanto permanecer **Em acolhimento**, as restrições continuam valendo. O aluno pode ser cadastrado diretamente como **Ativo** sem uma solicitação de atendimento prévia.
+
+## Registrar ou consultar uma solicitação de atendimento
+
+No rodapé do prontuário, **Solicitações** abre os registros filtrados pelo aluno. Na listagem filtrada, **Cadastrar** abre uma solicitação com o aluno selecionado. A consulta e o cadastro dependem de suas respectivas permissões. Veja [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento).
+
 ## Vincular um curso ao aluno
 
 1. No prontuário, abra a aba **Cursos do aluno** e clique em **Cadastrar**.
@@ -139,15 +147,19 @@ No rodapé do prontuário, clique em **PDF**. A ficha abre em uma nova aba com o
 1. Na listagem, use a ação de excluir da linha do aluno, ou clique em **Excluir** no rodapé do prontuário.
 2. Confirme na janela **Excluir Aluno**.
 
-O sistema volta para a listagem e mostra "Aluno removido com sucesso.". A exclusão só é permitida para alunos sem nenhum vínculo: responsáveis, perfis de atendimento, PEIs, cursos, documentos, agendamentos, avaliações de atendimento AEE, empréstimos ou solicitações na fila de espera.
+O sistema volta para a listagem e mostra "Aluno removido com sucesso.". A exclusão só é permitida para alunos sem nenhum vínculo: responsáveis, perfis de atendimento, PEIs, cursos, documentos, agendamentos, avaliações de atendimento AEE, empréstimos, solicitações de atendimento ou solicitações na fila de espera.
 
 ## Dúvidas comuns
+
+**Aparece "O aluno está em acolhimento. Nesta situação, somente solicitações de atendimento podem ser cadastradas."**
+Durante o acolhimento, registre e acompanhe a solicitação em **Atendimento → Solicitações de Atendimento**. Para liberar outros vínculos, a equipe precisa alterar manualmente a situação do aluno para **Ativo**, quando isso for adequado.
+
 
 **Aparece "Este aluno possui registros acadêmicos ou de atendimento vinculados e não pode ser excluído."**
 O aluno tem algum dos vínculos listados acima. Para encerrar o acompanhamento sem perder o histórico, altere a situação para **Concluído** ou **Desistente**.
 
 **Aparece "O aluno ... não está ativo e não pode realizar esta ação."**
-A situação do aluno é **Trancado**, **Concluído** ou **Desistente**. Edite o aluno e escolha **Ativo**, informando também o tipo de acompanhamento, antes de vincular cursos, responsáveis, perfis ou documentos.
+A situação do aluno é **Em acolhimento**, **Trancado**, **Concluído** ou **Desistente**. Edite o aluno e escolha **Ativo**, informando também o tipo de acompanhamento, antes de vincular cursos, responsáveis, perfis ou documentos.
 
 **Aparece "Esta matrícula já está cadastrada para outro aluno." ou "Este CPF já está cadastrado para outra pessoa."**
 A matrícula e o CPF são únicos. Procure o aluno na listagem antes de cadastrá-lo novamente.

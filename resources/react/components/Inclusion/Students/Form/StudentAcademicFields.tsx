@@ -6,24 +6,22 @@ import {
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
-import type { StudentFormMode, StudentFormSectionProps } from './StudentForm.types';
+import type { StudentFormSectionProps } from './StudentForm.types';
 
 interface StudentAcademicFieldsProps extends StudentFormSectionProps {
-    mode: StudentFormMode;
     studentStatuses: Record<string, string>;
     followUpTypes: Record<string, string>;
 }
 
-/** Dados acadêmicos, tipo de acompanhamento e, somente na edição, situação do aluno. */
+/** Dados acadêmicos, tipo de acompanhamento e situação do aluno. */
 export default function StudentAcademicFields({
     form,
     errors,
     disabled,
-    mode,
     studentStatuses,
     followUpTypes,
 }: StudentAcademicFieldsProps): React.JSX.Element {
-    const followUpRequired = mode === 'create' || form.data.status === 'active';
+    const followUpRequired = form.data.status === 'active';
 
     return (
         <FormSection
@@ -52,26 +50,23 @@ export default function StudentAcademicFields({
                     error={errors.entry_date}
                     onChange={(value) => form.setData('entry_date', value)}
                 />
-                {mode === 'edit' ? (
-                    <SelectInputField
-                        id="student-status"
-                        name="status"
-                        label="Situação do aluno"
-                        required
-                        disabled={disabled}
-                        options={optionsFromRecord(studentStatuses)}
-                        value={form.data.status ?? ''}
-                        error={errors.status}
-                        onChange={(value) => form.setData('status', value)}
-                    />
-                ) : null}
+                <SelectInputField
+                    id="student-status"
+                    name="status"
+                    label="Situação do aluno"
+                    required
+                    disabled={disabled}
+                    options={optionsFromRecord(studentStatuses)}
+                    value={form.data.status ?? ''}
+                    error={errors.status}
+                    onChange={(value) => form.setData('status', value)}
+                />
                 <SelectInputField
                     id="student-follow_up_type"
                     name="follow_up_type"
                     label="Tipo de acompanhamento"
                     required={followUpRequired}
                     disabled={disabled}
-                    hint="Define as modalidades permitidas nos agendamentos. Obrigatório para alunos ativos."
                     placeholder={followUpRequired ? 'Selecione' : 'Não informado'}
                     options={optionsFromRecord(followUpTypes)}
                     value={form.data.follow_up_type}

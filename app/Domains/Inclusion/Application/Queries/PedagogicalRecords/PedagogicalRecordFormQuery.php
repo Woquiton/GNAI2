@@ -22,6 +22,9 @@ final class PedagogicalRecordFormQuery
             'aeeRecord',
             'pedagogicalRecord',
         ]);
+        foreach ($session->students as $student) {
+            $student->ensureNotInIntake();
+        }
         if ((int) $session->professional_id !== $professionalId || ! AttendanceType::isPedagogical($session->attendance_type) || ! SessionStatus::isScheduledValue($session->status) || ! $session->sessionDateHasArrived() || $session->students->count() !== 1 || $session->aeeRecord !== null || $session->pedagogicalRecord !== null) {
             throw new InvalidPedagogicalRecord('Este agendamento não está disponível para criação de registro pedagógico.');
         }

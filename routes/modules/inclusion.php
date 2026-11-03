@@ -9,7 +9,6 @@ use App\Domains\Inclusion\UI\Controllers\CourseController;
 use App\Domains\Inclusion\UI\Controllers\DeficiencyController;
 use App\Domains\Inclusion\UI\Controllers\DisciplineController;
 use App\Domains\Inclusion\UI\Controllers\GuardianController;
-use App\Domains\Inclusion\UI\Controllers\PublicationController;
 use App\Domains\Inclusion\UI\Controllers\InstitutionController;
 use App\Domains\Inclusion\UI\Controllers\ItemController;
 use App\Domains\Inclusion\UI\Controllers\LoanController;
@@ -20,12 +19,14 @@ use App\Domains\Inclusion\UI\Controllers\PeiController;
 use App\Domains\Inclusion\UI\Controllers\PendencyController;
 use App\Domains\Inclusion\UI\Controllers\PositionController;
 use App\Domains\Inclusion\UI\Controllers\ProfessionalController;
+use App\Domains\Inclusion\UI\Controllers\PublicationController;
 use App\Domains\Inclusion\UI\Controllers\SemesterController;
 use App\Domains\Inclusion\UI\Controllers\SessionController;
 use App\Domains\Inclusion\UI\Controllers\StudentController;
 use App\Domains\Inclusion\UI\Controllers\StudentCourseController;
 use App\Domains\Inclusion\UI\Controllers\StudentDeficiencyController;
 use App\Domains\Inclusion\UI\Controllers\StudentDocumentController;
+use App\Domains\Inclusion\UI\Controllers\SupportRequestController;
 use App\Domains\Inclusion\UI\Controllers\TagController;
 use App\Domains\Inclusion\UI\Controllers\TeacherController;
 use App\Domains\Inclusion\UI\Controllers\WaitlistController;
@@ -340,6 +341,17 @@ Route::prefix('inclusao')->name('specialized-educational-support.')->group(funct
         Route::put('/alunos/{student}', [StudentController::class, 'update'])->name('students.update')->middleware('can:student.update');
         Route::delete('/alunos/{student}', [StudentController::class, 'destroy'])->name('students.destroy')->middleware('can:student.delete');
         Route::get('/alunos/{student}/pdf', [StudentController::class, 'pdf'])->name('students.pdf')->middleware('can:student.view');
+
+        /* SOLICITAÇÕES DE ATENDIMENTO */
+        Route::get('/solicitacoes-de-atendimento', [SupportRequestController::class, 'index'])->name('support-requests.index')->middleware('can:support-request.view');
+        Route::get('/solicitacoes-de-atendimento/criar', [SupportRequestController::class, 'create'])->name('support-requests.create')->middleware(['can:support-request.create', 'can:support-request.view']);
+        Route::post('/solicitacoes-de-atendimento/salvar', [SupportRequestController::class, 'store'])->name('support-requests.store')->middleware(['can:support-request.create', 'can:support-request.view']);
+        Route::get('/solicitacoes-de-atendimento/{supportRequest}/visualizar', [SupportRequestController::class, 'show'])->name('support-requests.show')->middleware('can:support-request.view');
+        Route::get('/solicitacoes-de-atendimento/{supportRequest}/editar', [SupportRequestController::class, 'edit'])->name('support-requests.edit')->middleware(['can:support-request.update', 'can:support-request.view']);
+        Route::put('/solicitacoes-de-atendimento/{supportRequest}', [SupportRequestController::class, 'update'])->name('support-requests.update')->middleware(['can:support-request.update', 'can:support-request.view']);
+        Route::delete('/solicitacoes-de-atendimento/{supportRequest}', [SupportRequestController::class, 'destroy'])->name('support-requests.destroy')->middleware(['can:support-request.delete', 'can:support-request.view']);
+        Route::get('/solicitacoes-de-atendimento/{supportRequest}/pdf', [SupportRequestController::class, 'pdf'])->name('support-requests.pdf')->middleware('can:support-request.view');
+        Route::get('/solicitacoes-de-atendimento/{supportRequest}/anexos/{attachment}/baixar', [SupportRequestController::class, 'attachment'])->name('support-requests.attachment')->middleware('can:support-request.view');
 
         /* 2. GUARDIANS */
         Route::get('/alunos/{student}/responsaveis', [GuardianController::class, 'index'])->name('guardians.index')->middleware('can:guardian.view');

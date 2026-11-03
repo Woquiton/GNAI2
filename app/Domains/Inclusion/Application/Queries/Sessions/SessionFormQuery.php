@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\Application\Queries\Sessions;
 
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
 use App\Domains\Inclusion\Domain\Enums\SessionType;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\Professional;
 use App\Domains\Inclusion\Domain\Models\Session;
 use App\Domains\Inclusion\Domain\Models\Student;
@@ -109,6 +110,7 @@ final class SessionFormQuery
     private function students(): Collection
     {
         return Student::query()
+            ->where('students.status', '!=', StudentStatus::INTAKE->value)
             ->with('person')
             ->join('people', 'people.id', '=', 'students.person_id')
             ->select('students.*')

@@ -9,6 +9,9 @@ permissoes: paee.view
 
 O PAEE organiza o atendimento educacional especializado do aluno: frequência, duração, formato e local do atendimento, tecnologia assistiva e CAA, apoios de profissionais, objetivos, recursos e articulações. Ele é criado a partir de um [Estudo de Caso](/ajuda/estudos-de-caso) e é pré-requisito do [PEI](/ajuda/pei).
 
+
+> **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
 ## Onde encontro os PAEEs?
 
 - **Planos e acompanhamento → PAEEs** mostra a listagem geral, com filtros por **Aluno**, **Semestre** e **Status**.

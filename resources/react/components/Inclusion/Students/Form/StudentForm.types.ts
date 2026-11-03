@@ -2,7 +2,7 @@ import type { InertiaFormProps } from '@inertiajs/react';
 
 /**
  * Payload enviado a `StudentController@store/update` (ver `Application/Data/Students`).
- * `status` e `remove_photo` existem somente na edição: o cadastro não envia esses campos.
+ * `status` é enviado no cadastro e na edição; `remove_photo` existe somente na edição.
  */
 export type StudentFormData = {
     name: string;
@@ -16,7 +16,7 @@ export type StudentFormData = {
     entry_date: string;
     follow_up_type: string;
     photo: File | null;
-    status?: string;
+    status: string;
     remove_photo?: boolean;
 };
 

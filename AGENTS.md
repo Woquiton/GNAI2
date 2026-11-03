@@ -38,7 +38,7 @@ Uma entrada Inertia não comprova paridade funcional: confira conteúdo e contra
 Fluxo: **legado e requisitos → contratos → assets e padrões Gnai → reutilizar componentes → implementar React com identidade e acessibilidade → ajustar integrações → comparar com o legado e revisar o diff → entregar.**
 
 1. Localize o legado no git (commit `f0bad6a2` ou anteriores), com partials e scripts. Pesquise no repositório antes de pedir caminhos ao usuário.
-2. Rastreie rotas, controllers, Data/Rules, Queries/Actions, permissões (`can:*` e `app/Domains/Auth/`) e contratos. Criar e editar costumam ter contratos diferentes; em alunos, por exemplo, `status` e `remove_photo` só existem na edição.
+2. Rastreie rotas, controllers, Data/Rules, Queries/Actions, permissões (`can:*` e `app/Domains/Auth/`) e contratos. Criar e editar costumam ter contratos diferentes; em alunos, por exemplo, `remove_photo` só existe na edição, enquanto `status` é aceito no cadastro e na edição.
 3. Inventarie campos, valores iniciais, opções, máscaras, uploads, textos, botões, estados, condicionais, métodos HTTP, nomes de campos, props, redirects, mensagens, erros inline, loading e recuperação após falhas.
 4. Reconstrua em TSX por composição, sem tradução mecânica do HTML/CSS antigo, e compare o código com o inventário, incluindo estados vazios e falhas.
 

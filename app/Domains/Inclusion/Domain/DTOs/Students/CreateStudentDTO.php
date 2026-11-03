@@ -12,7 +12,7 @@ final readonly class CreateStudentDTO
 {
     public function __construct(
         public Registration $registration,
-        public StudentFollowUpType $followUpType,
+        public ?StudentFollowUpType $followUpType,
         public ?string $entryDate = null,
         public StudentStatus $status = StudentStatus::ACTIVE,
     ) {}

@@ -9,6 +9,9 @@ permissoes: aee-record.view-own, aee-record.view-all
 
 O registro de Atendimento Educacional Especializado (AEE) documenta o que aconteceu em um agendamento de AEE: a execução geral do atendimento e uma avaliação individual para cada aluno participante. Os registros ficam em **Atendimento → Atendimentos Especializados** e também no prontuário de cada aluno, na aba **Atendimentos AEE**.
 
+
+> **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
 ## O que preciso antes de registrar um atendimento AEE?
 
 Todo registro nasce de um [agendamento](/ajuda/agendamentos). Para registrar:

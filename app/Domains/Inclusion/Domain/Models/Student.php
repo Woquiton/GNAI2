@@ -101,8 +101,18 @@ final class Student extends Model implements Auditable
     /**
      * @throws InvalidStudent
      */
+    public function ensureNotInIntake(): void
+    {
+        if ($this->status === StudentStatus::INTAKE) {
+            throw new InvalidStudent('O aluno está em acolhimento. Nesta situação, somente solicitações de atendimento podem ser cadastradas.');
+        }
+    }
+
+    /** @throws InvalidStudent */
     public function ensureIsActive(): void
     {
+        $this->ensureNotInIntake();
+
         if (! $this->status->isEnabled()) {
             throw new InvalidStudent(
                 "O aluno {$this->person->name} não está ativo e não pode realizar esta ação."
@@ -221,6 +231,11 @@ final class Student extends Model implements Auditable
     public function waitlists(): HasMany
     {
         return $this->hasMany(Waitlist::class, 'student_id');
+    }
+
+    public function supportRequests(): HasMany
+    {
+        return $this->hasMany(SupportRequest::class);
     }
 
     /**

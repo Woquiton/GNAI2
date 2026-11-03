@@ -9,6 +9,9 @@ permissoes: pedagogical-record.view-own, pedagogical-record.view-all
 
 O atendimento pedagógico registra o acompanhamento individual de um aluno feito em um agendamento do tipo **Atendimento Pedagógico**: motivo, presença, participação de responsáveis e o que foi trabalhado. Os registros ficam em **Atendimento → Atendimentos Pedagógicos** e também no prontuário do aluno, na aba **Atendimentos pedagógicos**.
 
+
+> **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
 ## O que preciso antes de registrar um atendimento pedagógico?
 
 Todo registro nasce de um [agendamento](/ajuda/agendamentos). Para registrar:

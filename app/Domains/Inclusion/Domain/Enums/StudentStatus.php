@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\Domain\Enums;
 enum StudentStatus: string
 {
     case ACTIVE = 'active';
+    case INTAKE = 'intake';
     case LOCKED = 'locked';
     case COMPLETED = 'completed';
     case DROPPED = 'dropped';
@@ -15,6 +16,7 @@ enum StudentStatus: string
     {
         return match ($this) {
             self::ACTIVE => 'Ativo',
+            self::INTAKE => 'Em acolhimento',
             self::LOCKED => 'Trancado',
             self::COMPLETED => 'Concluído',
             self::DROPPED => 'Desistente',
@@ -25,6 +27,7 @@ enum StudentStatus: string
     {
         return match ($this) {
             self::ACTIVE => 'success',
+            self::INTAKE => 'info',
             self::LOCKED => 'warning',
             self::COMPLETED => 'primary',
             self::DROPPED => 'danger',

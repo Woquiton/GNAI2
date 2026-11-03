@@ -32,7 +32,7 @@ O controle **Perfil Ativo**, abaixo de **Descrição / Detalhes** na seção **I
 
 ### Ativar, desativar ou excluir
 
-Para ativar ou desativar, clique em **Editar**, altere **Perfil Ativo** e clique em **Salvar**. Para excluir, use **Excluir** na visualização do perfil. Perfis vinculados a algum aluno não podem ser desativados nem excluídos; o sistema mostra "Este perfil está vinculado a um ou mais alunos e não pode ser desativado."
+Para ativar ou desativar, clique em **Editar**, altere **Perfil Ativo** e clique em **Salvar**. Para excluir, use **Excluir** na visualização do perfil. Perfis vinculados a solicitações de atendimento também não podem ser excluídos, para preservar o registro da demanda. Nesse caso, o sistema mostra "Este perfil está vinculado a solicitações de atendimento e não pode ser excluído." Perfis vinculados a algum aluno não podem ser desativados nem excluídos; o sistema mostra "Este perfil está vinculado a um ou mais alunos e não pode ser desativado."
 
 ## Cargos
 

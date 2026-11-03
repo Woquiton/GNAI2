@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Application\Data\Peis\ListPeisData;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
 use App\Domains\Inclusion\Domain\Models\Discipline;
 use App\Domains\Inclusion\Domain\Models\Paee;
@@ -162,7 +163,7 @@ final class PeiPagePresenter
                 'viewPaee' => $canViewPaee,
                 'viewDisciplines' => $canViewDisciplines,
                 // As ações de domínio também exigem o criador do PEI e um PEI em aberto.
-                'createDiscipline' => ! $pei->is_finished
+                'createDiscipline' => $pei->student->status !== StudentStatus::INTAKE && ! $pei->is_finished
                     && ($user?->can('pei-discipline.create') ?? false),
                 'finish' => ! $pei->is_finished
                     && $isCreator
@@ -226,7 +227,7 @@ final class PeiPagePresenter
             'can' => [
                 'update' => $isCreator && ($user?->can('pei-discipline.update') ?? false),
                 'delete' => $isCreator && ! $pei->is_finished && ($user?->can('pei-discipline.delete') ?? false),
-                'addRevision' => $user?->can('pei-discipline.update') ?? false,
+                'addRevision' => $pei->student->status !== StudentStatus::INTAKE && ($user?->can('pei-discipline.update') ?? false),
                 'pdf' => $user?->can('pei.view') ?? false,
             ],
         ];

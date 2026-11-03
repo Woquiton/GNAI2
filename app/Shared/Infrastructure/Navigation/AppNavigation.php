@@ -105,6 +105,7 @@ final class AppNavigation
             ]],
             ['Atendimento', [
                 ['students', 'Alunos', 'specialized-educational-support.students.index', 'ti-user', ['student.view'], ['specialized-educational-support.students.*', 'specialized-educational-support.guardians.*', 'specialized-educational-support.student-deficiencies.*']],
+                ['support-requests', 'Solicitações de Atendimento', 'specialized-educational-support.support-requests.index', 'ti-receipt', ['support-request.view'], ['specialized-educational-support.support-requests.*']],
                 ['sessions', 'Agendamentos', 'specialized-educational-support.sessions.index', 'ti-calendar', ['session.view-all', 'session.view-own'], ['specialized-educational-support.sessions.*']],
                 ['waitlists', 'Fila de Espera', 'inclusive-radar.waitlists.index', 'ti-time', ['waitlist.index'], ['inclusive-radar.waitlists.*']],
                 ['aee-records', 'Atendimentos Especializados', 'specialized-educational-support.aee-records.index', 'ti-book', ['aee-record.view-own', 'aee-record.view-all'], ['specialized-educational-support.aee-records.*']],
@@ -127,7 +128,7 @@ final class AppNavigation
                 ['registrations', 'Cadastros', null, 'ti-folder', [], [], [
                     ['deficiencies', 'Perfis de Atendimento', 'specialized-educational-support.deficiencies.index', 'ti-heart', ['deficiency.view'], ['specialized-educational-support.deficiencies.*']],
                     ['positions', 'Cargos', 'specialized-educational-support.positions.index', 'ti-briefcase', ['position.view'], ['specialized-educational-support.positions.*']],
-                    ['semesters', 'Semestres', 'specialized-educational-support.semesters.index', 'ti-calendar', ['semester.view'], ['specialized-educational-support.semesters.*']],
+                    ['semesters', 'Semestres', 'specialized-educational-support.semesters.index', 'ti-layout-column2', ['semester.view'], ['specialized-educational-support.semesters.*']],
                     ['disciplines', 'Disciplinas', 'specialized-educational-support.disciplines.index', 'ti-agenda', ['discipline.view'], ['specialized-educational-support.disciplines.*']],
                     ['courses', 'Cursos', 'specialized-educational-support.courses.index', 'ti-medall', ['course.view'], ['specialized-educational-support.courses.*']],
                     ['accessibility-features', 'Recursos de Acessibilidade', 'inclusive-radar.accessibility-features.index', 'ti-wheelchair', ['accessibility-feature.index'], ['inclusive-radar.accessibility-features.*']],

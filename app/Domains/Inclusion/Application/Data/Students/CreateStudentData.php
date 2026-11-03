@@ -8,6 +8,7 @@ use App\Domains\Inclusion\Application\Data\People\Concerns\NormalizesPersonInput
 use App\Domains\Inclusion\Application\Rules\ValidCpf;
 use App\Domains\Inclusion\Domain\Enums\Gender;
 use App\Domains\Inclusion\Domain\Enums\StudentFollowUpType;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -25,7 +26,8 @@ final class CreateStudentData extends Data
         public Gender $gender,
         public string $email,
         public string $registration,
-        public StudentFollowUpType $followUpType,
+        public ?StudentFollowUpType $followUpType = null,
+        public StudentStatus $status = StudentStatus::ACTIVE,
         public ?string $document = null,
         public ?string $phone = null,
         public ?string $address = null,
@@ -55,7 +57,12 @@ final class CreateStudentData extends Data
                 Rule::unique('students', 'registration'),
             ],
             'entry_date' => ['nullable', 'date', 'after_or_equal:birth_date'],
-            'follow_up_type' => ['required', Rule::enum(StudentFollowUpType::class)],
+            'status' => ['sometimes', Rule::enum(StudentStatus::class)],
+            'follow_up_type' => [
+                'nullable',
+                Rule::requiredIf(fn (): bool => request()->input('status', StudentStatus::ACTIVE->value) === StudentStatus::ACTIVE->value),
+                Rule::enum(StudentFollowUpType::class),
+            ],
             'photo' => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
         ];
     }
@@ -86,6 +93,7 @@ final class CreateStudentData extends Data
             'registration.max' => 'A matrícula do aluno não pode ultrapassar 50 caracteres.',
             'registration.unique' => 'Esta matrícula já está cadastrada para outro aluno.',
             'entry_date.date' => 'A data de ingresso do aluno deve ser válida.',
+            'status.enum' => 'A situação do aluno selecionada é inválida.',
             'follow_up_type.required' => 'Selecione o tipo de acompanhamento do aluno.',
             'follow_up_type.enum' => 'O tipo de acompanhamento selecionado é inválido.',
             'entry_date.after_or_equal' => 'A data de ingresso não pode ser anterior à data de nascimento.',

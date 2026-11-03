@@ -47,7 +47,7 @@ A página compõe o cabeçalho e recebe as props reais do controller. O componen
 | --- | --- | --- |
 | Obrigatório | Padrão estrutural, visual ou de integração para novas telas de formulário, salvo instrução explícita diferente | Cabeçalho compartilhado, card único, rodapé sticky de ações, labels e erros associados, componentes existentes, contratos do backend |
 | Condicional | Aplica-se somente quando a funcionalidade existe no cadastro | Foto de pessoa, calendário, editor de texto rico, máscaras, progresso de upload, método de atualização |
-| Particularidade do exemplo | Referência de uma solução local, sem obrigatoriedade para outros cadastros | Campos de alunos, duas seções específicas, foto à esquerda, rotas de alunos, status apenas na edição |
+| Particularidade do exemplo | Referência de uma solução local, sem obrigatoriedade para outros cadastros | Campos de alunos, duas seções específicas, foto à esquerda, rotas de alunos, opções de situação próprias do domínio |
 
 ## Padrões obrigatórios
 
@@ -199,7 +199,7 @@ Nos cadastros com mapa (barreiras, instituições e pontos de referência), o fo
 - “Dados Pessoais” e “Dados Acadêmicos”, seus ícones e campos são do domínio de alunos; outros cadastros devem definir seus próprios agrupamentos.
 - A foto ocupa uma coluna estreita à esquerda, e os seis campos pessoais ficam à direita: nome/e-mail na primeira linha e CPF/nascimento/gênero/telefone na seguinte, quando houver largura. O endereço ocupa toda a linha abaixo das duas colunas.
 - A composição e os respiros especiais dessa área estão em `Students.css`, com media queries e container queries. As medidas da coluna, distâncias e quantidade de campos não são uma grade obrigatória para outros formulários, especialmente os que não têm foto.
-- A situação aparece apenas na edição. `StudentForm` não envia `status` nem `remove_photo` na criação. O tipo de acompanhamento (`follow_up_type`) é um campo independente, presente no cadastro e na edição, obrigatório para alunos ativos e sem escolha automática em novos cadastros. Os defaults de gênero/status vêm das props preparadas para cada operação.
+- A situação aparece no cadastro e na edição. `StudentForm` envia `status` nos dois casos e `remove_photo` somente na edição. Alunos podem ser registrados como **Em acolhimento** antes de ficarem ativos no núcleo; o andamento das solicitações é independente dessa situação. O tipo de acompanhamento (`follow_up_type`) é um campo independente, presente no cadastro e na edição, obrigatório para alunos ativos e sem escolha automática em novos cadastros. Os defaults de gênero/status vêm das props preparadas para cada operação.
 - `Create` cancela para a listagem; `Edit` cancela para o prontuário. Ambas mantêm Cancelar somente no rodapé sticky do formulário. Preserve o destino e as ações do cadastro de origem em vez de impor essas rotas a outros módulos.
 - A edição usa `key={student.id}` para reinicializar o formulário/editor quando o registro muda. Não espere que `SummernoteEditor.defaultValue` acompanhe cada alteração de props como um campo controlado.
 

@@ -4,10 +4,18 @@ resumo: A ordem entre cadastro do aluno, Estudo de Caso, PAEE, PEI e atendimento
 categoria: Planos e acompanhamento
 palavras-chave: fluxo, etapas, ordem, jornada do aluno, por onde começar, estudo de caso, paee, pei, plano de atendimento educacional especializado, plano educacional individualizado, atendimento, sequência, pré-requisito, depende, status do atendimento, laudo, decreto 12.686
 ordem: 5
-permissoes: case-study.view, paee.view, pei.view
+permissoes: support-request.view, case-study.view, paee.view, pei.view
 ---
 
 O acompanhamento de um aluno no Gnai segue uma cadeia: cada documento usa as informações do anterior. Os Estudos de Caso, PAEEs e PEIs ficam no grupo **Planos e acompanhamento** da sidebar e também nas abas da visualização do aluno (**Atendimento → Alunos**).
+
+## Registrar a demanda inicial
+
+Em **Atendimento → Solicitações de Atendimento**, a equipe registra a demanda apresentada pelo aluno, familiar ou setor da instituição, os apoios solicitados e a análise inicial. O aluno precisa estar cadastrado; diagnóstico e anexos são opcionais. No prontuário, **Solicitações** consulta os registros do aluno. Nessa listagem, **Cadastrar** inicia uma solicitação com o aluno selecionado.
+
+A solicitação pode anteceder o Estudo de Caso, mas não é um pré-requisito para os documentos e atendimentos existentes. A equipe registra os encaminhamentos e dá continuidade ao acompanhamento pelos módulos próprios. Veja [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento).
+
+O aluno pode começar como **Em acolhimento**, situação definida no cadastro ou na edição do aluno. O andamento da solicitação (**Recebida**, **Em análise**, **Encaminhada** ou **Concluída**) é independente da situação do aluno e da informação sobre diagnóstico. A equipe muda o aluno para **Ativo** quando iniciar o acompanhamento no núcleo, definindo seu tipo de acompanhamento. Abrir ou concluir uma solicitação não altera essa situação automaticamente.
 
 ## Qual é a ordem das etapas?
 

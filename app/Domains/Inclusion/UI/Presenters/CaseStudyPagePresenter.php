@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Application\Data\CaseStudies\ListCaseStudiesData;
 use App\Domains\Inclusion\Application\Queries\CaseStudies\CaseStudyBarrierOptionsQuery;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Inclusion\Domain\Models\CaseStudyBarrier;
 use App\Domains\Inclusion\Domain\Models\CaseStudyContribution;
@@ -206,12 +207,12 @@ final class CaseStudyPagePresenter
                     ->all(),
             ],
             'can' => [
-                'update' => ! $completed && $canUpdate,
+                'update' => $caseStudy->student->status !== StudentStatus::INTAKE && ! $completed && $canUpdate,
                 'complete' => ! $completed && $canUpdate,
-                'contribute' => $canUpdate,
+                'contribute' => $caseStudy->student->status !== StudentStatus::INTAKE && $canUpdate,
                 // O backend recusa excluir um Estudo de Caso com PAEE vinculado.
                 'delete' => $caseStudy->paees->isEmpty() && ($user?->can('case-study.delete') ?? false),
-                'createPaee' => $completed && ($user?->can('paee.create') ?? false),
+                'createPaee' => $caseStudy->student->status !== StudentStatus::INTAKE && $completed && ($user?->can('paee.create') ?? false),
                 'pdf' => $user?->can('case-study.view') ?? false,
             ],
         ];

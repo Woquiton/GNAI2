@@ -138,6 +138,8 @@ final readonly class SessionSchedulingValidator
     {
         $students = Student::whereIn('id', $studentIds)
             ->with('person')
+            ->orderBy('id')
+            ->lockForUpdate()
             ->get();
 
         $inactiveStudents = $students

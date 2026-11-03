@@ -85,6 +85,6 @@ A restrição vale para novos pedidos de link de acesso do professor, sem altera
 
 O logotipo deve estar em JPG ou PNG, com até 4 MB e até 4000 pixels de largura e altura. **Remover** deixa o cabeçalho sem logotipo após salvar; selecionar outra imagem substitui a anterior.
 
-O modelo coloca o logotipo à esquerda e os textos à direita, seguido pelo título específico de cada documento. Vale para os próximos PDFs de alunos, PEIs, atendimentos, publicações, itens, empréstimos, barreiras, fila de espera e relatórios. Arquivos já baixados permanecem como foram emitidos.
+O modelo coloca o logotipo à esquerda e os textos à direita, seguido pelo título específico de cada documento. Vale para os próximos PDFs de alunos, solicitações de atendimento, PEIs, atendimentos, publicações, itens, empréstimos, barreiras, fila de espera e relatórios. Arquivos já baixados permanecem como foram emitidos.
 
 Enquanto a configuração não for salva, os documentos mantêm o cabeçalho atual do Gnai. A prévia representa o cabeçalho; a paginação final varia conforme o documento e a quantidade de texto informada.

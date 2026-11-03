@@ -6,6 +6,7 @@ namespace App\Domains\Inclusion\Application\Queries\Waitlists;
 
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\Enums\ItemType;
+use App\Domains\Inclusion\Domain\Enums\StudentStatus;
 use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Professional;
 use App\Domains\Inclusion\Domain\Models\Student;
@@ -38,7 +39,7 @@ final class WaitlistFormQuery
             'user',
         ]);
 
-        return $this->baseOptions() + [
+        return $this->baseOptions($waitlist->student_id) + [
             'waitlist' => $waitlist,
             'statusLabel' => $waitlist->status->label(),
             'authUser' => $authUser,
@@ -48,10 +49,16 @@ final class WaitlistFormQuery
     /**
      * @return array<string, mixed>
      */
-    private function baseOptions(): array
+    private function baseOptions(?int $existingStudentId = null): array
     {
         return [
             'students' => Student::query()
+                ->where(function ($query) use ($existingStudentId): void {
+                    $query->where('status', '!=', StudentStatus::INTAKE->value);
+                    if ($existingStudentId !== null) {
+                        $query->orWhere('id', $existingStudentId);
+                    }
+                })
                 ->with('person:id,name')
                 ->get(['id', 'person_id', 'registration'])
                 ->sortBy('person.name')

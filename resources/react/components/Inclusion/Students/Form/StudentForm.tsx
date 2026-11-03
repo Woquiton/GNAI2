@@ -78,7 +78,6 @@ export default function StudentForm({
                     />
                     <StudentAcademicFields
                         {...sectionProps}
-                        mode={mode}
                         studentStatuses={options.studentStatuses}
                         followUpTypes={options.followUpTypes}
                     />

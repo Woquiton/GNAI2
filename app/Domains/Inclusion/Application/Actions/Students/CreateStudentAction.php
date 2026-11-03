@@ -51,6 +51,7 @@ final readonly class CreateStudentAction
                     registration: Registration::from($data->registration),
                     followUpType: $data->followUpType,
                     entryDate: $data->entryDate,
+                    status: $data->status,
                 );
 
                 $student = Student::register($person, $studentDTO);

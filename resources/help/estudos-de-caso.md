@@ -9,6 +9,9 @@ permissoes: case-study.view
 
 O Estudo de Caso é a primeira etapa do acompanhamento do aluno: registra a origem da demanda, a escuta do estudante, da família e dos professores, as potencialidades, os apoios necessários, as barreiras e as estratégias. Depois de concluído, ele libera a criação do [PAEE](/ajuda/paee). Veja a ordem completa em [Fluxo de acompanhamento](/ajuda/fluxo-de-acompanhamento).
 
+
+> **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
 ## Onde encontro os Estudos de Caso?
 
 - **Planos e acompanhamento → Estudos de Caso** mostra a listagem geral, com filtros por **Aluno**, **Semestre** e **Status**.

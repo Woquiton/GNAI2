@@ -113,6 +113,18 @@ final class Deficiency extends Model implements Auditable
         $this->is_active = false;
     }
 
+    public function ensureCanBeDeleted(bool $hasSupportRequests): void
+    {
+        if ($hasSupportRequests) {
+            throw new InvalidDeficiency('Este perfil está vinculado a solicitações de atendimento e não pode ser excluído.');
+        }
+    }
+
+    public function supportRequests(): BelongsToMany
+    {
+        return $this->belongsToMany(SupportRequest::class, 'support_request_profiles')->withTimestamps();
+    }
+
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'students_deficiencies')

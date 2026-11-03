@@ -11,6 +11,7 @@ use App\Domains\Inclusion\Application\Handlers\Loans\LoanWaitlistHandler;
 use App\Domains\Inclusion\Application\Policies\Loans\LoanRegistrationPolicy;
 use App\Domains\Inclusion\Domain\DTOs\Loans\CreateLoanDTO;
 use App\Domains\Inclusion\Domain\Models\Loan;
+use App\Domains\Inclusion\Domain\Models\Student;
 use Illuminate\Support\Facades\DB;
 
 final readonly class CreateLoanAction
@@ -28,6 +29,10 @@ final readonly class CreateLoanAction
     public function execute(CreateLoanData $data, int $registeredBy): Loan
     {
         $loan = DB::transaction(function () use ($data, $registeredBy): Loan {
+            if ($data->studentId !== null) {
+                Student::query()->lockForUpdate()->findOrFail($data->studentId)->ensureNotInIntake();
+            }
+
             $item = $this->loanables->lockForLoan(
                 id: $data->loanableId,
                 expectedType: $data->itemType,

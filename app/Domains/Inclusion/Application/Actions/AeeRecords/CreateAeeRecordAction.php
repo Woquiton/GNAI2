@@ -23,6 +23,9 @@ final class CreateAeeRecordAction
     {
         return DB::transaction(function () use ($data, $professionalId): AeeRecord {
             $session = Session::query()->with(['students', 'aeeRecord', 'pedagogicalRecord'])->lockForUpdate()->findOrFail($data->attendanceSessionId);
+            foreach ($session->students()->orderBy('students.id')->lockForUpdate()->get() as $student) {
+                $student->ensureNotInIntake();
+            }
             $this->ensureCanCreate($session, $professionalId, $data->evaluations);
             $dto = $this->dto($data);
             $record = AeeRecord::register($session, $dto);

@@ -32,7 +32,8 @@ final class UpdateAeeRecordAction
                 $evaluation = AeeStudentEvaluation::query()->where('aee_record_id', $record->getKey())->where('student_id', $evaluationDTO->studentId)->first();
 
                 if ($evaluation === null) {
-                    $student = $session->students->firstWhere('id', $evaluationDTO->studentId);
+                    $student = $session->students()->where('students.id', $evaluationDTO->studentId)->lockForUpdate()->firstOrFail();
+                    $student->ensureNotInIntake();
                     $evaluation = AeeStudentEvaluation::register($record, $student, $evaluationDTO);
                 } else {
                     $evaluation->revise($evaluationDTO);

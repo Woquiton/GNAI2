@@ -18,6 +18,8 @@ final class AddPeiDisciplineRevisionAction
         return DB::transaction(function () use ($peiDiscipline, $data, $reviewer): PeiDiscipline {
             $lockedDiscipline = PeiDiscipline::query()->lockForUpdate()->findOrFail($peiDiscipline->getKey());
 
+            $lockedDiscipline->pei->student()->lockForUpdate()->firstOrFail()->ensureNotInIntake();
+
             $lockedDiscipline->revisions()->create([
                 'reviewed_at' => now()->toDateString(),
                 'what_changed' => $data->whatChanged,

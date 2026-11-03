@@ -45,6 +45,7 @@ final class UpdatePaeeAction
     {
         return DB::transaction(function () use ($paee, $data, $user): Paee {
             $lockedPaee = Paee::query()->lockForUpdate()->findOrFail($paee->getKey());
+            $lockedPaee->student()->lockForUpdate()->firstOrFail()->ensureNotInIntake();
             $before = $lockedPaee->only(array_keys(self::REVISABLE_FIELDS));
 
             $lockedPaee->revise($this->dto($data));

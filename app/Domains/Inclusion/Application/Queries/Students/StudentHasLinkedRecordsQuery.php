@@ -11,7 +11,8 @@ final readonly class StudentHasLinkedRecordsQuery
 {
     public function execute(Student $student): bool
     {
-        return $student->guardians()->exists()
+        return $student->supportRequests()->exists()
+            || $student->guardians()->exists()
             || $student->deficiencies()->exists()
             || $student->peis()->exists()
             || $student->studentCourses()->exists()

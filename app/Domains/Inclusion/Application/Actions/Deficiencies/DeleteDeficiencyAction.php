@@ -29,6 +29,8 @@ final readonly class DeleteDeficiencyAction
                 $this->hasStudents->execute($lockedDeficiency),
             );
 
+            $lockedDeficiency->ensureCanBeDeleted($lockedDeficiency->supportRequests()->exists());
+
             $lockedDeficiency->delete();
         });
     }

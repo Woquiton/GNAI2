@@ -28,7 +28,6 @@ final class StudentFormQuery
     {
         return $this->formOptions() + [
             'student' => $student->loadMissing('person'),
-            'defaultStatus' => StudentStatus::ACTIVE->value,
         ];
     }
 
@@ -38,6 +37,7 @@ final class StudentFormQuery
     private function formOptions(): array
     {
         return [
+            'defaultStatus' => StudentStatus::ACTIVE->value,
             'followUpTypes' => collect(StudentFollowUpType::cases())->mapWithKeys(
                 static fn (StudentFollowUpType $type): array => [$type->value => $type->label()],
             )->all(),

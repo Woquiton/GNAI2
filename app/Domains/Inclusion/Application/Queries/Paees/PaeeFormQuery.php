@@ -18,12 +18,13 @@ final class PaeeFormQuery
     public function forCreation(CaseStudy $caseStudy): array
     {
         $caseStudy->load(['student.person', 'barriers']);
+        $caseStudy->student->ensureNotInIntake();
 
         $hasLaudo = $caseStudy->student->documents()
             ->where('type', StudentDocumentType::TECHNICAL_REPORT->value)
             ->exists();
 
-        if ($caseStudy->status !== CaseStudy::STATUS_COMPLETED && !$hasLaudo) {
+        if ($caseStudy->status !== CaseStudy::STATUS_COMPLETED && ! $hasLaudo) {
             throw new InvalidPaee('O PAEE só pode ser criado a partir de um Estudo de Caso concluído ou de um Laudo anexado ao aluno.');
         }
 
@@ -35,6 +36,7 @@ final class PaeeFormQuery
     public function forUpdate(Paee $paee): array
     {
         $paee->load(['student.person', 'caseStudy.barriers', 'objectives', 'resources']);
+        $paee->student->ensureNotInIntake();
 
         $assistiveTechnologies = $this->assistiveTechnologies(
             $paee->resources->pluck('assistive_technology_id')->filter()->map(static fn ($id): int => (int) $id)->all(),

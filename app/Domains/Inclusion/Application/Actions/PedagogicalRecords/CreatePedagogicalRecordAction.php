@@ -37,6 +37,9 @@ final class CreatePedagogicalRecordAction
             if ($session->students->count() !== 1 || $session->aeeRecord !== null || $session->pedagogicalRecord !== null) {
                 throw new InvalidPedagogicalRecord('O agendamento não está disponível para receber um registro pedagógico.');
             }
+            foreach ($session->students()->orderBy('students.id')->lockForUpdate()->get() as $student) {
+                $student->ensureNotInIntake();
+            }
             $guardianIds = $data->withGuardians ? $data->guardianIds : [];
             $this->ensureGuardiansBelongToStudent($session, $guardianIds);
             $record = PedagogicalRecord::register($session, $this->dto($data));

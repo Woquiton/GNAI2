@@ -206,7 +206,7 @@ final class StudentController
                         : [],
                 ),
                 'activeTab' => $activeTab,
-            ] + $this->presenter->shared($request),
+            ] + $this->presenter->shared($request, $student),
         );
     }
 

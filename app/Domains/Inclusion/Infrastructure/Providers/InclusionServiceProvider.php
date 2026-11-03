@@ -42,6 +42,8 @@ use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\StudentCourse;
 use App\Domains\Inclusion\Domain\Models\StudentDeficiency;
 use App\Domains\Inclusion\Domain\Models\StudentDocument;
+use App\Domains\Inclusion\Domain\Models\SupportRequest;
+use App\Domains\Inclusion\Domain\Models\SupportRequestAttachment;
 use App\Domains\Inclusion\Domain\Models\Tag;
 use App\Domains\Inclusion\Domain\Models\Teacher;
 use App\Domains\Inclusion\Domain\Models\TeacherCourseDiscipline;
@@ -100,6 +102,8 @@ final class InclusionServiceProvider extends ServiceProvider
             StudentCourse::class,
             StudentDeficiency::class,
             StudentDocument::class,
+            SupportRequest::class,
+            SupportRequestAttachment::class,
             Tag::class,
             Teacher::class,
             TeacherCourseDiscipline::class,

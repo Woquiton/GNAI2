@@ -19,6 +19,7 @@ final class UpdateCaseStudyAction
     {
         return DB::transaction(function () use ($caseStudy, $data): CaseStudy {
             $lockedCaseStudy = CaseStudy::query()->lockForUpdate()->findOrFail($caseStudy->getKey());
+            $lockedCaseStudy->student()->lockForUpdate()->firstOrFail()->ensureNotInIntake();
             $lockedCaseStudy->revise($this->dto($data));
             $lockedCaseStudy->save();
 

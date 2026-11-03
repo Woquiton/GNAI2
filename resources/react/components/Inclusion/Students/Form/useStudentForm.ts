@@ -23,14 +23,14 @@ function initialData(
         registration: student?.registration ?? '',
         entry_date: student?.entry_date?.slice(0, 10) ?? '',
         follow_up_type: student?.follow_up_type ?? '',
+        status: student?.status ?? options.defaultStatus,
         photo: null,
     };
 
-    // O status e a remoção da foto pertencem somente à edição.
+    // A remoção de uma foto salva pertence somente à edição.
     return mode === 'edit'
         ? {
               ...data,
-              status: student?.status ?? options.defaultStatus ?? '',
               remove_photo: false,
           }
         : data;
