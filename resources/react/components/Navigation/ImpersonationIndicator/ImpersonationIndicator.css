@@ -70,3 +70,15 @@
         display: none;
     }
 }
+
+/* No celular o aviso fica só no ícone (com o nome no `title`) e no botão de voltar à conta. */
+@media (max-width: 767px) {
+    .impersonationIndicator__label,
+    .impersonationIndicator__mode {
+        display: none;
+    }
+
+    .impersonationIndicator__text {
+        padding-left: 4px;
+    }
+}

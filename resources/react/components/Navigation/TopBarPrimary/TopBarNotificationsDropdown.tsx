@@ -115,7 +115,6 @@ const TopBarNotificationsDropdown = forwardRef<HTMLLIElement, TopBarNotification
                     'topbar__navItem',
                     'topbar__navItem--dropdown',
                     'dropdown',
-                    'hidden-xs',
                     isOpen && 'is-open',
                     className,
                 )}

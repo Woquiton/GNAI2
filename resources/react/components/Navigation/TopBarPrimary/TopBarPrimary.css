@@ -599,3 +599,66 @@
     --ui-focus-keyboard-color: var(--ui-color-input-focus-border);
     --ui-focus-keyboard-offset: -3px;
 }
+
+/*
+ * Uma linha só em qualquer largura: botão do menu, conteúdo inicial (nome da instituição ou busca)
+ * e ações à direita. O conteúdo inicial encolhe com reticências; as ações nunca descem de linha.
+ */
+.topbar__container {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    height: var(--ui-topbar-height);
+}
+
+.topbar__container::before,
+.topbar__container::after {
+    display: none;
+}
+
+.topbar__leftActions {
+    flex: 0 0 auto;
+}
+
+.topbar__container > .institutionBrand,
+.topbar__container > .topbar__search {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.topbar .topbar__container > .institutionBrand {
+    max-width: none;
+}
+
+.topbar__navList {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    margin-left: auto;
+    padding-left: var(--ui-space-2);
+    list-style: none;
+}
+
+@media (max-width: 767px) {
+    .topbar__menuButton {
+        padding: 0 12px;
+    }
+
+    .topbar__navLink,
+    .topbar__profile {
+        padding-right: 11px;
+        padding-left: 11px;
+    }
+}
+
+/* No celular o menu de notificações ocupa a largura da tela, logo abaixo da barra. */
+@media (max-width: 767px) {
+    .topbar__navItem--dropdown .topbarDropdown--large {
+        position: fixed;
+        top: var(--ui-topbar-height);
+        right: 8px;
+        left: 8px;
+        width: auto;
+        margin-top: 4px;
+    }
+}
