@@ -90,7 +90,7 @@ export function useMailSettingsForm({
                 onSuccess: () => {
                     const savedData = { ...form.data, password: '' };
 
-                    form.defaults(savedData);
+                    form.setDefaults(savedData);
                     form.setData(savedData);
                 },
             },

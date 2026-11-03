@@ -1,6 +1,8 @@
 import type { WaitlistFilters } from './Waitlists.types';
 
 export const emptyWaitlistFilters: WaitlistFilters = {
+    semester_id: '',
+    semester_mode: 'origin',
     item: '',
     student: '',
     professional: '',

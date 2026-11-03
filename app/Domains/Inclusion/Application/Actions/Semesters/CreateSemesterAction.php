@@ -18,6 +18,9 @@ final readonly class CreateSemesterAction
     public function execute(CreateSemesterData $data): Semester
     {
         return DB::transaction(function () use ($data): Semester {
+            // Serializa alterações no calendário antes de conferir intervalos.
+            Semester::query()->orderBy('id')->lockForUpdate()->get();
+
             if ($data->isCurrent) {
                 Semester::markCurrentAsHistorical();
             }
@@ -32,6 +35,7 @@ final readonly class CreateSemesterAction
 
             $semester = Semester::register($semesterDTO);
             $semester->save();
+            app(LinkUnassignedSemesterRecordsAction::class)->execute($semester);
 
             return $semester;
         });

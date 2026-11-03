@@ -18,6 +18,7 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 export default function InclusionWaitlistsIndexPage({
     waitlists,
     filters: initialFilters,
+    semesters,
     can,
 }: WaitlistIndexProps): React.JSX.Element {
     const errors = usePage().props.errors as Record<string, string | undefined>;
@@ -55,6 +56,7 @@ export default function InclusionWaitlistsIndexPage({
             loadingLabel="Atualizando a fila de espera"
             filters={
                 <WaitlistFilters
+                    semesters={semesters}
                     values={filters.values}
                     errors={errors}
                     onUpdate={filters.update}

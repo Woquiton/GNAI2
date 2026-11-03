@@ -6,9 +6,8 @@ namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
 use App\Domains\Inclusion\Domain\Models\AeeRecord;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 
-final class AeeRecordsReportSource extends EloquentReportSource
+final class AeeRecordsReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -18,6 +17,11 @@ final class AeeRecordsReportSource extends EloquentReportSource
     public function label(): string
     {
         return 'Registros AEE';
+    }
+
+    protected function semesterPath(): string
+    {
+        return 'attendanceSession.semester_id';
     }
 
     protected function model(): string
@@ -33,6 +37,7 @@ final class AeeRecordsReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'origin_semester' => $this->semesterDefinition(),
             'professional' => ['label' => 'Profissional', 'path' => 'attendanceSession.professional.person.name'],
             'session_date' => ['label' => 'Data do atendimento', 'path' => 'attendanceSession.session_date', 'type' => ReportColumnType::DATE],
             'duration' => ['label' => 'Duração'],
@@ -46,6 +51,6 @@ final class AeeRecordsReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['professional', 'session_date', 'duration', 'created_at'];
+        return ['origin_semester', 'professional', 'session_date', 'duration', 'created_at'];
     }
 }

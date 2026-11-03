@@ -22,6 +22,7 @@
     :status="$waitlist->status?->label()"
     :meta="[
         'Protocolo' => '#' . $waitlist->id,
+        'Semestre de origem' => $waitlist->semester?->label ?? 'Sem vínculo: revisar calendário',
         'Emissão' => now()->format('d/m/Y H:i'),
     ]"
 />
@@ -51,6 +52,14 @@
 
 <x-pdf.section-title title="Solicitação" />
 <x-pdf.table>
+    <x-pdf.row>
+        <x-pdf.info-item label="Notificado em" :value="$waitlist->notified_at?->format('d/m/Y H:i') ?? $notInformed" />
+        <x-pdf.info-item label="Atendido em" :value="$waitlist->fulfilled_at?->format('d/m/Y H:i') ?? $notInformed" />
+    </x-pdf.row>
+    <x-pdf.row>
+        <x-pdf.info-item label="Cancelado em" :value="$waitlist->cancelled_at?->format('d/m/Y H:i') ?? $notInformed" />
+        <x-pdf.info-item label="Empréstimo que atendeu a solicitação" :value="$waitlist->fulfilled_loan_id ? '#' . $waitlist->fulfilled_loan_id : $notInformed" />
+    </x-pdf.row>
     <x-pdf.row>
         <x-pdf.info-item label="Data da Solicitação" :value="$waitlist->requested_at?->format('d/m/Y H:i') ?? $notInformed" />
         <td>

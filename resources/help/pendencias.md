@@ -78,3 +78,7 @@ A exclusão mostra "Pendência removida com sucesso.".
 - **"O profissional ... não está ativo e não pode realizar esta ação."**: o profissional escolhido está inativo. Escolha outro responsável.
 - **"A data limite deve ser hoje ou uma data futura."**: o vencimento não pode estar no passado.
 - **Não consigo inativar um profissional**: um profissional com pendências em aberto não pode ser inativado ("... possui pendências em aberto e não pode ser inativado."). Conclua ou transfira essas pendências antes.
+
+## Consultar o semestre de origem
+
+Nos relatórios, **Semestre de origem** permite selecionar o contexto temporal do registro. A origem é identificada pela data efetiva no calendário; nos registros de atendimento, acompanha o agendamento. **Sem vínculo: revisar calendário** indica que ainda falta uma correspondência única. A troca do semestre atual preserva a origem já definida. Consulte [Relatórios](/ajuda/relatorios#consultar-origem-e-movimentacoes-por-semestre) para distinguir origem, datas e histórico.

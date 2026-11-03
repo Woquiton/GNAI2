@@ -1,3 +1,4 @@
+import type { SemesterOption } from '@/components/Inclusion/Semesters/OperationSemesterFilters';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
 
 export type LoanOptionMap = Record<string, string>;
@@ -14,6 +15,7 @@ export type LoanableItem = {
 
 /** Empréstimo apresentado por `LoanPresenter::loan`. */
 export type LoanRecord = {
+    semester_label: string | null;
     id: number;
     loanable_id: number;
     item_type: string;
@@ -44,6 +46,8 @@ export interface LoanPaginator extends TableListPage {
 }
 
 export type LoanFilters = {
+    semester_id: string;
+    semester_mode: string;
     item: string;
     student: string;
     professional: string;
@@ -57,6 +61,7 @@ export interface LoanListPermissions {
 }
 
 export interface LoanIndexProps {
+    semesters: SemesterOption[];
     loans: LoanPaginator;
     filters: Partial<LoanFilters>;
     can: LoanListPermissions;

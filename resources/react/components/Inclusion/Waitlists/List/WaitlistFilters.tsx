@@ -1,9 +1,13 @@
+import OperationSemesterFilters, {
+    type SemesterOption,
+} from '@/components/Inclusion/Semesters/OperationSemesterFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { waitlistStatusOptions } from '../Waitlists.constants';
 import type { WaitlistFilters as WaitlistFilterValues } from '../Waitlists.types';
 
 interface WaitlistFiltersProps {
+    semesters: SemesterOption[];
     values: WaitlistFilterValues;
     errors: Record<string, string | undefined>;
     onUpdate: (name: keyof WaitlistFilterValues, value: string) => void;
@@ -12,6 +16,7 @@ interface WaitlistFiltersProps {
 }
 
 export default function WaitlistFilters({
+    semesters,
     values,
     errors,
     onUpdate,
@@ -19,16 +24,28 @@ export default function WaitlistFilters({
     onSubmit,
 }: WaitlistFiltersProps): React.JSX.Element {
     const moreFilters = (
-        <SelectInputField
-            id="waitlist-status-filter"
-            name="status"
-            label="Status"
-            placeholder="Todos"
-            options={waitlistStatusOptions}
-            value={values.status}
-            error={errors.status}
-            onChange={(value) => onUpdate('status', value)}
-        />
+        <>
+            <SelectInputField
+                id="waitlist-status-filter"
+                name="status"
+                label="Status"
+                placeholder="Todos"
+                options={waitlistStatusOptions}
+                value={values.status}
+                error={errors.status}
+                onChange={(value) => onUpdate('status', value)}
+            />
+            <OperationSemesterFilters
+                idPrefix="waitlist"
+                semesters={semesters}
+                semesterId={values.semester_id}
+                mode={values.semester_mode}
+                activeLabel="Em espera durante o período"
+                errors={errors}
+                onSemesterChange={(value) => onUpdate('semester_id', value)}
+                onModeChange={(value) => onUpdate('semester_mode', value)}
+            />
+        </>
     );
 
     return (

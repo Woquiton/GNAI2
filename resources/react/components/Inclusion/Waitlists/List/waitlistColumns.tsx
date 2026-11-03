@@ -18,6 +18,30 @@ function beneficiary(waitlist: WaitlistRecord): string {
 /** Colunas da listagem; as complementares começam ocultas no seletor de colunas. */
 export const waitlistColumns: TableListColumn<WaitlistRecord>[] = [
     {
+        id: 'notified_at',
+        label: 'Notificado em',
+        defaultVisible: false,
+        render: (waitlist) => waitlist.notified_at_label ?? 'Não informado',
+    },
+    {
+        id: 'fulfilled_at',
+        label: 'Atendido em',
+        defaultVisible: false,
+        render: (waitlist) => waitlist.fulfilled_at_label ?? 'Não informado',
+    },
+    {
+        id: 'cancelled_at',
+        label: 'Cancelado em',
+        defaultVisible: false,
+        render: (waitlist) => waitlist.cancelled_at_label ?? 'Não informado',
+    },
+    {
+        id: 'origin-semester',
+        label: 'Semestre de origem',
+        defaultVisible: false,
+        render: (waitlist) => waitlist.semester_label ?? 'Sem vínculo: revisar calendário',
+    },
+    {
         id: 'item',
         label: 'Item',
         width: '26%',

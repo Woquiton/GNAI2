@@ -32,8 +32,8 @@ interface MapInstance {
     fitBounds(points: number[][], options: object): void;
 }
 interface MapLayer {
-    addTo(map: MapInstance): MapLayer;
-    bindPopup(content: HTMLElement, options?: object): MapLayer;
+    addTo(map: MapInstance): this;
+    bindPopup(content: HTMLElement, options?: object): this;
 }
 interface MarkerLayer extends MapLayer {
     getElement(): HTMLElement | undefined;

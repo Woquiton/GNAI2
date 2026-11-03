@@ -1,6 +1,8 @@
 import type { LoanFilters } from './Loans.types';
 
 export const emptyLoanFilters: LoanFilters = {
+    semester_id: '',
+    semester_mode: 'origin',
     item: '',
     student: '',
     professional: '',

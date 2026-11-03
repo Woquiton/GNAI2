@@ -83,6 +83,7 @@ export default function SemesterForm({
                                 id="semester-start-date"
                                 name="start_date"
                                 label="Data de Início"
+                                required
                                 value={form.data.start_date}
                                 disabled={form.processing}
                                 error={errors.start_date}
@@ -92,6 +93,7 @@ export default function SemesterForm({
                                 id="semester-end-date"
                                 name="end_date"
                                 label="Data de Término"
+                                required
                                 value={form.data.end_date}
                                 disabled={form.processing}
                                 error={errors.end_date}

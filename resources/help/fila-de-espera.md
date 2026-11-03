@@ -95,3 +95,20 @@ Informe exatamente um beneficiário.
 
 **Aparece "Apenas solicitações em espera podem ser canceladas." ou "Solicitações já atendidas não podem ser removidas."**
 A solicitação já mudou de status. Solicitações atendidas ficam no histórico.
+
+## Consultar por semestre
+
+Em **Mais filtros**, escolha **Semestre** e a opção de **Consultar no semestre**:
+
+- **Semestre de origem:** vínculo preservado desde o registro.
+- **Iniciados no período:** operações cuja data inicial está no calendário escolhido.
+- **Em espera durante o período:** inclui operações que começaram antes e continuaram naquele semestre.
+- **Encerrados no período:** operações finalizadas no semestre escolhido.
+
+A opção **Sem vínculo: revisar calendário** encontra registros sem origem identificada. Complete as datas do semestre em **Gestão do núcleo → Cadastros → Semestres** e salve para vincular as operações com correspondência única. A troca do semestre atual preserva os registros e a continuidade entre períodos.
+
+O status da linha representa a situação atual, mesmo quando o filtro consulta um semestre passado. As datas de movimentação podem ser usadas também nos relatórios. Registros antigos sem data conhecida de encerramento não entram como encerrados nem como continuidade comprovada naquele período.
+
+## Saber quando a solicitação mudou de situação
+
+A visualização e as colunas complementares da lista mostram **Notificado em**, **Atendido em** e **Cancelado em**. O atendimento automático registra também o número do empréstimo correspondente. Uma data não disponível aparece como **Não informado**, sem usar a última edição como se fosse a data da mudança. As movimentações registradas a partir desta atualização podem ser consultadas pela relação **Histórico de movimentações** nos relatórios.

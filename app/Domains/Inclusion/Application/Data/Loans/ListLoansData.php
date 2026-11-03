@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Data\Loans;
 
 use App\Domains\Inclusion\Domain\Enums\LoanStatus;
+use App\Domains\Inclusion\Domain\Models\Semester;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MergeValidationRules;
@@ -21,6 +23,8 @@ final class ListLoansData extends Data
         public ?string $item = null,
         public ?LoanStatus $status = null,
         public int $perPage = 10,
+        public ?string $semesterId = null,
+        public string $semesterMode = 'origin',
     ) {}
 
     public static function rules(): array
@@ -30,6 +34,8 @@ final class ListLoansData extends Data
             'professional' => ['nullable', 'string', 'max:255'],
             'item' => ['nullable', 'string', 'max:255'],
             'status' => ['nullable', new Enum(LoanStatus::class)],
+            'semester_id' => ['nullable', 'string', Rule::in([...Semester::query()->pluck('id')->map(fn ($id) => (string) $id)->all(), 'unassigned'])],
+            'semester_mode' => ['required_with:semester_id', Rule::in(['origin', 'started', 'active', 'ended'])],
             'per_page' => ['integer', 'min:1', 'max:100'],
         ];
     }

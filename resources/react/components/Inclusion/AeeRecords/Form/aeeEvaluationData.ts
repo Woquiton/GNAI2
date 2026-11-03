@@ -68,9 +68,7 @@ export function pendingEvaluationFields(evaluation: AeeEvaluationFormData): numb
  * Reproduz o legado: os campos ocultos pela presença/ausência do aluno
  * eram limpos e desabilitados, chegando ao backend sem valor.
  */
-export function evaluationPayload<T extends AeeEvaluationFormData>(
-    evaluation: T,
-): EvaluationPayload {
+export function evaluationPayload(evaluation: AeeEvaluationFormData): EvaluationPayload {
     // A participação de responsáveis só existe com o aluno presente (como no Blade).
     const withGuardians = evaluation.is_present && evaluation.with_guardians;
     const payload: EvaluationPayload = {

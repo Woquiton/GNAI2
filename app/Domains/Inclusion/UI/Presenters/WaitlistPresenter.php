@@ -21,9 +21,11 @@ final class WaitlistPresenter
             'professional:id,person_id',
             'professional.person:id,name',
             'user:id,name',
+            'semester',
         ]);
 
         $payload = [
+            'semester_label' => $waitlist->semester?->label,
             'id' => $waitlist->id,
             'student_id' => $waitlist->student_id,
             'professional_id' => $waitlist->professional_id,
@@ -40,6 +42,10 @@ final class WaitlistPresenter
             ] : null,
             'user' => $waitlist->user?->name ?? 'Não informado',
             'requested_at' => $waitlist->requested_at?->format('Y-m-d\TH:i:s'),
+            'notified_at_label' => $waitlist->notified_at?->format('d/m/Y H:i'),
+            'fulfilled_at_label' => $waitlist->fulfilled_at?->format('d/m/Y H:i'),
+            'cancelled_at_label' => $waitlist->cancelled_at?->format('d/m/Y H:i'),
+            'fulfilled_loan_id' => $waitlist->fulfilled_loan_id,
             'requested_at_label' => $waitlist->requested_at?->format('d/m/Y H:i') ?? 'Não informado',
             'status' => $waitlist->status->value,
             'status_label' => $waitlist->status->label(),

@@ -28,7 +28,7 @@ export const loanListTour: TableListTourConfig = {
         'A lista se atualiza sozinha enquanto você digita.',
     ],
     moreFilters:
-        'Clique em Mais filtros para escolher o Status: ativo ou devolvido no prazo, com atraso ou com avaria.',
+        'Em Mais filtros, escolha o Status e o Semestre. Em Consultar no semestre, diferencie a origem, os iniciados, os que continuaram em andamento e os encerrados no período. Sem vínculo encontra registros cuja origem precisa de revisão do calendário.',
     table: [
         'Cada linha é um empréstimo, com o item, o beneficiário, o prazo, o status e quem registrou. Quando a devolução está atrasada, o Prazo aparece destacado.',
         'Clique no nome do item para abrir o cadastro dele em outra aba. Use o botão de olho, no fim da linha, para abrir o empréstimo.',

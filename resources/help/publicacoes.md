@@ -106,3 +106,7 @@ A publicação é excluída permanentemente, com a capa e a galeria. O sistema m
 - **"O horário de término deve ser maior que o horário de início para o mesmo dia."**: ajuste os horários.
 - **"Selecione um participante cadastrado, digite o nome de um avulso ou remova a linha."**: há uma linha de participante vazia.
 - **A publicação não aparece no site**: confira se a **Situação** é **Publicado** e se a **Data de publicação** não está no futuro.
+
+## Consultar o semestre de origem
+
+Nos relatórios, **Semestre de origem** permite selecionar o contexto temporal do registro. A origem é identificada pela data efetiva no calendário; nos registros de atendimento, acompanha o agendamento. **Sem vínculo: revisar calendário** indica que ainda falta uma correspondência única. A troca do semestre atual preserva a origem já definida. Consulte [Relatórios](/ajuda/relatorios#consultar-origem-e-movimentacoes-por-semestre) para distinguir origem, datas e histórico.

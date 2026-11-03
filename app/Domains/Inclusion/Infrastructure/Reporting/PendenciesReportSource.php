@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
-use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 use App\Domains\Inclusion\Domain\Models\Pendency;
+use App\Domains\Reporting\Domain\Enums\ReportColumnType;
 
-final class PendenciesReportSource extends EloquentReportSource
+final class PendenciesReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -33,6 +32,8 @@ final class PendenciesReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'completed_at' => ['label' => 'Concluída em', 'type' => ReportColumnType::DATE],
+            'origin_semester' => $this->semesterDefinition(),
             'title' => ['label' => 'Título'], 'description' => ['label' => 'Descrição'],
             'priority' => ['label' => 'Prioridade'],
             'due_date' => ['label' => 'Prazo', 'type' => ReportColumnType::DATE],
@@ -45,6 +46,6 @@ final class PendenciesReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['title', 'priority', 'due_date', 'is_completed', 'creator', 'assigned_professional'];
+        return ['completed_at', 'origin_semester', 'title', 'priority', 'due_date', 'is_completed', 'creator', 'assigned_professional'];
     }
 }

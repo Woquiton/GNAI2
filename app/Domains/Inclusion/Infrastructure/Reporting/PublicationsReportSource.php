@@ -6,9 +6,8 @@ namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
 use App\Domains\Inclusion\Domain\Models\Publication;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 
-final class PublicationsReportSource extends EloquentReportSource
+final class PublicationsReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -28,6 +27,7 @@ final class PublicationsReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'origin_semester' => $this->semesterDefinition(),
             'title' => ['label' => 'Título'], 'description' => ['label' => 'Descrição'],
             'start_date' => ['label' => 'Data inicial', 'type' => ReportColumnType::DATE],
             'end_date' => ['label' => 'Data final', 'type' => ReportColumnType::DATE],
@@ -39,6 +39,6 @@ final class PublicationsReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['title', 'start_date', 'end_date', 'location', 'organizer', 'is_active'];
+        return ['origin_semester', 'title', 'start_date', 'end_date', 'location', 'organizer', 'is_active'];
     }
 }

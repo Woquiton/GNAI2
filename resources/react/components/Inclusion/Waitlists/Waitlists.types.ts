@@ -1,3 +1,4 @@
+import type { SemesterOption } from '@/components/Inclusion/Semesters/OperationSemesterFilters';
 import type { ItemType } from '@/components/Inclusion/Items/Items.types';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
 
@@ -19,6 +20,7 @@ export type WaitlistStatus = 'waiting' | 'notified' | 'fulfilled' | 'cancelled';
 
 /** Solicitação apresentada por `WaitlistPresenter::waitlist`. */
 export interface WaitlistRecord {
+    semester_label: string | null;
     id: number;
     waitlistable_id: number;
     item_type: ItemType;
@@ -29,6 +31,10 @@ export interface WaitlistRecord {
     user: string;
     requested_at: string | null;
     requested_at_label: string;
+    notified_at_label: string | null;
+    fulfilled_at_label: string | null;
+    cancelled_at_label: string | null;
+    fulfilled_loan_id: number | null;
     status: WaitlistStatus;
     status_label: string;
     status_color: string;
@@ -41,6 +47,8 @@ export interface WaitlistPaginator extends TableListPage {
 }
 
 export type WaitlistFilters = {
+    semester_id: string;
+    semester_mode: string;
     item: string;
     student: string;
     professional: string;
@@ -54,6 +62,7 @@ export interface WaitlistListPermissions {
 }
 
 export interface WaitlistIndexProps {
+    semesters: SemesterOption[];
     waitlists: WaitlistPaginator;
     filters: Partial<WaitlistFilters>;
     can: WaitlistListPermissions;

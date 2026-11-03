@@ -26,6 +26,9 @@ export default function LoanDetails({
 
     return (
         <DetailGrid>
+            <DetailField label="Semestre de origem">
+                {loan.semester_label ?? 'Sem vínculo: revisar calendário'}
+            </DetailField>
             <DetailField label="Tipo do Item">{loan.item_type_label}</DetailField>
             <DetailField label="Recurso Emprestado">
                 {links.item ? (

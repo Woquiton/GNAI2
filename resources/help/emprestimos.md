@@ -111,3 +111,18 @@ Na visualização do empréstimo, clique em **PDF** para abrir o documento do em
 - **"O recurso está com status '...', que bloqueia empréstimos."** ou **"O estado 'Ruim (Danificado)' bloqueia empréstimos."** Revise o status ou a conservação na edição do item.
 - **"Este recurso não está disponível para empréstimo."** O item está inativo ou não permite empréstimos.
 - **O item não aparece na lista.** Confira se o **Tipo do Item** escolhido é o mesmo do item e veja [Quais itens podem ser emprestados?](/ajuda/emprestimos#quais-itens-podem-ser-emprestados)
+
+## Consultar por semestre
+
+Em **Mais filtros**, escolha **Semestre** e a opção de **Consultar no semestre**:
+
+- **Semestre de origem:** vínculo preservado desde o registro.
+- **Iniciados no período:** operações cuja data inicial está no calendário escolhido.
+- **Em uso durante o período:** inclui operações que começaram antes e continuaram naquele semestre.
+- **Encerrados no período:** operações finalizadas no semestre escolhido.
+
+A opção **Sem vínculo: revisar calendário** encontra registros sem origem identificada. Complete as datas do semestre em **Gestão do núcleo → Cadastros → Semestres** e salve para vincular as operações com correspondência única. A troca do semestre atual preserva os registros e a continuidade entre períodos.
+
+O status da linha representa a situação atual, mesmo quando o filtro consulta um semestre passado. As datas de movimentação podem ser usadas também nos relatórios. Registros antigos sem data conhecida de encerramento não entram como encerrados nem como continuidade comprovada naquele período.
+
+Empréstimos que atenderam uma solicitação da fila de espera são preservados e não podem ser excluídos. Registre a devolução para encerrá-los.

@@ -8,6 +8,8 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
+use App\Domains\Inclusion\Domain\Concerns\RecordsOperationStatusChanges;
 use App\Domains\Inclusion\Domain\DTOs\Waitlists\CreateWaitlistDTO;
 use App\Domains\Inclusion\Domain\DTOs\Waitlists\UpdateWaitlistDTO;
 use App\Domains\Inclusion\Domain\Enums\WaitlistStatus;
@@ -23,6 +25,13 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 final class Waitlist extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+    use RecordsOperationStatusChanges;
+
+    public const SEMESTER_DATE = 'requested_at';
+
+    public const HISTORY_FIELDS = ['status'];
+
     use HasFactory;
 
     protected $table = 'waitlists';
@@ -40,8 +49,34 @@ final class Waitlist extends Model implements Auditable
 
     protected $casts = [
         'requested_at' => 'datetime',
+        'notified_at' => 'datetime',
+        'fulfilled_at' => 'datetime',
+        'cancelled_at' => 'datetime',
         'status' => WaitlistStatus::class,
     ];
+
+    protected static function booted(): void
+    {
+        self::saving(function (self $record): void {
+            if (! $record->isDirty('status')) {
+                return;
+            }
+            $field = match ($record->status) {
+                WaitlistStatus::NOTIFIED => 'notified_at',
+                WaitlistStatus::FULFILLED => 'fulfilled_at',
+                WaitlistStatus::CANCELLED => 'cancelled_at',
+                default => null,
+            };
+            if ($field !== null && ! $record->isDirty($field)) {
+                $record->setAttribute($field, now());
+            }
+        });
+    }
+
+    public function fulfilledLoan(): BelongsTo
+    {
+        return $this->belongsTo(Loan::class, 'fulfilled_loan_id');
+    }
 
     public static function auditType(): string
     {
@@ -56,6 +91,11 @@ final class Waitlist extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'notified_at' => AuditedField::dateTime('Notificado em'),
+            'fulfilled_at' => AuditedField::dateTime('Atendido em'),
+            'cancelled_at' => AuditedField::dateTime('Cancelado em'),
+            'fulfilled_loan_id' => AuditedField::number('Empréstimo que atendeu a solicitação'),
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             'waitlistable_type' => AuditedField::enum('Tipo de Recurso', valueLabels: [
                 'item' => 'Item',
                 'assistive_technology' => 'Tecnologia Assistiva',

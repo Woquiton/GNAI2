@@ -8,6 +8,8 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
+use App\Domains\Inclusion\Domain\Concerns\RecordsOperationStatusChanges;
 use App\Domains\Inclusion\Domain\DTOs\Barriers\CreateBarrierDTO;
 use App\Domains\Inclusion\Domain\DTOs\Barriers\UpdateBarrierDTO;
 use App\Domains\Inclusion\Domain\Enums\BarrierStatus;
@@ -25,6 +27,13 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 final class Barrier extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+    use RecordsOperationStatusChanges;
+
+    public const SEMESTER_DATE = 'identified_at';
+
+    public const HISTORY_FIELDS = ['resolved_at'];
+
     use HasFactory;
 
     protected $fillable = [
@@ -73,6 +82,7 @@ final class Barrier extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             'name' => AuditedField::text('Título do Relato'),
             'description' => AuditedField::text('Descrição Detalhada'),
             'registered_by_user_id' => AuditedField::reference('Relator', User::class),

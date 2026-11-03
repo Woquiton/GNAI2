@@ -22,7 +22,7 @@ export const waitlistListTour: TableListTourConfig = {
         'A lista se atualiza sozinha enquanto você digita.',
     ],
     moreFilters:
-        'Clique em Mais filtros para escolher o Status: Em Espera, Notificado, Atendido ou Cancelado.',
+        'Em Mais filtros, escolha o Status e o Semestre. Em Consultar no semestre, diferencie a origem, os iniciados, os que continuaram em andamento e os encerrados no período. Sem vínculo encontra registros cuja origem precisa de revisão do calendário.',
     table: [
         'Cada linha é uma solicitação, com o item, o beneficiário, a data, o status e quem registrou.',
         'Clique no nome do item para abrir o cadastro dele em outra aba. Use o botão de olho, no fim da linha, para abrir a solicitação.',

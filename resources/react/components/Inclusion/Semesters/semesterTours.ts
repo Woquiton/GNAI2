@@ -34,7 +34,7 @@ export const semesterListTour: TableListTourConfig = {
             target: targets.currentNotice,
             title: 'Semestre Atual',
             content: [
-                'O semestre atual é o período que já vem escolhido nos novos registros do sistema.',
+                'O semestre atual é sugerido nos registros acadêmicos. Empréstimos, filas e outras operações têm sua origem identificada pela data efetiva no calendário.',
                 'Só existe um semestre atual por vez. Os outros aparecem como Histórico.',
             ],
         },
@@ -54,7 +54,7 @@ function semesterFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
                 mode === 'create'
                     ? 'Informe o Ano Letivo e o Período, 1 ou 2. Os campos com asterisco (*) são obrigatórios. Não pode haver dois semestres com o mesmo ano e período.'
                     : 'Você pode alterar o Ano Letivo e o Período, 1 ou 2. Os campos com asterisco (*) são obrigatórios. Não pode haver dois semestres com o mesmo ano e período.',
-                'As datas de início e de término não são obrigatórias. Se você informar uma, informe a outra também. O término não pode ser antes do início.',
+                'As datas de início e término são obrigatórias. O término não pode ser antes do início, e o intervalo não pode se sobrepor ao de outro semestre. O calendário identifica o semestre de origem das operações pelas datas efetivas.',
             ],
         },
         {

@@ -18,6 +18,9 @@ final readonly class UpdateSemesterAction
     public function execute(Semester $semester, UpdateSemesterData $data): Semester
     {
         return DB::transaction(function () use ($semester, $data): Semester {
+            // Serializa alterações no calendário antes de conferir intervalos.
+            Semester::query()->orderBy('id')->lockForUpdate()->get();
+
             $lockedSemester = Semester::query()
                 ->lockForUpdate()
                 ->findOrFail($semester->getKey());
@@ -36,6 +39,7 @@ final readonly class UpdateSemesterAction
 
             $lockedSemester->revise($semesterDTO);
             $lockedSemester->save();
+            app(LinkUnassignedSemesterRecordsAction::class)->execute($lockedSemester);
 
             return $lockedSemester;
         });

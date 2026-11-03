@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
+use App\Domains\Inclusion\Domain\Models\Paee;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
 use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
-use App\Domains\Inclusion\Domain\Models\Paee;
 
 final class PaeesReportSource extends EloquentReportSource
 {
@@ -45,7 +45,7 @@ final class PaeesReportSource extends EloquentReportSource
         return [
             'student' => ['label' => 'Estudante', 'path' => 'student.person.name'],
             'creator' => ['label' => 'Criador', 'path' => 'creator.name'],
-            'semester' => ['label' => 'Semestre', 'path' => 'semester.name'],
+            'semester' => ['label' => 'Semestre', 'path' => 'semester.label'],
             'version' => ['label' => 'Versão'],
             'status' => ['label' => 'Status'],
             'attendance_frequency_per_week' => ['label' => 'Frequência semanal'],

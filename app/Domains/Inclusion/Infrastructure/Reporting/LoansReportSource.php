@@ -9,10 +9,9 @@ use App\Domains\Inclusion\Domain\Enums\LoanStatus;
 use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 use Illuminate\Database\Eloquent\Builder;
 
-final class LoansReportSource extends EloquentReportSource
+final class LoansReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -37,6 +36,7 @@ final class LoansReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'origin_semester' => $this->semesterDefinition(),
             'item_type' => [
                 'label' => 'Tipo de recurso',
                 'path' => 'loanable.item_type',
@@ -56,7 +56,7 @@ final class LoansReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['item_type', 'student', 'professional', 'loan_date', 'due_date', 'return_date', 'status', 'registered_by'];
+        return ['origin_semester', 'item_type', 'student', 'professional', 'loan_date', 'due_date', 'return_date', 'status', 'registered_by'];
     }
 
     public function applyFilter(Builder $query, string $field, string $operator, mixed $value): void

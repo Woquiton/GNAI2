@@ -8,6 +8,8 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
+use App\Domains\Inclusion\Domain\Concerns\RecordsOperationStatusChanges;
 use App\Domains\Inclusion\Domain\DTOs\Loans\CreateLoanDTO;
 use App\Domains\Inclusion\Domain\DTOs\Loans\ReturnLoanDTO;
 use App\Domains\Inclusion\Domain\DTOs\Loans\UpdateLoanDTO;
@@ -27,6 +29,13 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 final class Loan extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+    use RecordsOperationStatusChanges;
+
+    public const SEMESTER_DATE = 'loan_date';
+
+    public const HISTORY_FIELDS = ['status'];
+
     use HasFactory;
 
     protected $table = 'loans';
@@ -64,6 +73,7 @@ final class Loan extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             'loanable_type' => AuditedField::enum('Tipo de Recurso', valueLabels: [
                 'item' => 'Item',
                 'assistive_technology' => 'Tecnologia Assistiva',

@@ -6,9 +6,8 @@ namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
 use App\Domains\Inclusion\Domain\Models\Barrier;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 
-final class BarriersReportSource extends EloquentReportSource
+final class BarriersReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -33,6 +32,7 @@ final class BarriersReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'origin_semester' => $this->semesterDefinition(),
             'name' => ['label' => 'Nome'], 'description' => ['label' => 'Descrição'],
             'institution' => ['label' => 'Instituição', 'path' => 'institution.name'],
             'category' => ['label' => 'Categoria', 'path' => 'category.name'],
@@ -52,6 +52,6 @@ final class BarriersReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['name', 'institution', 'category', 'location', 'affected_student', 'affected_professional', 'priority', 'identified_at', 'resolved_at', 'registered_by', 'is_active'];
+        return ['origin_semester', 'name', 'institution', 'category', 'location', 'affected_student', 'affected_professional', 'priority', 'identified_at', 'resolved_at', 'registered_by', 'is_active'];
     }
 }

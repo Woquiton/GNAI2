@@ -45,6 +45,7 @@ export interface PositionRecord {
     id: number;
     name: string;
     description: string | null;
+    is_active: boolean;
     permissions?: Array<Pick<PositionPermission, 'id'>>;
 }
 

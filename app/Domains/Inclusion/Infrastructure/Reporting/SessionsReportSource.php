@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
-use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 use App\Domains\Inclusion\Domain\Models\Session;
+use App\Domains\Reporting\Domain\Enums\ReportColumnType;
 
-final class SessionsReportSource extends EloquentReportSource
+final class SessionsReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -33,6 +32,7 @@ final class SessionsReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'origin_semester' => $this->semesterDefinition(),
             'professional' => ['label' => 'Profissional', 'path' => 'professional.person.name'],
             'session_date' => ['label' => 'Data', 'type' => ReportColumnType::DATE],
             'start_time' => ['label' => 'Início'], 'end_time' => ['label' => 'Fim'],
@@ -45,6 +45,6 @@ final class SessionsReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['professional', 'session_date', 'type', 'attendance_type', 'location', 'status', 'creator'];
+        return ['origin_semester', 'professional', 'session_date', 'type', 'attendance_type', 'location', 'status', 'creator'];
     }
 }

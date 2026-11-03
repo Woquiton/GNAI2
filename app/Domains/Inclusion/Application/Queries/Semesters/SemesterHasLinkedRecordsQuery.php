@@ -13,6 +13,12 @@ final class SemesterHasLinkedRecordsQuery
     {
         $semesterId = $semester->getKey();
 
+        foreach (['loans', 'waitlists', 'attendance_sessions', 'support_requests', 'pendencies', 'barriers', 'inspections', 'publications', 'operation_status_changes'] as $table) {
+            if (DB::table($table)->where('semester_id', $semesterId)->exists()) {
+                return true;
+            }
+        }
+
         return $semester->studentDocuments()->exists()
             || $semester->peis()->exists()
             || DB::table('paees')->where('semester_id', $semesterId)->exists()

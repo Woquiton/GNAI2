@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Queries\Waitlists;
 
 use App\Domains\Inclusion\Application\Data\Waitlists\ListWaitlistsData;
+use App\Domains\Inclusion\Application\Queries\Semesters\OperationsInSemesterQuery;
 use App\Domains\Inclusion\Domain\Models\Waitlist;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,6 +25,7 @@ final class ListWaitlistsQuery
                 'professional:id,person_id,registration',
                 'professional.person:id,name',
                 'user:id,name',
+                'semester',
             ]);
 
         if (filled($filters->item)) {
@@ -60,6 +62,10 @@ final class ListWaitlistsQuery
 
         if ($filters->startDate !== null && $filters->endDate !== null) {
             $query->whereBetween('requested_at', [$filters->startDate, $filters->endDate]);
+        }
+
+        if ($filters->semesterId !== null) {
+            app(OperationsInSemesterQuery::class)->apply($query, $filters->semesterId, $filters->semesterMode);
         }
 
         return $query

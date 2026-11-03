@@ -41,8 +41,8 @@ final class UpdateSemesterData extends Data
                     ->ignore($semesterId),
             ],
             'term' => ['required', 'integer', Rule::in([1, 2])],
-            'start_date' => ['nullable', 'date', 'required_with:end_date'],
-            'end_date' => ['nullable', 'date', 'required_with:start_date', 'after_or_equal:start_date'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'is_current' => ['sometimes', 'boolean'],
         ];
     }
@@ -58,6 +58,8 @@ final class UpdateSemesterData extends Data
             'term.integer' => 'O período letivo deve ser um número inteiro.',
             'term.in' => 'O período letivo deve ser o primeiro ou o segundo semestre.',
             'start_date.required_with' => 'Informe a data de início quando a data de término for preenchida.',
+            'start_date.required' => 'Informe a data de início do semestre.',
+            'end_date.required' => 'Informe a data de término do semestre.',
             'start_date.date' => 'A data de início deve ser uma data válida.',
             'end_date.required_with' => 'Informe a data de término quando a data de início for preenchida.',
             'end_date.date' => 'A data de término deve ser uma data válida.',

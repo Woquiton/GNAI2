@@ -17,6 +17,7 @@ final class WaitlistPdfQuery
             'professional:id,person_id,registration',
             'professional.person:id,name',
             'user:id,name',
+            'semester',
         ]);
     }
 }

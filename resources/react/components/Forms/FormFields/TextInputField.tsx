@@ -4,10 +4,15 @@ import TextInput, { type TextInputProps } from '@/components/Forms/TextInput/Tex
 import type { FieldBaseProps } from './FormFields.types';
 
 export type TextInputFieldProps = FieldBaseProps &
-    Omit<TextInputProps, 'id' | 'value' | 'onChange' | 'invalid' | 'required' | 'children'> & {
+    Omit<
+        TextInputProps,
+        'id' | 'value' | 'onChange' | 'invalid' | 'required' | 'children' | 'readOnly'
+    > & {
         value: string;
-        onChange: (value: string) => void;
-    };
+    } & (
+        | { readOnly: true; onChange?: (value: string) => void }
+        | { readOnly?: false; onChange: (value: string) => void }
+    );
 
 /** `FormField` + `TextInput`, com erro e descrição acessível já associados. */
 export default function TextInputField({
@@ -45,7 +50,7 @@ export default function TextInputField({
                     hint: Boolean(hint && !hintLabel),
                     describedBy,
                 })}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={(event) => onChange?.(event.target.value)}
             />
             {children}
         </FormField>

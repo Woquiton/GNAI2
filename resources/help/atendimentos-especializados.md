@@ -120,3 +120,7 @@ O botão aparece para quem pode criar registros AEE e tem um profissional vincul
 
 **Não vejo o botão Criar Atendimento AEE no agendamento.**
 Confira se você é o profissional do agendamento, se o status é **Agendada** e se a data já chegou.
+
+## Consultar o semestre de origem
+
+Nos relatórios, **Semestre de origem** permite selecionar o contexto temporal do registro. A origem é identificada pela data efetiva no calendário; nos registros de atendimento, acompanha o agendamento. **Sem vínculo: revisar calendário** indica que ainda falta uma correspondência única. A troca do semestre atual preserva a origem já definida. Consulte [Relatórios](/ajuda/relatorios#consultar-origem-e-movimentacoes-por-semestre) para distinguir origem, datas e histórico.

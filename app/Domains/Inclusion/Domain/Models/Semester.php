@@ -87,7 +87,7 @@ final class Semester extends Model implements Auditable
      */
     public function revise(UpdateSemesterDTO $data): void
     {
-        $this->fill(self::attributesFrom($data));
+        $this->fill(self::attributesFrom($data, $this->getKey()));
     }
 
     /** Indica se este semestre vem antes do informado, pela ordem de ano e período. */
@@ -153,7 +153,7 @@ final class Semester extends Model implements Auditable
      *
      * @throws InvalidSemester
      */
-    private static function attributesFrom(CreateSemesterDTO|UpdateSemesterDTO $data): array
+    private static function attributesFrom(CreateSemesterDTO|UpdateSemesterDTO $data, ?int $exceptId = null): array
     {
         self::ensureValidPeriod(
             year: $data->year,
@@ -161,6 +161,14 @@ final class Semester extends Model implements Auditable
             startDate: $data->startDate,
             endDate: $data->endDate,
         );
+
+        if (self::query()
+            ->when($exceptId !== null, fn ($query) => $query->whereKeyNot($exceptId))
+            ->where('start_date', '<=', $data->endDate)
+            ->where('end_date', '>=', $data->startDate)
+            ->exists()) {
+            throw new InvalidSemester('As datas deste semestre se sobrepõem às de outro semestre cadastrado.');
+        }
 
         return [
             'year' => $data->year,
@@ -185,7 +193,7 @@ final class Semester extends Model implements Auditable
             throw new InvalidSemester('O período letivo deve ser o primeiro ou o segundo semestre.');
         }
 
-        if (($startDate === null) !== ($endDate === null)) {
+        if ($startDate === null || $endDate === null) {
             throw new InvalidSemester('Informe as datas de início e término do semestre.');
         }
 

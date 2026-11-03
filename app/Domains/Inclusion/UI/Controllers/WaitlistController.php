@@ -15,6 +15,7 @@ use App\Domains\Inclusion\Application\Queries\Waitlists\ListWaitlistsQuery;
 use App\Domains\Inclusion\Application\Queries\Waitlists\ShowWaitlistQuery;
 use App\Domains\Inclusion\Application\Queries\Waitlists\WaitlistFormQuery;
 use App\Domains\Inclusion\Application\Queries\Waitlists\WaitlistPdfQuery;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\Domain\Models\Waitlist;
 use App\Domains\Inclusion\UI\Presenters\WaitlistPresenter;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
@@ -42,7 +43,8 @@ final class WaitlistController
             'Inclusion/Waitlists/Index',
             [
                 'waitlists' => $waitlists,
-                'filters' => $request->only(['item', 'student', 'professional', 'status', 'start_date', 'end_date', 'per_page']),
+                'semesters' => Semester::query()->orderByDesc('year')->orderByDesc('term')->get(['id', 'label']),
+                'filters' => $request->only(['item', 'student', 'professional', 'status', 'start_date', 'end_date', 'per_page', 'semester_id', 'semester_mode']),
                 'can' => [
                     'create' => $request->user()?->can('waitlist.create') ?? false,
                     'show' => $request->user()?->can('waitlist.show') ?? false,

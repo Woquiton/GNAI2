@@ -8,6 +8,7 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
 use App\Domains\Inclusion\Domain\DTOs\Inspections\CreateInspectionDTO;
 use App\Domains\Inclusion\Domain\Enums\BarrierStatus;
 use App\Domains\Inclusion\Domain\Enums\ConservationState;
@@ -24,6 +25,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 final class Inspection extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+
+    public const SEMESTER_DATE = 'inspection_date';
+
     use HasFactory;
 
     protected $fillable = [
@@ -57,6 +62,7 @@ final class Inspection extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             'inspectable_type' => AuditedField::enum('Tipo do Item Inspecionado', valueLabels: [
                 'item' => 'Item',
                 'assistive_technology' => 'Tecnologia Assistiva',

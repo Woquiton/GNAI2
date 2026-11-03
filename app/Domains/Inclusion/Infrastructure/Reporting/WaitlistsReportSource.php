@@ -9,10 +9,9 @@ use App\Domains\Inclusion\Domain\Enums\WaitlistStatus;
 use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Waitlist;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 use Illuminate\Database\Eloquent\Builder;
 
-final class WaitlistsReportSource extends EloquentReportSource
+final class WaitlistsReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -37,6 +36,10 @@ final class WaitlistsReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'notified_at' => ['label' => 'Notificado em', 'type' => ReportColumnType::DATE],
+            'fulfilled_at' => ['label' => 'Atendido em', 'type' => ReportColumnType::DATE],
+            'cancelled_at' => ['label' => 'Cancelado em', 'type' => ReportColumnType::DATE],
+            'origin_semester' => $this->semesterDefinition(),
             'item_type' => [
                 'label' => 'Tipo de recurso',
                 'path' => 'waitlistable.item_type',
@@ -54,7 +57,7 @@ final class WaitlistsReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['item_type', 'student', 'professional', 'requested_at', 'status', 'registered_by'];
+        return ['notified_at', 'fulfilled_at', 'cancelled_at', 'origin_semester', 'item_type', 'student', 'professional', 'requested_at', 'status', 'registered_by'];
     }
 
     public function applyFilter(Builder $query, string $field, string $operator, mixed $value): void

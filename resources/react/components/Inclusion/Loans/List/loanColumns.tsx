@@ -12,6 +12,12 @@ function beneficiaryRegistration(loan: LoanRecord): string {
 /** Colunas da listagem; as complementares começam ocultas no seletor de colunas. */
 export const loanColumns: TableListColumn<LoanRecord>[] = [
     {
+        id: 'origin-semester',
+        label: 'Semestre de origem',
+        defaultVisible: false,
+        render: (loan) => loan.semester_label ?? 'Sem vínculo: revisar calendário',
+    },
+    {
         id: 'item',
         label: 'Item',
         width: '24%',

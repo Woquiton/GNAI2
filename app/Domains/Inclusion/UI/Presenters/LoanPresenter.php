@@ -24,9 +24,11 @@ final class LoanPresenter
             'professional:id,person_id,registration',
             'professional.person:id,name',
             'user:id,name',
+            'semester',
         ]);
 
         $payload = [
+            'semester_label' => $loan->semester?->label,
             'id' => $loan->id,
             'loanable_id' => $loan->loanable_id,
             'item_type' => $loan->loanableType()->value,

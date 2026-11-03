@@ -23,6 +23,7 @@
     title="Ficha de Empréstimo de Recurso"
     :status="$statusLabel"
     :meta="[
+        'Semestre de origem' => $loan->semester?->label ?? 'Sem vínculo: revisar calendário',
         'Registro' => '#' . $loan->id,
         'Gerado em' => now()->format('d/m/Y H:i'),
     ]"

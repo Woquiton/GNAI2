@@ -34,6 +34,23 @@ export default function WaitlistDetails({
                 tourTarget={WAITLIST_TOUR_TARGETS.details}
             >
                 <DetailGrid>
+                    <DetailField label="Semestre de origem">
+                        {waitlist.semester_label ?? 'Sem vínculo: revisar calendário'}
+                    </DetailField>
+                    <DetailField label="Notificado em">
+                        {waitlist.notified_at_label ?? 'Não informado'}
+                    </DetailField>
+                    <DetailField label="Atendido em">
+                        {waitlist.fulfilled_at_label ?? 'Não informado'}
+                    </DetailField>
+                    <DetailField label="Cancelado em">
+                        {waitlist.cancelled_at_label ?? 'Não informado'}
+                    </DetailField>
+                    <DetailField label="Empréstimo que atendeu a solicitação">
+                        {waitlist.fulfilled_loan_id
+                            ? `#${waitlist.fulfilled_loan_id}`
+                            : 'Não informado'}
+                    </DetailField>
                     <WaitlistResourceDetails {...waitlist} />
                     <DetailField label="Estudante (Beneficiário)">
                         {waitlist.student?.name ?? NOT_INFORMED}

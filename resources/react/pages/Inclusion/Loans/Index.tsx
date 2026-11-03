@@ -12,6 +12,7 @@ import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfir
 export default function InclusionLoansIndexPage({
     loans,
     filters: initialFilters,
+    semesters,
     can,
 }: LoanIndexProps): React.JSX.Element {
     const errors = usePage().props.errors as Record<string, string | undefined>;
@@ -44,6 +45,7 @@ export default function InclusionLoansIndexPage({
             loadingLabel="Atualizando empréstimos"
             filters={
                 <LoanFilters
+                    semesters={semesters}
                     values={filters.values}
                     errors={errors}
                     onUpdate={filters.update}

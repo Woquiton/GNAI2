@@ -8,6 +8,8 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
+use App\Domains\Inclusion\Domain\Concerns\RecordsOperationStatusChanges;
 use App\Domains\Inclusion\Domain\DTOs\Sessions\CreateSessionDTO;
 use App\Domains\Inclusion\Domain\DTOs\Sessions\UpdateSessionDTO;
 use App\Domains\Inclusion\Domain\Enums\AttendanceType;
@@ -24,6 +26,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class Session extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+    use RecordsOperationStatusChanges;
+
+    public const SEMESTER_DATE = 'session_date';
+
+    public const HISTORY_FIELDS = ['status'];
+
     use SoftDeletes;
 
     protected $table = 'attendance_sessions';
@@ -62,6 +71,7 @@ final class Session extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             // O nome de profissionais e alunos mora em `people`; o histórico guarda o vínculo pelo id.
             'professional_id' => AuditedField::reference('Profissional', Professional::class, 'person.name'),
             'creator_id' => AuditedField::reference('Criado por', User::class),

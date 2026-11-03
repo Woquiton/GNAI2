@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
+use App\Domains\Inclusion\Domain\Models\CaseStudy;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
 use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
-use App\Domains\Inclusion\Domain\Models\CaseStudy;
 
 final class CaseStudiesReportSource extends EloquentReportSource
 {
@@ -44,7 +44,7 @@ final class CaseStudiesReportSource extends EloquentReportSource
         return [
             'student' => ['label' => 'Estudante', 'path' => 'student.person.name'],
             'creator' => ['label' => 'Criador', 'path' => 'creator.name'],
-            'semester' => ['label' => 'Semestre', 'path' => 'semester.name'],
+            'semester' => ['label' => 'Semestre', 'path' => 'semester.label'],
             'version' => ['label' => 'Versão'],
             'status' => ['label' => 'Status'],
             'demand_origin' => ['label' => 'Origem da demanda'],

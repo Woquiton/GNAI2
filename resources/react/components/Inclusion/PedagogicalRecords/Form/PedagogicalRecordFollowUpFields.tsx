@@ -6,7 +6,7 @@ import { PEDAGOGICAL_RECORD_TOUR_TARGETS } from '../pedagogicalRecordTours';
 import type { PedagogicalRecordFormData } from './PedagogicalRecordForm.types';
 
 type TextFieldName = {
-    [Key in keyof PedagogicalRecordFormData]: PedagogicalRecordFormData[Key] extends string
+    [Key in keyof PedagogicalRecordFormData]-?: PedagogicalRecordFormData[Key] extends string
         ? Key
         : never;
 }[keyof PedagogicalRecordFormData];

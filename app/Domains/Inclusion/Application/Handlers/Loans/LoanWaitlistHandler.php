@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\Application\Handlers\Loans;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\Enums\WaitlistStatus;
 use App\Domains\Inclusion\Domain\Models\Item;
+use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Waitlist;
 use App\Domains\Inclusion\Infrastructure\Notifications\LoanableItemAvailableNotification;
 
@@ -16,10 +17,12 @@ final class LoanWaitlistHandler
         Item $item,
         ?int $studentId,
         ?int $professionalId,
+        Loan $loan,
     ): void {
         $query = Waitlist::query()
             ->where('waitlistable_id', $item->id)
             ->where('waitlistable_type', $item->getMorphClass())
+            ->where('requested_at', '<=', $loan->loan_date)
             ->whereIn('status', [
                 WaitlistStatus::WAITING->value,
                 WaitlistStatus::NOTIFIED->value,
@@ -33,12 +36,14 @@ final class LoanWaitlistHandler
             $query->where('professional_id', $professionalId);
         }
 
-        $waitlist = $query->first();
+        $waitlist = $query->oldest('requested_at')->orderBy('id')->lockForUpdate()->first();
 
         if ($waitlist instanceof Waitlist) {
-            $waitlist->update([
+            $waitlist->forceFill([
                 'status' => WaitlistStatus::FULFILLED,
-            ]);
+                'fulfilled_at' => $loan->loan_date,
+                'fulfilled_loan_id' => $loan->getKey(),
+            ])->save();
         }
     }
 

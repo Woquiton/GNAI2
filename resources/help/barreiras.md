@@ -104,3 +104,7 @@ Clique em **Excluir** na listagem ou nos detalhes e confirme em **Confirmar excl
 - **"A data da inspeção não pode ser no futuro."** Use a data em que a vistoria foi feita.
 - **O mapa não deixa marcar o ponto.** Escolha o **Campus / Unidade** ou verifique se a categoria tem o mapa bloqueado.
 - **A instituição, o local ou a categoria não aparecem no formulário.** Apenas cadastros ativos aparecem para novas barreiras; peça a reativação em **Gestão do núcleo → Cadastros**.
+
+## Consultar o semestre de origem
+
+Nos relatórios, **Semestre de origem** permite selecionar o contexto temporal do registro. A origem é identificada pela data efetiva no calendário; nos registros de atendimento, acompanha o agendamento. **Sem vínculo: revisar calendário** indica que ainda falta uma correspondência única. A troca do semestre atual preserva a origem já definida. Consulte [Relatórios](/ajuda/relatorios#consultar-origem-e-movimentacoes-por-semestre) para distinguir origem, datas e histórico.

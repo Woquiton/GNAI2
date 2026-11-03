@@ -110,3 +110,13 @@ Sem as permissões de assuntos e informações, a tela mostra "Você não tem pe
 - **"Nenhum resultado encontrado para os filtros aplicados."**: Nenhum registro atende aos critérios. Revise ou remova algum critério.
 - **O botão Copiar está desativado**: Ele só fica disponível quando a prévia tem pelo menos uma linha.
 - **A lista de assuntos não carregou**: Clique em **Tentar novamente**, ao lado do campo **Assunto do relatório**.
+
+## Consultar origem e movimentações por semestre
+
+Os relatórios de empréstimos, filas, agendamentos, atendimentos AEE e pedagógicos, solicitações de atendimento, pendências, barreiras, vistorias e publicações oferecem **Semestre de origem**, incluindo a opção **Sem vínculo: revisar calendário**.
+
+O filtro **Início no semestre** usa a data efetiva da operação. Em publicações, **Publicação no semestre** consulta a divulgação e **Evento realizado no semestre** considera o intervalo do evento, inclusive quando atravessa semestres. Nos registros AEE e pedagógicos, essa data e a origem vêm do agendamento. Em empréstimos, filas e pendências, **Em andamento durante o semestre** inclui a continuidade de períodos anteriores, e **Encerramento no semestre** considera a finalização efetiva. Somente semestres com início e término preenchidos aparecem nesses filtros cronológicos.
+
+A relação **Histórico de movimentações**, disponível nos registros com mudanças de situação, permite consultar o valor anterior, o novo valor, a data da ocorrência, quando foi registrada e o responsável. O semestre da movimentação pode ser diferente do semestre de origem. O histórico começa nesta atualização: não reconstrói etapas antigas sem informação comprovada.
+
+O status principal continua sendo o atual. Para responder quando uma mudança aconteceu, use as datas ou o histórico, em vez de filtrar somente esse status.

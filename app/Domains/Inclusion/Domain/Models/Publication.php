@@ -8,6 +8,7 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
 use App\Domains\Inclusion\Domain\DTOs\Publications\CreatePublicationDTO;
 use App\Domains\Inclusion\Domain\DTOs\Publications\UpdatePublicationDTO;
 use App\Domains\Inclusion\Domain\Enums\PublicationType;
@@ -33,6 +34,10 @@ use Illuminate\Support\Str;
 class Publication extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+
+    public const SEMESTER_DATE = 'published_at';
+
     use HasFactory;
 
     protected $table = 'publications';
@@ -107,6 +112,7 @@ class Publication extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             'title' => AuditedField::text('Título'),
             'slug' => AuditedField::text('Endereço da página'),
             'summary' => AuditedField::text('Resumo'),

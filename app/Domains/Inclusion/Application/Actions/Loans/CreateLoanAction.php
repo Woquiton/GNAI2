@@ -59,6 +59,7 @@ final readonly class CreateLoanAction
             $loan->save();
 
             $this->waitlists->fulfillMatching(
+                loan: $loan,
                 item: $item,
                 studentId: $data->studentId,
                 professionalId: $data->professionalId,

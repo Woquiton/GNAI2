@@ -61,9 +61,9 @@ Para ativar ou desativar, clique em **Editar**, altere **Cargo Ativo** e clique 
 
 ## Semestres
 
-Os semestres organizam os períodos letivos. O **semestre atual** é o período selecionado por padrão nos novos registros do sistema.
+Os semestres organizam os períodos letivos. O **semestre atual** é sugerido nos registros acadêmicos. A origem das operações é identificada pela data efetiva no calendário.
 
-**Onde são usados:** nos PEIs e nos documentos dos alunos.
+**Onde são usados:** nos planos, documentos, vínculos acadêmicos e na origem de empréstimos, filas de espera, agendamentos, solicitações, pendências, barreiras, vistorias e publicações.
 
 ### Cadastrar um semestre
 
@@ -74,10 +74,16 @@ Os semestres organizam os períodos letivos. O **semestre atual** é o período 
 | --- | --- |
 | **Ano Letivo** (obrigatório) | Entre 1901 e 2155. |
 | **Período** (obrigatório) | 1 ou 2. Não pode haver dois semestres com o mesmo ano e período. |
-| **Data de Início** e **Data de Término** | Opcionais, mas, se uma for informada, a outra também precisa ser. O término não pode ser anterior ao início. |
+| **Data de Início** e **Data de Término** (obrigatórias) | O término não pode ser anterior ao início. As datas não podem se sobrepor às de outro semestre. |
 | **Definir este como o semestre atual do sistema** | Toggle que define este semestre como atual; o atual anterior passa a ser histórico. |
 
 O rótulo do semestre é gerado automaticamente a partir do ano e do período, por exemplo "2026.1".
+
+### Corrigir o calendário e preservar o histórico
+
+Ao salvar um semestre com as datas completas, o sistema vincula a ele operações sem semestre cuja data pertença unicamente àquele intervalo. Registros com origem já definida permanecem como estavam. Sem datas suficientes ou com intervalos antigos sobrepostos, a origem fica sem vínculo para revisão.
+
+Trocar o semestre atual não duplica filas, reinicia sua prioridade nem encerra empréstimos. Uma operação pode ter origem em um semestre e continuar no seguinte. Nos relatórios, **Semestre de origem** representa o vínculo persistido; os filtros de início, andamento e encerramento representam as movimentações no calendário.
 
 ### Definir o semestre atual
 
@@ -85,7 +91,7 @@ Na listagem, clique no botão **Definir como atual** da linha do semestre. O sis
 
 ### Excluir um semestre
 
-Use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando o semestre é o atual ("Não é possível excluir o semestre atual do sistema.") ou quando já tem registros vinculados ("Este semestre possui registros vinculados e não pode ser excluído."). Contam como registros vinculados: PEIs, PAEEs, estudos de caso, documentos de alunos, matrículas, períodos, reprovações, riscos e dependências aprovadas de alunos nesse semestre e vínculos de professores com disciplinas no semestre.
+Use **Excluir** na listagem ou na visualização. A exclusão é bloqueada quando o semestre é o atual ("Não é possível excluir o semestre atual do sistema.") ou quando já tem registros vinculados ("Este semestre possui registros vinculados e não pode ser excluído."). Contam como registros vinculados: PEIs, PAEEs, estudos de caso, documentos de alunos, matrículas, períodos, reprovações, riscos e dependências aprovadas de alunos nesse semestre vínculos de professores com disciplinas no semestre e operações ou movimentações vinculadas a ele.
 
 ## Disciplinas
 

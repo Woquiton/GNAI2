@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Queries\Loans;
 
 use App\Domains\Inclusion\Application\Data\Loans\ListLoansData;
+use App\Domains\Inclusion\Application\Queries\Semesters\OperationsInSemesterQuery;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,6 +25,7 @@ final class ListLoansQuery
                 'professional:id,person_id,registration',
                 'professional.person:id,name',
                 'user:id,name',
+                'semester',
             ]);
 
         if (filled($filters->student)) {
@@ -56,6 +58,10 @@ final class ListLoansQuery
 
         if ($filters->status !== null) {
             $query->where('status', $filters->status);
+        }
+
+        if ($filters->semesterId !== null) {
+            app(OperationsInSemesterQuery::class)->apply($query, $filters->semesterId, $filters->semesterMode);
         }
 
         return $query

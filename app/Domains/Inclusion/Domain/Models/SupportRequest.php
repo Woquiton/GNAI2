@@ -8,6 +8,8 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
+use App\Domains\Inclusion\Domain\Concerns\RecordsOperationStatusChanges;
 use App\Domains\Inclusion\Domain\DTOs\SupportRequests\SupportRequestDTO;
 use App\Domains\Inclusion\Domain\Enums\RequestedSupport;
 use App\Domains\Inclusion\Domain\Enums\SupportDiagnosisStatus;
@@ -24,6 +26,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 final class SupportRequest extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+    use RecordsOperationStatusChanges;
+
+    public const SEMESTER_DATE = 'request_date';
+
+    public const HISTORY_FIELDS = ['status'];
 
     protected $guarded = ['id'];
 
@@ -88,6 +96,7 @@ final class SupportRequest extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             'student_id' => AuditedField::reference('Aluno', Student::class, 'person.name'),
             'created_by' => AuditedField::reference('Registrada por', User::class),
             'request_date' => AuditedField::date('Data da solicitação'),

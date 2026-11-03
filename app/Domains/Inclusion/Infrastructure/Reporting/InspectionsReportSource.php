@@ -13,9 +13,8 @@ use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Reporting\Application\Services\ReportOptionCatalog;
 use App\Domains\Reporting\Domain\DTOs\PolymorphicReportRelationDTO;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
-use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
 
-final class InspectionsReportSource extends EloquentReportSource
+final class InspectionsReportSource extends OperationReportSource
 {
     public function key(): string
     {
@@ -60,6 +59,7 @@ final class InspectionsReportSource extends EloquentReportSource
     protected function definitions(): array
     {
         return [
+            'origin_semester' => $this->semesterDefinition(),
             'inspectable_type' => [
                 'label' => 'Tipo do item vistoriado',
                 'type' => ReportColumnType::SELECT,
@@ -77,7 +77,7 @@ final class InspectionsReportSource extends EloquentReportSource
 
     protected function filterable(): array
     {
-        return ['inspectable_type', 'state', 'status', 'type', 'inspection_date', 'registered_by'];
+        return ['origin_semester', 'inspectable_type', 'state', 'status', 'type', 'inspection_date', 'registered_by'];
     }
 
     protected function relationPolicy(string $parentModel, string $relationName): array

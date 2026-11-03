@@ -17,6 +17,7 @@ use App\Domains\Inclusion\Application\Queries\Loans\LoanFormQuery;
 use App\Domains\Inclusion\Application\Queries\Loans\LoanPdfQuery;
 use App\Domains\Inclusion\Application\Queries\Loans\ShowLoanQuery;
 use App\Domains\Inclusion\Domain\Models\Loan;
+use App\Domains\Inclusion\Domain\Models\Semester;
 use App\Domains\Inclusion\UI\Presenters\LoanPresenter;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -41,7 +42,8 @@ final class LoanController
             'Inclusion/Loans/Index',
             [
                 'loans' => $loans->through(fn (Loan $loan): array => $presenter->loan($loan)),
-                'filters' => $request->only(['item', 'student', 'professional', 'status', 'per_page']),
+                'semesters' => Semester::query()->orderByDesc('year')->orderByDesc('term')->get(['id', 'label']),
+                'filters' => $request->only(['item', 'student', 'professional', 'status', 'per_page', 'semester_id', 'semester_mode']),
                 'can' => [
                     'create' => $request->user()?->can('loan.create') ?? false,
                     'show' => $request->user()?->can('loan.show') ?? false,

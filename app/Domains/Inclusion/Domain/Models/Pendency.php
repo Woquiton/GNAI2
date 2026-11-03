@@ -8,6 +8,8 @@ use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
+use App\Domains\Inclusion\Domain\Concerns\RecordsOperationStatusChanges;
 use App\Domains\Inclusion\Domain\DTOs\Pendencies\CreatePendencyDTO;
 use App\Domains\Inclusion\Domain\DTOs\Pendencies\UpdatePendencyDTO;
 use App\Domains\Inclusion\Domain\Enums\Priority;
@@ -21,6 +23,13 @@ use Illuminate\Support\Facades\Auth;
 final class Pendency extends Model implements Auditable
 {
     use AuditsChanges;
+    use BelongsToOriginSemester;
+    use RecordsOperationStatusChanges;
+
+    public const SEMESTER_DATE = 'created_at';
+
+    public const HISTORY_FIELDS = ['is_completed'];
+
     use HasFactory;
 
     protected $table = 'pendencies';
@@ -36,6 +45,7 @@ final class Pendency extends Model implements Auditable
     ];
 
     protected $casts = [
+        'completed_at' => 'datetime',
         'is_completed' => 'boolean',
         'due_date' => 'date',
         'priority' => Priority::class,
@@ -54,6 +64,8 @@ final class Pendency extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'completed_at' => AuditedField::dateTime('Concluída em'),
+            'semester_id' => AuditedField::reference('Semestre de origem', Semester::class, 'label'),
             'created_by' => AuditedField::reference('Criada por', User::class),
             // O nome do profissional mora em `people`; o histórico guarda o vínculo pelo id.
             'assigned_to' => AuditedField::reference('Profissional responsável', Professional::class, 'person.name'),
@@ -147,6 +159,7 @@ final class Pendency extends Model implements Auditable
     {
         $this->forceFill([
             'is_completed' => true,
+            'completed_at' => now(),
         ]);
     }
 
