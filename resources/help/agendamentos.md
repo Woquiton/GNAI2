@@ -2,12 +2,16 @@
 titulo: Agendamentos
 resumo: Como agendar atendimentos AEE e pedagógicos, consultar a agenda em calendário ou lista, editar, cancelar e excluir agendamentos e registrar o atendimento realizado.
 categoria: Atendimento
-palavras-chave: agendamento, agendamentos, agendar, agenda, sessão, sessões, marcar atendimento, horário, calendário, listagem, meus agendamentos, todos agendamentos, central de agendamentos, disponibilidade, conflito de agenda, horário ocupado, cancelar agendamento, desmarcar, remarcar, reagendar, alterar horário, excluir agendamento, e-mail aos participantes, aviso por e-mail, notificação, atendimento individual, atendimento em grupo, aee, pedagógico, registrar atendimento, presença, agendada, realizada, cancelada
+palavras-chave: agendamento, agendamentos, agendar, agenda, sessão, sessões, marcar atendimento, horário, calendário, listagem, meus agendamentos, todos agendamentos, central de agendamentos, disponibilidade, conflito de agenda, horário ocupado, cancelar agendamento, desmarcar, remarcar, reagendar, alterar horário, excluir agendamento, e-mail aos participantes, aviso por e-mail, notificação, atendimento individual, atendimento em grupo, aee, pedagógico, registrar atendimento, presença, agendada, realizada, cancelada, tutorial, tour
 ordem: 20
 permissoes: session.view-all, session.view-own
 ---
 
 Os agendamentos organizam os atendimentos do núcleo: cada um reúne o tipo de atendimento, o profissional, os alunos, a data, o horário, o local e o objetivo. Depois que o atendimento acontece, o profissional responsável registra o que foi feito a partir do próprio agendamento. A tela fica em **Atendimento → Agendamentos**.
+
+## Conhecer as telas com o tutorial
+
+As agendas, o cadastro, a edição, a visualização e a lista de agendamentos do aluno têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Na agenda, ele mostra as abas **Calendário** e **Listagem**, os filtros e, conforme a aba aberta, os botões do calendário ou a tabela. No formulário, ele mostra cada seção, inclusive a **Disponibilidade do Dia**. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Meus agendamentos e central de agendamentos
 

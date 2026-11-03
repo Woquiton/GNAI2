@@ -15,15 +15,18 @@ export default function PageTabs<Key extends string>({
     activeKey,
     ariaLabel,
     preserveState = false,
+    tourTarget,
 }: {
     items: ReadonlyArray<PageTabItem<Key>>;
     activeKey: Key;
     ariaLabel: string;
     /** Mantém a página montada quando as abas são vistas do mesmo componente Inertia. */
     preserveState?: boolean;
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar as abas. */
+    tourTarget?: string;
 }): React.JSX.Element {
     return (
-        <nav className="pageTabs" aria-label={ariaLabel}>
+        <nav className="pageTabs" aria-label={ariaLabel} data-tour={tourTarget}>
             <TabNavigation
                 activeKey={activeKey}
                 itemKeys={items.map((item) => item.key)}

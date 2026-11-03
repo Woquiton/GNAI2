@@ -21,9 +21,10 @@ O `BusinessPage` começa todo tutorial pela moldura: trilha de navegação (`pag
 ## Escrever o tutorial de uma tela
 
 1. Crie `<recurso>Tour.ts` (uma tela) ou `<recurso>Tours.ts` (várias telas do recurso) na pasta do recurso, com os alvos e um `GuidedTourPageConfig` por tela, exportado como constante de módulo.
-2. Marque cada bloco explicado com `data-tour`. `CardBox`, `RevenueSummaryCard`, `InlineMetricsCard`, `FormSection`, `FormActions`, `PersonPhotoUpload` e `Tabs` aceitam `tourTarget`; em marcação própria, use o atributo direto. Os nomes dos alvos ficam num objeto de constantes, nunca repetidos como texto solto.
+2. Marque cada bloco explicado com `data-tour`. `CardBox`, `RevenueSummaryCard`, `InlineMetricsCard`, `FormSection`, `FormActions`, `PersonPhotoUpload`, `Tabs` e `PageTabs` aceitam `tourTarget`; `EventCalendar` aceita `tourTargets` para a navegação, os botões de visão e a grade; em marcação própria, use o atributo direto. Os nomes dos alvos ficam num objeto de constantes, nunca repetidos como texto solto.
 3. Passe a constante ao `BusinessPage` pela prop `tour`. Não monte o tutorial dentro do componente: um objeto novo a cada renderização registra o tutorial de novo e fecha o cartão aberto.
-4. Informe `helpHref` com o artigo da tela (`helpUrls.show('<slug>', '<âncora da seção>')`) quando ele existir.
+4. Quando os botões do cabeçalho não são só "Cadastrar", troque o texto do passo comum "Ações da tela" com `actions`.
+5. Informe `helpHref` com o artigo da tela (`helpUrls.show('<slug>', '<âncora da seção>')`) quando ele existir.
 
 ```ts
 export const overviewTour: GuidedTourPageConfig = {
@@ -82,7 +83,7 @@ Um componente usado em várias telas guarda sua explicação junto dele, em `<co
 | Tabela | Colunas; Escolher colunas, que abre o menu e explica que a escolha fica salva; Tabela; Largura das colunas, numa linha de redimensionar sorteada a cada visita; Veja como funciona, que arrasta a linha para um lado sorteado e conta o que mudou; Ações de cada linha |
 | Páginas | Registros por página, que fica salvo para a tela; Páginas |
 
-A tela troca só os textos que falam dos próprios registros (`filters`, `moreFilters` e `table`), informa `helpHref` e pode acrescentar passos em `steps`. Os demais textos são padrão e não devem ser reescritos por tela.
+A tela troca só os textos que falam dos próprios registros (`filters`, `moreFilters` e `table`), informa `helpHref` e `actions` e pode acrescentar passos em `steps`. Telas que montam a listagem sem `TableListLayout`, como a agenda de agendamentos, usam `tableListTourSteps` direto e podem intercalar passos próprios entre os grupos de `TABLE_LIST_TOUR_GROUPS`; passos de uma visão que não está aberta saem sozinhos. Os demais textos são padrão e não devem ser reescritos por tela.
 
 ### Demonstrações
 

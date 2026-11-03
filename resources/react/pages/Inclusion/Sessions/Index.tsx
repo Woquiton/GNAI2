@@ -3,6 +3,7 @@ import SessionWorkspaceActions from '@/components/Inclusion/Sessions/List/Sessio
 import { sessionIndexFailureText } from '@/components/Inclusion/Sessions/Sessions.constants';
 import { sessionBreadcrumb, sessionUrls } from '@/components/Inclusion/Sessions/Sessions.routes';
 import type { SessionIndexProps } from '@/components/Inclusion/Sessions/Sessions.types';
+import { sessionIndexTour } from '@/components/Inclusion/Sessions/sessionTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSessionsIndexPage({
@@ -34,6 +35,7 @@ export default function InclusionSessionsIndexPage({
             subtitle="Acompanhe os atendimentos do NAPNE no calendário ou em formato de lista."
             breadcrumbItems={sessionBreadcrumb()}
             actions={actions}
+            tour={sessionIndexTour}
         >
             <SessionWorkspace
                 baseUrl={sessionUrls.index}

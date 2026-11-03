@@ -24,9 +24,16 @@ export interface TableListTourTexts {
     table?: string | string[];
 }
 
-const FILTERS_GROUP = 'Filtros';
-const TABLE_GROUP = 'Tabela';
-const PAGES_GROUP = 'Páginas';
+/** Grupos dos passos padrão, para telas que intercalam passos próprios, como um calendário. */
+export const TABLE_LIST_TOUR_GROUPS = {
+    filters: 'Filtros',
+    table: 'Tabela',
+    pages: 'Páginas',
+} as const;
+
+const FILTERS_GROUP = TABLE_LIST_TOUR_GROUPS.filters;
+const TABLE_GROUP = TABLE_LIST_TOUR_GROUPS.table;
+const PAGES_GROUP = TABLE_LIST_TOUR_GROUPS.pages;
 
 /** Quantas vezes a seta é pressionada na demonstração; cada toque move a linha 10 px. */
 const RESIZE_DEMO_PRESSES = 8;

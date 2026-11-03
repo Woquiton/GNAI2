@@ -8,6 +8,7 @@ import SessionDeleteModal from '@/components/Inclusion/Sessions/SessionDeleteMod
 import { sessionBreadcrumb } from '@/components/Inclusion/Sessions/Sessions.routes';
 import type { SessionShowProps } from '@/components/Inclusion/Sessions/Sessions.types';
 import { useSessionRemoval } from '@/components/Inclusion/Sessions/useSessionRemoval';
+import { sessionShowTour } from '@/components/Inclusion/Sessions/sessionTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSessionsShowPage({
@@ -38,6 +39,7 @@ export default function InclusionSessionsShowPage({
             subtitle="Informações detalhadas do atendimento especializado."
             breadcrumbItems={sessionBreadcrumb({ session })}
             busy={busy}
+            tour={sessionShowTour}
         >
             <SessionDetails session={session} />
             <SessionDetailsActions

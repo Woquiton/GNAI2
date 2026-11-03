@@ -7,6 +7,7 @@ import type { SessionEditProps } from '../Sessions.types';
 import type { SessionFormSectionProps } from './SessionForm.types';
 import { personName } from './SessionForm.utils';
 import SessionScheduleFields from './SessionScheduleFields';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 
 interface SessionEditSummaryProps extends SessionFormSectionProps {
     options: SessionEditProps;
@@ -35,6 +36,7 @@ export default function SessionEditSummary({
         <>
             <FormSection
                 id="session-participants"
+                tourTarget={SESSION_TOUR_TARGETS.participants}
                 title="Participantes"
                 variant="inline"
                 iconClass="fa fa-users"
@@ -55,6 +57,7 @@ export default function SessionEditSummary({
             </FormSection>
             <FormSection
                 id="session-schedule"
+                tourTarget={SESSION_TOUR_TARGETS.schedule}
                 title="Agendamento"
                 variant="inline"
                 iconClass="fa fa-calendar"

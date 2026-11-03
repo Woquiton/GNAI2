@@ -12,6 +12,7 @@ import SessionNotificationModal from './SessionNotificationModal';
 import SessionParticipantsFields from './SessionParticipantsFields';
 import { useSessionForm } from './useSessionForm';
 import './SessionForm.css';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 
 /** Cadastro e edição de agendamentos com disponibilidade do dia e aviso opcional por e-mail. */
 export default function SessionForm(props: SessionFormProps): React.JSX.Element {
@@ -47,6 +48,7 @@ export default function SessionForm(props: SessionFormProps): React.JSX.Element 
                         {participantsSection}
                         <FormSection
                             id="session-availability"
+                            tourTarget={SESSION_TOUR_TARGETS.availability}
                             title="Disponibilidade do Dia"
                             variant="inline"
                             iconClass="fa fa-clock-o"
@@ -67,7 +69,10 @@ export default function SessionForm(props: SessionFormProps): React.JSX.Element 
                         />
                     </fieldset>
                 </CardBox>
-                <FormActions status={form.processing ? 'Salvando agendamento...' : undefined}>
+                <FormActions
+                    status={form.processing ? 'Salvando agendamento...' : undefined}
+                    tourTarget={SESSION_TOUR_TARGETS.formActions}
+                >
                     <Button
                         href={cancelHref}
                         tone="cancel"

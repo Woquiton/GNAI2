@@ -9,6 +9,8 @@ import { tableListTourSteps, type TableListTourTexts } from './tableListTour';
 /** Tutorial da listagem: textos próprios da tela, passos extras e o artigo da Central de Ajuda. */
 export interface TableListTourConfig extends TableListTourTexts {
     helpHref?: string;
+    /** Texto próprio do passo "Ações da tela", quando os botões do cabeçalho pedem. */
+    actions?: string | string[];
     /** Passos da tela, exibidos depois dos passos padrão da listagem. */
     steps?: GuidedTourStep[];
 }
@@ -56,6 +58,7 @@ export default function TableListLayout({
             tour
                 ? {
                       helpHref: tour.helpHref,
+                      actions: tour.actions,
                       steps: [...tableListTourSteps(tour), ...(tour.steps ?? [])],
                   }
                 : undefined,

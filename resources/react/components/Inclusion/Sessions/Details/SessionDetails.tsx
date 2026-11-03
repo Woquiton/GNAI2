@@ -7,6 +7,7 @@ import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import SessionStudentNames from '../SessionStudentNames';
 import type { SessionDetailsRecord } from '../Sessions.types';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 
 interface SessionDetailsProps {
     session: SessionDetailsRecord;
@@ -25,6 +26,7 @@ export default function SessionDetails({ session }: SessionDetailsProps): React.
         <CardBox>
             <FormSection
                 id="session-identification"
+                tourTarget={SESSION_TOUR_TARGETS.detailsIdentification}
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-id-card-o"
@@ -41,6 +43,7 @@ export default function SessionDetails({ session }: SessionDetailsProps): React.
             </FormSection>
             <FormSection
                 id="session-schedule"
+                tourTarget={SESSION_TOUR_TARGETS.detailsSchedule}
                 title="Agendamento e Local"
                 variant="inline"
                 iconClass="fa fa-calendar"
@@ -58,6 +61,7 @@ export default function SessionDetails({ session }: SessionDetailsProps): React.
             </FormSection>
             <FormSection
                 id="session-content"
+                tourTarget={SESSION_TOUR_TARGETS.detailsContent}
                 title="Conteúdo do Agendamento"
                 variant="inline"
                 iconClass="fa fa-file-text-o"

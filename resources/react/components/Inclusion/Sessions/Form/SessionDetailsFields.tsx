@@ -2,6 +2,7 @@ import { RichTextField, TextInputField } from '@/components/Forms/FormFields/For
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SessionFormSectionProps } from './SessionForm.types';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 
 interface SessionDetailsFieldsProps extends SessionFormSectionProps {
     editing: boolean;
@@ -19,6 +20,7 @@ export default function SessionDetailsFields({
     return (
         <FormSection
             id="session-details"
+            tourTarget={SESSION_TOUR_TARGETS.details}
             title={editing ? 'Detalhes Adicionais' : 'Detalhes do Atendimento'}
             variant="inline"
             iconClass="fa fa-info-circle"

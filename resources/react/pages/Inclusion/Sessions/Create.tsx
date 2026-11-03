@@ -1,6 +1,7 @@
 import SessionForm from '@/components/Inclusion/Sessions/Form/SessionForm';
 import { sessionBreadcrumb } from '@/components/Inclusion/Sessions/Sessions.routes';
 import type { SessionCreateProps } from '@/components/Inclusion/Sessions/Sessions.types';
+import { sessionCreateTour } from '@/components/Inclusion/Sessions/sessionTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSessionsCreatePage(props: SessionCreateProps): React.JSX.Element {
@@ -9,6 +10,7 @@ export default function InclusionSessionsCreatePage(props: SessionCreateProps): 
             title="Novo Agendamento"
             subtitle="Preencha os dados para agendar o atendimento especializado."
             breadcrumbItems={sessionBreadcrumb({ current: 'Cadastrar' })}
+            tour={sessionCreateTour}
         >
             <SessionForm mode="create" {...props} />
         </BusinessPage>

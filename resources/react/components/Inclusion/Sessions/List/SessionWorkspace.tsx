@@ -1,6 +1,7 @@
 import PageTabs from '@/components/Navigation/PageTabs/PageTabs';
 import { TableListCard, useTableListVisit } from '@/components/Tables/TableList/TableList';
 import { pickSessionWorkspaceFilters, sessionViews } from '../Sessions.constants';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 import type {
     SessionCalendarData,
     SessionListFilters,
@@ -90,6 +91,7 @@ export default function SessionWorkspace({
                 activeKey={view}
                 ariaLabel={`Visualizações de ${label.toLowerCase()}`}
                 preserveState
+                tourTarget={SESSION_TOUR_TARGETS.views}
             />
             <TableListCard
                 aria-label={label}

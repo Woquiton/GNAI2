@@ -16,6 +16,11 @@ export function businessPageTour(title: string, page: GuidedTourPageConfig): Gui
     return {
         title,
         helpHref: page.helpHref,
-        steps: [pageBreadcrumbTourStep, pageTitleTourStep, pageActionsTourStep, ...page.steps],
+        steps: [
+            pageBreadcrumbTourStep,
+            pageTitleTourStep,
+            page.actions ? { ...pageActionsTourStep, content: page.actions } : pageActionsTourStep,
+            ...page.steps,
+        ],
     };
 }

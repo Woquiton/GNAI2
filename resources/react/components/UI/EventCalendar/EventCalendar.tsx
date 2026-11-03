@@ -28,6 +28,25 @@ export default function EventCalendar(props: EventCalendarProps): React.JSX.Elem
         }
     }, [props.initialDate, props.selectedDate, ready]);
 
+    // O plugin monta a barra e a grade; as marcações do tutorial entram depois de cada montagem.
+    const { navigation, views, grid } = props.tourTargets ?? {};
+
+    useEffect(() => {
+        const root = host.current;
+        if (!root || !ready) return;
+
+        const marks: [string, string | undefined][] = [
+            ['.fc-toolbar .fc-left', navigation],
+            ['.fc-toolbar .fc-right', views],
+            ['.fc-view-container', grid],
+        ];
+
+        marks.forEach(([selector, target]) => {
+            const element = root.querySelector<HTMLElement>(selector);
+            if (element && target) element.dataset.tour = target;
+        });
+    }, [ready, navigation, views, grid]);
+
     return (
         <>
             <div

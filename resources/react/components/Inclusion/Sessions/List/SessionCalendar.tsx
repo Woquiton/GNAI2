@@ -7,6 +7,7 @@ import type {
 } from '@/components/UI/EventCalendar/EventCalendar.types';
 import { sessionUrls } from '../Sessions.routes';
 import type { SessionCalendarData } from '../Sessions.types';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 import SessionDayModal from './SessionDayModal';
 import './SessionCalendar.css';
 
@@ -20,6 +21,12 @@ interface SessionCalendarProps {
 function eventTitle(session: SessionCalendarData['sessions'][number]): string {
     return session.student_names.join(', ') || 'Sem alunos';
 }
+
+const calendarTourTargets = {
+    navigation: SESSION_TOUR_TARGETS.calendarNavigation,
+    views: SESSION_TOUR_TARGETS.calendarViews,
+    grid: SESSION_TOUR_TARGETS.calendarGrid,
+};
 
 const defaultFirstHour = 8;
 const defaultLastHour = 19;
@@ -122,6 +129,7 @@ export default function SessionCalendar({
                     key={`${hours.minTime}-${hours.maxTime}`}
                     className="eventCalendar--sessions"
                     ariaLabel="Calendário de agendamentos"
+                    tourTargets={calendarTourTargets}
                     initialDate={referenceDate}
                     defaultView={view}
                     minTime={hours.minTime}

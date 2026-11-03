@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { sessionUrls } from '../Sessions.routes';
 import type { SessionDetailsPermissions, SessionShowRecord } from '../Sessions.types';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 
 interface SessionDetailsActionsProps {
     sessionId: number;
@@ -43,7 +44,7 @@ export default function SessionDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={SESSION_TOUR_TARGETS.detailsActions}>
             <Button
                 href={backUrl}
                 tone="cancel"

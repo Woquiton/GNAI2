@@ -79,4 +79,15 @@ export interface EventCalendarProps {
     onEventClick?: (event: CalendarEvent) => void;
     onExternalDrop?: (categoryId: string) => void;
     api?: RefObject<CalendarApi | null>;
+    /** Valores de `data-tour` das partes do calendário destacadas pelo tutorial ao vivo. */
+    tourTargets?: CalendarTourTargets;
+}
+
+export interface CalendarTourTargets {
+    /** Setas de semana ou mês e o botão Hoje. */
+    navigation?: string;
+    /** Botões Mês, Semana e Dia. */
+    views?: string;
+    /** Grade com os dias e os eventos. */
+    grid?: string;
 }

@@ -33,6 +33,8 @@ export interface GuidedTourPageConfig {
     steps: GuidedTourStep[];
     /** Artigo da Central de Ajuda sobre a tela, oferecido no último passo. */
     helpHref?: string;
+    /** Texto próprio do passo comum "Ações da tela", quando os botões do cabeçalho pedem. */
+    actions?: string | string[];
 }
 
 /** Tutorial completo registrado para a tela atual. */

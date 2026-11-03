@@ -3,6 +3,7 @@ import SessionWorkspaceActions from '@/components/Inclusion/Sessions/List/Sessio
 import { mySessionsFailureText } from '@/components/Inclusion/Sessions/Sessions.constants';
 import { mySessionsBreadcrumb, sessionUrls } from '@/components/Inclusion/Sessions/Sessions.routes';
 import type { SessionMySessionsProps } from '@/components/Inclusion/Sessions/Sessions.types';
+import { sessionMySessionsTour } from '@/components/Inclusion/Sessions/sessionTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionSessionsMySessionsPage({
@@ -34,6 +35,7 @@ export default function InclusionSessionsMySessionsPage({
             subtitle="Acompanhe os seus atendimentos no calendário ou em formato de lista."
             breadcrumbItems={mySessionsBreadcrumb(can.viewAll)}
             actions={actions}
+            tour={sessionMySessionsTour}
         >
             <SessionWorkspace
                 baseUrl={sessionUrls.mySessions}

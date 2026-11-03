@@ -9,6 +9,7 @@ import { personOptions } from './SessionForm.utils';
 import SessionScheduleFields from './SessionScheduleFields';
 import SessionStudentRows from './SessionStudentRows';
 import type { SessionFormState } from './useSessionForm';
+import { SESSION_TOUR_TARGETS } from '../sessionTours';
 
 interface SessionParticipantsFieldsProps extends SessionFormSectionProps {
     options: SessionCreateProps;
@@ -28,6 +29,7 @@ export default function SessionParticipantsFields({
     return (
         <FormSection
             id="session-participants"
+            tourTarget={SESSION_TOUR_TARGETS.participants}
             title="Participantes e Horário"
             variant="inline"
             iconClass="fa fa-users"

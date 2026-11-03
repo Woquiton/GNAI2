@@ -2,6 +2,7 @@ import StudentSessionList from '@/components/Inclusion/Sessions/List/StudentSess
 import { studentSessionsBreadcrumb } from '@/components/Inclusion/Sessions/Sessions.routes';
 import type { SessionStudentIndexProps } from '@/components/Inclusion/Sessions/Sessions.types';
 import { studentUrls } from '@/components/Inclusion/Students/Students.routes';
+import { sessionStudentTour } from '@/components/Inclusion/Sessions/sessionTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import Button from '@/components/UI/Button/Button';
 
@@ -16,6 +17,7 @@ export default function InclusionSessionsStudentIndexPage({
             title={`Agendamentos de Atendimento, ${student.name}`}
             subtitle="Histórico de atendimentos realizados para o aluno."
             breadcrumbItems={studentSessionsBreadcrumb(student)}
+            tour={sessionStudentTour}
             actions={
                 <Button
                     href={studentUrls.show(student.id)}
