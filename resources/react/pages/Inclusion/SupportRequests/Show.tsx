@@ -9,6 +9,7 @@ import type {
     SupportRequestRecord,
     SupportRequestShowProps,
 } from '@/components/Inclusion/SupportRequests/SupportRequests.types';
+import { supportRequestShowTour } from '@/components/Inclusion/SupportRequests/supportRequestTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -30,6 +31,7 @@ export default function SupportRequestShow({
                 fromStudent ? { id: record.student_id, name: record.student_name } : undefined,
             )}
             busy={removal.processing}
+            tour={supportRequestShowTour}
         >
             <SupportRequestDetails record={record} />
             <SupportRequestDetailsActions

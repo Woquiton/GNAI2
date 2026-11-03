@@ -2,12 +2,16 @@
 titulo: Solicitações de Atendimento
 resumo: Como registrar uma demanda inicial, anexar documentos opcionais, analisar e registrar os encaminhamentos da equipe.
 categoria: Atendimento
-palavras-chave: solicitação de atendimento, formulário, demanda inicial, acolhimento, solicitante, napne, diagnóstico, anexos, encaminhamento
+palavras-chave: solicitação de atendimento, formulário, demanda inicial, acolhimento, solicitante, napne, diagnóstico, anexos, encaminhamento, tutorial, tour
 ordem: 15
 permissoes: support-request.view
 ---
 
 A solicitação registra a demanda apresentada ao núcleo antes ou durante o acompanhamento do aluno. Ela reúne o relato inicial, os apoios solicitados e as providências da equipe. A tela fica em **Atendimento → Solicitações de Atendimento**.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o registro, a edição e a visualização da solicitação têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que preciso antes de registrar?
 

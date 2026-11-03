@@ -4,6 +4,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { supportRequestUrls } from '../SupportRequests.routes';
+import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 import SupportRequestAttachmentsFields from './SupportRequestAttachmentsFields';
 import SupportRequestDemandFields from './SupportRequestDemandFields';
 import type { SupportRequestFormProps } from './SupportRequestForm.types';
@@ -62,7 +63,10 @@ export default function SupportRequestForm(props: SupportRequestFormProps): Reac
                     />
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? 'Salvando solicitação…' : undefined}>
+            <FormActions
+                status={form.processing ? 'Salvando solicitação…' : undefined}
+                tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={cancelUrl}
                     tone="cancel"

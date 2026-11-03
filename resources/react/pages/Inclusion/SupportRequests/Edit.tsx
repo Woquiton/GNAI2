@@ -1,6 +1,7 @@
 import SupportRequestForm from '@/components/Inclusion/SupportRequests/Form/SupportRequestForm';
 import { supportRequestBreadcrumb } from '@/components/Inclusion/SupportRequests/SupportRequests.routes';
 import type { SupportRequestEditProps } from '@/components/Inclusion/SupportRequests/SupportRequests.types';
+import { supportRequestEditTour } from '@/components/Inclusion/SupportRequests/supportRequestTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function EditSupportRequest(props: SupportRequestEditProps): React.JSX.Element {
@@ -18,6 +19,7 @@ export default function EditSupportRequest(props: SupportRequestEditProps): Reac
                       }
                     : undefined,
             )}
+            tour={supportRequestEditTour}
         >
             <SupportRequestForm key={props.supportRequest.id} {...props} />
         </BusinessPage>

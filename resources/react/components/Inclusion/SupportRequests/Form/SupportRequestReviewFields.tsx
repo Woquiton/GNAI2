@@ -7,6 +7,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import type { SupportRequestOption } from '../SupportRequests.types';
+import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 import type { SupportRequestFieldsProps } from './SupportRequestForm.types';
 
 export default function SupportRequestReviewFields({
@@ -25,6 +26,7 @@ export default function SupportRequestReviewFields({
     return (
         <FormSection
             id="support-request-review"
+            tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.review}
             title="Análise e encaminhamentos"
             variant="inline"
             iconClass="fa fa-clipboard"

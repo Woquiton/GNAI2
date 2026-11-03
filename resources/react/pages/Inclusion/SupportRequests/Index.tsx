@@ -11,6 +11,7 @@ import type {
     SupportRequestIndexProps,
     SupportRequestSummary,
 } from '@/components/Inclusion/SupportRequests/SupportRequests.types';
+import { supportRequestListTour } from '@/components/Inclusion/SupportRequests/supportRequestTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -44,6 +45,7 @@ export default function SupportRequestsIndex({
             title="Solicitações de Atendimento"
             subtitle="Acompanhe as demandas recebidas pelo núcleo e seus encaminhamentos."
             breadcrumbItems={supportRequestBreadcrumb()}
+            tour={supportRequestListTour}
             create={can.create && { href: createUrl, label: 'Registrar solicitação' }}
             listLabel="Solicitações de atendimento"
             loading={filters.loading}

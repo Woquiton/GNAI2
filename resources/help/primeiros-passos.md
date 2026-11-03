@@ -60,7 +60,7 @@ Em **Agendamentos**, **Atendimentos Especializados** e **Atendimentos Pedagógic
 
 ## Conhecer a tela com o tutorial
 
-Algumas telas têm um tutorial que explica, na própria tela, para que serve cada parte. Por enquanto, ele está disponível no **Painel** e nas telas de **Alunos**: listagem, cadastro, edição e prontuário.
+Algumas telas têm um tutorial que explica, na própria tela, para que serve cada parte. Por enquanto, ele está disponível no **Painel** e nas telas de **Alunos** e de **Solicitações de Atendimento**.
 
 1. Clique no botão com o ícone de informação, na barra do topo.
 2. A tela escurece e a parte explicada fica em destaque, com um quadro ao lado contando o que ela faz.

@@ -7,6 +7,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import type { SupportRequestOptions } from '../SupportRequests.types';
+import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 import type { SupportRequestFieldsProps } from './SupportRequestForm.types';
 
 export default function SupportRequestDemandFields({
@@ -32,6 +33,7 @@ export default function SupportRequestDemandFields({
     return (
         <FormSection
             id="support-request-demand"
+            tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.demand}
             title="Solicitação"
             variant="inline"
             iconClass="fa fa-file-text-o"

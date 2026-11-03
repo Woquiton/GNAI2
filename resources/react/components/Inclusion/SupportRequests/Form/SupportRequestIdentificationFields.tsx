@@ -6,6 +6,7 @@ import {
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SupportRequestOptions } from '../SupportRequests.types';
+import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 import type { SupportRequestFieldsProps } from './SupportRequestForm.types';
 
 export default function SupportRequestIdentificationFields({
@@ -29,6 +30,7 @@ export default function SupportRequestIdentificationFields({
     return (
         <FormSection
             id="support-request-identification"
+            tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.identification}
             title="Identificação"
             variant="inline"
             iconClass="fa fa-user"

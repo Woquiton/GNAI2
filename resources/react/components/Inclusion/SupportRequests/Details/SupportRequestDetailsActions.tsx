@@ -3,6 +3,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { supportRequestUrls } from '../SupportRequests.routes';
 import type { SupportRequestPermissions, SupportRequestRecord } from '../SupportRequests.types';
+import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 
 export default function SupportRequestDetailsActions({
     record,
@@ -22,6 +23,7 @@ export default function SupportRequestDetailsActions({
         : supportRequestUrls.index;
     return (
         <FormActions
+            tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.detailsActions}
             secondary={
                 <Button
                     href={supportRequestUrls.pdf(record.id)}

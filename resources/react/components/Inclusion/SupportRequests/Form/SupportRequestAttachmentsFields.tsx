@@ -9,6 +9,7 @@ import TextInput from '@/components/Forms/TextInput/TextInput';
 import Button from '@/components/UI/Button/Button';
 import { notify } from '@/components/UI/NotificationToast/notify';
 import type { SupportRequestAttachment } from '../SupportRequests.types';
+import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 import type { SupportRequestFieldsProps } from './SupportRequestForm.types';
 
 export default function SupportRequestAttachmentsFields({
@@ -55,6 +56,7 @@ export default function SupportRequestAttachmentsFields({
     return (
         <FormSection
             id="support-request-attachments"
+            tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.attachments}
             title="Documentos"
             variant="inline"
             iconClass="fa fa-paperclip"

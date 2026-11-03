@@ -8,6 +8,7 @@ import TagList from '@/components/UI/TagList/TagList';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { supportRequestStatusTones } from '../SupportRequests.constants';
 import type { SupportRequestRecord } from '../SupportRequests.types';
+import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 
 export default function SupportRequestDetails({
     record,
@@ -18,6 +19,7 @@ export default function SupportRequestDetails({
         <CardBox>
             <FormSection
                 id="support-request-details-identification"
+                tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.detailsIdentification}
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-user"
@@ -55,6 +57,7 @@ export default function SupportRequestDetails({
             </FormSection>
             <FormSection
                 id="support-request-details-demand"
+                tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.detailsDemand}
                 title="Solicitação"
                 variant="inline"
                 iconClass="fa fa-file-text-o"
@@ -100,6 +103,7 @@ export default function SupportRequestDetails({
             </FormSection>
             <FormSection
                 id="support-request-details-review"
+                tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.detailsReview}
                 title="Análise e encaminhamentos"
                 variant="inline"
                 iconClass="fa fa-clipboard"
@@ -127,6 +131,7 @@ export default function SupportRequestDetails({
             </FormSection>
             <FormSection
                 id="support-request-details-files"
+                tourTarget={SUPPORT_REQUEST_TOUR_TARGETS.detailsAttachments}
                 title="Documentos"
                 variant="inline"
                 iconClass="fa fa-paperclip"
