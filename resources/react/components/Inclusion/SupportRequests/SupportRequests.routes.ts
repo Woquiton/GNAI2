@@ -1,19 +1,45 @@
+import { studentRecordUrl, studentUrls } from '@/components/Inclusion/Students/Students.routes';
 import { resourceBreadcrumb } from '@/components/Navigation/PageBreadcrumb/resourceBreadcrumb';
 
 const base = '/inclusao/solicitacoes-de-atendimento';
 export const supportRequestUrls = {
     index: base,
     create: `${base}/criar`,
-    createForStudent: (id: number) => `${base}/criar?student_id=${id}`,
+    createForStudent: (id: number, fromStudent = false) =>
+        `${base}/criar?student_id=${id}${fromStudent ? '&from_student=1' : ''}`,
     forStudent: (id: number) => `${base}?student_id=${id}`,
     store: `${base}/salvar`,
-    show: (id: number) => `${base}/${id}/visualizar`,
-    edit: (id: number) => `${base}/${id}/editar`,
-    update: (id: number) => `${base}/${id}`,
-    destroy: (id: number) => `${base}/${id}`,
+    show: (id: number, fromStudent = false) =>
+        `${base}/${id}/visualizar${fromStudent ? '?from_student=1' : ''}`,
+    edit: (id: number, fromStudent = false) =>
+        `${base}/${id}/editar${fromStudent ? '?from_student=1' : ''}`,
+    update: (id: number, fromStudent = false) =>
+        `${base}/${id}${fromStudent ? '?from_student=1' : ''}`,
+    destroy: (id: number, fromStudent = false) =>
+        `${base}/${id}${fromStudent ? '?from_student=1' : ''}`,
     pdf: (id: number) => `${base}/${id}/pdf`,
 };
-export function supportRequestBreadcrumb(record?: { id: number }, current?: string) {
+export function supportRequestBreadcrumb(
+    record?: { id: number },
+    current?: string,
+    student?: { id: number; name: string },
+) {
+    if (student) {
+        return resourceBreadcrumb({
+            parents: [{ label: 'Alunos', href: studentUrls.index }],
+            collection: {
+                label: student.name,
+                href: studentRecordUrl(student.id, 'support-requests'),
+            },
+            record: record
+                ? {
+                      label: `Solicitação #${record.id}`,
+                      href: supportRequestUrls.show(record.id, true),
+                  }
+                : undefined,
+            current,
+        });
+    }
     return resourceBreadcrumb({
         collection: { label: 'Solicitações de Atendimento', href: base },
         record: record

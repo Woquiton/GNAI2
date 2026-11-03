@@ -30,7 +30,7 @@ final class StudentPagePresenter
     {
         $abilities = [
             'student.view', 'student.create', 'student.update', 'student.delete',
-            'support-request.view', 'support-request.create',
+            'support-request.view', 'support-request.create', 'support-request.update', 'support-request.delete',
             'student-course.view', 'student-course.create', 'student-course.update', 'student-course.delete',
             'student-deficiency.view', 'student-deficiency.create', 'student-deficiency.update', 'student-deficiency.delete',
             'guardian.view', 'guardian.create', 'guardian.update', 'guardian.delete',
@@ -202,6 +202,7 @@ final class StudentPagePresenter
         ?int $currentCourseId,
         bool $hasCurrentSemester,
         Request $request,
+        bool $hasSupportRequest = false,
     ): array {
         $studentId = (int) $student->getKey();
         $isEnabled = $student->status->isEnabled();
@@ -222,6 +223,19 @@ final class StudentPagePresenter
             && $hasCurrentSemester;
 
         $items = [];
+        if ($request->user()?->can('support-request.view')) {
+            $items[] = [
+                'key' => 'support-request',
+                'label' => 'Solicitação de atendimento',
+                'ok' => $hasSupportRequest,
+                'optional' => true,
+                'status' => $hasSupportRequest ? 'Registrada' : 'Não registrada',
+                'icon' => 'ti-receipt',
+                'href' => route('specialized-educational-support.students.show', ['student' => $studentId, 'tab' => 'support-requests']),
+                'action_label' => 'Ver',
+                'updated_at' => null,
+            ];
+        }
         $alerts = [];
 
         if ($paee instanceof Paee && $paee->next_review_date !== null && $paee->next_review_date->isPast()) {

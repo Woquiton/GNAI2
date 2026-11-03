@@ -5,6 +5,7 @@ import { createStudentDocumentTabs } from './StudentDocumentsRecord';
 import { createStudentLoanTabs } from './StudentLoansRecord';
 import { createStudentPersonalTabs } from './StudentPersonalRecord';
 import { createStudentSupportTabs } from './StudentSupportRecord';
+import { createStudentSupportRequestTabs } from './StudentSupportRequestsRecord';
 
 /** Abas do prontuário, na ordem do cadastro; cada grupo inclui somente as abas permitidas. */
 export function createStudentRecordTabs(
@@ -16,6 +17,7 @@ export function createStudentRecordTabs(
         caseStudies = [],
         paees = [],
         loans = [],
+        supportRequests = [],
         loadingTab,
     } = props;
 
@@ -34,5 +36,6 @@ export function createStudentRecordTabs(
         ...createStudentDocumentTabs({ student, permissions, loadingTab }),
         ...createStudentAttendanceTabs({ ...props, loadingTab }),
         ...createStudentLoanTabs({ student, permissions, loans, loadingTab }),
+        ...createStudentSupportRequestTabs({ student, permissions, supportRequests, loadingTab }),
     ];
 }

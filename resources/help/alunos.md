@@ -86,6 +86,7 @@ A lateral mostra a sequência do acompanhamento e só oferece uma ação quando 
 
 | Etapa | Como fica "ok" | Atalho |
 | --- | --- | --- |
+| **Solicitação de atendimento** | Há pelo menos uma solicitação vinculada, independentemente do andamento. Mostra **Registrada** em verde ou **Não registrada** em tom neutro; essa informação não entra na contagem de etapas concluídas ou pendentes. | **Ver** abre a aba **Solicitações**. |
 | **Vínculo com curso** | O aluno tem uma matrícula vigente. | **Ver** abre o vínculo atual; **Iniciar** abre o cadastro quando ainda não há curso vigente. |
 | **Laudo** | Há um documento do tipo Laudo anexado. | **Ver** abre a aba **Documentos**; **Iniciar** abre o envio de documento. |
 | **Estudo de Caso** | O Estudo de Caso atual está concluído. | **Ver**, **Continuar** ou **Iniciar** abre a etapa correspondente. |
@@ -111,6 +112,7 @@ Cada aba só aparece para quem tem permissão de consultá-la. O conteúdo apare
 | **Atendimentos AEE** | Registros de atendimento AEE do aluno, com **Histórico em PDF**. |
 | **Atendimentos pedagógicos** | Atendimentos pedagógicos do aluno, com **Histórico em PDF**. |
 | **Empréstimos** | Itens emprestados ao aluno (para quem consulta empréstimos). |
+| **Solicitações** | Solicitações de atendimento do aluno, com filtros, cadastro, visualização e exclusão conforme as permissões. |
 
 Responsáveis, perfis de atendimento e documentos são explicados em [Responsáveis, perfis e documentos do aluno](/ajuda/alunos-responsaveis-e-documentos). Os atendimentos estão em [Atendimentos Especializados](/ajuda/atendimentos-especializados) e [Atendimentos Pedagógicos](/ajuda/atendimentos-pedagogicos).
 
@@ -118,7 +120,7 @@ Concluir uma solicitação não torna o aluno ativo. Enquanto permanecer **Em ac
 
 ## Registrar ou consultar uma solicitação de atendimento
 
-No rodapé do prontuário, **Solicitações** abre os registros filtrados pelo aluno. Na listagem filtrada, **Cadastrar** abre uma solicitação com o aluno selecionado. A consulta e o cadastro dependem de suas respectivas permissões. Veja [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento).
+Ao final das abas do prontuário, **Solicitações** mostra todos os registros daquele aluno. Use **Cadastrar** acima da tabela para iniciar uma solicitação com o aluno selecionado. A consulta e o cadastro dependem de suas respectivas permissões. Ao voltar, cancelar ou excluir um registro aberto por essa aba, o sistema retorna à própria aba. Veja [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento).
 
 ## Vincular um curso ao aluno
 

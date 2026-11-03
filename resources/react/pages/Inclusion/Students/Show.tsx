@@ -48,6 +48,8 @@ function isTabAvailable(tab: StudentRecordTabId, permissions: Permissions): bool
             );
         case 'loans':
             return permissions['loan.index'];
+        case 'support-requests':
+            return permissions['support-request.view'];
         default:
             return true;
     }
@@ -56,9 +58,7 @@ function isTabAvailable(tab: StudentRecordTabId, permissions: Permissions): bool
 function initialTab(props: StudentShowProps): StudentRecordTabId {
     const requested = props.activeTab as StudentRecordTabId | undefined;
 
-    return requested && isTabAvailable(requested, props.permissions)
-        ? requested
-        : 'personal-data';
+    return requested && isTabAvailable(requested, props.permissions) ? requested : 'personal-data';
 }
 
 function dataPropFor(tab: StudentRecordTabId): keyof StudentShowProps | null {
@@ -83,6 +83,8 @@ function dataPropFor(tab: StudentRecordTabId): keyof StudentShowProps | null {
             return 'pedagogicalRecords';
         case 'loans':
             return 'loans';
+        case 'support-requests':
+            return 'supportRequests';
         default:
             return null;
     }
@@ -147,36 +149,40 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
 
         pendingTab.current = tab;
         setLoadingTab(tab);
-        router.get(studentRecordUrl(student.id, tab), {}, {
-            only: ['activeTab', dataProp],
-            preserveState: true,
-            preserveScroll: true,
-            replace: true,
-            onCancelToken: (token) => {
-                if (pendingTab.current === tab) {
-                    cancelRequest.current = () => token.cancel();
-                }
+        router.get(
+            studentRecordUrl(student.id, tab),
+            {},
+            {
+                only: ['activeTab', dataProp],
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                onCancelToken: (token) => {
+                    if (pendingTab.current === tab) {
+                        cancelRequest.current = () => token.cancel();
+                    }
+                },
+                onNetworkError: () => {
+                    setActiveTab(previousTab);
+                    notifyConnectionFailure();
+                    return false;
+                },
+                onHttpException: () => {
+                    setActiveTab(previousTab);
+                    notifyOperationFailure(
+                        'Ocorreu uma falha ao consultar esta seção do prontuário.',
+                    );
+                    return false;
+                },
+                onFinish: () => {
+                    if (pendingTab.current === tab) {
+                        cancelRequest.current = null;
+                        pendingTab.current = null;
+                        setLoadingTab((current) => (current === tab ? null : current));
+                    }
+                },
             },
-            onNetworkError: () => {
-                setActiveTab(previousTab);
-                notifyConnectionFailure();
-                return false;
-            },
-            onHttpException: () => {
-                setActiveTab(previousTab);
-                notifyOperationFailure(
-                    'Ocorreu uma falha ao consultar esta seção do prontuário.',
-                );
-                return false;
-            },
-            onFinish: () => {
-                if (pendingTab.current === tab) {
-                    cancelRequest.current = null;
-                    pendingTab.current = null;
-                    setLoadingTab((current) => (current === tab ? null : current));
-                }
-            },
-        });
+        );
     }
 
     return (

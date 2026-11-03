@@ -22,11 +22,13 @@ use App\Domains\Inclusion\Application\Queries\Students\StudentLoansQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPaeesQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPdfQuery;
 use App\Domains\Inclusion\Application\Queries\Students\StudentPedagogicalRecordsQuery;
+use App\Domains\Inclusion\Application\Queries\Students\StudentSupportRequestsQuery;
 use App\Domains\Inclusion\Domain\Enums\StudentDocumentType;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\UI\Presenters\LoanPresenter;
 use App\Domains\Inclusion\UI\Presenters\StudentPagePresenter;
+use App\Domains\Inclusion\UI\Presenters\SupportRequestPresenter;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -63,6 +65,8 @@ final class StudentController
         StudentCaseStudiesQuery $caseStudiesQuery,
         StudentPaeesQuery $paeesQuery,
         StudentLoansQuery $loansQuery,
+        StudentSupportRequestsQuery $supportRequestsQuery,
+        SupportRequestPresenter $supportRequestPresenter,
         LoanPresenter $loanPresenter,
         CurrentSemesterQuery $currentSemesterQuery,
         Request $request,
@@ -82,6 +86,7 @@ final class StudentController
             'aee-attendance',
             'pedagogical-attendance',
             'loans',
+            'support-requests',
         ];
         $activeTab = in_array($requestedTab, $availableTabs, true)
             ? $requestedTab
@@ -100,7 +105,7 @@ final class StudentController
                 'profileNames' => fn (): array => $request->user()?->can('student-deficiency.view')
                     ? $showStudent->profileNames($student)
                     : [],
-                'statusPanel' => function () use ($student, $showStudent, $currentSemesterQuery, $request): array {
+                'statusPanel' => function () use ($student, $showStudent, $currentSemesterQuery, $supportRequestsQuery, $request): array {
                     $studentWithStatus = $showStudent->status($student);
                     $hasLaudo = $student->documents()
                         ->where('type', StudentDocumentType::TECHNICAL_REPORT->value)
@@ -112,6 +117,7 @@ final class StudentController
                         $showStudent->currentCourseId($student),
                         $currentSemesterQuery->execute() !== null,
                         $request,
+                        $request->user()?->can('support-request.view') && $supportRequestsQuery->exists($student),
                     );
                 },
                 'studentCourses' => $tabProp(
@@ -203,6 +209,13 @@ final class StudentController
                             ->map(fn (Loan $loan): array => $loanPresenter->loan($loan))
                             ->values()
                             ->all()
+                        : [],
+                ),
+                'supportRequests' => $tabProp(
+                    'support-requests',
+                    fn (): array => $authenticatedUser?->can('support-request.view')
+                        ? $supportRequestsQuery->execute($student)
+                            ->map(fn ($record): array => $supportRequestPresenter->summary($record))->all()
                         : [],
                 ),
                 'activeTab' => $activeTab,

@@ -1,3 +1,4 @@
+import { studentRecordUrl } from '@/components/Inclusion/Students/Students.routes';
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { supportRequestUrls } from '../SupportRequests.routes';
@@ -8,12 +9,17 @@ export default function SupportRequestDetailsActions({
     can,
     busy,
     onDelete,
+    fromStudent,
 }: {
     record: SupportRequestRecord;
     can: SupportRequestPermissions;
     busy: boolean;
     onDelete: () => void;
+    fromStudent: boolean;
 }): React.JSX.Element {
+    const backUrl = fromStudent
+        ? studentRecordUrl(record.student_id, 'support-requests')
+        : supportRequestUrls.index;
     return (
         <FormActions
             secondary={
@@ -29,10 +35,10 @@ export default function SupportRequestDetailsActions({
                 />
             }
         >
-            <Button href={supportRequestUrls.index} tone="cancel" label="Voltar" disabled={busy} />
+            <Button href={backUrl} tone="cancel" label="Voltar" disabled={busy} />
             {can.update ? (
                 <Button
-                    href={supportRequestUrls.edit(record.id)}
+                    href={supportRequestUrls.edit(record.id, fromStudent)}
                     tone="warning"
                     leftIconClass="fa fa-pencil"
                     label="Editar"

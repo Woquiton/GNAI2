@@ -11,7 +11,7 @@ O acompanhamento de um aluno no Gnai segue uma cadeia: cada documento usa as inf
 
 ## Registrar a demanda inicial
 
-Em **Atendimento → Solicitações de Atendimento**, a equipe registra a demanda apresentada pelo aluno, familiar ou setor da instituição, os apoios solicitados e a análise inicial. O aluno precisa estar cadastrado; diagnóstico e anexos são opcionais. No prontuário, **Solicitações** consulta os registros do aluno. Nessa listagem, **Cadastrar** inicia uma solicitação com o aluno selecionado.
+Em **Atendimento → Solicitações de Atendimento**, a equipe registra a demanda apresentada pelo aluno, familiar ou setor da instituição, os apoios solicitados e a análise inicial. O aluno precisa estar cadastrado; diagnóstico e anexos são opcionais. No prontuário, a aba **Solicitações**, ao final da faixa de abas, consulta os registros do aluno. Nela, **Cadastrar** inicia uma solicitação com o aluno selecionado. A lateral **Status do atendimento** indica somente a existência de solicitação vinculada, sem mostrar seu andamento nem contar a ausência como pendência obrigatória.
 
 A solicitação pode anteceder o Estudo de Caso, mas não é um pré-requisito para os documentos e atendimentos existentes. A equipe registra os encaminhamentos e dá continuidade ao acompanhamento pelos módulos próprios. Veja [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento).
 

@@ -84,16 +84,19 @@ export interface SupportRequestDefaults {
     status: string;
 }
 export interface SupportRequestCreateProps {
+    fromStudent: boolean;
     options: SupportRequestOptions;
     selectedStudentId: string;
     today: string;
     defaults: SupportRequestDefaults;
 }
 export interface SupportRequestEditProps {
+    fromStudent: boolean;
     options: SupportRequestOptions;
     supportRequest: SupportRequestRecord;
 }
 export interface SupportRequestShowProps {
+    fromStudent: boolean;
     supportRequest: SupportRequestRecord;
     can: SupportRequestPermissions;
 }

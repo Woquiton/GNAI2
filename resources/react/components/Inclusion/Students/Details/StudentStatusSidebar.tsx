@@ -42,8 +42,8 @@ export default function StudentStatusSidebar({
     const railButtonRef = useRef<HTMLButtonElement | null>(null);
     const collapseButtonRef = useRef<HTMLButtonElement | null>(null);
     const previousExpanded = useRef(expanded);
-    const completedCount = panel.items.filter((item) => item.ok).length;
-    const pendingCount = panel.items.length - completedCount;
+    const completedCount = panel.items.filter((item) => item.ok && !item.optional).length;
+    const pendingCount = panel.items.filter((item) => !item.ok && !item.optional).length;
     const completedText = plural(completedCount, 'concluída', 'concluídas');
     const pendingText = plural(pendingCount, 'pendente', 'pendentes');
     const alertText = plural(panel.alerts.length, 'alerta', 'alertas');
@@ -137,6 +137,9 @@ export default function StudentStatusSidebar({
                                 className={joinClassNames(
                                     'studentStatusSidebar__railDot',
                                     item.ok && 'studentStatusSidebar__railDot--ok',
+                                    item.optional &&
+                                        !item.ok &&
+                                        'studentStatusSidebar__railDot--optional',
                                 )}
                             />
                         ))}
@@ -146,7 +149,10 @@ export default function StudentStatusSidebar({
 
             <div id={panelId} className="studentStatusSidebar__panel" inert={!expanded}>
                 <header className="studentStatusSidebar__header">
-                    <i className="fa fa-list-alt studentStatusSidebar__headerIcon" aria-hidden="true" />
+                    <i
+                        className="fa fa-list-alt studentStatusSidebar__headerIcon"
+                        aria-hidden="true"
+                    />
                     <div className="studentStatusSidebar__heading">
                         <h2 id={titleId} className="studentStatusSidebar__title">
                             Status do atendimento
@@ -184,19 +190,30 @@ export default function StudentStatusSidebar({
                             const actionLabel = `${item.action_label} ${item.label}`;
                             const action = stepAction(item);
                             const description = studentStatusStepDescriptions[item.key];
+                            const stepState = item.ok
+                                ? 'ok'
+                                : item.optional
+                                  ? 'optional'
+                                  : 'pending';
+                            const statusIcon = item.ok
+                                ? 'fa fa-check-circle'
+                                : item.optional
+                                  ? 'fa fa-minus-circle'
+                                  : 'fa fa-clock-o';
 
                             return (
                                 <li
                                     key={item.key}
                                     className={joinClassNames(
                                         'studentStatusSidebar__step',
-                                        item.ok
-                                            ? 'studentStatusSidebar__step--ok'
-                                            : 'studentStatusSidebar__step--pending',
+                                        `studentStatusSidebar__step--${stepState}`,
                                     )}
                                     style={{ '--step-index': index } as CSSProperties}
                                 >
-                                    <span className="studentStatusSidebar__marker" aria-hidden="true">
+                                    <span
+                                        className="studentStatusSidebar__marker"
+                                        aria-hidden="true"
+                                    >
                                         {item.ok ? <i className="fa fa-check" /> : null}
                                     </span>
                                     <div className="studentStatusSidebar__card">
@@ -224,12 +241,7 @@ export default function StudentStatusSidebar({
                                         </div>
                                         <div className="studentStatusSidebar__stepAside">
                                             <span className="studentStatusSidebar__status">
-                                                <i
-                                                    className={
-                                                        item.ok ? 'fa fa-check-circle' : 'fa fa-clock-o'
-                                                    }
-                                                    aria-hidden="true"
-                                                />{' '}
+                                                <i className={statusIcon} aria-hidden="true" />{' '}
                                                 {item.status}
                                             </span>
                                             {item.href ? (
