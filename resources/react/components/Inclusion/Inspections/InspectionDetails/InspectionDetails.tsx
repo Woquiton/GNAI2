@@ -8,6 +8,7 @@ import ExpandableContent from '@/components/UI/ExpandableContent/ExpandableConte
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import InspectionEvidenceCarousel from '../InspectionEvidenceCarousel/InspectionEvidenceCarousel';
+import { INSPECTION_TOUR_TARGETS } from '../inspectionTours';
 import type { InspectionDetailsData, InspectionDetailsSubject } from './InspectionDetails.types';
 import './InspectionDetails.css';
 
@@ -48,6 +49,7 @@ export default function InspectionDetails({
                     title="Informações Gerais"
                     variant="inline"
                     iconClass="fa fa-search"
+                    tourTarget={INSPECTION_TOUR_TARGETS.general}
                 >
                     <DetailGrid>
                         <DetailField label="Estado de Conservação">
@@ -66,11 +68,12 @@ export default function InspectionDetails({
                     title="Evidências"
                     variant="inline"
                     iconClass="fa fa-paperclip"
+                    tourTarget={INSPECTION_TOUR_TARGETS.evidences}
                 >
                     {evidences}
                 </FormSection>
             </CardBox>
-            <FormActions>
+            <FormActions tourTarget={INSPECTION_TOUR_TARGETS.actions}>
                 <Button
                     href={subject.href}
                     tone="cancel"

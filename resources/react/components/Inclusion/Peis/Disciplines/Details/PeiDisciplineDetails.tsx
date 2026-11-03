@@ -9,6 +9,7 @@ import type {
     PeiDisciplineShowProps,
 } from '../../Peis.types';
 import PeiDisciplineRevisions from './PeiDisciplineRevisions';
+import { PEI_TOUR_TARGETS } from '../../peiTours';
 
 type DetailHtmlField = keyof Omit<
     PeiDisciplineDetailsRecord,
@@ -48,6 +49,7 @@ export default function PeiDisciplineDetails({
         <CardBox>
             <FormSection
                 id="pei-discipline-details"
+                tourTarget={PEI_TOUR_TARGETS.disciplineDetails}
                 title="Adaptações Razoáveis e/ou Acessibilidades Curriculares"
                 iconClass="fa fa-book"
                 variant="inline"

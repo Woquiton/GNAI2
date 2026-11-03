@@ -6,6 +6,7 @@ import PeiDisciplineTable from './PeiDisciplineTable';
 import PeiGeneralDetails from './PeiGeneralDetails';
 import PeiOtherInfo from './PeiOtherInfo';
 import PeiPaeeDetails from './PeiPaeeDetails';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 /** Aba aberta por padrão quando `activeTab` não corresponde a uma aba permitida. */
 export const PEI_DEFAULT_TAB = 'details';
@@ -33,6 +34,7 @@ export function createPeiRecordTabs({
         tabs.push({
             id: 'paee',
             label: 'PAEE vinculado',
+            tourTarget: PEI_TOUR_TARGETS.paeeTabLabel,
             icon: 'fa fa-sitemap',
             content: <PeiPaeeDetails paee={paee} />,
         });
@@ -42,6 +44,7 @@ export function createPeiRecordTabs({
         tabs.push({
             id: 'disciplines',
             label: 'Adaptações curriculares',
+            tourTarget: PEI_TOUR_TARGETS.disciplinesTabLabel,
             accessibleLabel: 'Adaptações razoáveis e/ou acessibilidades curriculares',
             icon: 'fa fa-book',
             content: (

@@ -4,6 +4,7 @@ import { peiDisciplineName } from '@/components/Inclusion/Peis/Peis.constants';
 import { peiDisciplineBreadcrumb } from '@/components/Inclusion/Peis/Peis.routes';
 import type { PeiDisciplineShowProps } from '@/components/Inclusion/Peis/Peis.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import { peiDisciplineShowTour } from '@/components/Inclusion/Peis/peiTours';
 
 export default function InclusionPeisDisciplinesShowPage({
     pei,
@@ -24,6 +25,7 @@ export default function InclusionPeisDisciplinesShowPage({
                 student,
                 current: disciplineName,
             })}
+            tour={peiDisciplineShowTour}
         >
             <PeiDisciplineDetails
                 pei={pei}

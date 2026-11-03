@@ -4,6 +4,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { itemUrls } from '../Items.routes';
 import type { ItemFormOptions, ItemRecord } from '../Items.types';
+import { ITEM_TOUR_TARGETS } from '../itemTours';
 import ItemIdentificationFields from './ItemIdentificationFields';
 import ItemInspectionFields from './ItemInspectionFields';
 import ItemManagementFields from './ItemManagementFields';
@@ -81,7 +82,10 @@ export default function ItemForm({
                     />
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, form.progress?.percentage)}>
+            <FormActions
+                status={submissionStatus(form.processing, form.progress?.percentage)}
+                tourTarget={ITEM_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={item ? itemUrls.show(item.id) : itemUrls.index}
                     tone="cancel"

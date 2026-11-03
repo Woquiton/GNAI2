@@ -5,6 +5,7 @@ import { loanBreadcrumb, loanUrls } from '@/components/Inclusion/Loans/Loans.rou
 import type { LoanIndexProps, LoanRecord } from '@/components/Inclusion/Loans/Loans.types';
 import LoanFilters from '@/components/Inclusion/Loans/List/LoanFilters';
 import LoanList from '@/components/Inclusion/Loans/List/LoanList';
+import { loanListTour } from '@/components/Inclusion/Loans/loanTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -36,6 +37,7 @@ export default function InclusionLoansIndexPage({
             title="Empréstimos de Recursos"
             subtitle="Controle de saídas e devoluções de tecnologias e materiais pedagógicos."
             breadcrumbItems={loanBreadcrumb()}
+            tour={loanListTour}
             create={can.create && { href: loanUrls.create, label: 'Cadastrar empréstimo' }}
             listLabel="Listagem de empréstimos"
             loading={filters.loading}

@@ -3,6 +3,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import GeoMap, { type GeoPoint } from '@/components/Inclusion/GeoMap/GeoMap';
 import { notify } from '@/components/UI/NotificationToast/notify';
 import { DEFAULT_BARRIER_ZOOM } from '../Barriers.constants';
+import { BARRIER_TOUR_TARGETS } from '../barrierTours';
 import type { BarrierCategory, BarrierInstitution } from '../Barriers.types';
 import './BarrierMapField.css';
 
@@ -67,6 +68,7 @@ export default function BarrierMapField({
             title="Localização no Mapa"
             variant="inline"
             iconClass="fa fa-map-marker"
+            tourTarget={BARRIER_TOUR_TARGETS.map}
         >
             <ChoiceControl
                 id="barrier-show-locations"

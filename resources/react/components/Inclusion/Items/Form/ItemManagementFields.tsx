@@ -6,6 +6,7 @@ import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
 import type { ItemFormOptions } from '../Items.types';
+import { ITEM_TOUR_TARGETS } from '../itemTours';
 import type { ItemFormSectionProps } from './ItemForm.types';
 
 interface ItemManagementFieldsProps extends ItemFormSectionProps {
@@ -32,6 +33,7 @@ export default function ItemManagementFields({
             title="Gestão"
             variant="inline"
             iconClass="fa fa-tasks"
+            tourTarget={ITEM_TOUR_TARGETS.management}
         >
             <FormGrid>
                 <FormStack>

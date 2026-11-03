@@ -4,6 +4,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { caseStudyUrls } from '../CaseStudies.routes';
 import type { CaseStudyFormProps } from '../CaseStudies.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import CaseStudyAcceptanceFields from './CaseStudyAcceptanceFields';
 import CaseStudyBarrierFields from './CaseStudyBarrierFields';
 import CaseStudyDemandFields from './CaseStudyDemandFields';
@@ -70,7 +71,10 @@ export default function CaseStudyForm({
                     />
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={CASE_STUDY_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={cancelHref}
                     tone="cancel"

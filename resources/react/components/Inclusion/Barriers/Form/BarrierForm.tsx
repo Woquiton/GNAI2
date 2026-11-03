@@ -5,6 +5,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { barrierUrls } from '../Barriers.routes';
 import type { BarrierFormOptions, BarrierRecord } from '../Barriers.types';
+import { BARRIER_TOUR_TARGETS } from '../barrierTours';
 import BarrierIdentificationFields from './BarrierIdentificationFields';
 import BarrierInspectionFields from './BarrierInspectionFields';
 import BarrierMapField from './BarrierMapField';
@@ -87,7 +88,10 @@ export default function BarrierForm({ options, barrier }: BarrierFormProps): Rea
                     </MapSplitAside>
                 </MapSplit>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={BARRIER_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={barrier ? barrierUrls.show(barrier.id) : barrierUrls.index}
                     tone="cancel"

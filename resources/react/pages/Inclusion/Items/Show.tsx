@@ -3,6 +3,7 @@ import ItemDetailsActions from '@/components/Inclusion/Items/Details/ItemDetails
 import ItemDeleteModal from '@/components/Inclusion/Items/ItemDeleteModal';
 import { itemBreadcrumb, itemUrls } from '@/components/Inclusion/Items/Items.routes';
 import type { ItemShowProps } from '@/components/Inclusion/Items/Items.types';
+import { itemShowTour } from '@/components/Inclusion/Items/itemTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -22,6 +23,7 @@ export default function InclusionItemsShowPage({
             documentTitle={item.name}
             breadcrumbItems={itemBreadcrumb({ item })}
             busy={removal.processing}
+            tour={itemShowTour}
         >
             <ItemDetails
                 {...details}

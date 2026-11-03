@@ -3,6 +3,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { paeeUrls } from '../Paees.routes';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import PaeeArticulationFields from './PaeeArticulationFields';
 import PaeeAssistiveTechnologyFields from './PaeeAssistiveTechnologyFields';
 import PaeeAttendanceFields from './PaeeAttendanceFields';
@@ -55,7 +56,10 @@ export default function PaeeForm(props: PaeeFormProps): React.JSX.Element {
                     <PaeeArticulationFields {...sectionProps} />
                 </fieldset>
             </CardBox>
-            <FormActions status={form.processing ? savingStatus : undefined}>
+            <FormActions
+                tourTarget={PAEE_TOUR_TARGETS.formActions}
+                status={form.processing ? savingStatus : undefined}
+            >
                 <Button
                     href={cancelHref}
                     tone="cancel"

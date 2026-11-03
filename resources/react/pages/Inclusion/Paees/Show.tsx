@@ -7,6 +7,7 @@ import {
     paeeTitle,
 } from '@/components/Inclusion/Paees/Paees.constants';
 import { paeeRecordBreadcrumb, paeeUrls } from '@/components/Inclusion/Paees/Paees.routes';
+import { paeeShowTour } from '@/components/Inclusion/Paees/paeeTours';
 import type { PaeeShowProps } from '@/components/Inclusion/Paees/Paees.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
@@ -24,6 +25,7 @@ export default function InclusionPaeesShowPage({
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={paeeRecordBreadcrumb(student, paee)}
             busy={removal.processing}
+            tour={paeeShowTour}
         >
             <PaeeDetails paee={paee} can={can} />
             <PaeeDetailsActions

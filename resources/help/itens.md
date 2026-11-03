@@ -2,12 +2,16 @@
 titulo: Itens: tecnologias assistivas e materiais pedagógicos acessíveis
 resumo: Como cadastrar, clonar, editar e excluir itens do acervo, controlar estoque e status e registrar vistorias.
 categoria: Recursos e acessibilidade
-palavras-chave: item, itens, acervo, tecnologia assistiva, ta, material pedagógico acessível, mpa, recurso físico, recurso digital, clonar, clonar item, duplicar, copiar item, cópia, patrimônio, tombamento, estoque, quantidade, esgotado, vistoria, inspeção, evidência, foto, estado de conservação, status do recurso, em manutenção, danificado, público-alvo, recursos de acessibilidade, pdf
+palavras-chave: item, itens, acervo, tecnologia assistiva, ta, material pedagógico acessível, mpa, recurso físico, recurso digital, clonar, clonar item, duplicar, copiar item, cópia, patrimônio, tombamento, estoque, quantidade, esgotado, vistoria, inspeção, evidência, foto, estado de conservação, status do recurso, em manutenção, danificado, público-alvo, recursos de acessibilidade, pdf, tutorial, tour
 ordem: 10
 permissoes: item.index
 ---
 
 Itens são os recursos do acervo do núcleo que podem ser usados ou emprestados aos alunos e profissionais: **Tecnologias Assistivas (TA)** e **Materiais Pedagógicos Acessíveis (MPA)**. Cada item guarda sua identificação, o público-alvo, o estoque, o status e o histórico de vistorias e empréstimos. A tela fica em **Recursos e acessibilidade → Itens**.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a clonagem, a edição e os detalhes do item, além dos detalhes de uma vistoria, têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, os históricos de empréstimos e de vistorias e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Cadastrar um item
 

@@ -22,6 +22,7 @@ import {
 } from '../Barriers.constants';
 import { barrierUrls } from '../Barriers.routes';
 import type { BarrierRecord, BarrierShowProps } from '../Barriers.types';
+import { BARRIER_TOUR_TARGETS } from '../barrierTours';
 import BarrierAffectedPeople from './BarrierAffectedPeople';
 import './BarrierDetails.css';
 
@@ -80,6 +81,7 @@ export default function BarrierDetails({
                         title="Identificação"
                         variant="inline"
                         iconClass="fa fa-exclamation-triangle"
+                        tourTarget={BARRIER_TOUR_TARGETS.detailsIdentification}
                     >
                         <DetailGrid>
                             <DetailField label="Título do Relato">{barrier.name}</DetailField>
@@ -136,6 +138,7 @@ export default function BarrierDetails({
                         title="Localização no Mapa"
                         variant="inline"
                         iconClass="fa fa-map-marker"
+                        tourTarget={BARRIER_TOUR_TARGETS.detailsMap}
                     >
                         {!blocksMap ? (
                             <DetailGrid className="barrierDetails__coordinates">
@@ -168,6 +171,7 @@ export default function BarrierDetails({
                     baseUrl={barrierUrls.show(barrier.id)}
                     inspections={display.inspectionDetails}
                     stateLabel="Status da Barreira"
+                    tourTarget={BARRIER_TOUR_TARGETS.detailsInspections}
                 />
             ) : null}
         </CardBox>

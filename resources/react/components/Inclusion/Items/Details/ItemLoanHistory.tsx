@@ -10,6 +10,7 @@ import {
     type TableListColumn,
 } from '@/components/Tables/TableList/TableList';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
+import { ITEM_TOUR_TARGETS } from '../itemTours';
 
 interface ItemLoanHistoryProps {
     loans: LoanRecord[];
@@ -97,6 +98,7 @@ export default function ItemLoanHistory({
             title="Histórico de Empréstimos"
             variant="inline"
             iconClass="fa fa-exchange"
+            tourTarget={ITEM_TOUR_TARGETS.loanHistory}
         >
             <TableListScroll aria-label="Histórico de empréstimos">
                 <TableListTable

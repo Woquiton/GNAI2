@@ -1,5 +1,6 @@
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import { LOAN_TOUR_TARGETS } from '../loanTours';
 import type { LoanRecord } from '../Loans.types';
 import LoanDetails from './LoanDetails';
 
@@ -18,6 +19,7 @@ export default function LoanDetailsCard({
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-exchange"
+                tourTarget={LOAN_TOUR_TARGETS.details}
             >
                 <LoanDetails loan={loan} links={links} />
             </FormSection>

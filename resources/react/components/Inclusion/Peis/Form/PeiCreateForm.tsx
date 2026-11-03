@@ -10,6 +10,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import { PEI_CREATE_FAILURE_TEXT } from '../Peis.constants';
 import { peiUrls } from '../Peis.routes';
 import type { PeiCreateProps } from '../Peis.types';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 /** Confirmação da geração do PEI com os dados vigentes do aluno; não há campos editáveis. */
 export default function PeiCreateForm({
@@ -40,6 +41,7 @@ export default function PeiCreateForm({
             <CardBox>
                 <FormSection
                     id="pei-create-information"
+                    tourTarget={PEI_TOUR_TARGETS.createInformation}
                     title="Informações do PEI"
                     variant="inline"
                     iconClass="fa fa-file-text-o"
@@ -57,7 +59,7 @@ export default function PeiCreateForm({
                     </DetailGrid>
                 </FormSection>
             </CardBox>
-            <FormActions status={status}>
+            <FormActions status={status} tourTarget={PEI_TOUR_TARGETS.createActions}>
                 <Button
                     href={peiUrls.studentIndex(student.id)}
                     tone="cancel"

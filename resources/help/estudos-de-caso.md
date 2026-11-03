@@ -2,7 +2,7 @@
 titulo: Estudos de Caso
 resumo: Como registrar, editar, concluir e versionar o Estudo de Caso do aluno, registrar contribuições e gerar o PDF.
 categoria: Planos e acompanhamento
-palavras-chave: estudo de caso, estudos de caso, caso, avaliação inicial, escuta, barreiras, estratégias, apoios necessários, aceite da família, concluir estudo de caso, contribuição, contribuições, chat, comentário, parecer da equipe, nova versão, histórico, pdf do estudo de caso, excluir estudo de caso, primeira etapa
+palavras-chave: estudo de caso, estudos de caso, caso, avaliação inicial, escuta, barreiras, estratégias, apoios necessários, aceite da família, concluir estudo de caso, contribuição, contribuições, chat, comentário, parecer da equipe, nova versão, histórico, pdf do estudo de caso, excluir estudo de caso, primeira etapa, tutorial, tour
 ordem: 10
 permissoes: case-study.view
 ---
@@ -11,6 +11,10 @@ O Estudo de Caso é a primeira etapa do acompanhamento do aluno: registra a orig
 
 
 > **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a edição e a visualização do Estudo de Caso têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, os blocos da visualização, as contribuições e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Onde encontro os Estudos de Caso?
 

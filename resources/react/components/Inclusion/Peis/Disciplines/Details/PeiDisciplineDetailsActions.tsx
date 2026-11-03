@@ -3,6 +3,7 @@ import Button from '@/components/UI/Button/Button';
 import PeiConfirmAction from '../../PeiConfirmAction';
 import { peiDisciplineUrls, peiUrls } from '../../Peis.routes';
 import type { PeiDisciplineShowPermissions } from '../../Peis.types';
+import { PEI_TOUR_TARGETS } from '../../peiTours';
 
 interface PeiDisciplineDetailsActionsProps {
     peiId: number;
@@ -30,7 +31,7 @@ export default function PeiDisciplineDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={PEI_TOUR_TARGETS.disciplineDetailsActions}>
             <Button
                 href={peiUrls.showTab(peiId, 'disciplines')}
                 tone="cancel"

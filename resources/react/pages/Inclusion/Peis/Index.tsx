@@ -6,6 +6,7 @@ import { studentPeisBreadcrumb, peiUrls } from '@/components/Inclusion/Peis/Peis
 import type { PeiIndexProps } from '@/components/Inclusion/Peis/Peis.types';
 import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
 import { TableListLayout, TableListCreateButton } from '@/components/Tables/TableList/TableList';
+import { peiStudentIndexTour } from '@/components/Inclusion/Peis/peiTours';
 
 export default function InclusionPeisIndexPage({
     peis,
@@ -25,6 +26,7 @@ export default function InclusionPeisIndexPage({
             title="Histórico de PEIs"
             subtitle={`Aluno: ${student.name}`}
             breadcrumbItems={studentPeisBreadcrumb(student)}
+            tour={peiStudentIndexTour}
             actions={
                 <>
                     <StudentRecordReturnButton studentId={student.id} tab="peis" />

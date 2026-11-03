@@ -3,6 +3,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import type { PaeeFormSectionProps } from './PaeeForm.types';
 
 const PORTABLE_DEVICE_LABEL = 'A tecnologia assistiva é um dispositivo digital portátil';
@@ -17,6 +18,7 @@ export default function PaeeAssistiveTechnologyFields({
     return (
         <FormSection
             id="paee-assistive-technology"
+            tourTarget={PAEE_TOUR_TARGETS.assistiveTechnology}
             title="Tecnologia Assistiva e Comunicação Aumentativa e Alternativa (CAA)"
             variant="inline"
             iconClass="fa fa-wheelchair"

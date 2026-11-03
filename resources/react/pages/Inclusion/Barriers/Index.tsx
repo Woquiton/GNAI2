@@ -5,6 +5,7 @@ import type {
     BarrierIndexProps,
     BarrierRecord,
 } from '@/components/Inclusion/Barriers/Barriers.types';
+import { barrierListTour } from '@/components/Inclusion/Barriers/barrierTours';
 import BarrierFilters from '@/components/Inclusion/Barriers/List/BarrierFilters';
 import BarrierList from '@/components/Inclusion/Barriers/List/BarrierList';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
@@ -41,6 +42,7 @@ export default function InclusionBarriersIndexPage({
             title="Mapa de Barreiras"
             subtitle="Contribuições da comunidade para uma instituição mais acessível."
             breadcrumbItems={barrierBreadcrumb()}
+            tour={barrierListTour}
             create={can.create && { href: barrierUrls.create, label: 'Relatar barreira' }}
             listLabel="Listagem de barreiras"
             loading={filters.loading}

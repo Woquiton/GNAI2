@@ -13,6 +13,7 @@ import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel, dateTimeLabel } from '@/utils/formatters';
 import { joinClassNames } from '@/utils/joinClassNames';
 import type { CaseStudyDetail, CaseStudyShowProps } from '../CaseStudies.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import CaseStudyContributionForm from './CaseStudyContributionForm';
 import CaseStudyEntryList, { CaseStudyEntryMeta, CaseStudyEntryText } from './CaseStudyEntryList';
 import './CaseStudyDetails.css';
@@ -66,15 +67,21 @@ function ProfileSection({
     title,
     iconClass,
     className,
+    tourTarget,
     children,
 }: {
     title: string;
     iconClass: string;
     className?: string;
+    /** Valor de `data-tour` do bloco no tutorial ao vivo. */
+    tourTarget?: string;
     children: ReactNode;
 }): React.JSX.Element {
     return (
-        <section className={joinClassNames('caseStudyProfile__section', className)}>
+        <section
+            className={joinClassNames('caseStudyProfile__section', className)}
+            data-tour={tourTarget}
+        >
             <h2 className="caseStudyProfile__heading">
                 <i className={iconClass} aria-hidden="true" />
                 {title}
@@ -112,7 +119,10 @@ export default function CaseStudyDetails({
 
     return (
         <CardBox className="caseStudyProfile">
-            <header className="caseStudyProfile__banner">
+            <header
+                className="caseStudyProfile__banner"
+                data-tour={CASE_STUDY_TOUR_TARGETS.detailsBanner}
+            >
                 <ImageDisplay
                     src={student.photo_url || '/images/default-user.jpg'}
                     alt={`Foto de ${student.name}`}
@@ -134,7 +144,10 @@ export default function CaseStudyDetails({
                 </p>
             </header>
             <div className="caseStudyProfile__columns">
-                <div className="caseStudyProfile__summary">
+                <div
+                    className="caseStudyProfile__summary"
+                    data-tour={CASE_STUDY_TOUR_TARGETS.detailsSummary}
+                >
                     <ProfileSection title="Identificação da Demanda" iconClass="fa fa-bullhorn">
                         <AboutList>
                             <DetailField label="Origem da demanda">
@@ -181,7 +194,11 @@ export default function CaseStudyDetails({
                     </ProfileSection>
                 </div>
                 <div className="caseStudyProfile__content">
-                    <ProfileSection title="Escuta e Observação" iconClass="fa fa-comments-o">
+                    <ProfileSection
+                        title="Escuta e Observação"
+                        iconClass="fa fa-comments-o"
+                        tourTarget={CASE_STUDY_TOUR_TARGETS.detailsListening}
+                    >
                         <DetailGrid>
                             <DetailField label="Observação do estudante" wide>
                                 {richText(caseStudy.student_observation)}
@@ -200,7 +217,11 @@ export default function CaseStudyDetails({
                             </DetailField>
                         </DetailGrid>
                     </ProfileSection>
-                    <ProfileSection title="Potencialidades" iconClass="fa fa-star-o">
+                    <ProfileSection
+                        title="Potencialidades"
+                        iconClass="fa fa-star-o"
+                        tourTarget={CASE_STUDY_TOUR_TARGETS.detailsPotentials}
+                    >
                         <DetailGrid>
                             <DetailField label="Aspectos favoráveis">
                                 {richText(caseStudy.favorable_aspects)}
@@ -210,7 +231,10 @@ export default function CaseStudyDetails({
                             </DetailField>
                         </DetailGrid>
                     </ProfileSection>
-                    <div className="caseStudyProfile__pair">
+                    <div
+                        className="caseStudyProfile__pair"
+                        data-tour={CASE_STUDY_TOUR_TARGETS.detailsBarriers}
+                    >
                         <ProfileSection title="Barreiras" iconClass="fa fa-ban">
                             <CaseStudyEntryList
                                 items={caseStudy.barriers}
@@ -234,6 +258,7 @@ export default function CaseStudyDetails({
                 title="Contribuições"
                 iconClass="fa fa-users"
                 className="caseStudyProfile__contributions"
+                tourTarget={CASE_STUDY_TOUR_TARGETS.detailsContributions}
             >
                 <ChatConversation
                     label="Contribuições do Estudo de Caso"

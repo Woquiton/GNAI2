@@ -1,6 +1,7 @@
 import LoanEditForm from '@/components/Inclusion/Loans/Form/LoanEditForm';
 import { loanBreadcrumb } from '@/components/Inclusion/Loans/Loans.routes';
 import type { LoanEditProps } from '@/components/Inclusion/Loans/Loans.types';
+import { loanEditTour } from '@/components/Inclusion/Loans/loanTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionLoansEditPage({
@@ -11,6 +12,7 @@ export default function InclusionLoansEditPage({
         <BusinessPage
             title="Editar Registro de Empréstimo"
             subtitle="Atualize as observações registradas para este empréstimo."
+            tour={loanEditTour}
             breadcrumbItems={loanBreadcrumb({ loan, current: 'Editar' })}
         >
             <LoanEditForm key={loan.id} loan={loan} canSubmit={can.submit} />

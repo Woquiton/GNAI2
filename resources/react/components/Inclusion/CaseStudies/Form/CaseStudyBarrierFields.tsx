@@ -8,6 +8,7 @@ import RepeaterField from '@/components/Forms/RepeaterField/RepeaterField';
 import SelectField from '@/components/Forms/SelectField/SelectField';
 import type { SelectFieldOption } from '@/components/Forms/SelectField/SelectField.types';
 import type { CaseStudyBarrierInput } from '../CaseStudies.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import type { CaseStudyFormSectionProps } from './CaseStudyForm.types';
 
 interface CaseStudyBarrierFieldsProps extends CaseStudyFormSectionProps {
@@ -95,6 +96,7 @@ export default function CaseStudyBarrierFields({
     return (
         <FormSection
             id="case-study-barriers"
+            tourTarget={CASE_STUDY_TOUR_TARGETS.barriers}
             title="Barreiras Identificadas"
             variant="inline"
             iconClass="fa fa-ban"

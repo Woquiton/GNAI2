@@ -14,6 +14,7 @@ import {
 } from '../Barriers.constants';
 import { barrierUrls, evidenceUrl } from '../Barriers.routes';
 import type { BarrierEvidence, BarrierInspectionShowProps } from '../Barriers.types';
+import { INSPECTION_TOUR_TARGETS } from '@/components/Inclusion/Inspections/inspectionTours';
 import './BarrierInspectionDetails.css';
 
 function EvidenceLink({ evidence }: { evidence: BarrierEvidence }): React.JSX.Element {
@@ -53,6 +54,7 @@ export default function BarrierInspectionDetails({
             <CardBox>
                 <FormSection
                     id="barrier-inspection-details"
+                    tourTarget={INSPECTION_TOUR_TARGETS.general}
                     title="Informações Gerais"
                     variant="inline"
                     iconClass="fa fa-clipboard"
@@ -74,6 +76,7 @@ export default function BarrierInspectionDetails({
                 </FormSection>
                 <FormSection
                     id="barrier-inspection-evidence"
+                    tourTarget={INSPECTION_TOUR_TARGETS.evidences}
                     title="Evidências"
                     variant="inline"
                     iconClass="fa fa-paperclip"
@@ -91,7 +94,7 @@ export default function BarrierInspectionDetails({
                     )}
                 </FormSection>
             </CardBox>
-            <FormActions>
+            <FormActions tourTarget={INSPECTION_TOUR_TARGETS.actions}>
                 <Button href={barrierUrls.show(barrier.id)} tone="cancel" label="Voltar" />
             </FormActions>
         </>

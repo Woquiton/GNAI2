@@ -18,6 +18,8 @@ interface InspectionHistoryTableProps {
     inspections: InspectionHistoryItem[];
     /** Rótulo da coluna de situação; itens usam o estado de conservação e barreiras, o status. */
     stateLabel?: string;
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o histórico. */
+    tourTarget?: string;
 }
 
 function evidenceSummary(count: number): string {
@@ -81,6 +83,7 @@ export default function InspectionHistoryTable({
     baseUrl,
     inspections,
     stateLabel = 'Estado de conservação',
+    tourTarget,
 }: InspectionHistoryTableProps): React.JSX.Element {
     const columns = useMemo(() => inspectionColumns(baseUrl, stateLabel), [baseUrl, stateLabel]);
 
@@ -90,6 +93,7 @@ export default function InspectionHistoryTable({
             title="Histórico de Vistorias"
             variant="inline"
             iconClass="fa fa-history"
+            tourTarget={tourTarget}
         >
             <TableListScroll aria-label="Histórico de vistorias">
                 <TableListTable

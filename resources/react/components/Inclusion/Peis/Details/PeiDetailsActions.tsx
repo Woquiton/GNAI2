@@ -4,6 +4,7 @@ import Button from '@/components/UI/Button/Button';
 import PeiConfirmAction from '../PeiConfirmAction';
 import { peiUrls } from '../Peis.routes';
 import type { PeiShowPermissions } from '../Peis.types';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 interface PeiDetailsActionsProps {
     peiId: number;
@@ -43,7 +44,7 @@ export default function PeiDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfActions}>
+        <FormActions secondary={pdfActions} tourTarget={PEI_TOUR_TARGETS.detailsActions}>
             <StudentRecordReturnButton studentId={studentId} tab="peis" />
             {permissions.finish ? (
                 <PeiConfirmAction

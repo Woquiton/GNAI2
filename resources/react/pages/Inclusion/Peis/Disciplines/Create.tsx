@@ -2,6 +2,7 @@ import PeiDisciplineBulkForm from '@/components/Inclusion/Peis/Disciplines/Form/
 import { peiDisciplineBreadcrumb } from '@/components/Inclusion/Peis/Peis.routes';
 import type { PeiDisciplineBulkProps } from '@/components/Inclusion/Peis/Peis.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import { peiDisciplineCreateTour } from '@/components/Inclusion/Peis/peiTours';
 
 export default function InclusionPeisDisciplinesCreatePage({
     pei,
@@ -18,6 +19,7 @@ export default function InclusionPeisDisciplinesCreatePage({
                 peiLabel: 'PEI',
                 current: 'Cadastrar Adaptação',
             })}
+            tour={peiDisciplineCreateTour}
         >
             <PeiDisciplineBulkForm
                 pei={pei}

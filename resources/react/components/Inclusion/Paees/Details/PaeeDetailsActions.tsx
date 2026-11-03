@@ -3,6 +3,7 @@ import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRe
 import Button from '@/components/UI/Button/Button';
 import { paeeUrls, studentPaeesTab } from '../Paees.routes';
 import type { PaeeShowPermissions } from '../Paees.types';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 
 interface PaeeDetailsActionsProps {
     paeeId: number;
@@ -34,7 +35,7 @@ export default function PaeeDetailsActions({
     );
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={PAEE_TOUR_TARGETS.detailsActions}>
             <StudentRecordReturnButton studentId={studentId} tab={studentPaeesTab} />
             {permissions.update ? (
                 <Button

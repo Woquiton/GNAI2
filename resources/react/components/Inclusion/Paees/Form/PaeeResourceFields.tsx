@@ -7,6 +7,7 @@ import RepeaterField from '@/components/Forms/RepeaterField/RepeaterField';
 import SelectField from '@/components/Forms/SelectField/SelectField';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import { acquisitionTypeOptions } from '../Paees.constants';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import type { PaeeFormSectionProps, PaeeResourceInput } from './PaeeForm.types';
 import { paeeFieldId } from './usePaeeForm';
 
@@ -27,6 +28,7 @@ export default function PaeeResourceFields({
     return (
         <FormSection
             id="paee-resources"
+            tourTarget={PAEE_TOUR_TARGETS.resources}
             title="Recursos"
             titleAddon={
                 <InfoTooltip

@@ -3,6 +3,7 @@ import PaeeFilters from '@/components/Inclusion/Paees/List/PaeeFilters';
 import PaeeList from '@/components/Inclusion/Paees/List/PaeeList';
 import { usePaeeList } from '@/components/Inclusion/Paees/List/usePaeeList';
 import { paeeAllBreadcrumb, paeeUrls } from '@/components/Inclusion/Paees/Paees.routes';
+import { paeeListTour } from '@/components/Inclusion/Paees/paeeTours';
 import type { PaeeListProps } from '@/components/Inclusion/Paees/Paees.types';
 import { TableListLayout } from '@/components/Tables/TableList/TableList';
 
@@ -19,6 +20,7 @@ export default function InclusionPaeesAllPage({
             title="PAEE"
             subtitle="Plano de Atendimento Educacional Especializado, vinculado a um Estudo de Caso concluído."
             breadcrumbItems={paeeAllBreadcrumb()}
+            tour={paeeListTour}
             listLabel="Listagem geral de PAEEs"
             loading={filters.loading}
             loadingLabel="Atualizando PAEEs"

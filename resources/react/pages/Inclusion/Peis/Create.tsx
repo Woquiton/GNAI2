@@ -2,6 +2,7 @@ import PeiCreateForm from '@/components/Inclusion/Peis/Form/PeiCreateForm';
 import { peiCreateBreadcrumb } from '@/components/Inclusion/Peis/Peis.routes';
 import type { PeiCreateProps } from '@/components/Inclusion/Peis/Peis.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import { peiCreateTour } from '@/components/Inclusion/Peis/peiTours';
 
 export default function InclusionPeisCreatePage({
     student,
@@ -13,6 +14,7 @@ export default function InclusionPeisCreatePage({
             title="Gerar Novo PEI"
             subtitle="Revise as informações abaixo. O sistema criará automaticamente o PEI com base nesses dados."
             breadcrumbItems={peiCreateBreadcrumb(student)}
+            tour={peiCreateTour}
         >
             <PeiCreateForm student={student} course={course} semester={semester} />
         </BusinessPage>

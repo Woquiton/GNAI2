@@ -1,6 +1,7 @@
 import { caseStudyStudentBreadcrumb } from '@/components/Inclusion/CaseStudies/CaseStudies.routes';
 import type { CaseStudyFormProps } from '@/components/Inclusion/CaseStudies/CaseStudies.types';
 import CaseStudyForm from '@/components/Inclusion/CaseStudies/Form/CaseStudyForm';
+import { caseStudyCreateTour } from '@/components/Inclusion/CaseStudies/caseStudyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionCaseStudiesCreatePage({
@@ -11,6 +12,7 @@ export default function InclusionCaseStudiesCreatePage({
         <BusinessPage
             title="Novo Estudo de Caso"
             subtitle={`Aluno: ${student.name}`}
+            tour={caseStudyCreateTour}
             breadcrumbItems={caseStudyStudentBreadcrumb(student, {
                 current: 'Novo Estudo de Caso',
             })}

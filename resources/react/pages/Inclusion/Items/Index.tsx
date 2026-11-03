@@ -5,6 +5,7 @@ import { itemBreadcrumb, itemUrls } from '@/components/Inclusion/Items/Items.rou
 import type { ItemIndexProps, ItemSummary } from '@/components/Inclusion/Items/Items.types';
 import ItemFilters from '@/components/Inclusion/Items/List/ItemFilters';
 import ItemList from '@/components/Inclusion/Items/List/ItemList';
+import { itemListTour } from '@/components/Inclusion/Items/itemTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -42,6 +43,7 @@ export default function InclusionItemsIndexPage({
             listLabel="Listagem de itens"
             loading={filters.loading}
             loadingLabel="Atualizando itens"
+            tour={itemListTour}
             filters={
                 <ItemFilters
                     values={filters.values}

@@ -9,6 +9,7 @@ import {
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { BarrierFormOptions, BarrierInstitution } from '../Barriers.types';
+import { BARRIER_TOUR_TARGETS } from '../barrierTours';
 import BarrierAffectedPeopleFields from './BarrierAffectedPeopleFields';
 import type { BarrierEditorField, BarrierFormSectionProps } from './BarrierForm.types';
 
@@ -44,6 +45,7 @@ export default function BarrierIdentificationFields({
             title="Identificação"
             variant="inline"
             iconClass="fa fa-exclamation-triangle"
+            tourTarget={BARRIER_TOUR_TARGETS.identification}
         >
             <FormGrid columns={3}>
                 <TextInputField

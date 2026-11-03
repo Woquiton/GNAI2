@@ -5,6 +5,7 @@ import RemovableField from '@/components/Forms/RemovableField/RemovableField';
 import RepeaterField from '@/components/Forms/RepeaterField/RepeaterField';
 import TextArea from '@/components/Forms/TextArea/TextArea';
 import type { CaseStudyStrategyInput } from '../CaseStudies.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import type { CaseStudyFormSectionProps } from './CaseStudyForm.types';
 
 /** Estratégias propostas, cada uma com sua descrição. */
@@ -48,6 +49,7 @@ export default function CaseStudyStrategyFields({
     return (
         <FormSection
             id="case-study-strategies"
+            tourTarget={CASE_STUDY_TOUR_TARGETS.strategies}
             title="Estratégias Propostas"
             variant="inline"
             iconClass="fa fa-lightbulb-o"

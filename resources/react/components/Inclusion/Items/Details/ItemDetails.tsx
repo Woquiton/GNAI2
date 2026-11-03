@@ -10,6 +10,7 @@ import TagList from '@/components/UI/TagList/TagList';
 import { resourceStatusTone } from '../Items.constants';
 import { itemUrls } from '../Items.routes';
 import type { ItemShowProps } from '../Items.types';
+import { ITEM_TOUR_TARGETS } from '../itemTours';
 import ItemLoanHistory from './ItemLoanHistory';
 
 const NOT_APPLICABLE = 'Não se aplica';
@@ -36,6 +37,7 @@ export default function ItemDetails({
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-cube"
+                tourTarget={ITEM_TOUR_TARGETS.detailsIdentification}
             >
                 <DetailGrid>
                     <DetailField label="Tipo do Item">{display.itemTypeLabel}</DetailField>
@@ -61,6 +63,7 @@ export default function ItemDetails({
                 title="Gestão"
                 variant="inline"
                 iconClass="fa fa-tasks"
+                tourTarget={ITEM_TOUR_TARGETS.detailsManagement}
             >
                 <DetailGrid>
                     <DetailField label="Quantidade Total">
@@ -102,6 +105,7 @@ export default function ItemDetails({
                     id="item-inspections"
                     baseUrl={itemUrls.show(item.id)}
                     inspections={display.inspectionDetails}
+                    tourTarget={ITEM_TOUR_TARGETS.inspectionHistory}
                 />
             ) : null}
         </CardBox>

@@ -4,6 +4,7 @@ import CaseStudyDeleteModal from '@/components/Inclusion/CaseStudies/CaseStudyDe
 import CaseStudyFilters from '@/components/Inclusion/CaseStudies/List/CaseStudyFilters';
 import CaseStudyList from '@/components/Inclusion/CaseStudies/List/CaseStudyList';
 import { useCaseStudyList } from '@/components/Inclusion/CaseStudies/List/useCaseStudyList';
+import { caseStudyListTour } from '@/components/Inclusion/CaseStudies/caseStudyTours';
 import { TableListLayout } from '@/components/Tables/TableList/TableList';
 
 export default function InclusionCaseStudiesAllPage({
@@ -25,6 +26,7 @@ export default function InclusionCaseStudiesAllPage({
             listLabel="Listagem geral de Estudos de Caso"
             loading={filters.loading}
             loadingLabel="Atualizando Estudos de Caso"
+            tour={caseStudyListTour}
             filters={
                 <CaseStudyFilters
                     values={filters.values}

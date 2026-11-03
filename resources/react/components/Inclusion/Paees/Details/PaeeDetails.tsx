@@ -9,6 +9,7 @@ import { dateLabel } from '@/utils/formatters';
 import { PAEE_NOT_INFORMED, paeeStatusTone, paeeVersionLabel } from '../Paees.constants';
 import { paeeUrls } from '../Paees.routes';
 import type { PaeeShowProps, PaeeShowRecord } from '../Paees.types';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import PaeeEntryList from './PaeeEntryList';
 import PaeeReviews from './PaeeReviews';
 
@@ -86,6 +87,7 @@ export default function PaeeDetails({ paee, can }: PaeeDetailsProps): React.JSX.
         <CardBox>
             <FormSection
                 id="paee-details"
+                tourTarget={PAEE_TOUR_TARGETS.details}
                 title="Dados do PAEE"
                 variant="inline"
                 iconClass="fa fa-file-text-o"
@@ -117,6 +119,7 @@ export default function PaeeDetails({ paee, can }: PaeeDetailsProps): React.JSX.
 
             <FormSection
                 id="paee-assistive-technology"
+                tourTarget={PAEE_TOUR_TARGETS.detailsAssistiveTechnology}
                 title="Tecnologia Assistiva e CAA"
                 variant="inline"
                 iconClass="fa fa-wheelchair"
@@ -146,6 +149,7 @@ export default function PaeeDetails({ paee, can }: PaeeDetailsProps): React.JSX.
 
             <FormSection
                 id="paee-supports"
+                tourTarget={PAEE_TOUR_TARGETS.detailsSupports}
                 title="Apoios de Profissionais"
                 variant="inline"
                 iconClass="fa fa-users"
@@ -180,6 +184,7 @@ export default function PaeeDetails({ paee, can }: PaeeDetailsProps): React.JSX.
 
             <FormSection
                 id="paee-objectives"
+                tourTarget={PAEE_TOUR_TARGETS.detailsObjectives}
                 title="Objetivos"
                 variant="inline"
                 iconClass="fa fa-bullseye"
@@ -194,6 +199,7 @@ export default function PaeeDetails({ paee, can }: PaeeDetailsProps): React.JSX.
 
             <FormSection
                 id="paee-resources"
+                tourTarget={PAEE_TOUR_TARGETS.detailsResources}
                 title="Recursos"
                 variant="inline"
                 iconClass="fa fa-cubes"
@@ -208,6 +214,7 @@ export default function PaeeDetails({ paee, can }: PaeeDetailsProps): React.JSX.
 
             <FormSection
                 id="paee-articulations"
+                tourTarget={PAEE_TOUR_TARGETS.detailsArticulations}
                 title="Articulações e Orientações"
                 variant="inline"
                 iconClass="fa fa-handshake-o"

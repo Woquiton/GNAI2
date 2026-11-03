@@ -2,6 +2,7 @@ import { DateInputField, SelectInputField } from '@/components/Forms/FormFields/
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SelectFieldOption } from '@/components/Forms/SelectField/SelectField.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import type { CaseStudyRichTextSectionProps } from './CaseStudyForm.types';
 import CaseStudyRichTextField from './CaseStudyRichTextField';
 
@@ -19,6 +20,7 @@ export default function CaseStudyDemandFields({
     return (
         <FormSection
             id="case-study-demand"
+            tourTarget={CASE_STUDY_TOUR_TARGETS.demand}
             title="Identificação da Demanda"
             variant="inline"
             iconClass="fa fa-bullhorn"

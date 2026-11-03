@@ -8,6 +8,7 @@ import { NOT_INFORMED, peiRecordVersionLabel } from '../Peis.constants';
 import type { PeiShowProps } from '../Peis.types';
 import { createPeiRecordTabs, PEI_DEFAULT_TAB } from './peiRecordTabs';
 import PeiStatusLabel from './PeiStatusLabel';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 const DEFAULT_PHOTO = '/images/default-user.jpg';
 
@@ -22,6 +23,7 @@ export default function PeiDetails(props: PeiShowProps): React.JSX.Element {
             <CardBox>
                 <FormSection
                     id="pei-identification"
+                    tourTarget={PEI_TOUR_TARGETS.identification}
                     title="Identificação do PEI"
                     iconClass="fa fa-id-card-o"
                     variant="inline"
@@ -50,7 +52,11 @@ export default function PeiDetails(props: PeiShowProps): React.JSX.Element {
                     </RecordSummary>
                 </FormSection>
             </CardBox>
-            <RecordTabs items={tabs} initialActiveId={initialTab} />
+            <RecordTabs
+                items={tabs}
+                initialActiveId={initialTab}
+                tourTarget={PEI_TOUR_TARGETS.recordTabs}
+            />
         </>
     );
 }

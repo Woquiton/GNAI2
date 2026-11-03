@@ -1,6 +1,7 @@
 import { RichTextField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import type { PaeeFormSectionProps, PaeeTextField } from './PaeeForm.types';
 
 const articulationFields: Array<{
@@ -33,6 +34,7 @@ export default function PaeeArticulationFields({
     return (
         <FormSection
             id="paee-articulations"
+            tourTarget={PAEE_TOUR_TARGETS.articulations}
             title="Articulações e Orientações"
             variant="inline"
             iconClass="fa fa-handshake-o"

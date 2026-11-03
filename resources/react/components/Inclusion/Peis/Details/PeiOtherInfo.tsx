@@ -9,6 +9,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import { PEI_OTHER_INFO_FAILURE_TEXT } from '../Peis.constants';
 import PeiSectionActions from './PeiSectionActions';
 import EmptyText from '@/components/UI/EmptyText/EmptyText';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 const FIELD_LABEL = 'Outras informações relevantes';
 
@@ -83,6 +84,7 @@ export default function PeiOtherInfo({
     return (
         <FormSection
             id="pei-other-info"
+            tourTarget={PEI_TOUR_TARGETS.otherInfo}
             title="Outras Informações Relevantes"
             iconClass="fa fa-info-circle"
             variant="inline"

@@ -10,6 +10,7 @@ import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import { itemNatureOptions } from '../Items.constants';
 import type { ItemFormOptions } from '../Items.types';
+import { ITEM_TOUR_TARGETS } from '../itemTours';
 import type { ItemFormSectionProps } from './ItemForm.types';
 
 interface ItemIdentificationFieldsProps extends ItemFormSectionProps {
@@ -42,6 +43,7 @@ export default function ItemIdentificationFields({
             title="Identificação"
             variant="inline"
             iconClass="fa fa-cube"
+            tourTarget={ITEM_TOUR_TARGETS.identification}
         >
             <FormGrid>
                 <SelectInputField

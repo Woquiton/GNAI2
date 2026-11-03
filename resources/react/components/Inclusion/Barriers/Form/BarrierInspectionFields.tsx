@@ -6,6 +6,7 @@ import {
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { BARRIER_TOUR_TARGETS } from '../barrierTours';
 import type { BarrierOption } from '../Barriers.types';
 import type {
     BarrierEditorField,
@@ -46,6 +47,7 @@ export default function BarrierInspectionFields({
             title={editing ? 'Vistoria Periódica' : 'Vistoria Inicial'}
             variant="inline"
             iconClass="fa fa-clipboard"
+            tourTarget={BARRIER_TOUR_TARGETS.inspection}
         >
             <FormStack>
                 <FormGrid>

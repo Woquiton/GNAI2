@@ -14,6 +14,7 @@ import { peiDisciplineUrls, peiUrls } from '../../Peis.routes';
 import type { PeiBulkDiscipline, PeiDisciplineBulkProps } from '../../Peis.types';
 import './PeiDisciplineBulkForm.css';
 import EmptyText from '@/components/UI/EmptyText/EmptyText';
+import { PEI_TOUR_TARGETS } from '../../peiTours';
 
 type BulkAssignForm = {
     teacher_ids: Record<string, string>;
@@ -172,8 +173,11 @@ export default function PeiDisciplineBulkForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="pei-discipline-identification"
+                        tourTarget={PEI_TOUR_TARGETS.disciplineSuggested}
                         title={
-                            suggested.length ? 'Disciplinas Sugeridas' : 'Identificação da Disciplina'
+                            suggested.length
+                                ? 'Disciplinas Sugeridas'
+                                : 'Identificação da Disciplina'
                         }
                         variant="inline"
                         iconClass="fa fa-graduation-cap"
@@ -183,6 +187,7 @@ export default function PeiDisciplineBulkForm({
                     {hasDisciplines && others.length ? (
                         <FormSection
                             id="pei-discipline-other-disciplines"
+                            tourTarget={PEI_TOUR_TARGETS.disciplineOthers}
                             title={
                                 suggested.length
                                     ? 'Outras Disciplinas do Curso'
@@ -196,7 +201,7 @@ export default function PeiDisciplineBulkForm({
                     ) : null}
                 </fieldset>
             </CardBox>
-            <FormActions status={status}>
+            <FormActions status={status} tourTarget={PEI_TOUR_TARGETS.disciplineBulkActions}>
                 <Button
                     href={peiUrls.showTab(pei.id, 'disciplines')}
                     tone="cancel"

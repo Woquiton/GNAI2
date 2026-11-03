@@ -2,6 +2,7 @@ import PeiDisciplineForm from '@/components/Inclusion/Peis/Disciplines/Form/PeiD
 import { peiDisciplineBreadcrumb } from '@/components/Inclusion/Peis/Peis.routes';
 import type { PeiDisciplineEditProps } from '@/components/Inclusion/Peis/Peis.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import { peiDisciplineEditTour } from '@/components/Inclusion/Peis/peiTours';
 
 export default function InclusionPeisDisciplinesEditPage({
     pei,
@@ -18,6 +19,7 @@ export default function InclusionPeisDisciplinesEditPage({
                 peiLabel: 'PEI',
                 current: 'Editar Adaptação',
             })}
+            tour={peiDisciplineEditTour}
         >
             <PeiDisciplineForm key={peiDiscipline.id} pei={pei} peiDiscipline={peiDiscipline} />
         </BusinessPage>

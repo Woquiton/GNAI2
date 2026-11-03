@@ -1,5 +1,6 @@
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import type { CaseStudyRichTextSectionProps } from './CaseStudyForm.types';
 import CaseStudyRichTextField from './CaseStudyRichTextField';
 
@@ -10,6 +11,7 @@ export default function CaseStudyListeningFields(
     return (
         <FormSection
             id="case-study-listening"
+            tourTarget={CASE_STUDY_TOUR_TARGETS.listening}
             title="Escuta e Observação"
             variant="inline"
             iconClass="fa fa-comments-o"

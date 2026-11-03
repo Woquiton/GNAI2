@@ -7,6 +7,7 @@ import type {
     PeiAttendanceSummary,
 } from '../Peis.types';
 import PeiTimeline from './PeiTimeline';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 const NO_DATE = 'Sem data';
 
@@ -65,6 +66,7 @@ export default function PeiAttendanceDetails({
     return (
         <FormSection
             id="pei-attendance"
+            tourTarget={PEI_TOUR_TARGETS.attendance}
             title="Atividades, Acompanhamento e Devolutivas do Semestre"
             description="Reunido automaticamente a partir dos atendimentos AEE e pedagógicos deste aluno dentro do semestre do PEI; não exige preenchimento aqui."
             iconClass="fa fa-calendar-check-o"

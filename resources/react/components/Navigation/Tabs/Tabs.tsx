@@ -8,6 +8,8 @@ export interface TabItem {
     accessibleLabel?: string;
     icon?: string;
     content: ReactNode;
+    /** Valor de `data-tour` do botão da aba, para o tutorial ao vivo saber se ela existe. */
+    tourTarget?: string;
 }
 
 interface TabsProps {
@@ -110,6 +112,7 @@ export default function Tabs({
         >
             <button
                 data-tab-key={item.id}
+                data-tour={item.tourTarget}
                 type="button"
                 className="tabs__button"
                 role="tab"

@@ -11,6 +11,7 @@ import { dateLabel } from '@/utils/formatters';
 import { NOT_INFORMED } from '../Peis.constants';
 import { peiDisciplineUrls } from '../Peis.routes';
 import type { PeiDisciplineSummary } from '../Peis.types';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 const columns: TableListColumn[] = [
     {
@@ -121,6 +122,7 @@ export default function PeiDisciplineTable({
     return (
         <FormSection
             id="pei-disciplines"
+            tourTarget={PEI_TOUR_TARGETS.disciplines}
             title="Adaptações Razoáveis e/ou Acessibilidades Curriculares"
             iconClass="fa fa-book"
             variant="inline"

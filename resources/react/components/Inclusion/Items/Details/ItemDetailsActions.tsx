@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { itemUrls } from '../Items.routes';
 import type { ItemDetailsPermissions } from '../Items.types';
+import { ITEM_TOUR_TARGETS } from '../itemTours';
 
 interface ItemDetailsActionsProps {
     itemId: number;
@@ -30,7 +31,7 @@ export default function ItemDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={ITEM_TOUR_TARGETS.detailsActions}>
             <Button
                 href={itemUrls.index}
                 tone="cancel"

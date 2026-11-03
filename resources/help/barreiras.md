@@ -2,12 +2,16 @@
 titulo: Barreiras de acessibilidade
 resumo: Como relatar uma barreira, marcar sua localização no mapa, acompanhar o status pelas vistorias e excluir registros.
 categoria: Recursos e acessibilidade
-palavras-chave: barreira, barreiras, relatar barreira, relato, obstáculo, acessibilidade, mapa, mapa de barreiras, localização, campus, unidade, ponto de referência, categoria, prioridade, urgente, status, identificada, em análise, em tratamento, resolvida, não aplicável, vistoria, inspeção, evidência, foto, parecer técnico, relato anônimo, relato geral, pessoa impactada, radar inclusivo, pdf
+palavras-chave: barreira, barreiras, relatar barreira, relato, obstáculo, acessibilidade, mapa, mapa de barreiras, localização, campus, unidade, ponto de referência, categoria, prioridade, urgente, status, identificada, em análise, em tratamento, resolvida, não aplicável, vistoria, inspeção, evidência, foto, parecer técnico, relato anônimo, relato geral, pessoa impactada, radar inclusivo, pdf, tutorial, tour
 ordem: 30
 permissoes: barrier.index
 ---
 
 Barreiras são obstáculos à acessibilidade encontrados na instituição: arquitetônicos, de comunicação, atitudinais ou outros, conforme as categorias cadastradas. Cada relato registra onde está o problema, quem é afetado, a prioridade e um histórico de vistorias que mostra a evolução até a resolução. A tela fica em **Recursos e acessibilidade → Barreiras**, com o título **Mapa de Barreiras**.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o relato, a edição e os detalhes da barreira têm um tutorial na própria tela. A tela de uma vistoria também tem o seu. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, o mapa, o histórico de vistorias e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que preciso antes de relatar uma barreira?
 

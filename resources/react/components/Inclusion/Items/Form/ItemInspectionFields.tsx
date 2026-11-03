@@ -8,6 +8,7 @@ import {
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { ItemFormOptions } from '../Items.types';
+import { ITEM_TOUR_TARGETS } from '../itemTours';
 import type { ItemFormData, ItemFormMode, ItemFormSectionProps } from './ItemForm.types';
 
 interface ItemInspectionFieldsProps extends ItemFormSectionProps {
@@ -35,6 +36,7 @@ export default function ItemInspectionFields({
             title={mode === 'create' ? 'Vistoria Inicial' : 'Nova Vistoria'}
             variant="inline"
             iconClass="fa fa-search"
+            tourTarget={ITEM_TOUR_TARGETS.inspection}
         >
             <FormGrid>
                 <SelectInputField

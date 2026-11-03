@@ -3,6 +3,7 @@ import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import type { PaeeBooleanField, PaeeFormSectionProps, PaeeTextField } from './PaeeForm.types';
 
 const supportFields: Array<{
@@ -40,6 +41,7 @@ export default function PaeeSupportFields({
     return (
         <FormSection
             id="paee-supports"
+            tourTarget={PAEE_TOUR_TARGETS.supports}
             title="Apoios de Profissionais"
             titleAddon={
                 <InfoTooltip

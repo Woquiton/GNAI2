@@ -2,6 +2,7 @@ import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import { attendanceFormatOptions, attendanceLocationOptions } from '../Paees.constants';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import type { PaeeFormSectionProps } from './PaeeForm.types';
 import { paeeFieldId } from './usePaeeForm';
 
@@ -14,6 +15,7 @@ export default function PaeeAttendanceFields({
     return (
         <FormSection
             id="paee-attendance"
+            tourTarget={PAEE_TOUR_TARGETS.attendance}
             title="Caracterização do Atendimento"
             variant="inline"
             iconClass="fa fa-calendar-check-o"

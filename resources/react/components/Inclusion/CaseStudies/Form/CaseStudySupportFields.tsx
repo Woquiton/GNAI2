@@ -2,6 +2,7 @@ import { CheckboxListField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SelectFieldOption } from '@/components/Forms/SelectField/SelectField.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import type { CaseStudyRichTextSectionProps } from './CaseStudyForm.types';
 import CaseStudyRichTextField from './CaseStudyRichTextField';
 
@@ -23,6 +24,7 @@ export default function CaseStudySupportFields({
     return (
         <FormSection
             id="case-study-potentials"
+            tourTarget={CASE_STUDY_TOUR_TARGETS.potentials}
             title="Potencialidades e Apoios"
             variant="inline"
             iconClass="fa fa-star-o"

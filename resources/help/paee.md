@@ -2,7 +2,7 @@
 titulo: PAEE: Plano de Atendimento Educacional Especializado
 resumo: Como criar o PAEE a partir do Estudo de Caso, preencher atendimento, recursos e apoios, registrar revisões e gerar o PDF.
 categoria: Planos e acompanhamento
-palavras-chave: paee, pae, plano de atendimento, plano de atendimento educacional especializado, aee, atendimento educacional especializado, frequência, sala de recursos, srm, tecnologia assistiva, ta, caa, comunicação aumentativa e alternativa, intérprete de libras, guia-intérprete, profissional de apoio, objetivos, recursos, revisão do paee, próxima revisão, revisão vencida, nova versão, pdf do paee, criar paee
+palavras-chave: paee, pae, plano de atendimento, plano de atendimento educacional especializado, aee, atendimento educacional especializado, frequência, sala de recursos, srm, tecnologia assistiva, ta, caa, comunicação aumentativa e alternativa, intérprete de libras, guia-intérprete, profissional de apoio, objetivos, recursos, revisão do paee, próxima revisão, revisão vencida, nova versão, pdf do paee, criar paee, tutorial, tour
 ordem: 20
 permissoes: paee.view
 ---
@@ -11,6 +11,10 @@ O PAEE organiza o atendimento educacional especializado do aluno: frequência, d
 
 
 > **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a edição e a visualização do PAEE têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, as revisões e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Onde encontro os PAEEs?
 

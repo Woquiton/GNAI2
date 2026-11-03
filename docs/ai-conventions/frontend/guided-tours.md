@@ -21,7 +21,7 @@ O `BusinessPage` começa todo tutorial pela moldura: trilha de navegação (`pag
 ## Escrever o tutorial de uma tela
 
 1. Crie `<recurso>Tour.ts` (uma tela) ou `<recurso>Tours.ts` (várias telas do recurso) na pasta do recurso, com os alvos e um `GuidedTourPageConfig` por tela, exportado como constante de módulo.
-2. Marque cada bloco explicado com `data-tour`. `CardBox`, `RevenueSummaryCard`, `InlineMetricsCard`, `FormSection`, `FormActions`, `PersonPhotoUpload`, `Tabs` e `PageTabs` aceitam `tourTarget`; `EventCalendar` aceita `tourTargets` para a navegação, os botões de visão e a grade; em marcação própria, use o atributo direto. Os nomes dos alvos ficam num objeto de constantes, nunca repetidos como texto solto.
+2. Marque cada bloco explicado com `data-tour`. `CardBox`, `RevenueSummaryCard`, `InlineMetricsCard`, `FormSection`, `FormActions`, `PersonPhotoUpload`, `Tabs` e `PageTabs` aceitam `tourTarget`, e cada item de `Tabs` aceita `tourTarget` no botão da aba, que continua visível no celular; `EventCalendar` aceita `tourTargets` para a navegação, os botões de visão e a grade; em marcação própria, use o atributo direto. Os nomes dos alvos ficam num objeto de constantes, nunca repetidos como texto solto.
 3. Passe a constante ao `BusinessPage` pela prop `tour`. Não monte o tutorial dentro do componente: um objeto novo a cada renderização registra o tutorial de novo e fecha o cartão aberto.
 4. Quando os botões do cabeçalho não são só "Cadastrar", troque o texto do passo comum "Ações da tela" com `actions`.
 5. Informe `helpHref` com o artigo da tela (`helpUrls.show('<slug>', '<âncora da seção>')`) quando ele existir.

@@ -11,6 +11,7 @@ import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import TextInput from '@/components/Forms/TextInput/TextInput';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import { LOAN_TOUR_TARGETS } from '../loanTours';
 import { loanUrls } from '../Loans.routes';
 import type { LoanCreateProps } from '../Loans.types';
 import LoanFormActions from './LoanFormActions';
@@ -52,6 +53,7 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
                     title="Identificação"
                     variant="inline"
                     iconClass="fa fa-exchange"
+                    tourTarget={LOAN_TOUR_TARGETS.identification}
                 >
                     <FormGrid>
                         <SelectInputField
@@ -95,11 +97,20 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
                             onChange={(value) => form.setData('professional_id', value)}
                         />
                         <FormGridWide>
-                            <FormField id="loan-user" label="Usuário Autenticado (Responsável)">
-                                <TextInput id="loan-user" value={props.authUser.name} disabled />
-                            </FormField>
+                            <div data-tour={LOAN_TOUR_TARGETS.responsible}>
+                                <FormField id="loan-user" label="Usuário Autenticado (Responsável)">
+                                    <TextInput
+                                        id="loan-user"
+                                        value={props.authUser.name}
+                                        disabled
+                                    />
+                                </FormField>
+                            </div>
                         </FormGridWide>
-                        <div className="loanForm__dateTimeFields">
+                        <div
+                            className="loanForm__dateTimeFields"
+                            data-tour={LOAN_TOUR_TARGETS.departure}
+                        >
                             <DateInputField
                                 id="loan-date"
                                 name="loan_date"
@@ -131,18 +142,20 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
                             onChange={(date) => form.setData('due_date', date)}
                         />
                         <FormGridWide>
-                            <RichTextField
-                                id="loan-observation"
-                                label="Observações / Estado do Item"
-                                defaultValue={form.data.observation}
-                                height={120}
-                                disabled={form.processing}
-                                error={errors.observation}
-                                onLoadError={() =>
-                                    reportEditorFailure('observation', 'observações')
-                                }
-                                onChange={(html) => form.setData('observation', html)}
-                            />
+                            <div data-tour={LOAN_TOUR_TARGETS.observation}>
+                                <RichTextField
+                                    id="loan-observation"
+                                    label="Observações / Estado do Item"
+                                    defaultValue={form.data.observation}
+                                    height={120}
+                                    disabled={form.processing}
+                                    error={errors.observation}
+                                    onLoadError={() =>
+                                        reportEditorFailure('observation', 'observações')
+                                    }
+                                    onChange={(html) => form.setData('observation', html)}
+                                />
+                            </div>
                         </FormGridWide>
                     </FormGrid>
                 </FormSection>

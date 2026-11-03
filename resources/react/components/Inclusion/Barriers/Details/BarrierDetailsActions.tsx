@@ -1,6 +1,7 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { barrierUrls } from '../Barriers.routes';
+import { BARRIER_TOUR_TARGETS } from '../barrierTours';
 import type { BarrierDetailsPermissions } from '../Barriers.types';
 
 interface BarrierDetailsActionsProps {
@@ -31,7 +32,7 @@ export default function BarrierDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={BARRIER_TOUR_TARGETS.detailsActions}>
             <Button
                 href={barrierUrls.index}
                 tone="cancel"

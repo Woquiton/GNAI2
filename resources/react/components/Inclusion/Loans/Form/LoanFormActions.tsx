@@ -1,5 +1,6 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
+import { LOAN_TOUR_TARGETS } from '../loanTours';
 
 interface LoanFormActionsProps {
     cancelHref: string;
@@ -19,7 +20,10 @@ export default function LoanFormActions({
     blocked = false,
 }: LoanFormActionsProps): React.JSX.Element {
     return (
-        <FormActions status={processing ? 'Salvando empréstimo...' : undefined}>
+        <FormActions
+            status={processing ? 'Salvando empréstimo...' : undefined}
+            tourTarget={LOAN_TOUR_TARGETS.formActions}
+        >
             <Button href={cancelHref} tone="cancel" label="Cancelar" disabled={processing} />
             {canSubmit ? (
                 <Button

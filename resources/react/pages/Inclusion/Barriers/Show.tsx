@@ -4,6 +4,7 @@ import type {
     BarrierRecord,
     BarrierShowProps,
 } from '@/components/Inclusion/Barriers/Barriers.types';
+import { barrierShowTour } from '@/components/Inclusion/Barriers/barrierTours';
 import BarrierDetails from '@/components/Inclusion/Barriers/Details/BarrierDetails';
 import BarrierDetailsActions from '@/components/Inclusion/Barriers/Details/BarrierDetailsActions';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
@@ -25,6 +26,7 @@ export default function InclusionBarriersShowPage({
             documentTitle={barrier.name}
             breadcrumbItems={barrierBreadcrumb({ barrier })}
             busy={removal.processing}
+            tour={barrierShowTour}
         >
             <BarrierDetails
                 barrier={barrier}

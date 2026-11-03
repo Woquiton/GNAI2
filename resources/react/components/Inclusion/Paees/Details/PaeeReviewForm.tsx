@@ -7,6 +7,7 @@ import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmissi
 import Button from '@/components/UI/Button/Button';
 import { paeeFailureTexts } from '../Paees.constants';
 import { paeeUrls } from '../Paees.routes';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import './PaeeReviewForm.css';
 
 type ReviewFields = 'what_changed' | 'why';
@@ -63,6 +64,7 @@ export default function PaeeReviewForm({ paeeId }: PaeeReviewFormProps): React.J
         <FormLayout
             ref={submission.formRef}
             className="paeeReviewForm"
+            data-tour={PAEE_TOUR_TARGETS.reviewForm}
             aria-label="Registrar revisão do PAEE"
             aria-busy={form.processing}
             onSubmit={submit}

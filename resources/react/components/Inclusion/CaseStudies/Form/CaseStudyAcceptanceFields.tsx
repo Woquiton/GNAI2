@@ -2,6 +2,7 @@ import { DateInputField, SelectInputField } from '@/components/Forms/FormFields/
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { SelectFieldOption } from '@/components/Forms/SelectField/SelectField.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 import type { CaseStudyFormSectionProps } from './CaseStudyForm.types';
 
 interface CaseStudyAcceptanceFieldsProps extends CaseStudyFormSectionProps {
@@ -18,6 +19,7 @@ export default function CaseStudyAcceptanceFields({
     return (
         <FormSection
             id="case-study-acceptance"
+            tourTarget={CASE_STUDY_TOUR_TARGETS.acceptance}
             title="Aceite da Família/Estudante"
             variant="inline"
             iconClass="fa fa-thumbs-o-up"

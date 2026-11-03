@@ -2,7 +2,7 @@
 titulo: Empréstimos de itens
 resumo: Como registrar um empréstimo, acompanhar prazos e atrasos, registrar a devolução e como os empréstimos se ligam à fila de espera.
 categoria: Recursos e acessibilidade
-palavras-chave: empréstimo, emprestar, emprestimos, devolução, devolver, registrar devolução, atraso, atrasado, prazo, previsão de devolução, avaria, danificado, beneficiário, aluno, estudante, profissional, fila de espera, estoque, item, tecnologia assistiva, material pedagógico, comprovante, pdf
+palavras-chave: empréstimo, emprestar, emprestimos, devolução, devolver, registrar devolução, atraso, atrasado, prazo, previsão de devolução, avaria, danificado, beneficiário, aluno, estudante, profissional, fila de espera, estoque, item, tecnologia assistiva, material pedagógico, comprovante, pdf, tutorial, tour
 ordem: 20
 permissoes: loan.index
 ---
@@ -11,6 +11,10 @@ O módulo de empréstimos controla a saída e a devolução dos [itens](/ajuda/i
 
 
 > **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a edição e a visualização do empréstimo têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, as partes do formulário, os avisos de atraso e os botões do rodapé, como **Devolver**. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Registrar um empréstimo
 

@@ -1,6 +1,7 @@
 import PaeeForm from '@/components/Inclusion/Paees/Form/PaeeForm';
 import { paeeVersionLabel } from '@/components/Inclusion/Paees/Paees.constants';
 import { paeeStudentBreadcrumb } from '@/components/Inclusion/Paees/Paees.routes';
+import { paeeCreateTour } from '@/components/Inclusion/Paees/paeeTours';
 import type { PaeeCreateProps } from '@/components/Inclusion/Paees/Paees.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
@@ -16,6 +17,7 @@ export default function InclusionPaeesCreatePage({
             title="Novo PAEE"
             subtitle={subtitle}
             breadcrumbItems={paeeStudentBreadcrumb(student, { current: 'Novo PAEE' })}
+            tour={paeeCreateTour}
         >
             <PaeeForm mode="create" caseStudyId={caseStudy.id} options={options} />
         </BusinessPage>

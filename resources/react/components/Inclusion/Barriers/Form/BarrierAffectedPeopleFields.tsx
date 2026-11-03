@@ -3,6 +3,7 @@ import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import FormField from '@/components/Forms/FormField/FormField';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
+import { BARRIER_TOUR_TARGETS } from '../barrierTours';
 import type { BarrierFormOptions } from '../Barriers.types';
 import type { BarrierFormSectionProps } from './BarrierForm.types';
 import './BarrierAffectedPeopleFields.css';
@@ -121,6 +122,7 @@ export default function BarrierAffectedPeopleFields({
                 className="barrierAffectedPeople"
                 role="group"
                 aria-label="Pessoa Impactada"
+                data-tour={BARRIER_TOUR_TARGETS.affectedPeople}
             >
                 <div className="barrierAffectedPeople__options">
                     <ChoiceControl

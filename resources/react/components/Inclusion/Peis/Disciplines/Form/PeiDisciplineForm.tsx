@@ -20,6 +20,7 @@ import type {
     PeiDisciplineTextFieldConfig,
 } from './PeiDisciplineForm.types';
 import { peiDisciplineFormData, peiDisciplineTextFields } from './peiDisciplineFields';
+import { PEI_TOUR_TARGETS } from '../../peiTours';
 
 const keepReadOnly = (): void => undefined;
 
@@ -101,6 +102,7 @@ export default function PeiDisciplineForm({
                 <fieldset disabled={form.processing}>
                     <FormSection
                         id="pei-discipline-identification"
+                        tourTarget={PEI_TOUR_TARGETS.disciplineIdentification}
                         title="Identificação (Somente Leitura)"
                         variant="inline"
                         iconClass="fa fa-graduation-cap"
@@ -130,6 +132,7 @@ export default function PeiDisciplineForm({
                     </FormSection>
                     <FormSection
                         id="pei-discipline-planning"
+                        tourTarget={PEI_TOUR_TARGETS.disciplinePlanning}
                         title="Planejamento Adaptado"
                         variant="inline"
                         iconClass="fa fa-book"
@@ -140,7 +143,7 @@ export default function PeiDisciplineForm({
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={status}>
+            <FormActions status={status} tourTarget={PEI_TOUR_TARGETS.disciplineFormActions}>
                 <Button
                     href={peiUrls.showTab(pei.id, 'disciplines')}
                     tone="cancel"

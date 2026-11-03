@@ -1,6 +1,7 @@
 import InspectionDetails, {
     InspectionDateBadge,
 } from '@/components/Inclusion/Inspections/InspectionDetails/InspectionDetails';
+import { itemInspectionShowTour } from '@/components/Inclusion/Inspections/inspectionTours';
 import { itemBreadcrumb, itemUrls } from '@/components/Inclusion/Items/Items.routes';
 import type { ItemInspectionShowProps } from '@/components/Inclusion/Items/Items.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
@@ -15,6 +16,7 @@ export default function InclusionItemsInspectionsShowPage({
             subtitle="Visualize o estado de conservação, o tipo, o parecer técnico e as evidências da vistoria."
             breadcrumbItems={itemBreadcrumb({ item, current: 'Detalhes da Inspeção' })}
             actions={<InspectionDateBadge date={inspection.date} />}
+            tour={itemInspectionShowTour}
         >
             <InspectionDetails
                 inspection={inspection}

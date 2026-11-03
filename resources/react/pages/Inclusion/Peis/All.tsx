@@ -5,6 +5,7 @@ import PeiDeleteModal from '@/components/Inclusion/Peis/PeiDeleteModal';
 import { peiAllBreadcrumb, peiUrls } from '@/components/Inclusion/Peis/Peis.routes';
 import type { PeiListProps } from '@/components/Inclusion/Peis/Peis.types';
 import { TableListLayout } from '@/components/Tables/TableList/TableList';
+import { peiAllTour } from '@/components/Inclusion/Peis/peiTours';
 
 export default function InclusionPeisAllPage({
     peis,
@@ -20,6 +21,7 @@ export default function InclusionPeisAllPage({
             title="Listagem Geral de PEIs"
             subtitle="Visualização consolidada de todos os planos e adaptações curriculares do campus."
             breadcrumbItems={peiAllBreadcrumb()}
+            tour={peiAllTour}
             listLabel="Listagem de PEIs"
             loading={filters.loading}
             loadingLabel="Atualizando PEIs"

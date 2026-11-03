@@ -6,6 +6,7 @@ import { dateLabel } from '@/utils/formatters';
 import { NOT_INFORMED, peiRecordVersionLabel } from '../Peis.constants';
 import type { PeiShowRecord, PeiShowStudent } from '../Peis.types';
 import PeiStatusLabel from './PeiStatusLabel';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 interface PeiGeneralDetailsProps {
     pei: PeiShowRecord;
@@ -22,6 +23,7 @@ export default function PeiGeneralDetails({
     return (
         <FormSection
             id="pei-details"
+            tourTarget={PEI_TOUR_TARGETS.details}
             title="Dados do PEI"
             iconClass="fa fa-file-text-o"
             variant="inline"

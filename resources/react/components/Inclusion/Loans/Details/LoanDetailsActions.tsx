@@ -1,5 +1,6 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
+import { LOAN_TOUR_TARGETS } from '../loanTours';
 import { loanUrls } from '../Loans.routes';
 import type { LoanDetailsPermissions, LoanRecord } from '../Loans.types';
 
@@ -33,7 +34,7 @@ export default function LoanDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={LOAN_TOUR_TARGETS.detailsActions}>
             <Button
                 href={loanUrls.index}
                 tone="cancel"

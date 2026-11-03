@@ -12,6 +12,7 @@ import CaseStudyDeleteModal from '@/components/Inclusion/CaseStudies/CaseStudyDe
 import CaseStudyCompleteModal from '@/components/Inclusion/CaseStudies/Details/CaseStudyCompleteModal';
 import CaseStudyDetails from '@/components/Inclusion/CaseStudies/Details/CaseStudyDetails';
 import CaseStudyDetailsActions from '@/components/Inclusion/CaseStudies/Details/CaseStudyDetailsActions';
+import { caseStudyShowTour } from '@/components/Inclusion/CaseStudies/caseStudyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -28,6 +29,7 @@ export default function InclusionCaseStudiesShowPage({
         <BusinessPage
             title={title}
             subtitle={`Aluno: ${student.name}`}
+            tour={caseStudyShowTour}
             breadcrumbItems={caseStudyStudentBreadcrumb(student, { current: title })}
             busy={completion.processing || removal.processing}
         >

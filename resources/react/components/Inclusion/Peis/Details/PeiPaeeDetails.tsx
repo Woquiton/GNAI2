@@ -7,6 +7,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import type { PeiPaeeSummary } from '../Peis.types';
 import PeiSectionActions from './PeiSectionActions';
 import EmptyText from '@/components/UI/EmptyText/EmptyText';
+import { PEI_TOUR_TARGETS } from '../peiTours';
 
 interface PeiPaeeDetailsProps {
     paee: PeiPaeeSummary | null;
@@ -55,6 +56,7 @@ export default function PeiPaeeDetails({ paee }: PeiPaeeDetailsProps): React.JSX
     return (
         <FormSection
             id="pei-paee"
+            tourTarget={PEI_TOUR_TARGETS.paee}
             title="PAEE Vinculado"
             iconClass="fa fa-sitemap"
             variant="inline"

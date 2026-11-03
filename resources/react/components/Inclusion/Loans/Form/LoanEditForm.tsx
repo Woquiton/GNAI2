@@ -8,6 +8,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
 import LoanDetails from '../Details/LoanDetails';
+import { LOAN_TOUR_TARGETS } from '../loanTours';
 import { loanUrls } from '../Loans.routes';
 import type { LoanRecord } from '../Loans.types';
 import LoanFormActions from './LoanFormActions';
@@ -35,17 +36,21 @@ export default function LoanEditForm({ loan, canSubmit }: LoanEditFormProps): Re
 
     return (
         <>
-            {loan.is_returned ? (
-                <InlineAlert variant="info">
-                    <strong>Este empréstimo já foi finalizado.</strong> Apenas as observações podem
-                    ser atualizadas.
-                </InlineAlert>
-            ) : null}
-            {loan.is_overdue ? (
-                <InlineAlert variant="warning">
-                    <strong>Este item está com a devolução atrasada.</strong> O prazo encerrou em{' '}
-                    {loan.due_date_label}.
-                </InlineAlert>
+            {loan.is_returned || loan.is_overdue ? (
+                <div data-tour={LOAN_TOUR_TARGETS.editNotices}>
+                    {loan.is_returned ? (
+                        <InlineAlert variant="info">
+                            <strong>Este empréstimo já foi finalizado.</strong> Apenas as
+                            observações podem ser atualizadas.
+                        </InlineAlert>
+                    ) : null}
+                    {loan.is_overdue ? (
+                        <InlineAlert variant="warning">
+                            <strong>Este item está com a devolução atrasada.</strong> O prazo
+                            encerrou em {loan.due_date_label}.
+                        </InlineAlert>
+                    ) : null}
+                </div>
             ) : null}
             <FormLayout
                 ref={formRef}
@@ -65,21 +70,25 @@ export default function LoanEditForm({ loan, canSubmit }: LoanEditFormProps): Re
                     >
                         <FormGrid>
                             <FormGridWide>
-                                <LoanDetails loan={loan} showObservation={false} />
+                                <div data-tour={LOAN_TOUR_TARGETS.editDetails}>
+                                    <LoanDetails loan={loan} showObservation={false} />
+                                </div>
                             </FormGridWide>
                             <FormGridWide>
-                                <RichTextField
-                                    id="loan-observation"
-                                    label="Observações / Estado do Item"
-                                    defaultValue={form.data.observation}
-                                    height={120}
-                                    disabled={form.processing}
-                                    error={form.errors.observation}
-                                    onLoadError={() =>
-                                        reportEditorFailure('observation', 'observações')
-                                    }
-                                    onChange={(html) => form.setData('observation', html)}
-                                />
+                                <div data-tour={LOAN_TOUR_TARGETS.observation}>
+                                    <RichTextField
+                                        id="loan-observation"
+                                        label="Observações / Estado do Item"
+                                        defaultValue={form.data.observation}
+                                        height={120}
+                                        disabled={form.processing}
+                                        error={form.errors.observation}
+                                        onLoadError={() =>
+                                            reportEditorFailure('observation', 'observações')
+                                        }
+                                        onChange={(html) => form.setData('observation', html)}
+                                    />
+                                </div>
                             </FormGridWide>
                         </FormGrid>
                     </FormSection>

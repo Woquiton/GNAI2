@@ -1,5 +1,6 @@
 import { barrierBreadcrumb } from '@/components/Inclusion/Barriers/Barriers.routes';
 import type { BarrierCreateProps } from '@/components/Inclusion/Barriers/Barriers.types';
+import { barrierCreateTour } from '@/components/Inclusion/Barriers/barrierTours';
 import BarrierForm from '@/components/Inclusion/Barriers/Form/BarrierForm';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
@@ -11,6 +12,7 @@ export default function InclusionBarriersCreatePage(
             title="Relatar Barreira de Acessibilidade"
             subtitle="Registre um ponto de obstrução ou dificuldade encontrada no campus."
             breadcrumbItems={barrierBreadcrumb({ current: 'Cadastrar' })}
+            tour={barrierCreateTour}
         >
             <BarrierForm options={options} />
         </BusinessPage>

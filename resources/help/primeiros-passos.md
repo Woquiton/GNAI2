@@ -60,7 +60,7 @@ Em **Agendamentos**, **Atendimentos Especializados** e **Atendimentos Pedagógic
 
 ## Conhecer a tela com o tutorial
 
-Algumas telas têm um tutorial que explica, na própria tela, para que serve cada parte. Por enquanto, ele está disponível no **Painel** e nas telas de **Alunos**, **Solicitações de Atendimento**, **Agendamentos**, **Fila de Espera**, **Atendimentos Especializados** e **Atendimentos Pedagógicos**.
+Algumas telas têm um tutorial que explica, na própria tela, para que serve cada parte. Ele está disponível no **Painel** e nas telas dos grupos **Atendimento**, **Planos e acompanhamento** e **Recursos e acessibilidade** do menu.
 
 1. Clique no botão com o ícone de informação, na barra do topo.
 2. A tela escurece e a parte explicada fica em destaque, com um quadro ao lado contando o que ela faz.

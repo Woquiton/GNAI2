@@ -6,6 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import { dateLabel } from '@/utils/formatters';
 import { PAEE_NOT_INFORMED } from '../Paees.constants';
 import type { PaeeShowRecord } from '../Paees.types';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import PaeeEntryList from './PaeeEntryList';
 import PaeeReviewForm from './PaeeReviewForm';
 
@@ -47,7 +48,13 @@ export default function PaeeReviews({
     canReview,
 }: PaeeReviewsProps): React.JSX.Element {
     return (
-        <FormSection id="paee-reviews" title="Revisões" variant="inline" iconClass="fa fa-history">
+        <FormSection
+            id="paee-reviews"
+            tourTarget={PAEE_TOUR_TARGETS.reviews}
+            title="Revisões"
+            variant="inline"
+            iconClass="fa fa-history"
+        >
             <PaeeEntryList
                 items={reviews}
                 itemKey={(review) => review.id}

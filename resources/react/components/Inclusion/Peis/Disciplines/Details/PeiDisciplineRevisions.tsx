@@ -9,6 +9,7 @@ import PeiSectionActions from '../../Details/PeiSectionActions';
 import PeiTimeline from '../../Details/PeiTimeline';
 import { PEI_DISCIPLINE_REVISION_FAILURE_TEXT } from '../../Peis.constants';
 import type { PeiDisciplineRevision } from '../../Peis.types';
+import { PEI_TOUR_TARGETS } from '../../peiTours';
 
 interface PeiDisciplineRevisionsProps {
     /** Rota `pei-discipline.revisions.store` (POST). */
@@ -99,6 +100,7 @@ export default function PeiDisciplineRevisions({
     return (
         <FormSection
             id="pei-discipline-revisions"
+            tourTarget={PEI_TOUR_TARGETS.disciplineRevisions}
             title="Revisões desta Adaptação"
             iconClass="fa fa-history"
             variant="inline"

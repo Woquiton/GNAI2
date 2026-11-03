@@ -6,6 +6,7 @@ import RemovableField from '@/components/Forms/RemovableField/RemovableField';
 import RepeaterField from '@/components/Forms/RepeaterField/RepeaterField';
 import SelectField from '@/components/Forms/SelectField/SelectField';
 import { objectiveTermOptions } from '../Paees.constants';
+import { PAEE_TOUR_TARGETS } from '../paeeTours';
 import type { PaeeFormSectionProps, PaeeObjectiveInput } from './PaeeForm.types';
 import { paeeFieldId } from './usePaeeForm';
 
@@ -26,6 +27,7 @@ export default function PaeeObjectiveFields({
     return (
         <FormSection
             id="paee-objectives"
+            tourTarget={PAEE_TOUR_TARGETS.objectives}
             title="Objetivos"
             variant="inline"
             iconClass="fa fa-bullseye"

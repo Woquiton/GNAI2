@@ -3,6 +3,7 @@ import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRe
 import Button from '@/components/UI/Button/Button';
 import { caseStudiesTab, caseStudyUrls } from '../CaseStudies.routes';
 import type { CaseStudyShowPermissions } from '../CaseStudies.types';
+import { CASE_STUDY_TOUR_TARGETS } from '../caseStudyTours';
 
 interface CaseStudyDetailsActionsProps {
     caseStudyId: number;
@@ -41,7 +42,7 @@ export default function CaseStudyDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={CASE_STUDY_TOUR_TARGETS.detailsActions}>
             <StudentRecordReturnButton studentId={studentId} tab={caseStudiesTab} />
             {permissions.update ? (
                 <Button

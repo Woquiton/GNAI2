@@ -2,12 +2,16 @@
 titulo: PEI: Plano Educacional Individualizado
 resumo: Como gerar o PEI, o que ele exige antes, como cadastrar as adaptações por disciplina, envolver os professores, finalizar, criar novas versões e gerar os PDFs.
 categoria: Planos e acompanhamento
-palavras-chave: pei, plano educacional individualizado, plano educacional, plano individual, gerar pei, criar pei, cadastrar pei, adaptação curricular, adaptações curriculares, adaptação razoável, acessibilidade curricular, disciplina, planejamento adaptado, professor, professor responsável, portal do professor, matriz curricular, finalizar pei, nova versão, versão do pei, revisão da adaptação, a preencher, pdf do pei, pdf para a família, devolutiva, acompanhamento do semestre, paee ativo, matrícula vigente, período do aluno, disciplinas do período, semestre do professor
+palavras-chave: pei, plano educacional individualizado, plano educacional, plano individual, gerar pei, criar pei, cadastrar pei, adaptação curricular, adaptações curriculares, adaptação razoável, acessibilidade curricular, disciplina, planejamento adaptado, professor, professor responsável, portal do professor, matriz curricular, finalizar pei, nova versão, versão do pei, revisão da adaptação, a preencher, pdf do pei, pdf para a família, devolutiva, acompanhamento do semestre, paee ativo, matrícula vigente, período do aluno, disciplinas do período, semestre do professor, tutorial, tour
 ordem: 30
 permissoes: pei.view
 ---
 
 O PEI reúne as adaptações razoáveis e acessibilidades curriculares do aluno em cada disciplina do curso, o resumo do PAEE vinculado e o acompanhamento do semestre. Ele é a etapa seguinte ao [PAEE](/ajuda/paee): sem PAEE vigente não é possível gerar o PEI. Veja a ordem completa em [Fluxo de acompanhamento](/ajuda/fluxo-de-acompanhamento).
+
+## Conhecer as telas com o tutorial
+
+As listagens de PEIs, a tela **Gerar Novo PEI**, a visualização do PEI e as telas das adaptações curriculares têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela das listagens, cada aba do PEI, as seções das adaptações e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que preciso antes de criar um PEI?
 

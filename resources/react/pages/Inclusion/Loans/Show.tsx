@@ -5,6 +5,7 @@ import LoanReturnModal from '@/components/Inclusion/Loans/Details/LoanReturnModa
 import LoanDeleteModal from '@/components/Inclusion/Loans/LoanDeleteModal';
 import { loanBreadcrumb, loanUrls } from '@/components/Inclusion/Loans/Loans.routes';
 import type { LoanRecord, LoanShowProps } from '@/components/Inclusion/Loans/Loans.types';
+import { loanShowTour } from '@/components/Inclusion/Loans/loanTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -22,14 +23,12 @@ export default function InclusionLoansShowPage({ loan, can }: LoanShowProps): Re
             title="Detalhes do Empréstimo"
             subtitle="Visualize as informações, os prazos e o histórico do recurso."
             documentTitle={`Empréstimo #${loan.id}`}
+            tour={loanShowTour}
             breadcrumbItems={loanBreadcrumb({ loan })}
             busy={processing}
         >
             {loan.is_overdue ? <LoanOverdueNotice loan={loan} /> : null}
-            <LoanDetailsCard
-                loan={loan}
-                links={{ item: can.viewItem, student: can.viewStudent }}
-            />
+            <LoanDetailsCard loan={loan} links={{ item: can.viewItem, student: can.viewStudent }} />
             <LoanDetailsActions
                 loan={loan}
                 permissions={can}
