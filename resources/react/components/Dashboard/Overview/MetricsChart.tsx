@@ -6,6 +6,8 @@ import type { Metric } from './Overview.types';
 import './Overview.css';
 
 interface MetricsChartProps {
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o gráfico. */
+    tourTarget?: string;
     title: string;
     items: Metric[];
     total?: number;
@@ -15,11 +17,12 @@ export default function MetricsChart({
     title,
     items,
     total,
+    tourTarget,
 }: MetricsChartProps): React.JSX.Element {
     const hasData = items.some((item) => item.count > 0);
 
     return (
-        <CardBox className="salesAnalyticsCard">
+        <CardBox className="salesAnalyticsCard" tourTarget={tourTarget}>
             <h2 className="salesAnalyticsCard__title text-dark header-title">{title}</h2>
             <ul
                 className="salesAnalyticsCard__legend list-inline chart-detail-list"

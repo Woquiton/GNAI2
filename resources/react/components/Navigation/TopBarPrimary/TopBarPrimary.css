@@ -195,6 +195,15 @@
     font-size: 16px;
 }
 
+/* Ações da barra feitas com <button>, com a mesma aparência dos links. */
+.topbar__navButton {
+    height: var(--ui-topbar-height);
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+}
+
 .topbar__badge {
     position: absolute;
     top: 12px;

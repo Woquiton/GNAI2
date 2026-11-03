@@ -13,6 +13,7 @@ Gnai é o sistema de acessibilidade e inclusão do Núcleo de Acessibilidade e I
 | Cabeçalho, botões, cores, logo, imagens | [identidade visual](docs/ai-conventions/frontend/identity.md) |
 | Mensagens de sucesso, erro, aviso e carregamento | [feedback de operações](docs/ai-conventions/frontend/feedback.md) |
 | Componentes novos, foco, teclado, atalhos | [acessibilidade](docs/ai-conventions/frontend/accessibility.md) |
+| Criar ou alterar uma tela de negócio (toda tela tem tutorial ao vivo) | [tutorial ao vivo](docs/ai-conventions/frontend/guided-tours.md) |
 | Criar, alterar ou remover testes | [testes do backend](docs/ai-conventions/backend/tests.md) |
 | Alterar uma funcionalidade documentada na Central de Ajuda | [artigos de ajuda](docs/ai-conventions/content/help-articles.md); atualize o artigo em `resources/help/` |
 

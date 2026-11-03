@@ -11,6 +11,7 @@ import { loadExternalScript } from '@/utils/loadExternalScript';
 import BarrierPopup from './BarrierPopup';
 import { STATUS_TONE_COLORS } from './Overview.constants';
 import type { Barrier } from './Overview.types';
+import { OVERVIEW_TOUR_TARGETS } from './overviewTour';
 import '/public/assets/react/plugins/leaflet/leaflet.css';
 import './Overview.css';
 
@@ -182,7 +183,7 @@ export default function BarrierMap({ barriers }: { barriers: Barrier[] }): React
         setPopups(nextPopups);
     }, [runtime, mapped]);
     return (
-        <CardBox className="gnaiDashboard__chart">
+        <CardBox className="gnaiDashboard__chart" tourTarget={OVERVIEW_TOUR_TARGETS.barrierMap}>
             {popups.map(({ element, barrier }) =>
                 createPortal(<BarrierPopup barrier={barrier} />, element, String(barrier.id)),
             )}

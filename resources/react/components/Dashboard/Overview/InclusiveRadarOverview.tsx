@@ -2,6 +2,7 @@ import InlineMetricsCard from '@/components/UI/InlineMetricsCard/InlineMetricsCa
 import BarrierMap from './BarrierMap';
 import MetricsChart from './MetricsChart';
 import type { OverviewProps } from './Overview.types';
+import { OVERVIEW_TOUR_TARGETS } from './overviewTour';
 import { radarStats } from './Overview.utils';
 import './Overview.css';
 
@@ -18,6 +19,7 @@ export default function InclusiveRadarOverview({
             <InlineMetricsCard
                 className="gnaiDashboard__radarMetrics"
                 label="Indicadores do Radar inclusivo"
+                tourTarget={OVERVIEW_TOUR_TARGETS.radarStats}
                 items={radarStats(radar).map((stat) => ({
                     label: stat.title,
                     value: stat.value,
@@ -31,6 +33,7 @@ export default function InclusiveRadarOverview({
                     title="Status das barreiras"
                     items={radar.barrierStatusCounts}
                     total={radar.totalBarriers}
+                    tourTarget={OVERVIEW_TOUR_TARGETS.barrierStatus}
                 />
                 <BarrierMap barriers={radar.mapBarriers} />
             </div>

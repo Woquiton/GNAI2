@@ -4,6 +4,7 @@ import MorrisChart from '@/components/UI/MorrisChart/MorrisChart';
 import '@/components/UI/SalesAnalyticsCard/SalesAnalyticsCard.css';
 import { EMPTY_CHART_TEXT, STATUS_TONE_COLORS } from './Overview.constants';
 import type { SessionMonth } from './Overview.types';
+import { OVERVIEW_TOUR_TARGETS } from './overviewTour';
 import './Overview.css';
 
 /* Empilhadas de baixo para cima nas cores dos status; nesta ordem verde e amarelo não se tocam. */
@@ -64,7 +65,7 @@ export default function SessionsTimelineChart({
         .join('; ');
 
     return (
-        <CardBox className="salesAnalyticsCard">
+        <CardBox className="salesAnalyticsCard" tourTarget={OVERVIEW_TOUR_TARGETS.sessionsByMonth}>
             <h2 className="salesAnalyticsCard__title text-dark header-title">{title}</h2>
             <ul className="salesAnalyticsCard__legend list-inline chart-detail-list">
                 {SERIES.map(({ key, label, color }) => (

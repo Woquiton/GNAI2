@@ -2,6 +2,7 @@ import RevenueSummaryCard from '@/components/UI/RevenueSummaryCard/RevenueSummar
 import DistributionChart from './DistributionChart';
 import type { OverviewProps } from './Overview.types';
 import { finishedPeisPercentage } from './Overview.utils';
+import { OVERVIEW_TOUR_TARGETS } from './overviewTour';
 import SessionsTimelineChart from './SessionsTimelineChart';
 import './Overview.css';
 
@@ -36,11 +37,13 @@ export default function SupportOverviewCharts({
                     progress={percentage}
                     amount={`${percentage}%`}
                     metrics={metrics}
+                    tourTarget={OVERVIEW_TOUR_TARGETS.peis}
                 />
                 <DistributionChart
                     title="Pendências por prioridade"
                     items={support.pendenciesByPriority}
                     variant="rotated"
+                    tourTarget={OVERVIEW_TOUR_TARGETS.pendencies}
                 />
             </div>
             <div className="gnaiDashboard__charts">
@@ -48,6 +51,7 @@ export default function SupportOverviewCharts({
                     title="Agendamentos por status"
                     items={support.sessionsByStatus}
                     variant="donut"
+                    tourTarget={OVERVIEW_TOUR_TARGETS.sessionsByStatus}
                 />
                 <SessionsTimelineChart months={support.sessionsByMonth} />
             </div>

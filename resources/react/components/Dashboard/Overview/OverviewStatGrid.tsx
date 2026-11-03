@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import StatWidgetCard from '@/components/UI/StatWidgetCard/StatWidgetCard';
 import { joinClassNames } from '@/utils/joinClassNames';
 import type { OverviewStat } from './Overview.types';
+import { OVERVIEW_TOUR_TARGETS } from './overviewTour';
 import './Overview.css';
 
 interface OverviewStatGridProps {
@@ -21,6 +22,7 @@ export default function OverviewStatGrid({
                 'gnaiDashboard__stats',
                 singleRow && 'gnaiDashboard__stats--singleRow',
             )}
+            data-tour={OVERVIEW_TOUR_TARGETS.stats}
         >
             {stats.map((item) => (
                 <Link key={item.title} href={item.href} aria-label={`${item.title}: ${item.value}`}>

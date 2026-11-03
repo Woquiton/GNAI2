@@ -21,6 +21,8 @@ interface InlineMetricsCardProps {
     /** Nome do conjunto para leitores de tela. */
     label: string;
     className?: string;
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o card. */
+    tourTarget?: string;
 }
 
 /**
@@ -31,11 +33,12 @@ export default function InlineMetricsCard({
     items,
     label,
     className,
+    tourTarget,
 }: InlineMetricsCardProps): React.JSX.Element {
     const columns = { '--inline-metrics-columns': Math.min(items.length, 4) } as CSSProperties;
 
     return (
-        <CardBox className={joinClassNames('inlineMetricsCard', className)}>
+        <CardBox className={joinClassNames('inlineMetricsCard', className)} tourTarget={tourTarget}>
             <ul className="inlineMetricsCard__list" aria-label={label} style={columns}>
                 {items.map((item) => {
                     const content = (

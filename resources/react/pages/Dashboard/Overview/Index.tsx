@@ -8,6 +8,7 @@ import type {
 } from '@/components/Dashboard/Overview/Overview.types';
 import { overviewWelcome, supportStats } from '@/components/Dashboard/Overview/Overview.utils';
 import OverviewStatGrid from '@/components/Dashboard/Overview/OverviewStatGrid';
+import { overviewTour } from '@/components/Dashboard/Overview/overviewTour';
 import SupportOverviewCharts from '@/components/Dashboard/Overview/SupportOverviewCharts';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
@@ -24,6 +25,7 @@ export default function Overview({
             title="Painel"
             subtitle={overviewWelcome(auth.user)}
             breadcrumbItems={dashboardBreadcrumb()}
+            tour={overviewTour}
         >
             <OverviewStatGrid stats={supportStats(specializedEducationalSupport)} singleRow />
             <ActivityFeed feed={activityFeed} />

@@ -2,13 +2,17 @@
 titulo: Painel (Dashboard)
 resumo: O que mostram os indicadores, os gráficos, o mapa de barreiras e as atividades recentes da tela inicial do Gnai.
 categoria: Primeiros passos
-palavras-chave: painel, dashboard, tela inicial, início, home, página inicial, indicadores, números, totais, estatísticas, gráficos, resumo, atividades recentes, feed, histórico, últimas alterações, o que mudou, carregar mais, filtro de período, tipo de documento, status dos peis, pendências por prioridade, agendamentos por status, agendamentos nos últimos 6 meses, radar inclusivo, mapa de barreiras, status das barreiras
+palavras-chave: painel, dashboard, tela inicial, início, home, página inicial, indicadores, números, totais, estatísticas, gráficos, resumo, atividades recentes, feed, histórico, últimas alterações, o que mudou, carregar mais, filtro de período, tipo de documento, status dos peis, pendências por prioridade, agendamentos por status, agendamentos nos últimos 6 meses, radar inclusivo, mapa de barreiras, status das barreiras, tutorial, tour, passo a passo, como usar o painel
 ordem: 4
 ---
 
 O **Painel** é a tela inicial do Gnai. Ele resume o trabalho do núcleo em números e gráficos e mostra as últimas alterações nos documentos dos alunos. Você chega a ele logo depois de entrar, pelo item **Dashboard** do menu lateral ou pelo logotipo na barra do topo.
 
 Contas de professores sem vínculo com a equipe não usam o Painel: elas vão direto para o [Portal do Professor](/ajuda/portal-do-professor).
+
+## Conhecer o Painel com o tutorial
+
+Clique no botão com o ícone de informação, na barra do topo, para abrir o tutorial do Painel. Ele destaca cada parte da tela e explica o que ela mostra: a trilha de navegação, os números principais, as atividades recentes, os gráficos, os recursos de acessibilidade e o mapa de barreiras. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que significam os indicadores do topo?
 

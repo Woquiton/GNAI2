@@ -11,6 +11,8 @@ import type { Metric } from './Overview.types';
 import './Overview.css';
 
 interface DistributionChartProps {
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o gráfico. */
+    tourTarget?: string;
     title: string;
     items: Metric[];
     variant: 'rotated' | 'donut';
@@ -21,6 +23,7 @@ export default function DistributionChart({
     title,
     items,
     variant,
+    tourTarget,
 }: DistributionChartProps): React.JSX.Element {
     const total = items.reduce((sum, item) => sum + item.count, 0);
     // Cada barra na cor do seu item, como a prioridade nas etiquetas das pendências.
@@ -68,7 +71,7 @@ export default function DistributionChart({
                   },
               };
     return (
-        <CardBox className="salesAnalyticsCard">
+        <CardBox className="salesAnalyticsCard" tourTarget={tourTarget}>
             <h2 className="salesAnalyticsCard__title text-dark header-title">{title}</h2>
             {total > 0 ? (
                 <C3Chart

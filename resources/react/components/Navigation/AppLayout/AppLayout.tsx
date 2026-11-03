@@ -7,8 +7,10 @@ import InstitutionBrand from '@/components/Navigation/InstitutionBrand/Instituti
 import SidebarPrimary from '@/components/Navigation/SidebarPrimary/SidebarPrimary';
 import SkipLinks, { type SkipLinkItem } from '@/components/Navigation/SkipLinks/SkipLinks';
 import TopBarPrimary from '@/components/Navigation/TopBarPrimary/TopBarPrimary';
+import TopBarTourAction from '@/components/Navigation/TopBarPrimary/TopBarTourAction';
 import type { ProfileLink } from '@/components/Navigation/TopBarPrimary/TopBarPrimary.data';
 import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
+import GuidedTourProvider from '@/components/UI/GuidedTour/GuidedTourProvider';
 import PageErrorBoundary from '@/components/UI/PageErrorBoundary/PageErrorBoundary';
 import PageScrollbar from '@/components/UI/PageScrollbar/PageScrollbar';
 import '@/styles/app-shell.css';
@@ -66,69 +68,75 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
     return (
         <PageErrorBoundary resetKey={url} fallback={<RenderErrorScreen homeHref={HOME_HREF} />}>
             <SkipLinks items={skipLinks} />
-            <div
-                className={`app-page gnaiApp${sidebar.collapsed ? ' app-page--sidebarCollapsed' : ''}`}
-            >
-                <TopBarPrimary
-                    brand="Gnai"
-                    compactLogoSrc="/images/logo2.png"
-                    expandedLogoText="NAI"
-                    homeHref={HOME_HREF}
-                    sidebarCollapsed={sidebar.collapsed}
-                    onToggleSidebar={sidebar.toggle}
-                    user={auth.user}
-                    profileItems={profileItems}
-                    notificationItems={topbar?.notifications ?? []}
-                    unreadCount={topbar?.unreadCount ?? 0}
-                    notificationsHref="/notificacoes"
-                    showSettings={false}
-                    actionsContent={
-                        impersonating ? (
-                            <ImpersonationIndicator
-                                name={auth.user.name}
-                                readOnly={impersonationReadOnly}
+            {/* O tutorial envolve a barra do topo (botão) e o conteúdo (tutorial de cada tela). */}
+            <GuidedTourProvider>
+                <div
+                    className={`app-page gnaiApp${sidebar.collapsed ? ' app-page--sidebarCollapsed' : ''}`}
+                >
+                    <TopBarPrimary
+                        brand="Gnai"
+                        compactLogoSrc="/images/logo2.png"
+                        expandedLogoText="NAI"
+                        homeHref={HOME_HREF}
+                        sidebarCollapsed={sidebar.collapsed}
+                        onToggleSidebar={sidebar.toggle}
+                        user={auth.user}
+                        profileItems={profileItems}
+                        notificationItems={topbar?.notifications ?? []}
+                        unreadCount={topbar?.unreadCount ?? 0}
+                        notificationsHref="/notificacoes"
+                        showSettings={false}
+                        actionsContent={
+                            <>
+                                {impersonating ? (
+                                    <ImpersonationIndicator
+                                        name={auth.user.name}
+                                        readOnly={impersonationReadOnly}
+                                    />
+                                ) : null}
+                                <TopBarTourAction />
+                            </>
+                        }
+                        leadingContent={
+                            <InstitutionBrand
+                                name={topbar?.institutionName ?? 'Gnai'}
+                                href={
+                                    navigation.entries.some((item) => item.key === 'institutions')
+                                        ? '/inclusao/instituicoes'
+                                        : undefined
+                                }
                             />
-                        ) : null
-                    }
-                    leadingContent={
-                        <InstitutionBrand
-                            name={topbar?.institutionName ?? 'Gnai'}
-                            href={
-                                navigation.entries.some((item) => item.key === 'institutions')
-                                    ? '/inclusao/instituicoes'
-                                    : undefined
-                            }
-                        />
-                    }
-                />
-                <SidebarPrimary
-                    collapsed={sidebar.collapsed}
-                    entries={navigation.entries}
-                    currentItemKey={navigation.currentItemKey ?? undefined}
-                />
-                {!sidebar.collapsed ? (
-                    <button
-                        className="gnaiApp__overlay"
-                        type="button"
-                        onClick={sidebar.closeOnMobile}
-                        aria-label="Fechar menu lateral"
+                        }
                     />
-                ) : null}
-                <div className="app-content-placeholder">
-                    <div
-                        id={CONTENT_ID}
-                        className="app-content-placeholder__inner"
-                        tabIndex={-1}
-                    >
-                        {children}
+                    <SidebarPrimary
+                        collapsed={sidebar.collapsed}
+                        entries={navigation.entries}
+                        currentItemKey={navigation.currentItemKey ?? undefined}
+                    />
+                    {!sidebar.collapsed ? (
+                        <button
+                            className="gnaiApp__overlay"
+                            type="button"
+                            onClick={sidebar.closeOnMobile}
+                            aria-label="Fechar menu lateral"
+                        />
+                    ) : null}
+                    <div className="app-content-placeholder">
+                        <div
+                            id={CONTENT_ID}
+                            className="app-content-placeholder__inner"
+                            tabIndex={-1}
+                        >
+                            {children}
+                        </div>
+                        <AppFooter id={FOOTER_ID}>
+                            Gnai &copy; {new Date().getFullYear()} | Gestão NAIs
+                        </AppFooter>
                     </div>
-                    <AppFooter id={FOOTER_ID}>
-                        Gnai &copy; {new Date().getFullYear()} | Gestão NAIs
-                    </AppFooter>
+                    <FlashNotifications />
+                    <PageScrollbar />
                 </div>
-                <FlashNotifications />
-                <PageScrollbar />
-            </div>
+            </GuidedTourProvider>
         </PageErrorBoundary>
     );
 }

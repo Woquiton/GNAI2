@@ -42,7 +42,8 @@ Os caminhos são relativos a `resources/react/components/`.
 
 | Necessidade | Componente ou hook |
 | --- | --- |
-| Moldura de página de negócio | `Navigation/BusinessPage`: `title`, `subtitle`, `documentTitle`, `breadcrumbItems`, `actions`, `error`, `busy` |
+| Moldura de página de negócio | `Navigation/BusinessPage`: `title`, `subtitle`, `documentTitle`, `breadcrumbItems`, `actions`, `error`, `busy`, `tour` |
+| Tutorial ao vivo da tela | `UI/GuidedTour` pela prop `tour` do `BusinessPage`; veja a [convenção](guided-tours.md) |
 | Breadcrumb de recurso | `Navigation/PageBreadcrumb/resourceBreadcrumb.ts`: Home › Coleção › Registro › Etapa |
 | Página de listagem | `Tables/TableList`: `TableListLayout` (cabeçalho, card, filtros, tabela, diálogos) |
 | Estado da listagem | `useTableListFilters`: filtros com atraso, limpeza, paginação (`selectPage`) e `loading` |

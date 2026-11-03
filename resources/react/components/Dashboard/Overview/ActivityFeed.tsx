@@ -7,6 +7,7 @@ import { notify } from '@/components/UI/NotificationToast/notify';
 import { dashboardUrls } from '../Dashboard.routes';
 import { ACTIVITY_PERIOD_OPTIONS } from './Overview.constants';
 import type { ActivityFeedItem, ActivityFeedPage, ActivityFeedProps } from './Overview.types';
+import { OVERVIEW_TOUR_TARGETS } from './overviewTour';
 import './Overview.css';
 
 /**
@@ -64,10 +65,13 @@ export default function ActivityFeed({ feed }: { feed: ActivityFeedProps }): Rea
     }
 
     return (
-        <CardBox className="gnaiDashboard__feed">
+        <CardBox className="gnaiDashboard__feed" tourTarget={OVERVIEW_TOUR_TARGETS.feed}>
             <div className="gnaiDashboard__feedHeader">
                 <h2 className="header-title">Atividades recentes</h2>
-                <div className="gnaiDashboard__feedFilters">
+                <div
+                    className="gnaiDashboard__feedFilters"
+                    data-tour={OVERVIEW_TOUR_TARGETS.feedFilters}
+                >
                     <SelectField
                         id="activity-feed-model"
                         name="model"
@@ -114,7 +118,7 @@ export default function ActivityFeed({ feed }: { feed: ActivityFeedProps }): Rea
                 )}
             </div>
             {nextPage ? (
-                <div className="gnaiDashboard__feedMore">
+                <div className="gnaiDashboard__feedMore" data-tour={OVERVIEW_TOUR_TARGETS.feedMore}>
                     <Button
                         type="button"
                         tone="white"

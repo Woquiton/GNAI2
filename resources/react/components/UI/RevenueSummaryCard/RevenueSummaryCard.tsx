@@ -27,6 +27,8 @@ interface RevenueSummaryCardProps {
     amount: string;
     progress: number;
     metrics: RevenueMetric[];
+    /** Valor de `data-tour`, para o tutorial ao vivo destacar o card. */
+    tourTarget?: string;
 }
 
 export default function RevenueSummaryCard({
@@ -35,9 +37,10 @@ export default function RevenueSummaryCard({
     amount,
     progress,
     metrics,
+    tourTarget,
 }: RevenueSummaryCardProps): React.JSX.Element {
     return (
-        <div className="revenueSummaryCard card-box">
+        <div className="revenueSummaryCard card-box" data-tour={tourTarget}>
             <h4 className="revenueSummaryCard__title text-dark header-title">{title}</h4>
 
             <div className="revenueSummaryCard__content widget-chart text-center">
