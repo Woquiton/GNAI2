@@ -24,7 +24,7 @@ enum SupportRequesterRole: string
             self::COURSE_COORDINATION => 'Coordenação de curso',
             self::AEE_TEACHER => 'Docente do AEE',
             self::PSYCHOLOGY => 'Psicologia',
-            self::STUDENTAssistance => 'Assistência estudantil',
+            self::STUDENT_ASSISTANCE => 'Assistência estudantil',
             self::OTHER => 'Outro',
         };
     }
