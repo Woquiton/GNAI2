@@ -16,6 +16,7 @@ import type {
     PedagogicalRecordListRow,
     StudentPedagogicalRecordIndexProps,
 } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.types';
+import { studentPedagogicalRecordTour } from '@/components/Inclusion/PedagogicalRecords/pedagogicalRecordTours';
 import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
@@ -62,6 +63,7 @@ export default function InclusionStudentsPedagogicalRecordsIndexPage({
                 id: student.id,
                 name: studentName,
             })}
+            tour={studentPedagogicalRecordTour}
             actions={
                 <StudentRecordReturnButton
                     studentId={student.id}

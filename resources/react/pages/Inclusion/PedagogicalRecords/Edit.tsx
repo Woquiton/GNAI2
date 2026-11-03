@@ -1,6 +1,7 @@
 import PedagogicalRecordForm from '@/components/Inclusion/PedagogicalRecords/Form/PedagogicalRecordForm';
 import { pedagogicalRecordBreadcrumb } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.routes';
 import type { PedagogicalRecordEditProps } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.types';
+import { pedagogicalRecordEditTour } from '@/components/Inclusion/PedagogicalRecords/pedagogicalRecordTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPedagogicalRecordsEditPage({
@@ -23,6 +24,7 @@ export default function InclusionPedagogicalRecordsEditPage({
             title="Editar Registro de Atendimento Pedagógico"
             subtitle={`Agendamento #${context.session_id}`}
             breadcrumbItems={breadcrumbItems}
+            tour={pedagogicalRecordEditTour}
         >
             <PedagogicalRecordForm
                 key={pedagogicalRecord.id}

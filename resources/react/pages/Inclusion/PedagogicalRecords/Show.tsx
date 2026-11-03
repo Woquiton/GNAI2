@@ -7,6 +7,7 @@ import {
     pedagogicalRecordUrls,
 } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.routes';
 import type { PedagogicalRecordShowProps } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.types';
+import { pedagogicalRecordShowTour } from '@/components/Inclusion/PedagogicalRecords/pedagogicalRecordTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -28,6 +29,7 @@ export default function InclusionPedagogicalRecordsShowPage({
             subtitle={subtitle}
             breadcrumbItems={pedagogicalRecordBreadcrumb({ sessionId: session.id })}
             busy={removal.processing}
+            tour={pedagogicalRecordShowTour}
         >
             <PedagogicalRecordDetails pedagogicalRecord={record} session={session} />
             <PedagogicalRecordDetailsActions

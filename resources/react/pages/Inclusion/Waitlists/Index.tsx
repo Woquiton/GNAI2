@@ -11,6 +11,7 @@ import type {
     WaitlistIndexProps,
     WaitlistRecord,
 } from '@/components/Inclusion/Waitlists/Waitlists.types';
+import { waitlistListTour } from '@/components/Inclusion/Waitlists/waitlistTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -42,6 +43,7 @@ export default function InclusionWaitlistsIndexPage({
             title="Fila de Espera"
             subtitle="Gerencie solicitações de recursos que estão indisponíveis para empréstimo."
             breadcrumbItems={waitlistBreadcrumb()}
+            tour={waitlistListTour}
             create={
                 can.create && {
                     href: waitlistUrls.create,

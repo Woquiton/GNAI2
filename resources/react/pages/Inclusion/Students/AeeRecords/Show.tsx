@@ -10,6 +10,7 @@ import {
 import type { StudentAeeRecordShowProps } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
 import StudentAeeEvaluationDetails from '@/components/Inclusion/AeeRecords/Details/StudentAeeEvaluationDetails';
 import StudentAeeEvaluationDetailsActions from '@/components/Inclusion/AeeRecords/Details/StudentAeeEvaluationDetailsActions';
+import { studentAeeRecordShowTour } from '@/components/Inclusion/AeeRecords/aeeRecordTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 import { dateLabel } from '@/utils/formatters';
@@ -30,6 +31,7 @@ export default function InclusionStudentsAeeRecordsShowPage({
         <BusinessPage
             title="Registro de atendimento AEE do Aluno"
             subtitle={subtitle}
+            tour={studentAeeRecordShowTour}
             breadcrumbItems={studentAeeRecordBreadcrumb({
                 studentId: student.id,
                 studentName,

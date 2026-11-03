@@ -2,6 +2,7 @@ import { RichTextField, TextInputField } from '@/components/Forms/FormFields/For
 import FormGrid, { FormGridWide, FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
+import { PEDAGOGICAL_RECORD_TOUR_TARGETS } from '../pedagogicalRecordTours';
 import type { PedagogicalRecordFormData } from './PedagogicalRecordForm.types';
 
 type TextFieldName = {
@@ -121,6 +122,7 @@ export default function PedagogicalRecordFollowUpFields({
             title="Acompanhamento Pedagógico"
             variant="inline"
             iconClass="fa fa-book"
+            tourTarget={PEDAGOGICAL_RECORD_TOUR_TARGETS.followUp}
         >
             <FormGrid columns={2}>
                 {renderEditor(followUpReasonField)}

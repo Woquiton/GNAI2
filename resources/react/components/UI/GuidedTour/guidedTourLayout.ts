@@ -51,9 +51,12 @@ export function findTourTargets(target: GuidedTourStep['target']): HTMLElement[]
         .filter((element): element is HTMLElement => element !== undefined);
 }
 
-/** O passo entra no tutorial quando não tem alvo ou quando ao menos um alvo está na tela. */
+/**
+ * O passo entra no tutorial quando não tem alvo ou quando ao menos um alvo está na tela. Com
+ * `availableWith`, vale o alvo indicado ali, porque o do passo só aparece com a demonstração.
+ */
 export function isTourStepAvailable(step: GuidedTourStep): boolean {
-    return !step.target || findTourTargets(step.target).length > 0;
+    return !step.target || findTourTargets(step.availableWith ?? step.target).length > 0;
 }
 
 /** Retângulo que envolve todos os elementos, nas coordenadas da janela. */

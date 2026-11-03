@@ -9,6 +9,7 @@ import { sessionUrls } from '@/components/Inclusion/Sessions/Sessions.routes';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { pedagogicalRecordUrls } from '../PedagogicalRecords.routes';
+import { PEDAGOGICAL_RECORD_TOUR_TARGETS } from '../pedagogicalRecordTours';
 import PedagogicalRecordFollowUpFields from './PedagogicalRecordFollowUpFields';
 import PedagogicalRecordIdentificationFields from './PedagogicalRecordIdentificationFields';
 import {
@@ -143,7 +144,9 @@ export default function PedagogicalRecordForm(
                   pending: pending.details,
                   content: (
                       <>
-                          {detailsSection}
+                          <div data-tour={PEDAGOGICAL_RECORD_TOUR_TARGETS.details}>
+                              {detailsSection}
+                          </div>
                           {guardiansSection}
                       </>
                   ),
@@ -180,7 +183,9 @@ export default function PedagogicalRecordForm(
                 save();
             }}
         >
-            <CardBox>
+            <CardBox
+                tourTarget={detailsSection ? PEDAGOGICAL_RECORD_TOUR_TARGETS.formTabs : undefined}
+            >
                 <fieldset disabled={form.processing}>
                     <AttendanceRecordTabs tabs={recordTabs} state={tabs} />
                 </fieldset>
@@ -194,6 +199,7 @@ export default function PedagogicalRecordForm(
                     />
                 }
                 status={submissionStatus(form.processing, editing)}
+                tourTarget={PEDAGOGICAL_RECORD_TOUR_TARGETS.formActions}
             >
                 <Button
                     href={cancelHref(props)}

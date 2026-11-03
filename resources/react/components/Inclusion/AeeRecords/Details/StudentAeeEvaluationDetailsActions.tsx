@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { aeeRecordUrls, studentAeeRecordUrls } from '../AeeRecords.routes';
 import type { AeeRecordManagementPermissions } from '../AeeRecords.types';
+import { AEE_RECORD_TOUR_TARGETS } from '../aeeRecordTours';
 
 interface StudentAeeEvaluationDetailsActionsProps {
     studentId: number;
@@ -52,6 +53,7 @@ export default function StudentAeeEvaluationDetailsActions({
     return (
         <FormActions
             secondary={secondaryActions}
+            tourTarget={AEE_RECORD_TOUR_TARGETS.studentDetailsActions}
             status={deleting ? 'Excluindo registro do aluno...' : undefined}
         >
             <Button

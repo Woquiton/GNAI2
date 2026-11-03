@@ -1,6 +1,7 @@
 import { aeeRecordBreadcrumb } from '@/components/Inclusion/AeeRecords/AeeRecords.routes';
 import type { AeeRecordEditProps } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
 import AeeRecordForm from '@/components/Inclusion/AeeRecords/Form/AeeRecordForm';
+import { aeeRecordEditTour } from '@/components/Inclusion/AeeRecords/aeeRecordTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionAeeRecordsEditPage({
@@ -18,6 +19,7 @@ export default function InclusionAeeRecordsEditPage({
         <BusinessPage
             title="Editar Registro de Atendimento Educacional Especializado"
             subtitle={`Registro #${aeeRecord.id} • Agendamento #${sessionId}`}
+            tour={aeeRecordEditTour}
             breadcrumbItems={aeeRecordBreadcrumb({
                 sessionId,
                 recordId: aeeRecord.id,

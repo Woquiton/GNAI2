@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { pedagogicalRecordReturnUrl, pedagogicalRecordUrls } from '../PedagogicalRecords.routes';
 import type { PedagogicalRecordShowAbilities } from '../PedagogicalRecords.types';
+import { PEDAGOGICAL_RECORD_TOUR_TARGETS } from '../pedagogicalRecordTours';
 
 interface PedagogicalRecordDetailsActionsProps {
     recordId: number;
@@ -37,7 +38,10 @@ export default function PedagogicalRecordDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions
+            secondary={pdfAction}
+            tourTarget={PEDAGOGICAL_RECORD_TOUR_TARGETS.detailsActions}
+        >
             <Button
                 href={pedagogicalRecordReturnUrl(sessionId, studentId)}
                 tone="cancel"

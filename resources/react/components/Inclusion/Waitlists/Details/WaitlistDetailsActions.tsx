@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { waitlistUrls } from '../Waitlists.routes';
 import type { WaitlistDetailsPermissions } from '../Waitlists.types';
+import { WAITLIST_TOUR_TARGETS } from '../waitlistTours';
 
 interface WaitlistDetailsActionsProps {
     waitlistId: number;
@@ -36,7 +37,7 @@ export default function WaitlistDetailsActions({
     ) : undefined;
 
     return (
-        <FormActions secondary={pdfAction}>
+        <FormActions secondary={pdfAction} tourTarget={WAITLIST_TOUR_TARGETS.detailsActions}>
             <Button
                 href={waitlistUrls.index}
                 tone="cancel"

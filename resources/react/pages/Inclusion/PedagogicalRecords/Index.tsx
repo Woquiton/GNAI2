@@ -12,6 +12,7 @@ import {
     pedagogicalRecordUrls,
 } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.routes';
 import type { PedagogicalRecordListProps } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.types';
+import { pedagogicalRecordIndexTour } from '@/components/Inclusion/PedagogicalRecords/pedagogicalRecordTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 
 export default function InclusionPedagogicalRecordsIndexPage({
@@ -35,6 +36,7 @@ export default function InclusionPedagogicalRecordsIndexPage({
             title="Todos os Atendimentos Pedagógicos"
             subtitle="Visão geral dos registros pedagógicos dos profissionais permitidos."
             breadcrumbItems={pedagogicalRecordListBreadcrumb()}
+            tour={pedagogicalRecordIndexTour}
             create={
                 can.create && {
                     href: pedagogicalRecordUrls.directCreate,

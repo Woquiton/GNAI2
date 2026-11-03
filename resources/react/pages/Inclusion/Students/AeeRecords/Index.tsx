@@ -18,6 +18,7 @@ import type {
 } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
 import AeeRecordFilters from '@/components/Inclusion/AeeRecords/List/AeeRecordFilters';
 import StudentAeeRecordList from '@/components/Inclusion/AeeRecords/List/StudentAeeRecordList';
+import { studentAeeRecordIndexTour } from '@/components/Inclusion/AeeRecords/aeeRecordTours';
 import StudentRecordReturnButton from '@/components/Inclusion/Students/StudentRecordReturnButton';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
@@ -60,6 +61,7 @@ export default function InclusionStudentsAeeRecordsIndexPage({
             breadcrumbItems={studentAeeRecordBreadcrumb({ studentId: student.id, studentName })}
             actions={returnAction}
             listLabel="Listagem de registros de atendimento AEE do aluno"
+            tour={studentAeeRecordIndexTour}
             loading={filters.loading}
             loadingLabel="Atualizando registros de atendimento AEE"
             filters={

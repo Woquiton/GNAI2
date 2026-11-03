@@ -1,6 +1,7 @@
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import type { AeeStudentEvaluationWithRecord } from '../AeeRecords.types';
+import { AEE_RECORD_TOUR_TARGETS } from '../aeeRecordTours';
 import AeeEvaluationDetails from './AeeEvaluationDetails';
 import AeeRecordExecutionDetails from './AeeRecordExecutionDetails';
 
@@ -22,6 +23,7 @@ export default function StudentAeeEvaluationDetails({
             />
             <FormSection
                 id="student-aee-evaluation"
+                tourTarget={AEE_RECORD_TOUR_TARGETS.studentDetailsEvaluation}
                 title="Avaliação Individual do Aluno"
                 variant="inline"
                 iconClass="fa fa-user"

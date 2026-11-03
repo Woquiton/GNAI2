@@ -2,7 +2,7 @@
 titulo: Fila de Espera
 resumo: Como colocar um aluno ou profissional na fila de um item indisponível para empréstimo, acompanhar a solicitação, cancelá-la ou excluí-la.
 categoria: Atendimento
-palavras-chave: fila de espera, fila, lista de espera, espera, aguardar item, reservar item, reserva, solicitação, solicitar recurso, item indisponível, sem estoque, tecnologia assistiva, material pedagógico acessível, beneficiário, aluno, profissional, notificado, atendido, em espera, cancelar solicitação, excluir solicitação, próximo da fila, pdf da solicitação
+palavras-chave: fila de espera, fila, lista de espera, espera, aguardar item, reservar item, reserva, solicitação, solicitar recurso, item indisponível, sem estoque, tecnologia assistiva, material pedagógico acessível, beneficiário, aluno, profissional, notificado, atendido, em espera, cancelar solicitação, excluir solicitação, próximo da fila, pdf da solicitação, tutorial, tour
 ordem: 50
 permissoes: waitlist.index
 ---
@@ -11,6 +11,10 @@ A fila de espera registra quem precisa de um item do acervo que não pode ser em
 
 
 > **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
+## Conhecer as telas com o tutorial
+
+A listagem, o cadastro, a edição e a visualização da solicitação têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, os campos do formulário e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Quais itens podem entrar na fila?
 

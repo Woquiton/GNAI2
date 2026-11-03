@@ -10,6 +10,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { aeeRecordUrls, aeeSessionUrls } from '../AeeRecords.routes';
 import type { AeeGuardiansByStudent } from '../AeeRecords.types';
+import { AEE_RECORD_TOUR_TARGETS } from '../aeeRecordTours';
 import AeeRecordEvaluationFields from './AeeRecordEvaluationFields';
 import AeeRecordGeneralFields from './AeeRecordGeneralFields';
 import { type UseAeeRecordFormOptions, useAeeRecordForm } from './useAeeRecordForm';
@@ -171,10 +172,11 @@ export default function AeeRecordForm(props: AeeRecordFormProps): React.JSX.Elem
                 save();
             }}
         >
-            <CardBox>
+            <CardBox tourTarget={AEE_RECORD_TOUR_TARGETS.recordTabs}>
                 <AttendanceRecordTabs tabs={recordTabs} state={tabs} />
             </CardBox>
             <FormActions
+                tourTarget={AEE_RECORD_TOUR_TARGETS.formActions}
                 secondary={
                     <AttendanceRecordTabNavigation
                         tabs={recordTabs}

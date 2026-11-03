@@ -8,6 +8,7 @@ import TextInput from '@/components/Forms/TextInput/TextInput';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { waitlistUrls } from '../Waitlists.routes';
 import type { WaitlistCreateProps } from '../Waitlists.types';
+import { WAITLIST_TOUR_TARGETS } from '../waitlistTours';
 import WaitlistFormActions from './WaitlistFormActions';
 import { useWaitlistCreateForm } from './useWaitlistCreateForm';
 import './WaitlistForm.css';
@@ -48,6 +49,7 @@ export default function WaitlistCreateForm(props: WaitlistCreateProps): React.JS
                     title="Identificação"
                     variant="inline"
                     iconClass="fa fa-list-alt"
+                    tourTarget={WAITLIST_TOUR_TARGETS.identification}
                 >
                     <FormStack>
                         <FormGrid columns={2}>
@@ -107,19 +109,26 @@ export default function WaitlistCreateForm(props: WaitlistCreateProps): React.JS
                                 </FormField>
                             </FormGridWide>
                         </FormGrid>
-                        <p className="waitlistForm__hint">
+                        <p
+                            className="waitlistForm__hint"
+                            data-tour={WAITLIST_TOUR_TARGETS.beneficiary}
+                        >
                             Selecione um aluno ou um profissional como beneficiário, nunca ambos.
                         </p>
-                        <RichTextField
-                            id="waitlist-observation-field"
-                            label="Observações"
-                            defaultValue={form.data.observation}
-                            height={120}
-                            disabled={form.processing}
-                            error={errors.observation}
-                            onLoadError={() => reportEditorFailure('observation', 'observações')}
-                            onChange={(html) => form.setData('observation', html)}
-                        />
+                        <div data-tour={WAITLIST_TOUR_TARGETS.observation}>
+                            <RichTextField
+                                id="waitlist-observation-field"
+                                label="Observações"
+                                defaultValue={form.data.observation}
+                                height={120}
+                                disabled={form.processing}
+                                error={errors.observation}
+                                onLoadError={() =>
+                                    reportEditorFailure('observation', 'observações')
+                                }
+                                onChange={(html) => form.setData('observation', html)}
+                            />
+                        </div>
                     </FormStack>
                 </FormSection>
             </CardBox>

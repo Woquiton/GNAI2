@@ -2,7 +2,7 @@
 titulo: Atendimentos Especializados (AEE)
 resumo: Como registrar o atendimento educacional especializado de um agendamento ou direto, sem agendamento, avaliar cada aluno, indicar a participação de responsáveis e consultar, editar ou excluir os registros.
 categoria: Atendimento
-palavras-chave: aee, atendimento educacional especializado, cadastrar atendimento, sem agendamento, registro direto, atendimento passado, atendimento retroativo, corrigir data, corrigir horário, atendimento especializado, atendimentos especializados, registro aee, registrar atendimento, criar atendimento aee, relatório de atendimento, evolução, presença, ausência, falta, aluno presente, aluno ausente, motivo da ausência, participação, avaliação do desenvolvimento, indicadores de progresso, recomendações, adaptações, responsável participou, devolutiva à família, meus atendimentos, todos os atendimentos, histórico de atendimentos, pdf do atendimento, histórico em pdf, duração
+palavras-chave: aee, atendimento educacional especializado, cadastrar atendimento, sem agendamento, registro direto, atendimento passado, atendimento retroativo, corrigir data, corrigir horário, atendimento especializado, atendimentos especializados, registro aee, registrar atendimento, criar atendimento aee, relatório de atendimento, evolução, presença, ausência, falta, aluno presente, aluno ausente, motivo da ausência, participação, avaliação do desenvolvimento, indicadores de progresso, recomendações, adaptações, responsável participou, devolutiva à família, meus atendimentos, todos os atendimentos, histórico de atendimentos, pdf do atendimento, histórico em pdf, duração, tutorial, tour
 ordem: 30
 permissoes: aee-record.view-own, aee-record.view-all
 ---
@@ -11,6 +11,10 @@ O registro de Atendimento Educacional Especializado (AEE) documenta o que aconte
 
 
 > **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
+## Conhecer as telas com o tutorial
+
+As listagens, o registro a partir do agendamento, o registro sem agendamento, a edição, a visualização do registro e as telas da avaliação do aluno pelo prontuário têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela das listagens, cada aba do formulário e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que preciso antes de registrar um atendimento AEE?
 

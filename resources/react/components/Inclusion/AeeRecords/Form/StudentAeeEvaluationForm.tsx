@@ -13,6 +13,7 @@ import { dateLabel } from '@/utils/formatters';
 import { AEE_EVALUATION_SAVE_FAILURE_TEXT, aeeTextValue } from '../AeeRecords.constants';
 import { aeeRecordUrls, studentAeeRecordUrls } from '../AeeRecords.routes';
 import type { StudentAeeRecordEditProps } from '../AeeRecords.types';
+import { AEE_RECORD_TOUR_TARGETS } from '../aeeRecordTours';
 import AeeEvaluationFields from './AeeEvaluationFields';
 import { evaluationFromRecord, evaluationPayload } from './aeeEvaluationData';
 import type { AeeEvaluationTextField, AeeStudentEvaluationFormData } from './AeeRecordForm.types';
@@ -58,6 +59,7 @@ export default function StudentAeeEvaluationForm({
             <CardBox>
                 <FormSection
                     id="student-aee-session"
+                    tourTarget={AEE_RECORD_TOUR_TARGETS.studentSession}
                     title="Informações do atendimento AEE"
                     variant="inline"
                     iconClass="fa fa-calendar"
@@ -89,6 +91,7 @@ export default function StudentAeeEvaluationForm({
                 </FormSection>
                 <FormSection
                     id="student-aee-evaluation"
+                    tourTarget={AEE_RECORD_TOUR_TARGETS.studentEvaluation}
                     title="Editar Avaliação Individual"
                     variant="inline"
                     iconClass="fa fa-user"
@@ -111,6 +114,7 @@ export default function StudentAeeEvaluationForm({
                 </FormSection>
             </CardBox>
             <FormActions
+                tourTarget={AEE_RECORD_TOUR_TARGETS.studentFormActions}
                 secondary={
                     <Button
                         href={aeeRecordUrls.show(aeeRecord.id)}

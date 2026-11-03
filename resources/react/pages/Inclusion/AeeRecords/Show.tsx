@@ -7,6 +7,7 @@ import {
 import type { AeeRecordShowProps } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
 import AeeRecordDetails from '@/components/Inclusion/AeeRecords/Details/AeeRecordDetails';
 import AeeRecordDetailsActions from '@/components/Inclusion/AeeRecords/Details/AeeRecordDetailsActions';
+import { aeeRecordShowTour } from '@/components/Inclusion/AeeRecords/aeeRecordTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 import { dateLabel } from '@/utils/formatters';
@@ -24,6 +25,7 @@ export default function InclusionAeeRecordsShowPage({
         <BusinessPage
             title="Registro de Atendimento AEE"
             subtitle={subtitle}
+            tour={aeeRecordShowTour}
             breadcrumbItems={aeeRecordBreadcrumb({
                 sessionId,
                 sessionLabel: `Agendamento #${sessionId}`,

@@ -5,6 +5,7 @@ import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { aeeStudentName } from '../AeeRecords.constants';
 import type { AeeRecordRecord } from '../AeeRecords.types';
 import AeeEvaluationTabs, { AeeEvaluationTabLabel } from '../AeeEvaluationTabs';
+import { AEE_RECORD_TOUR_TARGETS } from '../aeeRecordTours';
 import AeeEvaluationDetails from './AeeEvaluationDetails';
 import AeeRecordExecutionDetails from './AeeRecordExecutionDetails';
 
@@ -33,6 +34,7 @@ export default function AeeRecordDetails({ aeeRecord }: AeeRecordDetailsProps): 
             <AeeRecordExecutionDetails id="aee-record-execution" aeeRecord={aeeRecord} />
             <FormSection
                 id="aee-record-evaluations"
+                tourTarget={AEE_RECORD_TOUR_TARGETS.evaluations}
                 title="Desempenho Individual"
                 variant="inline"
                 iconClass="fa fa-users"

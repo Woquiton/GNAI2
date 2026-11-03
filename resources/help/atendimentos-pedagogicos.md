@@ -2,7 +2,7 @@
 titulo: Atendimentos Pedagógicos
 resumo: Como registrar o acompanhamento pedagógico de um agendamento ou direto, sem agendamento, indicar presença e participação de responsáveis e consultar, editar, excluir ou exportar os registros.
 categoria: Atendimento
-palavras-chave: atendimento pedagógico, atendimentos pedagógicos, cadastrar atendimento, sem agendamento, registro direto, atendimento passado, atendimento retroativo, corrigir data, corrigir horário, registro pedagógico, criar registro pedagógico, acompanhamento pedagógico, acompanhamento sistemático, motivo do acompanhamento, encaminhamentos, encaminhamento, estratégias e recursos, observações complementares, presença, ausência, falta, motivo da ausência, responsável participou, atendimento com responsável, família, meus atendimentos, todos os atendimentos, pdf pedagógico, histórico em pdf, duração
+palavras-chave: atendimento pedagógico, atendimentos pedagógicos, cadastrar atendimento, sem agendamento, registro direto, atendimento passado, atendimento retroativo, corrigir data, corrigir horário, registro pedagógico, criar registro pedagógico, acompanhamento pedagógico, acompanhamento sistemático, motivo do acompanhamento, encaminhamentos, encaminhamento, estratégias e recursos, observações complementares, presença, ausência, falta, motivo da ausência, responsável participou, atendimento com responsável, família, meus atendimentos, todos os atendimentos, pdf pedagógico, histórico em pdf, duração, tutorial, tour
 ordem: 40
 permissoes: pedagogical-record.view-own, pedagogical-record.view-all
 ---
@@ -11,6 +11,10 @@ O atendimento pedagógico registra o acompanhamento individual de um aluno feito
 
 
 > **Importante:** alunos em **Em acolhimento** não podem receber novos registros neste módulo. Durante essa etapa, cadastre somente [Solicitações de Atendimento](/ajuda/solicitacoes-de-atendimento). A liberação depende da alteração manual da situação do aluno; concluir uma solicitação não o torna ativo.
+
+## Conhecer as telas com o tutorial
+
+As listagens, o registro a partir do agendamento, o registro sem agendamento, a edição e a visualização do atendimento pedagógico têm um tutorial na própria tela, assim como o histórico de atendimentos pedagógicos do aluno. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela das listagens, as abas e as seções do formulário e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## O que preciso antes de registrar um atendimento pedagógico?
 

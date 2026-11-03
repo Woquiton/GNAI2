@@ -10,6 +10,7 @@ import type {
     WaitlistRecord,
     WaitlistShowProps,
 } from '@/components/Inclusion/Waitlists/Waitlists.types';
+import { waitlistShowTour } from '@/components/Inclusion/Waitlists/waitlistTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -35,6 +36,7 @@ export default function InclusionWaitlistsShowPage({
             documentTitle={`Solicitação #${waitlist.id}`}
             breadcrumbItems={waitlistBreadcrumb({ waitlist })}
             busy={processing}
+            tour={waitlistShowTour}
         >
             <WaitlistDetails
                 waitlist={waitlist}

@@ -1,5 +1,6 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
+import { WAITLIST_TOUR_TARGETS } from '../waitlistTours';
 
 interface WaitlistFormActionsProps {
     editing: boolean;
@@ -24,7 +25,10 @@ export default function WaitlistFormActions({
     const submitTitle = editing ? 'Salvar alterações' : 'Cadastrar solicitação';
 
     return (
-        <FormActions status={processing ? 'Salvando solicitação...' : undefined}>
+        <FormActions
+            status={processing ? 'Salvando solicitação...' : undefined}
+            tourTarget={WAITLIST_TOUR_TARGETS.formActions}
+        >
             <Button
                 href={cancelHref}
                 tone="cancel"

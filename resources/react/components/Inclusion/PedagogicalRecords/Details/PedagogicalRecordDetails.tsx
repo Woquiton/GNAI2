@@ -5,6 +5,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { PedagogicalRecordShowProps } from '../PedagogicalRecords.types';
+import { PEDAGOGICAL_RECORD_TOUR_TARGETS } from '../pedagogicalRecordTours';
 
 type PedagogicalRecordDetailsProps = Pick<
     PedagogicalRecordShowProps,
@@ -36,6 +37,7 @@ export default function PedagogicalRecordDetails({
                 title="Identificação do Estudante"
                 variant="inline"
                 iconClass="fa fa-user"
+                tourTarget={PEDAGOGICAL_RECORD_TOUR_TARGETS.detailsIdentification}
             >
                 <DetailGrid>
                     <DetailField label="Aluno">
@@ -59,6 +61,7 @@ export default function PedagogicalRecordDetails({
                 title="Acompanhamento Pedagógico"
                 variant="inline"
                 iconClass="fa fa-book"
+                tourTarget={PEDAGOGICAL_RECORD_TOUR_TARGETS.detailsFollowUp}
             >
                 <DetailGrid>
                     <DetailField label="Motivo do Acompanhamento" wide>

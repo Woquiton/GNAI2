@@ -2,6 +2,7 @@ import { aeeStudentName } from '@/components/Inclusion/AeeRecords/AeeRecords.con
 import { studentAeeRecordBreadcrumb } from '@/components/Inclusion/AeeRecords/AeeRecords.routes';
 import type { StudentAeeRecordEditProps } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
 import StudentAeeEvaluationForm from '@/components/Inclusion/AeeRecords/Form/StudentAeeEvaluationForm';
+import { studentAeeRecordEditTour } from '@/components/Inclusion/AeeRecords/aeeRecordTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionStudentsAeeRecordsEditPage({
@@ -17,6 +18,7 @@ export default function InclusionStudentsAeeRecordsEditPage({
         <BusinessPage
             title="Editar Avaliação do Aluno"
             subtitle={subtitle}
+            tour={studentAeeRecordEditTour}
             breadcrumbItems={studentAeeRecordBreadcrumb({
                 studentId: student.id,
                 studentName,

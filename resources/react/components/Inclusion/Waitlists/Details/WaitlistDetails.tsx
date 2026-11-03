@@ -6,6 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import WaitlistResourceDetails from '../WaitlistResourceDetails';
 import type { WaitlistShowProps } from '../Waitlists.types';
+import { WAITLIST_TOUR_TARGETS } from '../waitlistTours';
 
 const NOT_INFORMED = 'Não informado';
 
@@ -30,6 +31,7 @@ export default function WaitlistDetails({
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-list-alt"
+                tourTarget={WAITLIST_TOUR_TARGETS.details}
             >
                 <DetailGrid>
                     <WaitlistResourceDetails {...waitlist} />

@@ -14,6 +14,11 @@ export interface GuidedTourStep {
     id: string;
     /** Valor de `data-tour` do elemento destacado. Sem alvo, o cartão aparece no centro da tela. */
     target?: string | string[];
+    /**
+     * Alvo que garante o passo no tutorial quando o próprio alvo só aparece depois do `onEnter`,
+     * como uma seção dentro de outra aba que a demonstração abre.
+     */
+    availableWith?: string | string[];
     /** Nome curto do que está destacado. */
     title: string;
     /** Explicação em linguagem simples; cada item vira um parágrafo. */

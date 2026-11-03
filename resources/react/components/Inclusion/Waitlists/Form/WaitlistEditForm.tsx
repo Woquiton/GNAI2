@@ -12,6 +12,7 @@ import WaitlistResourceDetails from '../WaitlistResourceDetails';
 import { waitlistStudentLabel } from '../Waitlists.constants';
 import { waitlistUrls } from '../Waitlists.routes';
 import type { WaitlistRecord } from '../Waitlists.types';
+import { WAITLIST_TOUR_TARGETS } from '../waitlistTours';
 import WaitlistFormActions from './WaitlistFormActions';
 import type { WaitlistEditFormData } from './WaitlistForm.types';
 
@@ -61,6 +62,7 @@ export default function WaitlistEditForm({
                     title="Identificação"
                     variant="inline"
                     iconClass="fa fa-list-alt"
+                    tourTarget={WAITLIST_TOUR_TARGETS.identification}
                 >
                     <FormStack>
                         <DetailGrid>
@@ -74,16 +76,20 @@ export default function WaitlistEditForm({
                                 {statusLabel ?? waitlist.status_label}
                             </DetailField>
                         </DetailGrid>
-                        <RichTextField
-                            id="waitlist-observation-field"
-                            label="Observações"
-                            defaultValue={form.data.observation}
-                            height={120}
-                            disabled={form.processing}
-                            error={form.errors.observation}
-                            onLoadError={() => reportEditorFailure('observation', 'observações')}
-                            onChange={(html) => form.setData('observation', html)}
-                        />
+                        <div data-tour={WAITLIST_TOUR_TARGETS.observation}>
+                            <RichTextField
+                                id="waitlist-observation-field"
+                                label="Observações"
+                                defaultValue={form.data.observation}
+                                height={120}
+                                disabled={form.processing}
+                                error={form.errors.observation}
+                                onLoadError={() =>
+                                    reportEditorFailure('observation', 'observações')
+                                }
+                                onChange={(html) => form.setData('observation', html)}
+                            />
+                        </div>
                     </FormStack>
                 </FormSection>
             </CardBox>

@@ -10,6 +10,7 @@ import type {
     PedagogicalRecordFormContext,
     PedagogicalRecordGuardianOption,
 } from '../PedagogicalRecords.types';
+import { PEDAGOGICAL_RECORD_TOUR_TARGETS } from '../pedagogicalRecordTours';
 import './PedagogicalRecordForm.css';
 
 interface PedagogicalRecordIdentificationFieldsProps {
@@ -73,9 +74,7 @@ export default function PedagogicalRecordIdentificationFields({
 
     const summary = context ? (
         <DetailGrid>
-            <DetailField label="Aluno">
-                {context.student_name ?? 'Aluno não informado'}
-            </DetailField>
+            <DetailField label="Aluno">{context.student_name ?? 'Aluno não informado'}</DetailField>
             <DetailField label="Profissional">
                 {context.professional_name ?? 'Profissional não informado'}
             </DetailField>
@@ -93,6 +92,7 @@ export default function PedagogicalRecordIdentificationFields({
             title={context ? 'Identificação do Estudante' : 'Responsáveis Participantes'}
             variant="inline"
             iconClass={context ? 'fa fa-user' : 'fa fa-users'}
+            tourTarget={PEDAGOGICAL_RECORD_TOUR_TARGETS.identification}
         >
             {summary}
             <FormGrid columns={2}>

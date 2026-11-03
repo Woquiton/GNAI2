@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { aeeRecordUrls, aeeSessionUrls } from '../AeeRecords.routes';
 import type { AeeRecordManagementPermissions } from '../AeeRecords.types';
+import { AEE_RECORD_TOUR_TARGETS } from '../aeeRecordTours';
 
 interface AeeRecordDetailsActionsProps {
     recordId: number;
@@ -35,6 +36,7 @@ export default function AeeRecordDetailsActions({
     return (
         <FormActions
             secondary={pdfAction}
+            tourTarget={AEE_RECORD_TOUR_TARGETS.detailsActions}
             status={deleting ? 'Excluindo registro do atendimento AEE...' : undefined}
         >
             <Button

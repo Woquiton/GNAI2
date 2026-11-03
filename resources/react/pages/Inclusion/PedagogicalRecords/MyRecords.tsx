@@ -12,6 +12,7 @@ import {
     pedagogicalRecordUrls,
 } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.routes';
 import type { PedagogicalRecordListProps } from '@/components/Inclusion/PedagogicalRecords/PedagogicalRecords.types';
+import { pedagogicalRecordMyRecordsTour } from '@/components/Inclusion/PedagogicalRecords/pedagogicalRecordTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 
 export default function InclusionPedagogicalRecordsMyRecordsPage({
@@ -35,6 +36,7 @@ export default function InclusionPedagogicalRecordsMyRecordsPage({
             title="Meus Atendimentos Pedagógicos"
             subtitle="Histórico dos seus atendimentos pedagógicos."
             breadcrumbItems={pedagogicalRecordListBreadcrumb()}
+            tour={pedagogicalRecordMyRecordsTour}
             create={
                 can.create && {
                     href: pedagogicalRecordUrls.directCreate,

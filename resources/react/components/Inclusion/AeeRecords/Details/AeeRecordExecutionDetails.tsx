@@ -4,6 +4,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import { aeeTextValue } from '../AeeRecords.constants';
 import type { AeeRecordRecord } from '../AeeRecords.types';
+import { AEE_RECORD_TOUR_TARGETS } from '../aeeRecordTours';
 
 interface AeeRecordExecutionDetailsProps {
     id: string;
@@ -18,6 +19,7 @@ export default function AeeRecordExecutionDetails({
     return (
         <FormSection
             id={id}
+            tourTarget={AEE_RECORD_TOUR_TARGETS.execution}
             title="Execução do Atendimento AEE"
             variant="inline"
             iconClass="fa fa-clipboard"

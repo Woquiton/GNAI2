@@ -11,6 +11,7 @@ import {
 import type { AeeRecordListProps } from '@/components/Inclusion/AeeRecords/AeeRecords.types';
 import AeeRecordFilters from '@/components/Inclusion/AeeRecords/List/AeeRecordFilters';
 import AeeRecordList from '@/components/Inclusion/AeeRecords/List/AeeRecordList';
+import { aeeRecordMyRecordsTour } from '@/components/Inclusion/AeeRecords/aeeRecordTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import Button from '@/components/UI/Button/Button';
 
@@ -52,6 +53,7 @@ export default function InclusionAeeRecordsMyRecordsPage({
             }
             actions={allRecordsAction}
             listLabel="Listagem de atendimentos especializados"
+            tour={aeeRecordMyRecordsTour}
             loading={filters.loading}
             loadingLabel="Atualizando atendimentos especializados"
             filters={

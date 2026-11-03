@@ -50,6 +50,7 @@ Campos de cada passo (`GuidedTourStep`):
 | `title` | Nome curto da parte destacada, igual ao rótulo da tela quando houver |
 | `content` | Explicação; cada item da lista vira um parágrafo |
 | `group` | Agrupa passos em "Ver todos os passos" |
+| `availableWith` | Alvo que garante o passo no tutorial quando o próprio alvo só aparece depois do `onEnter`, como uma seção de outra aba |
 | `onEnter` | Demonstração ao entrar no passo. Devolve a função que desfaz ao sair ou um `GuidedTourDemo` com `undo` e `note`, a frase em destaque sobre o que aconteceu na tela |
 
 ## Ordem e conteúdo
@@ -90,6 +91,7 @@ A tela troca só os textos que falam dos próprios registros (`filters`, `moreFi
 - Demonstrações usam `onEnter` e desfazem tudo ao sair do passo. As preferências salvas do usuário precisam ficar como estavam: abrir e fechar de novo um controle que lembra o estado é aceitável; trocar a quantidade por página, que recarrega a lista e grava a preferência no servidor, não é.
 - `openDisclosureDemo` abre um controle com `aria-expanded` e o fecha ao sair, só se o tutorial o abriu. `pressKey` simula o teclado, como no arraste da coluna. Toques seguidos precisam de intervalo, para o componente medir a tela já atualizada.
 - Controles que fecham ao clicar fora devem ignorar cliques dentro de `[data-guided-tour]`, como faz o menu de colunas.
+- Formulários com abas: o tutorial descarta, ao abrir, passos cujo alvo está numa aba fechada. Destaque o card das abas ou use `availableWith` com o card e um `onEnter` que abre a aba, lendo a aba atual depois de um `setTimeout`, para a volta do passo anterior já ter acontecido.
 - Não demonstre controles que viram diálogo modal em telas menores, como a lateral de status do prontuário abaixo de 1280 px.
 
 ## Acessibilidade
