@@ -9,6 +9,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { DEFAULT_LOCATION_ZOOM } from '../Locations.constants';
 import type { LocationRecord, LocationShowProps } from '../Locations.types';
+import { LOCATION_TOUR_TARGETS } from '../locationTours';
 
 /** A instituição vinculada enquadra o mapa e aparece como sede. */
 function institutionReference(location: LocationRecord): GeoMapReference | null {
@@ -40,6 +41,7 @@ export default function LocationDetails({
                 <MapSplitMain>
                     <FormSection
                         id="location-show-information"
+                        tourTarget={LOCATION_TOUR_TARGETS.detailsIdentification}
                         title="Identificação"
                         variant="inline"
                         iconClass="fa fa-map-marker"
@@ -59,6 +61,7 @@ export default function LocationDetails({
                     </FormSection>
                     <FormSection
                         id="location-show-map-section"
+                        tourTarget={LOCATION_TOUR_TARGETS.detailsSettings}
                         title="Configuração"
                         variant="inline"
                         iconClass="fa fa-globe"
@@ -81,6 +84,7 @@ export default function LocationDetails({
                 <MapSplitAside>
                     <FormSection
                         id="location-show-map"
+                        tourTarget={LOCATION_TOUR_TARGETS.detailsMap}
                         title="Localização no Mapa"
                         variant="inline"
                         iconClass="fa fa-map-marker"

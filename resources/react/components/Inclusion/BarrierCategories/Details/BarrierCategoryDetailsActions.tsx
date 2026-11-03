@@ -1,5 +1,6 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
+import { BARRIER_CATEGORY_TOUR_TARGETS } from '../barrierCategoryTours';
 import { barrierCategoryUrls } from '../BarrierCategories.routes';
 import type { BarrierCategoryDetailsPermissions } from '../BarrierCategories.types';
 
@@ -18,7 +19,7 @@ export default function BarrierCategoryDetailsActions({
     onDelete,
 }: BarrierCategoryDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={BARRIER_CATEGORY_TOUR_TARGETS.detailsActions}>
             <Button
                 href={barrierCategoryUrls.index}
                 tone="cancel"

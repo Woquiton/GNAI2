@@ -8,6 +8,7 @@ import type {
     BarrierCategoryIndexProps,
     BarrierCategoryRecord,
 } from '@/components/Inclusion/BarrierCategories/BarrierCategories.types';
+import { barrierCategoryListTour } from '@/components/Inclusion/BarrierCategories/barrierCategoryTours';
 import BarrierCategoryDeleteModal from '@/components/Inclusion/BarrierCategories/BarrierCategoryDeleteModal';
 import BarrierCategoryFilters from '@/components/Inclusion/BarrierCategories/List/BarrierCategoryFilters';
 import BarrierCategoryList from '@/components/Inclusion/BarrierCategories/List/BarrierCategoryList';
@@ -41,6 +42,7 @@ export default function InclusionBarrierCategoriesIndexPage({
         <TableListLayout
             title="Categorias de Barreiras"
             subtitle="Classificação para o mapeamento de acessibilidade e identificação de obstáculos."
+            tour={barrierCategoryListTour}
             breadcrumbItems={barrierCategoryBreadcrumb()}
             create={
                 can.create && {

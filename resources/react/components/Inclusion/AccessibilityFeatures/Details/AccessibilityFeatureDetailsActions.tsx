@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { accessibilityFeatureUrls } from '../AccessibilityFeatures.routes';
 import type { AccessibilityFeatureDetailsPermissions } from '../AccessibilityFeatures.types';
+import { ACCESSIBILITY_FEATURE_TOUR_TARGETS } from '../accessibilityFeatureTours';
 
 interface AccessibilityFeatureDetailsActionsProps {
     featureId: number;
@@ -18,7 +19,7 @@ export default function AccessibilityFeatureDetailsActions({
     onDelete,
 }: AccessibilityFeatureDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={ACCESSIBILITY_FEATURE_TOUR_TARGETS.detailsActions}>
             <Button
                 href={accessibilityFeatureUrls.index}
                 tone="cancel"

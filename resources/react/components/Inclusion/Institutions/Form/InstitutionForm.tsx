@@ -7,6 +7,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { institutionUrls } from '../Institutions.routes';
 import type { InstitutionRecord } from '../Institutions.types';
+import { INSTITUTION_TOUR_TARGETS } from '../institutionTours';
 import InstitutionIdentificationFields from './InstitutionIdentificationFields';
 import InstitutionSettingsFields from './InstitutionSettingsFields';
 import { useInstitutionForm } from './useInstitutionForm';
@@ -62,6 +63,7 @@ export default function InstitutionForm({
                     <MapSplitAside>
                         <FormSection
                             id="institution-map"
+                            tourTarget={INSTITUTION_TOUR_TARGETS.map}
                             title="Localização no Mapa"
                             variant="inline"
                             iconClass="fa fa-map-marker"
@@ -82,7 +84,10 @@ export default function InstitutionForm({
                     </MapSplitAside>
                 </MapSplit>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={INSTITUTION_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={
                         institution ? institutionUrls.show(institution.id) : institutionUrls.index

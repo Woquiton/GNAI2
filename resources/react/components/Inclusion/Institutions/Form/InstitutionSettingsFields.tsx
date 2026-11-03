@@ -6,6 +6,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import RangeSlider from '@/components/Forms/RangeSlider/RangeSlider';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { INSTITUTION_TOUR_TARGETS } from '../institutionTours';
 import type { InstitutionFormSectionProps } from './InstitutionForm.types';
 
 interface InstitutionSettingsFieldsProps extends InstitutionFormSectionProps {
@@ -27,6 +28,7 @@ export default function InstitutionSettingsFields({
             id="institution-map-settings"
             title="Configuração"
             variant="inline"
+            tourTarget={INSTITUTION_TOUR_TARGETS.settings}
             iconClass="fa fa-globe"
         >
             <FormGrid columns={2}>

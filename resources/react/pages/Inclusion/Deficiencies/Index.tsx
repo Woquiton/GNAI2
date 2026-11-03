@@ -14,6 +14,7 @@ import type {
 import DeficiencyDeleteModal from '@/components/Inclusion/Deficiencies/DeficiencyDeleteModal';
 import DeficiencyFilters from '@/components/Inclusion/Deficiencies/List/DeficiencyFilters';
 import DeficiencyList from '@/components/Inclusion/Deficiencies/List/DeficiencyList';
+import { deficiencyListTour } from '@/components/Inclusion/Deficiencies/deficiencyTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -44,6 +45,7 @@ export default function InclusionDeficienciesIndexPage({
             title="Lista de Perfis de Atendimento"
             subtitle={deficiencyDescription}
             breadcrumbItems={deficiencyBreadcrumb()}
+            tour={deficiencyListTour}
             create={
                 can.create && {
                     href: deficiencyUrls.create,

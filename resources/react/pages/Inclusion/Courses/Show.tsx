@@ -1,4 +1,5 @@
 import CourseDeleteModal from '@/components/Inclusion/Courses/CourseDeleteModal';
+import { courseShowTour } from '@/components/Inclusion/Courses/courseTours';
 import { courseBreadcrumb, courseUrls } from '@/components/Inclusion/Courses/Courses.routes';
 import type { CourseShowProps } from '@/components/Inclusion/Courses/Courses.types';
 import CourseDetails from '@/components/Inclusion/Courses/Details/CourseDetails';
@@ -22,6 +23,7 @@ export default function InclusionCoursesShowPage({
             documentTitle={course.name}
             breadcrumbItems={courseBreadcrumb({ course })}
             busy={removal.processing}
+            tour={courseShowTour}
         >
             <CourseDetails course={course} descriptionHtml={display.descriptionHtml} />
             <CourseDetailsActions

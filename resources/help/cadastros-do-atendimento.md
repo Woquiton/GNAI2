@@ -2,7 +2,7 @@
 titulo: Cadastros do atendimento: perfis de atendimento, cargos, semestres, disciplinas e cursos
 resumo: Para que servem os cadastros de apoio do atendimento, onde são usados, como criá-los, ativá-los ou desativá-los e por que a exclusão pode ser bloqueada.
 categoria: Gestão do núcleo
-palavras-chave: cadastros, cadastros de apoio, tabelas auxiliares, perfil de atendimento, perfis de atendimento, deficiência, deficiências, cid, código cid, tea, tdah, altas habilidades, cargo, cargos, função, permissões do cargo, semestre, semestres, semestre atual, período letivo, ano letivo, disciplina, disciplinas, matéria, curso, cursos, séries, matriz curricular, grade curricular, período do curso, período da disciplina, nome repetido, virada de semestre, avançar alunos, novo semestre, retido, promover alunos, ativar, desativar, inativar, excluir cadastro, não pode ser excluído
+palavras-chave: cadastros, cadastros de apoio, tabelas auxiliares, perfil de atendimento, perfis de atendimento, deficiência, deficiências, cid, código cid, tea, tdah, altas habilidades, cargo, cargos, função, permissões do cargo, semestre, semestres, semestre atual, período letivo, ano letivo, disciplina, disciplinas, matéria, curso, cursos, séries, matriz curricular, grade curricular, período do curso, período da disciplina, nome repetido, virada de semestre, avançar alunos, novo semestre, retido, promover alunos, ativar, desativar, inativar, excluir cadastro, não pode ser excluído, tutorial, tour
 ordem: 40
 permissoes: deficiency.view, position.view, semester.view, discipline.view, course.view
 ---
@@ -10,6 +10,10 @@ permissoes: deficiency.view, position.view, semester.view, discipline.view, cour
 Os cadastros de apoio do atendimento ficam em **Gestão do núcleo → Cadastros** e alimentam as listas usadas nos alunos, nos PEIs, na equipe e nos professores. Cada cadastro só aparece no menu para quem tem a permissão de visualizá-lo; editar, ativar ou desativar e excluir dependem de permissões próprias. Esta página trata de **Perfis de Atendimento**, **Cargos**, **Semestres**, **Disciplinas** e **Cursos**; os cadastros do Radar (recursos de acessibilidade, etiquetas, categorias de barreiras, instituições e localizações) têm artigo próprio, [Cadastros do Radar](/ajuda/cadastros-do-radar).
 
 Em todos eles, os cadastros que já estão em uso não podem ser excluídos. Quando o cadastro tiver a opção, desative-o em vez de excluir: ele deixa de ser oferecido em novos vínculos, mas o histórico é preservado.
+
+## Conhecer os cadastros com o tutorial
+
+As telas de **Perfis de Atendimento**, **Cargos**, **Semestres**, **Disciplinas** e **Cursos**, inclusive a virada de semestre dos cursos, têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela das listagens, cada parte dos formulários e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Perfis de Atendimento
 

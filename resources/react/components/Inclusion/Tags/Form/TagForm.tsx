@@ -7,6 +7,7 @@ import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { TAG_TOUR_TARGETS } from '../tagTours';
 import { tagUrls } from '../Tags.routes';
 import type { TagRecord } from '../Tags.types';
 import { useTagForm } from './useTagForm';
@@ -50,38 +51,45 @@ export default function TagForm({ tag, canSubmit }: TagFormProps): React.JSX.Ele
                     >
                         <FormGrid columns={2}>
                             <FormGridWide>
-                                <TextInputField
-                                    id="tag-name"
-                                    name="name"
-                                    label="Nome da Etiqueta"
-                                    required
-                                    maxLength={100}
-                                    placeholder="Ex: Acessibilidade, Eventos, Editais, etc."
-                                    value={form.data.name}
-                                    error={errors.name}
-                                    onChange={(value) => form.setData('name', value)}
-                                />
-                            </FormGridWide>
-                            <ToggleControl
-                                id="tag-active"
-                                name="is_active"
-                                size="small"
-                                label="Etiqueta Ativa"
-                                labelAddon={
-                                    <InfoTooltip
-                                        label="Informações sobre o status da etiqueta"
-                                        text="Define se esta etiqueta estará disponível para seleção no sistema."
+                                <div data-tour={TAG_TOUR_TARGETS.name}>
+                                    <TextInputField
+                                        id="tag-name"
+                                        name="name"
+                                        label="Nome da Etiqueta"
+                                        required
+                                        maxLength={100}
+                                        placeholder="Ex: Acessibilidade, Eventos, Editais, etc."
+                                        value={form.data.name}
+                                        error={errors.name}
+                                        onChange={(value) => form.setData('name', value)}
                                     />
-                                }
-                                checked={form.data.is_active}
-                                disabled={form.processing}
-                                onChange={(checked) => form.setData('is_active', checked)}
-                            />
+                                </div>
+                            </FormGridWide>
+                            <div data-tour={TAG_TOUR_TARGETS.active}>
+                                <ToggleControl
+                                    id="tag-active"
+                                    name="is_active"
+                                    size="small"
+                                    label="Etiqueta Ativa"
+                                    labelAddon={
+                                        <InfoTooltip
+                                            label="Informações sobre o status da etiqueta"
+                                            text="Define se esta etiqueta estará disponível para seleção no sistema."
+                                        />
+                                    }
+                                    checked={form.data.is_active}
+                                    disabled={form.processing}
+                                    onChange={(checked) => form.setData('is_active', checked)}
+                                />
+                            </div>
                         </FormGrid>
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={TAG_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={tag ? tagUrls.show(tag.id) : tagUrls.index}
                     tone="cancel"

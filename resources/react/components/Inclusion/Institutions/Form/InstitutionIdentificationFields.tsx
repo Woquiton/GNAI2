@@ -1,6 +1,7 @@
 import { TextInputField } from '@/components/Forms/FormFields/FormFields';
 import FormGrid from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { INSTITUTION_TOUR_TARGETS } from '../institutionTours';
 import type { InstitutionFormSectionProps } from './InstitutionForm.types';
 
 /** Nome, sigla e endereço da sede; o endereço também posiciona o mapa. */
@@ -14,6 +15,7 @@ export default function InstitutionIdentificationFields({
             id="institution-information"
             title="Identificação"
             variant="inline"
+            tourTarget={INSTITUTION_TOUR_TARGETS.identification}
             iconClass="fa fa-university"
         >
             <FormGrid columns={2}>

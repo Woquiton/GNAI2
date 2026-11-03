@@ -7,6 +7,7 @@ import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { BARRIER_CATEGORY_TOUR_TARGETS } from '../barrierCategoryTours';
 import { barrierCategoryUrls } from '../BarrierCategories.routes';
 import type { BarrierCategoryRecord } from '../BarrierCategories.types';
 import { useBarrierCategoryForm } from './useBarrierCategoryForm';
@@ -55,67 +56,78 @@ export default function BarrierCategoryForm({
                     >
                         <FormGrid columns={2}>
                             <FormGridWide>
-                                <TextInputField
-                                    id="barrier-category-name"
-                                    name="name"
-                                    label="Nome da Categoria"
-                                    required
-                                    maxLength={150}
-                                    placeholder="Ex: Arquitetônica, Atitudinal, Comunicacional..."
-                                    value={form.data.name}
-                                    error={errors.name}
-                                    onChange={(value) => form.setData('name', value)}
-                                />
+                                <div data-tour={BARRIER_CATEGORY_TOUR_TARGETS.name}>
+                                    <TextInputField
+                                        id="barrier-category-name"
+                                        name="name"
+                                        label="Nome da Categoria"
+                                        required
+                                        maxLength={150}
+                                        placeholder="Ex: Arquitetônica, Atitudinal, Comunicacional..."
+                                        value={form.data.name}
+                                        error={errors.name}
+                                        onChange={(value) => form.setData('name', value)}
+                                    />
+                                </div>
                             </FormGridWide>
                             <FormGridWide>
-                                <RichTextField
-                                    id="barrier-category-description"
-                                    label="Descrição Detalhada"
-                                    defaultValue={form.data.description}
-                                    height={120}
-                                    disabled={form.processing}
-                                    error={errors.description}
-                                    onLoadError={() =>
-                                        reportEditorFailure('description', 'descrição')
-                                    }
-                                    onChange={(html) => form.setData('description', html)}
-                                />
+                                <div data-tour={BARRIER_CATEGORY_TOUR_TARGETS.description}>
+                                    <RichTextField
+                                        id="barrier-category-description"
+                                        label="Descrição Detalhada"
+                                        defaultValue={form.data.description}
+                                        height={120}
+                                        disabled={form.processing}
+                                        error={errors.description}
+                                        onLoadError={() =>
+                                            reportEditorFailure('description', 'descrição')
+                                        }
+                                        onChange={(html) => form.setData('description', html)}
+                                    />
+                                </div>
                             </FormGridWide>
                         </FormGrid>
                         <FormGrid columns={2}>
                             <FormStack>
-                                <ToggleControl
-                                    id="barrier-category-active"
-                                    name="is_active"
-                                    size="small"
-                                    label="Ativar no Sistema"
-                                    labelAddon={
-                                        <InfoTooltip text="Indica se esta categoria estará disponível para seleção no cadastro de novas barreiras." />
-                                    }
-                                    checked={form.data.is_active}
-                                    disabled={form.processing}
-                                    onChange={(checked) => form.setData('is_active', checked)}
-                                />
+                                <div data-tour={BARRIER_CATEGORY_TOUR_TARGETS.active}>
+                                    <ToggleControl
+                                        id="barrier-category-active"
+                                        name="is_active"
+                                        size="small"
+                                        label="Ativar no Sistema"
+                                        labelAddon={
+                                            <InfoTooltip text="Indica se esta categoria estará disponível para seleção no cadastro de novas barreiras." />
+                                        }
+                                        checked={form.data.is_active}
+                                        disabled={form.processing}
+                                        onChange={(checked) => form.setData('is_active', checked)}
+                                    />
+                                </div>
                             </FormStack>
                             <FormStack>
-                                <ToggleControl
-                                    id="barrier-category-blocks-map"
-                                    name="blocks_map"
-                                    size="small"
-                                    label="Bloquear Mapa"
-                                    labelAddon={
-                                        <InfoTooltip text="Oculta o mapa no cadastro de novas barreiras quando esta categoria for selecionada." />
-                                    }
-                                    checked={form.data.blocks_map}
-                                    disabled={form.processing}
-                                    onChange={(checked) => form.setData('blocks_map', checked)}
-                                />
+                                <div data-tour={BARRIER_CATEGORY_TOUR_TARGETS.blocksMap}>
+                                    <ToggleControl
+                                        id="barrier-category-blocks-map"
+                                        name="blocks_map"
+                                        size="small"
+                                        label="Bloquear Mapa"
+                                        labelAddon={
+                                            <InfoTooltip text="Oculta o mapa no cadastro de novas barreiras quando esta categoria for selecionada." />
+                                        }
+                                        checked={form.data.blocks_map}
+                                        disabled={form.processing}
+                                        onChange={(checked) => form.setData('blocks_map', checked)}
+                                    />
+                                </div>
                             </FormStack>
                         </FormGrid>
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={BARRIER_CATEGORY_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={
                         category ? barrierCategoryUrls.show(category.id) : barrierCategoryUrls.index

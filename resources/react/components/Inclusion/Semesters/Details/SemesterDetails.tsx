@@ -4,6 +4,7 @@ import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
+import { SEMESTER_TOUR_TARGETS } from '../semesterTours';
 import { semesterLabel } from '../Semesters.constants';
 import type { SemesterRecord } from '../Semesters.types';
 
@@ -44,6 +45,7 @@ export default function SemesterDetails({
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-calendar"
+                tourTarget={SEMESTER_TOUR_TARGETS.details}
             >
                 <DetailGrid>
                     <DetailField label="Rótulo / Identificador">

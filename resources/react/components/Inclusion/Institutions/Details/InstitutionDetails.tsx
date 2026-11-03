@@ -7,6 +7,7 @@ import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { InstitutionRecord } from '../Institutions.types';
+import { INSTITUTION_TOUR_TARGETS } from '../institutionTours';
 
 /** Identificação, configuração e sede no mapa. */
 export default function InstitutionDetails({
@@ -25,6 +26,7 @@ export default function InstitutionDetails({
                 <MapSplitMain>
                     <FormSection
                         id="institution-show-information"
+                        tourTarget={INSTITUTION_TOUR_TARGETS.detailsIdentification}
                         title="Identificação"
                         variant="inline"
                         iconClass="fa fa-university"
@@ -48,6 +50,7 @@ export default function InstitutionDetails({
                     </FormSection>
                     <FormSection
                         id="institution-show-settings"
+                        tourTarget={INSTITUTION_TOUR_TARGETS.detailsSettings}
                         title="Configuração"
                         variant="inline"
                         iconClass="fa fa-globe"
@@ -73,6 +76,7 @@ export default function InstitutionDetails({
                 <MapSplitAside>
                     <FormSection
                         id="institution-show-map"
+                        tourTarget={INSTITUTION_TOUR_TARGETS.detailsMap}
                         title="Localização no Mapa"
                         variant="inline"
                         iconClass="fa fa-map-marker"

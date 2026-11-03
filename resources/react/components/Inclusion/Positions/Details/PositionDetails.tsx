@@ -6,6 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import TagList from '@/components/UI/TagList/TagList';
 import type { PositionDetailsRecord } from '../Positions.types';
+import { POSITION_TOUR_TARGETS } from '../positionTours';
 
 /** Informações, atribuições e permissões vinculadas de um cargo. */
 export default function PositionDetails({
@@ -22,11 +23,10 @@ export default function PositionDetails({
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-briefcase"
+                tourTarget={POSITION_TOUR_TARGETS.detailsIdentification}
             >
                 <DetailGrid>
-                    <DetailField label="Nome do Cargo / Função">
-                        {position.name}
-                    </DetailField>
+                    <DetailField label="Nome do Cargo / Função">{position.name}</DetailField>
                     <DetailField label="Status de Disponibilidade">
                         <TableLabel tone={position.is_active ? 'success' : 'inverse'}>
                             {position.is_active ? 'Ativo' : 'Desativado'}
@@ -42,6 +42,7 @@ export default function PositionDetails({
                 title="Permissões Vinculadas ao Cargo"
                 variant="inline"
                 iconClass="fa fa-key"
+                tourTarget={POSITION_TOUR_TARGETS.detailsPermissions}
             >
                 <DetailGrid>
                     <DetailField label="Permissões Vinculadas" wide>

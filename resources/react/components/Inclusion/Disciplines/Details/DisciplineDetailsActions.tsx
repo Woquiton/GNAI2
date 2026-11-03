@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { disciplineUrls } from '../Disciplines.routes';
 import type { DisciplineDetailsPermissions } from '../Disciplines.types';
+import { DISCIPLINE_TOUR_TARGETS } from '../disciplineTours';
 
 interface DisciplineDetailsActionsProps {
     disciplineId: number;
@@ -18,7 +19,7 @@ export default function DisciplineDetailsActions({
     onDelete,
 }: DisciplineDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={DISCIPLINE_TOUR_TARGETS.detailsActions}>
             <Button
                 href={disciplineUrls.index}
                 tone="cancel"

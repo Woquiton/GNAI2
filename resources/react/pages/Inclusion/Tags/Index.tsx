@@ -5,6 +5,7 @@ import TagDeleteModal from '@/components/Inclusion/Tags/TagDeleteModal';
 import { emptyTagFilters } from '@/components/Inclusion/Tags/Tags.constants';
 import { tagBreadcrumb, tagUrls } from '@/components/Inclusion/Tags/Tags.routes';
 import type { TagIndexProps, TagRecord } from '@/components/Inclusion/Tags/Tags.types';
+import { tagListTour } from '@/components/Inclusion/Tags/tagTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -36,6 +37,7 @@ export default function InclusionTagsIndexPage({
             title="Etiquetas"
             subtitle="Gerencie as etiquetas disponíveis para classificar as publicações."
             breadcrumbItems={tagBreadcrumb()}
+            tour={tagListTour}
             create={can.create && { href: tagUrls.create, label: 'Cadastrar etiqueta' }}
             listLabel="Listagem de etiquetas"
             loading={filters.loading}

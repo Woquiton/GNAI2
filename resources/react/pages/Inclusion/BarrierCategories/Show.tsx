@@ -3,6 +3,7 @@ import {
     barrierCategoryUrls,
 } from '@/components/Inclusion/BarrierCategories/BarrierCategories.routes';
 import type { BarrierCategoryShowProps } from '@/components/Inclusion/BarrierCategories/BarrierCategories.types';
+import { barrierCategoryShowTour } from '@/components/Inclusion/BarrierCategories/barrierCategoryTours';
 import BarrierCategoryDeleteModal from '@/components/Inclusion/BarrierCategories/BarrierCategoryDeleteModal';
 import BarrierCategoryDetails from '@/components/Inclusion/BarrierCategories/Details/BarrierCategoryDetails';
 import BarrierCategoryDetailsActions from '@/components/Inclusion/BarrierCategories/Details/BarrierCategoryDetailsActions';
@@ -23,6 +24,7 @@ export default function InclusionBarrierCategoriesShowPage({
             title="Detalhes da Categoria de Barreira"
             subtitle={`Visualize as informações cadastrais da categoria: ${category.name}`}
             documentTitle={category.name}
+            tour={barrierCategoryShowTour}
             breadcrumbItems={barrierCategoryBreadcrumb({ category })}
             busy={removal.processing}
         >

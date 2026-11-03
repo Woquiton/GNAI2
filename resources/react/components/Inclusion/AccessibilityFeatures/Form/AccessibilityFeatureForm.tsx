@@ -9,6 +9,7 @@ import CardBox from '@/components/UI/CardBox/CardBox';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import { accessibilityFeatureUrls } from '../AccessibilityFeatures.routes';
 import type { AccessibilityFeatureRecord } from '../AccessibilityFeatures.types';
+import { ACCESSIBILITY_FEATURE_TOUR_TARGETS } from '../accessibilityFeatureTours';
 import { useAccessibilityFeatureForm } from './useAccessibilityFeatureForm';
 
 interface AccessibilityFeatureFormProps {
@@ -56,52 +57,61 @@ export default function AccessibilityFeatureForm({
                     >
                         <FormGrid columns={2}>
                             <FormGridWide>
-                                <TextInputField
-                                    id="accessibility-feature-name"
-                                    name="name"
-                                    label="Nome do Recurso"
-                                    required
-                                    maxLength={255}
-                                    placeholder="Ex: Intérprete de Libras, Piso Podotátil, etc."
-                                    value={form.data.name}
-                                    error={errors.name}
-                                    onChange={(value) => form.setData('name', value)}
-                                />
+                                <div data-tour={ACCESSIBILITY_FEATURE_TOUR_TARGETS.name}>
+                                    <TextInputField
+                                        id="accessibility-feature-name"
+                                        name="name"
+                                        label="Nome do Recurso"
+                                        required
+                                        maxLength={255}
+                                        placeholder="Ex: Intérprete de Libras, Piso Podotátil, etc."
+                                        value={form.data.name}
+                                        error={errors.name}
+                                        onChange={(value) => form.setData('name', value)}
+                                    />
+                                </div>
                             </FormGridWide>
                             <FormGridWide>
-                                <RichTextField
-                                    id="accessibility-feature-description"
-                                    label="Descrição Detalhada"
-                                    defaultValue={form.data.description}
-                                    height={120}
-                                    disabled={form.processing}
-                                    error={errors.description}
-                                    onLoadError={() =>
-                                        reportEditorFailure('description', 'descrição')
-                                    }
-                                    onChange={(html) => form.setData('description', html)}
-                                />
-                            </FormGridWide>
-                            <ToggleControl
-                                id="accessibility-feature-active"
-                                name="is_active"
-                                size="small"
-                                label="Recurso Ativo"
-                                labelAddon={
-                                    <InfoTooltip
-                                        label="Informações sobre o status do recurso"
-                                        text="Define se este recurso estará disponível para seleção no sistema."
+                                <div data-tour={ACCESSIBILITY_FEATURE_TOUR_TARGETS.description}>
+                                    <RichTextField
+                                        id="accessibility-feature-description"
+                                        label="Descrição Detalhada"
+                                        defaultValue={form.data.description}
+                                        height={120}
+                                        disabled={form.processing}
+                                        error={errors.description}
+                                        onLoadError={() =>
+                                            reportEditorFailure('description', 'descrição')
+                                        }
+                                        onChange={(html) => form.setData('description', html)}
                                     />
-                                }
-                                checked={form.data.is_active}
-                                disabled={form.processing}
-                                onChange={(checked) => form.setData('is_active', checked)}
-                            />
+                                </div>
+                            </FormGridWide>
+                            <div data-tour={ACCESSIBILITY_FEATURE_TOUR_TARGETS.status}>
+                                <ToggleControl
+                                    id="accessibility-feature-active"
+                                    name="is_active"
+                                    size="small"
+                                    label="Recurso Ativo"
+                                    labelAddon={
+                                        <InfoTooltip
+                                            label="Informações sobre o status do recurso"
+                                            text="Define se este recurso estará disponível para seleção no sistema."
+                                        />
+                                    }
+                                    checked={form.data.is_active}
+                                    disabled={form.processing}
+                                    onChange={(checked) => form.setData('is_active', checked)}
+                                />
+                            </div>
                         </FormGrid>
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={ACCESSIBILITY_FEATURE_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={
                         feature

@@ -2,6 +2,7 @@ import { usePage } from '@inertiajs/react';
 import LocationFilters from '@/components/Inclusion/Locations/List/LocationFilters';
 import LocationList from '@/components/Inclusion/Locations/List/LocationList';
 import LocationDeleteModal from '@/components/Inclusion/Locations/LocationDeleteModal';
+import { locationListTour } from '@/components/Inclusion/Locations/locationTours';
 import { emptyLocationFilters } from '@/components/Inclusion/Locations/Locations.constants';
 import {
     locationBreadcrumb,
@@ -49,6 +50,7 @@ export default function InclusionLocationsIndexPage({
             create={
                 can.create && { href: locationUrls.create, label: 'Cadastrar ponto de referência' }
             }
+            tour={locationListTour}
             listLabel="Listagem de pontos de referência"
             loading={filters.loading}
             loadingLabel="Atualizando pontos de referência"

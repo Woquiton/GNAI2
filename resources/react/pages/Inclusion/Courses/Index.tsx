@@ -1,6 +1,7 @@
 import { usePage } from '@inertiajs/react';
 import CourseDeleteModal from '@/components/Inclusion/Courses/CourseDeleteModal';
 import { emptyCourseFilters } from '@/components/Inclusion/Courses/Courses.constants';
+import { courseListTour } from '@/components/Inclusion/Courses/courseTours';
 import { courseBreadcrumb, courseUrls } from '@/components/Inclusion/Courses/Courses.routes';
 import type { CourseIndexProps, CourseSummary } from '@/components/Inclusion/Courses/Courses.types';
 import CourseFilters from '@/components/Inclusion/Courses/List/CourseFilters';
@@ -44,6 +45,7 @@ export default function InclusionCoursesIndexPage({
             listLabel="Listagem de cursos"
             loading={filters.loading}
             loadingLabel="Atualizando cursos"
+            tour={courseListTour}
             filters={
                 <CourseFilters
                     values={filters.values}

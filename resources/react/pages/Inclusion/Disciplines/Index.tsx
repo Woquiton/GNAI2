@@ -11,6 +11,7 @@ import type {
 } from '@/components/Inclusion/Disciplines/Disciplines.types';
 import DisciplineFilters from '@/components/Inclusion/Disciplines/List/DisciplineFilters';
 import DisciplineList from '@/components/Inclusion/Disciplines/List/DisciplineList';
+import { disciplineListTour } from '@/components/Inclusion/Disciplines/disciplineTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -50,6 +51,7 @@ export default function InclusionDisciplinesIndexPage({
             listLabel="Listagem de disciplinas"
             loading={filters.loading}
             loadingLabel="Atualizando disciplinas"
+            tour={disciplineListTour}
             filters={
                 <DisciplineFilters
                     values={filters.values}

@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { institutionUrls } from '../Institutions.routes';
 import type { InstitutionDetailsPermissions } from '../Institutions.types';
+import { INSTITUTION_TOUR_TARGETS } from '../institutionTours';
 
 interface InstitutionDetailsActionsProps {
     institutionId: number;
@@ -18,7 +19,7 @@ export default function InstitutionDetailsActions({
     onDelete,
 }: InstitutionDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={INSTITUTION_TOUR_TARGETS.detailsActions}>
             <Button href={institutionUrls.index} tone="cancel" label="Voltar" disabled={deleting} />
             {permissions.edit ? (
                 <Button

@@ -11,6 +11,7 @@ import type {
 } from '@/components/Inclusion/AccessibilityFeatures/AccessibilityFeatures.types';
 import AccessibilityFeatureFilters from '@/components/Inclusion/AccessibilityFeatures/List/AccessibilityFeatureFilters';
 import AccessibilityFeatureList from '@/components/Inclusion/AccessibilityFeatures/List/AccessibilityFeatureList';
+import { accessibilityFeatureListTour } from '@/components/Inclusion/AccessibilityFeatures/accessibilityFeatureTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -51,6 +52,7 @@ export default function InclusionAccessibilityFeaturesIndexPage({
             listLabel="Listagem de recursos de acessibilidade"
             loading={filters.loading}
             loadingLabel="Atualizando recursos de acessibilidade"
+            tour={accessibilityFeatureListTour}
             filters={
                 <AccessibilityFeatureFilters
                     values={filters.values}

@@ -8,6 +8,7 @@ import { fieldErrorId } from '@/components/Forms/FormField/fieldDescription';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import { COURSE_TOUR_TARGETS } from '../courseTours';
 import { courseUrls } from '../Courses.routes';
 import type { CourseDisciplineOption, CourseRecord } from '../Courses.types';
 import CourseCurriculumFields from './CourseCurriculumFields';
@@ -62,6 +63,7 @@ export default function CourseForm({
                         title="Identificação"
                         variant="inline"
                         iconClass="fa fa-university"
+                        tourTarget={COURSE_TOUR_TARGETS.information}
                     >
                         <FormGrid columns={2}>
                             <FormGridWide>
@@ -91,7 +93,7 @@ export default function CourseForm({
                                 />
                             </FormGridWide>
                             {editing ? (
-                                <div>
+                                <div data-tour={COURSE_TOUR_TARGETS.status}>
                                     <ToggleControl
                                         id="course-status"
                                         name="is_active"
@@ -136,7 +138,10 @@ export default function CourseForm({
                     />
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={COURSE_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={course ? courseUrls.show(course.id) : courseUrls.index}
                     tone="cancel"

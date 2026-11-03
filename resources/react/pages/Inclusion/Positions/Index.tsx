@@ -11,6 +11,7 @@ import type {
     PositionIndexProps,
     PositionSummary,
 } from '@/components/Inclusion/Positions/Positions.types';
+import { positionListTour } from '@/components/Inclusion/Positions/positionTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -46,6 +47,7 @@ export default function InclusionPositionsIndexPage({
             title="Lista de Cargos"
             subtitle="Gerenciamento de funções para o suporte especializado."
             breadcrumbItems={positionBreadcrumb()}
+            tour={positionListTour}
             create={can.create && { href: positionUrls.create, label: 'Cadastrar cargo' }}
             listLabel="Listagem de cargos"
             loading={filters.loading}

@@ -8,6 +8,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { deficiencyUrls } from '../Deficiencies.routes';
 import type { DeficiencyRecord } from '../Deficiencies.types';
+import { DEFICIENCY_TOUR_TARGETS } from '../deficiencyTours';
 import { useDeficiencyForm } from './useDeficiencyForm';
 
 function submissionStatus(processing: boolean, editing: boolean): string | undefined {
@@ -47,6 +48,7 @@ export default function DeficiencyForm({
                         title="Identificação"
                         variant="inline"
                         iconClass="fa fa-list-alt"
+                        tourTarget={DEFICIENCY_TOUR_TARGETS.identification}
                     >
                         <FormGrid columns={2}>
                             <TextInputField
@@ -97,7 +99,10 @@ export default function DeficiencyForm({
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={DEFICIENCY_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={deficiency ? deficiencyUrls.show(deficiency.id) : deficiencyUrls.index}
                     tone="cancel"

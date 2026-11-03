@@ -1,6 +1,7 @@
 import LocationDetails from '@/components/Inclusion/Locations/Details/LocationDetails';
 import LocationDetailsActions from '@/components/Inclusion/Locations/Details/LocationDetailsActions';
 import LocationDeleteModal from '@/components/Inclusion/Locations/LocationDeleteModal';
+import { locationShowTour } from '@/components/Inclusion/Locations/locationTours';
 import {
     locationBreadcrumb,
     locationUrls,
@@ -27,6 +28,7 @@ export default function InclusionLocationsShowPage({
             subtitle={`Visualize as informações cadastradas e a posição no mapa: ${location.name}`}
             documentTitle={location.name}
             breadcrumbItems={locationBreadcrumb({ location })}
+            tour={locationShowTour}
             busy={removal.processing}
         >
             <LocationDetails location={location} display={display} />

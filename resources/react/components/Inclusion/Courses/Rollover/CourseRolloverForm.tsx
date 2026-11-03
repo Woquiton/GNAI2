@@ -12,6 +12,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import EmptyText from '@/components/UI/EmptyText/EmptyText';
 import InlineAlert from '@/components/UI/InlineAlert/InlineAlert';
+import { COURSE_TOUR_TARGETS } from '../courseTours';
 import { courseUrls } from '../Courses.routes';
 import type {
     CourseRolloverAction,
@@ -85,7 +86,10 @@ function RolloverStudentRow({
     const needsPeriod = student.previous_period === null && row.action !== 'skip';
 
     return (
-        <li className="courseRollover__row">
+        <li
+            className="courseRollover__row"
+            data-tour={index === 0 ? COURSE_TOUR_TARGETS.rolloverStudent : undefined}
+        >
             <div className="courseRollover__student">
                 <strong>{student.student_name}</strong>
                 {student.registration ? <span>Matrícula {student.registration}</span> : null}
@@ -234,7 +238,7 @@ export default function CourseRolloverForm({
 
     const content = students.length ? (
         <>
-            <div className="courseRollover__bulk">
+            <div className="courseRollover__bulk" data-tour={COURSE_TOUR_TARGETS.rolloverBulk}>
                 <Button
                     type="button"
                     tone="white"
@@ -293,6 +297,7 @@ export default function CourseRolloverForm({
                     title="Semestre de Destino"
                     variant="inline"
                     iconClass="fa fa-calendar"
+                    tourTarget={COURSE_TOUR_TARGETS.rolloverSemester}
                 >
                     {semester ? (
                         <SelectInputField
@@ -324,12 +329,13 @@ export default function CourseRolloverForm({
                         title="Alunos do Curso"
                         variant="inline"
                         iconClass="fa fa-users"
+                        tourTarget={COURSE_TOUR_TARGETS.rolloverStudents}
                     >
                         <fieldset disabled={form.processing}>{content}</fieldset>
                     </FormSection>
                 ) : null}
             </CardBox>
-            <FormActions status={status}>
+            <FormActions status={status} tourTarget={COURSE_TOUR_TARGETS.rolloverActions}>
                 <Button
                     href={courseUrls.show(course.id)}
                     tone="cancel"

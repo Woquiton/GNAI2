@@ -8,6 +8,7 @@ import CardBox from '@/components/UI/CardBox/CardBox';
 import { DEFAULT_LOCATION_ZOOM } from '../Locations.constants';
 import { locationUrls } from '../Locations.routes';
 import type { LocationFormOptions, LocationRecord } from '../Locations.types';
+import { LOCATION_TOUR_TARGETS } from '../locationTours';
 import LocationIdentificationFields from './LocationIdentificationFields';
 import LocationSettingsFields from './LocationSettingsFields';
 import { useLocationForm, warnInstitutionRequired } from './useLocationForm';
@@ -74,6 +75,7 @@ export default function LocationForm({ options, location }: LocationFormProps): 
                     <MapSplitAside>
                         <FormSection
                             id="location-map"
+                            tourTarget={LOCATION_TOUR_TARGETS.map}
                             title="Localização no Mapa"
                             variant="inline"
                             iconClass="fa fa-map-marker"
@@ -96,7 +98,10 @@ export default function LocationForm({ options, location }: LocationFormProps): 
                     </MapSplitAside>
                 </MapSplit>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={LOCATION_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={location ? locationUrls.show(location.id) : locationUrls.index}
                     tone="cancel"

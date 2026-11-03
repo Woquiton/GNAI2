@@ -9,6 +9,7 @@ import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { disciplineUrls } from '../Disciplines.routes';
+import { DISCIPLINE_TOUR_TARGETS } from '../disciplineTours';
 import type { DisciplineRecord } from '../Disciplines.types';
 import { useDisciplineForm } from './useDisciplineForm';
 
@@ -50,32 +51,36 @@ export default function DisciplineForm({
                     >
                         <FormGrid columns={2}>
                             <FormGridWide>
-                                <TextInputField
-                                    id="discipline-name"
-                                    name="name"
-                                    label="Nome da Disciplina"
-                                    required
-                                    maxLength={255}
-                                    value={form.data.name}
-                                    error={errors.name}
-                                    onChange={(value) => form.setData('name', value)}
-                                />
+                                <div data-tour={DISCIPLINE_TOUR_TARGETS.name}>
+                                    <TextInputField
+                                        id="discipline-name"
+                                        name="name"
+                                        label="Nome da Disciplina"
+                                        required
+                                        maxLength={255}
+                                        value={form.data.name}
+                                        error={errors.name}
+                                        onChange={(value) => form.setData('name', value)}
+                                    />
+                                </div>
                             </FormGridWide>
                             <FormGridWide>
-                                <RichTextField
-                                    id="discipline-description"
-                                    label="Descrição"
-                                    defaultValue={form.data.description}
-                                    height={120}
-                                    disabled={form.processing}
-                                    error={errors.description}
-                                    onLoadError={() =>
-                                        reportEditorFailure('description', 'descrição')
-                                    }
-                                    onChange={(html) => form.setData('description', html)}
-                                />
+                                <div data-tour={DISCIPLINE_TOUR_TARGETS.description}>
+                                    <RichTextField
+                                        id="discipline-description"
+                                        label="Descrição"
+                                        defaultValue={form.data.description}
+                                        height={120}
+                                        disabled={form.processing}
+                                        error={errors.description}
+                                        onLoadError={() =>
+                                            reportEditorFailure('description', 'descrição')
+                                        }
+                                        onChange={(html) => form.setData('description', html)}
+                                    />
+                                </div>
                             </FormGridWide>
-                            <div>
+                            <div data-tour={DISCIPLINE_TOUR_TARGETS.status}>
                                 <ToggleControl
                                     id="discipline-status"
                                     name="is_active"
@@ -99,7 +104,10 @@ export default function DisciplineForm({
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={DISCIPLINE_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={discipline ? disciplineUrls.show(discipline.id) : disciplineUrls.index}
                     tone="cancel"

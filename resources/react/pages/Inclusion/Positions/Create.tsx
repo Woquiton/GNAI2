@@ -1,6 +1,7 @@
 import PositionForm from '@/components/Inclusion/Positions/Form/PositionForm';
 import { positionBreadcrumb } from '@/components/Inclusion/Positions/Positions.routes';
 import type { PositionCreateProps } from '@/components/Inclusion/Positions/Positions.types';
+import { positionCreateTour } from '@/components/Inclusion/Positions/positionTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionPositionsCreatePage({
@@ -11,6 +12,7 @@ export default function InclusionPositionsCreatePage({
             title="Cadastrar Novo Cargo"
             subtitle="Defina as atribuições e o status do cargo no sistema."
             breadcrumbItems={positionBreadcrumb({ current: 'Cadastrar' })}
+            tour={positionCreateTour}
         >
             <PositionForm permissions={permissions} />
         </BusinessPage>

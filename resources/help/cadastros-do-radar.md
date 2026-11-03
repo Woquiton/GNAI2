@@ -2,12 +2,16 @@
 titulo: Cadastros de apoio de recursos e acessibilidade
 resumo: Para que servem e como manter Recursos de Acessibilidade, Etiquetas, Categorias de Barreiras, Instituições e Localizações, e quando a exclusão é bloqueada.
 categoria: Recursos e acessibilidade
-palavras-chave: cadastros, cadastros do radar, radar inclusivo, recursos de acessibilidade, recurso de acessibilidade, braille, libras, etiqueta, etiquetas, marcador, tag, publicações, categoria de barreira, categorias de barreiras, bloquear mapa, instituição, instituição base, campus, sede, unidade, zoom, latitude, longitude, coordenadas, localização, localizações, ponto de referência, local, prédio, bloco, sala, mapa
+palavras-chave: cadastros, cadastros do radar, radar inclusivo, recursos de acessibilidade, recurso de acessibilidade, braille, libras, etiqueta, etiquetas, marcador, tag, publicações, categoria de barreira, categorias de barreiras, bloquear mapa, instituição, instituição base, campus, sede, unidade, zoom, latitude, longitude, coordenadas, localização, localizações, ponto de referência, local, prédio, bloco, sala, mapa, tutorial, tour
 ordem: 40
 permissoes: accessibility-feature.index, tag.index, barrier-category.index, institution.index, location.index
 ---
 
 Estes cadastros alimentam as listas de opções de [Itens](/ajuda/itens), [Barreiras](/ajuda/barreiras) e Publicações. Todos ficam em **Gestão do núcleo → Cadastros** e seguem o mesmo padrão: botão de cadastro na listagem, filtros por nome e status, página de detalhes com **Editar** e **Excluir**, e confirmação em **Confirmar exclusão** antes de remover. Cadastros inativos continuam guardados, mas deixam de ser oferecidos nos formulários de novos registros.
+
+## Conhecer os cadastros com o tutorial
+
+As telas de **Recursos de Acessibilidade**, **Etiquetas**, **Categorias de Barreiras**, **Instituições** e **Localizações** têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela das listagens, cada parte dos formulários e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Recursos de Acessibilidade
 

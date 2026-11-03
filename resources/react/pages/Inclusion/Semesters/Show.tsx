@@ -7,6 +7,7 @@ import {
     semesterUrls,
 } from '@/components/Inclusion/Semesters/Semesters.routes';
 import type { SemesterShowProps } from '@/components/Inclusion/Semesters/Semesters.types';
+import { semesterShowTour } from '@/components/Inclusion/Semesters/semesterTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -25,6 +26,7 @@ export default function InclusionSemestersShowPage({
             documentTitle={`Semestre ${semesterLabel(semester)}`}
             breadcrumbItems={semesterBreadcrumb({ semester })}
             busy={removal.processing}
+            tour={semesterShowTour}
         >
             <SemesterDetails semester={semester} />
             <SemesterDetailsActions

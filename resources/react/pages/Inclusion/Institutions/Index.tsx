@@ -1,5 +1,6 @@
 import { usePage } from '@inertiajs/react';
 import InstitutionDeleteModal from '@/components/Inclusion/Institutions/InstitutionDeleteModal';
+import { institutionListTour } from '@/components/Inclusion/Institutions/institutionTours';
 import { emptyInstitutionFilters } from '@/components/Inclusion/Institutions/Institutions.constants';
 import {
     institutionBreadcrumb,
@@ -47,6 +48,7 @@ export default function InclusionInstitutionsIndexPage({
             subtitle="Gerencie os locais centrais onde o radar de acessibilidade opera."
             breadcrumbItems={institutionBreadcrumb()}
             create={can.create && { href: institutionUrls.create, label: 'Cadastrar instituição' }}
+            tour={institutionListTour}
             listLabel="Listagem de instituições"
             loading={filters.loading}
             loadingLabel="Atualizando instituições"

@@ -5,6 +5,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import ExpandableContent from '@/components/UI/ExpandableContent/ExpandableContent';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
+import { BARRIER_CATEGORY_TOUR_TARGETS } from '../barrierCategoryTours';
 import type { BarrierCategoryShowProps } from '../BarrierCategories.types';
 
 type BarrierCategoryDetailsProps = Omit<BarrierCategoryShowProps, 'can'>;
@@ -15,7 +16,7 @@ export default function BarrierCategoryDetails({
     display,
 }: BarrierCategoryDetailsProps): React.JSX.Element {
     return (
-        <CardBox>
+        <CardBox tourTarget={BARRIER_CATEGORY_TOUR_TARGETS.details}>
             <FormSection
                 id="barrier-category-show-information"
                 title="Identificação"
@@ -27,9 +28,11 @@ export default function BarrierCategoryDetails({
                         {category.name}
                     </DetailField>
                     <DetailField label="Descrição Detalhada" wide>
-                        <ExpandableContent>
-                            <RichTextContent html={display.descriptionHtml} />
-                        </ExpandableContent>
+                        <div data-tour={BARRIER_CATEGORY_TOUR_TARGETS.detailsDescription}>
+                            <ExpandableContent>
+                                <RichTextContent html={display.descriptionHtml} />
+                            </ExpandableContent>
+                        </div>
                     </DetailField>
                     {category.barriers_count !== undefined ? (
                         <DetailField label="Barreiras Vinculadas">

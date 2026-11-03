@@ -8,6 +8,7 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import { SEMESTER_TOUR_TARGETS } from '../semesterTours';
 import { semesterUrls } from '../Semesters.routes';
 import type { SemesterRecord } from '../Semesters.types';
 import { useSemesterForm } from './useSemesterForm';
@@ -47,6 +48,7 @@ export default function SemesterForm({
                     <FormSection
                         id="semester-identification"
                         title="Identificação"
+                        tourTarget={SEMESTER_TOUR_TARGETS.identification}
                         variant="inline"
                         iconClass="fa fa-calendar"
                     >
@@ -96,28 +98,36 @@ export default function SemesterForm({
                                 onChange={(date) => form.setData('end_date', date)}
                             />
                             <FormGridWide>
-                                <ToggleControl
-                                    size="small"
-                                    id="semester-is-current"
-                                    name="is_current"
-                                    label={currentLabel}
-                                    checked={form.data.is_current}
-                                    disabled={form.processing}
-                                    invalid={Boolean(errors.is_current)}
-                                    describedBy={
-                                        errors.is_current
-                                            ? fieldErrorId('semester-is-current')
-                                            : undefined
-                                    }
-                                    onChange={(checked) => form.setData('is_current', checked)}
-                                />
-                                <FieldError id="semester-is-current" error={errors.is_current} />
+                                <div data-tour={SEMESTER_TOUR_TARGETS.current}>
+                                    <ToggleControl
+                                        size="small"
+                                        id="semester-is-current"
+                                        name="is_current"
+                                        label={currentLabel}
+                                        checked={form.data.is_current}
+                                        disabled={form.processing}
+                                        invalid={Boolean(errors.is_current)}
+                                        describedBy={
+                                            errors.is_current
+                                                ? fieldErrorId('semester-is-current')
+                                                : undefined
+                                        }
+                                        onChange={(checked) => form.setData('is_current', checked)}
+                                    />
+                                    <FieldError
+                                        id="semester-is-current"
+                                        error={errors.is_current}
+                                    />
+                                </div>
                             </FormGridWide>
                         </FormGrid>
                     </FormSection>
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={SEMESTER_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={semester ? semesterUrls.show(semester.id) : semesterUrls.index}
                     tone="cancel"

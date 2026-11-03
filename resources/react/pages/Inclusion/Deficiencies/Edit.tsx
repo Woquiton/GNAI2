@@ -1,6 +1,7 @@
 import { deficiencyBreadcrumb } from '@/components/Inclusion/Deficiencies/Deficiencies.routes';
 import type { DeficiencyEditProps } from '@/components/Inclusion/Deficiencies/Deficiencies.types';
 import DeficiencyForm from '@/components/Inclusion/Deficiencies/Form/DeficiencyForm';
+import { deficiencyEditTour } from '@/components/Inclusion/Deficiencies/deficiencyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionDeficienciesEditPage({
@@ -11,6 +12,7 @@ export default function InclusionDeficienciesEditPage({
             title="Editar Perfil de Atendimento"
             subtitle={`Atualizando informações de: ${deficiency.name}`}
             breadcrumbItems={deficiencyBreadcrumb({ deficiency, current: 'Editar' })}
+            tour={deficiencyEditTour}
         >
             <DeficiencyForm key={deficiency.id} deficiency={deficiency} />
         </BusinessPage>

@@ -8,6 +8,7 @@ import {
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import { coursePeriodOptions } from '@/components/Inclusion/coursePeriods';
+import { COURSE_TOUR_TARGETS } from '../courseTours';
 import type { CourseDisciplineOption } from '../Courses.types';
 
 interface CourseCurriculumFieldsProps {
@@ -62,6 +63,7 @@ export default function CourseCurriculumFields({
                 }
                 variant="inline"
                 iconClass="fa fa-book"
+                tourTarget={COURSE_TOUR_TARGETS.curriculum}
             >
                 <FormGrid columns={2}>
                     <FormGridWide>
@@ -100,6 +102,7 @@ export default function CourseCurriculumFields({
                     title="Períodos das Disciplinas"
                     variant="inline"
                     iconClass="fa fa-list-ol"
+                    tourTarget={COURSE_TOUR_TARGETS.curriculumPeriods}
                 >
                     <p>
                         Informe em qual período (semestre ou série) do curso cada disciplina é

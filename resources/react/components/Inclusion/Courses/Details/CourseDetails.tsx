@@ -10,6 +10,7 @@ import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
+import { COURSE_TOUR_TARGETS } from '../courseTours';
 import type { CourseCurriculumDiscipline, CourseRecord } from '../Courses.types';
 
 const disciplineColumns: TableListColumn<CourseCurriculumDiscipline>[] = [
@@ -65,11 +66,10 @@ export default function CourseDetails({
                 title="Identificação"
                 variant="inline"
                 iconClass="fa fa-graduation-cap"
+                tourTarget={COURSE_TOUR_TARGETS.detailsGeneral}
             >
                 <DetailGrid>
-                    <DetailField label="Nome do Curso">
-                        {course.name}
-                    </DetailField>
+                    <DetailField label="Nome do Curso">{course.name}</DetailField>
                     <DetailField label="Status">
                         <TableLabel tone={course.is_active ? 'success' : 'danger'}>
                             {course.is_active ? 'Ativo' : 'Inativo'}
@@ -85,6 +85,7 @@ export default function CourseDetails({
                 title="Matriz Curricular (Disciplinas)"
                 variant="inline"
                 iconClass="fa fa-book"
+                tourTarget={COURSE_TOUR_TARGETS.detailsCurriculum}
             >
                 <TableListScroll aria-label="Disciplinas da matriz curricular">
                     <TableListTable

@@ -1,6 +1,7 @@
 import AccessibilityFeatureForm from '@/components/Inclusion/AccessibilityFeatures/Form/AccessibilityFeatureForm';
 import { accessibilityFeatureBreadcrumb } from '@/components/Inclusion/AccessibilityFeatures/AccessibilityFeatures.routes';
 import type { AccessibilityFeatureEditProps } from '@/components/Inclusion/AccessibilityFeatures/AccessibilityFeatures.types';
+import { accessibilityFeatureEditTour } from '@/components/Inclusion/AccessibilityFeatures/accessibilityFeatureTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionAccessibilityFeaturesEditPage({
@@ -15,6 +16,7 @@ export default function InclusionAccessibilityFeaturesEditPage({
                 feature: accessibilityFeature,
                 current: 'Editar',
             })}
+            tour={accessibilityFeatureEditTour}
         >
             <AccessibilityFeatureForm
                 key={accessibilityFeature.id}

@@ -5,6 +5,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { DeficiencyRecord } from '../Deficiencies.types';
+import { DEFICIENCY_TOUR_TARGETS } from '../deficiencyTours';
 
 /** Identificação e descrição de um perfil de atendimento. */
 export default function DeficiencyDetails({
@@ -15,7 +16,7 @@ export default function DeficiencyDetails({
     descriptionHtml: string;
 }): React.JSX.Element {
     return (
-        <CardBox>
+        <CardBox tourTarget={DEFICIENCY_TOUR_TARGETS.details}>
             <FormSection
                 id="deficiency-show-identification"
                 title="Identificação"
@@ -23,9 +24,7 @@ export default function DeficiencyDetails({
                 iconClass="fa fa-list-alt"
             >
                 <DetailGrid>
-                    <DetailField label="Nome do Perfil">
-                        {deficiency.name}
-                    </DetailField>
+                    <DetailField label="Nome do Perfil">{deficiency.name}</DetailField>
                     <DetailField label="Código CID">
                         {deficiency.cid_code || 'Não informado'}
                     </DetailField>

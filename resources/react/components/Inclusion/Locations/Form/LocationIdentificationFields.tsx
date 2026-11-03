@@ -6,6 +6,7 @@ import {
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import type { LocationFormOptions } from '../Locations.types';
+import { LOCATION_TOUR_TARGETS } from '../locationTours';
 import type { LocationFormSectionProps } from './LocationForm.types';
 
 interface LocationIdentificationFieldsProps extends LocationFormSectionProps {
@@ -28,6 +29,7 @@ export default function LocationIdentificationFields({
             id="location-identification"
             title="Identificação"
             variant="inline"
+            tourTarget={LOCATION_TOUR_TARGETS.identification}
             iconClass="fa fa-map-marker"
         >
             <FormGrid columns={2}>

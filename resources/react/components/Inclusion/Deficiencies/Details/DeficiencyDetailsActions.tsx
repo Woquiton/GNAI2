@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { deficiencyUrls } from '../Deficiencies.routes';
 import type { DeficiencyDetailsPermissions } from '../Deficiencies.types';
+import { DEFICIENCY_TOUR_TARGETS } from '../deficiencyTours';
 
 interface DeficiencyDetailsActionsProps {
     deficiencyId: number;
@@ -22,7 +23,7 @@ export default function DeficiencyDetailsActions({
     onDelete,
 }: DeficiencyDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions status={status}>
+        <FormActions status={status} tourTarget={DEFICIENCY_TOUR_TARGETS.detailsActions}>
             <Button
                 href={deficiencyUrls.index}
                 tone="cancel"

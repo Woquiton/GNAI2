@@ -1,3 +1,4 @@
+import { courseEditTour } from '@/components/Inclusion/Courses/courseTours';
 import { courseBreadcrumb } from '@/components/Inclusion/Courses/Courses.routes';
 import type { CourseEditProps } from '@/components/Inclusion/Courses/Courses.types';
 import CourseForm from '@/components/Inclusion/Courses/Form/CourseForm';
@@ -13,6 +14,7 @@ export default function InclusionCoursesEditPage({
             title={`Editar o curso ${course.name}`}
             subtitle="Atualize as informações do curso e sua matriz curricular."
             breadcrumbItems={courseBreadcrumb({ course, current: 'Editar' })}
+            tour={courseEditTour}
         >
             <CourseForm
                 key={course.id}

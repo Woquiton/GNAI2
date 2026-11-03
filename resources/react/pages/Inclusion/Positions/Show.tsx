@@ -6,6 +6,7 @@ import {
     positionUrls,
 } from '@/components/Inclusion/Positions/Positions.routes';
 import type { PositionShowProps } from '@/components/Inclusion/Positions/Positions.types';
+import { positionShowTour } from '@/components/Inclusion/Positions/positionTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -25,6 +26,7 @@ export default function InclusionPositionsShowPage({
             subtitle="Gerenciamento de funções e atribuições do suporte especializado."
             documentTitle={position.name}
             breadcrumbItems={positionBreadcrumb({ position })}
+            tour={positionShowTour}
             busy={busy}
         >
             <PositionDetails position={position} descriptionHtml={descriptionHtml} />

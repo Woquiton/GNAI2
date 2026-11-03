@@ -12,6 +12,7 @@ import type {
     SemesterIndexProps,
     SemesterRecord,
 } from '@/components/Inclusion/Semesters/Semesters.types';
+import { semesterListTour } from '@/components/Inclusion/Semesters/semesterTours';
 import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -59,6 +60,7 @@ export default function InclusionSemestersIndexPage({
             listLabel="Listagem de semestres"
             loading={filters.loading}
             loadingLabel="Atualizando semestres"
+            tour={semesterListTour}
             filters={
                 <SemesterFilters
                     values={filters.values}

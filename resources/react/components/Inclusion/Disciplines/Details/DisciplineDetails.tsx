@@ -6,6 +6,7 @@ import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import TagList from '@/components/UI/TagList/TagList';
 import type { DisciplineDetailsRecord } from '../Disciplines.types';
+import { DISCIPLINE_TOUR_TARGETS } from '../disciplineTours';
 
 /** Informações gerais e cursos vinculados de uma disciplina. */
 export default function DisciplineDetails({
@@ -17,7 +18,7 @@ export default function DisciplineDetails({
     descriptionHtml: string;
 }): React.JSX.Element {
     return (
-        <CardBox>
+        <CardBox tourTarget={DISCIPLINE_TOUR_TARGETS.details}>
             <FormSection
                 id="discipline-show-general"
                 title="Identificação"
@@ -25,9 +26,7 @@ export default function DisciplineDetails({
                 iconClass="fa fa-book"
             >
                 <DetailGrid>
-                    <DetailField label="Nome da Disciplina">
-                        {discipline.name}
-                    </DetailField>
+                    <DetailField label="Nome da Disciplina">{discipline.name}</DetailField>
                     <DetailField label="Status">
                         <TableLabel tone={discipline.is_active ? 'success' : 'danger'}>
                             {discipline.is_active ? 'Ativo' : 'Inativo'}
@@ -37,10 +36,12 @@ export default function DisciplineDetails({
                         <RichTextContent html={descriptionHtml} />
                     </DetailField>
                     <DetailField label="Cursos vinculados" wide>
-                        <TagList
-                            items={discipline.courses ?? []}
-                            emptyMessage="Nenhum curso vinculado."
-                        />
+                        <div data-tour={DISCIPLINE_TOUR_TARGETS.courses}>
+                            <TagList
+                                items={discipline.courses ?? []}
+                                emptyMessage="Nenhum curso vinculado."
+                            />
+                        </div>
                     </DetailField>
                 </DetailGrid>
             </FormSection>

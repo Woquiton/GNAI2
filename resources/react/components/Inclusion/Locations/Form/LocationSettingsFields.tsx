@@ -3,6 +3,7 @@ import FormGrid, { FormGridWide, FormStack } from '@/components/Forms/FormGrid/F
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import ToggleControl from '@/components/Forms/ToggleControl/ToggleControl';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
+import { LOCATION_TOUR_TARGETS } from '../locationTours';
 import type { LocationFormSectionProps } from './LocationForm.types';
 
 /** Ativação no mapa público e coordenadas do ponto. */
@@ -16,6 +17,7 @@ export default function LocationSettingsFields({
             id="location-map-section"
             title="Configuração"
             variant="inline"
+            tourTarget={LOCATION_TOUR_TARGETS.settings}
             iconClass="fa fa-globe"
         >
             <FormGrid columns={2}>

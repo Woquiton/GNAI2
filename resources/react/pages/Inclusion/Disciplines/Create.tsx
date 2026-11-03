@@ -1,5 +1,6 @@
 import { disciplineBreadcrumb } from '@/components/Inclusion/Disciplines/Disciplines.routes';
 import DisciplineForm from '@/components/Inclusion/Disciplines/Form/DisciplineForm';
+import { disciplineCreateTour } from '@/components/Inclusion/Disciplines/disciplineTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionDisciplinesCreatePage(): React.JSX.Element {
@@ -8,6 +9,7 @@ export default function InclusionDisciplinesCreatePage(): React.JSX.Element {
             title="Cadastrar Disciplina"
             subtitle="Defina o nome e descrição da matéria para o catálogo da instituição."
             breadcrumbItems={disciplineBreadcrumb({ current: 'Cadastrar' })}
+            tour={disciplineCreateTour}
         >
             <DisciplineForm />
         </BusinessPage>

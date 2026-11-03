@@ -6,6 +6,7 @@ import {
 import type { AccessibilityFeatureShowProps } from '@/components/Inclusion/AccessibilityFeatures/AccessibilityFeatures.types';
 import AccessibilityFeatureDetails from '@/components/Inclusion/AccessibilityFeatures/Details/AccessibilityFeatureDetails';
 import AccessibilityFeatureDetailsActions from '@/components/Inclusion/AccessibilityFeatures/Details/AccessibilityFeatureDetailsActions';
+import { accessibilityFeatureShowTour } from '@/components/Inclusion/AccessibilityFeatures/accessibilityFeatureTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -25,6 +26,7 @@ export default function InclusionAccessibilityFeaturesShowPage({
             documentTitle={feature.name}
             breadcrumbItems={accessibilityFeatureBreadcrumb({ feature })}
             busy={removal.processing}
+            tour={accessibilityFeatureShowTour}
         >
             <AccessibilityFeatureDetails feature={feature} display={display} />
             <AccessibilityFeatureDetailsActions

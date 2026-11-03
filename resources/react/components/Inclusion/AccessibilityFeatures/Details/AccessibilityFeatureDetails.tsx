@@ -6,6 +6,7 @@ import ExpandableContent from '@/components/UI/ExpandableContent/ExpandableConte
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { AccessibilityFeatureShowProps } from '../AccessibilityFeatures.types';
+import { ACCESSIBILITY_FEATURE_TOUR_TARGETS } from '../accessibilityFeatureTours';
 
 type AccessibilityFeatureDetailsProps = Omit<AccessibilityFeatureShowProps, 'can'>;
 
@@ -15,7 +16,7 @@ export default function AccessibilityFeatureDetails({
     display,
 }: AccessibilityFeatureDetailsProps): React.JSX.Element {
     return (
-        <CardBox>
+        <CardBox tourTarget={ACCESSIBILITY_FEATURE_TOUR_TARGETS.details}>
             <FormSection
                 id="accessibility-feature-show-identification"
                 title="Identificação"
@@ -27,9 +28,11 @@ export default function AccessibilityFeatureDetails({
                         {feature.name}
                     </DetailField>
                     <DetailField label="Descrição Detalhada" wide>
-                        <ExpandableContent>
-                            <RichTextContent html={display.descriptionHtml} />
-                        </ExpandableContent>
+                        <div data-tour={ACCESSIBILITY_FEATURE_TOUR_TARGETS.detailsDescription}>
+                            <ExpandableContent>
+                                <RichTextContent html={display.descriptionHtml} />
+                            </ExpandableContent>
+                        </div>
                     </DetailField>
                     <DetailField label="Recurso Ativo">
                         <TableLabel tone={feature.is_active ? 'success' : 'inverse'}>

@@ -1,5 +1,6 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
+import { TAG_TOUR_TARGETS } from '../tagTours';
 import { tagUrls } from '../Tags.routes';
 import type { TagDetailsPermissions } from '../Tags.types';
 
@@ -18,7 +19,7 @@ export default function TagDetailsActions({
     onDelete,
 }: TagDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={TAG_TOUR_TARGETS.detailsActions}>
             <Button
                 href={tagUrls.index}
                 tone="cancel"

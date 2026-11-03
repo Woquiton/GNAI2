@@ -8,6 +8,7 @@ import Button from '@/components/UI/Button/Button';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import { positionUrls } from '../Positions.routes';
 import type { GroupedPositionPermissions, PositionRecord } from '../Positions.types';
+import { POSITION_TOUR_TARGETS } from '../positionTours';
 import PositionPermissionsFields from './PositionPermissionsFields';
 import { usePositionForm } from './usePositionForm';
 
@@ -58,6 +59,7 @@ export default function PositionForm({
                         title="Identificação"
                         variant="inline"
                         iconClass="fa fa-briefcase"
+                        tourTarget={POSITION_TOUR_TARGETS.identification}
                     >
                         <FormGrid columns={2}>
                             <TextInputField
@@ -105,7 +107,10 @@ export default function PositionForm({
                     />
                 </fieldset>
             </CardBox>
-            <FormActions status={submissionStatus(form.processing, editing)}>
+            <FormActions
+                status={submissionStatus(form.processing, editing)}
+                tourTarget={POSITION_TOUR_TARGETS.formActions}
+            >
                 <Button
                     href={position ? positionUrls.show(position.id) : positionUrls.index}
                     tone="cancel"

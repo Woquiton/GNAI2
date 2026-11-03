@@ -1,5 +1,6 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
+import { SEMESTER_TOUR_TARGETS } from '../semesterTours';
 import { semesterUrls } from '../Semesters.routes';
 import type { SemesterDetailsPermissions } from '../Semesters.types';
 
@@ -21,7 +22,7 @@ export default function SemesterDetailsActions({
     onDelete,
 }: SemesterDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions>
+        <FormActions tourTarget={SEMESTER_TOUR_TARGETS.detailsActions}>
             <Button
                 href={semesterUrls.index}
                 tone="cancel"

@@ -2,6 +2,7 @@ import FormActions from '@/components/Forms/FormActions/FormActions';
 import Button from '@/components/UI/Button/Button';
 import { positionUrls } from '../Positions.routes';
 import type { PositionDetailsPermissions } from '../Positions.types';
+import { POSITION_TOUR_TARGETS } from '../positionTours';
 
 interface PositionDetailsActionsProps {
     positionId: number;
@@ -22,7 +23,7 @@ export default function PositionDetailsActions({
     onDelete,
 }: PositionDetailsActionsProps): React.JSX.Element {
     return (
-        <FormActions status={status}>
+        <FormActions status={status} tourTarget={POSITION_TOUR_TARGETS.detailsActions}>
             <Button
                 href={positionUrls.index}
                 tone="cancel"

@@ -1,6 +1,7 @@
 import InstitutionDetails from '@/components/Inclusion/Institutions/Details/InstitutionDetails';
 import InstitutionDetailsActions from '@/components/Inclusion/Institutions/Details/InstitutionDetailsActions';
 import InstitutionDeleteModal from '@/components/Inclusion/Institutions/InstitutionDeleteModal';
+import { institutionShowTour } from '@/components/Inclusion/Institutions/institutionTours';
 import {
     institutionBreadcrumb,
     institutionUrls,
@@ -26,6 +27,7 @@ export default function InclusionInstitutionsShowPage({
             subtitle={`Visualize as informações cadastrais e a localização no mapa da instituição: ${institution.name}`}
             documentTitle={institution.name}
             breadcrumbItems={institutionBreadcrumb({ institution })}
+            tour={institutionShowTour}
             busy={removal.processing}
         >
             <InstitutionDetails institution={institution} />

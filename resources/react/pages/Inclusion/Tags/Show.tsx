@@ -3,6 +3,7 @@ import TagDetailsActions from '@/components/Inclusion/Tags/Details/TagDetailsAct
 import TagDeleteModal from '@/components/Inclusion/Tags/TagDeleteModal';
 import { tagBreadcrumb, tagUrls } from '@/components/Inclusion/Tags/Tags.routes';
 import type { TagShowProps } from '@/components/Inclusion/Tags/Tags.types';
+import { tagShowTour } from '@/components/Inclusion/Tags/tagTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -17,6 +18,7 @@ export default function InclusionTagsShowPage({ tag, can }: TagShowProps): React
             subtitle={`Visualize as informações cadastrais e status da etiqueta: ${tag.name}`}
             documentTitle={tag.name}
             breadcrumbItems={tagBreadcrumb({ tag })}
+            tour={tagShowTour}
             busy={removal.processing}
         >
             <TagDetails tag={tag} />

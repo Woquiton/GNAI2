@@ -6,6 +6,7 @@ import {
     disciplineUrls,
 } from '@/components/Inclusion/Disciplines/Disciplines.routes';
 import type { DisciplineShowProps } from '@/components/Inclusion/Disciplines/Disciplines.types';
+import { disciplineShowTour } from '@/components/Inclusion/Disciplines/disciplineTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -25,6 +26,7 @@ export default function InclusionDisciplinesShowPage({
             documentTitle={discipline.name}
             breadcrumbItems={disciplineBreadcrumb({ discipline })}
             busy={removal.processing}
+            tour={disciplineShowTour}
         >
             <DisciplineDetails discipline={discipline} descriptionHtml={display.descriptionHtml} />
             <DisciplineDetailsActions

@@ -6,6 +6,7 @@ import type { DeficiencyShowProps } from '@/components/Inclusion/Deficiencies/De
 import DeficiencyDeleteModal from '@/components/Inclusion/Deficiencies/DeficiencyDeleteModal';
 import DeficiencyDetails from '@/components/Inclusion/Deficiencies/Details/DeficiencyDetails';
 import DeficiencyDetailsActions from '@/components/Inclusion/Deficiencies/Details/DeficiencyDetailsActions';
+import { deficiencyShowTour } from '@/components/Inclusion/Deficiencies/deficiencyTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
@@ -25,6 +26,7 @@ export default function InclusionDeficienciesShowPage({
             subtitle="Informações sobre o perfil para acompanhamento e encaminhamentos pedagógicos."
             documentTitle={deficiency.name}
             breadcrumbItems={deficiencyBreadcrumb({ deficiency })}
+            tour={deficiencyShowTour}
             busy={busy}
         >
             <DeficiencyDetails deficiency={deficiency} descriptionHtml={descriptionHtml} />
