@@ -30,6 +30,13 @@
     margin: 0;
 }
 
+/* Checkbox e ícone de informação lado a lado; o botão não pode ficar dentro do label. */
+.professionalForm__choiceRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 @media (max-width: 900px) {
     .professionalForm__personal {
         grid-template-columns: minmax(0, 1fr);

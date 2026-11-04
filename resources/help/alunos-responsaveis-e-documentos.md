@@ -64,7 +64,7 @@ Os perfis vinculados aparecem na identificação do prontuário e podem ser usad
 1. No prontuário, abra a aba **Documentos** e clique em **Cadastrar**.
 2. Informe o **Título do Documento** (obrigatório), por exemplo "Laudo Médico Psicológico 2024".
 3. Escolha o **Tipo de Documento** (obrigatório): Histórico Escolar, Laudo, Relatório, Avaliação, Plano AEE ou Outro.
-4. Em **Selecionar Arquivo**, escolha o arquivo (obrigatório): PDF, DOC, DOCX, JPG, JPEG ou PNG, com até 10 MB.
+4. Em **Selecionar Arquivo**, arraste o arquivo para a área tracejada ou clique nela para escolhê-lo (obrigatório): PDF, DOC, DOCX, JPG, JPEG ou PNG, com até 10 MB.
 5. Clique em **Realizar Upload**. O sistema volta ao prontuário e mostra "Documento enviado com sucesso.".
 
 O campo **Semestre Atual** é preenchido automaticamente com o semestre atual do sistema. Documentos do tipo **Laudo** marcam a etapa **Laudo** da lateral **Status do atendimento** como anexada.

@@ -37,7 +37,7 @@ export default function StudentDocumentForm({
     semester,
     studentDocument,
 }: StudentDocumentFormProps): React.JSX.Element {
-    const { form, errors, formRef, editing, fileInputKey, selectFile, clearFile, save } =
+    const { form, errors, formRef, editing, selectFile, rejectFile, clearFile, save } =
         useStudentDocumentForm({ student, studentDocument });
     const sectionProps = { form, errors, disabled: form.processing, editing };
     const submitAction = editing ? (
@@ -82,8 +82,8 @@ export default function StudentDocumentForm({
                     <StudentDocumentFileFields
                         {...sectionProps}
                         studentDocument={studentDocument}
-                        fileInputKey={fileInputKey}
                         onSelect={selectFile}
+                        onReject={rejectFile}
                         onClear={clearFile}
                     />
                 </fieldset>

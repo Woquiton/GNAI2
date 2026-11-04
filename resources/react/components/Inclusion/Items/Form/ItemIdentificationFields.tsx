@@ -8,9 +8,11 @@ import {
 } from '@/components/Forms/FormFields/FormFields';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import { joinClassNames } from '@/utils/joinClassNames';
 import { itemNatureOptions } from '../Items.constants';
 import type { ItemFormOptions } from '../Items.types';
 import { ITEM_TOUR_TARGETS } from '../itemTours';
+import './ItemIdentificationFields.css';
 import type { ItemFormSectionProps } from './ItemForm.types';
 
 interface ItemIdentificationFieldsProps extends ItemFormSectionProps {
@@ -26,14 +28,16 @@ export default function ItemIdentificationFields({
     options,
     onEditorFailure,
 }: ItemIdentificationFieldsProps): React.JSX.Element {
+    const digital = form.data.is_digital;
+
     function changeNature(value: string): void {
-        const digital = value === '1';
+        const toDigital = value === '1';
 
         // Recursos digitais não têm patrimônio: o valor é descartado ao trocar a natureza.
         form.setData((data) => ({
             ...data,
-            is_digital: digital,
-            asset_code: digital ? '' : data.asset_code,
+            is_digital: toDigital,
+            asset_code: toDigital ? '' : data.asset_code,
         }));
     }
 
@@ -46,48 +50,67 @@ export default function ItemIdentificationFields({
             tourTarget={ITEM_TOUR_TARGETS.identification}
         >
             <FormGrid>
-                <SelectInputField
-                    id="item-type"
-                    name="item_type"
-                    label="Tipo do Item"
-                    required
-                    options={optionsFromRecord(options.itemTypes)}
-                    value={form.data.item_type}
-                    error={errors.item_type}
-                    onChange={(value) => form.setData('item_type', value)}
-                />
-                <TextInputField
-                    id="item-name"
-                    name="name"
-                    label="Descrição do Item"
-                    required
-                    maxLength={255}
-                    placeholder="Ex: Cadeira de Rodas Motorizada, Livro em Braille..."
-                    value={form.data.name}
-                    error={errors.name}
-                    onChange={(value) => form.setData('name', value)}
-                />
-                <SelectInputField
-                    id="item-digital"
-                    name="is_digital"
-                    label="Natureza do Recurso"
-                    required
-                    options={itemNatureOptions}
-                    value={form.data.is_digital ? '1' : '0'}
-                    error={errors.is_digital}
-                    onChange={changeNature}
-                />
-                {!form.data.is_digital ? (
-                    <TextInputField
-                        id="item-asset-code"
-                        name="asset_code"
-                        label="Patrimônio / Tombamento"
-                        maxLength={50}
-                        value={form.data.asset_code}
-                        error={errors.asset_code}
-                        onChange={(value) => form.setData('asset_code', value)}
-                    />
-                ) : null}
+                <FormGridWide>
+                    <div
+                        className={joinClassNames(
+                            'itemIdentification__mainRow',
+                            digital && 'itemIdentification__mainRow--digital',
+                        )}
+                    >
+                        <div className="itemIdentification__cell">
+                            <SelectInputField
+                                id="item-type"
+                                name="item_type"
+                                label="Tipo do Item"
+                                required
+                                options={optionsFromRecord(options.itemTypes)}
+                                value={form.data.item_type}
+                                error={errors.item_type}
+                                onChange={(value) => form.setData('item_type', value)}
+                            />
+                        </div>
+                        <div className="itemIdentification__cell">
+                            <TextInputField
+                                id="item-name"
+                                name="name"
+                                label="Descrição do Item"
+                                required
+                                maxLength={255}
+                                placeholder="Ex: Cadeira de Rodas Motorizada, Livro em Braille..."
+                                value={form.data.name}
+                                error={errors.name}
+                                onChange={(value) => form.setData('name', value)}
+                            />
+                        </div>
+                        <div className="itemIdentification__cell">
+                            <SelectInputField
+                                id="item-digital"
+                                name="is_digital"
+                                label="Natureza do Recurso"
+                                required
+                                options={itemNatureOptions}
+                                value={form.data.is_digital ? '1' : '0'}
+                                error={errors.is_digital}
+                                onChange={changeNature}
+                            />
+                        </div>
+                        <div
+                            className="itemIdentification__cell itemIdentification__cell--asset"
+                            inert={digital}
+                        >
+                            <TextInputField
+                                id="item-asset-code"
+                                name="asset_code"
+                                label="Patrimônio / Tombamento"
+                                maxLength={50}
+                                disabled={digital}
+                                value={form.data.asset_code}
+                                error={errors.asset_code}
+                                onChange={(value) => form.setData('asset_code', value)}
+                            />
+                        </div>
+                    </div>
+                </FormGridWide>
                 <FormGridWide>
                     <RichTextField
                         id="item-notes"

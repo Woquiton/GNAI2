@@ -1,7 +1,0 @@
-/* Orientação sobre o beneficiário único, logo abaixo dos campos de aluno e profissional. */
-.waitlistForm__hint {
-    margin: 0;
-    color: var(--ui-color-gnai-primary);
-    font-size: 13px;
-    font-weight: 600;
-}

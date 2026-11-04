@@ -32,7 +32,7 @@ export const studentDocumentCreateTour: GuidedTourPageConfig = {
             group: CREATE_GROUP,
             title: 'Arquivo',
             content: [
-                'Clique em Selecionar arquivo para escolher o documento no seu computador. Ele é obrigatório.',
+                'Arraste o documento para a área tracejada ou clique nela para escolher no seu computador. Ele é obrigatório.',
                 'Você pode enviar PDF, DOC, DOCX, JPG ou PNG de até 10 MB. Depois de escolher, use Remover para tirar o arquivo e escolher outro.',
             ],
         },
@@ -68,7 +68,7 @@ export const studentDocumentEditTour: GuidedTourPageConfig = {
             group: EDIT_GROUP,
             title: 'Arquivo',
             content: [
-                'Em Arquivo Atual, você vê o nome do arquivo enviado. Para trocar, clique em Selecionar arquivo e escolha outro.',
+                'Em Arquivo Atual, você vê o nome do arquivo enviado. Para trocar, arraste outro arquivo para a área tracejada ou clique nela e escolha outro.',
                 'Se não escolher nada, o arquivo atual continua. O novo arquivo pode ser PDF, DOC, DOCX, JPG ou PNG de até 10 MB.',
             ],
         },

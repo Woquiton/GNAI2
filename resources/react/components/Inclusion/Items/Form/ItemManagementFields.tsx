@@ -35,7 +35,7 @@ export default function ItemManagementFields({
             iconClass="fa fa-tasks"
             tourTarget={ITEM_TOUR_TARGETS.management}
         >
-            <FormGrid>
+            <FormGrid columns={4}>
                 <FormStack>
                     <TextInputField
                         id="item-quantity"

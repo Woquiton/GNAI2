@@ -10,8 +10,9 @@ export interface FormFieldProps {
     label: string;
     children: ReactNode;
     layout?: 'stacked' | 'horizontal';
-    /** Texto de apoio. Com `hintLabel`, é exibido no tooltip ao lado do label. */
+    /** Texto de apoio, sempre exibido no tooltip de informação ao lado do label. */
     hint?: string;
+    /** Nome acessível do botão de informação; o padrão cita o label do campo. */
     hintLabel?: string;
     error?: string;
     className?: string;
@@ -52,22 +53,29 @@ export default function FormField({
     requiredIndicator = false,
 }: FormFieldProps): React.JSX.Element {
     const labelElement = <FormFieldLabel id={id} label={label} required={requiredIndicator} />;
-    const inlineHint = hint && !hintLabel;
+    /**
+     * Sem `hintLabel`, o consumidor pode apontar `aria-describedby` para a dica: ela continua no
+     * DOM, oculta visualmente, para o leitor de tela anunciá-la ao focar o controle.
+     */
+    const describedHint = hint && !hintLabel;
 
     return (
         <div className={joinClassNames('formField', `formField--${layout}`, className)}>
-            {hint && hintLabel ? (
+            {hint ? (
                 <div className="formField__labelRow">
                     {labelElement}
-                    <InfoTooltip text={hint} label={hintLabel} />
+                    <InfoTooltip
+                        text={hint}
+                        label={hintLabel ?? `Mais informações sobre ${label.toLowerCase()}`}
+                    />
                 </div>
             ) : (
                 labelElement
             )}
             <div className="formField__control">
                 {children}
-                {inlineHint ? (
-                    <span id={fieldHintId(id)} className="formField__hint">
+                {describedHint ? (
+                    <span id={fieldHintId(id)} className="formField__hint--hidden">
                         {hint}
                     </span>
                 ) : null}

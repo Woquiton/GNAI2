@@ -1,5 +1,4 @@
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { studentDocumentMaxFileSize } from '../StudentDocuments.constants';
 import { studentDocumentFileUrls, studentDocumentUrls } from '../StudentDocuments.routes';
@@ -23,8 +22,6 @@ export function useStudentDocumentForm({
         file: null,
     });
     const { formRef, submit } = useFormSubmission(form);
-    /** Recria o input de arquivo para limpar a seleção nativa. */
-    const [fileInputKey, setFileInputKey] = useState(0);
     const errors = form.errors as Partial<Record<keyof StudentDocumentFormData, string>>;
 
     function selectFile(file: File | undefined): void {
@@ -33,9 +30,7 @@ export function useStudentDocumentForm({
         }
 
         if (file.size > studentDocumentMaxFileSize) {
-            form.setData('file', null);
-            form.setError('file', 'O arquivo não pode ultrapassar 10 MB.');
-            setFileInputKey((key) => key + 1);
+            rejectFile('O arquivo não pode ultrapassar 10 MB.');
             return;
         }
 
@@ -43,10 +38,15 @@ export function useStudentDocumentForm({
         form.setData('file', file);
     }
 
+    /** Arquivo recusado (tamanho ou formato): a seleção é limpa e o motivo fica no campo. */
+    function rejectFile(message: string): void {
+        form.setData('file', null);
+        form.setError('file', message);
+    }
+
     function clearFile(): void {
         form.setData('file', null);
         form.clearErrors('file');
-        setFileInputKey((key) => key + 1);
     }
 
     function save(): void {
@@ -62,5 +62,5 @@ export function useStudentDocumentForm({
         });
     }
 
-    return { form, errors, formRef, editing, fileInputKey, selectFile, clearFile, save };
+    return { form, errors, formRef, editing, selectFile, rejectFile, clearFile, save };
 }

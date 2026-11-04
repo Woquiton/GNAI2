@@ -266,17 +266,11 @@ export default function BuilderPillarsEditor({
                     {contact ? (
                         <FormSection
                             title="Canais de contato"
+                            description="Endereço, telefone, e-mail e redes sociais são gerenciados no item Identidade. Somente os canais preenchidos aparecem no site."
                             variant="inline"
                             iconClass="fa fa-envelope-o"
                         >
                             <FormGrid>
-                                <FormGridWide>
-                                    <p className="websiteBuilder__note">
-                                        Endereço, telefone, e-mail e redes sociais são gerenciados
-                                        no item Identidade. Somente os canais preenchidos aparecem
-                                        no site.
-                                    </p>
-                                </FormGridWide>
                                 {(
                                     [
                                         ['show_icons', 'Exibir ícones'],
@@ -321,7 +315,12 @@ export default function BuilderPillarsEditor({
                             </FormGrid>
                         </FormSection>
                     ) : team ? (
-                        <FormSection title="Profissionais" variant="inline" iconClass="fa fa-users">
+                        <FormSection
+                            title="Profissionais"
+                            description="Mostra os profissionais ativos marcados como “Aparece no site”, em ordem alfabética. Fotos, nomes e cargos são gerenciados no cadastro de profissionais. Sem profissionais disponíveis, a seção fica oculta no site público e permanece editável na prévia."
+                            variant="inline"
+                            iconClass="fa fa-users"
+                        >
                             <FormGrid>
                                 <FormField
                                     id={id('limit')}
@@ -348,15 +347,6 @@ export default function BuilderPillarsEditor({
                                         }
                                     />
                                 </FormField>
-                                <FormGridWide>
-                                    <p className="websiteBuilder__note">
-                                        Mostra os profissionais ativos marcados como “Aparece no
-                                        site”, em ordem alfabética. Fotos, nomes e cargos são
-                                        gerenciados no cadastro de profissionais. Sem profissionais
-                                        disponíveis, a seção fica oculta no site público e permanece
-                                        editável na prévia.
-                                    </p>
-                                </FormGridWide>
                                 {(
                                     [
                                         ['show_photo', 'Exibir foto'],
@@ -397,6 +387,11 @@ export default function BuilderPillarsEditor({
                     ) : publications ? (
                         <FormSection
                             title={events ? 'Eventos' : 'Publicações'}
+                            description={`${
+                                events
+                                    ? 'Mostra publicações publicadas com programação que ainda não terminou, em ordem de início. O conteúdo é gerenciado no cadastro de publicações.'
+                                    : 'Mostra as publicações mais recentes, com os destaques primeiro. O conteúdo é gerenciado no cadastro de publicações.'
+                            } Sem registros disponíveis, a seção fica oculta no site público e permanece editável na prévia.`}
                             variant="inline"
                             iconClass={events ? 'fa fa-calendar' : 'fa fa-newspaper-o'}
                         >
@@ -430,15 +425,6 @@ export default function BuilderPillarsEditor({
                                         }
                                     />
                                 </FormField>
-                                <FormGridWide>
-                                    <p className="websiteBuilder__note">
-                                        {events
-                                            ? 'Mostra publicações publicadas com programação que ainda não terminou, em ordem de início. O conteúdo é gerenciado no cadastro de publicações.'
-                                            : 'Mostra as publicações mais recentes, com os destaques primeiro. O conteúdo é gerenciado no cadastro de publicações.'}{' '}
-                                        Sem registros disponíveis, a seção fica oculta no site
-                                        público e permanece editável na prévia.
-                                    </p>
-                                </FormGridWide>
                                 {(
                                     [
                                         ['show_image', 'Exibir capa'],

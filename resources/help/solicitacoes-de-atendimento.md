@@ -59,7 +59,7 @@ Os perfis ficam vinculados a esta solicitação. Essa seleção não vincula nem
 
 ## Adicionar ou remover documentos
 
-Use **Adicionar documentos** para selecionar arquivos em PDF, DOC, DOCX, ODT, JPG ou PNG. Cada solicitação aceita até 10 anexos, com no máximo 10 MB por arquivo.
+Em **Documentos**, arraste os arquivos para a área tracejada ou clique nela para selecionar arquivos em PDF, DOC, DOCX, ODT, JPG ou PNG. Cada solicitação aceita até 10 anexos, com no máximo 10 MB por arquivo. As prévias dos arquivos novos ficam dentro da área; passe o ponteiro sobre uma prévia e clique no **X** para retirá-la antes de salvar. Pelo teclado, use Tab para chegar à área ou ao botão de remoção e Enter para ativá-los.
 
 Na edição, o botão de remover marca um anexo para exclusão. É possível desfazer a marcação antes de salvar. Os arquivos novos e as remoções só são confirmados ao clicar em **Salvar**. Os anexos ficam privados e o download exige acesso à solicitação.
 

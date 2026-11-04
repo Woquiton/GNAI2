@@ -77,7 +77,7 @@ function publicationFormSteps(mode: FormMode): GuidedTourStep[] {
             group,
             title: 'Galeria de fotos',
             content: [
-                'Clique em Adicionar fotos para enviar várias imagens de uma vez, até 30 fotos.',
+                'Arraste as fotos para a área tracejada ou clique nela para enviar várias imagens de uma vez, até 30 fotos.',
                 mode === 'create'
                     ? 'Cada foto precisa de um texto alternativo. Use o botão com X ao lado para tirar uma foto da lista.'
                     : 'Você pode mudar o texto alternativo das fotos, remover as que já estão salvas e acrescentar novas. As fotos removidas saem quando você salvar.',

@@ -143,6 +143,7 @@ export default function EmailComposeForm({
                                 </ul>
                             ) : null}
                             <EvidenceUpload
+                                variant="dropzone"
                                 id="email-compose-attachments"
                                 name="attachments"
                                 label="Anexar arquivos"

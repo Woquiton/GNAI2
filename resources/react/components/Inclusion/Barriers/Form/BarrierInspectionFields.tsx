@@ -74,6 +74,7 @@ export default function BarrierInspectionFields({
                     />
                 </FormGrid>
                 <EvidenceUpload
+                    variant="dropzone"
                     id="barrier-evidences"
                     name="inspection[evidences][]"
                     files={form.data.inspection.evidences}

@@ -11,7 +11,6 @@ import type { WaitlistCreateProps } from '../Waitlists.types';
 import { WAITLIST_TOUR_TARGETS } from '../waitlistTours';
 import WaitlistFormActions from './WaitlistFormActions';
 import { useWaitlistCreateForm } from './useWaitlistCreateForm';
-import './WaitlistForm.css';
 
 /** Cadastro na fila de espera: recurso indisponível, beneficiário único e observações. */
 export default function WaitlistCreateForm(props: WaitlistCreateProps): React.JSX.Element {
@@ -75,46 +74,44 @@ export default function WaitlistCreateForm(props: WaitlistCreateProps): React.JS
                                 error={errors.waitlistable_id}
                                 onChange={(value) => form.setData('waitlistable_id', value)}
                             />
-                            <SelectInputField
-                                id="waitlist-student"
-                                name="student_id"
-                                label="Aluno (Beneficiário)"
-                                disabled={Boolean(form.data.professional_id)}
-                                options={studentOptions}
-                                value={form.data.student_id}
-                                error={errors.student_id}
-                                onChange={changeStudent}
-                            />
-                            <SelectInputField
-                                id="waitlist-professional"
-                                name="professional_id"
-                                label="Profissional (Beneficiário)"
-                                disabled={Boolean(form.data.student_id)}
-                                options={professionalOptions}
-                                value={form.data.professional_id}
-                                error={errors.professional_id}
-                                onChange={changeProfessional}
-                            />
                             <FormGridWide>
-                                <FormField
-                                    id="waitlist-user"
-                                    label="Usuário Responsável pelo Registro"
-                                >
-                                    <TextInput
-                                        id="waitlist-user"
-                                        value={props.authUser.name}
-                                        disabled
-                                        readOnly
-                                    />
-                                </FormField>
+                                <div data-tour={WAITLIST_TOUR_TARGETS.beneficiary}>
+                                    <FormGrid columns={3}>
+                                        <SelectInputField
+                                            id="waitlist-student"
+                                            name="student_id"
+                                            label="Aluno (Beneficiário)"
+                                            disabled={Boolean(form.data.professional_id)}
+                                            options={studentOptions}
+                                            value={form.data.student_id}
+                                            error={errors.student_id}
+                                            onChange={changeStudent}
+                                        />
+                                        <SelectInputField
+                                            id="waitlist-professional"
+                                            name="professional_id"
+                                            label="Profissional (Beneficiário)"
+                                            disabled={Boolean(form.data.student_id)}
+                                            options={professionalOptions}
+                                            value={form.data.professional_id}
+                                            error={errors.professional_id}
+                                            onChange={changeProfessional}
+                                        />
+                                        <FormField
+                                            id="waitlist-user"
+                                            label="Usuário Responsável pelo Registro"
+                                        >
+                                            <TextInput
+                                                id="waitlist-user"
+                                                value={props.authUser.name}
+                                                disabled
+                                                readOnly
+                                            />
+                                        </FormField>
+                                    </FormGrid>
+                                </div>
                             </FormGridWide>
                         </FormGrid>
-                        <p
-                            className="waitlistForm__hint"
-                            data-tour={WAITLIST_TOUR_TARGETS.beneficiary}
-                        >
-                            Selecione um aluno ou um profissional como beneficiário, nunca ambos.
-                        </p>
                         <div data-tour={WAITLIST_TOUR_TARGETS.observation}>
                             <RichTextField
                                 id="waitlist-observation-field"

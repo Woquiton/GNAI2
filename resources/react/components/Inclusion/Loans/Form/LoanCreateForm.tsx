@@ -80,36 +80,41 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
                             error={errors.loanable_id}
                             onChange={changeItem}
                         />
-                        <SelectInputField
-                            id="loan-student"
-                            name="student_id"
-                            label="Estudante (Beneficiário)"
-                            disabled={form.processing || Boolean(form.data.professional_id)}
-                            options={optionsFromRecord(props.students)}
-                            value={form.data.student_id}
-                            error={errors.student_id}
-                            onChange={changeStudent}
-                        />
-                        <SelectInputField
-                            id="loan-professional"
-                            name="professional_id"
-                            label="Profissional (Beneficiário)"
-                            disabled={form.processing || Boolean(form.data.student_id)}
-                            options={optionsFromRecord(props.professionals)}
-                            value={form.data.professional_id}
-                            error={errors.professional_id}
-                            onChange={changeProfessional}
-                        />
                         <FormGridWide>
-                            <div data-tour={LOAN_TOUR_TARGETS.responsible}>
-                                <FormField id="loan-user" label="Usuário Autenticado (Responsável)">
-                                    <TextInput
+                            <FormGrid columns={3}>
+                                <SelectInputField
+                                    id="loan-student"
+                                    name="student_id"
+                                    label="Estudante (Beneficiário)"
+                                    disabled={form.processing || Boolean(form.data.professional_id)}
+                                    options={optionsFromRecord(props.students)}
+                                    value={form.data.student_id}
+                                    error={errors.student_id}
+                                    onChange={changeStudent}
+                                />
+                                <SelectInputField
+                                    id="loan-professional"
+                                    name="professional_id"
+                                    label="Profissional (Beneficiário)"
+                                    disabled={form.processing || Boolean(form.data.student_id)}
+                                    options={optionsFromRecord(props.professionals)}
+                                    value={form.data.professional_id}
+                                    error={errors.professional_id}
+                                    onChange={changeProfessional}
+                                />
+                                <div data-tour={LOAN_TOUR_TARGETS.responsible}>
+                                    <FormField
                                         id="loan-user"
-                                        value={props.authUser.name}
-                                        disabled
-                                    />
-                                </FormField>
-                            </div>
+                                        label="Usuário Autenticado (Responsável)"
+                                    >
+                                        <TextInput
+                                            id="loan-user"
+                                            value={props.authUser.name}
+                                            disabled
+                                        />
+                                    </FormField>
+                                </div>
+                            </FormGrid>
                         </FormGridWide>
                         <div
                             className="loanForm__dateTimeFields"

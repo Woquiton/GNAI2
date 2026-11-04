@@ -56,6 +56,8 @@ Ao salvar, o Gnai registra automaticamente a primeira vistoria do item com o est
 
 > **Importante:** o item não tem um campo de foto próprio. Para guardar imagens do item, anexe-as como **Evidências** da vistoria.
 
+Na vistoria, arraste os arquivos para a área de **Evidências** ou clique nela para selecionar vários arquivos. As prévias ficam dentro da área tracejada. Passe o ponteiro sobre a prévia e clique no **X** para remover o arquivo antes de salvar. Pelo teclado, use Tab para chegar ao botão de remoção e Enter para ativá-lo. Os arquivos são enviados ao salvar o formulário.
+
 ## Clonar um item
 
 Clonar serve para cadastrar rapidamente outro exemplar igual ou parecido com um item que já existe, como mais uma unidade de um equipamento com outro número de patrimônio. Em vez de preencher tudo de novo, o Gnai abre o formulário de cadastro já preenchido com os dados do item original.

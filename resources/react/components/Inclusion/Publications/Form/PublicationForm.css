@@ -16,6 +16,17 @@
     font-size: 12px;
 }
 
+/* A capa ocupa só a largura do quadrado; o texto alternativo fica logo ao lado. */
+.formGrid.publicationCover__grid {
+    grid-template-columns: auto minmax(0, 1fr);
+}
+
+@media (max-width: 700px) {
+    .formGrid.publicationCover__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 /* Título e resumo à esquerda; autor, tipo e etiquetas à direita. */
 /* Espaçamento vertical igual ao da grade de formulários (20px). */
 .publicationForm__intro {
@@ -88,11 +99,12 @@
     border-radius: 0 4px 4px 0;
 }
 
+/* Fotos em cartões compactos: várias por linha, cada uma com miniatura e texto alternativo. */
 .publicationGallery {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
     gap: 12px;
-    margin: 0 0 16px;
+    margin: 0;
     padding: 0;
     list-style: none;
 }
@@ -101,8 +113,8 @@
     display: flex;
     min-width: 0;
     align-items: center;
-    gap: 14px;
-    padding: 10px;
+    gap: 10px;
+    padding: 8px;
     border: 1px solid var(--ui-color-card-border);
     border-radius: 6px;
 }
@@ -110,8 +122,8 @@
 .publicationGallery__item img,
 .publicationGallery__placeholder {
     flex: 0 0 auto;
-    width: 96px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 4px;
     background: var(--ui-color-surface-alt, #f5f6f8);
     object-fit: cover;
@@ -124,6 +136,9 @@
 .publicationGallery__fields {
     flex: 1;
     min-width: 0;
+}
+.publicationGallery__fields .formField {
+    margin-bottom: 0;
 }
 
 .publicationGallery__status {
@@ -145,10 +160,6 @@
 @media (max-width: 700px) {
     .publicationForm__wide {
         grid-column: auto;
-    }
-
-    .publicationGallery__item {
-        flex-wrap: wrap;
     }
 
     .publicationForm__speakerRow {

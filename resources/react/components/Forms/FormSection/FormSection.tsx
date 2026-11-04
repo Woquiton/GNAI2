@@ -1,11 +1,16 @@
 import { useId, type ReactNode } from 'react';
 import CardBox from '@/components/UI/CardBox/CardBox';
+import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import './FormSection.css';
 
 interface FormSectionProps {
     id?: string;
     title: string;
     titleAddon?: ReactNode;
+    /**
+     * Texto de apoio da seção. Texto simples vai para o tooltip de informação ao lado do título;
+     * conteúdo formatado (com código ou links) continua como parágrafo abaixo dele.
+     */
     description?: ReactNode;
     children: ReactNode;
     variant?: 'card' | 'inline';
@@ -32,8 +37,16 @@ export default function FormSection({
                 <i className={iconClass} aria-hidden="true" />
                 <span>{title}</span>
                 {titleAddon}
+                {typeof description === 'string' && description ? (
+                    <InfoTooltip
+                        text={description}
+                        label={`Mais informações sobre ${title.toLowerCase()}`}
+                    />
+                ) : null}
             </Heading>
-            {description ? <p className="formSection__description">{description}</p> : null}
+            {description && typeof description !== 'string' ? (
+                <p className="formSection__description">{description}</p>
+            ) : null}
             {children}
         </>
     );

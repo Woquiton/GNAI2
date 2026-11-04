@@ -138,7 +138,7 @@ function managementContent(mode: ItemFormTourMode): string[] {
 
 function inspectionStep(mode: ItemFormTourMode): GuidedTourStep {
     const evidences =
-        'Em Evidências, anexe fotos e documentos da vistoria. São até 10 arquivos, com até 20 MB cada.';
+        'Em Evidências, arraste fotos e documentos ou clique na área para selecionar arquivos. São até 10 arquivos, com até 20 MB cada.';
 
     return mode === 'edit'
         ? {

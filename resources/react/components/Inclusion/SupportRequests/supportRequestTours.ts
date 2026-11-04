@@ -82,7 +82,7 @@ function supportRequestFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
             group,
             title: 'Documentos',
             content: [
-                'Clique em Adicionar documentos para anexar arquivos em PDF, Word, ODT, JPG ou PNG. São até 10 arquivos, com até 10 MB cada.',
+                'Arraste os arquivos para a área tracejada ou clique nela para anexar PDF, Word, ODT, JPG ou PNG. São até 10 arquivos, com até 10 MB cada.',
                 mode === 'create'
                     ? 'Os documentos não são obrigatórios.'
                     : 'Para tirar um anexo, use o botão de remover. Ele só sai de verdade quando você salva.',

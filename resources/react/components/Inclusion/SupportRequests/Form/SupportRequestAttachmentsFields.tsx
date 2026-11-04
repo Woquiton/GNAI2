@@ -1,16 +1,18 @@
-import FileUploadButton from '@/components/Forms/FileUploadButton/FileUploadButton';
+import FileDropzone from '@/components/Forms/FileDropzone/FileDropzone';
 import FieldError from '@/components/Forms/FormField/FieldError';
 import { fieldErrorId } from '@/components/Forms/FormField/fieldDescription';
 import { FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import FormSection from '@/components/Forms/FormSection/FormSection';
 import InfoTooltip from '@/components/UI/InfoTooltip/InfoTooltip';
 import RemovableField from '@/components/Forms/RemovableField/RemovableField';
-import TextInput from '@/components/Forms/TextInput/TextInput';
 import Button from '@/components/UI/Button/Button';
 import { notify } from '@/components/UI/NotificationToast/notify';
 import type { SupportRequestAttachment } from '../SupportRequests.types';
 import { SUPPORT_REQUEST_TOUR_TARGETS } from '../supportRequestTours';
 import type { SupportRequestFieldsProps } from './SupportRequestForm.types';
+
+const MAX_ATTACHMENTS = 10;
+const ACCEPTED_FILES = '.pdf,.doc,.docx,.odt,.jpg,.jpeg,.png';
 
 export default function SupportRequestAttachmentsFields({
     data,
@@ -27,30 +29,29 @@ export default function SupportRequestAttachmentsFields({
         )?.[1];
     const kept = existing.filter((file) => !data.remove_attachment_ids.includes(file.id)).length;
 
-    function addFiles(files: FileList | null): void {
-        if (!files) return;
-        const selected = Array.from(files);
-        let message = '';
-        if (kept + data.attachments.length + selected.length > 10) {
-            message = 'Uma solicitação pode ter no máximo 10 anexos.';
-        } else if (selected.some((file) => file.size > 10 * 1024 * 1024)) {
-            message = 'Cada anexo pode ter no máximo 10 MB.';
-        } else if (
-            selected.some((file) => !/\.(pdf|doc|docx|odt|jpg|jpeg|png)$/i.test(file.name))
-        ) {
-            message = 'Use PDF, DOC, DOCX, ODT, JPG ou PNG.';
-        }
-        const fingerprints = [...data.attachments, ...selected].map(
-            (file) => `${file.name}-${file.size}-${file.lastModified}`,
-        );
-        if (new Set(fingerprints).size !== fingerprints.length) {
-            message = 'Este arquivo já foi selecionado. Remova a cópia repetida.';
-        }
-        if (message) {
-            notify({ tone: 'warning', title: 'Anexos não adicionados', text: message });
+    function warn(text: string): void {
+        notify({ tone: 'warning', title: 'Anexos não adicionados', text });
+    }
+
+    /** O Dropzone barra tipo e tamanho; aqui ficam as cópias e o total com os anexos salvos. */
+    function changeFiles(files: File[]): void {
+        const seen = new Set<string>();
+        const unique = files.filter((file) => {
+            const fingerprint = `${file.name}-${file.size}-${file.lastModified}`;
+            if (seen.has(fingerprint)) return false;
+            seen.add(fingerprint);
+            return true;
+        });
+        if (kept + unique.length > MAX_ATTACHMENTS) {
+            warn(`Uma solicitação pode ter no máximo ${MAX_ATTACHMENTS} anexos.`);
+            // Lista nova mesmo sem mudanças, para a área de envio descartar o que foi recusado.
+            update('attachments', [...data.attachments]);
             return;
         }
-        update('attachments', [...data.attachments, ...selected]);
+        if (unique.length !== files.length) {
+            warn('Este arquivo já foi selecionado. Remova a cópia repetida.');
+        }
+        update('attachments', unique);
     }
 
     return (
@@ -99,37 +100,20 @@ export default function SupportRequestAttachmentsFields({
                         </RemovableField>
                     );
                 })}
-                {data.attachments.map((file, index) => (
-                    <RemovableField
-                        key={`${file.name}-${file.size}-${file.lastModified}`}
-                        removeLabel={`Remover ${file.name}`}
-                        disabled={disabled}
-                        onRemove={() =>
-                            update(
-                                'attachments',
-                                data.attachments.filter((_, position) => position !== index),
-                            )
-                        }
-                    >
-                        <TextInput
-                            value={file.name}
-                            readOnly
-                            aria-label={`Novo anexo ${index + 1}`}
-                        />
-                    </RemovableField>
-                ))}
-                <FileUploadButton
-                    id="support-request-files"
-                    name="attachments[]"
-                    label="Adicionar documentos"
-                    multiple
-                    accept=".pdf,.doc,.docx,.odt,.jpg,.jpeg,.png"
-                    disabled={disabled || kept + data.attachments.length >= 10}
-                    aria-invalid={Boolean(error)}
-                    aria-describedby={error ? fieldErrorId('support-request-files') : undefined}
-                    onChange={(event) => {
-                        addFiles(event.target.files);
-                        event.target.value = '';
+                <FileDropzone
+                    acceptedFiles={ACCEPTED_FILES}
+                    maxFiles={MAX_ATTACHMENTS}
+                    maxFilesMessage={`Uma solicitação pode ter no máximo ${MAX_ATTACHMENTS} anexos.`}
+                    maxFileSizeMb={10}
+                    onFilesChange={changeFiles}
+                    onError={(_file, message) => warn(message)}
+                    selection={{
+                        id: 'support-request-files',
+                        name: 'attachments[]',
+                        disabled,
+                        invalid: Boolean(error),
+                        describedBy: error ? fieldErrorId('support-request-files') : undefined,
+                        files: data.attachments,
                     }}
                 />
                 <FieldError id="support-request-files" error={error} />

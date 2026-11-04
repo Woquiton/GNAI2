@@ -117,19 +117,21 @@ export default function ProfessionalWorkFields({
             </div>
             {canManageAdmin ? (
                 <div className="professionalForm__option">
-                    <ChoiceControl
-                        type="checkbox"
-                        id="professional-is-admin"
-                        name="is_admin"
-                        label="Definir este profissional como administrador interno da unidade"
-                        checked={form.data.is_admin}
-                        disabled={disabled}
-                        onChange={(checked) => form.setData('is_admin', checked)}
-                    />
-                    <p className="formField__hint">
-                        Somente o administrador superior do Gnai pode conceder ou retirar este
-                        acesso.
-                    </p>
+                    <div className="professionalForm__choiceRow">
+                        <ChoiceControl
+                            type="checkbox"
+                            id="professional-is-admin"
+                            name="is_admin"
+                            label="Definir este profissional como administrador interno da unidade"
+                            checked={form.data.is_admin}
+                            disabled={disabled}
+                            onChange={(checked) => form.setData('is_admin', checked)}
+                        />
+                        <InfoTooltip
+                            text="Somente o administrador superior do Gnai pode conceder ou retirar este acesso."
+                            label="Mais informações sobre o administrador interno"
+                        />
+                    </div>
                     {errors.is_admin ? (
                         <p
                             id={fieldErrorId('professional-is-admin')}

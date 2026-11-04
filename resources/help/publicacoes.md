@@ -55,7 +55,7 @@ Ative **Tem data de início e término** para eventos: o site passa a mostrar se
 ### Imagem de capa e galeria
 
 - **Capa**: aparece nos cartões e no topo da publicação. JPG, PNG ou WEBP com até 4 MB. Ao enviar uma capa, o **Texto alternativo** (descrição da imagem para quem usa leitor de tela) é obrigatório.
-- **Galeria de fotos**: clique em **Adicionar fotos** para enviar várias imagens (JPG, PNG ou WEBP, até 4 MB cada, no máximo 30 fotos). Cada foto precisa de texto alternativo.
+- **Galeria de fotos**: arraste as fotos para a área tracejada ou clique nela para enviar várias imagens (JPG, PNG ou WEBP, até 4 MB cada, no máximo 30 fotos). Cada foto precisa de texto alternativo.
 
 ### Publicação, endereço e buscadores
 

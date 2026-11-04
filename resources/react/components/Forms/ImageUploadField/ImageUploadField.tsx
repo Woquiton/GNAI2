@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import FileUploadButton from '@/components/Forms/FileUploadButton/FileUploadButton';
+import FileDropzone from '@/components/Forms/FileDropzone/FileDropzone';
 import Button from '@/components/UI/Button/Button';
 import { joinClassNames } from '@/utils/joinClassNames';
 import './ImageUploadField.css';
@@ -97,35 +97,47 @@ export default function ImageUploadField({
                 invalid && 'imageUploadField--invalid',
             )}
         >
-            <div className="imageUploadField__preview">
-                {previewUrl ? (
-                    <img src={previewUrl} alt={previewAlt} />
-                ) : (
-                    <span className="imageUploadField__empty">
-                        <i className="fa fa-picture-o" aria-hidden="true" />
-                        <span>Nenhuma imagem selecionada</span>
-                    </span>
+            <div
+                className={joinClassNames(
+                    'imageUploadField__drop',
+                    Boolean(previewUrl) && 'imageUploadField__drop--filled',
                 )}
-            </div>
-            <div className="imageUploadField__actions">
-                <FileUploadButton
-                    id={id}
-                    name={name}
-                    label={
-                        previewUrl
-                            ? `Trocar ${label.toLowerCase()}`
-                            : `Escolher ${label.toLowerCase()}`
-                    }
-                    accept={accept}
-                    disabled={disabled}
-                    aria-invalid={invalid || undefined}
-                    aria-describedby={describedBy}
-                    onChange={(event) => {
-                        select(event.target.files?.[0]);
-                        event.target.value = '';
+            >
+                <FileDropzone
+                    compact
+                    message="Arraste a imagem aqui ou clique para selecionar"
+                    picker={{
+                        id,
+                        name,
+                        accept,
+                        disabled,
+                        invalid,
+                        describedBy,
+                        onPick: (files) => select(files[0]),
                     }}
+                    maxFilesMessage="Selecione apenas uma imagem."
+                    onError={(_file, message) => onError?.(message)}
+                    onLoadError={() =>
+                        onError?.(
+                            'Não foi possível carregar o seletor de imagens. Atualize a página e tente novamente.',
+                        )
+                    }
                 />
                 {previewUrl ? (
+                    <>
+                        <img
+                            className="imageUploadField__image"
+                            src={previewUrl}
+                            alt={previewAlt}
+                        />
+                        <span className="imageUploadField__change" aria-hidden="true">
+                            Arraste ou clique para trocar
+                        </span>
+                    </>
+                ) : null}
+            </div>
+            {previewUrl ? (
+                <div className="imageUploadField__actions">
                     <Button
                         tone="dark-red"
                         size="sm"
@@ -136,8 +148,8 @@ export default function ImageUploadField({
                         disabled={disabled}
                         onClick={onRemove}
                     />
-                ) : null}
-            </div>
+                </div>
+            ) : null}
         </div>
     );
 }

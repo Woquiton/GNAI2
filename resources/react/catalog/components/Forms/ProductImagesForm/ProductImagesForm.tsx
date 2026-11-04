@@ -2,7 +2,7 @@ import { Fragment, useId } from 'react';
 import ImageDisplay from '@/components/UI/ImageDisplay/ImageDisplay';
 import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import RecordActions from '@/catalog/components/UI/RecordActions/RecordActions';
-import FileUploadButton from '@/components/Forms/FileUploadButton/FileUploadButton';
+import FileDropzone from '@/components/Forms/FileDropzone/FileDropzone';
 import ProductFormSection from '@/catalog/components/Forms/ProductFormSection/ProductFormSection';
 import { productImages, imageRoles } from './ProductImagesForm.data';
 import './ProductImagesForm.css';
@@ -40,7 +40,18 @@ export default function ProductImagesForm(): React.JSX.Element {
                 </div>
             ))}
             <div className="productImagesForm__upload">
-                <FileUploadButton label="Enviar" />
+                {/* Demonstração: as imagens escolhidas não são enviadas. */}
+                <FileDropzone
+                    compact
+                    message="Arraste as imagens aqui ou clique para enviar"
+                    picker={{
+                        id: `${id}-upload`,
+                        name: 'product_images',
+                        accept: '.jpg,.jpeg,.png,.webp',
+                        multiple: true,
+                        onPick: () => undefined,
+                    }}
+                />
             </div>
         </ProductFormSection>
     );

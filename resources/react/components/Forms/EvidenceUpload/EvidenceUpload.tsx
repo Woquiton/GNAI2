@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import FileUploadButton from '@/components/Forms/FileUploadButton/FileUploadButton';
+import FileDropzone from '@/components/Forms/FileDropzone/FileDropzone';
+import { fieldDescribedBy } from '@/components/Forms/FormField/fieldDescription';
 import FormField from '@/components/Forms/FormField/FormField';
 import Button from '@/components/UI/Button/Button';
 import './EvidenceUpload.css';
@@ -7,7 +9,15 @@ import './EvidenceUpload.css';
 const defaultAccept =
     '.jpg,.jpeg,.png,.webp,.pdf,.doc,.docx,.ppt,.pptx,.odp,.odt,.ods,.xls,.xlsx,.csv,.txt';
 
-function EvidenceFile({ file, onRemove }: { file: File; onRemove: () => void }): React.JSX.Element {
+function EvidenceFile({
+    file,
+    onRemove,
+    disabled,
+}: {
+    file: File;
+    onRemove: () => void;
+    disabled: boolean;
+}): React.JSX.Element {
     const [previewUrl, setPreviewUrl] = useState('');
     useEffect(() => {
         if (!file.type.startsWith('image/')) {
@@ -26,6 +36,7 @@ function EvidenceFile({ file, onRemove }: { file: File; onRemove: () => void }):
             )}
             <span>{file.name}</span>
             <Button
+                disabled={disabled}
                 tone="danger"
                 size="xs"
                 rounded
@@ -52,6 +63,7 @@ export default function EvidenceUpload({
     accept = defaultAccept,
     label = 'Evidências',
     maxFilesMessage,
+    variant = 'button',
 }: {
     id: string;
     name: string;
@@ -64,11 +76,12 @@ export default function EvidenceUpload({
     accept?: string;
     label?: string;
     maxFilesMessage?: string;
+    variant?: 'button' | 'dropzone';
 }): React.JSX.Element {
     const [localError, setLocalError] = useState('');
     const message = error ?? localError;
-    function add(selected: FileList | null): void {
-        if (!selected) {
+    function add(selected: FileList | File[] | null): void {
+        if (!selected || disabled) {
             return;
         }
         const next = [...files, ...Array.from(selected)];
@@ -96,24 +109,52 @@ export default function EvidenceUpload({
             hint={`Até ${maxFiles} arquivos. Imagens, PDF, documentos, planilhas, textos e apresentações; máximo de ${maxFileSizeMb} MB por arquivo.`}
             hintLabel={`Informações sobre ${label.toLowerCase()}`}
         >
-            <FileUploadButton
-                id={id}
-                name={name}
-                label="Escolher arquivos"
-                accept={accept}
-                multiple
-                disabled={disabled}
-                onChange={(event) => {
-                    add(event.target.files);
-                    event.target.value = '';
-                }}
-            />
-            {files.length ? (
+            {variant === 'dropzone' ? (
+                <FileDropzone
+                    acceptedFiles={accept}
+                    maxFiles={maxFiles}
+                    maxFilesMessage={maxFilesMessage}
+                    maxFileSizeMb={maxFileSizeMb}
+                    onFilesChange={(selected) => {
+                        setLocalError('');
+                        onChange(selected);
+                    }}
+                    onError={(_file, message) => setLocalError(message)}
+                    onLoadError={() =>
+                        setLocalError(
+                            'Não foi possível carregar o seletor de arquivos. Atualize a página e tente novamente.',
+                        )
+                    }
+                    selection={{
+                        id,
+                        name,
+                        disabled,
+                        invalid: Boolean(message),
+                        describedBy: fieldDescribedBy(id, { error: message }),
+                        files,
+                    }}
+                />
+            ) : (
+                <FileUploadButton
+                    id={id}
+                    name={name}
+                    label="Escolher arquivos"
+                    accept={accept}
+                    multiple
+                    disabled={disabled}
+                    onChange={(event) => {
+                        add(event.target.files);
+                        event.target.value = '';
+                    }}
+                />
+            )}
+            {variant === 'button' && files.length ? (
                 <ul className="evidenceUpload__files" aria-live="polite">
                     {files.map((file, index) => (
                         <EvidenceFile
                             key={`${file.name}-${file.size}-${file.lastModified}-${index}`}
                             file={file}
+                            disabled={disabled}
                             onRemove={() => {
                                 setLocalError('');
                                 onChange(files.filter((_, itemIndex) => itemIndex !== index));

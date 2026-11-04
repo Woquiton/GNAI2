@@ -80,10 +80,10 @@ function barrierFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
                 mode === 'create'
                     ? [
                           'Escolha o Status Inicial e confira a Data da Vistoria. A data não pode ser futura.',
-                          'Se quiser, anexe fotos ou documentos como evidências e escreva o parecer técnico.',
+                          'Em Evidências, arraste fotos e documentos ou clique na área para selecionar arquivos. Você também pode escrever o parecer técnico.',
                       ]
                     : [
-                          'Para registrar uma nova vistoria, mude o Status Atual, anexe evidências ou escreva o parecer técnico.',
+                          'Para registrar uma nova vistoria, mude o Status Atual, arraste arquivos para Evidências ou clique na área para selecioná-los, ou escreva o parecer técnico.',
                           'Se você só mudar os dados do relato, nenhuma vistoria nova entra no histórico.',
                       ],
         },

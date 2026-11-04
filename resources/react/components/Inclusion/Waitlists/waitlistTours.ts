@@ -48,7 +48,7 @@ export const waitlistCreateTour: GuidedTourPageConfig = {
             group: 'Cadastro na fila',
             title: 'Beneficiário',
             content: [
-                'Nos campos logo acima, escolha quem vai receber o item em Aluno (Beneficiário) ou em Profissional (Beneficiário).',
+                'Nesta linha, escolha quem vai receber o item em Aluno (Beneficiário) ou em Profissional (Beneficiário).',
                 'Um dos dois é obrigatório, nunca ambos. Ao escolher um, o outro fica bloqueado.',
             ],
         },

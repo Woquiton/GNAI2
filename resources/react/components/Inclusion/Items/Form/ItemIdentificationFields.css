@@ -1,0 +1,64 @@
+/* Tipo, descrição, natureza e patrimônio numa linha; o patrimônio recolhe com animação em itens digitais. */
+.itemIdentification__mainRow {
+    display: flex;
+    align-items: flex-start;
+}
+/* O espaçamento fica nas células para que a célula recolhida não deixe um vão sobrando. */
+.itemIdentification__cell {
+    flex: 1 1 0;
+    min-width: 0;
+}
+.itemIdentification__cell + .itemIdentification__cell {
+    padding-left: 24px;
+}
+/* flex-grow é numérico e interpola nos dois sentidos, ao contrário das faixas da grade. */
+.itemIdentification__cell--asset {
+    transition:
+        flex-grow 0.3s ease,
+        padding-left 0.3s ease,
+        opacity 0.3s ease,
+        visibility 0s;
+}
+.itemIdentification__mainRow--digital .itemIdentification__cell--asset {
+    flex-grow: 0;
+    overflow: hidden;
+    padding-left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        flex-grow 0.3s ease,
+        padding-left 0.3s ease,
+        opacity 0.3s ease,
+        visibility 0s linear 0.3s;
+}
+/* Ao encolher, o texto quebraria letra a letra e esticaria a linha, afastando os campos de baixo. */
+.itemIdentification__cell--asset .formField__label {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.itemIdentification__mainRow--digital .itemIdentification__cell--asset {
+    white-space: nowrap;
+}
+@media (max-width: 900px) {
+    .itemIdentification__mainRow,
+    .itemIdentification__mainRow--digital {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px 24px;
+    }
+    .itemIdentification__cell + .itemIdentification__cell {
+        padding-left: 0;
+    }
+    .itemIdentification__mainRow--digital .itemIdentification__cell--asset {
+        display: none;
+    }
+}
+@media (max-width: 700px) {
+    .itemIdentification__mainRow,
+    .itemIdentification__mainRow--digital {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

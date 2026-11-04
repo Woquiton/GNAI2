@@ -44,6 +44,8 @@ Esses cadastros ficam em **Gestão do núcleo → Cadastros**; veja [Cadastros d
 
 As evidências aceitam até 10 arquivos de até 20 MB cada (imagens, PDF, documentos, planilhas, textos e apresentações). A data da vistoria não pode ser futura.
 
+Na vistoria, arraste os arquivos para a área de **Evidências** ou clique nela para selecionar vários arquivos. As prévias ficam dentro da área tracejada. Passe o ponteiro sobre a prévia e clique no **X** para remover o arquivo antes de salvar. Pelo teclado, use Tab para chegar ao botão de remoção e Enter para ativá-lo. Os arquivos são enviados ao salvar o formulário.
+
 ## Marcar a localização no mapa
 
 O mapa da seção **Localização no Mapa** é enquadrado pela instituição escolhida.

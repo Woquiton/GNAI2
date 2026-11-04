@@ -34,6 +34,18 @@
     color: #98a6ad;
     font-size: 13px;
 }
+/* Cópia da dica só para leitores de tela; a versão visível fica no tooltip. */
+.formField__hint--hidden {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
 .formField__required {
     color: var(--ui-color-danger);
     font-style: italic;

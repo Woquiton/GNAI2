@@ -7,7 +7,107 @@
 .fileDropzone .dropzone .dz-message {
     font-size: 30px;
 }
+/* Versão baixa, para ficar ao lado de uma prévia ou abaixo de uma lista. */
+.fileDropzone--compact .dropzone {
+    min-height: 0;
+    padding: 12px 16px;
+}
+.fileDropzone--compact .dropzone .dz-message {
+    margin: 0.75em 0;
+    font-size: 16px;
+}
+/* Composto: a moldura tracejada envolve a lista do formulário e o convite para soltar. */
+.fileDropzone__content:empty {
+    display: none;
+}
+.fileDropzone--composed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    border: 2px dashed rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    background: #fff;
+}
+.fileDropzone--composed:has(.dropzone[aria-invalid='true']) {
+    border-color: var(--ui-color-danger);
+}
+.fileDropzone--composed .fileDropzone__content {
+    order: 0;
+}
+/* O hook anexa a área do Dropzone depois do conteúdo; a ordem visual não depende disso. */
+.fileDropzone--composed .dropzone {
+    order: 1;
+    min-height: 0;
+    padding: 8px;
+    border: 0;
+}
+/* Cinco miniaturas por linha; em áreas estreitas, quantas couberem. */
+.fileDropzone {
+    container-type: inline-size;
+}
+.fileDropzone .dropzone.dz-started {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(120px, 1fr));
+    align-content: start;
+    justify-items: center;
+    gap: 24px 12px;
+}
+.fileDropzone .dropzone.dz-started .dz-preview {
+    margin: 0;
+}
+@container (max-width: 700px) {
+    .fileDropzone .dropzone.dz-started {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
 .fileDropzone .dropzone:focus-visible {
     outline: 2px solid var(--ui-color-custom);
     outline-offset: 3px;
+}
+.fileDropzone[aria-disabled='true']:not(.fileDropzone--composed),
+.fileDropzone--composed[aria-disabled='true'] .dropzone {
+    opacity: 0.6;
+}
+.fileDropzone .dropzone[aria-invalid='true'] {
+    border-color: var(--ui-color-danger);
+}
+/* O SVG, as miniaturas e os keyframes vêm do template e do CSS originais do Dropzone. */
+.fileDropzone .dz-preview .fileDropzone__remove {
+    position: absolute;
+    z-index: 30;
+    top: 50%;
+    left: 50%;
+    width: 54px;
+    height: 54px;
+    margin: -27px 0 0 -27px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.2s linear;
+}
+.fileDropzone .fileDropzone__remove svg {
+    display: block;
+    width: 54px;
+    height: 54px;
+}
+.fileDropzone .dz-preview:hover .fileDropzone__remove,
+.fileDropzone .dz-preview:focus-within .fileDropzone__remove,
+.fileDropzone .fileDropzone__remove:focus-visible {
+    opacity: 1;
+    animation: slide-in 0.3s ease;
+}
+.fileDropzone .dz-preview:focus-within .dz-image img {
+    transform: scale(1.05);
+    filter: blur(8px);
+}
+.fileDropzone .dz-preview:focus-within .dz-details {
+    opacity: 1;
+}
+@media (hover: none) {
+    .fileDropzone .dz-preview .fileDropzone__remove {
+        opacity: 1;
+    }
 }
