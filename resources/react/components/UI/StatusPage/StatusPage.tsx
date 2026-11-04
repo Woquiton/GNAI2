@@ -16,20 +16,22 @@ export default function StatusPage({
             <div className="statusPage__background" aria-hidden="true" />
             <div className="statusPage__container">
                 <div className="statusPage__wrapper">
-                    <h1 className="statusPage__icon">
-                        <i className="md md-album" aria-hidden="true" />
-                    </h1>
+                    <div className="statusPage__icon" aria-hidden="true">
+                        <i className={maintenance ? 'ti-settings' : 'md md-album'} />
+                    </div>
                     <h1 className="statusPage__title">
                         {maintenance ? (
                             <>
-                                <span>Site</span> <span>em</span> <span>manutenção</span>
+                                <span>Gnai</span> <span>em</span> <span>manutenção</span>
                             </>
                         ) : (
                             <RotatingText texts={copy.titles} />
                         )}
                     </h1>
                     {maintenance ? (
-                        <h4>Estamos melhorando o sistema. Voltaremos em breve.</h4>
+                        <p className="statusPage__description">
+                            Estamos melhorando o sistema. Voltaremos em breve.
+                        </p>
                     ) : (
                         <>
                             <p>

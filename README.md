@@ -361,6 +361,27 @@ docker exec gnai-app-1 php artisan view:clear
 make logs-app ENV=prod
 ```
 
+**Ativar a tela de manutenção**:
+
+```bash
+docker compose --env-file .env.prod -f docker-compose.prod.yml exec app php artisan down --retry=60
+```
+
+O Gnai mostra a tela de manutenção baseada no Ubold, com o ícone de engrenagem,
+sem a navegação da área autenticada. A resposta mantém o status HTTP 503 e o
+prazo `Retry-After`. Outras indisponibilidades 503 continuam usando a tela de erro.
+A página não consulta usuário, navegação ou dados de negócio.
+
+Para reabrir o sistema:
+
+```bash
+docker compose --env-file .env.prod -f docker-compose.prod.yml exec app php artisan up
+```
+
+Essa integração usa o modo normal de manutenção, com os assets React publicados.
+A opção `down --render` gera uma resposta estática antes de carregar a aplicação
+e não usa a tela React.
+
 **Depois de mudar a configuração do Apache** (só na Opção B), sempre valide
 antes de recarregar:
 

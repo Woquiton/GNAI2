@@ -21,6 +21,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -127,6 +128,26 @@ return Application::configure(basePath: dirname(__DIR__))
 
             if ($request->expectsJson()) {
                 return $response;
+            }
+
+            if ($status === 503 && app()->isDownForMaintenance()) {
+                // A manutenção interrompe a requisição antes dos middlewares web.
+                // Não resolver props de sessão, navegação ou usuário neste estado.
+                $maintenanceResponse = (new InertiaResponse(
+                    component: 'Errors/Maintenance',
+                    sharedProps: [],
+                    props: [],
+                    rootView: 'inertia',
+                ))->toResponse($request)->setStatusCode(503);
+
+                foreach (['Retry-After', 'Refresh'] as $header) {
+                    if ($response->headers->has($header)) {
+                        $maintenanceResponse->headers->set($header, $response->headers->get($header));
+                    }
+                }
+                $maintenanceResponse->headers->set('Cache-Control', 'no-store, private');
+
+                return $maintenanceResponse;
             }
 
             $hasErrorScreen = in_array($status, [400, 403, 404, 419, 429, 500, 503], true);

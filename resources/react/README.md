@@ -18,6 +18,13 @@ npm run build
 O catálogo precisa do Laravel em execução. No ambiente Docker existente, use o
 serviço `node` para os comandos npm. Não há servidor React separado.
 
+Para usar o PhpStorm ou outro editor instalado no computador, execute `npm ci`
+também no terminal local, na raiz do projeto. O Docker mantém as dependências em
+um volume próprio, que não preenche a pasta `node_modules` vista pelo editor.
+A instalação local permite resolver `react/jsx-runtime`, os tipos do React e o
+TypeScript. Os comandos de desenvolvimento da aplicação continuam no serviço
+`node` do Docker.
+
 Controllers de telas retornam `Inertia::render('Dominio/Recurso/Acao', $props)`.
 O identificador resolve diretamente o arquivo `pages/Dominio/Recurso/Acao.tsx`.
 As páginas de negócio são estruturas iniciais com título, prontas para receber

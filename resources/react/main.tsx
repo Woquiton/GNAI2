@@ -22,6 +22,7 @@ const STANDALONE_PAGES = [
     'Auth/ForgotPassword',
     'Auth/ResetPassword',
     'Errors/Error',
+    'Errors/Maintenance',
 ];
 
 function usesAppLayout(name: string): boolean {
