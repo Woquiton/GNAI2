@@ -73,6 +73,7 @@ final readonly class UpdateSessionAction
         if ($data->sendNotification) {
             $this->notifications->send(
                 $updatedSession,
+                'session_updated',
                 'Agendamento de Atendimento Atualizado',
                 'Houve uma alteração nos detalhes do seu agendamento.',
             );

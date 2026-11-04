@@ -39,6 +39,7 @@ final readonly class CancelSessionAction
         if ($data->sendNotification) {
             $this->notifications->send(
                 $cancelledSession,
+                'session_cancelled',
                 'Agendamento Cancelado',
                 "Informamos que o seu agendamento foi cancelado. Motivo: {$data->cancellationReason}",
             );

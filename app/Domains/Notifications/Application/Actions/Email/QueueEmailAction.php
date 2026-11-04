@@ -16,6 +16,8 @@ use Throwable;
 /** Registra primeiro, enfileira depois; falhas de e-mail não revertem a operação de origem. */
 final class QueueEmailAction
 {
+    public function __construct(private readonly RegisterEmailAction $register) {}
+
     public function execute(EmailMessageDTO $message): void
     {
         try {
@@ -29,24 +31,8 @@ final class QueueEmailAction
     {
         $delivery = null;
         try {
-            $email = trim((string) $message->recipientEmail);
-            $valid = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
-            $delivery = EmailDelivery::query()->firstOrCreate(
-                ['deduplication_key' => hash('sha256', $message->deduplicationKey)],
-                [
-                    'context_type' => $message->contextType,
-                    'context_id' => $message->contextId,
-                    'purpose' => $message->purpose,
-                    'recipient_email' => $email ?: null,
-                    'recipient_name' => $message->recipientName,
-                    'subject' => $message->subject,
-                    'view' => $message->view,
-                    'text_view' => $message->textView,
-                    'payload' => $message->payload,
-                    'status' => $valid ? EmailDeliveryStatus::QUEUED : EmailDeliveryStatus::NO_EMAIL,
-                ],
-            );
-            if (! $delivery->wasRecentlyCreated || ! $valid) {
+            $delivery = $this->register->execute($message);
+            if (! $delivery->wasRecentlyCreated || $delivery->status !== EmailDeliveryStatus::QUEUED) {
                 return;
             }
             Bus::dispatch(new SendEmailDelivery($delivery->id));

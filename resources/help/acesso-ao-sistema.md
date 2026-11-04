@@ -58,7 +58,7 @@ senha ou cadastrarem uma nova senha pelo perfil ou pela recuperação de acesso.
 
 O sistema mostra "Se o e-mail estiver cadastrado, enviaremos instruções.". Por segurança, a mensagem é a mesma para qualquer e-mail, cadastrado ou não.
 
-Você recebe o e-mail "Redefinição de senha - GNAI" com o botão **Redefinir minha senha**. O link é pessoal e vale por 60 minutos. Se o botão não funcionar, copie e cole no navegador o endereço que aparece no fim do e-mail.
+Você recebe o e-mail "Redefinição de senha - Gnai" com o botão roxo **Redefinir minha senha**, em um card branco com cabeçalho grafite. O envio é processado em segundo plano. O link é pessoal e vale por 60 minutos. Se o botão não funcionar, copie e cole no navegador o endereço que aparece no fim do e-mail.
 
 > **Importante:** pedidos repetidos em menos de um minuto não geram um novo e-mail. Aguarde e confira também a caixa de spam antes de pedir outra vez.
 

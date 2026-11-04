@@ -90,6 +90,7 @@ final readonly class CreateSessionAction
         if ($data->sendNotification && ! $session->sessionDateHasPassed()) {
             $this->notifications->send(
                 $session,
+                'session_created',
                 'Novo Agendamento Criado',
                 'Um novo agendamento foi registrado.',
             );

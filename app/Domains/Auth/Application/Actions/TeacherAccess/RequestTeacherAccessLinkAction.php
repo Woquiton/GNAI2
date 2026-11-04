@@ -5,22 +5,21 @@ declare(strict_types=1);
 namespace App\Domains\Auth\Application\Actions\TeacherAccess;
 
 use App\Domains\Auth\Application\Data\TeacherAccess\RequestTeacherAccessLinkData;
-use App\Domains\Auth\Domain\Models\SentEmail;
 use App\Domains\Auth\Domain\Models\TeacherAccessToken;
-use App\Domains\Auth\Infrastructure\Notifications\TeacherAccessLinkNotification;
 use App\Domains\Inclusion\Domain\Models\Teacher;
+use App\Domains\Notifications\Application\Actions\Email\QueueEmailAction;
+use App\Domains\Notifications\Domain\DTOs\EmailMessageDTO;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Throwable;
 
 final class RequestTeacherAccessLinkAction
 {
+    public function __construct(private readonly QueueEmailAction $queueEmail) {}
+
     /**
-     * Sempre retorna sem lançar exceção para quem chama (a resposta ao usuário
-     * é sempre genérica). Se não houver professor ativo com esse e-mail,
-     * simplesmente não envia nada.
+     * A resposta ao usuário é genérica. Sem professor com esse e-mail, não envia
+     * nada; falhas no envio são tratadas pelo motor após o commit do token.
      *
      * @throws Throwable
      */
@@ -29,6 +28,7 @@ final class RequestTeacherAccessLinkAction
         $email = Str::lower(trim($data->email));
 
         $teacher = Teacher::query()
+            ->with('person')
             ->whereHas('person', fn ($query) => $query->whereRaw('LOWER(email) = ?', [$email]))
             ->first();
 
@@ -44,7 +44,7 @@ final class RequestTeacherAccessLinkAction
 
             $rawToken = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
 
-            TeacherAccessToken::create([
+            $accessToken = TeacherAccessToken::create([
                 'teacher_id' => $teacher->getKey(),
                 'token_hash' => hash('sha256', $rawToken),
                 'expires_at' => now()->addHours(24),
@@ -54,37 +54,29 @@ final class RequestTeacherAccessLinkAction
 
             $confirmUrl = route('teacher-access.confirm.show', ['token' => $rawToken]);
 
-            try {
-                // O envio real acontece de forma assíncrona (fila). Se a
-                // entrega falhar depois de esgotar as tentativas, quem
-                // registra o status "failed" é o próprio
-                // TeacherAccessLinkNotification::failed(), não aqui — aqui só
-                // confirmamos que o job foi colocado na fila com sucesso.
-                Notification::route('mail', $email)
-                    ->notify(new TeacherAccessLinkNotification($confirmUrl, $email));
-
-                SentEmail::create([
-                    'recipient' => $email,
-                    'type' => 'link_acesso',
-                    'status' => SentEmail::STATUS_SENT,
-                    'created_at' => now(),
-                ]);
-            } catch (Throwable $exception) {
-                Log::error('Falha ao enfileirar e-mail de link de acesso do professor.', [
-                    'recipient' => $email,
-                    'error' => $exception->getMessage(),
-                ]);
-
-                SentEmail::create([
-                    'recipient' => $email,
-                    'type' => 'link_acesso',
-                    'status' => SentEmail::STATUS_FAILED,
-                    'error' => $exception->getMessage(),
-                    'created_at' => now(),
-                ]);
-
-                throw $exception;
-            }
+            $this->queueEmail->execute(new EmailMessageDTO(
+                contextType: 'teacher',
+                contextId: (int) $teacher->getKey(),
+                purpose: 'teacher_access_link',
+                deduplicationKey: 'teacher-access-link:'.$accessToken->getKey(),
+                recipientEmail: $email,
+                recipientName: $teacher->person?->name,
+                subject: 'Gnai - Seu link de acesso',
+                view: 'emails.notifications.alert',
+                textView: 'emails.notifications.alert-text',
+                payload: [
+                    'heading' => 'Seu link de acesso',
+                    'greeting' => 'Olá.',
+                    'paragraphs' => [
+                        'Recebemos uma solicitação de acesso ao Gnai para este e-mail.',
+                        'Clique no botão abaixo para acessar sua conta de professor(a).',
+                        'Este link é válido por 24 horas e serve para um único acesso. Não compartilhe este e-mail com mais ninguém.',
+                    ],
+                    'actionLabel' => 'Acessar o Gnai',
+                    'actionUrl' => $confirmUrl,
+                    'outro' => 'Se você não solicitou este acesso, apenas ignore este e-mail. Nenhuma ação será feita.',
+                ],
+            ));
         });
     }
 }

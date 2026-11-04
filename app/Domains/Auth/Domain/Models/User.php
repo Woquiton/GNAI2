@@ -8,8 +8,8 @@ namespace App\Domains\Auth\Domain\Models;
 use App\Domains\Audit\Domain\Contracts\Auditable;
 use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
+use App\Domains\Auth\Application\Actions\Passwords\QueuePasswordResetEmailAction;
 use App\Domains\Auth\Domain\DTOs\Users\ResetUserPasswordDTO;
-use App\Domains\Auth\Infrastructure\Notifications\ResetPasswordNotification;
 use App\Domains\Backup\Domain\Models\Backup;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Professional;
@@ -136,7 +136,7 @@ class User extends Authenticatable implements Auditable
 
     public function sendPasswordResetNotification($token): void
     {
-        $this->notify(new ResetPasswordNotification($token));
+        app(QueuePasswordResetEmailAction::class)->execute($this, $token);
     }
 
     public function getPhotoUrlAttribute()

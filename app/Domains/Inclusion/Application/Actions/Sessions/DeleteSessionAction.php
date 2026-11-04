@@ -41,6 +41,7 @@ final readonly class DeleteSessionAction
         if ($sendNotification && $cancelledSession !== null) {
             $this->notifications->send(
                 $cancelledSession,
+                'session_deleted',
                 'Agendamento Cancelado',
                 'Informamos que o seu agendamento foi cancelado. Motivo: Agendamento cancelado automaticamente devido à exclusão do registro.',
             );

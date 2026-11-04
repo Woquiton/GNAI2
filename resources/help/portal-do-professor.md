@@ -27,7 +27,7 @@ Se o e-mail não estiver cadastrado como professor, nenhum link é enviado. Proc
 
 O sistema mostra "Se este e-mail estiver cadastrado, você receberá um link de acesso.". A resposta é a mesma para qualquer e-mail, por segurança.
 
-Você recebe o e-mail "GNAI - Seu link de acesso", com o botão de acesso ao sistema. O link:
+Você recebe o e-mail "Gnai - Seu link de acesso", com o botão roxo **Acessar o Gnai**, em um card branco com cabeçalho grafite. O envio é processado em segundo plano. O link:
 
 - vale por 24 horas;
 - serve para um único acesso;

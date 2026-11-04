@@ -50,6 +50,10 @@ No início da tela, o quadro identifica a conta, o remetente e se a chave de apl
 
 Se der certo, o sistema mostra "E-mail de teste enviado para ... Confira a caixa de entrada e a pasta de spam.". Com **Registro em log (sem envio real)**, a mensagem é apenas registrada e nenhum e-mail chega.
 
+O teste usa o mesmo serviço dos demais e-mails, mas aguarda o resultado para
+mostrar o diagnóstico na tela. A mensagem tem cabeçalho grafite e card branco,
+no mesmo padrão dos avisos de agendamentos e de acesso ao sistema.
+
 ## Definir os horários e a retenção dos backups automáticos
 
 1. Acesse **Sistema → Configurações** e abra a aba **Backups**.

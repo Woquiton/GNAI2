@@ -62,6 +62,10 @@ Os filtros valem para as duas abas: **Dia de referência**, **Aluno**, **Profess
 | **Objetivo do Agendamento** (obrigatório) | Texto livre com formatação. |
 
 O e-mail é enviado aos alunos e ao profissional que tenham e-mail cadastrado.
+Os avisos de criação, alteração, cancelamento e exclusão são enviados em segundo
+plano, com até três tentativas. Uma falha de envio não desfaz a operação no
+agendamento. A mensagem apresenta os detalhes, como data, horário, local, tipo
+e objetivo, em um card branco com cabeçalho grafite.
 
 Os alunos precisam estar na situação **Ativo** e ter um **Tipo de acompanhamento** que permita a modalidade escolhida. Essa configuração fica no cadastro do aluno e também é verificada ao editar um agendamento. Alterar o acompanhamento não cancela agendamentos nem modifica atendimentos já registrados.
 
@@ -87,7 +91,7 @@ O cancelamento mantém o agendamento na agenda com o status **Cancelada** e o mo
 1. Abra o agendamento e clique em **Cancelar Agendamento**.
 2. Informe o **Motivo do Cancelamento** (obrigatório, com ao menos 5 caracteres).
 3. Se quiser, marque **Enviar e-mail de aviso aos participantes**.
-4. Clique em **Confirmar cancelamento**. O sistema mostra "Agendamento cancelado com sucesso." ou "Agendamento cancelado e participantes notificados.".
+4. Clique em **Confirmar cancelamento**. O sistema mostra "Agendamento cancelado com sucesso.". Se você pediu o aviso, o envio é processado em segundo plano.
 
 ## Excluir um agendamento
 

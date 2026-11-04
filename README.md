@@ -430,6 +430,26 @@ O modelo visual `emails.notifications.summary` segue o `billing.html` do
 Ubold e pode ser usado pelos demais módulos. O motor também aceita outras views.
 Falhas de preparação, enfileiramento ou envio não revertem a operação de origem.
 
+Os avisos de agendamento (criação, atualização, cancelamento e exclusão), o link
+de acesso do professor e a recuperação de senha também usam esse motor e a fila.
+Os agendamentos guardam os destinatários e o conteúdo do aviso, sem depender de
+consultar o registro durante o envio. Pedidos diferentes de acesso ou mudanças
+no agendamento geram avisos próprios; as tentativas do mesmo aviso reutilizam o
+registro central. Validade, uso único e limitação de pedidos dos links continuam
+sob as regras de autenticação.
+
+Esses fluxos e o teste de Configurações usam `emails.notifications.alert` e sua
+versão de texto, baseados no `alert.html` do Ubold: cabeçalho grafite, card branco
+e botão de ação opcional no roxo institucional `#322b75`. Sessões mantêm seus
+detalhes e os e-mails de autenticação incluem o endereço alternativo do botão.
+As classes e views específicas substituídas foram removidas. O histórico antigo
+em `sent_emails` não recebe novas gravações nem é usado como confirmação de envio.
+
+O teste de Configurações usa `SendEmailNowAction`: registra por
+`RegisterEmailAction` e executa o mesmo `SendEmailAction` da fila, de forma
+síncrona, para preservar o diagnóstico imediato, o modo de log e os erros de SMTP.
+Os demais consumidores usam `QueueEmailAction`, que compartilha esse registro.
+
 Aplique a migration `2026_11_03_170000_create_email_deliveries_table.php` e mantenha
 o worker da fila atualizado após publicar mudanças no código. Não é necessário
 adicionar colunas de e-mail em cada tabela de negócio. Os estados, tentativas,

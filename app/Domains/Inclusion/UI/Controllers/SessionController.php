@@ -221,13 +221,9 @@ final class SessionController
             userId: (int) $request->user()?->getAuthIdentifier(),
         );
 
-        $message = $data->sendNotification
-            ? 'Agendamento cancelado e participantes notificados.'
-            : 'Agendamento cancelado com sucesso.';
-
         return redirect()
             ->back()
-            ->with('success', $message);
+            ->with('success', 'Agendamento cancelado com sucesso.');
     }
 
     /**
