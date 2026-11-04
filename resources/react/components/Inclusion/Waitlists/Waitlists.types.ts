@@ -1,3 +1,4 @@
+import type { EmailDeliverySummary } from '@/components/UI/EmailDeliveryIndicator/EmailDeliveryIndicator.types';
 import type { SemesterOption } from '@/components/Inclusion/Semesters/OperationSemesterFilters';
 import type { ItemType } from '@/components/Inclusion/Items/Items.types';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
@@ -20,6 +21,7 @@ export type WaitlistStatus = 'waiting' | 'notified' | 'fulfilled' | 'cancelled';
 
 /** Solicitação apresentada por `WaitlistPresenter::waitlist`. */
 export interface WaitlistRecord {
+    registration_email: EmailDeliverySummary;
     semester_label: string | null;
     id: number;
     waitlistable_id: number;

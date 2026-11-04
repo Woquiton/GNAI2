@@ -20,6 +20,7 @@ final class ListWaitlistsQuery
         $query = Waitlist::query()
             ->with([
                 'waitlistable',
+                'registrationEmail:id,context_id,status,sent_at',
                 'student:id,person_id,registration',
                 'student.person:id,name',
                 'professional:id,person_id,registration',

@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\Application\Actions\Waitlists;
 use App\Domains\Inclusion\Application\Data\Waitlists\CreateWaitlistData;
 use App\Domains\Inclusion\Application\Handlers\Loans\LoanableLockHandler;
 use App\Domains\Inclusion\Application\Policies\Waitlists\WaitlistRegistrationPolicy;
+use App\Domains\Inclusion\Application\Services\Waitlists\WaitlistRegistrationSender;
 use App\Domains\Inclusion\Domain\DTOs\Waitlists\CreateWaitlistDTO;
 use App\Domains\Inclusion\Domain\Models\Student;
 use App\Domains\Inclusion\Domain\Models\Waitlist;
@@ -18,6 +19,7 @@ final readonly class CreateWaitlistAction
     public function __construct(
         private LoanableLockHandler $loanables,
         private WaitlistRegistrationPolicy $registrationPolicy,
+        private WaitlistRegistrationSender $registrationSender,
     ) {}
 
     /**
@@ -53,11 +55,15 @@ final readonly class CreateWaitlistAction
             return $waitlist;
         });
 
-        return $waitlist->fresh([
+        $waitlist = $waitlist->fresh([
             'waitlistable',
             'student.person',
             'professional.person',
             'user',
         ]);
+
+        $this->registrationSender->send($waitlist);
+
+        return $waitlist;
     }
 }

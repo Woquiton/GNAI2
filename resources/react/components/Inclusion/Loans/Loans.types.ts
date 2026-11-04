@@ -1,3 +1,4 @@
+import type { EmailDeliverySummary } from '@/components/UI/EmailDeliveryIndicator/EmailDeliveryIndicator.types';
 import type { SemesterOption } from '@/components/Inclusion/Semesters/OperationSemesterFilters';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
 
@@ -15,6 +16,8 @@ export type LoanableItem = {
 
 /** Empréstimo apresentado por `LoanPresenter::loan`. */
 export type LoanRecord = {
+    confirmation_email: EmailDeliverySummary;
+    return_email: EmailDeliverySummary | null;
     semester_label: string | null;
     id: number;
     loanable_id: number;

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useEmailDeliveryPolling } from '@/components/UI/EmailDeliveryIndicator/useEmailDeliveryPolling';
 import {
     TableListFooter,
     TableListRowActions,
@@ -31,6 +32,11 @@ export default function WaitlistList({
     onDelete,
     onPageSelect,
 }: WaitlistListProps): React.JSX.Element {
+    const hasPendingEmail = waitlists.data.some((waitlist) =>
+        ['queued', 'processing'].includes(waitlist.registration_email.status),
+    );
+    useEmailDeliveryPolling(hasPendingEmail, 'waitlists');
+
     const columns = useMemo<TableListColumn<WaitlistRecord>[]>(
         () => [
             ...waitlistColumns,

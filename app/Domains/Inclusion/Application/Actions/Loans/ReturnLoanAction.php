@@ -9,6 +9,7 @@ use App\Domains\Inclusion\Application\Data\Loans\ReturnLoanData;
 use App\Domains\Inclusion\Application\Handlers\Loans\LoanableLockHandler;
 use App\Domains\Inclusion\Application\Handlers\Loans\LoanStockHandler;
 use App\Domains\Inclusion\Application\Handlers\Loans\LoanWaitlistHandler;
+use App\Domains\Inclusion\Application\Services\Loans\LoanReturnConfirmationSender;
 use App\Domains\Inclusion\Domain\DTOs\Loans\ReturnLoanDTO;
 use App\Domains\Inclusion\Domain\Enums\LoanStatus;
 use App\Domains\Inclusion\Domain\Models\Loan;
@@ -21,6 +22,7 @@ final readonly class ReturnLoanAction
         private LoanableLockHandler $loanables,
         private LoanStockHandler $stock,
         private LoanWaitlistHandler $waitlists,
+        private LoanReturnConfirmationSender $confirmationSender,
     ) {}
 
     /**
@@ -58,11 +60,15 @@ final readonly class ReturnLoanAction
             return $loan;
         });
 
-        return $returnedLoan->fresh([
+        $returnedLoan = $returnedLoan->fresh([
             'loanable',
             'student.person',
             'professional.person',
             'user',
         ]);
+
+        $this->confirmationSender->send($returnedLoan, $returnedBy);
+
+        return $returnedLoan;
     }
 }

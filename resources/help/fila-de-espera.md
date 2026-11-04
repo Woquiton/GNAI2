@@ -38,9 +38,48 @@ O campo **Usuário Responsável pelo Registro** mostra quem está registrando a 
 | **Aluno** ou **Profissional** (um deles é obrigatório) | O mesmo beneficiário não pode ter duas solicitações ativas para o mesmo item. |
 | **Observações** | Texto livre com formatação. |
 
+## Receber a confirmação de entrada na fila
+
+Após cadastrar a solicitação, o Gnai prepara uma confirmação para o e-mail do
+beneficiário, aluno ou profissional, informado no cadastro de pessoa. A mensagem
+usa o mesmo modelo visual do comprovante por e-mail de empréstimo e apresenta:
+
+- número da solicitação e nome do beneficiário;
+- item solicitado, tipo e patrimônio, quando houver;
+- data da solicitação e responsável pelo registro;
+- situação no momento do cadastro.
+
+A mensagem confirma somente a entrada na fila. Ela não significa que um empréstimo
+foi realizado e não promete uma data de retirada. O aviso de disponibilidade é
+outro e-mail, enviado quando a pessoa for chamada para o item disponível.
+
+O envio ocorre depois da gravação, em segundo plano, com até três tentativas.
+Sem e-mail válido ou em caso de falha, a solicitação continua cadastrada. Não
+repita o cadastro porque a confirmação não chegou. Editar a solicitação não envia
+outra confirmação de entrada.
+
+### Consultar o envio da confirmação
+
+Na primeira coluna da tabela, sem título visível, passe o mouse ou use o teclado
+para focar o ícone. A dica explica a situação do e-mail de confirmação do cadastro:
+
+- **E-mail na fila** ou **Enviando e-mail**: o envio está pendente ou em processamento.
+- **E-mail enviado**: o serviço aceitou a mensagem; a dica mostra a data e hora. Isso não confirma a chegada à caixa de entrada ou a leitura.
+- **Falha no envio do e-mail**: houve falha no enfileiramento ou as tentativas se esgotaram.
+- **Beneficiário sem e-mail válido**: o cadastro não tinha um endereço válido.
+- **E-mail não enviado**: o envio real estava desativado ou a mensagem foi interrompida.
+- **Resultado do envio não confirmado**: o processamento foi interrompido sem confirmação. A mensagem não é reenviada automaticamente, para evitar duplicidade.
+- **Sem registro de envio**: não há rastreamento, como nas solicitações anteriores à implantação da confirmação.
+
+Enquanto houver envio pendente nas linhas exibidas, o indicador é atualizado a
+cada cinco segundos. O ícone acompanha a confirmação de entrada na fila; não
+representa o aviso posterior de disponibilidade e não muda a situação da solicitação.
+Se houver falha ao registrar o resultado de um envio concluído, o sistema tenta
+recuperar essa informação automaticamente, sem enviar a mesma mensagem de novo.
+
 ## Acompanhar a fila
 
-A listagem mostra **Item**, **Beneficiário**, **Data da Solicitação**, **Status** e **Usuário**. Pelo seletor de colunas é possível exibir **Tipo do item**, **Patrimônio / Tombamento**, **Matrícula do aluno** e **Observações**. Os filtros são **Item**, **Aluno**, **Profissional** e **Status**.
+A listagem começa com uma faixa de ícones sem título, à esquerda, para o envio da confirmação de entrada na fila. As ações continuam à direita. Também mostra **Item**, **Beneficiário**, **Data da Solicitação**, **Status** e **Usuário**. Pelo seletor de colunas é possível exibir **Tipo do item**, **Patrimônio / Tombamento**, **Matrícula do aluno** e **Observações**. Os filtros são **Item**, **Aluno**, **Profissional** e **Status**.
 
 | Status | Significado |
 | --- | --- |
@@ -112,3 +151,15 @@ O status da linha representa a situação atual, mesmo quando o filtro consulta 
 ## Saber quando a solicitação mudou de situação
 
 A visualização e as colunas complementares da lista mostram **Notificado em**, **Atendido em** e **Cancelado em**. O atendimento automático registra também o número do empréstimo correspondente. Uma data não disponível aparece como **Não informado**, sem usar a última edição como se fosse a data da mudança. As movimentações registradas a partir desta atualização podem ser consultadas pela relação **Histórico de movimentações** nos relatórios.
+
+## Receber o aviso de disponibilidade por e-mail
+
+Quando um item volta a ficar disponível e a primeira pessoa da fila é chamada,
+o Gnai prepara um e-mail para o beneficiário, usando o endereço do cadastro de
+pessoa. A mensagem identifica o item e orienta a procurar a equipe do núcleo.
+O aviso não registra um empréstimo nem garante a retirada.
+
+O envio ocorre depois da gravação, pelo mesmo serviço de e-mail usado nos
+empréstimos, com até três tentativas. A falta de e-mail válido ou uma falha de
+envio não desfaz a devolução, a atualização do estoque ou a chamada na fila.
+A notificação interna ao responsável pela operação continua disponível.

@@ -21,7 +21,7 @@ A listagem, o cadastro, a edição e a visualização do empréstimo têm um tut
 1. Acesse **Recursos e acessibilidade → Empréstimos** e clique em **Cadastrar empréstimo**.
 2. Escolha o **Tipo do Item** (Tecnologia Assistiva ou Material Pedagógico Acessível). O campo **Item Específico** só é liberado depois disso.
 3. Escolha o **Item Específico**. Itens físicos mostram o patrimônio e quantas unidades estão disponíveis; itens digitais aparecem com "(Digital)".
-4. Informe o beneficiário: **Estudante (Beneficiário)** ou **Profissional (Beneficiário)**, apenas um dos dois.
+4. Informe o beneficiário: **Estudante (Beneficiário)** ou **Profissional (Beneficiário)**, apenas um dos dois. Ao selecionar um, o outro campo fica desabilitado. Para trocar o tipo de beneficiário, limpe a seleção atual.
 5. Confira a **Data de Saída** e o **Horário**, que vêm preenchidos com o momento atual.
 6. Informe a **Previsão de Devolução**, o prazo limite para a entrega do item.
 7. Se quiser, registre **Observações / Estado do Item**.
@@ -37,6 +37,51 @@ O campo **Usuário Autenticado (Responsável)** mostra quem está registrando o 
 | **Data de Saída** e **Horário** (obrigatórios) | Momento da retirada do item. |
 | **Previsão de Devolução** (obrigatório) | Não pode ser anterior à data de saída. |
 | **Observações / Estado do Item** | Texto livre. |
+
+## Receber a confirmação por e-mail
+
+Após a gravação do empréstimo, o Gnai prepara uma confirmação para o e-mail do
+beneficiário, aluno ou profissional, informado no cadastro de pessoa. A mensagem
+contém o número do empréstimo, beneficiário, item, tipo, patrimônio quando houver,
+data de saída, responsável pelo registro e previsão de devolução.
+
+O envio ocorre em segundo plano. Se o beneficiário não tiver um e-mail válido ou
+houver falha no envio, o empréstimo continua registrado, com a baixa de estoque e
+o atendimento da fila de espera preservados. Não cadastre o mesmo empréstimo
+novamente apenas porque a confirmação não chegou.
+
+Se o e-mail recebido apresentar dados que você não reconhece, procure a equipe do
+núcleo. A confirmação se refere ao registro original; editar observações ou
+registrar a devolução não envia outra confirmação de criação. Para alunos, a devolução gera uma confirmação própria.
+
+### Consultar o indicador de e-mail
+
+Na faixa de ícones à esquerda, sem título visível, passe o mouse ou use o teclado
+para focar o indicador. A dica explica a situação. Enquanto houver envio na fila
+ou em processamento nas linhas exibidas, a listagem consulta o resultado a cada
+cinco segundos.
+
+O primeiro ícone acompanha a confirmação do empréstimo. Quando a devolução de um
+aluno é registrada, um segundo ícone aparece ao lado para a confirmação de
+devolução. Cada um mantém seu próprio histórico: se o primeiro não tem registro,
+ele continua com a interrogação mesmo quando o e-mail de devolução foi enviado.
+A dica identifica a qual confirmação o ícone se refere.
+
+| Situação | Significado |
+| --- | --- |
+| **E-mail na fila** | A confirmação aguarda processamento ou uma nova tentativa. |
+| **Enviando e-mail** | O serviço está processando a entrega. |
+| **E-mail enviado** | O serviço de envio aceitou a mensagem. A dica inclui a data e hora. Isso não confirma a chegada à caixa de entrada ou a leitura. |
+| **Falha no envio do e-mail** | Não foi possível colocar a confirmação na fila ou as tentativas de entrega se esgotaram. |
+| **Beneficiário sem e-mail válido** | O cadastro não tinha um endereço válido no momento do registro. |
+| **E-mail não enviado** | O envio real estava desativado, em modo de registro em log, ou a mensagem foi interrompida. |
+| **Resultado do envio não confirmado** | O processamento foi interrompido sem confirmação. Não há reenvio automático, para evitar mensagens duplicadas. |
+| **Sem registro de envio** | Não há um resultado registrado, como nos empréstimos anteriores à implantação da confirmação. |
+
+Esses indicadores não alteram a situação do empréstimo ou do estoque. Não há envio
+automático retroativo para os registros antigos.
+Se houver falha ao registrar o resultado de um envio concluído, o sistema tenta
+recuperar essa informação automaticamente, sem enviar a mesma mensagem de novo.
 
 ## Quais itens podem ser emprestados?
 
@@ -54,7 +99,7 @@ Quando a última unidade de um item físico é emprestada, o status do item pass
 
 ## Acompanhar empréstimos e atrasos
 
-A listagem mostra **Item**, **Beneficiário**, **Prazo**, **Status** e **Usuário**. Use os filtros **Item**, **Estudante**, **Profissional** e **Status**. Outras colunas, como patrimônio, matrícula do beneficiário, saída, devolução e observações, podem ser exibidas pelo seletor de colunas.
+A listagem reserva a primeira coluna, sem título visível, para os indicadores de e-mail, à esquerda. As ações ficam à direita. Também mostra **Item**, **Beneficiário**, **Prazo**, **Status** e **Usuário**. Use os filtros **Item**, **Estudante**, **Profissional** e **Status**. Outras colunas, como patrimônio, matrícula do beneficiário, saída, devolução e observações, podem ser exibidas pelo seletor de colunas.
 
 | Status | Significado |
 | --- | --- |
@@ -80,6 +125,20 @@ A data da devolução é o momento do registro. O Gnai define o status do empré
 
 - devolução normal: o item volta ao status **Disponível**;
 - devolução com avaria: o item passa ao status **Danificado** e fica bloqueado para novos empréstimos até ser revisado na [edição do item](/ajuda/itens#editar-um-item-e-registrar-uma-nova-vistoria).
+
+### Receber a confirmação de devolução por e-mail
+
+Quando o beneficiário é um aluno, após a devolução ser gravada o Gnai prepara um
+e-mail para o endereço informado no cadastro de pessoa. A mensagem usa o mesmo
+modelo visual da confirmação de empréstimo e mostra o número do empréstimo, item,
+patrimônio quando houver, datas de saída, prazo e devolução, situação da devolução
+e quem a registrou. Vale para devoluções no prazo, com atraso ou com avaria.
+
+O envio ocorre em segundo plano e tem rastreamento separado da confirmação de
+retirada. Falta de endereço válido ou falha no envio não desfaz a devolução,
+a atualização do estoque ou a chamada da fila de espera. Não registre a devolução
+novamente apenas porque o e-mail não chegou. A confirmação de devolução não é
+enviada novamente ao editar observações.
 
 ## Empréstimos e fila de espera
 

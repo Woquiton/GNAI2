@@ -17,12 +17,14 @@ use App\Domains\Inclusion\Domain\Enums\ItemType;
 use App\Domains\Inclusion\Domain\Enums\LoanStatus;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidLoan;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidLoanableResource;
+use App\Domains\Notifications\Domain\Models\EmailDelivery;
 use Database\Factories\Domains\Inclusion\LoanFactory;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 #[UseFactory(LoanFactory::class)]
@@ -198,6 +200,20 @@ final class Loan extends Model implements Auditable
     public function loanable(): MorphTo
     {
         return $this->morphTo()->withTrashed();
+    }
+
+    public function confirmationEmail(): HasOne
+    {
+        return $this->hasOne(EmailDelivery::class, 'context_id')
+            ->where('context_type', 'loan')
+            ->where('purpose', 'loan_confirmation');
+    }
+
+    public function returnEmail(): HasOne
+    {
+        return $this->hasOne(EmailDelivery::class, 'context_id')
+            ->where('context_type', 'loan')
+            ->where('purpose', 'loan_returned');
     }
 
     public function student(): BelongsTo

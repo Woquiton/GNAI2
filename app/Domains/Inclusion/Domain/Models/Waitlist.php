@@ -14,11 +14,13 @@ use App\Domains\Inclusion\Domain\DTOs\Waitlists\CreateWaitlistDTO;
 use App\Domains\Inclusion\Domain\DTOs\Waitlists\UpdateWaitlistDTO;
 use App\Domains\Inclusion\Domain\Enums\WaitlistStatus;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidWaitlist;
+use App\Domains\Notifications\Domain\Models\EmailDelivery;
 use Database\Factories\Domains\Inclusion\WaitlistFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 #[UseFactory(WaitlistFactory::class)]
@@ -180,6 +182,13 @@ final class Waitlist extends Model implements Auditable
     public function waitlistable(): MorphTo
     {
         return $this->morphTo()->withTrashed();
+    }
+
+    public function registrationEmail(): HasOne
+    {
+        return $this->hasOne(EmailDelivery::class, 'context_id')
+            ->where('context_type', 'waitlist')
+            ->where('purpose', 'waitlist_registered');
     }
 
     public function student(): BelongsTo

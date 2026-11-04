@@ -27,7 +27,7 @@ function initialData(options: LoanCreateOptions): LoanCreateFormData {
         item_type: options.selectedItemType ?? '',
         loanable_id: options.selectedItemId ? String(options.selectedItemId) : '',
         student_id: options.selectedStudentId ? String(options.selectedStudentId) : '',
-        professional_id: options.selectedProfessionalId
+        professional_id: !options.selectedStudentId && options.selectedProfessionalId
             ? String(options.selectedProfessionalId)
             : '',
         loan_date: localDateTime(),
@@ -61,6 +61,24 @@ export function useLoanCreateForm(options: LoanFormOptions & LoanCreateOptions) 
         form.clearErrors('loanable_id');
     }
 
+    function changeStudent(value: string): void {
+        form.setData((data) => ({
+            ...data,
+            student_id: value,
+            professional_id: value ? '' : data.professional_id,
+        }));
+        form.clearErrors('student_id', 'professional_id');
+    }
+
+    function changeProfessional(value: string): void {
+        form.setData((data) => ({
+            ...data,
+            professional_id: value,
+            student_id: value ? '' : data.student_id,
+        }));
+        form.clearErrors('student_id', 'professional_id');
+    }
+
     function changeLoanDay(day: string): void {
         form.setData('loan_date', day ? `${day}T${loanTime}` : '');
     }
@@ -87,6 +105,8 @@ export function useLoanCreateForm(options: LoanFormOptions & LoanCreateOptions) 
         loanDay,
         changeItemType,
         changeItem,
+        changeStudent,
+        changeProfessional,
         changeLoanDay,
         changeLoanTime,
         editorFailed,

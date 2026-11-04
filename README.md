@@ -414,3 +414,48 @@ confirma essa condição. Cadastros novos com senha também são identificados.
 Sessões antigas passam a contar a inatividade a partir do primeiro acesso após
 a atualização. Durante a personificação, aplica-se o encerramento automático;
 o bloqueio por senha fica disponível ao retornar à própria conta.
+
+## Motor compartilhado de e-mails transacionais
+
+Os módulos usam `Notifications/Application/Actions/Email/QueueEmailAction` com um
+`EmailMessageDTO`: destinatário, assunto, views, dados e vínculo com a operação.
+O motor registra a solicitação em `email_deliveries` depois do commit e só então
+enfileira `SendEmailDelivery`. Uma chave de deduplicação fornecida pelo módulo
+impede repetir o mesmo aviso. Destinatário e conteúdo são criptografados no banco.
+
+O empréstimo, a confirmação de devolução para alunos, a confirmação de entrada
+na fila de espera e o aviso de disponibilidade da fila já consomem esse motor. A inscrição e a disponibilidade
+usam finalidades e chaves de deduplicação diferentes, preservando os dois avisos.
+O modelo visual `emails.notifications.summary` segue o `billing.html` do
+Ubold e pode ser usado pelos demais módulos. O motor também aceita outras views.
+Falhas de preparação, enfileiramento ou envio não revertem a operação de origem.
+
+Aplique a migration `2026_11_03_170000_create_email_deliveries_table.php` e mantenha
+o worker da fila atualizado após publicar mudanças no código. Não é necessário
+adicionar colunas de e-mail em cada tabela de negócio. Os estados, tentativas,
+última tentativa, identificação da mensagem e aceite pelo serviço ficam no
+registro central. SMTP aceito não significa mensagem lida ou entregue na caixa
+de entrada; o modo de registro em log não é classificado como envio real.
+
+O resultado do transporte também é guardado temporariamente em
+`storage/app/private/email-delivery-receipts`, sem destinatário nem conteúdo.
+Se a atualização final no banco falhar, a tarefa agendada
+`email-deliveries:recover-results` recupera o resultado a cada minuto, sem reenviar
+a mensagem. Mantenha o agendador Laravel ativo e esse diretório persistente;
+em instalações com vários servidores, o worker e o agendador precisam acessar
+o mesmo volume. O comprovante é removido depois da gravação no banco.
+Processamentos interrompidos por mais de cinco minutos sem comprovante recebem
+o estado `unconfirmed`, sem reenvio automático nem consulta periódica permanente.
+
+Envios anteriores sem rastreamento continuam sem registro; o sistema não presume
+que foram enviados nem os reenvia automaticamente. A ausência da estrutura de
+rastreamento é registrada nos logs e impede um novo envio sem registro.
+
+Os indicadores das listagens reutilizam `UI/EmailDeliveryIndicator` e o hook
+`useEmailDeliveryPolling`. Empréstimos e fila de espera usam uma primeira coluna
+sem título visual, preservando o nome acessível, com os metadados fornecidos pelo
+`EmailDeliveryPresenter` comum. A consulta periódica funciona apenas enquanto as
+linhas exibidas têm confirmações pendentes e recarrega somente a coleção da tela.
+A atualização usa o transporte comum `useTableListVisit`, preserva filtros e
+paginação e é suspensa enquanto a aba está oculta ou uma visita do usuário está
+em andamento. Uma nova visita cancela a consulta em segundo plano.

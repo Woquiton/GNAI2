@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useEmailDeliveryPolling } from '@/components/UI/EmailDeliveryIndicator/useEmailDeliveryPolling';
 import {
     TableListFooter,
     TableListRowActions,
@@ -28,6 +29,13 @@ export default function LoanList({
     onDelete,
     onPageSelect,
 }: LoanListProps): React.JSX.Element {
+    const hasPendingEmail = loans.data.some((loan) =>
+        [loan.confirmation_email, loan.return_email].some(
+            (email) => email !== null && ['queued', 'processing'].includes(email.status),
+        ),
+    );
+    useEmailDeliveryPolling(hasPendingEmail, 'loans');
+
     const columns = useMemo<TableListColumn<LoanRecord>[]>(
         () => [
             ...loanColumns,

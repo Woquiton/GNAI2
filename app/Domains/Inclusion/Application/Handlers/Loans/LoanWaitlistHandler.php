@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Handlers\Loans;
 
 use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Inclusion\Application\Services\Waitlists\WaitlistAvailabilitySender;
 use App\Domains\Inclusion\Domain\Enums\WaitlistStatus;
 use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Loan;
@@ -13,6 +14,8 @@ use App\Domains\Inclusion\Infrastructure\Notifications\LoanableItemAvailableNoti
 
 final class LoanWaitlistHandler
 {
+    public function __construct(private readonly WaitlistAvailabilitySender $availabilitySender) {}
+
     public function fulfillMatching(
         Item $item,
         ?int $studentId,
@@ -71,6 +74,7 @@ final class LoanWaitlistHandler
         ]);
 
         $notifier->notify(new LoanableItemAvailableNotification($waitlist));
+        $this->availabilitySender->send($waitlist);
 
         return $waitlist;
     }

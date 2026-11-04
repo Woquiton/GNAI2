@@ -346,10 +346,16 @@ export default function TableListTable<T>({
                                 const rightColumn = column;
 
                                 return (
-                                    <th key={column.id} scope="col">
-                                        <span className="tableListTable__heading">
-                                            {column.label}
-                                        </span>
+                                    <th
+                                        key={column.id}
+                                        scope="col"
+                                        aria-label={column.hideLabel ? column.label : undefined}
+                                    >
+                                        {column.hideLabel ? null : (
+                                            <span className="tableListTable__heading">
+                                                {column.label}
+                                            </span>
+                                        )}
                                         {leftColumn &&
                                         column.fixed !== 'end' &&
                                         leftColumn.fixed !== 'end' ? (

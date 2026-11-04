@@ -9,6 +9,7 @@ use App\Domains\Inclusion\Application\Handlers\Loans\LoanableLockHandler;
 use App\Domains\Inclusion\Application\Handlers\Loans\LoanStockHandler;
 use App\Domains\Inclusion\Application\Handlers\Loans\LoanWaitlistHandler;
 use App\Domains\Inclusion\Application\Policies\Loans\LoanRegistrationPolicy;
+use App\Domains\Inclusion\Application\Services\Loans\LoanConfirmationSender;
 use App\Domains\Inclusion\Domain\DTOs\Loans\CreateLoanDTO;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\Domain\Models\Student;
@@ -21,6 +22,7 @@ final readonly class CreateLoanAction
         private LoanableLockHandler $loanables,
         private LoanStockHandler $stock,
         private LoanWaitlistHandler $waitlists,
+        private LoanConfirmationSender $confirmationSender,
     ) {}
 
     /**
@@ -68,11 +70,15 @@ final readonly class CreateLoanAction
             return $loan;
         });
 
-        return $loan->fresh([
+        $loan = $loan->fresh([
             'loanable',
             'student.person',
             'professional.person',
             'user',
         ]);
+
+        $this->confirmationSender->send($loan);
+
+        return $loan;
     }
 }

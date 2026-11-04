@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Domain\Models\Waitlist;
+use App\Domains\Notifications\UI\Presenters\EmailDeliveryPresenter;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 
 final class WaitlistPresenter
 {
+    public function __construct(private readonly EmailDeliveryPresenter $emailPresenter) {}
+
     /**
      * @return array<string, mixed>
      */
@@ -16,6 +19,7 @@ final class WaitlistPresenter
     {
         $waitlist->loadMissing([
             'waitlistable',
+            'registrationEmail:id,context_id,status,sent_at',
             'student:id,person_id,registration',
             'student.person:id,name',
             'professional:id,person_id',
@@ -27,6 +31,7 @@ final class WaitlistPresenter
         $payload = [
             'semester_label' => $waitlist->semester?->label,
             'id' => $waitlist->id,
+            'registration_email' => $this->emailPresenter->present($waitlist->registrationEmail),
             'student_id' => $waitlist->student_id,
             'professional_id' => $waitlist->professional_id,
             'waitlistable_id' => $waitlist->waitlistable_id,

@@ -6,10 +6,13 @@ namespace App\Domains\Inclusion\UI\Presenters;
 
 use App\Domains\Inclusion\Domain\Exceptions\InvalidLoanableResource;
 use App\Domains\Inclusion\Domain\Models\Loan;
+use App\Domains\Notifications\UI\Presenters\EmailDeliveryPresenter;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 
 final class LoanPresenter
 {
+    public function __construct(private readonly EmailDeliveryPresenter $emailPresenter) {}
+
     /**
      * @return array<string, mixed>
      *
@@ -19,6 +22,8 @@ final class LoanPresenter
     {
         $loan->loadMissing([
             'loanable',
+            'confirmationEmail:id,context_id,status,sent_at',
+            'returnEmail:id,context_id,status,sent_at',
             'student:id,person_id,registration',
             'student.person:id,name',
             'professional:id,person_id,registration',
@@ -30,6 +35,9 @@ final class LoanPresenter
         $payload = [
             'semester_label' => $loan->semester?->label,
             'id' => $loan->id,
+            'confirmation_email' => $this->emailPresenter->present($loan->confirmationEmail),
+            'return_email' => $loan->isReturned() && $loan->student_id !== null
+                ? $this->emailPresenter->present($loan->returnEmail) : null,
             'loanable_id' => $loan->loanable_id,
             'item_type' => $loan->loanableType()->value,
             'item_type_label' => $loan->loanableType()->label(),

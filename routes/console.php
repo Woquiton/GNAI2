@@ -1,8 +1,15 @@
 <?php
 
+use App\Domains\Notifications\Application\Actions\Email\RecoverEmailResultsAction;
 use App\Domains\Settings\Application\Queries\GetBackupSettingsQuery;
-use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::call(fn () => app(RecoverEmailResultsAction::class)->execute())
+    ->name('email-deliveries:recover-results')
+    ->everyMinute()
+    ->withoutOverlapping()
+    ->description('Recupera resultados de e-mail sem repetir o envio');
 
 // Roda o backup nos horários definidos em Configurações > Backups (fuso da aplicação).
 // A retenção é aplicada pelo próprio backup automático, conforme as mesmas configurações.

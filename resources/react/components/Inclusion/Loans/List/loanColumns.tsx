@@ -2,6 +2,7 @@ import { formatTableListText, type TableListColumn } from '@/components/Tables/T
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { loanUrls } from '../Loans.routes';
 import type { LoanRecord } from '../Loans.types';
+import EmailDeliveryIndicator from '@/components/UI/EmailDeliveryIndicator/EmailDeliveryIndicator';
 
 const NOT_INFORMED = 'Não informado';
 
@@ -12,6 +13,31 @@ function beneficiaryRegistration(loan: LoanRecord): string {
 /** Colunas da listagem; as complementares começam ocultas no seletor de colunas. */
 export const loanColumns: TableListColumn<LoanRecord>[] = [
     {
+        id: 'confirmation-email',
+        label: 'E-mail',
+        hideLabel: true,
+        width: '4.5%',
+        fixed: 'start',
+        cellTitle: (loan) => [
+            `Empréstimo: ${loan.confirmation_email.label}`,
+            ...(loan.return_email ? [`Devolução: ${loan.return_email.label}`] : []),
+        ].join(' | '),
+        render: (loan) => (
+            <div className="loanList__emailIndicators">
+                <EmailDeliveryIndicator
+                    email={loan.confirmation_email}
+                    label={`Confirmação do empréstimo #${loan.id}`}
+                />
+                {loan.return_email ? (
+                    <EmailDeliveryIndicator
+                        email={loan.return_email}
+                        label={`Confirmação da devolução do empréstimo #${loan.id}`}
+                    />
+                ) : null}
+            </div>
+        ),
+    },
+    {
         id: 'origin-semester',
         label: 'Semestre de origem',
         defaultVisible: false,
@@ -20,8 +46,7 @@ export const loanColumns: TableListColumn<LoanRecord>[] = [
     {
         id: 'item',
         label: 'Item',
-        width: '24%',
-        fixed: 'start',
+        width: '21.5%',
         render: (loan) => (
             <a href={loanUrls.item(loan.loanable_id)} target="_blank" rel="noreferrer">
                 {loan.loanable.name}
@@ -31,7 +56,7 @@ export const loanColumns: TableListColumn<LoanRecord>[] = [
     {
         id: 'beneficiary',
         label: 'Beneficiário',
-        width: '22%',
+        width: '20%',
         render: (loan) => (loan.student ?? loan.professional)?.name ?? NOT_INFORMED,
     },
     {

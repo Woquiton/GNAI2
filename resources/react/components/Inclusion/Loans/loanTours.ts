@@ -30,7 +30,7 @@ export const loanListTour: TableListTourConfig = {
     moreFilters:
         'Em Mais filtros, escolha o Status e o Semestre. Em Consultar no semestre, diferencie a origem, os iniciados, os que continuaram em andamento e os encerrados no período. Sem vínculo encontra registros cuja origem precisa de revisão do calendário.',
     table: [
-        'Cada linha é um empréstimo, com o item, o beneficiário, o prazo, o status e quem registrou. Quando a devolução está atrasada, o Prazo aparece destacado.',
+        'Os ícones à esquerda mostram os e-mails: primeiro a confirmação do empréstimo e, após a devolução de um aluno, a confirmação de devolução ao lado. Cada um mantém seu próprio status. Passe o mouse ou use o teclado para consultar a explicação. O Prazo fica destacado quando há atraso.',
         'Clique no nome do item para abrir o cadastro dele em outra aba. Use o botão de olho, no fim da linha, para abrir o empréstimo.',
     ],
 };
@@ -45,7 +45,7 @@ export const loanCreateTour: GuidedTourPageConfig = {
             title: 'Identificação',
             content: [
                 'Escolha primeiro o Tipo do Item. Depois, escolha o Item Específico. Só aparecem os itens que podem ser emprestados agora, com as unidades disponíveis.',
-                'Em seguida, escolha quem vai receber o item: um Estudante ou um Profissional, só um dos dois. Os campos com asterisco (*) são obrigatórios.',
+                'Escolha um Estudante ou um Profissional como beneficiário. Ao selecionar um, o outro campo fica desabilitado. Limpe a seleção para trocar o tipo de beneficiário. Os campos com asterisco (*) são obrigatórios.',
             ],
         },
         {

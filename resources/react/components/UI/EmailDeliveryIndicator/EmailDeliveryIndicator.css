@@ -1,0 +1,28 @@
+/* Faixa informativa à esquerda; ações da linha continuam à direita. */
+.emailDeliveryIndicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 2px;
+    border: 0;
+    border-radius: var(--ui-radius-sm);
+    background: transparent;
+    color: var(--ui-color-text-muted);
+    font: inherit;
+    cursor: help;
+}
+.emailDeliveryIndicator[data-status='sent'] {
+    color: var(--ui-color-success);
+}
+.emailDeliveryIndicator:is(
+    [data-status='queued'],
+    [data-status='processing'],
+    [data-status='unconfirmed']
+) {
+    color: var(--ui-color-warning-strong);
+}
+.emailDeliveryIndicator:is([data-status='failed'], [data-status='no_email']) {
+    color: var(--ui-color-danger);
+}

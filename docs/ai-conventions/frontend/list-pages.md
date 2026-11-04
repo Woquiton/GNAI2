@@ -44,6 +44,8 @@ Quando os filtros ultrapassarem uma linha útil, mantenha os critérios mais fre
 
 Ações destrutivas usam `UI/ConfirmActionModal`, que centraliza a apresentação custombox do Ubold, com cabeçalho grafite e conteúdo centralizado, além de foco, mensagens de erro, estado de processamento e ações do rodapé. A funcionalidade mantém apenas o estado de abertura e a requisição do domínio; não use `window.confirm` nem replique o markup do modal na página.
 
+Atualizações periódicas de resultados assíncronos também usam `useTableListVisit`, pela opção `polling: { enabled, only, interval }`. Mantenha `only` estável e restrito às props da coleção; habilite a consulta somente enquanto houver resultados pendentes nas linhas exibidas. O transporte preserva a URL atual, filtros, página e rolagem, reutiliza os toasts de falha e suspende as consultas com a aba oculta. Visitas do usuário têm prioridade: cancelam a consulta em segundo plano e impedem outra até terminarem. Não crie um fluxo de requisições paralelo por domínio.
+
 CSS de campos, larguras de coluna e conteúdo específico fica junto de `StudentFilters`, `StudentList` ou do equivalente do domínio. Não concentre novamente estilos de indexação em um arquivo geral que também atende formulários e prontuários.
 
 Em prontuários organizados por abas, uma coleção pode reutilizar `TableListCard`, `TableListScroll`, `TableListTable`, `TableListEmpty` e `TableListSummary` sem filtros ou paginação quando o contrato entrega intencionalmente a coleção completa. `TableListSummary` mantém a contagem no rodapé sem criar uma página única artificial. A ação de cadastro fica acima do card e as ações de linha seguem as mesmas permissões e confirmações das listagens independentes.

@@ -1,5 +1,6 @@
 import { itemTypeLabels } from '@/components/Inclusion/Items/Items.constants';
 import { formatTableListText, type TableListColumn } from '@/components/Tables/TableList/TableList';
+import EmailDeliveryIndicator from '@/components/UI/EmailDeliveryIndicator/EmailDeliveryIndicator';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { waitlistStudentLabel } from '../Waitlists.constants';
 import { waitlistUrls } from '../Waitlists.routes';
@@ -17,6 +18,20 @@ function beneficiary(waitlist: WaitlistRecord): string {
 
 /** Colunas da listagem; as complementares começam ocultas no seletor de colunas. */
 export const waitlistColumns: TableListColumn<WaitlistRecord>[] = [
+    {
+        id: 'registration-email',
+        label: 'E-mail',
+        hideLabel: true,
+        width: '4%',
+        fixed: 'start',
+        cellTitle: (waitlist) => waitlist.registration_email.label,
+        render: (waitlist) => (
+            <EmailDeliveryIndicator
+                email={waitlist.registration_email}
+                label={`Confirmação de entrada na fila #${waitlist.id}`}
+            />
+        ),
+    },
     {
         id: 'notified_at',
         label: 'Notificado em',
@@ -44,8 +59,7 @@ export const waitlistColumns: TableListColumn<WaitlistRecord>[] = [
     {
         id: 'item',
         label: 'Item',
-        width: '26%',
-        fixed: 'start',
+        width: '22%',
         render: (waitlist) => (
             <a href={waitlistUrls.item(waitlist.waitlistable_id)} target="_blank" rel="noreferrer">
                 {waitlist.item_name}

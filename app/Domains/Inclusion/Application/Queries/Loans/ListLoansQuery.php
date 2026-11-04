@@ -20,6 +20,8 @@ final class ListLoansQuery
         $query = Loan::query()
             ->with([
                 'loanable',
+                'confirmationEmail:id,context_id,status,sent_at',
+                'returnEmail:id,context_id,status,sent_at',
                 'student:id,person_id,registration',
                 'student.person:id,name',
                 'professional:id,person_id,registration',

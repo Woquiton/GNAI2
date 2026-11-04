@@ -24,7 +24,7 @@ export const waitlistListTour: TableListTourConfig = {
     moreFilters:
         'Em Mais filtros, escolha o Status e o Semestre. Em Consultar no semestre, diferencie a origem, os iniciados, os que continuaram em andamento e os encerrados no período. Sem vínculo encontra registros cuja origem precisa de revisão do calendário.',
     table: [
-        'Cada linha é uma solicitação, com o item, o beneficiário, a data, o status e quem registrou.',
+        'A faixa de ícones à esquerda, sem título, mostra o envio da confirmação de entrada na fila. Passe o mouse ou use o teclado para consultar o significado. Cada linha também mostra item, beneficiário, data, situação da solicitação e responsável.',
         'Clique no nome do item para abrir o cadastro dele em outra aba. Use o botão de olho, no fim da linha, para abrir a solicitação.',
     ],
 };

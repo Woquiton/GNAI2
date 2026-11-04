@@ -29,6 +29,8 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
         loanDay,
         changeItemType,
         changeItem,
+        changeStudent,
+        changeProfessional,
         changeLoanDay,
         changeLoanTime,
         editorFailed,
@@ -82,19 +84,21 @@ export default function LoanCreateForm(props: LoanCreateProps): React.JSX.Elemen
                             id="loan-student"
                             name="student_id"
                             label="Estudante (Beneficiário)"
+                            disabled={form.processing || Boolean(form.data.professional_id)}
                             options={optionsFromRecord(props.students)}
                             value={form.data.student_id}
                             error={errors.student_id}
-                            onChange={(value) => form.setData('student_id', value)}
+                            onChange={changeStudent}
                         />
                         <SelectInputField
                             id="loan-professional"
                             name="professional_id"
                             label="Profissional (Beneficiário)"
+                            disabled={form.processing || Boolean(form.data.student_id)}
                             options={optionsFromRecord(props.professionals)}
                             value={form.data.professional_id}
                             error={errors.professional_id}
-                            onChange={(value) => form.setData('professional_id', value)}
+                            onChange={changeProfessional}
                         />
                         <FormGridWide>
                             <div data-tour={LOAN_TOUR_TARGETS.responsible}>

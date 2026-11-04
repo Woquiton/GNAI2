@@ -4,6 +4,8 @@ import type { TableProps } from '@/components/Tables/Table/Table';
 export interface TableListColumn<T = unknown> {
     id: string;
     label: string;
+    /** Oculta só o título visual; preserva o nome acessível e o seletor de colunas. */
+    hideLabel?: boolean;
     width?: number | string;
     hideable?: boolean;
     /** Colunas complementares começam desmarcadas; fixas continuam sempre visíveis. */
