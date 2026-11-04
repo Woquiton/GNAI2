@@ -70,6 +70,7 @@ final readonly class CreateTeacherAction
                     'email' => $person->email,
                     'password' => Hash::make($data->password ?? Str::random(40)),
                     'teacher_id' => $teacher->id,
+                    'password_configured' => filled($data->password),
                     'is_admin' => false,
                 ]);
 

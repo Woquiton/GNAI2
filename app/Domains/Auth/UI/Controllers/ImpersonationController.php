@@ -6,6 +6,7 @@ namespace App\Domains\Auth\UI\Controllers;
 
 use App\Domains\Auth\Application\Actions\Impersonation\LeaveImpersonationAction;
 use App\Domains\Auth\Application\Actions\Impersonation\StartImpersonationAction;
+use App\Domains\Auth\Application\Actions\Sessions\StartSessionSecurityAction;
 use App\Domains\Auth\Application\Data\Impersonation\StartImpersonationData;
 use App\Domains\Auth\Domain\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -20,6 +21,7 @@ final class ImpersonationController
         Request $request,
     ): RedirectResponse {
         $target = $action->execute($request->user(), $user, $data->mode);
+        app(StartSessionSecurityAction::class)->execute();
 
         return redirect()
             ->route('dashboard')
@@ -29,6 +31,7 @@ final class ImpersonationController
     public function leave(LeaveImpersonationAction $action): RedirectResponse
     {
         $action->execute();
+        app(StartSessionSecurityAction::class)->execute();
 
         return redirect()
             ->route('dashboard')

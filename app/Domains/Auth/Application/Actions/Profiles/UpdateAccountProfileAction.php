@@ -58,6 +58,7 @@ final readonly class UpdateAccountProfileAction
         ];
 
         if ($changesPassword) {
+            $attributes['password_configured'] = true;
             $attributes['password'] = Hash::make((string) $data->password);
             $attributes['remember_token'] = Str::random(60);
         }

@@ -5,6 +5,7 @@ use App\Domains\Auth\UI\Controllers\ImpersonationController;
 use App\Domains\Auth\UI\Controllers\LoginController;
 use App\Domains\Auth\UI\Controllers\ProfileController;
 use App\Domains\Auth\UI\Controllers\ResetPasswordController;
+use App\Domains\Auth\UI\Controllers\SessionController;
 use App\Domains\Auth\UI\Controllers\TablePreferenceController;
 use App\Domains\Auth\UI\Controllers\TeacherAccessController;
 use App\Domains\Dashboard\UI\Controllers\DashboardController;
@@ -37,6 +38,12 @@ Route::get('/acesso/{token}', [TeacherAccessController::class, 'showConfirm'])->
 Route::post('/acesso/{token}', [TeacherAccessController::class, 'confirm'])->name('teacher-access.confirm');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/sessao/bloqueada', [SessionController::class, 'show'])->name('session.locked');
+    Route::post('/sessao/bloquear', [SessionController::class, 'lock'])->name('session.lock');
+    Route::post('/sessao/desbloquear', [SessionController::class, 'unlock'])->name('session.unlock');
+    Route::get('/sessao/estado', [SessionController::class, 'status'])->name('session.status');
+    Route::post('/sessao/atividade', [SessionController::class, 'activity'])->name('session.activity');
+
     Route::get('/painel', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/painel/atividades', [DashboardController::class, 'activityFeed'])->name('dashboard.activity-feed');
     Route::post('/sair', [LoginController::class, 'logout'])->name('logout');

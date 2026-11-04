@@ -1,3 +1,4 @@
+import SessionActivity from '@/components/Auth/Session/SessionActivity';
 import type { ReactNode } from 'react';
 import { usePage } from '@inertiajs/react';
 import RenderErrorScreen from '@/components/Errors/RenderErrorScreen';
@@ -31,7 +32,18 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
         return <>{children}</>;
     }
 
+    const canLock = props.sessionSecurity?.canLock === true;
     const profileItems: ProfileLink[] = [
+        ...(canLock
+            ? [
+                  {
+                      label: 'Bloquear tela',
+                      iconClass: 'ti-lock',
+                      href: '/autenticacao/sessao/bloquear',
+                      method: 'post' as const,
+                  },
+              ]
+            : []),
         { label: 'Perfil', iconClass: 'ti-user', href: '/autenticacao/perfil' },
         ...(impersonating
             ? [
@@ -67,6 +79,7 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
     // A falha de renderização troca o layout inteiro pela tela de erro avulsa.
     return (
         <PageErrorBoundary resetKey={url} fallback={<RenderErrorScreen homeHref={HOME_HREF} />}>
+            <SessionActivity />
             <SkipLinks items={skipLinks} />
             {/* O tutorial envolve a barra do topo (botão) e o conteúdo (tutorial de cada tela). */}
             <GuidedTourProvider>

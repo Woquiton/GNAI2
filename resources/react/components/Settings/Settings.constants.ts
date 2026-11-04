@@ -30,4 +30,11 @@ export const settingsCategories = [
         href: settingsUrls.pdf,
         iconClass: 'fa fa-file-pdf-o',
     },
+    {
+        key: 'session-security',
+        component: 'Settings/SessionSecurity',
+        label: 'Segurança e sessões',
+        href: settingsUrls.sessionSecurity,
+        iconClass: 'fa fa-lock',
+    },
 ] as const;

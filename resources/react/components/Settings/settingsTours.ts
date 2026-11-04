@@ -8,6 +8,8 @@ import type { settingsCategories } from './Settings.constants';
 /** Valores de `data-tour` das partes das telas de configuração. */
 export const SETTINGS_TOUR_TARGETS = {
     tabs: 'settings-tabs',
+    sessionTimeouts: 'settings-session-timeouts',
+    sessionActions: 'settings-session-actions',
     mailStatus: 'settings-mail-status',
     mailServer: 'settings-mail-server',
     mailSender: 'settings-mail-sender',
@@ -31,7 +33,7 @@ const tabsStep: GuidedTourStep = {
     target: targets.tabs,
     title: 'Categorias de configuração',
     content: [
-        'As configurações ficam separadas em abas: E-mail, Backups, Acesso dos professores e PDFs.',
+        'As configurações ficam separadas em abas: E-mail, Backups, Acesso dos professores, PDFs e Segurança e sessões.',
         'Clique no nome de uma aba para abrir a categoria. Cada aba tem o seu próprio botão Salvar.',
     ],
 };
@@ -161,6 +163,23 @@ export const settingsPdfTour: GuidedTourPageConfig = {
     ],
 };
 
+export const settingsSessionSecurityTour: GuidedTourPageConfig = {
+    helpHref: helpUrls.show(HELP_SLUG, 'configurar-o-bloqueio-e-o-encerramento-das-sessoes'),
+    steps: [
+        tabsStep,
+        {
+            id: 'settings-session-timeouts',
+            target: targets.sessionTimeouts,
+            title: 'Prazos de inatividade',
+            content: [
+                'Informe em minutos quando bloquear a tela e quando encerrar a sessão. O encerramento deve acontecer depois do bloqueio, contado desde a última atividade, incluindo o tempo na tela bloqueada. Use os ícones de informação para consultar as orientações.',
+                'Professores sem senha própria não passam pelo bloqueio com senha, mas também são desconectados. Consultas automáticas não prolongam o acesso. Os valores salvos valem na próxima verificação; diminuir os prazos pode bloquear ou encerrar sessões que já estavam inativas.',
+            ],
+        },
+        actionsStep('settings-session-actions', targets.sessionActions, 'os prazos de inatividade'),
+    ],
+};
+
 type SettingsCategoryKey = (typeof settingsCategories)[number]['key'];
 
 /** Tutorial de cada aba de configuração, escolhido pelo layout compartilhado. */
@@ -169,4 +188,5 @@ export const settingsTours: Record<SettingsCategoryKey, GuidedTourPageConfig> = 
     backup: settingsBackupTour,
     'teacher-access': settingsTeacherAccessTour,
     pdf: settingsPdfTour,
+    'session-security': settingsSessionSecurityTour,
 };

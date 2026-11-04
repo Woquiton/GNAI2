@@ -1,3 +1,5 @@
+import SessionActivity from '@/components/Auth/Session/SessionActivity';
+import type { SessionSecurityState } from '@/components/Auth/Session/Session.types';
 import type { ReactNode } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import RenderErrorScreen from '@/components/Errors/RenderErrorScreen';
@@ -44,6 +46,7 @@ function PortalTourButton(): React.JSX.Element | null {
 
 interface TeacherPortalLayoutProps {
     auth: { user: { name: string } | null };
+    sessionSecurity: SessionSecurityState | null;
     impersonating: boolean;
     impersonationReadOnly: boolean;
     [key: string]: unknown;
@@ -76,6 +79,7 @@ export default function TeacherPortalLayout({
     // A falha de renderização troca o portal inteiro pela tela de erro avulsa.
     return (
         <PageErrorBoundary resetKey={url} fallback={<RenderErrorScreen homeHref={HOME_HREF} />}>
+            <SessionActivity />
             <SkipLinks items={SKIP_LINKS} />
             <GuidedTourProvider>
                 <div className="teacherPortalLayout">
@@ -95,6 +99,15 @@ export default function TeacherPortalLayout({
                         <div className="teacherPortalLayout__session">
                             {sessionIdentity}
                             <PortalTourButton />
+                            {props.sessionSecurity?.canLock ? (
+                                <Button
+                                    tone="white"
+                                    size="sm"
+                                    leftIconClass="fa fa-lock"
+                                    label="Bloquear tela"
+                                    onClick={() => router.post('/autenticacao/sessao/bloquear')}
+                                />
+                            ) : null}
                             <Button
                                 tone="white"
                                 size="sm"

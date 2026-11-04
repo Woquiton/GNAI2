@@ -50,3 +50,11 @@ export interface PdfHeaderSettingsProps {
     logoShapes: SettingsOptions;
     canUpdate: boolean;
 }
+
+export interface SessionSecuritySettingsProps {
+    sessionSecuritySettings: {
+        lock_after: number;
+        logout_after: number;
+    };
+    canUpdate: boolean;
+}

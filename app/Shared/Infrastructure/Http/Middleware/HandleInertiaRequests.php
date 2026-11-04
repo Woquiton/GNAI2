@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Http\Middleware;
 
 use App\Domains\Auth\Application\Queries\Preferences\TablePreferencesQuery;
+use App\Domains\Auth\Application\Queries\Sessions\GetSessionSecurityStateQuery;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Auth\Infrastructure\Session\ImpersonationSession;
+use App\Domains\Auth\UI\Presenters\SessionSecurityPresenter;
 use App\Shared\Infrastructure\Navigation\AppNavigation;
 use App\Shared\Infrastructure\Navigation\AppTopbar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 final class HandleInertiaRequests extends Middleware
@@ -19,6 +22,8 @@ final class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
+        Inertia::encryptHistory($request->user() !== null);
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -27,8 +32,20 @@ final class HandleInertiaRequests extends Middleware
                     'professional_id', 'teacher_id', 'photo_url',
                 ]),
             ],
-            'navigation' => fn () => app(AppNavigation::class)->forRequest($request),
-            'topbar' => fn () => app(AppTopbar::class)->forRequest($request),
+            'sessionSecurity' => Inertia::always(function () use ($request) {
+                // Esta prop só é resolvida ao preparar uma resposta Inertia, inclusive na primeira visita.
+                $request->attributes->set('sessionSecurityInertiaResponse', true);
+                $user = $request->user();
+
+                return $user ? app(SessionSecurityPresenter::class)->present(
+                    $user,
+                    app(GetSessionSecurityStateQuery::class)->execute($user),
+                ) : null;
+            }),
+            'navigation' => fn () => $request->routeIs('session.*')
+                ? null : app(AppNavigation::class)->forRequest($request),
+            'topbar' => fn () => $request->routeIs('session.*')
+                ? null : app(AppTopbar::class)->forRequest($request),
             'impersonating' => fn () => $request->session()->has('impersonator_id'),
             'impersonationReadOnly' => fn () => app(ImpersonationSession::class)->readOnly(),
             'tablePreferences' => fn () => $this->tablePreferences($request),

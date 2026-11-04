@@ -1,0 +1,11 @@
+.sessionActivity__cover {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: var(--ui-color-surface);
+    color: var(--ui-color-text);
+    text-align: center;
+}

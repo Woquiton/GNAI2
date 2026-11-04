@@ -34,3 +34,9 @@ Route::get('/pdfs', [SettingsController::class, 'editPdf'])
 
 Route::put('/pdfs', [SettingsController::class, 'updatePdf'])
     ->name('pdf.update')->middleware('can:setting.update');
+
+Route::get('/seguranca-e-sessoes', [SettingsController::class, 'editSessionSecurity'])
+    ->name('session-security.edit')->middleware('can:setting.view');
+
+Route::put('/seguranca-e-sessoes', [SettingsController::class, 'updateSessionSecurity'])
+    ->name('session-security.update')->middleware('can:setting.update');

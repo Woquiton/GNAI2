@@ -1,7 +1,9 @@
+import type { SessionSecurityState } from '@/components/Auth/Session/Session.types';
 import type { SidebarEntry } from '@/components/Navigation/SidebarPrimary/SidebarPrimary.types';
 import type { NotificationItem } from '@/components/Navigation/TopBarPrimary/TopBarPrimary.data';
 
 export interface AppLayoutProps {
+    sessionSecurity: SessionSecurityState | null;
     auth: { user: { name: string; photo_url: string } | null };
     navigation: { entries: SidebarEntry[]; currentItemKey: string | null };
     topbar: {

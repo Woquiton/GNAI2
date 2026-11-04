@@ -18,6 +18,7 @@ const pages = import.meta.glob<{ default: PageComponent }>('./pages/**/*.tsx');
 const STANDALONE_PREFIXES = ['Catalog/', 'Website/Public/'];
 const STANDALONE_PAGES = [
     'Auth/Login',
+    'Auth/LockScreen',
     'Auth/ForgotPassword',
     'Auth/ResetPassword',
     'Errors/Error',

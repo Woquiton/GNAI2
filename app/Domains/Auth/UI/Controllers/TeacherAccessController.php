@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Auth\UI\Controllers;
 
+use App\Domains\Auth\Application\Actions\Sessions\StartSessionSecurityAction;
 use App\Domains\Auth\Application\Actions\TeacherAccess\ConfirmTeacherAccessTokenAction;
 use App\Domains\Auth\Application\Actions\TeacherAccess\RequestTeacherAccessLinkAction;
 use App\Domains\Auth\Application\Data\TeacherAccess\RequestTeacherAccessLinkData;
@@ -80,8 +81,9 @@ final class TeacherAccessController
                 ->with('error', $exception->getMessage());
         }
 
-        Auth::login($user, remember: true);
+        Auth::login($user, remember: false);
         $request->session()->regenerate();
+        app(StartSessionSecurityAction::class)->execute();
 
         return redirect()
             ->route('teacher-portal.index')

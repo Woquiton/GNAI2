@@ -6,6 +6,7 @@ namespace App\Domains\Auth\UI\Controllers;
 
 use App\Domains\Auth\Application\Actions\Sessions\AuthenticateUserAction;
 use App\Domains\Auth\Application\Actions\Sessions\LogoutUserAction;
+use App\Domains\Auth\Application\Actions\Sessions\StartSessionSecurityAction;
 use App\Domains\Auth\Application\Data\Sessions\LoginData;
 use App\Domains\Auth\Domain\Exceptions\InactiveProfessionalAccount;
 use App\Domains\Auth\Domain\Exceptions\InvalidCredentials;
@@ -22,10 +23,17 @@ final class LoginController
         return Inertia::render('Auth/Login');
     }
 
-    public function login(LoginData $data, AuthenticateUserAction $action): RedirectResponse
+    public function login(
+        LoginData $data,
+        AuthenticateUserAction $action,
+        Request $request,
+        StartSessionSecurityAction $startSession,
+    ): RedirectResponse
     {
         try {
             $action->execute($data);
+            $request->session()->regenerate();
+            $startSession->execute();
         } catch (InvalidCredentials|InactiveProfessionalAccount $exception) {
             return back()
                 ->withInput(['email' => $data->email])
@@ -47,6 +55,7 @@ final class LoginController
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        Inertia::clearHistory();
 
         return redirect()->route('login');
     }

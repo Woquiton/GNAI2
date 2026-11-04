@@ -92,6 +92,7 @@ final readonly class UpdateProfileAction
 
                 if (filled($dto->password)) {
                     $user->password = Hash::make((string) $dto->password);
+                    $user->password_configured = true;
                 }
 
                 $user->save();

@@ -2,8 +2,10 @@
 
 use App\Domains\Audit\UI\Middleware\StartAuditOperation;
 use App\Domains\Auth\UI\Middleware\ApplyTablePageSize;
+use App\Domains\Auth\UI\Middleware\EnforceSessionSecurity;
 use App\Domains\Auth\UI\Middleware\BlockReadOnlyImpersonationWrites;
 use App\Domains\Auth\UI\Middleware\EnsureUserIsAdmin;
+use App\Domains\Settings\UI\Middleware\ConfigureSessionLifetime;
 use App\Shared\Application\Exceptions\AccessDeniedException;
 use App\Shared\Domain\Exceptions\BusinessRuleException;
 use App\Shared\Infrastructure\Http\Middleware\EnsureTeacherPortalAccess;
@@ -35,8 +37,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 | Request::HEADER_X_FORWARDED_PREFIX
         );
 
-        $middleware->web(append: [
+        $middleware->web(prepend: [ConfigureSessionLifetime::class], append: [
             StartAuditOperation::class,
+            EnforceSessionSecurity::class,
             HandleInertiaRequests::class,
             BlockReadOnlyImpersonationWrites::class,
             // Abre o `_payload` antes de sanitizar, para o texto rico ser tratado campo a campo.

@@ -24,7 +24,7 @@ final class BlockReadOnlyImpersonationWrites
             $request->isMethodSafe()
             || ! $request->hasSession()
             || ! app(ImpersonationSession::class)->readOnly()
-            || $request->routeIs('admin.impersonate.leave', 'logout')
+            || $request->routeIs('admin.impersonate.leave', 'logout', 'session.activity')
         ) {
             return $next($request);
         }

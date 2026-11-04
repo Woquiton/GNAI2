@@ -1,17 +1,17 @@
 ---
 titulo: Configurações
-resumo: Como configurar o envio de e-mails do Gnai, testar a conta de envio definir os horários e a retenção dos backups automáticos e configurar os domínios aceitos no acesso de professores e personalizar o cabeçalho dos PDFs.
+resumo: Como configurar e-mails, backups, acesso de professores, cabeçalho dos PDFs e os prazos de bloqueio e encerramento das sessões.
 categoria: Sistema
-palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, chave de app, chave de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos, tutorial, tour
+palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, chave de app, chave de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos, tutorial, tour, segurança, sessões, inatividade, bloqueio, lock screen, logout automático
 ordem: 10
 permissoes: setting.view
 ---
 
-Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **Backups**, **Acesso dos professores** e **PDFs**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
+Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **Backups**, **Acesso dos professores**, **PDFs** e **Segurança e sessões**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
 
 ## Conhecer as configurações com o tutorial
 
-As abas **E-mail**, **Backups**, **Acesso dos professores** e **PDFs** têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra as abas de configuração, cada seção do formulário da aba aberta e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
+As abas **E-mail**, **Backups**, **Acesso dos professores**, **PDFs** e **Segurança e sessões** têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra as abas de configuração, cada seção do formulário da aba aberta e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Para que serve a configuração de e-mail?
 
@@ -94,3 +94,34 @@ O logotipo deve estar em JPG ou PNG, com até 4 MB e até 4000 pixels de largura
 O modelo coloca o logotipo à esquerda, os textos da instituição ao lado e, separado por uma linha vertical, o título específico de cada documento. Vale para os próximos PDFs de alunos, solicitações de atendimento, PEIs, atendimentos, publicações, itens, empréstimos, barreiras, fila de espera e relatórios. Arquivos já baixados permanecem como foram emitidos.
 
 Enquanto a configuração não for salva, os documentos usam o logotipo redondo do Gnai e o nome do sistema. A prévia representa o cabeçalho; a paginação final varia conforme o documento e a quantidade de texto informada.
+
+## Configurar o bloqueio e o encerramento das sessões
+
+1. Acesse **Sistema → Configurações → Segurança e sessões**.
+2. Em **Inatividade da sessão**, preencha os dois campos obrigatórios:
+
+| Campo | Regra |
+| --- | --- |
+| **Bloquear tela após (minutos)** | Número inteiro, de pelo menos 1 minuto. Vale para contas com senha própria. |
+| **Encerrar sessão após (minutos)** | Número inteiro, de pelo menos 2 minutos e maior que o prazo de bloqueio. Vale para todas as contas. |
+
+3. Clique em **Salvar**. Aparece **Configurações de segurança e sessões salvas com sucesso.**.
+
+Use os ícones de informação ao lado do título da seção e dos nomes dos campos
+para consultar as orientações sobre os prazos.
+
+Ambos os prazos contam desde a última atividade. Por exemplo, com bloqueio em
+15 minutos e encerramento em 60 minutos, a pessoa terá mais 45 minutos na tela
+bloqueada antes de precisar entrar novamente. Consultas automáticas e interações
+na tela bloqueada não reiniciam essa contagem.
+
+As mudanças alcançam as sessões já abertas na próxima verificação. Reduzir os
+prazos pode bloquear ou encerrar sessões que já estavam inativas. Aumentar um prazo
+não desbloqueia uma sessão que já foi bloqueada e não reabre uma sessão encerrada.
+
+Professores sem senha própria não passam pela tela de senha; depois do
+encerramento, precisam solicitar outro link de acesso. Veja
+[Bloquear a tela ao se afastar](/ajuda/acesso-ao-sistema#bloquear-a-tela-ao-se-afastar).
+
+Se aparecer **O prazo de encerramento deve ser maior que o de bloqueio.**, aumente
+o prazo de encerramento ou diminua o prazo de bloqueio e salve novamente.

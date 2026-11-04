@@ -1,3 +1,4 @@
+import SessionActivity from '@/components/Auth/Session/SessionActivity';
 import { useEffect, type ReactNode } from 'react';
 import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
 import { initWaves } from '@/utils/initWaves';
@@ -24,6 +25,7 @@ export default function AccountLayout({
                         <section className="accountLayout__splitContent">{children}</section>
                     </div>
                 </main>
+                <SessionActivity />
                 <FlashNotifications />
             </>
         );
@@ -44,6 +46,7 @@ export default function AccountLayout({
                     </div>
                 </div>
             </main>
+            <SessionActivity />
             <FlashNotifications />
         </>
     );

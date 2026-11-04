@@ -16,6 +16,40 @@ Administradores e profissionais da equipe entram no Gnai com o e-mail e a senha 
 
 Com tudo certo, você vai para o [Painel](/ajuda/painel) e recebe a mensagem "Login realizado com sucesso.". Professores sem vínculo com a equipe vão direto para o Portal do Professor.
 
+## Bloquear a tela ao se afastar
+
+Se sua conta possui uma senha cadastrada, abra o menu da sua foto e clique em
+**Bloquear tela**. No Portal do Professor, o botão fica na barra superior.
+A tela também é bloqueada após o tempo de inatividade configurado pela administração.
+
+A tela de bloqueio mostra sua foto e seu nome. Digite sua **Senha** e clique em
+**Desbloquear** para retornar à página anterior. A senha incorreta mantém a tela
+bloqueada. Depois de cinco tentativas incorretas, aguarde um minuto para tentar
+novamente. Para trocar de pessoa, clique em **Entrar**, ao lado da pergunta
+**Não é [seu nome]?**. Essa ação encerra a sessão atual antes de abrir o login.
+
+O bloqueio vale para todas as abas da mesma sessão. Durante a personificação de
+outra conta, o bloqueio por senha fica indisponível. Volte à sua conta para usá-lo.
+
+> **Importante:** salve seu trabalho antes de se afastar. O bloqueio não salva
+> alterações de formulários, e o retorno à página pode descartar dados não enviados.
+
+## Entender o encerramento por inatividade
+
+O Gnai usa dois prazos definidos pela administração em
+[Segurança e sessões](/ajuda/configuracoes#configurar-o-bloqueio-e-o-encerramento-das-sessoes): um para bloquear a tela e
+outro, maior, para encerrar a sessão. O prazo de encerramento conta desde a última
+atividade, incluindo o tempo na tela de bloqueio. Movimentar-se nessa tela ou
+consultas automáticas do sistema não prolongam o acesso.
+
+Quando a sessão é encerrada, aparece **Sua sessão foi encerrada por inatividade.
+Entre novamente para continuar.** Faça login novamente. Professores que usam
+apenas link de e-mail não passam pela tela de senha; ao encerrar a sessão, precisam
+solicitar outro link. Fechar e reabrir o navegador não garante acesso permanente.
+
+Professores com contas antigas passam a usar o bloqueio depois de entrarem com
+senha ou cadastrarem uma nova senha pelo perfil ou pela recuperação de acesso.
+
 ## Esqueci minha senha
 
 1. Na tela de login, clique em **Esqueceu sua senha?**.

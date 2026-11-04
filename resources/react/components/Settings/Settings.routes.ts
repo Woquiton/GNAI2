@@ -5,6 +5,7 @@ const base = '/configuracoes';
 /** Endereços das rotas `settings.*` (prefixo `/configuracoes`). */
 export const settingsUrls = {
     index: base,
+    sessionSecurity: `${base}/seguranca-e-sessoes`,
     mail: `${base}/email`,
     pdf: `${base}/pdfs`,
     mailTest: `${base}/email/teste`,

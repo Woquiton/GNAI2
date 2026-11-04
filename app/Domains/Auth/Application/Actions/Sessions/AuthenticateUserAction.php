@@ -44,6 +44,10 @@ final readonly class AuthenticateUserAction
             throw UserWithoutAccess::make();
         }
 
+        if (! $user->password_configured) {
+            $user->forceFill(['password_configured' => true])->save();
+        }
+
         return $user;
     }
 }

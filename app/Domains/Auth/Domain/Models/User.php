@@ -40,6 +40,7 @@ class User extends Authenticatable implements Auditable
         'name',
         'email',
         'password',
+        'password_configured',
         'professional_id',
         'teacher_id',
         'is_admin',
@@ -89,7 +90,7 @@ class User extends Authenticatable implements Auditable
     /** @return list<string> */
     public static function unauditedFields(): array
     {
-        return ['remember_token'];
+        return ['remember_token', 'password_configured'];
     }
 
     public function auditDescription(): string
@@ -128,6 +129,7 @@ class User extends Authenticatable implements Auditable
     {
         $this->forceFill([
             'password' => $data->password,
+            'password_configured' => true,
             'remember_token' => $data->rememberToken,
         ]);
     }
@@ -177,6 +179,13 @@ class User extends Authenticatable implements Auditable
         return (bool) $this->is_super_admin;
     }
 
+    public function hasUsablePassword(): bool
+    {
+        return $this->teacher_id === null
+            || $this->professional_id !== null
+            || (bool) $this->password_configured;
+    }
+
     public function canAccessSystem(): bool
     {
         return $this->isAdmin()
@@ -201,6 +210,7 @@ class User extends Authenticatable implements Auditable
             'is_admin' => 'boolean',
             'is_super_admin' => 'boolean',
             'password' => 'hashed',
+            'password_configured' => 'boolean',
         ];
     }
 }

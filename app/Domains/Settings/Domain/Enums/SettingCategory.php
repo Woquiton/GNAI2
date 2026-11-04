@@ -14,4 +14,5 @@ enum SettingCategory: string
     case PDF = 'pdf';
     case BACKUP = 'backup';
     case TEACHER_ACCESS = 'teacher_access';
+    case SESSION_SECURITY = 'session_security';
 }
