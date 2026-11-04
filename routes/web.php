@@ -17,6 +17,7 @@ Route::middleware('web')->group(function () {
     Route::redirect('/', '/sobre-nos');
 
     Route::group([], base_path('routes/modules/inclusion.php'));
+    Route::middleware('auth')->group(base_path('routes/modules/notifications.php'));
 
     Route::middleware(['auth'])
         ->prefix('backups')

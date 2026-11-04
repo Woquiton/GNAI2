@@ -1,0 +1,73 @@
+.emailInbox {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ui-space-5);
+    align-items: start;
+}
+.emailInbox__sidebar {
+    padding: var(--ui-space-5);
+    min-width: 0;
+}
+.emailInbox__folderTitle {
+    margin: 0 0 var(--ui-space-5);
+    font: 600 var(--ui-font-size-lg) var(--ui-font-ui);
+    color: var(--ui-color-text-muted);
+    text-transform: uppercase;
+}
+.emailInbox__folders {
+    display: grid;
+    gap: var(--ui-space-1);
+}
+.emailInbox__folders button {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-3);
+    width: 100%;
+    padding: var(--ui-space-3) var(--ui-space-4);
+    border: 0;
+    border-radius: var(--ui-radius-sm);
+    color: var(--ui-color-text);
+    background: transparent;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+.emailInbox__folders button:hover {
+    background: var(--ui-color-surface);
+}
+.emailInbox__folders button.is-active {
+    --ui-focus-keyboard-color: var(--ui-color-text-inverse);
+    --ui-focus-keyboard-offset: -4px;
+    --ui-focus-keyboard-shadow: none;
+    color: var(--ui-color-text-inverse);
+    background: var(--ui-color-gnai-primary);
+}
+.emailInbox__folderCount {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+}
+.emailInbox__content {
+    min-width: 0;
+}
+.emailInbox__recipient {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.emailInbox__recipient > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.emailInbox__recipient small {
+    color: var(--ui-color-text-muted);
+}
+@media (min-width: 992px) {
+    .emailInbox {
+        grid-template-columns: minmax(220px, 1fr) minmax(0, 3fr);
+    }
+}
+@media (max-width: 991px) {
+    .emailInbox__folders {
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    }
+}

@@ -2,6 +2,7 @@
 
 return [
     'entities' => [
+        'email' => 'Central de E-mails',
         'people' => 'Pessoas',
         'deficiency' => 'Perfis de Atendimento',
         'position' => 'Cargos',

@@ -500,3 +500,30 @@ linhas exibidas têm confirmações pendentes e recarrega somente a coleção da
 A atualização usa o transporte comum `useTableListVisit`, preserva filtros e
 paginação e é suspensa enquanto a aba está oculta ou uma visita do usuário está
 em andamento. Uma nova visita cancela a consulta em segundo plano.
+
+## Central de E-mails
+
+O módulo em `/emails` reúne os registros reais de `email_deliveries`, com a
+composição do Inbox do Ubold: lateral de status e histórico de mensagens. O menu
+fica em **Sistema → Central de E-mails**. As rotas de consulta exigem `auth` e
+`can:email.view`; administradores têm acesso pelo mecanismo existente de Gates.
+Para delegar a consulta a um cargo, sincronize as permissões e conceda
+**Visualizar Central de E-mails** no cadastro de cargos:
+
+```bash
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec app php artisan permissions:sync
+```
+
+Em produção, use `.env.prod` e `docker-compose.prod.yml`. A migration
+`2026_11_04_010000_add_email_delivery_history_indexes.php` acrescenta índices para
+as consultas por data, status e origem, sem alterar os registros do histórico.
+
+O módulo permite pesquisar assunto e filtrar origem, status e período de
+registro, com contagens por status e paginação. O destinatário é descriptografado
+somente nos registros exibidos; a busca por assunto não consulta os campos
+criptografados do destinatário. As listagens não carregam o payload da mensagem.
+A visualização retorna somente os campos de conteúdo necessários à leitura,
+sem URLs de autenticação, tokens, payload bruto ou detalhes técnicos de exceções.
+Os registros pendentes são atualizados pelo transporte compartilhado de listagens.
+O módulo é de consulta e não escreve, reenvia ou exclui mensagens. O artigo da
+Central de Ajuda fica em `resources/help/central-de-emails.md`.
