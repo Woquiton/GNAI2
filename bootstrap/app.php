@@ -122,20 +122,24 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request): Response {
             $status = $response->getStatusCode();
 
-            if (! $request->expectsJson() && in_array($status, [403, 404, 419, 503], true)) {
-                return Inertia::render('Errors/Error', [
-                    'status' => $status,
-                    'homeHref' => route($request->user() ? 'dashboard' : 'login'),
-                ])
-                    ->toResponse($request)->setStatusCode($status);
+            if ($request->expectsJson()) {
+                return $response;
             }
 
-            if (! $request->expectsJson() && $status === 500 && ! config('app.debug')) {
-                return Inertia::render('Errors/Error', [
+            $hasErrorScreen = in_array($status, [400, 403, 404, 419, 429, 500, 503], true);
+
+            if ($hasErrorScreen && ($status !== 500 || ! config('app.debug'))) {
+                $errorResponse = Inertia::render('Errors/Error', [
                     'status' => $status,
                     'homeHref' => route($request->user() ? 'dashboard' : 'login'),
                 ])
                     ->toResponse($request)->setStatusCode($status);
+
+                if ($response->headers->has('Retry-After')) {
+                    $errorResponse->headers->set('Retry-After', $response->headers->get('Retry-After'));
+                }
+
+                return $errorResponse;
             }
 
             return $response;

@@ -6,13 +6,12 @@
     line-height: 20px;
 }
 .errorState__code {
-    color: #252932;
-    font-size: 98px;
+    font-size: clamp(64px, 18vw, 98px);
     font-weight: 700;
     line-height: 150px;
 }
 .errorState__code i {
-    font-size: 78px;
+    font-size: 0.795918em;
     padding: 0 10px;
 }
 .errorState__primary {
@@ -24,11 +23,11 @@
 .errorState__info {
     color: var(--ui-color-info);
 }
-.errorState h2 {
+.errorState h1 {
     margin: 10px 0;
     color: var(--ui-color-heading);
     font-family: var(--ui-font-ui);
-    font-size: 30px;
+    font-size: clamp(24px, 5vw, 30px);
     font-weight: 500;
     line-height: 35px;
 }
@@ -36,17 +35,4 @@
     margin: 0 0 10px;
     color: var(--ui-color-legacy-muted);
     line-height: 1.6;
-}
-.errorState .errorState__home.button--default,
-.errorState .errorState__home.button--default:hover,
-.errorState .errorState__home.button--default:focus,
-.errorState .errorState__home.button--default:active {
-    border-color: var(--ui-color-gnai-primary) !important;
-    background-color: var(--ui-color-gnai-primary) !important;
-}
-.errorState .errorState__home.button--default:hover,
-.errorState .errorState__home.button--default:focus,
-.errorState .errorState__home.button--default:active {
-    border-color: var(--ui-color-gnai-primary-hover) !important;
-    background-color: var(--ui-color-gnai-primary-hover) !important;
 }

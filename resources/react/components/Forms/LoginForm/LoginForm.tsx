@@ -85,7 +85,7 @@ export default function LoginForm(): React.JSX.Element {
             <div className="loginForm__submit">
                 <Button
                     type="submit"
-                    tone="save"
+                    tone="list-action"
                     block
                     disabled={form.processing}
                     label={form.processing ? 'Entrando...' : 'Entrar'}

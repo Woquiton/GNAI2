@@ -23,6 +23,12 @@ export const errorDescriptions: Record<ErrorCode, ErrorDescription> = {
         title: 'Sessão expirada',
         paragraphs: ['Sua sessão expirou. Atualize a página e entre novamente para continuar.'],
     },
+    '429': {
+        title: 'Muitas solicitações',
+        paragraphs: [
+            'O limite de solicitações foi atingido. Aguarde alguns instantes antes de tentar novamente.',
+        ],
+    },
     '500': {
         title: 'Erro interno no servidor',
         paragraphs: [

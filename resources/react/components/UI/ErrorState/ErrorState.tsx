@@ -16,12 +16,12 @@ export default function ErrorState({
 }): React.JSX.Element {
     return (
         <section className="errorState" aria-label={`${copy.label} ${code}`}>
-            <div className="errorState__code" aria-label={code}>
+            <div className="errorState__code" aria-hidden="true">
                 <span className="errorState__primary">{code[0]}</span>
-                {code === '400' ? (
-                    <span className="errorState__pink">0</span>
-                ) : (
+                {code[1] === '0' && code !== '400' ? (
                     <i className="ti-face-sad errorState__pink" aria-hidden="true" />
+                ) : (
+                    <span className="errorState__pink">{code[1]}</span>
                 )}
                 {code === '500' ? (
                     <i className="ti-face-sad errorState__info" aria-hidden="true" />
@@ -29,13 +29,18 @@ export default function ErrorState({
                     <span className="errorState__info">{code[2]}</span>
                 )}
             </div>
-            <h2>{description.title}</h2>
+            <h1>{description.title}</h1>
             <br />
             {description.paragraphs.map((text) => (
                 <p key={text}>{text}</p>
             ))}
             <br />
-            <Button href={homeHref} label={homeLabel} className="errorState__home" />
+            <Button
+                href={homeHref}
+                label={homeLabel}
+                tone="list-action"
+                className="errorState__home"
+            />
         </section>
     );
 }
