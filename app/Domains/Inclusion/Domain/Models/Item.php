@@ -19,6 +19,7 @@ use Database\Factories\Domains\Inclusion\ItemFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -45,6 +46,7 @@ final class Item extends Model implements Auditable
     ];
 
     protected $casts = [
+        'cover_evidence_id' => 'integer',
         'item_type' => ItemType::class,
         'is_digital' => 'boolean',
         'is_loanable' => 'boolean',
@@ -68,6 +70,7 @@ final class Item extends Model implements Auditable
     public static function auditedFields(): array
     {
         return [
+            'cover_evidence_id' => AuditedField::number('Imagem favorita de capa'),
             'item_type' => AuditedField::enum('Tipo do Item', ItemType::class),
             'name' => AuditedField::text('Descrição do Item'),
             'is_digital' => AuditedField::boolean('Recurso Digital'),
@@ -236,6 +239,35 @@ final class Item extends Model implements Auditable
     public function inspections(): MorphMany
     {
         return $this->morphMany(Inspection::class, 'inspectable');
+    }
+
+    /** @throws InvalidItem */
+    public function setCover(InspectionEvidence $evidence, ?int $expectedCoverEvidenceId): void
+    {
+        if ($this->cover_evidence_id !== $expectedCoverEvidenceId) {
+            throw new InvalidItem(
+                'A capa deste item foi alterada. Confira a imagem atual e confirme novamente.'
+            );
+        }
+
+        $inspection = $evidence->inspection;
+        if (
+            $inspection === null
+            || $inspection->inspectable_type !== $this->getMorphClass()
+            || (int) $inspection->inspectable_id !== (int) $this->getKey()
+            || ! in_array($evidence->mime_type, ['image/jpeg', 'image/png', 'image/webp'], true)
+        ) {
+            throw new InvalidItem(
+                'Selecione uma imagem JPG, PNG ou WebP de uma vistoria deste item.'
+            );
+        }
+
+        $this->cover_evidence_id = $evidence->getKey();
+    }
+
+    public function coverEvidence(): BelongsTo
+    {
+        return $this->belongsTo(InspectionEvidence::class, 'cover_evidence_id');
     }
 
     public function loans(): MorphMany

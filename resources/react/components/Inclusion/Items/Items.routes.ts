@@ -5,6 +5,7 @@ const base = '/inclusao/itens';
 /** Endereços das rotas `inclusive-radar.items.*` (prefixo `/inclusao/itens`). */
 export const itemUrls = {
     index: base,
+    setCover: (itemId: number, evidenceId: number) => `${base}/${itemId}/capa/${evidenceId}`,
     create: `${base}/criar`,
     store: `${base}/salvar`,
     show: (id: number) => `${base}/${id}`,

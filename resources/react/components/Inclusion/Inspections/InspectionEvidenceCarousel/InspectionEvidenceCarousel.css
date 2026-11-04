@@ -5,6 +5,16 @@
     min-width: 0;
 }
 
+.inspectionEvidenceCarousel .item {
+    position: relative;
+}
+.inspectionEvidenceCarousel__favorite {
+    position: absolute;
+    top: var(--ui-space-3);
+    right: var(--ui-space-3);
+    z-index: 3;
+}
+
 .inspectionEvidenceCarousel__slide {
     display: flex;
     height: 280px;

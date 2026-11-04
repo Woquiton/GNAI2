@@ -1,28 +1,13 @@
 import { formatTableListDate, type TableListColumn } from '@/components/Tables/TableList/TableList';
-import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { itemTypeLabels } from '../Items.constants';
 import type { ItemSummary } from '../Items.types';
+import ItemStatusLabel from './ItemStatusLabel';
 
 const NOT_INFORMED = 'Não informado';
 const NOT_APPLICABLE = 'Não se aplica';
 
 function joinNames(entries: ReadonlyArray<{ name: string }>): string {
     return entries.map(({ name }) => name).join(', ') || NOT_INFORMED;
-}
-
-/** Item físico sem unidades disponíveis aparece como "Esgotado". */
-function ItemStatusLabel({ item }: { item: ItemSummary }): React.JSX.Element {
-    const exhausted = !item.is_digital && (item.quantity_available ?? 0) <= 0;
-
-    if (exhausted) {
-        return <TableLabel tone="danger">Esgotado</TableLabel>;
-    }
-
-    return (
-        <TableLabel tone={item.is_active ? 'success' : 'inverse'}>
-            {item.is_active ? 'Ativo' : 'Inativo'}
-        </TableLabel>
-    );
 }
 
 function stock(item: ItemSummary): string {

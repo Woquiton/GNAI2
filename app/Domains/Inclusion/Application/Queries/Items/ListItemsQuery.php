@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\Application\Queries\Items;
 use App\Domains\Inclusion\Application\Data\Items\ListItemsData;
 use App\Domains\Inclusion\Domain\Models\Item;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 
 final class ListItemsQuery
 {
@@ -15,8 +16,20 @@ final class ListItemsQuery
      */
     public function execute(ListItemsData $filters): LengthAwarePaginator
     {
+        $imageTypes = ['image/jpeg', 'image/png', 'image/webp'];
         $query = Item::query()
-            ->with(['deficiencies', 'accessibilityFeatures']);
+            ->with([
+                'deficiencies',
+                'accessibilityFeatures',
+                'coverEvidence:id,path,original_name',
+                'inspections' => fn ($inspections) => $inspections
+                    ->select(['id', 'inspectable_id', 'inspectable_type', 'inspection_date'])
+                    ->whereHas('evidences', fn (Builder $evidences) => $evidences->whereIn('mime_type', $imageTypes))
+                    ->latest('inspection_date')->orderByDesc('id')->limit(1)
+                    ->with(['evidences' => fn ($evidences) => $evidences
+                        ->select(['id', 'inspection_id', 'path'])
+                        ->whereIn('mime_type', $imageTypes)->orderBy('id')->limit(1)]),
+            ]);
 
         if (filled($filters->name)) {
             $query->where('name', 'like', '%'.trim($filters->name).'%');

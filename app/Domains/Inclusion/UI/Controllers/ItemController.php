@@ -6,9 +6,11 @@ namespace App\Domains\Inclusion\UI\Controllers;
 
 use App\Domains\Inclusion\Application\Actions\Items\CreateItemAction;
 use App\Domains\Inclusion\Application\Actions\Items\DeleteItemAction;
+use App\Domains\Inclusion\Application\Actions\Items\SetItemCoverAction;
 use App\Domains\Inclusion\Application\Actions\Items\UpdateItemAction;
 use App\Domains\Inclusion\Application\Data\Items\CreateItemData;
 use App\Domains\Inclusion\Application\Data\Items\ListItemsData;
+use App\Domains\Inclusion\Application\Data\Items\SetItemCoverData;
 use App\Domains\Inclusion\Application\Data\Items\UpdateItemData;
 use App\Domains\Inclusion\Application\Queries\Items\ItemFilterOptionsQuery;
 use App\Domains\Inclusion\Application\Queries\Items\ItemFormQuery;
@@ -19,6 +21,7 @@ use App\Domains\Inclusion\Application\Queries\Items\ShowItemQuery;
 use App\Domains\Inclusion\Domain\Enums\ItemType;
 use App\Domains\Inclusion\Domain\Exceptions\AssetCodeAlreadyInUse;
 use App\Domains\Inclusion\Domain\Models\Inspection;
+use App\Domains\Inclusion\Domain\Models\InspectionEvidence;
 use App\Domains\Inclusion\Domain\Models\Item;
 use App\Domains\Inclusion\Domain\Models\Loan;
 use App\Domains\Inclusion\UI\Presenters\ItemPresenter;
@@ -200,6 +203,7 @@ final class ItemController
         Inspection $inspection,
         ShowItemInspectionQuery $query,
         ItemPresenter $presenter,
+        Request $request,
     ): InertiaResponse {
         $scopedInspection = $query->execute(
             item: $item,
@@ -209,6 +213,19 @@ final class ItemController
         return Inertia::render('Inclusion/Items/Inspections/Show', [
             'item' => $item->only(['id', 'name']),
             'inspection' => $presenter->inspection($scopedInspection),
+            'cover' => $presenter->cover($item),
+            'canSetCover' => $request->user()?->can('item.update') ?? false,
         ]);
+    }
+
+    public function setCover(
+        Item $item,
+        InspectionEvidence $evidence,
+        SetItemCoverData $data,
+        SetItemCoverAction $action,
+    ): RedirectResponse {
+        $action->execute($item, $evidence, $data);
+
+        return redirect()->back()->with('success', 'Imagem favoritada e definida como capa do item.');
     }
 }

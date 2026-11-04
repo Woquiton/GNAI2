@@ -151,6 +151,9 @@ Route::prefix('inclusao')->name('inclusive-radar.')->group(function (): void {
         Route::get('/itens/{item}/vistoria/{inspection}', [ItemController::class, 'showInspection'])
             ->name('items.inspection.show')->middleware('can:item.inspection.show');
 
+        Route::put('/itens/{item}/capa/{evidence}', [ItemController::class, 'setCover'])
+            ->name('items.cover.update')->middleware(['can:item.update', 'can:item.inspection.show']);
+
         Route::get('/itens/{item}', [ItemController::class, 'show'])
             ->name('items.show')->middleware('can:item.show');
 

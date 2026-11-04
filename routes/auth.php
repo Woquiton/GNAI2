@@ -52,6 +52,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/perfil/conta', [ProfileController::class, 'updateAccount'])->name('profile.account.update');
     Route::put('/preferencias/tabelas/colunas', [TablePreferenceController::class, 'updateColumns'])
         ->name('preferences.tables.columns.update');
+    Route::put('/preferencias/tabelas/visualizacao', [TablePreferenceController::class, 'updateView'])
+        ->name('preferences.tables.view.update');
 
     Route::post('/acessar-como/encerrar', [ImpersonationController::class, 'leave'])
         ->name('admin.impersonate.leave');

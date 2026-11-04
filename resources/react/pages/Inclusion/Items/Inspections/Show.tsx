@@ -1,14 +1,15 @@
-import InspectionDetails, {
-    InspectionDateBadge,
-} from '@/components/Inclusion/Inspections/InspectionDetails/InspectionDetails';
+import { InspectionDateBadge } from '@/components/Inclusion/Inspections/InspectionDetails/InspectionDetails';
+import ItemInspectionDetails from '@/components/Inclusion/Items/Details/ItemInspectionDetails';
 import { itemInspectionShowTour } from '@/components/Inclusion/Inspections/inspectionTours';
-import { itemBreadcrumb, itemUrls } from '@/components/Inclusion/Items/Items.routes';
+import { itemBreadcrumb } from '@/components/Inclusion/Items/Items.routes';
 import type { ItemInspectionShowProps } from '@/components/Inclusion/Items/Items.types';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
 export default function InclusionItemsInspectionsShowPage({
     item,
     inspection,
+    cover,
+    canSetCover,
 }: ItemInspectionShowProps): React.JSX.Element {
     return (
         <BusinessPage
@@ -18,9 +19,11 @@ export default function InclusionItemsInspectionsShowPage({
             actions={<InspectionDateBadge date={inspection.date} />}
             tour={itemInspectionShowTour}
         >
-            <InspectionDetails
+            <ItemInspectionDetails
+                item={item}
                 inspection={inspection}
-                subject={{ name: item.name, href: itemUrls.show(item.id) }}
+                cover={cover}
+                canSetCover={canSetCover}
             />
         </BusinessPage>
     );

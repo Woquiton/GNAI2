@@ -1,0 +1,22 @@
+.itemCoverComparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--ui-space-4);
+}
+.itemCoverComparison figure {
+    margin: 0;
+    min-width: 0;
+}
+.itemCoverComparison img {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    background: var(--ui-color-surface-hover-alt);
+    border-radius: var(--ui-radius-sm);
+}
+.itemCoverComparison figcaption {
+    margin-top: var(--ui-space-2);
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-sm);
+}

@@ -21,6 +21,14 @@ final class ItemPresenter
         $items->getCollection()->each(static function (Item $item): void {
             $item->setAttribute('conservation_state_label', $item->conservation_state?->label());
             $item->setAttribute('resource_status_label', $item->status?->label());
+            $image = $item->relationLoaded('coverEvidence') ? $item->coverEvidence : null;
+            $image ??= $item->relationLoaded('inspections')
+                ? $item->inspections->first()?->evidences->first() : null;
+            $item->setAttribute('catalog_image_url', $image
+                ? '/storage/'.ltrim((string) $image->path, '/') : null);
+            // O catálogo recebe somente a capa, sem os demais dados das vistorias.
+            $item->unsetRelation('inspections');
+            $item->unsetRelation('coverEvidence');
         });
 
         return $items;
@@ -70,5 +78,16 @@ final class ItemPresenter
                 ],
             )->all(),
         ];
+    }
+
+    public function cover(Item $item): ?array
+    {
+        $evidence = $item->coverEvidence;
+
+        return $evidence ? [
+            'id' => $evidence->getKey(),
+            'name' => $evidence->displayName(),
+            'url' => '/storage/'.ltrim((string) $evidence->path, '/'),
+        ] : null;
     }
 }

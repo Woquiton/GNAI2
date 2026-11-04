@@ -9,11 +9,6 @@ import { TABLE_LIST_DEFAULT_PAGE_SIZE, TABLE_LIST_PAGE_SIZES } from './TableList
 import { TableListBusyContext } from './TableListBusyContext';
 import { TABLE_LIST_TOUR_TARGETS } from './tableListTour';
 
-const options = TABLE_LIST_PAGE_SIZES.map((size) => ({
-    value: String(size),
-    label: String(size),
-}));
-
 /** Remove a página atual (`page`, `pedagogical_page`…) para a nova quantidade começar do início. */
 function pageSizeUrl(size: number): string {
     const params = new URLSearchParams(window.location.search);
@@ -33,13 +28,18 @@ function pageSizeUrl(size: number): string {
 export default function TableListPageSize({
     value,
     disabled = false,
+    pageSizeOptions = TABLE_LIST_PAGE_SIZES,
 }: {
     value: number | undefined;
     disabled?: boolean;
+    pageSizeOptions?: readonly number[];
 }): React.JSX.Element {
     const id = useId();
     const setBusy = useContext(TableListBusyContext);
     const current = String(value ?? TABLE_LIST_DEFAULT_PAGE_SIZE);
+    // Ao alternar para uma tabela, continue exibindo a quantidade escolhida no catálogo.
+    const sizes = [...new Set([...pageSizeOptions, Number(current)])].sort((a, b) => a - b);
+    const options = sizes.map((size) => ({ value: String(size), label: String(size) }));
 
     function change(next: string): void {
         if (next === current) return;

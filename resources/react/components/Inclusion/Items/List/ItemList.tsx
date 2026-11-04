@@ -1,31 +1,20 @@
 import { useMemo } from 'react';
 import {
-    TableListFooter,
     TableListRowActions,
     TableListScroll,
     TableListTable,
     type TableListColumn,
 } from '@/components/Tables/TableList/TableList';
 import { itemUrls } from '../Items.routes';
-import type { ItemListPermissions, ItemPaginator, ItemSummary } from '../Items.types';
+import type { ItemSummary } from '../Items.types';
 import { itemColumns } from './itemColumns';
-
-interface ItemListProps {
-    items: ItemPaginator;
-    permissions: ItemListPermissions;
-    loading: boolean;
-    processing: boolean;
-    onDelete: (item: ItemSummary) => void;
-    onPageSelect: (page: number) => void;
-}
+import type { ItemListProps } from './ItemList.types';
 
 export default function ItemList({
     items,
     permissions,
-    loading,
     processing,
     onDelete,
-    onPageSelect,
 }: ItemListProps): React.JSX.Element {
     const columns = useMemo<TableListColumn<ItemSummary>[]>(
         () => [
@@ -58,23 +47,15 @@ export default function ItemList({
     );
 
     return (
-        <>
-            <TableListScroll aria-label="Tabela de itens">
-                <TableListTable
-                    className="itemList"
-                    columns={columns}
-                    rows={items.data}
-                    rowKey={(item) => item.id}
-                    page={items}
-                    emptyMessage="Nenhum item cadastrado."
-                />
-            </TableListScroll>
-            <TableListFooter
+        <TableListScroll aria-label="Tabela de itens">
+            <TableListTable
+                className="itemList"
+                columns={columns}
+                rows={items.data}
+                rowKey={(item) => item.id}
                 page={items}
-                disabled={loading}
-                paginationLabel="Páginas de itens"
-                onSelect={onPageSelect}
+                emptyMessage="Nenhum item cadastrado."
             />
-        </>
+        </TableListScroll>
     );
 }

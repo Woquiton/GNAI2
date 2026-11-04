@@ -8,6 +8,7 @@ import type {
 export const INSPECTION_TOUR_TARGETS = {
     general: 'inspection-general',
     evidences: 'inspection-evidences',
+    cover: 'inspection-cover',
     actions: 'inspection-actions',
 } as const;
 
@@ -40,8 +41,17 @@ export const itemInspectionShowTour: GuidedTourPageConfig = {
             target: targets.evidences,
             title: 'Evidências',
             content: [
-                'Aqui ficam as fotos e os documentos anexados na vistoria. Quando há mais de um, eles passam sozinhos e você pode usar as bolinhas abaixo para escolher.',
+                'Aqui ficam as fotos e os documentos anexados na vistoria. Use as bolinhas abaixo para navegar. Com a escolha de favorita habilitada, a rotação automática fica pausada.',
                 'Clique em uma foto para ver em tamanho maior. Os documentos abrem em uma nova aba.',
+            ],
+        },
+        {
+            id: 'inspection-cover',
+            target: targets.cover,
+            title: 'Imagem favorita e capa',
+            content: [
+                'Quem pode editar o item pode clicar na estrela sobre uma foto do carrossel para usá-la como capa no catálogo. Todos que consultam os itens podem ver essa capa.',
+                'Se já houver uma favorita, a confirmação mostra a imagem atual e a nova antes de substituir.',
             ],
         },
         actionsStep('do item'),

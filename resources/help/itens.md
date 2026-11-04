@@ -13,6 +13,8 @@ Itens são os recursos do acervo do núcleo que podem ser usados ou emprestados 
 
 A listagem, o cadastro, a clonagem, a edição e os detalhes do item, além dos detalhes de uma vistoria, têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros e a tabela da listagem, cada seção do formulário, os históricos de empréstimos e de vistorias e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
+Na listagem, o tutorial alterna temporariamente entre **Listagem** e **Catálogo** para explicar cada visão. No passo das ações do card, os botões ficam visíveis durante o destaque. Ao sair do passo ou fechar o tutorial, a visão escolhida por você volta, sem alterar a preferência salva nem a quantidade de itens por página.
+
 ## Cadastrar um item
 
 1. Acesse **Recursos e acessibilidade → Itens** e clique em **Cadastrar item**.
@@ -75,7 +77,48 @@ O patrimônio e o estado de conservação pertencem a cada exemplar físico, por
 
 A listagem mostra **Descrição**, **Tipo**, **Natureza**, **Estoque** (disponíveis / total, ou "Ilimitado" para digitais) e **Status** (Ativo ou Inativo). Um item físico sem unidades disponíveis aparece como **Esgotado**. Outras colunas, como patrimônio, conservação e público-alvo, podem ser exibidas pelo seletor de colunas.
 
+Use os botões **Listagem** e **Catálogo** para alternar a visualização. A tabela
+é o modo inicial quando ainda não há preferência salva. O modo escolhido fica
+salvo para o operador e esta tela, inclusive após sair do sistema ou usar outro
+navegador, até que ele escolha o outro modo. Os dois modos compartilham os mesmos filtros, a página atual,
+a quantidade de registros por página e as permissões de visualizar e excluir.
+No catálogo, os cards mostram a capa, o tipo, a natureza, o estoque, o status e o
+patrimônio, quando informado. As ações aparecem ao passar o mouse ou ao navegar
+pelo teclado e ficam disponíveis também em telas de toque. A troca de modo e a
+organização dos cards têm animação, respeitando a preferência de movimento reduzido.
+O filtro **Tipo** da barra principal também filtra o catálogo. A troca usa o
+efeito de ocultação, exibição e reorganização dos cards do Ubold.
+O catálogo oferece 12, 24, 48 ou 96 registros por página para completar linhas
+de duas, três ou quatro colunas. Ao entrar nesse modo, uma quantidade de tabela
+é ajustada para a opção de catálogo mais próxima. A última página pode ter menos
+cards, conforme a quantidade de itens encontrados.
+
+A capa usa a imagem favorita escolhida nas vistorias. Quando não há favorita,
+o Gnai usa a primeira foto da vistoria mais recente que tenha imagens. Sem foto,
+o card mostra um ícone. A capa pode ser vista por todos que acessam a listagem.
+
 Use os filtros **Descrição**, **Tipo**, **Natureza** e **Recurso de acessibilidade**; em mais filtros há **Status** (Ativo/Inativo) e **Disponibilidade** (com ou sem unidades disponíveis).
+
+## Escolher a imagem favorita e capa
+
+1. Abra os detalhes do item e visualize uma vistoria com fotos.
+2. No carrossel de evidências, clique na estrela **Favoritar como capa** sobre a foto desejada.
+3. Confira a imagem e confirme em **Usar como favorita e capa**.
+
+É necessário ter permissão para editar o item e consultar suas vistorias. Só é
+possível escolher imagens JPG, PNG ou WebP de uma vistoria do próprio item.
+Com essa escolha habilitada, a rotação automática do carrossel fica pausada;
+use as bolinhas para navegar pelas evidências. A estrela preenchida identifica a
+imagem favorita atual.
+
+Se já existir uma imagem favorita, o modal mostra a **Favorita e capa atual** e
+a **Nova favorita e capa**. Confirme para substituir, ou cancele para manter a
+escolha anterior. Só há uma favorita por item, mesmo que as fotos pertençam a
+vistorias diferentes. A escolha é registrada no histórico de alterações.
+
+Se outra pessoa alterar a capa antes da sua confirmação, o Gnai pede que você
+confira a imagem atual e confirme novamente. Se a evidência favorita for removida,
+o catálogo volta a usar a capa automática quando houver outra imagem disponível.
 
 ## Ver os detalhes, as vistorias e os empréstimos de um item
 

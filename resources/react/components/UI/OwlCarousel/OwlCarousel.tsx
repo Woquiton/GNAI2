@@ -11,6 +11,8 @@ interface OwlCarouselProps {
     options: OwlCarouselOptions;
     theme?: boolean;
     label: string;
+    /** Ações dos slides estáticos, encaminhadas pelo host inclusive após o Owl montar o DOM. */
+    onAction?: (action: string, id: string) => void;
 }
 
 /** React owns the host; Owl owns only its generated track, clones and drag events. */
@@ -19,9 +21,11 @@ export default function OwlCarousel({
     options,
     theme = false,
     label,
+    onAction,
 }: OwlCarouselProps): React.JSX.Element {
     const host = useRef<HTMLDivElement>(null);
     const owl = useRef<OwlCollection | undefined>(undefined);
+    const activeIndex = useRef(0);
     const markup = renderToStaticMarkup(<>{children}</>);
     useEffect(() => {
         let cancelled = false;
@@ -50,6 +54,7 @@ export default function OwlCarousel({
                 const instance = collection?.data('owl.carousel');
                 if (!instance || !host.current || !carousel) return;
                 host.current.dataset.activeIndex = String(instance.relative(instance.current()));
+                activeIndex.current = instance.relative(instance.current());
                 host.current.dataset.visibleItems = String(instance.settings.items);
                 // As cópias do loop saem do Tab e do leitor de tela; os slides originais ficam.
                 carousel.querySelectorAll<HTMLElement>('.owl-item').forEach((item) => {
@@ -69,7 +74,10 @@ export default function OwlCarousel({
                 'initialized.owl.carousel.react changed.owl.carousel.react refreshed.owl.carousel.react translated.owl.carousel.react',
                 update,
             );
-            collection.owlCarousel(options);
+            collection.owlCarousel({
+                ...options,
+                startPosition: options.startPosition ?? activeIndex.current,
+            });
             update();
             // The original engine listens to window resize; also cover sidebar/container changes.
             lastWidth = host.current.clientWidth;
@@ -101,7 +109,20 @@ export default function OwlCarousel({
             role="region"
             aria-label={label}
             onClick={(event) => {
-                if ((event.target as Element).closest('a[href="#"]')) event.preventDefault();
+                const target = event.target as Element;
+                const action = target.closest<HTMLElement>('[data-carousel-action]');
+                if (action && event.currentTarget.contains(action)) {
+                    const button = target.closest<HTMLButtonElement>('button');
+                    if (!button || button.disabled) return;
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onAction?.(
+                        action.dataset.carouselAction ?? '',
+                        action.dataset.carouselId ?? '',
+                    );
+                    return;
+                }
+                if (target.closest('a[href="#"]')) event.preventDefault();
             }}
             // Com o foco dentro do carrossel a rotação para (WCAG 2.2.2) e não tira o slide focado da tela.
             onFocus={(event) => {

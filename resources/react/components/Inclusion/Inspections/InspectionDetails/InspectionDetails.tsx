@@ -8,6 +8,7 @@ import ExpandableContent from '@/components/UI/ExpandableContent/ExpandableConte
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import InspectionEvidenceCarousel from '../InspectionEvidenceCarousel/InspectionEvidenceCarousel';
+import type { InspectionFavoriteOptions } from '../InspectionEvidenceCarousel/InspectionEvidenceCarousel.types';
 import { INSPECTION_TOUR_TARGETS } from '../inspectionTours';
 import type { InspectionDetailsData, InspectionDetailsSubject } from './InspectionDetails.types';
 import './InspectionDetails.css';
@@ -15,6 +16,7 @@ import './InspectionDetails.css';
 interface InspectionDetailsProps {
     inspection: InspectionDetailsData;
     subject: InspectionDetailsSubject;
+    favorite?: InspectionFavoriteOptions;
 }
 
 /** Data da vistoria exibida nas ações do cabeçalho da página. */
@@ -31,9 +33,10 @@ export function InspectionDateBadge({ date }: { date: string }): React.JSX.Eleme
 export default function InspectionDetails({
     inspection,
     subject,
+    favorite,
 }: InspectionDetailsProps): React.JSX.Element {
     const evidences = inspection.evidences.length ? (
-        <InspectionEvidenceCarousel evidences={inspection.evidences} />
+        <InspectionEvidenceCarousel evidences={inspection.evidences} favorite={favorite} />
     ) : (
         <div className="inspectionDetails__empty">
             <i className="fa fa-paperclip" aria-hidden="true" />

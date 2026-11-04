@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Button from '@/components/UI/Button/Button';
+import SegmentedControl from '@/components/UI/SegmentedControl/SegmentedControl';
 import Modal from '@/components/UI/Modal/Modal';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import type { AuditField, AuditRecord, AuditView } from '../Audit.types';
@@ -181,31 +182,24 @@ export default function AuditRecordModal({
                                 {auditDateTime(record.date)}
                             </time>
                         </div>
-                        <div
-                            className="auditRecord__views"
-                            role="group"
-                            aria-label="Forma de exibição"
-                            data-tour={AUDIT_TOUR_TARGETS.modalViews}
-                        >
-                            <Button
-                                size="sm"
-                                tone="inverse"
-                                className="auditRecord__view"
-                                leftIconClass="fa fa-align-left"
-                                label="Formatado"
-                                aria-pressed={view === 'plain'}
-                                onClick={() => setView('plain')}
-                            />
-                            <Button
-                                size="sm"
-                                tone="inverse"
-                                className="auditRecord__view"
-                                leftIconClass="fa fa-code"
-                                label="Log técnico"
-                                aria-pressed={view === 'technical'}
-                                onClick={() => setView('technical')}
-                            />
-                        </div>
+                        <SegmentedControl<AuditView>
+                            label="Forma de exibição"
+                            value={view}
+                            onChange={setView}
+                            tourTarget={AUDIT_TOUR_TARGETS.modalViews}
+                            options={[
+                                {
+                                    value: 'plain',
+                                    label: 'Formatado',
+                                    iconClass: 'fa fa-align-left',
+                                },
+                                {
+                                    value: 'technical',
+                                    label: 'Log técnico',
+                                    iconClass: 'fa fa-code',
+                                },
+                            ]}
+                        />
                     </div>
                     {view === 'plain' ? (
                         <PlainFields record={record} />

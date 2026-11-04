@@ -63,6 +63,7 @@ Os caminhos são relativos a `resources/react/components/`.
 | Falhas de operação | `UI/NotificationToast/operationFeedback`: `notifyOperationFailure`, `notifyConnectionFailure` |
 | Controles isolados | `Forms/`: `TextInput`, `TextArea`, `SelectField`, `ChoiceControl`, `ChoiceGroup`, `ToggleControl`, `MaskedInput`, `DatePicker`, `FileUploadButton`, `FileDropzone`, `EvidenceUpload`, `ImageUploadField`, `PersonPhotoUpload`, `FormSection`, `FormActions` |
 | Agrupamento, ações e estados | `UI/Button`, `UI/CardBox`, `UI/Panel`, `UI/InlineAlert`, `UI/AppLoader`, `UI/ErrorState`, `UI/Tooltip`, `UI/SearchInput` |
+| Alternar modos de visualização | `UI/SegmentedControl`: grupo grafite com `value`, `options` e `onChange`; usado no builder, na auditoria e em Listagem/Catálogo |
 | Navegação e tabelas | `Navigation/Tabs`, `Navigation/Pagination`, `Navigation/PageTitle`, `Navigation/PageBreadcrumb`, `Tables/Table`, `Tables/DataTable`; `Navigation/PageHeader` é só referência Ubold |
 | Estrutura compartilhada | `Navigation/AppLayout` (atribuído em `main.tsx`), `AuthLayout` com `AccountLayout`, `TeacherPortalLayout`, `TopBarPrimary`, `SidebarPrimary`, `AppFooter`, `SkipLinks`. Não repita header, footer, barras ou navegação por página |
 

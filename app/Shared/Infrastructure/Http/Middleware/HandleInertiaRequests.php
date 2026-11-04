@@ -62,7 +62,7 @@ final class HandleInertiaRequests extends Middleware
     /**
      * Rota da tela e colunas salvas pelo usuário nas tabelas dela.
      *
-     * @return array{route: string|null, columns: array<string, array<string, bool>>}
+     * @return array{route: string|null, viewMode: string, columns: array<string, array<string, bool>>}
      */
     private function tablePreferences(Request $request): array
     {
@@ -71,6 +71,8 @@ final class HandleInertiaRequests extends Middleware
 
         return [
             'route' => is_string($routeName) ? $routeName : null,
+            'viewMode' => $user instanceof User && is_string($routeName)
+                ? app(TablePreferencesQuery::class)->viewMode($user, $routeName) : 'list',
             'columns' => $user instanceof User && is_string($routeName)
                 ? app(TablePreferencesQuery::class)->columns($user, $routeName)
                 : [],

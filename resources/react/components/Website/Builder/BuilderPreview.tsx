@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import Button from '@/components/UI/Button/Button';
+import SegmentedControl from '@/components/UI/SegmentedControl/SegmentedControl';
 import SiteLayout from '@/components/Website/SiteLayout/SiteLayout';
 import SiteSections from '@/components/Website/SiteSections/SiteSections';
 import type {
@@ -354,31 +354,16 @@ export default function BuilderPreview({
                 <h2 id="website-preview-title" className="websiteBuilder__previewTitle">
                     <i className="fa fa-eye" aria-hidden="true" /> Prévia em tempo real
                 </h2>
-                <div
-                    className="websiteBuilder__devices"
-                    role="group"
-                    aria-label="Dispositivo da prévia"
-                    data-tour={WEBSITE_BUILDER_TOUR_TARGETS.devices}
-                >
-                    <Button
-                        size="sm"
-                        tone="inverse"
-                        className="websiteBuilder__device"
-                        leftIconClass="fa fa-desktop"
-                        label="Computador"
-                        aria-pressed={device === 'desktop'}
-                        onClick={() => setDevice('desktop')}
-                    />
-                    <Button
-                        size="sm"
-                        tone="inverse"
-                        className="websiteBuilder__device"
-                        leftIconClass="fa fa-mobile"
-                        label="Celular"
-                        aria-pressed={device === 'mobile'}
-                        onClick={() => setDevice('mobile')}
-                    />
-                </div>
+                <SegmentedControl<Device>
+                    label="Dispositivo da prévia"
+                    value={device}
+                    onChange={setDevice}
+                    tourTarget={WEBSITE_BUILDER_TOUR_TARGETS.devices}
+                    options={[
+                        { value: 'desktop', label: 'Computador', iconClass: 'fa fa-desktop' },
+                        { value: 'mobile', label: 'Celular', iconClass: 'fa fa-mobile' },
+                    ]}
+                />
             </div>
             <div
                 ref={viewport}

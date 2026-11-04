@@ -18,17 +18,14 @@ export default function GalleryFilter({
             {items.map((item, index) => (
                 <Fragment key={item.id}>
                     {index > 0 ? ' ' : null}
-                    <a
-                        href="#"
+                    <button
+                        type="button"
                         className={selected === item.id ? 'current' : undefined}
-                        aria-current={selected === item.id ? 'true' : undefined}
-                        onClick={(event) => {
-                            event.preventDefault();
-                            onSelect(item.id);
-                        }}
+                        aria-pressed={selected === item.id}
+                        onClick={() => onSelect(item.id)}
                     >
                         {item.label}
-                    </a>
+                    </button>
                 </Fragment>
             ))}
         </nav>

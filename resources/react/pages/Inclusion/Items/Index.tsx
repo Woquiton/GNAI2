@@ -4,9 +4,14 @@ import { emptyItemFilters } from '@/components/Inclusion/Items/Items.constants';
 import { itemBreadcrumb, itemUrls } from '@/components/Inclusion/Items/Items.routes';
 import type { ItemIndexProps, ItemSummary } from '@/components/Inclusion/Items/Items.types';
 import ItemFilters from '@/components/Inclusion/Items/List/ItemFilters';
-import ItemList from '@/components/Inclusion/Items/List/ItemList';
+import ItemResults from '@/components/Inclusion/Items/List/ItemResults';
 import { itemListTour } from '@/components/Inclusion/Items/itemTours';
-import { TableListLayout, useTableListFilters } from '@/components/Tables/TableList/TableList';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import {
+    TableListCard,
+    TableListCreateButton,
+    useTableListFilters,
+} from '@/components/Tables/TableList/TableList';
 import { useConfirmedAction } from '@/components/UI/ConfirmActionModal/useConfirmedAction';
 
 export default function InclusionItemsIndexPage({
@@ -35,16 +40,22 @@ export default function InclusionItemsIndexPage({
     }
 
     return (
-        <TableListLayout
+        <BusinessPage
             title="Itens"
             subtitle="Gestão de tecnologias assistivas e materiais pedagógicos acessíveis."
             breadcrumbItems={itemBreadcrumb()}
-            create={can.create && { href: itemUrls.create, label: 'Cadastrar item' }}
-            listLabel="Listagem de itens"
-            loading={filters.loading}
-            loadingLabel="Atualizando itens"
+            actions={
+                can.create ? (
+                    <TableListCreateButton href={itemUrls.create} ariaLabel="Cadastrar item" />
+                ) : undefined
+            }
             tour={itemListTour}
-            filters={
+        >
+            <TableListCard
+                aria-label="Listagem de itens"
+                loading={filters.loading}
+                loadingLabel="Atualizando itens"
+            >
                 <ItemFilters
                     values={filters.values}
                     itemTypeOptions={itemTypeOptions}
@@ -54,24 +65,26 @@ export default function InclusionItemsIndexPage({
                     onClear={filters.clear}
                     onSubmit={filters.submit}
                 />
-            }
-            dialogs={
-                <ItemDeleteModal
-                    item={removal.target}
+                <ItemResults
+                    itemTypeFilter={initialFilters.item_type ?? ''}
+                    onPageSizeSelect={(size) => {
+                        filters.cancelScheduled();
+                        filters.visit(filters.values, 1, { per_page: size });
+                    }}
+                    items={items}
+                    permissions={can}
+                    loading={filters.loading}
                     processing={removal.processing}
-                    onClose={removal.close}
-                    onConfirm={confirmRemoval}
+                    onDelete={removal.open}
+                    onPageSelect={filters.selectPage}
                 />
-            }
-        >
-            <ItemList
-                items={items}
-                permissions={can}
-                loading={filters.loading}
+            </TableListCard>
+            <ItemDeleteModal
+                item={removal.target}
                 processing={removal.processing}
-                onDelete={removal.open}
-                onPageSelect={filters.selectPage}
+                onClose={removal.close}
+                onConfirm={confirmRemoval}
             />
-        </TableListLayout>
+        </BusinessPage>
     );
 }

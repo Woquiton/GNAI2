@@ -5,3 +5,9 @@ export type InspectionEvidence = {
     isImage: boolean;
     iconClass: string;
 };
+
+export interface InspectionFavoriteOptions {
+    selectedId: number | null;
+    disabled?: boolean;
+    onSelect?: (evidence: InspectionEvidence) => void;
+}

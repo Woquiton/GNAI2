@@ -17,6 +17,7 @@ final class ShowItemInspectionQuery
         Item $item,
         Inspection $inspection,
     ): Inspection {
+        $item->loadMissing('coverEvidence');
         $scopedInspection = $item->inspections()
             ->with('evidences')
             ->whereKey($inspection->getKey())

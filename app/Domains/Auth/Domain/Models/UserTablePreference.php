@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Preferência de uma tela para um usuário: `per_page` na chave da rota e
+ * Preferência de uma tela para um usuário: `per_page` e `view_mode` na chave da rota e
  * `columns` (id da coluna => visível) na chave `rota#tabela`.
  */
 final class UserTablePreference extends Model
 {
     /** Quantidades oferecidas no rodapé das listagens. */
-    public const PAGE_SIZES = [10, 25, 50, 100];
+    public const PAGE_SIZES = [10, 12, 24, 25, 48, 50, 96, 100];
 
     public const DEFAULT_PAGE_SIZE = 10;
 

@@ -9,6 +9,19 @@ use App\Domains\Auth\Domain\Models\UserTablePreference;
 
 final class TablePreferencesQuery
 {
+    /** Modo escolhido pelo operador para a tela, independente dos filtros da visita. */
+    public function viewMode(User $user, string $routeName): string
+    {
+        $settings = UserTablePreference::query()
+            ->where('user_id', $user->getKey())
+            ->where('table_key', $routeName)
+            ->value('settings');
+        $settings = is_string($settings) ? json_decode($settings, true) : $settings;
+        $mode = is_array($settings) ? ($settings['view_mode'] ?? null) : null;
+
+        return in_array($mode, ['list', 'catalog'], true) ? $mode : 'list';
+    }
+
     /** Quantidade por página salva para a tela (rota), ou `null` quando não houver. */
     public function pageSize(User $user, string $routeName): ?int
     {

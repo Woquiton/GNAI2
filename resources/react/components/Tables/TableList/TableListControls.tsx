@@ -137,18 +137,24 @@ export function TableListFooter({
     disabled = false,
     paginationLabel,
     onSelect,
+    pageSizeOptions,
 }: {
     page: TableListPage;
     disabled?: boolean;
     paginationLabel: string;
     onSelect: (page: number) => void;
+    pageSizeOptions?: readonly number[];
 }): React.JSX.Element {
     return (
         <footer className="tableListFooter">
             <div className="tableListFooter__summary">
                 <span>{formatTableListRange(page)}</span>
                 {page.total > 0 ? (
-                    <TableListPageSize value={page.per_page} disabled={disabled} />
+                    <TableListPageSize
+                        value={page.per_page}
+                        disabled={disabled}
+                        pageSizeOptions={pageSizeOptions}
+                    />
                 ) : null}
             </div>
             <nav aria-label={paginationLabel} data-tour={TABLE_LIST_TOUR_TARGETS.pagination}>

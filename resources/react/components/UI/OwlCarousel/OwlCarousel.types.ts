@@ -8,6 +8,7 @@ export interface OwlCarouselOptions {
     margin?: number;
     nav?: boolean;
     dots?: boolean;
+    startPosition?: number;
     responsive?: Record<number, { items: number }>;
 }
 export interface OwlCarouselInstance {

@@ -1,0 +1,30 @@
+.segmentedControl {
+    display: inline-flex;
+    max-width: 100%;
+    --ui-focus-keyboard-color: var(--ui-color-text-inverse);
+    --ui-focus-keyboard-offset: -3px;
+    --ui-focus-keyboard-shadow: none;
+}
+.segmentedControl__button.button {
+    position: relative;
+    margin: 0;
+    border-radius: 0;
+}
+.segmentedControl__button.button + .segmentedControl__button.button {
+    margin-left: -1px;
+}
+.segmentedControl__button.button:first-child {
+    border-radius: var(--ui-radius-sm) 0 0 var(--ui-radius-sm);
+}
+.segmentedControl__button.button:last-child {
+    border-radius: 0 var(--ui-radius-sm) var(--ui-radius-sm) 0;
+}
+.segmentedControl__button.button:only-child {
+    border-radius: var(--ui-radius-sm);
+}
+.segmentedControl__button.button[aria-pressed='true'] {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+.segmentedControl__button.button:focus-visible {
+    z-index: 1;
+}

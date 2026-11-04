@@ -27,6 +27,7 @@ export interface ItemSummary {
     accessibility_features: NamedRecord[];
     created_at: string | null;
     updated_at: string | null;
+    catalog_image_url: string | null;
 }
 
 export interface ItemPaginator extends TableListPage {
@@ -139,4 +140,12 @@ export interface ItemShowProps {
 export interface ItemInspectionShowProps {
     item: { id: number; name: string };
     inspection: InspectionDetailsData;
+    cover: ItemCoverImage | null;
+    canSetCover: boolean;
+}
+
+export interface ItemCoverImage {
+    id: number;
+    name: string;
+    url: string;
 }

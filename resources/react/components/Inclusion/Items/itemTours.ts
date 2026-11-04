@@ -1,12 +1,20 @@
 import { helpUrls } from '@/components/Help/Help.routes';
-import type { TableListTourConfig } from '@/components/Tables/TableList/TableList';
+import {
+    TABLE_LIST_TOUR_GROUPS,
+    TABLE_LIST_TOUR_TARGETS,
+    tableListTourSteps,
+} from '@/components/Tables/TableList/tableListTour';
 import type {
     GuidedTourPageConfig,
     GuidedTourStep,
 } from '@/components/UI/GuidedTour/GuidedTour.types';
+import { itemListViewStep } from './List/itemListTourBridge';
 
 /** Valores de `data-tour` do formulário e da visualização do item. */
 export const ITEM_TOUR_TARGETS = {
+    viewMode: 'item-view-mode',
+    catalog: 'item-catalog',
+    catalogActions: 'item-catalog-actions',
     identification: 'item-identification',
     management: 'item-management',
     inspection: 'item-inspection',
@@ -21,8 +29,7 @@ export const ITEM_TOUR_TARGETS = {
 const targets = ITEM_TOUR_TARGETS;
 const HELP_SLUG = 'itens';
 
-export const itemListTour: TableListTourConfig = {
-    helpHref: helpUrls.show(HELP_SLUG, 'encontrar-um-item-na-listagem'),
+const listSteps = tableListTourSteps({
     filters: [
         'Em Descrição, digite o nome do item. Você também pode filtrar pelo tipo, pela natureza e pelo recurso de acessibilidade.',
         'A lista se atualiza sozinha.',
@@ -34,6 +41,63 @@ export const itemListTour: TableListTourConfig = {
     table: [
         'Cada linha é um item, com a descrição, o tipo, a natureza, o estoque e o status. O estoque mostra as unidades disponíveis e o total. Recursos digitais aparecem como Ilimitado, e um item físico sem unidades livres aparece como Esgotado.',
         'No fim da linha, o botão de olho abre o item e o botão de lixeira exclui, depois de pedir confirmação.',
+    ],
+});
+
+export const itemListTour: GuidedTourPageConfig = {
+    helpHref: helpUrls.show(HELP_SLUG, 'encontrar-um-item-na-listagem'),
+    steps: [
+        ...listSteps.filter((step) => step.group === TABLE_LIST_TOUR_GROUPS.filters),
+        {
+            id: 'view-mode',
+            target: targets.viewMode,
+            title: 'Listagem e catálogo',
+            content: [
+                'Alterne entre a tabela e os cards. Os filtros, a página atual e as ações são os mesmos nos dois modos.',
+                'O modo escolhido fica salvo na sua conta para esta tela e será usado nas próximas visitas, até você alterá-lo.',
+            ],
+        },
+        ...listSteps
+            .filter((step) => step.group === TABLE_LIST_TOUR_GROUPS.table)
+            .map((step) =>
+                itemListViewStep(
+                    step,
+                    'list',
+                    step.target === TABLE_LIST_TOUR_TARGETS.rowActions
+                        ? TABLE_LIST_TOUR_TARGETS.rowActions
+                        : targets.viewMode,
+                ),
+            ),
+        itemListViewStep(
+            {
+                id: 'catalog',
+                target: targets.catalog,
+                group: 'Catálogo',
+                title: 'Catálogo de itens',
+                content: [
+                    'Os cards mostram a capa, o tipo, o estoque e o status. A foto favorita da vistoria é a capa; sem favorita, aparece uma imagem da vistoria mais recente com fotos.',
+                    'Use o filtro Tipo da barra principal para filtrar com a animação de reorganização dos cards.',
+                ],
+            },
+            'catalog',
+            targets.viewMode,
+        ),
+        itemListViewStep(
+            {
+                id: 'catalog-actions',
+                target: targets.catalogActions,
+                group: 'Catálogo',
+                title: 'Ações de cada card',
+                content: [
+                    'O olho abre os detalhes do item. A lixeira pede confirmação antes de excluir. Os botões disponíveis dependem da sua permissão.',
+                    'No computador, as ações aparecem ao passar o mouse ou navegar pelo teclado. Durante este passo, elas ficam visíveis para você conhecer.',
+                ],
+            },
+            'catalog',
+            TABLE_LIST_TOUR_TARGETS.rowActions,
+            true,
+        ),
+        ...listSteps.filter((step) => step.group === TABLE_LIST_TOUR_GROUPS.pages),
     ],
 };
 
