@@ -9,11 +9,15 @@ use App\Domains\Audit\Domain\ValueObjects\AuditedField;
 use App\Domains\Audit\Infrastructure\Eloquent\AuditsChanges;
 use App\Domains\Inclusion\Domain\DTOs\Tags\CreateTagDTO;
 use App\Domains\Inclusion\Domain\DTOs\Tags\UpdateTagDTO;
+use App\Domains\Inclusion\Domain\Enums\TagModule;
+use App\Domains\Notifications\Domain\Models\EmailMailboxState;
 use Database\Factories\Domains\Inclusion\TagFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[UseFactory(TagFactory::class)]
 final class Tag extends Model implements Auditable
@@ -26,11 +30,21 @@ final class Tag extends Model implements Auditable
     protected $fillable = [
         'name',
         'is_active',
+        'module',
+        'color',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'module' => TagModule::class,
     ];
+
+    protected $appends = ['module_label'];
+
+    protected function moduleLabel(): Attribute
+    {
+        return Attribute::get(fn (): string => $this->module?->label() ?? 'Não informado');
+    }
 
     public static function auditType(): string
     {
@@ -47,6 +61,8 @@ final class Tag extends Model implements Auditable
         return [
             'name' => AuditedField::text('Nome da Etiqueta'),
             'is_active' => AuditedField::boolean('Etiqueta Ativa'),
+            'module' => AuditedField::enum('Módulo', TagModule::class),
+            'color' => AuditedField::text('Cor'),
         ];
     }
 
@@ -60,6 +76,8 @@ final class Tag extends Model implements Auditable
         return new self([
             'name' => self::normalizeName($data->name),
             'is_active' => $data->isActive,
+            'module' => $data->module,
+            'color' => strtolower($data->color),
         ]);
     }
 
@@ -68,6 +86,8 @@ final class Tag extends Model implements Auditable
         $this->fill([
             'name' => self::normalizeName($data->name),
             'is_active' => $data->isActive,
+            'module' => $data->module,
+            'color' => strtolower($data->color),
         ]);
     }
 
@@ -79,6 +99,11 @@ final class Tag extends Model implements Auditable
             'tag_id',
             'publication_id',
         );
+    }
+
+    public function mailboxStates(): HasMany
+    {
+        return $this->hasMany(EmailMailboxState::class, 'tag_id');
     }
 
     private static function normalizeName(string $name): string

@@ -3,7 +3,13 @@ import { useState } from 'react';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import { settingsUrls } from '../Settings.routes';
 import type { MailSettingsProps } from '../Settings.types';
-import { MAIL_PORTS, MAIL_PROVIDERS, OTHER_OPTION, portChoice, providerChoice } from './MailSettings.constants';
+import {
+    MAIL_PORTS,
+    MAIL_PROVIDERS,
+    OTHER_OPTION,
+    portChoice,
+    providerChoice,
+} from './MailSettings.constants';
 
 export interface MailSettingsFormData {
     transport: string;
@@ -16,6 +22,9 @@ export interface MailSettingsFormData {
     from_name: string;
     gmail_bounces_enabled: boolean;
     gmail_bounces_folder: string;
+    gmail_inbox_enabled: boolean;
+    gmail_inbox_folder: string;
+    gmail_folders_enabled: boolean;
 }
 
 const FAILURE_TEXT = 'Não foi possível concluir a operação. Atualize a página e tente novamente.';
@@ -32,6 +41,9 @@ function initialData(mail: MailSettingsProps['mail']): MailSettingsFormData {
         from_name: mail.from_name,
         gmail_bounces_enabled: mail.gmail_bounces_enabled,
         gmail_bounces_folder: mail.gmail_bounces_folder,
+        gmail_inbox_enabled: mail.gmail_inbox_enabled ?? false,
+        gmail_inbox_folder: mail.gmail_inbox_folder ?? 'INBOX',
+        gmail_folders_enabled: mail.gmail_folders_enabled ?? false,
     };
 }
 

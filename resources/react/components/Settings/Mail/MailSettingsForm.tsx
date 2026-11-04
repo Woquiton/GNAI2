@@ -7,6 +7,8 @@ import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import type { MailSettingsProps } from '../Settings.types';
 import MailConfigurationStatus from './MailConfigurationStatus';
 import MailBounceFields from './MailBounceFields';
+import MailInboxFields from './MailInboxFields';
+import MailFolderSyncFields from './MailFolderSyncFields';
 import MailSenderFields from './MailSenderFields';
 import MailServerFields from './MailServerFields';
 import MailTestSection from './MailTestSection';
@@ -28,6 +30,7 @@ export default function MailSettingsForm({
     encryptions,
     canUpdate,
     gmailBouncesAvailable,
+    gmailFoldersAvailable,
 }: MailSettingsProps): React.JSX.Element {
     const state = useMailSettingsForm({ mail, canUpdate });
     const { form, testForm, formRef, save } = state;
@@ -55,6 +58,8 @@ export default function MailSettingsForm({
                     />
                     <MailSenderFields form={form} />
                     <MailBounceFields form={form} available={gmailBouncesAvailable} />
+                    <MailInboxFields form={form} available={gmailBouncesAvailable} />
+                    <MailFolderSyncFields form={form} available={gmailFoldersAvailable} />
                     {canUpdate ? <MailTestSection state={state} /> : null}
                 </fieldset>
             </CardBox>

@@ -5,46 +5,71 @@ interface DropdownBehavior {
     open: boolean;
     toggle: () => void;
     close: () => void;
-    onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => void;
+    onKeyDown: (event: KeyboardEvent<HTMLElement>) => void;
 }
 
 export function useDropdownMenu(): DropdownBehavior {
     const [open, setOpen] = useState<boolean>(false);
     const host = useRef<HTMLDivElement>(null);
+    const openAtEnd = useRef(false);
 
-    function links(): HTMLAnchorElement[] {
-        return Array.from(
-            host.current?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]') ?? [],
-        );
+    function links(): HTMLElement[] {
+        return Array.from(host.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []);
     }
 
     useEffect(() => {
-        if (!open) return;
+        if (!open) {
+            return;
+        }
         function outside(event: MouseEvent): void {
-            if (!host.current?.contains(event.target as Node)) setOpen(false);
+            if (!host.current?.contains(event.target as Node)) {
+                setOpen(false);
+            }
         }
         document.addEventListener('mousedown', outside);
-        return () => document.removeEventListener('mousedown', outside);
+        const frame = window.requestAnimationFrame(() => {
+            const items = host.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
+            if (items?.length) {
+                items[openAtEnd.current ? items.length - 1 : 0].focus();
+            }
+        });
+        return () => {
+            window.cancelAnimationFrame(frame);
+            document.removeEventListener('mousedown', outside);
+        };
     }, [open]);
 
-    function onKeyDown(event: KeyboardEvent<HTMLDivElement>): void {
+    function onKeyDown(event: KeyboardEvent<HTMLElement>): void {
+        const active = document.activeElement as HTMLElement | null;
+        if (event.key === ' ' && active?.getAttribute('role') === 'menuitem') {
+            event.preventDefault();
+            event.stopPropagation();
+            active.click();
+            setOpen(false);
+            return;
+        }
         if (event.key === 'Escape') {
-            if (!open) return;
+            if (!open) {
+                return;
+            }
             event.preventDefault();
             event.stopPropagation();
             setOpen(false);
             host.current?.querySelector<HTMLElement>('[aria-haspopup="menu"]')?.focus();
             return;
         }
-        if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== ' ') return;
+        if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== ' ') {
+            return;
+        }
         event.preventDefault();
         event.stopPropagation();
         if (!open) {
+            openAtEnd.current = event.key === 'ArrowUp';
             setOpen(true);
             return;
         }
         const items = links();
-        const current = items.indexOf(document.activeElement as HTMLAnchorElement);
+        const current = active ? items.indexOf(active) : -1;
         const next =
             event.key === 'ArrowDown'
                 ? Math.min(current + 1, items.length - 1)
@@ -57,7 +82,10 @@ export function useDropdownMenu(): DropdownBehavior {
     return {
         host,
         open,
-        toggle: () => setOpen((value) => !value),
+        toggle: () => {
+            openAtEnd.current = false;
+            setOpen((value) => !value);
+        },
         close: () => setOpen(false),
         onKeyDown,
     };

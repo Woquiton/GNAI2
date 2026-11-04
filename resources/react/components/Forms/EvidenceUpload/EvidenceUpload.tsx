@@ -10,7 +10,9 @@ const defaultAccept =
 function EvidenceFile({ file, onRemove }: { file: File; onRemove: () => void }): React.JSX.Element {
     const [previewUrl, setPreviewUrl] = useState('');
     useEffect(() => {
-        if (!file.type.startsWith('image/')) return;
+        if (!file.type.startsWith('image/')) {
+            return;
+        }
         const url = URL.createObjectURL(file);
         setPreviewUrl(url);
         return () => URL.revokeObjectURL(url);
@@ -48,6 +50,8 @@ export default function EvidenceUpload({
     maxFiles = 10,
     maxFileSizeMb = 20,
     accept = defaultAccept,
+    label = 'Evidências',
+    maxFilesMessage,
 }: {
     id: string;
     name: string;
@@ -58,14 +62,20 @@ export default function EvidenceUpload({
     maxFiles?: number;
     maxFileSizeMb?: number;
     accept?: string;
+    label?: string;
+    maxFilesMessage?: string;
 }): React.JSX.Element {
     const [localError, setLocalError] = useState('');
     const message = error ?? localError;
     function add(selected: FileList | null): void {
-        if (!selected) return;
+        if (!selected) {
+            return;
+        }
         const next = [...files, ...Array.from(selected)];
         if (next.length > maxFiles) {
-            setLocalError(`Uma inspeção pode possuir no máximo ${maxFiles} evidências.`);
+            setLocalError(
+                maxFilesMessage ?? `Uma inspeção pode possuir no máximo ${maxFiles} evidências.`,
+            );
             return;
         }
         const oversized = next.find((file) => file.size > maxFileSizeMb * 1024 * 1024);
@@ -81,10 +91,10 @@ export default function EvidenceUpload({
     return (
         <FormField
             id={id}
-            label="Evidências"
+            label={label}
             error={message}
             hint={`Até ${maxFiles} arquivos. Imagens, PDF, documentos, planilhas, textos e apresentações; máximo de ${maxFileSizeMb} MB por arquivo.`}
-            hintLabel="Informações sobre evidências"
+            hintLabel={`Informações sobre ${label.toLowerCase()}`}
         >
             <FileUploadButton
                 id={id}

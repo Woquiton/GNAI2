@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Notifications\Application\Actions\Email;
 
-use App\Domains\Notifications\Infrastructure\Mail\GmailBounceMailbox;
+use App\Domains\Notifications\Infrastructure\Mail\GmailMailbox;
 use App\Domains\Settings\Application\Queries\GetMailSettingsQuery;
 use Illuminate\Support\Facades\Cache;
 
@@ -12,7 +12,7 @@ final readonly class ProcessGmailBouncesAction
 {
     public function __construct(
         private GetMailSettingsQuery $mailSettings,
-        private GmailBounceMailbox $mailbox,
+        private GmailMailbox $mailbox,
         private RecordEmailBounceAction $recordBounce,
     ) {}
 
@@ -35,7 +35,7 @@ final readonly class ProcessGmailBouncesAction
                 $lastUid = (int) Cache::get($cursorKey, 0);
                 $days = max(1, (int) config('email_bounces.lookback_days', 30));
                 $batchSize = max(1, (int) config('email_bounces.batch_size', 100));
-                $uids = $this->mailbox->reportUids($connection, $lastUid, $days);
+                $uids = $this->mailbox->messageUids($connection, $lastUid, $days);
                 $deadline = microtime(true) + 45;
                 $count = 0;
 

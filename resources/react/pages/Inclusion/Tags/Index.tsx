@@ -13,6 +13,7 @@ export default function InclusionTagsIndexPage({
     tags,
     filters: initialFilters,
     can,
+    modules,
 }: TagIndexProps): React.JSX.Element {
     const errors = usePage().props.errors as Record<string, string | undefined>;
     const filters = useTableListFilters({
@@ -35,7 +36,7 @@ export default function InclusionTagsIndexPage({
     return (
         <TableListLayout
             title="Etiquetas"
-            subtitle="Gerencie as etiquetas disponíveis para classificar as publicações."
+            subtitle="Gerencie as etiquetas de publicações e os marcadores da Inbox."
             breadcrumbItems={tagBreadcrumb()}
             tour={tagListTour}
             create={can.create && { href: tagUrls.create, label: 'Cadastrar etiqueta' }}
@@ -45,6 +46,7 @@ export default function InclusionTagsIndexPage({
             filters={
                 <TagFilters
                     values={filters.values}
+                    modules={modules}
                     errors={errors}
                     onUpdate={filters.update}
                     onClear={filters.clear}

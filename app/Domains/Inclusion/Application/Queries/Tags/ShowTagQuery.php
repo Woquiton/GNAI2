@@ -10,6 +10,6 @@ final class ShowTagQuery
 {
     public function execute(Tag $tag): Tag
     {
-        return $tag->loadCount('publications');
+        return $tag->loadCount(['publications', 'mailboxStates']);
     }
 }

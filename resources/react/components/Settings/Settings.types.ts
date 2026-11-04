@@ -16,11 +16,15 @@ export interface MailSettingsProps {
         last_tested_at: string | null;
         gmail_bounces_enabled: boolean;
         gmail_bounces_folder: string;
+        gmail_inbox_enabled: boolean;
+        gmail_inbox_folder: string;
+        gmail_folders_enabled: boolean;
     };
     transports: SettingsOptions;
     encryptions: SettingsOptions;
     canUpdate: boolean;
     gmailBouncesAvailable: boolean;
+    gmailFoldersAvailable: boolean;
 }
 
 export interface BackupSettingsValues {

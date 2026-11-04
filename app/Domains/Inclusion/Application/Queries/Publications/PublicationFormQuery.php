@@ -7,6 +7,7 @@ namespace App\Domains\Inclusion\Application\Queries\Publications;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Inclusion\Domain\Enums\ProfessionalStatus;
 use App\Domains\Inclusion\Domain\Enums\PublicationType;
+use App\Domains\Inclusion\Domain\Enums\TagModule;
 use App\Domains\Inclusion\Domain\Models\Professional;
 use App\Domains\Inclusion\Domain\Models\Tag;
 
@@ -51,6 +52,7 @@ final class PublicationFormQuery
             ->all();
 
         $tags = Tag::query()
+            ->where('module', TagModule::PUBLICATIONS->value)
             ->where(function ($query) use ($selectedTagIds): void {
                 $query->where('is_active', true)
                     ->orWhereIn('id', $selectedTagIds);

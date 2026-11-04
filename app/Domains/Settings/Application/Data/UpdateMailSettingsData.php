@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Settings\Application\Data;
 
 use App\Domains\Settings\Application\Queries\GetMailSettingsQuery;
-use App\Domains\Settings\Application\Rules\GmailBounceMonitoringAvailable;
+use App\Domains\Settings\Application\Rules\GmailMailboxAvailable;
 use App\Domains\Settings\Domain\Enums\MailEncryption;
 use App\Domains\Settings\Domain\Enums\MailTransport;
 use Illuminate\Validation\Rule;
@@ -27,11 +27,14 @@ final class UpdateMailSettingsData extends Data
         public ?string $password = null,
         public bool $gmailBouncesEnabled = false,
         public string $gmailBouncesFolder = 'INBOX',
+        public bool $gmailInboxEnabled = false,
+        public string $gmailInboxFolder = 'INBOX',
+        public bool $gmailFoldersEnabled = false,
     ) {}
 
     public static function prepareForPipeline(array $properties): array
     {
-        foreach (['host', 'username', 'from_address', 'from_name', 'gmail_bounces_folder'] as $field) {
+        foreach (['host', 'username', 'from_address', 'from_name', 'gmail_bounces_folder', 'gmail_inbox_folder'] as $field) {
             if (array_key_exists($field, $properties) && is_string($properties[$field])) {
                 $properties[$field] = trim($properties[$field]) === '' ? null : trim($properties[$field]);
             }
@@ -40,6 +43,10 @@ final class UpdateMailSettingsData extends Data
         if (! filter_var($properties['gmail_bounces_enabled'] ?? false, FILTER_VALIDATE_BOOLEAN)
             && ($properties['gmail_bounces_folder'] ?? null) === null) {
             $properties['gmail_bounces_folder'] = 'INBOX';
+        }
+        if (! filter_var($properties['gmail_inbox_enabled'] ?? false, FILTER_VALIDATE_BOOLEAN)
+            && ($properties['gmail_inbox_folder'] ?? null) === null) {
+            $properties['gmail_inbox_folder'] = 'INBOX';
         }
 
         if (array_key_exists('password', $properties) && $properties['password'] === '') {
@@ -65,7 +72,7 @@ final class UpdateMailSettingsData extends Data
                 'required_if:transport,smtp',
                 'string',
                 'max:255',
-                Rule::when(request()->boolean('gmail_bounces_enabled'), ['email:rfc']),
+                Rule::when(request()->boolean('gmail_bounces_enabled') || request()->boolean('gmail_inbox_enabled') || request()->boolean('gmail_folders_enabled'), ['email:rfc']),
             ],
             'password' => [
                 'nullable',
@@ -84,9 +91,12 @@ final class UpdateMailSettingsData extends Data
             'gmail_bounces_enabled' => [
                 'sometimes',
                 'boolean',
-                new GmailBounceMonitoringAvailable,
+                new GmailMailboxAvailable,
             ],
             'gmail_bounces_folder' => ['sometimes', 'required', 'string', 'max:255', 'not_regex:/[{}\r\n]/'],
+            'gmail_inbox_enabled' => ['sometimes', 'boolean', new GmailMailboxAvailable],
+            'gmail_folders_enabled' => ['sometimes', 'boolean', new GmailMailboxAvailable],
+            'gmail_inbox_folder' => ['sometimes', 'required', 'string', 'max:255', 'not_regex:/[{}\r\n]/'],
         ];
     }
 
@@ -116,7 +126,12 @@ final class UpdateMailSettingsData extends Data
             'gmail_bounces_folder.string' => 'Informe uma pasta válida do Gmail.',
             'gmail_bounces_folder.max' => 'A pasta do Gmail não pode ultrapassar 255 caracteres.',
             'gmail_bounces_folder.not_regex' => 'A pasta do Gmail não pode conter chaves ou quebras de linha.',
-            'username.email' => 'Informe o endereço completo da conta Gmail para ler as rejeições.',
+            'gmail_inbox_enabled.boolean' => 'Informe se deseja receber respostas do Gmail.',
+            'gmail_folders_enabled.boolean' => 'Informe se deseja sincronizar pastas com o Gmail.',
+            'gmail_inbox_folder.required' => 'Informe a pasta do Gmail que recebe as respostas.',
+            'gmail_inbox_folder.max' => 'A pasta do Gmail não pode ultrapassar 255 caracteres.',
+            'gmail_inbox_folder.not_regex' => 'A pasta do Gmail não pode conter chaves ou quebras de linha.',
+            'username.email' => 'Informe o endereço completo da conta Gmail para ler os e-mails.',
         ];
     }
 }

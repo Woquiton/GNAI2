@@ -4,7 +4,11 @@ import type { TagEditProps } from '@/components/Inclusion/Tags/Tags.types';
 import { tagEditTour } from '@/components/Inclusion/Tags/tagTours';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 
-export default function InclusionTagsEditPage({ tag, can }: TagEditProps): React.JSX.Element {
+export default function InclusionTagsEditPage({
+    tag,
+    can,
+    modules,
+}: TagEditProps): React.JSX.Element {
     return (
         <BusinessPage
             title="Editar Etiqueta"
@@ -12,7 +16,7 @@ export default function InclusionTagsEditPage({ tag, can }: TagEditProps): React
             breadcrumbItems={tagBreadcrumb({ tag, current: 'Editar' })}
             tour={tagEditTour}
         >
-            <TagForm key={tag.id} tag={tag} canSubmit={can.update} />
+            <TagForm key={tag.id} tag={tag} canSubmit={can.update} modules={modules} />
         </BusinessPage>
     );
 }

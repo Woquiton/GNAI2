@@ -28,16 +28,36 @@ A exclusão não tem bloqueio. Se o recurso ainda descreve itens existentes, pre
 
 ## Etiquetas
 
-Classificam as publicações (antiga agenda institucional), por exemplo "Acessibilidade", "Eventos" ou "Editais". Elas aparecem para seleção no cadastro de publicações. A página de detalhes mostra as **Publicações Vinculadas**.
+Organizam as **Publicações** e os marcadores da **Inbox**. Cada etiqueta tem nome,
+módulo, cor e situação. Uma etiqueta de Publicações aparece no cadastro de
+publicações; uma etiqueta de Inbox aparece como marcador na lateral e no menu
+**Aplicar marcador** dos e-mails. Os módulos têm listas independentes.
 
 Para cadastrar:
 
 1. Acesse **Gestão do núcleo → Cadastros → Etiquetas** e clique em **Cadastrar etiqueta**.
-2. Preencha **Nome da Etiqueta** (obrigatório, até 100 caracteres e sem repetir outra já cadastrada).
-3. Deixe **Etiqueta Ativa** marcada para que ela fique disponível para seleção.
-4. Clique em **Cadastrar**.
+2. Preencha **Nome da Etiqueta** (obrigatório, até 100 caracteres e sem repetir outra do mesmo módulo).
+3. Em **Módulo**, selecione **Publicações** ou **Inbox**.
+4. Em **Cor**, abra a paleta pelo conta-gotas ou digite o código no formato **#RRGGBB**.
+5. Deixe **Etiqueta Ativa** marcada para disponibilizar novas aplicações no módulo escolhido.
+6. Clique em **Cadastrar**.
 
-A exclusão não tem bloqueio. Para deixar de usar uma etiqueta sem apagá-la, desmarque **Etiqueta Ativa**.
+**Importante**, **Trabalho** e **Pessoal** já vêm cadastradas para a Inbox. Os
+marcadores antigos foram vinculados a essas etiquetas, preservando a organização
+existente. Você pode alterar seus nomes, cores e situação, ou criar outras etiquetas.
+
+A listagem pode ser filtrada por nome, módulo e situação. Os detalhes mostram o
+módulo, a cor, a situação e a quantidade de vínculos em publicações ou aplicações
+na Inbox. Cada operador continua escolhendo seus próprios marcadores nos e-mails.
+
+Para impedir novas aplicações sem apagar vínculos existentes, desative a etiqueta.
+Na Inbox, uma etiqueta inativa já aplicada permanece identificada como **Inativa**
+na lateral e pode ser consultada ou removida, mas não aplicada novamente. No cadastro
+de publicações, etiquetas inativas já vinculadas continuam disponíveis na edição.
+
+Uma etiqueta em uso não pode mudar de módulo. Nesse caso, crie outra etiqueta no
+novo módulo. A exclusão retira a etiqueta dos vínculos, sem apagar publicações,
+e-mails ou a organização restante da Inbox.
 
 ## Categorias de Barreiras
 

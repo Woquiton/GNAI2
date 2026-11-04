@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Infrastructure\Reporting;
 
+use App\Domains\Inclusion\Domain\Enums\TagModule;
 use App\Domains\Inclusion\Domain\Models\Tag;
 use App\Domains\Reporting\Domain\Enums\ReportColumnType;
 use App\Domains\Reporting\Infrastructure\Sources\EloquentReportSource;
@@ -29,12 +30,14 @@ final class TagsReportSource extends EloquentReportSource
     {
         return [
             'name' => ['label' => 'Nome'],
+            'module' => ['label' => 'Módulo', 'type' => ReportColumnType::SELECT, 'options' => TagModule::options()],
+            'color' => ['label' => 'Cor'],
             'is_active' => ['label' => 'Ativo', 'type' => ReportColumnType::BOOLEAN],
         ];
     }
 
     protected function filterable(): array
     {
-        return ['name', 'is_active'];
+        return ['name', 'module', 'is_active'];
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Inclusion\Application\Data\Publications;
 
 use App\Domains\Inclusion\Domain\Enums\PublicationType;
+use App\Domains\Inclusion\Domain\Enums\TagModule;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -89,7 +90,7 @@ final class UpdatePublicationData extends Data
             'speakers.*.name' => ['nullable', 'string', 'max:150'],
             'speakers.*.participation' => ['nullable', 'string', 'max:100'],
             'tag_ids' => ['sometimes', 'array'],
-            'tag_ids.*' => ['integer', 'distinct', Rule::exists('tags', 'id')],
+            'tag_ids.*' => ['integer', 'distinct', Rule::exists('tags', 'id')->where('module', TagModule::PUBLICATIONS->value)],
             'link_url' => ['nullable', 'url:http,https', 'max:500'],
             'link_label' => ['nullable', 'string', 'max:80'],
             'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],

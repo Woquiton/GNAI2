@@ -9,6 +9,8 @@ import type {
 export const TAG_TOUR_TARGETS = {
     name: 'tag-name',
     active: 'tag-active',
+    module: 'tag-module',
+    color: 'tag-color',
     formActions: 'tag-form-actions',
     details: 'tag-details',
     detailsActions: 'tag-details-actions',
@@ -21,10 +23,10 @@ export const tagListTour: TableListTourConfig = {
     helpHref: HELP_HREF,
     filters: [
         'Digite o nome da etiqueta para encontrá-la. A lista se atualiza sozinha enquanto você digita.',
-        'Em Status, você pode ver só as etiquetas ativas ou só as inativas.',
+        'Em Módulo, escolha Publicações ou Inbox. Em Status, consulte etiquetas ativas ou inativas.',
     ],
     table: [
-        'Cada linha é uma etiqueta, com o nome e o status. As etiquetas ativas podem ser escolhidas no cadastro de publicações.',
+        'Cada linha mostra nome, módulo, cor e situação. Etiquetas ativas de Publicações classificam publicações; etiquetas ativas de Inbox são os marcadores dos e-mails.',
         'Use o botão de olho, no fim da linha, para abrir a etiqueta.',
     ],
 };
@@ -42,8 +44,24 @@ function tagFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
                 mode === 'create'
                     ? 'Digite o nome da etiqueta, como Acessibilidade, Eventos ou Editais. Ele pode ter até 100 caracteres.'
                     : 'Você pode corrigir o nome da etiqueta. Ele pode ter até 100 caracteres.',
-                'O asterisco (*) mostra que o campo é obrigatório. O nome não pode repetir o de outra etiqueta.',
+                'O asterisco (*) mostra que o campo é obrigatório. O nome não pode repetir o de outra etiqueta no mesmo módulo.',
             ],
+        },
+        {
+            id: 'tag-module',
+            target: targets.module,
+            group,
+            title: 'Módulo',
+            content:
+                'Escolha Publicações ou Inbox. O módulo define onde a etiqueta aparece para seleção. Etiquetas já aplicadas não podem trocar de módulo; crie outra etiqueta para o novo módulo.',
+        },
+        {
+            id: 'tag-color',
+            target: targets.color,
+            group,
+            title: 'Cor',
+            content:
+                'Abra a paleta pelo conta-gotas ou digite uma cor no formato #RRGGBB. A cor identifica o marcador na lateral e nas mensagens da Inbox.',
         },
         {
             id: 'tag-active',
@@ -51,7 +69,7 @@ function tagFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
             group,
             title: 'Etiqueta Ativa',
             content: [
-                'Com esta opção ligada, a etiqueta aparece para escolha no cadastro de publicações.',
+                'Com esta opção ligada, a etiqueta fica disponível para novas aplicações no módulo escolhido. Desativar preserva os vínculos existentes.',
                 mode === 'create'
                     ? 'Ela já vem ligada. Desligue se ainda não quiser usar a etiqueta.'
                     : 'Para deixar de usar a etiqueta sem apagá-la, desligue esta opção.',
@@ -94,8 +112,8 @@ export const tagShowTour: GuidedTourPageConfig = {
             target: targets.details,
             title: 'Identificação',
             content: [
-                'Mostra o nome da etiqueta e se ela está ativa.',
-                'Em Publicações Vinculadas, você vê quantas publicações usam esta etiqueta.',
+                'Mostra o nome, o módulo, a cor e a situação da etiqueta.',
+                'A contagem mostra publicações vinculadas ou aplicações na Inbox, conforme o módulo.',
             ],
         },
         {
@@ -103,7 +121,7 @@ export const tagShowTour: GuidedTourPageConfig = {
             target: targets.detailsActions,
             title: 'Ações da etiqueta',
             content: [
-                'Voltar leva para a lista de etiquetas. Editar abre o formulário para mudar o nome ou o status.',
+                'Voltar leva para a lista de etiquetas. Editar abre o formulário para mudar nome, cor e situação. O módulo só pode mudar se a etiqueta ainda não estiver em uso.',
                 'Excluir apaga a etiqueta depois de pedir confirmação. Se quiser só parar de usar, prefira desligar Etiqueta Ativa na edição. Alguns botões só aparecem para quem tem permissão.',
             ],
         },

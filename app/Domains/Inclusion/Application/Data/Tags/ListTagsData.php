@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Inclusion\Application\Data\Tags;
 
+use App\Domains\Inclusion\Domain\Enums\TagModule;
+use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -15,6 +17,7 @@ final class ListTagsData extends Data
         public ?string $name = null,
         public ?bool $isActive = null,
         public int $perPage = 10,
+        public ?string $module = null,
     ) {}
 
     public static function rules(): array
@@ -23,6 +26,7 @@ final class ListTagsData extends Data
             'name' => ['nullable', 'string', 'max:100'],
             'is_active' => ['nullable', 'boolean'],
             'per_page' => ['integer', 'min:1', 'max:100'],
+            'module' => ['nullable', Rule::enum(TagModule::class)],
         ];
     }
 }

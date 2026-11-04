@@ -12,6 +12,7 @@ use App\Domains\Inclusion\Domain\Concerns\BelongsToOriginSemester;
 use App\Domains\Inclusion\Domain\DTOs\Publications\CreatePublicationDTO;
 use App\Domains\Inclusion\Domain\DTOs\Publications\UpdatePublicationDTO;
 use App\Domains\Inclusion\Domain\Enums\PublicationType;
+use App\Domains\Inclusion\Domain\Enums\TagModule;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidPublication;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -316,6 +317,7 @@ class Publication extends Model implements Auditable
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'publication_tag', 'publication_id', 'tag_id')
+            ->where('tags.module', TagModule::PUBLICATIONS->value)
             ->orderBy('tags.name');
     }
 

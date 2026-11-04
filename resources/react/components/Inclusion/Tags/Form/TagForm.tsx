@@ -1,5 +1,9 @@
 import FormActions from '@/components/Forms/FormActions/FormActions';
-import { TextInputField } from '@/components/Forms/FormFields/FormFields';
+import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
+import ColorPicker from '@/components/Forms/ColorPicker/ColorPicker';
+import FormField from '@/components/Forms/FormField/FormField';
+import { fieldDescribedBy } from '@/components/Forms/FormField/fieldDescription';
+import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import FormGrid, { FormGridWide } from '@/components/Forms/FormGrid/FormGrid';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
 import FormSection from '@/components/Forms/FormSection/FormSection';
@@ -15,6 +19,7 @@ import { useTagForm } from './useTagForm';
 interface TagFormProps {
     tag?: TagRecord;
     canSubmit: boolean;
+    modules: Record<string, string>;
 }
 
 function submissionStatus(processing: boolean, editing: boolean): string | undefined {
@@ -25,8 +30,8 @@ function submissionStatus(processing: boolean, editing: boolean): string | undef
     return editing ? 'Salvando alterações…' : 'Cadastrando etiqueta…';
 }
 
-/** Cadastro e edição de etiquetas das publicações. */
-export default function TagForm({ tag, canSubmit }: TagFormProps): React.JSX.Element {
+/** Cadastro e edição de etiquetas por módulo. */
+export default function TagForm({ tag, canSubmit, modules }: TagFormProps): React.JSX.Element {
     const { form, errors, formRef, save } = useTagForm({ tag, canSubmit });
     const editing = Boolean(tag);
     const submitLabel = editing ? 'Salvar' : 'Cadastrar';
@@ -65,6 +70,41 @@ export default function TagForm({ tag, canSubmit }: TagFormProps): React.JSX.Ele
                                     />
                                 </div>
                             </FormGridWide>
+                            <div data-tour={TAG_TOUR_TARGETS.module}>
+                                <SelectInputField
+                                    id="tag-module"
+                                    name="module"
+                                    label="Módulo"
+                                    required
+                                    options={optionsFromRecord(modules)}
+                                    value={form.data.module}
+                                    error={errors.module}
+                                    onChange={(value) => form.setData('module', value)}
+                                />
+                            </div>
+                            <div data-tour={TAG_TOUR_TARGETS.color}>
+                                <FormField
+                                    id="tag-color"
+                                    label="Cor"
+                                    requiredIndicator
+                                    error={errors.color}
+                                    hint="Escolha na paleta ou informe uma cor no formato #RRGGBB."
+                                    hintLabel="Sobre a cor da etiqueta"
+                                >
+                                    <ColorPicker
+                                        id="tag-color"
+                                        name="color"
+                                        label="Cor da etiqueta"
+                                        value={form.data.color}
+                                        disabled={form.processing}
+                                        invalid={Boolean(errors.color)}
+                                        describedBy={fieldDescribedBy('tag-color', {
+                                            error: errors.color,
+                                        })}
+                                        onChange={(value) => form.setData('color', value)}
+                                    />
+                                </FormField>
+                            </div>
                             <div data-tour={TAG_TOUR_TARGETS.active}>
                                 <ToggleControl
                                     id="tag-active"

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Application\Rules;
 
+use App\Domains\Notifications\Infrastructure\Mail\GmailImapClient;
 use App\Domains\Settings\Domain\Enums\MailTransport;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-final class GmailBounceMonitoringAvailable implements DataAwareRule, ValidationRule
+final class GmailMailboxAvailable implements DataAwareRule, ValidationRule
 {
     private array $data = [];
 
@@ -29,11 +30,18 @@ final class GmailBounceMonitoringAvailable implements DataAwareRule, ValidationR
         $host = $this->data['host'] ?? null;
         if (($this->data['transport'] ?? null) !== MailTransport::SMTP->value || ! is_string($host)
             || strtolower(trim($host)) !== 'smtp.gmail.com') {
-            $fail('O monitoramento de rejeições exige o servidor Gmail / Google Workspace.');
+            $fail('A leitura de e-mails exige o servidor Gmail / Google Workspace.');
 
             return;
         }
 
+        if ($attribute === 'gmail_folders_enabled') {
+            if (! GmailImapClient::available()) {
+                $fail('O servidor precisa de PHP cURL com suporte a IMAPS para sincronizar as pastas.');
+            }
+
+            return;
+        }
         if (! extension_loaded('imap')) {
             $fail('O servidor precisa da extensão PHP IMAP para habilitar o monitoramento. Solicite ao responsável pela instalação.');
         }

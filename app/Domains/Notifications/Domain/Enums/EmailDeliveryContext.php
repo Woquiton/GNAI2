@@ -12,6 +12,7 @@ enum EmailDeliveryContext: string
     case TEACHER = 'teacher';
     case USER = 'user';
     case SETTINGS = 'settings';
+    case MAILBOX = 'mailbox';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum EmailDeliveryContext: string
             self::TEACHER => 'Acesso de professores',
             self::USER => 'Contas de usuário',
             self::SETTINGS => 'Configurações',
+            self::MAILBOX => 'Inbox',
         };
     }
 }

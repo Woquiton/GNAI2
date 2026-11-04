@@ -36,6 +36,9 @@ final readonly class UpdateMailSettingsAction
             fromName: $data->fromName,
             gmailBouncesEnabled: $data->gmailBouncesEnabled,
             gmailBouncesFolder: $data->gmailBouncesFolder,
+            gmailInboxEnabled: $data->gmailInboxEnabled,
+            gmailInboxFolder: $data->gmailInboxFolder,
+            gmailFoldersEnabled: $data->gmailFoldersEnabled,
         );
 
         Setting::store(SettingCategory::MAIL, [

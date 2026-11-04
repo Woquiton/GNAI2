@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Notifications\Application\Data\Email;
 
+use App\Domains\Inclusion\Domain\Enums\TagModule;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryContext;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryStatus;
+use App\Domains\Notifications\Domain\Enums\EmailMailboxFolder;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
@@ -22,6 +24,8 @@ final class ListEmailDeliveriesData extends Data
         public ?string $dateFrom = null,
         public ?string $dateTo = null,
         public int $perPage = 10,
+        public string $folder = 'all',
+        public ?int $label = null,
     ) {}
 
     public static function prepareForPipeline(array $properties): array
@@ -47,6 +51,8 @@ final class ListEmailDeliveriesData extends Data
                 Rule::when(filled($context->payload['date_from'] ?? null), ['after_or_equal:date_from']),
             ],
             'per_page' => ['integer', 'min:1', 'max:100'],
+            'folder' => ['sometimes', 'required', Rule::enum(EmailMailboxFolder::class)],
+            'label' => ['nullable', 'integer', Rule::exists('tags', 'id')->where('module', TagModule::INBOX->value)],
         ];
     }
 
@@ -56,6 +62,8 @@ final class ListEmailDeliveriesData extends Data
             'search.max' => 'Informe um assunto com até 255 caracteres.',
             'status.enum' => 'Selecione um status de envio válido.',
             'context.enum' => 'Selecione uma origem válida.',
+            'label.integer' => 'Selecione um marcador válido.',
+            'label.exists' => 'Selecione uma etiqueta do módulo Inbox.',
             'date_from.date_format' => 'Informe uma data inicial válida.',
             'date_to.date_format' => 'Informe uma data final válida.',
             'date_to.after_or_equal' => 'A data final deve ser igual ou posterior à data inicial.',
@@ -73,6 +81,8 @@ final class ListEmailDeliveriesData extends Data
             'context' => $this->context ?? '',
             'date_from' => $this->dateFrom ?? '',
             'date_to' => $this->dateTo ?? '',
+            'folder' => $this->folder,
+            'label' => $this->label !== null ? (string) $this->label : '',
         ];
     }
 }

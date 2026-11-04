@@ -9,28 +9,31 @@ use App\Domains\Notifications\Domain\Exceptions\EmailMailboxUnavailable;
 use App\Domains\Settings\Domain\ValueObjects\MailSettings;
 use IMAP\Connection;
 
-final readonly class GmailBounceMailbox
+final readonly class GmailMailbox
 {
-    public function __construct(private DeliveryStatusReportParser $parser) {}
+    public function __construct(
+        private DeliveryStatusReportParser $parser,
+        private EmailHeaderParser $headers,
+    ) {}
 
-    public function open(MailSettings $settings): Connection
+    public function open(MailSettings $settings, ?string $folder = null): Connection
     {
         if (! extension_loaded('imap')) {
-            throw new EmailMailboxUnavailable('A leitura de rejeições do Gmail requer a extensão PHP IMAP.');
+            throw new EmailMailboxUnavailable('A leitura de e-mails do Gmail requer a extensão PHP IMAP.');
         }
         $username = $settings->username;
         $password = $settings->password;
-        $folder = $settings->gmailBouncesFolder;
+        $folder ??= $settings->gmailBouncesFolder;
         if (! is_string($username) || ! filter_var($username, FILTER_VALIDATE_EMAIL)
             || ! is_string($password) || $password === '' || $folder === ''
             || preg_match('/[{}\r\n]/', $folder)) {
-            throw new EmailMailboxUnavailable('Configure a conta Gmail, a senha de app e uma pasta IMAP válida para ler as rejeições.');
+            throw new EmailMailboxUnavailable('Configure a conta Gmail, a senha de app e uma pasta IMAP válida para ler os e-mails.');
         }
 
         imap_timeout(IMAP_OPENTIMEOUT, 15);
         imap_timeout(IMAP_READTIMEOUT, 20);
         // Host fixo e certificado verificado. Nunca alterar flags ou apagar mensagens da caixa.
-        $connection = @imap_open('{imap.gmail.com:993/imap/ssl}'.$folder, $username, $password, OP_READONLY, 1, [
+        $connection = @imap_open($this->mailboxName($folder), $username, $password, OP_READONLY, 1, [
             'DISABLE_AUTHENTICATOR' => 'GSSAPI',
         ]);
         if ($connection === false) {
@@ -44,7 +47,7 @@ final readonly class GmailBounceMailbox
 
     public function uidValidity(Connection $connection, string $folder): int
     {
-        $status = imap_status($connection, '{imap.gmail.com:993/imap/ssl}'.$folder, SA_UIDVALIDITY);
+        $status = imap_status($connection, $this->mailboxName($folder), SA_UIDVALIDITY);
         if ($status === false) {
             throw new EmailMailboxUnavailable('Não foi possível identificar a pasta IMAP do Gmail.');
         }
@@ -53,18 +56,29 @@ final readonly class GmailBounceMailbox
     }
 
     /** @return list<int> */
-    public function reportUids(Connection $connection, int $afterUid, int $lookbackDays): array
+    public function messageUids(Connection $connection, int $afterUid, int $lookbackDays): array
     {
         $since = now()->subDays($lookbackDays)->format('d-M-Y');
-        $criteria = 'SINCE "'.$since.'" HEADER Content-Type "multipart/report"';
+        // A extensão PHP IMAP aceita o subconjunto IMAP2 de pesquisa; cabeçalhos são conferidos na leitura.
+        $criteria = 'SINCE "'.$since.'"';
         $uids = imap_search($connection, $criteria, SE_UID) ?: [];
         if (imap_errors() !== false) {
-            throw new EmailMailboxUnavailable('Não foi possível pesquisar os avisos de entrega do Gmail.');
+            throw new EmailMailboxUnavailable('Não foi possível pesquisar as mensagens recebidas no Gmail.');
         }
         $uids = array_values(array_filter($uids, static fn (int $uid): bool => $uid > $afterUid));
         sort($uids, SORT_NUMERIC);
 
         return $uids;
+    }
+
+    public function messageHeaders(Connection $connection, int $uid): array
+    {
+        $headers = imap_fetchheader($connection, $uid, FT_UID);
+        if ($headers === false) {
+            throw new EmailMailboxUnavailable('Não foi possível ler os cabeçalhos de uma resposta do Gmail.');
+        }
+
+        return $this->headers->fields($headers);
     }
 
     public function close(Connection $connection): void
@@ -82,7 +96,7 @@ final readonly class GmailBounceMailbox
         if ($headers === false || $structure === false) {
             throw new EmailMailboxUnavailable('Não foi possível ler um aviso de entrega do Gmail.');
         }
-        $fields = $this->parser->fields($headers);
+        $fields = $this->headers->fields($headers);
         $senders = imap_rfc822_parse_adrlist($fields['from'] ?? '', 'invalid');
         $sender = is_array($senders) && count($senders) === 1
             ? strtolower(($senders[0]->mailbox ?? '').'@'.($senders[0]->host ?? '')) : '';
@@ -137,5 +151,15 @@ final readonly class GmailBounceMailbox
         }
 
         return $body;
+    }
+
+    private function mailboxName(string $folder): string
+    {
+        $encoded = imap_utf8_to_mutf7($folder);
+        if ($encoded === false) {
+            throw new EmailMailboxUnavailable('O nome da pasta do Gmail é inválido.');
+        }
+
+        return '{imap.gmail.com:993/imap/ssl}'.$encoded;
     }
 }

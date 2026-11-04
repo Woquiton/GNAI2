@@ -381,7 +381,107 @@ o retorno do Gmail e execute a consulta. O segundo registro deve passar para
 para conferir que o resultado se mantém e nenhum e-mail é reenviado. Na Central,
 use **Atualizar** para consultar uma rejeição que chegou depois do aceite.
 
+### Receber respostas aos e-mails do Gnai
+
+Aplique também a migration `2026_11_04_190000_add_incoming_email_metadata`, que
+acrescenta data de recebimento, vínculo com a mensagem anterior e índice de
+Message-ID. Em **Configurações → E-mail → Respostas do Gmail**, ative
+**Importar respostas do Gmail** e configure **Pasta das respostas recebidas**
+(padrão `INBOX`). Não há novas credenciais ou variáveis de ambiente.
+
+O agendador executa `emails:sync-gmail-replies` a cada minuto. O mesmo processamento
+pode ser iniciado por **Buscar respostas** na Inbox. Usa IMAP somente para
+leitura, com certificados verificados, e considera os últimos 30 dias, em lotes
+de até 50 candidatos. Só persiste respostas cujos cabeçalhos In-Reply-To ou
+References correspondam a envios rastreados do Gnai; não usa assunto como chave.
+Respostas diretas a avisos de autenticação são ignoradas para preservar links pessoais.
+O cursor é separado por conta, pasta e UIDVALIDITY; a chave de deduplicação por
+conta e Message-ID evita repetir importações caso o cursor seja perdido.
+
+Corpo e anexos são processados com limites em `config/email_inbox.php`. HTML
+recebido é sanitizado, imagens remotas não são carregadas, e anexos ficam no
+disco privado. Conteúdo omitido por limite gera aviso na leitura. Favoritos,
+marcadores e leitura continuam individuais no Gnai. As pastas podem ser
+sincronizadas conforme a opção abaixo. Homologue com uma resposta real a um envio rastreado, confira o
+vínculo com a mensagem original, repita a busca para verificar deduplicação e
+confira que a resposta enviada pelo Gnai se destina ao remetente correto.
+
+### Sincronizar pastas com o Gmail
+
+A migration `2026_11_04_200000_add_gmail_folder_sync_to_email_deliveries` acrescenta
+o vínculo por conta e X-GM-MSGID, a pasta compartilhada e a data da última consulta.
+Ative **Sincronizar pastas com o Gmail** em **Configurações → E-mail → Pastas do Gmail**.
+A opção é por instalação, inicialmente desativada, e independe do recebimento de
+respostas e do monitoramento de rejeições.
+
+`GmailImapClient` usa PHP cURL com suporte a `imaps`, TLS e certificado verificado,
+com host fixo `imap.gmail.com:993` e as mesmas credenciais do SMTP. Isso permite
+usar os comandos IMAP4 que a pesquisa IMAP2 da extensão PHP não expõe. Não requer
+OAuth, dependências Composer adicionais ou novas credenciais. Pastas são
+descobertas por Special-Use, sem nomes traduzidos fixos. A associação começa pelo
+Message-ID e passa a usar X-GM-MSGID, estável entre pastas. Consulte as
+[extensões oficiais do Gmail](https://developers.google.com/workspace/gmail/imap/imap-extensions).
+
+Spam, Lixeira, Arquivar e Restaurar alteram somente marcadores de pasta da mensagem
+selecionada, preservando seus outros marcadores. Não há EXPUNGE ou exclusão
+definitiva. O estado local compartilhado só muda após a confirmação remota.
+A conferência combina os marcadores retornados e a presença na pasta selecionada,
+pois o Gmail pode omitir de X-GM-LABELS o marcador dessa própria pasta. Essa presença
+também é considerada ao remover Spam ou Lixeira para arquivar ou restaurar.
+`email.send`, além de `email.view`, é exigida para essas ações quando a integração
+está ativa. Estrelas, leitura e marcadores pessoais não são enviados ao Gmail.
+Mensagens sem envio real continuam locais; mensagens rastreadas não encontradas
+no Gmail geram falha na ação. Lotes podem terminar parcialmente e informam seus
+resultados sem anunciar conclusão integral.
+
+O comando `emails:sync-gmail-folders`, agendado a cada minuto, consulta até 20
+registros por lote, com prioridade para os consultados há mais tempo. O botão
+**Sincronizar pastas** executa a mesma consulta. A consulta só lê metadados de
+mensagens já registradas, inclusive em Todas as mensagens, Spam e Lixeira. Não
+reaplica organização pessoal antiga ao Gmail nem remove o histórico caso uma
+mensagem tenha sido apagada externamente. Mensagens de contas anteriores não são
+alteradas na conta atual. Homologue Spam, Lixeira, Arquivar e Restaurar nos dois
+sentidos e confira os resultados de falha e os efeitos em outro usuário da instalação.
+
+### Etiquetas por módulo e marcadores da Inbox
+
+A migration `2026_11_04_210000_add_tag_modules_and_inbox_markers` adiciona módulo
+e cor ao cadastro existente de etiquetas. As etiquetas anteriores permanecem em
+Publicações; a unicidade do nome passa a valer por módulo. Inbox ganha as etiquetas
+Importante, Trabalho e Pessoal, também incluídas no seeder para novas instalações.
+Os antigos valores de `email_mailbox_states.label` são convertidos para `tag_id`,
+com chave estrangeira que remove somente o vínculo ao excluir uma etiqueta.
+
+O cadastro permite selecionar Publicações ou Inbox, situação e cor hexadecimal pela
+paleta Ubold local. Etiquetas em uso não podem trocar de módulo. Publicações validam
+e listam somente etiquetas do seu módulo. A Inbox usa as etiquetas ativas do módulo
+Inbox na aplicação de marcadores; etiquetas inativas já aplicadas permanecem
+consultáveis e removíveis. Nome e cor vêm do cadastro, sem enum de marcadores fixos.
+Os marcadores permanecem pessoais no Gnai e não são enviados como rótulos ao Gmail.
+
+`Forms/ColorPicker` encapsula o plugin existente, com digitação hexadecimal,
+desabilitação, associação de erros, fechamento por Escape e limpeza ao desmontar.
+Se a paleta não carregar, oferece o seletor nativo. Não importa CSS de Bootstrap
+global nem componentes do catálogo. Homologue cadastro, edição, inativação,
+unicidade por módulo, aplicação e filtro dos marcadores e preservação dos vínculos.
+
 ### Operações de manutenção
+
+Após atualizar para a Inbox com escrita e organização de e-mails, aplique as
+migrations e sincronize o catálogo de permissões no PHP do ambiente:
+
+```bash
+php artisan migrate --force
+php artisan permissions:sync
+```
+
+A tabela `email_mailbox_states` guarda a organização individual por operador.
+Os rascunhos usam o registro de e-mail existente e são privados ao autor.
+Conceda `email.send`, além de `email.view`, aos perfis autorizados a escrever e
+enviar. Os anexos são armazenados no disco privado `local`; downloads exigem
+autenticação e a mesma autorização da mensagem. O agendador e o worker de fila
+continuam necessários. Homologue escrita, rascunho, cópias/Cco, anexos, resposta,
+encaminhamento, ações em lote e restauração da lixeira.
 
 Estas são as operações mais usadas no dia a dia, depois do primeiro deploy:
 
@@ -554,11 +654,11 @@ A atualização usa o transporte comum `useTableListVisit`, preserva filtros e
 paginação e é suspensa enquanto a aba está oculta ou uma visita do usuário está
 em andamento. Uma nova visita cancela a consulta em segundo plano.
 
-## Central de E-mails
+## Inbox
 
 O módulo em `/emails` reúne os registros reais de `email_deliveries`, com a
-composição do Inbox do Ubold: lateral de status e histórico de mensagens. O menu
-fica em **Sistema → Central de E-mails**. As rotas de consulta exigem `auth` e
+composição do Inbox do Ubold: pastas, listagem, leitura em conversa e composição
+de mensagens. O menu fica em **Sistema → Inbox**. As rotas de consulta exigem `auth` e
 `can:email.view`; administradores têm acesso pelo mecanismo existente de Gates.
 Para delegar a consulta a um cargo, sincronize as permissões e conceda
 **Visualizar Central de E-mails** no cadastro de cargos:
@@ -577,9 +677,20 @@ somente nos registros exibidos; a busca por assunto não consulta os campos
 criptografados do destinatário. As listagens não carregam o payload da mensagem.
 A visualização retorna somente os campos de conteúdo necessários à leitura,
 sem URLs de autenticação, tokens, payload bruto ou detalhes técnicos de exceções.
-Os registros pendentes são atualizados pelo transporte compartilhado de listagens.
-O módulo é de consulta e não escreve, reenvia ou exclui mensagens. O artigo da
-Central de Ajuda fica em `resources/help/central-de-emails.md`.
+Os registros pendentes são atualizados pelo transporte compartilhado de listagens;
+a Inbox também consulta novas respostas periodicamente. Cada mensagem ocupa uma
+linha e a leitura reúne seu fio, posicionando a página na mensagem selecionada.
+Com `email.send`, o módulo permite escrever, salvar rascunhos, responder e
+encaminhar, com destinatários, cópias, cópias ocultas e anexos privados.
+A organização inclui favoritos, leitura, marcadores e pastas, com a integração
+opcional ao Gmail descrita acima. Não há exclusão definitiva nem reenvio automático
+de mensagens sem confirmação. O artigo da Central de Ajuda fica em
+`resources/help/central-de-emails.md`.
+
+As Actions coordenam as operações; Data e Rules validam as entradas, Policies
+verificam o acesso e Handlers tratam os anexos. Operações da caixa usam enum,
+resultados usam DTO e Presenters preparam conteúdo e mensagens para a interface.
+Os adaptadores IMAP e o armazenamento privado ficam em Infrastructure.
 
 ## Listagem e catálogo de itens
 

@@ -3,8 +3,8 @@
 namespace Database\Seeders\Inclusion;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TagSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class TagSeeder extends Seeder
 
         foreach ($tags as $name) {
             DB::table('tags')->updateOrInsert(
-                ['name' => $name],
+                ['module' => 'publications', 'name' => $name],
                 [
                     'is_active' => true,
                     'created_at' => $now,
@@ -34,6 +34,13 @@ class TagSeeder extends Seeder
             );
         }
 
-        $this->command->info('Tags seeded: ' . count($tags) . ' records.');
+        foreach (['Importante' => '#f59e0b', 'Trabalho' => '#322b75', 'Pessoal' => '#16a34a'] as $name => $color) {
+            DB::table('tags')->insertOrIgnore([
+                'module' => 'inbox', 'name' => $name, 'color' => $color,
+                'is_active' => true, 'created_at' => $now, 'updated_at' => $now,
+            ]);
+        }
+
+        $this->command->info('Etiquetas padrão de Publicações e Inbox preparadas.');
     }
 }

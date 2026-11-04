@@ -6,6 +6,18 @@ use App\Domains\Settings\Application\Queries\GetMailSettingsQuery;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 
+Schedule::command('emails:sync-gmail-folders')
+    ->everyMinute()
+    ->when(fn (): bool => app(GetMailSettingsQuery::class)->execute()?->syncsGmailFolders() ?? false)
+    ->withoutOverlapping(2)
+    ->description('Atualiza as pastas sincronizadas com o Gmail');
+
+Schedule::command('emails:sync-gmail-replies')
+    ->everyMinute()
+    ->when(fn (): bool => app(GetMailSettingsQuery::class)->execute()?->receivesGmailReplies() ?? false)
+    ->withoutOverlapping(3)
+    ->description('Importa respostas recebidas no Gmail');
+
 Schedule::command('emails:process-gmail-bounces')
     ->everyFiveMinutes()
     ->when(fn (): bool => app(GetMailSettingsQuery::class)->execute()?->monitorsGmailBounces() ?? false)

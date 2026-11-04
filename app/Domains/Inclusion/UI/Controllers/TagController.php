@@ -12,6 +12,7 @@ use App\Domains\Inclusion\Application\Data\Tags\ListTagsData;
 use App\Domains\Inclusion\Application\Data\Tags\UpdateTagData;
 use App\Domains\Inclusion\Application\Queries\Tags\ListTagsQuery;
 use App\Domains\Inclusion\Application\Queries\Tags\ShowTagQuery;
+use App\Domains\Inclusion\Domain\Enums\TagModule;
 use App\Domains\Inclusion\Domain\Exceptions\InvalidTag;
 use App\Domains\Inclusion\Domain\Models\Tag;
 use Illuminate\Http\RedirectResponse;
@@ -30,8 +31,10 @@ final class TagController
             'Inclusion/Tags/Index',
             [
                 'tags' => $tags,
+                'modules' => TagModule::options(),
                 'filters' => [
                     'name' => $filters->name ?? '',
+                    'module' => $filters->module ?? '',
                     'is_active' => $filters->isActive === null ? '' : ($filters->isActive ? '1' : '0'),
                 ],
                 'can' => [
@@ -46,6 +49,7 @@ final class TagController
     public function create(Request $request): InertiaResponse
     {
         return Inertia::render('Inclusion/Tags/Create', [
+            'modules' => TagModule::options(),
             'can' => ['store' => $request->user()->can('tag.store')],
         ]);
     }
@@ -85,6 +89,7 @@ final class TagController
             [
                 'tag' => $tag,
                 'can' => ['update' => $request->user()->can('tag.update')],
+                'modules' => TagModule::options(),
             ],
         );
     }

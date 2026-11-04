@@ -6,6 +6,7 @@ namespace App\Domains\Notifications\Application\Actions\Email;
 
 use App\Domains\Notifications\Domain\DTOs\EmailDeliveryReceiptDTO;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryStatus;
+use App\Domains\Notifications\Domain\Enums\EmailPurpose;
 use App\Domains\Notifications\Domain\Models\EmailDelivery;
 use App\Domains\Notifications\Infrastructure\Mail\EmailDeliveryReceiptStore;
 use App\Domains\Notifications\Infrastructure\Mail\TransactionalEmail;
@@ -39,6 +40,8 @@ final readonly class SendEmailAction
             $delivery = EmailDelivery::query()->find($deliveryId);
             if ($delivery === null || in_array($delivery->status, [
                 EmailDeliveryStatus::SENT,
+                EmailDeliveryStatus::DRAFT,
+                EmailDeliveryStatus::RECEIVED,
                 EmailDeliveryStatus::BOUNCED,
                 EmailDeliveryStatus::NO_EMAIL,
                 EmailDeliveryStatus::NOT_SENT,
@@ -61,7 +64,7 @@ final readonly class SendEmailAction
             ]);
             try {
                 Mail::getFacadeRoot();
-                $this->mailSettings->apply();
+                $settings = $this->mailSettings->apply();
                 Mail::purge();
                 $mailer = Mail::mailer();
                 $transport = $mailer->getSymfonyTransport();
@@ -69,15 +72,32 @@ final readonly class SendEmailAction
                 $domain = substr(strrchr((string) config('mail.from.address'), '@') ?: '@gnai.local', 1);
                 $messageId = $delivery->id.'@'.$domain;
                 // Persistir antes do transporte permite correlacionar até uma rejeição imediata.
-                $delivery->update(['message_id' => $messageId]);
+                $delivery->update([
+                    'message_id' => $messageId,
+                    'gmail_account_hash' => $settings !== null && strtolower((string) $settings->host) === 'smtp.gmail.com'
+                        ? hash('sha256', strtolower((string) $settings->username)) : null,
+                ]);
+                if ($delivery->purpose === EmailPurpose::MANUAL->value) {
+                    $delivery->update(['payload' => [
+                        ...$delivery->payload,
+                        'sender_address' => config('mail.from.address'),
+                        'sender_name' => config('mail.from.name'),
+                    ]]);
+                }
                 $email = new TransactionalEmail(
                     $delivery->subject, $delivery->view, $delivery->text_view, $delivery->payload,
                 );
                 $email->withSymfonyMessage(function (Email $message) use ($messageId): void {
-                    $message->getHeaders()->removeAll('Message-ID');
+                    $message->getHeaders()->remove('Message-ID');
                     $message->getHeaders()->addIdHeader('Message-ID', $messageId);
                 });
-                $message = $mailer->to($delivery->recipient_email, $delivery->recipient_name)->sendNow($email);
+                $pending = $mailer->to($delivery->recipient_email, $delivery->recipient_name);
+                if ($delivery->purpose === EmailPurpose::MANUAL->value) {
+                    $pending->to($delivery->payload['to']);
+                    $pending->cc($delivery->payload['cc'] ?? []);
+                    $pending->bcc($delivery->payload['bcc'] ?? []);
+                }
+                $message = $pending->sendNow($email);
             } catch (Throwable $exception) {
                 try {
                     $delivery->update([

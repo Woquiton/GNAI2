@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import type { ButtonSize, ButtonTone } from '@/components/UI/Button/Button';
 export interface DropdownItem {
     label: string;
+    iconClass?: string;
+    iconColor?: string;
     href?: string;
     dividerBefore?: boolean;
     onSelect?: () => void;

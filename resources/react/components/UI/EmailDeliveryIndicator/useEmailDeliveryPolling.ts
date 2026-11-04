@@ -6,6 +6,7 @@ import { useTableListVisit } from '@/components/Tables/TableList/useTableListReq
 export function useEmailDeliveryPolling(
     hasPendingEmail: boolean,
     collection: string | readonly string[],
+    interval?: number,
 ): void {
     const { url } = usePage();
     const only = useMemo(
@@ -15,6 +16,6 @@ export function useEmailDeliveryPolling(
     useTableListVisit({
         url,
         failureText: 'Não foi possível atualizar os indicadores de e-mail.',
-        polling: { enabled: hasPendingEmail, only },
+        polling: { enabled: hasPendingEmail, only, interval },
     });
 }

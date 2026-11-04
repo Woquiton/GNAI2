@@ -6,6 +6,7 @@ namespace App\Domains\Notifications\Application\Actions\Email;
 
 use App\Domains\Notifications\Domain\DTOs\EmailBounceDTO;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryStatus;
+use App\Domains\Notifications\Domain\Enums\EmailPurpose;
 use App\Domains\Notifications\Domain\Models\EmailDelivery;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,25 +17,37 @@ final readonly class RecordEmailBounceAction
         // Não associar pelo assunto ou somente pelo endereço do destinatário.
         $delivery = EmailDelivery::query()->whereIn('message_id', [
             $bounce->messageId, '<'.$bounce->messageId.'>',
-        ])->first();
-        if ($delivery === null || strcasecmp((string) $delivery->recipient_email, $bounce->recipient) !== 0) {
+        ])->where('purpose', '!=', EmailPurpose::INCOMING->value)->first();
+        if ($delivery === null) {
+            return false;
+        }
+        $recipients = [(string) $delivery->recipient_email];
+        if ($delivery->purpose === EmailPurpose::MANUAL->value) {
+            $recipients = [...$recipients, ...($delivery->payload['to'] ?? []),
+                ...($delivery->payload['cc'] ?? []), ...($delivery->payload['bcc'] ?? [])];
+        }
+        if (! in_array(strtolower($bounce->recipient), array_map('strtolower', $recipients), true)) {
             return false;
         }
 
         return Cache::lock('email-delivery:'.$delivery->id, 60)->block(5, function () use ($delivery, $bounce): bool {
             $delivery->refresh();
-            if ($delivery->status === EmailDeliveryStatus::BOUNCED) {
-                return true;
-            }
             if (! in_array($delivery->status, [
                 EmailDeliveryStatus::SENT, EmailDeliveryStatus::PROCESSING, EmailDeliveryStatus::UNCONFIRMED,
+                EmailDeliveryStatus::BOUNCED,
             ], true)) {
                 return false;
             }
-            $delivery->update([
+            $attributes = [
                 'status' => EmailDeliveryStatus::BOUNCED,
                 'error_type' => 'dsn:'.$bounce->status,
-            ]);
+            ];
+            if ($delivery->purpose === EmailPurpose::MANUAL->value) {
+                $payload = $delivery->payload;
+                $payload['rejections'][strtolower($bounce->recipient)] = $bounce->status;
+                $attributes['payload'] = $payload;
+            }
+            $delivery->update($attributes);
 
             return true;
         });

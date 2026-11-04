@@ -17,6 +17,8 @@ enum EmailPurpose: string
     case SESSION_CANCELLED = 'session_cancelled';
     case SESSION_DELETED = 'session_deleted';
     case MAIL_TEST = 'mail_test';
+    case MANUAL = 'manual';
+    case INCOMING = 'incoming';
 
     public function label(): string
     {
@@ -32,6 +34,8 @@ enum EmailPurpose: string
             self::SESSION_CANCELLED => 'Agendamento cancelado',
             self::SESSION_DELETED => 'Agendamento excluído',
             self::MAIL_TEST => 'Teste de configuração',
+            self::MANUAL => 'Mensagem escrita no sistema',
+            self::INCOMING => 'Resposta recebida',
         };
     }
 }

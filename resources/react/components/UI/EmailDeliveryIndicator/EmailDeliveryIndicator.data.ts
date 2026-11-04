@@ -4,6 +4,8 @@ import type { EmailDeliveryStatus } from './EmailDeliveryIndicator.types';
 export const emailDeliveryIcons: Record<EmailDeliveryStatus, string> = {
     not_requested: 'fa fa-question-circle',
     queued: 'fa fa-clock-o',
+    draft: 'fa fa-file-text-o',
+    received: 'fa fa-inbox',
     processing: 'fa fa-paper-plane',
     sent: 'fa fa-envelope',
     bounced: 'fa fa-exclamation-triangle',

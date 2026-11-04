@@ -23,6 +23,9 @@ final readonly class MailSettings
         public ?string $lastTestedAt = null,
         public bool $gmailBouncesEnabled = false,
         public string $gmailBouncesFolder = 'INBOX',
+        public bool $gmailInboxEnabled = false,
+        public string $gmailInboxFolder = 'INBOX',
+        public bool $gmailFoldersEnabled = false,
     ) {}
 
     /**
@@ -43,6 +46,9 @@ final readonly class MailSettings
             lastTestedAt: self::nullableString($payload['last_tested_at'] ?? null),
             gmailBouncesEnabled: (bool) ($payload['gmail_bounces_enabled'] ?? false),
             gmailBouncesFolder: (string) ($payload['gmail_bounces_folder'] ?? 'INBOX'),
+            gmailInboxEnabled: (bool) ($payload['gmail_inbox_enabled'] ?? false),
+            gmailInboxFolder: (string) ($payload['gmail_inbox_folder'] ?? 'INBOX'),
+            gmailFoldersEnabled: (bool) ($payload['gmail_folders_enabled'] ?? false),
         );
     }
 
@@ -65,12 +71,27 @@ final readonly class MailSettings
             'last_tested_at' => $this->lastTestedAt,
             'gmail_bounces_enabled' => $this->gmailBouncesEnabled,
             'gmail_bounces_folder' => $this->gmailBouncesFolder,
+            'gmail_inbox_enabled' => $this->gmailInboxEnabled,
+            'gmail_inbox_folder' => $this->gmailInboxFolder,
+            'gmail_folders_enabled' => $this->gmailFoldersEnabled,
         ];
     }
 
     public function monitorsGmailBounces(): bool
     {
         return $this->gmailBouncesEnabled && $this->transport === MailTransport::SMTP
+            && strtolower((string) $this->host) === 'smtp.gmail.com';
+    }
+
+    public function receivesGmailReplies(): bool
+    {
+        return $this->gmailInboxEnabled && $this->transport === MailTransport::SMTP
+            && strtolower((string) $this->host) === 'smtp.gmail.com';
+    }
+
+    public function syncsGmailFolders(): bool
+    {
+        return $this->gmailFoldersEnabled && $this->transport === MailTransport::SMTP
             && strtolower((string) $this->host) === 'smtp.gmail.com';
     }
 

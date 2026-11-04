@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Website\Application\Queries;
 
+use App\Domains\Inclusion\Domain\Enums\TagModule;
 use App\Domains\Inclusion\Domain\Models\Publication;
 use App\Domains\Inclusion\Domain\Models\Tag;
 use App\Domains\Website\Application\Data\ListPublicPublicationsData;
@@ -70,6 +71,7 @@ final class PublicPublicationsQuery
     public function tags(): array
     {
         return Tag::query()
+            ->where('module', TagModule::PUBLICATIONS->value)
             ->where('is_active', true)
             ->whereHas('publications', fn (Builder $query) => $query->publiclyVisible())
             ->orderBy('name')

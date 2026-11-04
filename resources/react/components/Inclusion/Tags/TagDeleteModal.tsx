@@ -24,6 +24,7 @@ export default function TagDeleteModal({
                 </>
             }
             processing={processing}
+            details="A etiqueta será retirada das publicações e dos marcadores em que estiver aplicada. Os registros e os e-mails serão preservados. Para impedir novas aplicações sem remover os vínculos, desative a etiqueta."
             confirmLabel="Confirmar exclusão"
             processingLabel="Excluindo etiqueta..."
             confirmTone="dark-red"

@@ -1,10 +1,12 @@
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { tagStatusOptions } from '../Tags.constants';
+import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import type { TagFilters as FilterValues } from '../Tags.types';
 
 interface TagFiltersProps {
     values: FilterValues;
+    modules: Record<string, string>;
     errors: Record<string, string | undefined>;
     onUpdate: (name: keyof FilterValues, value: string) => void;
     onClear: () => void;
@@ -13,6 +15,7 @@ interface TagFiltersProps {
 
 export default function TagFilters({
     values,
+    modules,
     errors,
     onUpdate,
     onClear,
@@ -29,6 +32,16 @@ export default function TagFilters({
                 value={values.name}
                 error={errors.name}
                 onChange={(value) => onUpdate('name', value)}
+            />
+            <SelectInputField
+                id="tag-filter-module"
+                name="module"
+                label="Módulo"
+                placeholder="Todos"
+                options={optionsFromRecord(modules)}
+                value={values.module}
+                error={errors.module}
+                onChange={(value) => onUpdate('module', value)}
             />
             <SelectInputField
                 id="tag-filter-status"

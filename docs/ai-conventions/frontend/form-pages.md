@@ -78,6 +78,7 @@ Os caminhos desta tabela são relativos a `resources/react/components/`.
 | Texto e atributos nativos | `Forms/TextInput/TextInput.tsx`; valores controlados e `invalid` |
 | Texto simples com várias linhas | `Forms/TextArea/TextArea.tsx`, quando o contrato não requer texto rico |
 | Seleção | `Forms/SelectField/SelectField.tsx`; `options`, `value`, `onChange`, `label`, `id`, `name` |
+| Cor | `Forms/ColorPicker/ColorPicker.tsx`; paleta Ubold local, valor hexadecimal controlado, `disabled`, `invalid`, `describedBy` e `onChange`; digitação disponível por teclado e seletor nativo se o plugin não carregar |
 | Grupos de checkbox/radio | `Forms/ChoiceGroup/ChoiceGroup.tsx` envolvendo controles `ChoiceControl` e recebendo o estado inválido |
 | Alternância booleana | `Forms/ToggleControl/ToggleControl.tsx`; adaptador React do Switchery local, com estado controlado, tamanho e limpeza |
 | Valor numérico em faixa | `Forms/RangeSlider/RangeSlider.tsx`; adaptador controlado do Ion.RangeSlider do Ubold, com grade, cor roxa do Gnai, opção `live` para prévia durante o arraste, fallback nativo quando o plugin não carrega, trilha focável por teclado e `role="slider"` |

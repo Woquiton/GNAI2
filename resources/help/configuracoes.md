@@ -62,13 +62,54 @@ O monitoramento usa a mesma conta e chave de aplicativo do envio, sem exigir
 outra senha. O Gnai consulta os avisos a cada cinco minutos, sem apagá-los ou
 marcá-los como lidos. Quando identifica uma rejeição definitiva associada ao
 envio original, o status muda para **E-mail não entregue**. Confira os resultados
-na [Central de E-mails](/ajuda/central-de-emails), usando **Atualizar**.
+na [Inbox](/ajuda/central-de-emails), usando **Atualizar**.
 
 Salvar a opção não verifica a conexão com a caixa do Gmail. O teste abaixo
 verifica o envio, não a leitura das rejeições. O responsável pela instalação
 precisa manter o agendador do sistema ativo e a extensão PHP IMAP disponível;
 se essa extensão faltar, a tela avisa e impede a ativação. Contas que exigem
 exclusivamente OAuth não são atendidas por este monitoramento.
+
+## Receber respostas do Gmail na Inbox
+
+Na seção **Respostas do Gmail**, marque **Importar respostas do Gmail** e informe
+**Pasta das respostas recebidas**. O padrão **INBOX** corresponde à caixa de
+entrada. Salve para ativar. A leitura usa a mesma conta Gmail e chave de
+aplicativo do envio, com acesso IMAP, sem exigir outra senha.
+
+O sistema consulta a cada minuto e importa as respostas vinculadas aos e-mails
+enviados pelo Gnai, dos últimos 30 dias. As mensagens ficam disponíveis aos
+usuários com permissão de consulta da Inbox. Outras mensagens da conta não são
+importadas. A leitura não altera pastas nem estado de leitura no Gmail.
+
+Para consultar agora, abra **Sistema → Inbox** e clique em **Buscar respostas**.
+Confira [o recebimento e seus limites](/ajuda/central-de-emails#receber-as-respostas-dos-alunos).
+**Monitorar rejeições do Gmail** continua independente: uma opção acompanha
+falhas de entrega; a outra importa respostas. Salvar ou enviar um teste SMTP não
+verifica a leitura IMAP.
+
+## Sincronizar pastas com o Gmail
+
+Na seção **Pastas do Gmail**, marque **Sincronizar pastas com o Gmail** e salve.
+A integração usa a conta Gmail e a chave de aplicativo já configuradas para envio.
+O servidor precisa de PHP cURL com suporte a IMAPS. As pastas especiais são
+identificadas automaticamente, sem precisar informar seus nomes ou idioma.
+
+Com a opção ativa, **Arquivar**, **Mover para spam**, **Mover para a lixeira** e
+**Restaurar** também alteram o Gmail. As pastas das mensagens vinculadas passam
+a ser compartilhadas por todos os usuários da instalação. Essas ações exigem a
+permissão de envio de e-mails; estrelas, leitura e marcadores continuam pessoais.
+Mensagens ainda não enviadas e rascunhos mantêm a organização local.
+
+Mudanças feitas diretamente no Gmail são consultadas a cada minuto, em lotes.
+Na Inbox, **Sincronizar pastas** consulta um lote agora. Uma falha não é mostrada
+como sincronização concluída. O Gnai mantém o histórico quando a mensagem não é
+mais encontrada na conta. Veja [como organizar as mensagens](/ajuda/central-de-emails#organizar-as-mensagens).
+
+Essa opção é independente de **Importar respostas do Gmail** e **Monitorar
+rejeições do Gmail**. Desativá-la interrompe a sincronização e volta à organização
+pessoal no Gnai, sem desfazer operações já confirmadas no Gmail. Ativar a opção
+consulta a situação atual da conta; não reaplica movimentos pessoais antigos.
 
 ## Enviar um e-mail de teste
 

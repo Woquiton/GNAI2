@@ -19,6 +19,8 @@ final readonly class UpdateTagAction
         $tagDTO = new UpdateTagDTO(
             name: $data->name,
             isActive: $data->isActive,
+            module: $data->module,
+            color: $data->color,
         );
 
         $tag->revise($tagDTO);

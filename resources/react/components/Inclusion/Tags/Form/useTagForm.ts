@@ -7,6 +7,8 @@ import type { TagRecord } from '../Tags.types';
 export type TagFormData = {
     name: string;
     is_active: boolean;
+    module: string;
+    color: string;
 };
 
 interface UseTagFormOptions {
@@ -19,6 +21,8 @@ export function useTagForm({ tag, canSubmit }: UseTagFormOptions) {
     const form = useForm<TagFormData>({
         name: tag?.name ?? '',
         is_active: tag?.is_active ?? true,
+        module: tag?.module ?? 'publications',
+        color: tag?.color ?? '#322b75',
     });
     const { formRef, submit } = useFormSubmission(form);
     const errors = form.errors as Record<string, string | undefined>;

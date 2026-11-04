@@ -6,14 +6,31 @@ export const tagColumns: TableListColumn<TagRecord>[] = [
     {
         id: 'name',
         label: 'Nome',
-        width: '60%',
+        width: '30%',
         fixed: 'start',
         render: (tag) => tag.name,
     },
     {
+        id: 'module',
+        label: 'Módulo',
+        width: '20%',
+        render: (tag) => tag.module_label,
+    },
+    {
+        id: 'color',
+        label: 'Cor',
+        width: '15%',
+        render: (tag) => (
+            <span>
+                <i className="fa fa-circle" style={{ color: tag.color }} aria-hidden="true" />{' '}
+                {tag.color}
+            </span>
+        ),
+    },
+    {
         id: 'status',
         label: 'Status',
-        width: '20%',
+        width: '15%',
         render: (tag) => (
             <TableLabel tone={tag.is_active ? 'success' : 'inverse'}>
                 {tag.is_active ? 'Ativo' : 'Inativo'}

@@ -1,0 +1,50 @@
+.emailThread__messages {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.emailThread__messages > li {
+    scroll-margin-block-start: var(--ui-space-2);
+    padding: var(--ui-space-5);
+    border-top: 1px solid var(--ui-color-border-soft);
+    min-width: 0;
+}
+
+.emailThread__summary {
+    padding-inline: var(--ui-space-5);
+    margin-block: 0 var(--ui-space-4);
+}
+
+.emailThread__messageCaption,
+.emailThread__messageActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ui-space-3);
+    margin-bottom: var(--ui-space-3);
+}
+
+.emailThread__messageCaption {
+    color: var(--ui-color-text-muted);
+}
+
+.emailThread__messageCaption strong {
+    color: var(--ui-color-text);
+}
+
+.emailThread__messageActions {
+    margin-top: var(--ui-space-4);
+    margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+    .emailThread__messages > li {
+        padding: var(--ui-space-4);
+    }
+
+    .emailThread__summary {
+        padding-inline: var(--ui-space-4);
+    }
+}

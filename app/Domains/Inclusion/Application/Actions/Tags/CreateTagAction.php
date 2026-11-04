@@ -19,6 +19,8 @@ final readonly class CreateTagAction
         $tagDTO = new CreateTagDTO(
             name: $data->name,
             isActive: $data->isActive,
+            module: $data->module,
+            color: $data->color,
         );
 
         $tag = Tag::register($tagDTO);

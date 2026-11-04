@@ -85,7 +85,9 @@ export default function Tabs({
             nextIndex = items.length - 1;
         }
 
-        if (nextIndex === undefined) return;
+        if (nextIndex === undefined) {
+            return;
+        }
 
         event.preventDefault();
         selectTab(items[nextIndex].id);
@@ -198,36 +200,48 @@ interface AccordionProps {
     items: AccordionItem[];
     initialActiveId?: string;
     joined?: boolean;
+    headingLevel?: 2 | 3 | 4;
 }
 
 export function Accordion({
     items,
     initialActiveId,
     joined = false,
+    headingLevel = 4,
 }: AccordionProps): React.JSX.Element {
     const [activeId, setActiveId] = useState<string | null>(initialActiveId ?? null);
+    const instanceId = useId();
+    const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
 
     return (
         <div className={`tabs__accordion ${joined ? 'tabs__accordion--joined' : ''}`}>
-            {items.map((item: AccordionItem) => {
+            {items.map((item: AccordionItem, index) => {
                 const isOpen = activeId === item.id;
+                const triggerId = `${instanceId}-trigger-${index}`;
+                const panelId = `${instanceId}-panel-${index}`;
                 return (
                     <div
                         className={`tabs__accordionItem ${isOpen ? 'tabs__accordionItem--open' : ''}`}
                         key={item.id}
                     >
-                        <h4 className="tabs__accordionHeading">
+                        <Heading className="tabs__accordionHeading">
                             <button
                                 type="button"
+                                id={triggerId}
                                 aria-expanded={isOpen}
+                                aria-controls={panelId}
                                 onClick={() => setActiveId(isOpen ? null : item.id)}
                             >
                                 {item.title}
                             </button>
-                        </h4>
+                        </Heading>
                         <div
+                            id={panelId}
+                            role="region"
+                            aria-labelledby={triggerId}
                             className={`tabs__accordionBody ${isOpen ? 'tabs__accordionBody--open' : ''}`}
                             aria-hidden={!isOpen}
+                            inert={!isOpen}
                         >
                             <div className="tabs__accordionBodyInner">{item.content}</div>
                         </div>

@@ -145,7 +145,7 @@ final class AppNavigation
                 ['notifications', 'Notificações', 'notifications.index', 'ti-bell', [], ['notifications.*']],
             ]],
             ['Sistema', [
-                ['emails', 'Central de E-mails', 'emails.index', 'ti-email', ['email.view'], ['emails.*']],
+                ['emails', 'Inbox', 'emails.index', 'ti-email', ['email.view'], ['emails.*']],
                 ['settings', 'Configurações', 'settings.index', 'ti-settings', ['setting.view'], ['settings.*']],
                 ['audit', 'Auditoria', 'audit.index', 'ti-shield', ['audit.index'], ['audit.*']],
                 ['backups', 'Backups', 'backup.backups.index', 'ti-cloud-down', ['backup.index'], ['backup.backups.*']],

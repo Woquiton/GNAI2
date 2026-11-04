@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Application\Queries;
 
+use App\Domains\Notifications\Infrastructure\Mail\GmailImapClient;
 use App\Domains\Settings\Domain\Enums\BackupRetentionMode;
 use App\Domains\Settings\Domain\Enums\MailEncryption;
 use App\Domains\Settings\Domain\Enums\MailTransport;
@@ -45,6 +46,7 @@ final readonly class SettingsFormQuery
             'transports' => $this->options(MailTransport::cases()),
             'encryptions' => $this->options(MailEncryption::cases()),
             'gmailBouncesAvailable' => extension_loaded('imap'),
+            'gmailFoldersAvailable' => GmailImapClient::available(),
         ];
     }
 

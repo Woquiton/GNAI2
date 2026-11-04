@@ -7,6 +7,8 @@ namespace App\Domains\Notifications\Domain\Enums;
 enum EmailDeliveryStatus: string
 {
     case QUEUED = 'queued';
+    case DRAFT = 'draft';
+    case RECEIVED = 'received';
     case PROCESSING = 'processing';
     case SENT = 'sent';
     case BOUNCED = 'bounced';
@@ -19,6 +21,8 @@ enum EmailDeliveryStatus: string
     {
         return match ($this) {
             self::QUEUED => 'E-mail na fila',
+            self::DRAFT => 'Rascunho',
+            self::RECEIVED => 'Resposta recebida',
             self::PROCESSING => 'Enviando e-mail',
             self::SENT => 'Aceito pelo servidor de envio',
             self::BOUNCED => 'E-mail não entregue',

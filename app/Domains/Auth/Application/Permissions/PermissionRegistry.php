@@ -266,6 +266,7 @@ final class PermissionRegistry
             'download' => 'Baixar',
             'restore' => 'Restaurar',
             'upload' => 'Enviar',
+            'send' => 'Enviar',
             'return' => 'Registrar devolução',
             'cancel' => 'Cancelar',
             'available' => 'Listar disponíveis',

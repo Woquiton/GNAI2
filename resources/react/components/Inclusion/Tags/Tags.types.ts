@@ -5,7 +5,11 @@ export interface TagRecord {
     id: number;
     name: string;
     is_active: boolean;
+    module: 'publications' | 'inbox';
+    module_label: string;
+    color: string;
     publications_count?: number;
+    mailbox_states_count?: number;
 }
 
 export interface TagPaginator extends TableListPage {
@@ -15,6 +19,7 @@ export interface TagPaginator extends TableListPage {
 export type TagFilters = {
     name: string;
     is_active: string;
+    module: string;
 };
 
 export interface TagListPermissions {
@@ -24,16 +29,19 @@ export interface TagListPermissions {
 }
 
 export interface TagIndexProps {
+    modules: Record<string, string>;
     tags: TagPaginator;
     filters: Partial<TagFilters>;
     can: TagListPermissions;
 }
 
 export interface TagCreateProps {
+    modules: Record<string, string>;
     can: { store: boolean };
 }
 
 export interface TagEditProps {
+    modules: Record<string, string>;
     tag: TagRecord;
     can: { update: boolean };
 }

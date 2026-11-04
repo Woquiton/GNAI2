@@ -7,6 +7,7 @@ import type { settingsCategories } from './Settings.constants';
 
 /** Valores de `data-tour` das partes das telas de configuração. */
 export const SETTINGS_TOUR_TARGETS = {
+    mailFolders: 'settings-mail-folders',
     tabs: 'settings-tabs',
     sessionTimeouts: 'settings-session-timeouts',
     sessionActions: 'settings-session-actions',
@@ -14,6 +15,7 @@ export const SETTINGS_TOUR_TARGETS = {
     mailServer: 'settings-mail-server',
     mailSender: 'settings-mail-sender',
     mailBounces: 'settings-mail-bounces',
+    mailInbox: 'settings-mail-inbox',
     mailTest: 'settings-mail-test',
     mailActions: 'settings-mail-actions',
     backupRetention: 'settings-backup-retention',
@@ -90,6 +92,20 @@ export const settingsMailTour: GuidedTourPageConfig = {
                 'Com uma conta Gmail / Google Workspace, marque Monitorar rejeições do Gmail e informe a pasta que recebe os avisos. A leitura usa a mesma conta e chave de aplicativo do envio.',
                 'Depois de salvar, o sistema consulta as rejeições a cada cinco minutos. A conta precisa permitir leitura por IMAP. Salvar não confirma a conexão; o teste de envio verifica apenas o envio.',
             ],
+        },
+        {
+            id: 'settings-mail-inbox',
+            target: targets.mailInbox,
+            title: 'Respostas do Gmail',
+            content:
+                'Marque Importar respostas do Gmail para receber as respostas aos e-mails do sistema. Informe INBOX ou a pasta que recebe essas respostas. Salve e use Buscar respostas na Inbox. A leitura usa a mesma conta do envio e não altera a caixa do Gmail.',
+        },
+        {
+            id: 'mail-folders',
+            target: SETTINGS_TOUR_TARGETS.mailFolders,
+            title: 'Pastas do Gmail',
+            content:
+                'Ative Sincronizar pastas com o Gmail para aplicar Spam, Lixeira, Arquivar e Restaurar também na conta da instituição. As pastas dessas mensagens são compartilhadas. Estrelas, leitura e marcadores continuam pessoais. As mudanças feitas no Gmail são consultadas a cada minuto, em lotes.',
         },
         {
             id: 'settings-mail-test',

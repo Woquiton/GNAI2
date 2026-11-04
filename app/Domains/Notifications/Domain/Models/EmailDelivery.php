@@ -7,6 +7,8 @@ namespace App\Domains\Notifications\Domain\Models;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class EmailDelivery extends Model
 {
@@ -24,5 +26,17 @@ final class EmailDelivery extends Model
         'attempts' => 'integer',
         'last_attempt_at' => 'datetime',
         'sent_at' => 'datetime',
+        'received_at' => 'datetime',
+        'gmail_synced_at' => 'datetime',
     ];
+
+    public function mailboxStates(): HasMany
+    {
+        return $this->hasMany(EmailMailboxState::class);
+    }
+
+    public function inReplyTo(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'in_reply_to_id');
+    }
 }

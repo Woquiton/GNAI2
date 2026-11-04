@@ -16,6 +16,7 @@ final class ListTagsQuery
     public function execute(ListTagsData $filters): LengthAwarePaginator
     {
         $query = Tag::query();
+        $query->when($filters->module, fn ($query, $module) => $query->where('module', $module));
 
         if (filled($filters->name)) {
             $query->where('name', 'like', '%'.trim($filters->name).'%');
