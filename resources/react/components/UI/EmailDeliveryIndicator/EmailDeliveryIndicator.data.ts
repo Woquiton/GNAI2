@@ -6,6 +6,7 @@ export const emailDeliveryIcons: Record<EmailDeliveryStatus, string> = {
     queued: 'fa fa-clock-o',
     processing: 'fa fa-paper-plane',
     sent: 'fa fa-envelope',
+    bounced: 'fa fa-exclamation-triangle',
     failed: 'fa fa-exclamation-circle',
     unconfirmed: 'fa fa-question-circle',
     no_email: 'fa fa-ban',

@@ -2,8 +2,15 @@
 
 use App\Domains\Notifications\Application\Actions\Email\RecoverEmailResultsAction;
 use App\Domains\Settings\Application\Queries\GetBackupSettingsQuery;
+use App\Domains\Settings\Application\Queries\GetMailSettingsQuery;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('emails:process-gmail-bounces')
+    ->everyFiveMinutes()
+    ->when(fn (): bool => app(GetMailSettingsQuery::class)->execute()?->monitorsGmailBounces() ?? false)
+    ->withoutOverlapping(10)
+    ->description('Atualiza os e-mails rejeitados pelo Gmail');
 
 Schedule::call(fn () => app(RecoverEmailResultsAction::class)->execute())
     ->name('email-deliveries:recover-results')

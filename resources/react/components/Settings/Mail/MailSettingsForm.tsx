@@ -6,6 +6,7 @@ import { settingsCancelUrl } from '../Settings.routes';
 import { SETTINGS_TOUR_TARGETS } from '../settingsTours';
 import type { MailSettingsProps } from '../Settings.types';
 import MailConfigurationStatus from './MailConfigurationStatus';
+import MailBounceFields from './MailBounceFields';
 import MailSenderFields from './MailSenderFields';
 import MailServerFields from './MailServerFields';
 import MailTestSection from './MailTestSection';
@@ -26,6 +27,7 @@ export default function MailSettingsForm({
     transports,
     encryptions,
     canUpdate,
+    gmailBouncesAvailable,
 }: MailSettingsProps): React.JSX.Element {
     const state = useMailSettingsForm({ mail, canUpdate });
     const { form, testForm, formRef, save } = state;
@@ -52,6 +54,7 @@ export default function MailSettingsForm({
                         disabled={disabled}
                     />
                     <MailSenderFields form={form} />
+                    <MailBounceFields form={form} available={gmailBouncesAvailable} />
                     {canUpdate ? <MailTestSection state={state} /> : null}
                 </fieldset>
             </CardBox>

@@ -14,7 +14,7 @@
     cursor: help;
 }
 .emailDeliveryIndicator[data-status='sent'] {
-    color: var(--ui-color-success);
+    color: var(--ui-color-info-text);
 }
 .emailDeliveryIndicator:is(
     [data-status='queued'],
@@ -23,6 +23,10 @@
 ) {
     color: var(--ui-color-warning-strong);
 }
-.emailDeliveryIndicator:is([data-status='failed'], [data-status='no_email']) {
+.emailDeliveryIndicator:is(
+    [data-status='failed'],
+    [data-status='bounced'],
+    [data-status='no_email']
+) {
     color: var(--ui-color-danger);
 }

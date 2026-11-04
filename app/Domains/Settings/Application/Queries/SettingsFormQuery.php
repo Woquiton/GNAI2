@@ -44,6 +44,7 @@ final readonly class SettingsFormQuery
             ],
             'transports' => $this->options(MailTransport::cases()),
             'encryptions' => $this->options(MailEncryption::cases()),
+            'gmailBouncesAvailable' => extension_loaded('imap'),
         ];
     }
 

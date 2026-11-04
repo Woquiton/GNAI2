@@ -14,6 +14,8 @@ export default function EmailDeliveryIndicator({
     let description = email.label;
     if (email.status === 'sent') {
         description = `${email.label}${sentAt}. A mensagem foi aceita pelo serviço de e-mail; a chegada à caixa de entrada não é confirmada.`;
+    } else if (email.status === 'bounced') {
+        description = `${email.label}. O Gmail retornou uma rejeição definitiva para esta mensagem. Confira o endereço do destinatário. Não haverá reenvio automático.`;
     } else if (email.status === 'not_sent') {
         description = `${email.label}. O envio real pode estar desativado ou a mensagem foi interrompida.`;
     } else if (email.status === 'unconfirmed') {

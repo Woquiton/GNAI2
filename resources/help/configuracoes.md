@@ -42,6 +42,34 @@ A conta configurada em **E-mail** é usada em todos os e-mails que o Gnai envia,
 
 No início da tela, o quadro identifica a conta, o remetente e se a chave de aplicativo está cadastrada, sem mostrar a chave. A situação aparece como **Envio ainda não verificado**, **Envio confirmado no último teste** ou **Falha no último teste**, com a data e a hora da tentativa. O resultado corresponde ao último teste realizado.
 
+## Monitorar rejeições do Gmail
+
+Esta configuração vale para toda a instalação do Gnai e pode ser alterada por
+quem tem permissão para editar as configurações. Cada instituição usa a sua
+própria conta de envio.
+
+1. Em **Sistema → Configurações → E-mail**, escolha **SMTP** e o servidor
+   **Gmail / Google Workspace**. Preencha a conta completa em **Usuário de
+   autenticação** e sua **Chave de aplicativo**. A conta precisa permitir leitura
+   por IMAP com essa chave. No Google Workspace, confira a autorização com o
+   administrador da conta.
+2. Na seção **Rejeições do Gmail**, marque **Monitorar rejeições do Gmail**.
+3. Em **Pasta dos avisos de rejeição**, mantenha **INBOX** para ler a caixa de
+   entrada. Se um filtro move os avisos para outra pasta, informe essa pasta.
+4. Clique em **Salvar**. Para interromper a leitura, desmarque a opção e salve.
+
+O monitoramento usa a mesma conta e chave de aplicativo do envio, sem exigir
+outra senha. O Gnai consulta os avisos a cada cinco minutos, sem apagá-los ou
+marcá-los como lidos. Quando identifica uma rejeição definitiva associada ao
+envio original, o status muda para **E-mail não entregue**. Confira os resultados
+na [Central de E-mails](/ajuda/central-de-emails), usando **Atualizar**.
+
+Salvar a opção não verifica a conexão com a caixa do Gmail. O teste abaixo
+verifica o envio, não a leitura das rejeições. O responsável pela instalação
+precisa manter o agendador do sistema ativo e a extensão PHP IMAP disponível;
+se essa extensão faltar, a tela avisa e impede a ativação. Contas que exigem
+exclusivamente OAuth não são atendidas por este monitoramento.
+
 ## Enviar um e-mail de teste
 
 1. Salve a configuração antes de testar. O teste fica bloqueado enquanto houver alterações não salvas.

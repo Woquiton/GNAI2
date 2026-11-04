@@ -13,6 +13,7 @@ export const SETTINGS_TOUR_TARGETS = {
     mailStatus: 'settings-mail-status',
     mailServer: 'settings-mail-server',
     mailSender: 'settings-mail-sender',
+    mailBounces: 'settings-mail-bounces',
     mailTest: 'settings-mail-test',
     mailActions: 'settings-mail-actions',
     backupRetention: 'settings-backup-retention',
@@ -79,6 +80,15 @@ export const settingsMailTour: GuidedTourPageConfig = {
             content: [
                 'Informe o E-mail de envio e o Nome do remetente. É assim que as pessoas veem quem mandou a mensagem.',
                 'Muitos provedores só aceitam o endereço da própria conta como e-mail de envio.',
+            ],
+        },
+        {
+            id: 'settings-mail-bounces',
+            target: targets.mailBounces,
+            title: 'Rejeições do Gmail',
+            content: [
+                'Com uma conta Gmail / Google Workspace, marque Monitorar rejeições do Gmail e informe a pasta que recebe os avisos. A leitura usa a mesma conta e chave de aplicativo do envio.',
+                'Depois de salvar, o sistema consulta as rejeições a cada cinco minutos. A conta precisa permitir leitura por IMAP. Salvar não confirma a conexão; o teste de envio verifica apenas o envio.',
             ],
         },
         {

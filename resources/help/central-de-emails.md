@@ -34,7 +34,8 @@ cinco segundos. As consultas ficam suspensas quando a aba do navegador está ocu
 | --- | --- |
 | **E-mail na fila** | Aguarda processamento ou uma nova tentativa. |
 | **Enviando e-mail** | O serviço está processando a mensagem. |
-| **E-mail enviado** | O serviço aceitou a mensagem. Isso não confirma a chegada à caixa de entrada nem a leitura. |
+| **Aceito pelo servidor de envio** | O serviço aceitou a mensagem. Isso não confirma a chegada à caixa de entrada nem a leitura. |
+| **E-mail não entregue** | Foi processada uma rejeição definitiva do Gmail. Confira o endereço do destinatário. Não há reenvio automático. |
 | **Falha no envio do e-mail** | As tentativas se esgotaram ou houve falha ao colocar o envio na fila. |
 | **Beneficiário sem e-mail válido** | O destinatário não tinha um endereço válido no momento do registro. |
 | **E-mail não enviado** | O envio real estava desativado ou a mensagem foi interrompida. |
@@ -49,6 +50,22 @@ consulta e continuam restritos ao e-mail do destinatário.
 
 Os resultados pendentes também são atualizados automaticamente nessa tela.
 Clique em **Voltar** para retornar à Central de E-mails.
+
+Quando houver rejeição, os detalhes exibem o **Código da rejeição**. O código
+**5.1.1**, por exemplo, indica que o endereço do destinatário não existe.
+
+## Como as rejeições do Gmail são identificadas?
+
+A leitura dos avisos pode ser ativada por quem tem permissão para editar
+**Sistema → Configurações → E-mail**, na opção **Monitorar rejeições do Gmail**.
+Veja [como configurar](/ajuda/configuracoes#monitorar-rejeicoes-do-gmail).
+Quando ativa, o Gnai consulta esses avisos a cada cinco minutos e os associa ao
+envio original. A consulta não apaga mensagens nem as marca como lidas.
+
+Uma rejeição pode chegar depois do aceite inicial. Clique em **Atualizar** para
+consultar o resultado mais recente. Sem um aviso de rejeição associado, o aceite
+continua sem confirmar a entrega. Avisos que foram apagados, estão fora da pasta
+configurada ou têm mais de 30 dias não são processados.
 
 ## Conhecer a tela com o tutorial
 

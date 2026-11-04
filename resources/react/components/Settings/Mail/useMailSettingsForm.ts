@@ -14,6 +14,8 @@ export interface MailSettingsFormData {
     password: string;
     from_address: string;
     from_name: string;
+    gmail_bounces_enabled: boolean;
+    gmail_bounces_folder: string;
 }
 
 const FAILURE_TEXT = 'Não foi possível concluir a operação. Atualize a página e tente novamente.';
@@ -28,6 +30,8 @@ function initialData(mail: MailSettingsProps['mail']): MailSettingsFormData {
         password: '',
         from_address: mail.from_address,
         from_name: mail.from_name,
+        gmail_bounces_enabled: mail.gmail_bounces_enabled,
+        gmail_bounces_folder: mail.gmail_bounces_folder,
     };
 }
 

@@ -71,7 +71,8 @@ A dica identifica a qual confirmação o ícone se refere.
 | --- | --- |
 | **E-mail na fila** | A confirmação aguarda processamento ou uma nova tentativa. |
 | **Enviando e-mail** | O serviço está processando a entrega. |
-| **E-mail enviado** | O serviço de envio aceitou a mensagem. A dica inclui a data e hora. Isso não confirma a chegada à caixa de entrada ou a leitura. |
+| **Aceito pelo servidor de envio** | O serviço de envio aceitou a mensagem. A dica inclui a data e hora. Isso não confirma a chegada à caixa de entrada ou a leitura. |
+| **E-mail não entregue** | Uma rejeição definitiva do Gmail foi processada. Confira o endereço do destinatário. Não há reenvio automático. |
 | **Falha no envio do e-mail** | Não foi possível colocar a confirmação na fila ou as tentativas de entrega se esgotaram. |
 | **Beneficiário sem e-mail válido** | O cadastro não tinha um endereço válido no momento do registro. |
 | **E-mail não enviado** | O envio real estava desativado, em modo de registro em log, ou a mensagem foi interrompida. |

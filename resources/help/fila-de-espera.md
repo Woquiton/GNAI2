@@ -64,7 +64,8 @@ Na primeira coluna da tabela, sem título visível, passe o mouse ou use o tecla
 para focar o ícone. A dica explica a situação do e-mail de confirmação do cadastro:
 
 - **E-mail na fila** ou **Enviando e-mail**: o envio está pendente ou em processamento.
-- **E-mail enviado**: o serviço aceitou a mensagem; a dica mostra a data e hora. Isso não confirma a chegada à caixa de entrada ou a leitura.
+- **Aceito pelo servidor de envio**: o serviço aceitou a mensagem; a dica mostra a data e hora. Isso não confirma a chegada à caixa de entrada ou a leitura.
+- **E-mail não entregue**: uma rejeição definitiva do Gmail foi processada. Confira o endereço do destinatário. Não há reenvio automático.
 - **Falha no envio do e-mail**: houve falha no enfileiramento ou as tentativas se esgotaram.
 - **Beneficiário sem e-mail válido**: o cadastro não tinha um endereço válido.
 - **E-mail não enviado**: o envio real estava desativado ou a mensagem foi interrompida.

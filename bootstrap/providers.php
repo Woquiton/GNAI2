@@ -4,6 +4,7 @@ use App\Domains\Audit\Infrastructure\Providers\AuditServiceProvider;
 use App\Domains\Auth\Infrastructure\Providers\AuthServiceProvider;
 use App\Domains\Backup\Infrastructure\Providers\BackupServiceProvider;
 use App\Domains\Inclusion\Infrastructure\Providers\InclusionServiceProvider;
+use App\Domains\Notifications\Infrastructure\Providers\NotificationsServiceProvider;
 use App\Domains\Reporting\Infrastructure\Providers\ReportingServiceProvider;
 use App\Domains\Settings\Infrastructure\Providers\SettingsServiceProvider;
 use App\Domains\Website\Infrastructure\Providers\WebsiteServiceProvider;
@@ -15,6 +16,7 @@ return [
     AuthServiceProvider::class,
     BackupServiceProvider::class,
     InclusionServiceProvider::class,
+    NotificationsServiceProvider::class,
     ReportingServiceProvider::class,
     SettingsServiceProvider::class,
     WebsiteServiceProvider::class,

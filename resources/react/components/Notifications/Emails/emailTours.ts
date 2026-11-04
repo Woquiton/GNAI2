@@ -35,7 +35,7 @@ export const emailDetailsTour: GuidedTourPageConfig = {
             id: 'tracking',
             target: EMAIL_TOUR_TARGETS.tracking,
             title: 'Resultado do envio',
-            content: 'Consulte o destinatário, a origem, as tentativas e as datas do envio. O aceite pelo serviço não confirma a leitura da mensagem.',
+            content: 'Consulte o destinatário, a origem, as tentativas e as datas do envio. O aceite pelo serviço não confirma a entrega. Quando uma rejeição do Gmail é processada, o status passa a E-mail não entregue e o código da rejeição aparece aqui.',
         },
         {
             id: 'content',

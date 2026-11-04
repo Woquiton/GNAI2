@@ -21,6 +21,8 @@ final readonly class MailSettings
         public string $fromName,
         public ?MailTestStatus $testStatus = null,
         public ?string $lastTestedAt = null,
+        public bool $gmailBouncesEnabled = false,
+        public string $gmailBouncesFolder = 'INBOX',
     ) {}
 
     /**
@@ -39,6 +41,8 @@ final readonly class MailSettings
             fromName: (string) ($payload['from_name'] ?? ''),
             testStatus: MailTestStatus::tryFrom((string) ($payload['test_status'] ?? '')),
             lastTestedAt: self::nullableString($payload['last_tested_at'] ?? null),
+            gmailBouncesEnabled: (bool) ($payload['gmail_bounces_enabled'] ?? false),
+            gmailBouncesFolder: (string) ($payload['gmail_bounces_folder'] ?? 'INBOX'),
         );
     }
 
@@ -59,7 +63,15 @@ final readonly class MailSettings
             'from_name' => $this->fromName,
             'test_status' => $this->testStatus?->value,
             'last_tested_at' => $this->lastTestedAt,
+            'gmail_bounces_enabled' => $this->gmailBouncesEnabled,
+            'gmail_bounces_folder' => $this->gmailBouncesFolder,
         ];
+    }
+
+    public function monitorsGmailBounces(): bool
+    {
+        return $this->gmailBouncesEnabled && $this->transport === MailTransport::SMTP
+            && strtolower((string) $this->host) === 'smtp.gmail.com';
     }
 
     /**

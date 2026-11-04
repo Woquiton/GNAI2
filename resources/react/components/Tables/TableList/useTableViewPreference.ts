@@ -38,7 +38,7 @@ export function useTableViewPreference() {
         function remember(): void {
             router.replaceProp<ViewPreferencePageProps>(
                 'tablePreferences.viewMode',
-                (old, current) =>
+                (old: TableListViewMode | undefined, current: ViewPreferencePageProps) =>
                     current.tablePreferences?.route === key && current.auth?.user?.id === userId
                         ? next
                         : old,

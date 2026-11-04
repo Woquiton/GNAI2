@@ -33,6 +33,7 @@ export interface EmailIndexProps {
 
 export interface EmailDetails extends EmailRecord {
     last_attempt_at_label: string | null;
+    bounce_status: string | null;
     content: {
         greeting: string | null;
         paragraphs: string[];

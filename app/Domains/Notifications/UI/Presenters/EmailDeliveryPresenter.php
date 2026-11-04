@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Notifications\UI\Presenters;
 
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryContext;
+use App\Domains\Notifications\Domain\Enums\EmailDeliveryStatus;
 use App\Domains\Notifications\Domain\Enums\EmailPurpose;
 use App\Domains\Notifications\Domain\Models\EmailDelivery;
 
@@ -45,10 +46,16 @@ final class EmailDeliveryPresenter
         if (! is_string($greeting) && is_string($payload['beneficiaryName'] ?? null)) {
             $greeting = 'Olá, '.$payload['beneficiaryName'].'.';
         }
+        $bounceStatus = null;
+        if ($delivery->status === EmailDeliveryStatus::BOUNCED
+            && preg_match('/^dsn:(5\.\d{1,3}\.\d{1,3})$/D', (string) $delivery->error_type, $match)) {
+            $bounceStatus = $match[1];
+        }
 
         return [
             ...$this->record($delivery),
             'last_attempt_at_label' => $delivery->last_attempt_at?->format('d/m/Y H:i'),
+            'bounce_status' => $bounceStatus,
             // Não expor o payload inteiro: os avisos de autenticação contêm tokens de acesso.
             'content' => [
                 'greeting' => is_string($greeting) ? $greeting : null,

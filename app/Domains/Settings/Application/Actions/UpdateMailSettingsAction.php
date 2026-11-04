@@ -34,6 +34,8 @@ final readonly class UpdateMailSettingsAction
             password: $password,
             fromAddress: $data->fromAddress,
             fromName: $data->fromName,
+            gmailBouncesEnabled: $data->gmailBouncesEnabled,
+            gmailBouncesFolder: $data->gmailBouncesFolder,
         );
 
         Setting::store(SettingCategory::MAIL, [

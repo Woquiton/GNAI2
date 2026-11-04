@@ -15,13 +15,15 @@ use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mime\Email;
 use Throwable;
 
-final class SendEmailAction
+final readonly class SendEmailAction
 {
     public function __construct(
-        private readonly EmailDeliveryReceiptStore $receipts,
-        private readonly RecordEmailResultAction $recordResult,
+        private EmailDeliveryReceiptStore $receipts,
+        private RecordEmailResultAction $recordResult,
+        private MailSettingsConfigurator $mailSettings,
     ) {}
 
     public function execute(string $deliveryId): void
@@ -37,6 +39,7 @@ final class SendEmailAction
             $delivery = EmailDelivery::query()->find($deliveryId);
             if ($delivery === null || in_array($delivery->status, [
                 EmailDeliveryStatus::SENT,
+                EmailDeliveryStatus::BOUNCED,
                 EmailDeliveryStatus::NO_EMAIL,
                 EmailDeliveryStatus::NOT_SENT,
                 EmailDeliveryStatus::FAILED,
@@ -58,14 +61,23 @@ final class SendEmailAction
             ]);
             try {
                 Mail::getFacadeRoot();
-                app(MailSettingsConfigurator::class)->apply();
+                $this->mailSettings->apply();
                 Mail::purge();
                 $mailer = Mail::mailer();
                 $transport = $mailer->getSymfonyTransport();
                 $realDelivery = ! ($transport instanceof LogTransport || $transport instanceof ArrayTransport);
-                $message = $mailer->to($delivery->recipient_email, $delivery->recipient_name)->sendNow(new TransactionalEmail(
+                $domain = substr(strrchr((string) config('mail.from.address'), '@') ?: '@gnai.local', 1);
+                $messageId = $delivery->id.'@'.$domain;
+                // Persistir antes do transporte permite correlacionar até uma rejeição imediata.
+                $delivery->update(['message_id' => $messageId]);
+                $email = new TransactionalEmail(
                     $delivery->subject, $delivery->view, $delivery->text_view, $delivery->payload,
-                ));
+                );
+                $email->withSymfonyMessage(function (Email $message) use ($messageId): void {
+                    $message->getHeaders()->removeAll('Message-ID');
+                    $message->getHeaders()->addIdHeader('Message-ID', $messageId);
+                });
+                $message = $mailer->to($delivery->recipient_email, $delivery->recipient_name)->sendNow($email);
             } catch (Throwable $exception) {
                 try {
                     $delivery->update([

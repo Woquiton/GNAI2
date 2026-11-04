@@ -3,6 +3,7 @@ export type EmailDeliveryStatus =
     | 'queued'
     | 'processing'
     | 'sent'
+    | 'bounced'
     | 'failed'
     | 'unconfirmed'
     | 'no_email'

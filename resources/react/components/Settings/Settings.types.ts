@@ -14,10 +14,13 @@ export interface MailSettingsProps {
         has_application_key: boolean;
         test_status: 'success' | 'failed' | null;
         last_tested_at: string | null;
+        gmail_bounces_enabled: boolean;
+        gmail_bounces_folder: string;
     };
     transports: SettingsOptions;
     encryptions: SettingsOptions;
     canUpdate: boolean;
+    gmailBouncesAvailable: boolean;
 }
 
 export interface BackupSettingsValues {

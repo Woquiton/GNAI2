@@ -6,6 +6,9 @@ RUN apk add --no-cache \
     $PHPIZE_DEPS \
     unzip \
     icu-dev \
+    imap-dev \
+    krb5-dev \
+    openssl-dev \
     libjpeg-turbo-dev \
     libpng-dev \
     libwebp-dev \
@@ -16,12 +19,14 @@ RUN apk add --no-cache \
     sqlite-dev \
     zlib-dev
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" \
         bcmath \
         exif \
         gd \
         intl \
+        imap \
         mbstring \
         opcache \
         pcntl \
@@ -68,6 +73,8 @@ WORKDIR /var/www
 
 RUN apk add --no-cache \
     icu-libs \
+    c-client \
+    krb5-libs \
     libjpeg-turbo \
     libpng \
     libwebp \

@@ -50,6 +50,9 @@ export default function EmailDetails({ email }: { email: EmailDetailsRecord }): 
                     <DetailField label="Enviado em">
                         {email.delivery.sent_at_label || 'Sem envio confirmado'}
                     </DetailField>
+                    {email.bounce_status ? (
+                        <DetailField label="Código da rejeição">{email.bounce_status}</DetailField>
+                    ) : null}
                 </DetailGrid>
                 <InlineAlert variant="info">{emailStatusDescriptions[email.delivery.status]}</InlineAlert>
             </FormSection>

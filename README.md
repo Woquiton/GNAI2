@@ -330,6 +330,59 @@ subiu — comece verificando se o container `app` está com status `healthy`.
 
 ## Tarefas comuns depois que o sistema já está no ar
 
+### Processar rejeições de e-mail do Gmail
+
+O Gnai pode ler os avisos técnicos de falha do Gmail por IMAP e atualizar o
+histórico para **E-mail não entregue**. O aceite SMTP aparece como **Aceito pelo
+servidor de envio** e não confirma a entrega ou leitura. O processamento não
+reenvia a mensagem, não apaga avisos e não os marca como lidos.
+
+1. Na conta remetente, use verificação em duas etapas e uma **senha de app**.
+   A conta precisa permitir autenticação IMAP com essa senha. Em Google
+   Workspace, confira as políticas com o administrador. Contas que exigem
+   exclusivamente OAuth não são atendidas por esta integração.
+2. Em **Sistema → Configurações → E-mail**, selecione **SMTP**, o servidor
+   **Gmail / Google Workspace** e cadastre a conta remetente e sua chave de
+   aplicativo. Na seção **Rejeições do Gmail**, marque **Monitorar rejeições do
+   Gmail** e salve. A ativação vale para a instalação e respeita as permissões
+   existentes das configurações. Não depende de variáveis extras no `.env`.
+   A leitura usa a mesma conta e senha criptografada do envio.
+3. A **Pasta dos avisos de rejeição** é **INBOX** por padrão. Mantenha os avisos
+   nessa pasta ou cadastre a pasta IMAP usada pelos seus filtros. O servidor é fixo:
+   `imap.gmail.com:993`, com TLS e validação de certificado.
+4. Antes da ativação, reconstrua a imagem PHP e recrie os serviços conforme as instruções de
+   atualização abaixo. O Dockerfile inclui a extensão IMAP; fora do Docker,
+   instale essa extensão no PHP que executa o agendador. Recarregue também o
+   cache de configuração caso seja usado no ambiente. A tela impede a ativação
+   se o PHP da aplicação não tiver IMAP. O PHP do agendador também precisa dessa
+   extensão. Depois da preparação, cada instalação configura o monitoramento
+   pela interface, sem alterar arquivos do servidor.
+5. Com o agendador ativo, a consulta ocorre a cada cinco minutos. Para executar
+   uma consulta manual no ambiente, use `php artisan emails:process-gmail-bounces`.
+
+Para desativar, desmarque **Monitorar rejeições do Gmail** e salve. Salvar as
+configurações não testa a conexão IMAP. O botão **Enviar teste** verifica apenas
+o envio SMTP; homologue a leitura com um aviso real e o comando acima.
+
+O processamento consulta avisos estruturados `multipart/report` do subsistema de
+entrega do Gmail, dos últimos 30 dias, em lotes de até 100 avisos por execução.
+O cursor é separado por conta, pasta e UIDVALIDITY; perder o cache pode repetir
+a leitura, mas não o envio. Apenas rejeições definitivas (`Action: failed`,
+status `5.x.x`) são registradas. Avisos de atraso não são tratados como falha
+definitiva. A associação exige o `Message-ID` original e o destinatário do
+registro; mensagens sem essa correspondência são ignoradas. Isso também permite
+associar avisos anteriores à integração quando o identificador já foi registrado.
+O corpo original e o diagnóstico livre do aviso não são persistidos; somente o
+código técnico da rejeição fica no histórico. Não é confirmação de entrega.
+
+Na homologação manual, confira um envio válido e um endereço inexistente, espere
+o retorno do Gmail e execute a consulta. O segundo registro deve passar para
+**E-mail não entregue**, com o código da rejeição nos detalhes. Execute novamente
+para conferir que o resultado se mantém e nenhum e-mail é reenviado. Na Central,
+use **Atualizar** para consultar uma rejeição que chegou depois do aceite.
+
+### Operações de manutenção
+
 Estas são as operações mais usadas no dia a dia, depois do primeiro deploy:
 
 **Aplicar uma mudança de código** (depois de atualizar os arquivos no
