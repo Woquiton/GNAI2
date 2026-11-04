@@ -38,7 +38,7 @@ Para cadastrar:
 1. Acesse **Gestão do núcleo → Cadastros → Etiquetas** e clique em **Cadastrar etiqueta**.
 2. Preencha **Nome da Etiqueta** (obrigatório, até 100 caracteres e sem repetir outra do mesmo módulo).
 3. Em **Módulo**, selecione **Publicações** ou **Inbox**.
-4. Em **Cor**, abra a paleta pelo conta-gotas ou digite o código no formato **#RRGGBB**.
+4. Em **Cor**, abra a paleta pelo botão com a amostra da cor, ao lado do campo, ou digite o código no formato **#RRGGBB**.
 5. Deixe **Etiqueta Ativa** marcada para disponibilizar novas aplicações no módulo escolhido.
 6. Clique em **Cadastrar**.
 

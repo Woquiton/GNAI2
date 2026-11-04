@@ -5,33 +5,70 @@
     align-items: center;
     gap: var(--ui-space-2);
 }
-.colorPicker > .textInput:not([type='color']) {
+/* Campo e botão colados, como o "As Component" do Ubold. */
+.colorPicker > .inputAction {
     flex: 1;
     min-width: 0;
 }
-.colorPicker__swatch {
-    width: var(--ui-space-6);
-    height: var(--ui-space-6);
-    border: 1px solid var(--ui-color-input-border);
-    border-radius: var(--ui-radius-sm);
+.colorPicker > .inputAction .textInput {
+    flex: 1;
 }
+.colorPicker .colorPicker__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+}
+/* O btn-white do Ubold não muda de cor nem tem onda ao passar o ponteiro ou clicar. */
+.colorPicker .colorPicker__trigger:is(:hover, :focus, :active) {
+    border-color: var(--ui-color-border-control);
+    background-color: var(--ui-color-surface);
+    box-shadow: none;
+}
+.colorPicker__swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+/* Paleta no menu suspenso do Ubold: fundo branco, sem borda e com sombra leve. */
 .colorPicker .colorPicker__palette {
     position: absolute;
     top: 100%;
-    left: 0;
+    right: 0;
+    left: auto;
     z-index: 1000;
-    padding: var(--ui-space-3);
-    margin-top: var(--ui-space-2);
-    border: 1px solid var(--ui-color-input-border);
-    border-radius: var(--ui-radius-sm);
-    background: var(--ui-color-surface);
-    box-shadow: var(--ui-shadow-card);
+    margin: 2px 0 0;
+    padding: 4px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
 }
 .colorPicker .colorPicker__palette.colorpicker-hidden {
     display: none;
 }
 .colorPicker .colorPicker__palette.colorpicker-visible {
     display: block;
+    animation: colorPickerIn 300ms ease;
+}
+/* Seta centralizada no botão da amostra (16px de amostra + 12px de respiro de cada lado). */
+.colorPicker .colorPicker__palette.colorpicker-right::before {
+    right: 14px;
+}
+.colorPicker .colorPicker__palette.colorpicker-right::after {
+    right: 15px;
+}
+/* Entrada do menu suspenso do Ubold: sobe de baixo enquanto aparece. */
+@keyframes colorPickerIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 .colorPicker__fallback {
     flex-basis: 100%;

@@ -61,7 +61,7 @@ function tagFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
             group,
             title: 'Cor',
             content:
-                'Abra a paleta pelo conta-gotas ou digite uma cor no formato #RRGGBB. A cor identifica o marcador na lateral e nas mensagens da Inbox.',
+                'Abra a paleta pelo botão com a amostra da cor, ao lado do campo, ou digite uma cor no formato #RRGGBB. A cor identifica o marcador na lateral e nas mensagens da Inbox.',
         },
         {
             id: 'tag-active',

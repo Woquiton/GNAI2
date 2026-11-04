@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import InputAction from '@/components/Forms/InputAction/InputAction';
 import TextInput from '@/components/Forms/TextInput/TextInput';
 import Button from '@/components/UI/Button/Button';
 import { loadExternalScript } from '@/utils/loadExternalScript';
@@ -12,6 +13,21 @@ interface PickerCollection {
         handler: (event: { color?: { toHex: () => string } }) => void,
     ) => PickerCollection;
     off: (events: string) => PickerCollection;
+}
+
+const DEFAULT_COLOR = '#322b75';
+
+/** Lê a cor enquanto é digitada: com ou sem "#", em 3 ou 6 dígitos hexadecimais. */
+function parseHexColor(value: string): string | null {
+    const digits = value.trim().replace(/^#/, '').toLowerCase();
+    if (/^[0-9a-f]{6}$/.test(digits)) return `#${digits}`;
+    if (/^[0-9a-f]{3}$/.test(digits)) {
+        return `#${digits
+            .split('')
+            .map((digit) => digit + digit)
+            .join('')}`;
+    }
+    return null;
 }
 
 export default function ColorPicker({
@@ -41,7 +57,11 @@ export default function ColorPicker({
     const [ready, setReady] = useState(false);
     const [loadFailed, setLoadFailed] = useState(false);
     const [open, setOpen] = useState(false);
-    const validColor = /^#[0-9a-f]{6}$/i.test(value) ? value : '#322b75';
+    const parsedColor = parseHexColor(value);
+    // Enquanto o código está incompleto, a amostra e a paleta mantêm a última cor válida.
+    const [lastColor, setLastColor] = useState(parsedColor ?? DEFAULT_COLOR);
+    if (parsedColor && parsedColor !== lastColor) setLastColor(parsedColor);
+    const validColor = parsedColor ?? lastColor;
 
     useEffect(() => {
         let disposed = false;
@@ -70,6 +90,8 @@ export default function ColorPicker({
                 input: false,
                 component: false,
                 container: host.current,
+                // Abre para a esquerda, com a seta do lado direito, apontando para o botão colado.
+                align: 'right',
                 customClass: 'colorPicker__palette',
             });
             initialized = true;
@@ -145,9 +167,34 @@ export default function ColorPicker({
         host.current?.querySelector<HTMLButtonElement>('.colorPicker__trigger')?.focus();
     }
 
+    // Modelo "As Component" do Ubold: botão branco colado ao campo, com a amostra da cor dentro.
+    const trigger = (
+        <Button
+            className="colorPicker__trigger"
+            tone="white"
+            iconOnly
+            showIcon={false}
+            waves={false}
+            title={`Escolher ${label.toLowerCase()}`}
+            aria-label={`Escolher ${label.toLowerCase()}`}
+            aria-expanded={open}
+            aria-controls={ready ? `${id}-palette` : undefined}
+            disabled={disabled || !ready}
+            onMouseDown={(event) => event.stopPropagation()}
+            onKeyDown={closeOnEscape}
+            onClick={() => picker.current?.colorpicker(open ? 'hide' : 'show')}
+        >
+            <i
+                className="colorPicker__swatch"
+                style={{ backgroundColor: validColor }}
+                aria-hidden="true"
+            />
+        </Button>
+    );
+
     return (
         <div ref={host} className="colorPicker" role="group" aria-label={`Seletor: ${label}`}>
-            <TextInput
+            <InputAction
                 id={id}
                 name={name}
                 value={value}
@@ -157,28 +204,18 @@ export default function ColorPicker({
                 autoComplete="off"
                 aria-label={label}
                 aria-describedby={describedBy}
-                placeholder="#322b75"
+                placeholder={DEFAULT_COLOR}
                 onChange={(event) => onChange(event.target.value)}
+                onBlur={() => {
+                    // Completa o formato aceito pelo servidor (#rrggbb) ao sair do campo.
+                    if (parsedColor && parsedColor !== value) onChange(parsedColor);
+                }}
                 onKeyDown={closeOnEscape}
-            />
-            <span
-                className="colorPicker__swatch"
-                style={{ backgroundColor: validColor }}
-                aria-hidden="true"
-            />
-            <Button
-                className="colorPicker__trigger"
-                tone="white"
-                iconOnly
-                leftIconClass="fa fa-eyedropper"
-                title={`Escolher ${label.toLowerCase()}`}
-                aria-label={`Escolher ${label.toLowerCase()}`}
-                aria-expanded={open}
-                aria-controls={ready ? `${id}-palette` : undefined}
-                disabled={disabled || !ready}
-                onMouseDown={(event) => event.stopPropagation()}
-                onKeyDown={closeOnEscape}
-                onClick={() => picker.current?.colorpicker(open ? 'hide' : 'show')}
+                onClick={() => {
+                    // Como no Ubold, clicar no campo também abre a paleta.
+                    if (ready && !disabled && !open) picker.current?.colorpicker('show');
+                }}
+                button={trigger}
             />
             {loadFailed ? (
                 <>

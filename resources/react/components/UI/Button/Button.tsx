@@ -84,6 +84,9 @@ type ButtonAsButtonProps = ButtonCommonProps & {
     href?: undefined;
     type?: 'button' | 'submit' | 'reset';
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    /** Teclado e ponteiro de botões que controlam painéis (Esc, abertura sem perder o foco). */
+    onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
+    onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 export type ButtonProps = ButtonAsAnchorProps | ButtonAsButtonProps;
@@ -260,6 +263,8 @@ export default function Button(props: ButtonProps): React.JSX.Element {
             aria-controls={props['aria-controls']}
             aria-pressed={props['aria-pressed']}
             onClick={props.onClick}
+            onKeyDown={props.onKeyDown}
+            onMouseDown={props.onMouseDown}
         >
             {content}
         </button>
