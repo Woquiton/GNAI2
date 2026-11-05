@@ -40,11 +40,14 @@ O campo **Usuário Autenticado (Responsável)** mostra quem está registrando o 
 
 ## Receber a confirmação por e-mail
 
-Após a gravação do empréstimo, o Gnai prepara uma confirmação para o e-mail do
+Quando a confirmação de empréstimo está ativada em
+[E-mails automáticos](/ajuda/configuracoes#escolher-os-e-mails-automaticos),
+após a gravação do empréstimo, o Gnai prepara uma confirmação para o e-mail do
 beneficiário, aluno ou profissional, informado no cadastro de pessoa. A mensagem
 contém o número do empréstimo, beneficiário, item, tipo, patrimônio quando houver,
 data de saída, responsável pelo registro e previsão de devolução.
 
+Com o evento desativado, não é criado registro de envio para a operação.
 O envio ocorre em segundo plano. Se o beneficiário não tiver um e-mail válido ou
 houver falha no envio, o empréstimo continua registrado, com a baixa de estoque e
 o atendimento da fila de espera preservados. Não cadastre o mesmo empréstimo
@@ -129,7 +132,8 @@ A data da devolução é o momento do registro. O Gnai define o status do empré
 
 ### Receber a confirmação de devolução por e-mail
 
-Quando o beneficiário é um aluno, após a devolução ser gravada o Gnai prepara um
+Quando a confirmação de devolução está ativada em **Configurações → E-mails automáticos**
+e o beneficiário é um aluno, após a devolução ser gravada o Gnai prepara um
 e-mail para o endereço informado no cadastro de pessoa. A mensagem usa o mesmo
 modelo visual da confirmação de empréstimo e mostra o número do empréstimo, item,
 patrimônio quando houver, datas de saída, prazo e devolução, situação da devolução

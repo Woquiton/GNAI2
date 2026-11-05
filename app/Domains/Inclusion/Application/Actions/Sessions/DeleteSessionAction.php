@@ -18,7 +18,7 @@ final readonly class DeleteSessionAction
     /**
      * @throws Throwable
      */
-    public function execute(Session $session, int $userId, bool $sendNotification = false): void
+    public function execute(Session $session, int $userId): void
     {
         $session->ensureCreatedBy($userId, 'excluí-la');
 
@@ -38,7 +38,7 @@ final readonly class DeleteSessionAction
             return $notificationSession ?? null;
         });
 
-        if ($sendNotification && $cancelledSession !== null) {
+        if ($cancelledSession !== null) {
             $this->notifications->send(
                 $cancelledSession,
                 'session_deleted',

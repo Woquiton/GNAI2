@@ -70,14 +70,12 @@ final readonly class UpdateSessionAction
             return $lockedSession->fresh(['students.person', 'professional.person', 'aeeRecord', 'pedagogicalRecord']);
         });
 
-        if ($data->sendNotification) {
-            $this->notifications->send(
-                $updatedSession,
-                'session_updated',
-                'Agendamento de Atendimento Atualizado',
-                'Houve uma alteração nos detalhes do seu agendamento.',
-            );
-        }
+        $this->notifications->send(
+            $updatedSession,
+            'session_updated',
+            'Agendamento de Atendimento Atualizado',
+            'Houve uma alteração nos detalhes do seu agendamento.',
+        );
 
         return $updatedSession;
     }

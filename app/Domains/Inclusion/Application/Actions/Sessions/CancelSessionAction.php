@@ -36,14 +36,12 @@ final readonly class CancelSessionAction
             return $lockedSession->fresh(['students.person', 'professional.person', 'aeeRecord', 'pedagogicalRecord']);
         });
 
-        if ($data->sendNotification) {
-            $this->notifications->send(
-                $cancelledSession,
-                'session_cancelled',
-                'Agendamento Cancelado',
-                "Informamos que o seu agendamento foi cancelado. Motivo: {$data->cancellationReason}",
-            );
-        }
+        $this->notifications->send(
+            $cancelledSession,
+            'session_cancelled',
+            'Agendamento Cancelado',
+            "Informamos que o seu agendamento foi cancelado. Motivo: {$data->cancellationReason}",
+        );
 
         return $cancelledSession;
     }

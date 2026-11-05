@@ -10,6 +10,13 @@ export const settingsCategories = [
         iconClass: 'fa fa-envelope',
     },
     {
+        key: 'automatic-emails',
+        component: 'Settings/AutomaticEmails',
+        label: 'E-mails automáticos',
+        href: settingsUrls.automaticEmails,
+        iconClass: 'fa fa-paper-plane',
+    },
+    {
         key: 'backup',
         component: 'Settings/Backup',
         label: 'Backups',

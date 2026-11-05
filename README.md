@@ -624,6 +624,35 @@ O teste de Configurações usa `SendEmailNowAction`: registra por
 síncrona, para preservar o diagnóstico imediato, o modo de log e os erros de SMTP.
 Os demais consumidores usam `QueueEmailAction`, que compartilha esse registro.
 
+### Parâmetros de envio automático e conexão da fila
+
+Em **Configurações → E-mails automáticos** (`/configuracoes/emails-automaticos`),
+quem possui `setting.update` escolhe os eventos que geram avisos para todas as
+próximas operações. A leitura exige `setting.view`. Os valores ficam na categoria
+`automatic_emails` da tabela `settings`, sem nova migration. Criação, atualização,
+cancelamento e exclusão de agendamentos começam desativados; confirmações de
+empréstimo/devolução e inscrição/disponibilidade na fila de espera mantêm o padrão
+ativado. Os campos `send_notification` foram removidos dos contratos de agendamentos.
+
+`EmailQueueHandler` consulta o parâmetro depois do commit, antes de registrar a
+mensagem. Eventos desativados não criam entrega. A configuração vale no momento
+da preparação; mudanças não cancelam jobs existentes nem geram avisos retroativos.
+Recuperação de senha, acesso do professor, mensagens manuais e o teste de envio
+não dependem desses parâmetros. As restrições de destinatários e de datas dos
+módulos continuam valendo.
+
+`SendEmailDelivery` usa `queue.email_connection`, definido por
+`MAIL_QUEUE_CONNECTION=database` por padrão, independentemente de `QUEUE_CONNECTION`.
+São aceitos os drivers persistentes `database`, `redis`, `beanstalkd` e `sqs`.
+Conexões síncronas, descartáveis ou com fallback para execução local são rejeitadas;
+a falha é rastreada sem executar SMTP na requisição e sem reverter a operação.
+Os Compose de desenvolvimento e produção já possuem o serviço `queue`; seu
+entrypoint consome essa mesma conexão. Em instalações fora do Compose, use
+`php artisan queue:work database --sleep=3 --tries=3` ou substitua `database` pela
+conexão configurada em `MAIL_QUEUE_CONNECTION`. Após publicar, atualize o cache
+de configuração em uso e reinicie o worker. O teste de envio das Configurações
+continua síncrono para apresentar o diagnóstico imediato.
+
 Aplique a migration `2026_11_03_170000_create_email_deliveries_table.php` e mantenha
 o worker da fila atualizado após publicar mudanças no código. Não é necessário
 adicionar colunas de e-mail em cada tabela de negócio. Os estados, tentativas,

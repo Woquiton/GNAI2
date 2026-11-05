@@ -87,7 +87,7 @@ final readonly class CreateSessionAction
             }
         }
 
-        if ($data->sendNotification && ! $session->sessionDateHasPassed()) {
+        if (! $session->sessionDateHasPassed()) {
             $this->notifications->send(
                 $session,
                 'session_created',

@@ -31,7 +31,6 @@ final class UpdateSessionData extends Data
         public string $location,
         public string $sessionObjective,
         public ?string $status = null,
-        public bool $sendNotification = false,
     ) {}
 
     public static function rules(): array
@@ -48,7 +47,6 @@ final class UpdateSessionData extends Data
             'location' => ['required', 'string', 'max:255'],
             'session_objective' => ['required', 'string'],
             'status' => ['sometimes', 'nullable', Rule::in(array_keys(SessionStatus::options()))],
-            'send_notification' => ['sometimes', 'boolean'],
         ];
     }
 

@@ -159,7 +159,7 @@ export const sessionCreateTour: GuidedTourPageConfig = {
         {
             ...FORM_ACTIONS_STEP,
             content: [
-                'Clique em Salvar para gravar. Para datas de hoje em diante, o sistema pergunta se você quer avisar os participantes por e-mail.',
+                'Clique em Salvar para gravar. Os avisos aos participantes seguem as opções de Configurações, na aba E-mails automáticos. Criações com datas passadas não geram aviso.',
                 'Cancelar volta para a agenda sem salvar.',
             ],
         },
@@ -195,7 +195,7 @@ export const sessionEditTour: GuidedTourPageConfig = {
         {
             ...FORM_ACTIONS_STEP,
             content: [
-                'Clique em Salvar para gravar. O sistema pergunta se você quer avisar os participantes por e-mail sobre a mudança.',
+                'Clique em Salvar para gravar. O aviso aos participantes sobre a mudança segue a opção definida em Configurações, na aba E-mails automáticos.',
                 'Cancelar volta para o agendamento sem salvar.',
             ],
         },

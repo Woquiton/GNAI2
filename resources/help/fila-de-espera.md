@@ -40,7 +40,9 @@ O campo **Usuário Responsável pelo Registro** mostra quem está registrando a 
 
 ## Receber a confirmação de entrada na fila
 
-Após cadastrar a solicitação, o Gnai prepara uma confirmação para o e-mail do
+Quando o aviso de inscrição está ativado em
+[E-mails automáticos](/ajuda/configuracoes#escolher-os-e-mails-automaticos),
+após cadastrar a solicitação, o Gnai prepara uma confirmação para o e-mail do
 beneficiário, aluno ou profissional, informado no cadastro de pessoa. A mensagem
 usa o mesmo modelo visual do comprovante por e-mail de empréstimo e apresenta:
 
@@ -53,6 +55,7 @@ A mensagem confirma somente a entrada na fila. Ela não significa que um emprés
 foi realizado e não promete uma data de retirada. O aviso de disponibilidade é
 outro e-mail, enviado quando a pessoa for chamada para o item disponível.
 
+Com o evento desativado, não é criado registro de envio para a operação.
 O envio ocorre depois da gravação, em segundo plano, com até três tentativas.
 Sem e-mail válido ou em caso de falha, a solicitação continua cadastrada. Não
 repita o cadastro porque a confirmação não chegou. Editar a solicitação não envia
@@ -155,7 +158,8 @@ A visualização e as colunas complementares da lista mostram **Notificado em**,
 
 ## Receber o aviso de disponibilidade por e-mail
 
-Quando um item volta a ficar disponível e a primeira pessoa da fila é chamada,
+Quando o aviso de disponibilidade está ativado em **Configurações → E-mails automáticos**,
+um item volta a ficar disponível e a primeira pessoa da fila é chamada,
 o Gnai prepara um e-mail para o beneficiário, usando o endereço do cadastro de
 pessoa. A mensagem identifica o item e orienta a procurar a equipe do núcleo.
 O aviso não registra um empréstimo nem garante a retirada.

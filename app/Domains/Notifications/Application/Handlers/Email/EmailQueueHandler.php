@@ -9,18 +9,28 @@ use App\Domains\Notifications\Domain\DTOs\EmailMessageDTO;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryStatus;
 use App\Domains\Notifications\Domain\Models\EmailDelivery;
 use App\Domains\Notifications\Infrastructure\Jobs\SendEmailDelivery;
+use App\Domains\Settings\Application\Queries\GetAutomaticEmailSettingsQuery;
+use App\Domains\Settings\Domain\ValueObjects\AutomaticEmailSettings;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 final readonly class EmailQueueHandler
 {
-    public function __construct(private RegisterEmailAction $register) {}
+    public function __construct(
+        private RegisterEmailAction $register,
+        private GetAutomaticEmailSettingsQuery $automaticEmails,
+    ) {}
 
     public function enqueue(EmailMessageDTO $message): void
     {
         $delivery = null;
         try {
+            if (array_key_exists($message->purpose, AutomaticEmailSettings::defaults())
+                && ! $this->automaticEmails->execute()->allows($message->purpose)) {
+                return;
+            }
+
             $delivery = $this->register->execute($message);
             if (! $delivery->wasRecentlyCreated || $delivery->status !== EmailDeliveryStatus::QUEUED) {
                 return;

@@ -46,7 +46,7 @@ Os filtros valem para as duas abas: **Dia de referência**, **Aluno**, **Profess
 5. Informe a **Data do Agendamento**, o horário de **Início** e, se quiser, o de **Fim**.
 6. Confira a seção **Disponibilidade do Dia** (veja abaixo).
 7. Em **Detalhes do Atendimento**, informe o **Local** e o **Objetivo do Agendamento**.
-8. Clique em **Salvar**. Para datas de hoje em diante, o sistema pergunta "Deseja enviar um e-mail aos participantes sobre este agendamento?": escolha **Salvar e Enviar E-mail**, **Salvar sem E-mail** ou **Voltar** para continuar editando.
+8. Clique em **Salvar**. O aviso por e-mail segue a opção de criação definida em **Configurações → E-mails automáticos**.
 9. O sistema abre o agendamento e mostra "Agendamento criado com sucesso.".
 
 | Campo | Observação |
@@ -55,13 +55,15 @@ Os filtros valem para as duas abas: **Dia de referência**, **Aluno**, **Profess
 | **Formato** (obrigatório) | Individual ou Grupo. |
 | **Profissional** (obrigatório) | Precisa estar ativo e ter permissão para registrar o tipo de atendimento escolhido. |
 | **Alunos Participantes** (obrigatório) | Ao menos um aluno; no atendimento pedagógico, exatamente um. |
-| **Data do Agendamento** (obrigatório) | Datas passadas são aceitas e salvas sem a pergunta sobre o e-mail. |
+| **Data do Agendamento** (obrigatório) | Datas passadas são aceitas e não geram aviso de criação por e-mail. |
 | **Início** (obrigatório) | Horários de 30 em 30 minutos, das 08:00 às 11:30 e das 14:00 às 16:30. |
 | **Fim** | Se ficar em branco, o sistema considera uma hora após o início. |
 | **Local** (obrigatório) | Até 255 caracteres. |
 | **Objetivo do Agendamento** (obrigatório) | Texto livre com formatação. |
 
-O e-mail é enviado aos alunos e ao profissional que tenham e-mail cadastrado.
+Quando o evento está ativado em [E-mails automáticos](/ajuda/configuracoes#escolher-os-e-mails-automaticos),
+o e-mail é preparado para os alunos e o profissional. Endereços ausentes ou
+inválidos ficam registrados como **Beneficiário sem e-mail válido** na Inbox.
 Os avisos de criação, alteração, cancelamento e exclusão são enviados em segundo
 plano, com até três tentativas. Uma falha de envio não desfaz a operação no
 agendamento. A mensagem apresenta os detalhes, como data, horário, local, tipo
@@ -79,7 +81,7 @@ Somente quem criou o agendamento pode editá-lo, e apenas enquanto o status for 
 
 1. Abra o agendamento e clique em **Editar** no rodapé.
 2. Os participantes, o tipo de atendimento e o formato aparecem apenas para consulta. Altere a data, o horário, o local ou o objetivo.
-3. Clique em **Salvar** e responda se deseja avisar os participantes por e-mail sobre as alterações.
+3. Clique em **Salvar**. O aviso aos participantes segue a opção de atualização definida em **Configurações → E-mails automáticos**.
 4. O sistema mostra "Agendamento atualizado com sucesso.".
 
 Para trocar o profissional, os alunos ou o tipo de atendimento, cancele o agendamento e crie outro.
@@ -90,15 +92,14 @@ O cancelamento mantém o agendamento na agenda com o status **Cancelada** e o mo
 
 1. Abra o agendamento e clique em **Cancelar Agendamento**.
 2. Informe o **Motivo do Cancelamento** (obrigatório, com ao menos 5 caracteres).
-3. Se quiser, marque **Enviar e-mail de aviso aos participantes**.
-4. Clique em **Confirmar cancelamento**. O sistema mostra "Agendamento cancelado com sucesso.". Se você pediu o aviso, o envio é processado em segundo plano.
+3. Clique em **Confirmar cancelamento**. O sistema mostra "Agendamento cancelado com sucesso.". Quando o aviso de cancelamento está ativado em **Configurações → E-mails automáticos**, o envio é processado em segundo plano.
 
 ## Excluir um agendamento
 
 Somente quem criou o agendamento pode excluí-lo. A ação está no rodapé do agendamento, na listagem e na janela do dia do calendário.
 
 1. Clique em **Excluir**. A janela **Excluir Agendamento** pergunta "Mover este agendamento para a lixeira?".
-2. Se o agendamento ainda estiver **Agendada**, é possível marcar **Enviar e-mail de aviso aos participantes**; nesse caso ele é cancelado automaticamente antes da exclusão.
+2. Se o agendamento ainda estiver **Agendada**, ele é cancelado automaticamente antes da exclusão. O aviso aos participantes segue a opção de exclusão definida em **Configurações → E-mails automáticos**.
 3. Clique em **Confirmar exclusão**. O agendamento sai da agenda e o sistema mostra "Agendamento removido com sucesso.".
 
 ## Registrar o atendimento a partir do agendamento

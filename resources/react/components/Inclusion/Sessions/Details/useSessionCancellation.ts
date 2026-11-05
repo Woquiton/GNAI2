@@ -4,10 +4,10 @@ import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmissi
 import { sessionCancelFailureText } from '../Sessions.constants';
 import { sessionUrls } from '../Sessions.routes';
 
-/** Cancelamento do agendamento (`POST cancelar`) com motivo e aviso opcional por e-mail. */
+/** Cancelamento do agendamento (`POST cancelar`) com motivo obrigatório. */
 export function useSessionCancellation(sessionId: number, blocked: boolean) {
     const [isOpen, setOpen] = useState(false);
-    const form = useForm({ cancellation_reason: '', send_notification: false });
+    const form = useForm({ cancellation_reason: '' });
     const submission = useFormSubmission(form);
 
     function open(): void {
@@ -31,10 +31,6 @@ export function useSessionCancellation(sessionId: number, blocked: boolean) {
             url: sessionUrls.cancel(sessionId),
             blocked,
             failureText: sessionCancelFailureText,
-            transform: () => ({
-                ...form.data,
-                send_notification: form.data.send_notification ? 1 : 0,
-            }),
             options: {
                 onSuccess: () => {
                     setOpen(false);

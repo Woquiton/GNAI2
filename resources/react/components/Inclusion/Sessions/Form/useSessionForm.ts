@@ -1,11 +1,9 @@
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
 import { useEditorFailure } from '@/components/Forms/FormLayout/useEditorFailure';
 import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import {
     GROUP_SESSION,
     INDIVIDUAL_SESSION,
-    localDate,
     PEDAGOGICAL_ATTENDANCE,
     sessionSaveFailureText,
 } from '../Sessions.constants';
@@ -46,14 +44,10 @@ function initialData(props: SessionFormProps): SessionFormData {
     };
 }
 
-/**
- * Estado, linhas de alunos, ajustes de horário e envio do agendamento. O envio passa antes pela
- * escolha do aviso por e-mail (`send_notification`), exceto no cadastro de datas passadas.
- */
+/** Estado, linhas de alunos, ajustes de horário e envio do agendamento. */
 export function useSessionForm(props: SessionFormProps) {
     const session = props.mode === 'edit' ? props.session : undefined;
     const editing = props.mode === 'edit';
-    const [confirmOpen, setConfirmOpen] = useState(false);
     const form = useForm<SessionFormData>(initialData(props));
     const submission = useFormSubmission(form);
     const { editorFailed, reportEditorFailure } = useEditorFailure(form);
@@ -89,7 +83,7 @@ export function useSessionForm(props: SessionFormProps) {
         }));
     }
 
-    function save(sendNotification?: boolean): void {
+    function save(): void {
         submission.submit({
             url: session ? sessionUrls.update(session.id) : sessionUrls.store,
             method: session ? 'put' : 'post',
@@ -110,10 +104,6 @@ export function useSessionForm(props: SessionFormProps) {
                     payload.status = session.status;
                 }
 
-                if (sendNotification !== undefined) {
-                    payload.send_notification = sendNotification;
-                }
-
                 return payload;
             },
         });
@@ -126,27 +116,11 @@ export function useSessionForm(props: SessionFormProps) {
             return;
         }
 
-        // Paridade com o legado: no cadastro, datas passadas são salvas sem perguntar
-        // sobre o e-mail; na edição, a escolha é sempre solicitada.
-        if (!editing && form.data.session_date < localDate()) {
-            save();
-            return;
-        }
-
-        setConfirmOpen(true);
-    }
-
-    function chooseNotification(sendNotification: boolean): void {
-        setConfirmOpen(false);
-        save(sendNotification);
+        save();
     }
 
     function reportObjectiveEditorFailure(): void {
         reportEditorFailure('session_objective', 'objetivo do agendamento');
-    }
-
-    function closeConfirmation(): void {
-        setConfirmOpen(false);
     }
 
     return {
@@ -158,7 +132,6 @@ export function useSessionForm(props: SessionFormProps) {
         rowKeys: studentRows.rowKeys,
         isPedagogical,
         canAddStudents,
-        confirmOpen,
         editorFailed,
         reportObjectiveEditorFailure,
         changeAttendanceType,
@@ -167,8 +140,6 @@ export function useSessionForm(props: SessionFormProps) {
         removeStudent: studentRows.remove,
         changeStartTime,
         handleSubmit,
-        chooseNotification,
-        closeConfirmation,
     };
 }
 

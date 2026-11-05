@@ -22,8 +22,9 @@ final class SessionNotificationSender
             $session->loadMissing(['students.person', 'professional.person']);
             $people = $session->students->map(fn ($student) => $student->person);
             $people->push($session->professional?->person);
-            $recipients = $people->filter(fn ($person) => filled($person?->email))
-                ->unique(fn ($person) => Str::lower(trim($person->email)));
+            $recipients = $people->filter(fn ($person) => $person !== null)
+                ->unique(fn ($person) => filled($person->email)
+                    ? Str::lower(trim($person->email)) : 'person:'.$person->getKey());
             $eventId = (string) Str::uuid();
             $objective = html_entity_decode(
                 trim(strip_tags($session->session_objective ?? '')),
@@ -32,12 +33,13 @@ final class SessionNotificationSender
             );
 
             foreach ($recipients as $person) {
-                $email = trim($person->email);
+                $email = trim((string) $person->email);
+                $recipientKey = $email !== '' ? Str::lower($email) : 'person:'.$person->getKey();
                 $this->queueEmail->execute(new EmailMessageDTO(
                     contextType: 'session',
                     contextId: (int) $session->getKey(),
                     purpose: $purpose,
-                    deduplicationKey: 'session:'.$eventId.':'.hash('sha256', Str::lower($email)),
+                    deduplicationKey: 'session:'.$eventId.':'.hash('sha256', $recipientKey),
                     recipientEmail: $email,
                     recipientName: $person->name,
                     subject: $subject,

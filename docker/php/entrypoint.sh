@@ -149,7 +149,7 @@ if [ "${ROLE}" = "scheduler" ]; then
 fi
 
 if [ "${ROLE}" = "queue" ]; then
-    exec php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    exec php artisan queue:work "${MAIL_QUEUE_CONNECTION:-database}" --sleep=3 --tries=3 --max-time=3600
 fi
 
 exec "$@"

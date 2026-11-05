@@ -234,7 +234,6 @@ final class SessionController
         $action->execute(
             session: $session,
             userId: (int) $request->user()?->getAuthIdentifier(),
-            sendNotification: $request->boolean('send_notification'),
         );
 
         return redirect()

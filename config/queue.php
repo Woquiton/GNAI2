@@ -15,6 +15,9 @@ return [
 
     'default' => env('QUEUE_CONNECTION', 'database'),
 
+    // E-mails sempre usam um backend persistente, independente da fila geral.
+    'email_connection' => env('MAIL_QUEUE_CONNECTION', 'database'),
+
     /*
     |--------------------------------------------------------------------------
     | Queue Connections

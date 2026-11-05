@@ -11,6 +11,7 @@ namespace App\Domains\Settings\Domain\Enums;
 enum SettingCategory: string
 {
     case MAIL = 'mail';
+    case AUTOMATIC_EMAILS = 'automatic_emails';
     case PDF = 'pdf';
     case BACKUP = 'backup';
     case TEACHER_ACCESS = 'teacher_access';

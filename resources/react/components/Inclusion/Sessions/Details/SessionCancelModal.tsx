@@ -1,4 +1,3 @@
-import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import { TextAreaField } from '@/components/Forms/FormFields/FormFields';
 import { FormStack } from '@/components/Forms/FormGrid/FormGrid';
 import ConfirmActionModal from '@/components/UI/ConfirmActionModal/ConfirmActionModal';
@@ -8,7 +7,7 @@ interface SessionCancelModalProps {
     cancellation: SessionCancellation;
 }
 
-/** Confirmação do cancelamento com motivo obrigatório e aviso opcional por e-mail. */
+/** Confirmação do cancelamento com motivo obrigatório. */
 export default function SessionCancelModal({
     cancellation,
 }: SessionCancelModalProps): React.JSX.Element {
@@ -26,16 +25,6 @@ export default function SessionCancelModal({
                 error={form.errors.cancellation_reason}
                 disabled={form.processing}
                 onChange={(value) => form.setData('cancellation_reason', value)}
-            />
-            <ChoiceControl
-                type="checkbox"
-                tone="purple"
-                id="session-cancel-send-notification"
-                name="send_notification"
-                label="Enviar e-mail de aviso aos participantes"
-                checked={form.data.send_notification}
-                disabled={form.processing}
-                onChange={(checked) => form.setData('send_notification', checked)}
             />
         </FormStack>
     );

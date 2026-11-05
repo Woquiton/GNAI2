@@ -17,6 +17,12 @@ Route::put('/email', [SettingsController::class, 'updateMail'])
 Route::post('/email/teste', [SettingsController::class, 'sendTestMail'])
     ->name('mail.test')->middleware('can:setting.update');
 
+Route::get('/emails-automaticos', [SettingsController::class, 'editAutomaticEmails'])
+    ->name('automatic-emails.edit')->middleware('can:setting.view');
+
+Route::put('/emails-automaticos', [SettingsController::class, 'updateAutomaticEmails'])
+    ->name('automatic-emails.update')->middleware('can:setting.update');
+
 Route::get('/backups', [SettingsController::class, 'editBackup'])
     ->name('backup.edit')->middleware('can:setting.view');
 

@@ -13,6 +13,16 @@ mensagens pela conta de envio da instituição. A consulta exige
 permissão de visualização de e-mails; escrever, salvar rascunhos e enviar exigem
 também a permissão de envio.
 
+## Escolher quais avisos são enviados automaticamente
+
+Os avisos de agendamentos, empréstimos e fila de espera seguem as opções de
+[Configurações → E-mails automáticos](/ajuda/configuracoes#escolher-os-e-mails-automaticos).
+Quando um evento está desativado, a operação é salva sem preparar mensagem e
+sem criar registro na Inbox. Quando está ativado, o envio ocorre em segundo
+plano e suas tentativas e falhas ficam no histórico. Uma falha não desfaz a
+operação de origem. Mensagens escritas na Inbox e links de acesso não dependem
+dessas opções.
+
 ## Consultar os e-mails
 
 1. Abra **Sistema → Inbox**.

@@ -1,5 +1,14 @@
 export type SettingsOptions = Record<string, string>;
 
+export interface AutomaticEmailSettingsProps {
+    events: Record<string, boolean>;
+    groups: {
+        label: string;
+        options: { value: string; label: string }[];
+    }[];
+    canUpdate: boolean;
+}
+
 export interface MailSettingsProps {
     configured: boolean;
     mail: {

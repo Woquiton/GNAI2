@@ -29,7 +29,6 @@ final class CreateSessionData extends Data
         public SessionType $type,
         public string $location,
         public string $sessionObjective,
-        public bool $sendNotification = false,
     ) {}
 
     public static function rules(): array
@@ -45,7 +44,6 @@ final class CreateSessionData extends Data
             'type' => ['required', Rule::enum(SessionType::class)],
             'location' => ['required', 'string', 'max:255'],
             'session_objective' => ['required', 'string'],
-            'send_notification' => ['sometimes', 'boolean'],
         ];
     }
 

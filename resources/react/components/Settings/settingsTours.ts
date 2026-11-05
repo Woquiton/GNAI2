@@ -8,6 +8,8 @@ import type { settingsCategories } from './Settings.constants';
 /** Valores de `data-tour` das partes das telas de configuração. */
 export const SETTINGS_TOUR_TARGETS = {
     mailFolders: 'settings-mail-folders',
+    automaticEmailEvents: 'settings-automatic-email-events',
+    automaticEmailActions: 'settings-automatic-email-actions',
     tabs: 'settings-tabs',
     sessionTimeouts: 'settings-session-timeouts',
     sessionActions: 'settings-session-actions',
@@ -36,7 +38,7 @@ const tabsStep: GuidedTourStep = {
     target: targets.tabs,
     title: 'Categorias de configuração',
     content: [
-        'As configurações ficam separadas em abas: E-mail, Backups, Acesso dos professores, PDFs e Segurança e sessões.',
+        'As configurações ficam separadas em abas: E-mail, E-mails automáticos, Backups, Acesso dos professores, PDFs e Segurança e sessões.',
         'Clique no nome de uma aba para abrir a categoria. Cada aba tem o seu próprio botão Salvar.',
     ],
 };
@@ -117,6 +119,23 @@ export const settingsMailTour: GuidedTourPageConfig = {
             ],
         },
         actionsStep('settings-mail-actions', targets.mailActions, 'a configuração de e-mail'),
+    ],
+};
+
+export const settingsAutomaticEmailsTour: GuidedTourPageConfig = {
+    helpHref: helpUrls.show(HELP_SLUG, 'escolher-os-e-mails-automaticos'),
+    steps: [
+        tabsStep,
+        {
+            id: 'automatic-email-events',
+            target: targets.automaticEmailEvents,
+            title: 'E-mails automáticos',
+            content: [
+                'Ative os avisos de agendamentos, empréstimos e fila de espera que devem ser enviados automaticamente. A escolha vale para todas as próximas operações do evento selecionado.',
+                'O envio acontece em segundo plano. Se houver falha, a operação continua salva e você pode consultar a situação na Inbox. As opções não alteram links de acesso, recuperação de senha ou mensagens escritas na Inbox.',
+            ],
+        },
+        actionsStep('automatic-email-actions', targets.automaticEmailActions, 'os e-mails automáticos'),
     ],
 };
 
@@ -211,6 +230,7 @@ type SettingsCategoryKey = (typeof settingsCategories)[number]['key'];
 /** Tutorial de cada aba de configuração, escolhido pelo layout compartilhado. */
 export const settingsTours: Record<SettingsCategoryKey, GuidedTourPageConfig> = {
     mail: settingsMailTour,
+    'automatic-emails': settingsAutomaticEmailsTour,
     backup: settingsBackupTour,
     'teacher-access': settingsTeacherAccessTour,
     pdf: settingsPdfTour,

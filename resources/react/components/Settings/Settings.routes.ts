@@ -7,6 +7,7 @@ export const settingsUrls = {
     index: base,
     sessionSecurity: `${base}/seguranca-e-sessoes`,
     mail: `${base}/email`,
+    automaticEmails: `${base}/emails-automaticos`,
     pdf: `${base}/pdfs`,
     mailTest: `${base}/email/teste`,
     backup: `${base}/backups`,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\UI\Controllers;
 
+use App\Domains\Settings\Application\Actions\UpdateAutomaticEmailSettingsAction;
+use App\Domains\Settings\Application\Data\UpdateAutomaticEmailSettingsData;
 use App\Domains\Settings\Application\Actions\SendTestMailAction;
 use App\Domains\Settings\Application\Actions\UpdateSessionSecuritySettingsAction;
 use App\Domains\Settings\Application\Data\UpdateSessionSecuritySettingsData;
@@ -47,6 +49,24 @@ final class SettingsController
         return redirect()
             ->route('settings.mail.edit')
             ->with('success', 'Configurações de e-mail salvas com sucesso. Os próximos envios usarão estes dados.');
+    }
+
+    public function editAutomaticEmails(SettingsFormQuery $form, Request $request): InertiaResponse
+    {
+        return Inertia::render('Settings/AutomaticEmails', [
+            ...$form->forAutomaticEmails(),
+            'canUpdate' => $request->user()?->can('setting.update') === true,
+        ]);
+    }
+
+    public function updateAutomaticEmails(
+        UpdateAutomaticEmailSettingsData $data,
+        UpdateAutomaticEmailSettingsAction $action,
+    ): RedirectResponse {
+        $action->execute($data);
+
+        return redirect()->route('settings.automatic-emails.edit')
+            ->with('success', 'Configurações de e-mails automáticos salvas com sucesso.');
     }
 
     /**

@@ -61,8 +61,6 @@ export default function SessionList({
             <SessionDeleteModal
                 session={removal.target}
                 processing={removal.processing}
-                sendNotification={removal.sendNotification}
-                onSendNotificationChange={removal.setSendNotification}
                 onClose={removal.close}
                 onConfirm={removal.confirm}
             />

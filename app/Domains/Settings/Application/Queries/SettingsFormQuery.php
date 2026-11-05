@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Settings\Application\Queries;
 
+use App\Domains\Notifications\Domain\Enums\EmailPurpose;
 use App\Domains\Notifications\Infrastructure\Mail\GmailImapClient;
 use App\Domains\Settings\Domain\Enums\BackupRetentionMode;
 use App\Domains\Settings\Domain\Enums\MailEncryption;
@@ -21,6 +22,7 @@ final readonly class SettingsFormQuery
         private GetBackupSettingsQuery $backupSettings,
         private GetPdfHeaderSettingsQuery $pdfHeaderSettings,
         private PdfHeaderLogoStorage $pdfLogoStorage,
+        private GetAutomaticEmailSettingsQuery $automaticEmails,
     ) {}
 
     /**
@@ -47,6 +49,32 @@ final readonly class SettingsFormQuery
             'encryptions' => $this->options(MailEncryption::cases()),
             'gmailBouncesAvailable' => extension_loaded('imap'),
             'gmailFoldersAvailable' => GmailImapClient::available(),
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    public function forAutomaticEmails(): array
+    {
+        $groups = [
+            'Agendamentos' => [
+                EmailPurpose::SESSION_CREATED,
+                EmailPurpose::SESSION_UPDATED,
+                EmailPurpose::SESSION_CANCELLED,
+                EmailPurpose::SESSION_DELETED,
+            ],
+            'Empréstimos' => [EmailPurpose::LOAN_CONFIRMATION, EmailPurpose::LOAN_RETURNED],
+            'Fila de espera' => [EmailPurpose::WAITLIST_REGISTERED, EmailPurpose::WAITLIST_AVAILABLE],
+        ];
+
+        return [
+            'events' => $this->automaticEmails->execute()->events,
+            'groups' => collect($groups)->map(fn (array $purposes, string $label): array => [
+                'label' => $label,
+                'options' => array_map(fn (EmailPurpose $purpose): array => [
+                    'value' => $purpose->value,
+                    'label' => $purpose->label(),
+                ], $purposes),
+            ])->values(),
         ];
     }
 

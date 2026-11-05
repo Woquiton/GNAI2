@@ -8,6 +8,7 @@ use App\Domains\Notifications\Application\Actions\Email\FailEmailDeliveryAction;
 use App\Domains\Notifications\Application\Actions\Email\SendEmailAction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use LogicException;
 use Throwable;
 
 final class SendEmailDelivery implements ShouldQueue
@@ -20,6 +21,13 @@ final class SendEmailDelivery implements ShouldQueue
 
     public function __construct(public string $deliveryId)
     {
+        $connection = (string) config('queue.email_connection', 'database');
+        $driver = config('queue.connections.'.$connection.'.driver');
+        if (! in_array($driver, ['database', 'redis', 'beanstalkd', 'sqs'], true)) {
+            throw new LogicException('O envio de e-mails exige uma conexão de fila persistente e assíncrona.');
+        }
+
+        $this->onConnection($connection);
         $this->afterCommit();
     }
 

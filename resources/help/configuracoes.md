@@ -1,21 +1,50 @@
 ---
 titulo: Configurações
-resumo: Como configurar e-mails, backups, acesso de professores, cabeçalho dos PDFs e os prazos de bloqueio e encerramento das sessões.
+resumo: Como configurar o envio e os avisos automáticos por e-mail, backups, acesso de professores, PDFs e os prazos das sessões.
 categoria: Sistema
 palavras-chave: configurações, configuracoes, ajustes, preferências do sistema, e-mail, email, smtp, servidor de e-mail, porta, 587, 465, starttls, ssl, tls, gmail, chave de app, chave de aplicativo, outlook, hotmail, microsoft 365, yahoo, zoho, hostinger, locaweb, remetente, e-mail de envio, testar e-mail, e-mail de teste, e-mails não chegam, recuperação de senha, backup automático, horário do backup, retenção, quantos backups manter, apagar backups antigos, tutorial, tour, segurança, sessões, inatividade, bloqueio, lock screen, logout automático
 ordem: 10
 permissoes: setting.view
 ---
 
-Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **Backups**, **Acesso dos professores**, **PDFs** e **Segurança e sessões**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
+Em **Sistema → Configurações** ficam os ajustes gerais da instalação do Gnai, organizados em abas: **E-mail**, **E-mails automáticos**, **Backups**, **Acesso dos professores**, **PDFs** e **Segurança e sessões**. Quem só tem permissão de consulta vê os valores atuais, mas não pode alterá-los.
 
 ## Conhecer as configurações com o tutorial
 
-As abas **E-mail**, **Backups**, **Acesso dos professores**, **PDFs** e **Segurança e sessões** têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra as abas de configuração, cada seção do formulário da aba aberta e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
+As abas **E-mail**, **E-mails automáticos**, **Backups**, **Acesso dos professores**, **PDFs** e **Segurança e sessões** têm um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra as abas de configuração, cada seção do formulário da aba aberta e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Para que serve a configuração de e-mail?
 
 A conta configurada em **E-mail** é usada em todos os e-mails que o Gnai envia, como o link de redefinição de senha, o link de acesso dos professores e os avisos de agendamentos enviados aos alunos e ao profissional. Enquanto nada for salvo nesta tela, o sistema usa a configuração definida na instalação do servidor.
+
+## Escolher os e-mails automáticos
+
+1. Abra **Sistema → Configurações → E-mails automáticos**.
+2. Ative ou desative cada evento:
+   - **Agendamentos**: criação, atualização, cancelamento e exclusão;
+   - **Empréstimos**: confirmação de empréstimo e confirmação de devolução;
+   - **Fila de espera**: inscrição e disponibilidade de item.
+3. Clique em **Salvar**. O sistema mostra "Configurações de e-mails automáticos salvas com sucesso.".
+
+A escolha vale para todas as próximas operações daquele evento. Não há mais
+escolha individual de e-mail ao salvar, cancelar ou excluir um agendamento.
+O cadastro de agendamentos com data passada continua sem aviso de criação.
+A confirmação de devolução continua sendo enviada somente para alunos.
+
+Na primeira configuração, os avisos de agendamentos começam desativados. Os
+avisos de empréstimos e fila de espera começam ativados, mantendo o padrão
+anterior. Desativar um evento não cancela mensagens já preparadas nem remove
+seu histórico. Ativar um evento não envia avisos de operações antigas.
+
+Os avisos são enviados em segundo plano, com até três tentativas. Uma falha no
+envio, uma configuração incompleta ou a ausência de endereço válido não impede
+salvar o agendamento, o empréstimo ou a solicitação. Consulte a situação e as
+falhas na [Inbox](/ajuda/central-de-emails). Um evento desativado não cria
+registro de envio.
+
+As opções não desativam a recuperação de senha, os links de acesso dos
+professores, as mensagens escritas na Inbox ou o teste de envio. A conta de
+envio continua sendo definida na aba **E-mail**.
 
 ## Configurar o envio de e-mails
 
