@@ -17,7 +17,7 @@ final class InertiaPagesTest extends TestCase
     {
         $this->withoutVite();
 
-        $response = $this->get('/auth/login');
+        $response = $this->get(route('login'));
 
         $response->assertOk()
             ->assertInertia(fn (Assert $page) => $page->component('Auth/Login')->where('auth.user', null))
@@ -32,7 +32,7 @@ final class InertiaPagesTest extends TestCase
         $this->withoutVite();
         $user = User::factory()->create(['is_admin' => true]);
 
-        $response = $this->actingAs($user)->get('/specialized-educational-support/students');
+        $response = $this->actingAs($user)->get(route('specialized-educational-support.students.index'));
 
         $response->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Students/Index')
@@ -46,15 +46,15 @@ final class InertiaPagesTest extends TestCase
     {
         $this->withoutVite();
 
-        $this->from('/auth/login')->post('/auth/login', [])->assertRedirect('/auth/login');
+        $this->from(route('login'))->post(route('login'), [])->assertRedirect(route('login'));
 
-        $this->get('/auth/login')->assertInertia(fn (Assert $page) => $page
+        $this->get(route('login'))->assertInertia(fn (Assert $page) => $page
             ->has('errors.email')
             ->has('errors.password')
         );
 
         $this->withSession(['success' => '</script><script>alert(1)</script>', 'warning' => 'Atenção'])
-            ->get('/auth/login')
+            ->get(route('login'))
             ->assertInertia(fn (Assert $page) => $page
                 ->where('flash.success', '</script><script>alert(1)</script>')
                 ->where('flash.warning', 'Atenção')
@@ -67,7 +67,7 @@ final class InertiaPagesTest extends TestCase
     {
         $this->withoutVite();
         $this->actingAs(User::factory()->create(['is_admin' => true]));
-        $url = '/inclusive-radar/barriers';
+        $url = route('inclusive-radar.barriers.index');
         $initial = $this->get($url)->assertOk();
 
         $response = $this->get($url.'?search=teste', [

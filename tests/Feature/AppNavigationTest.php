@@ -22,7 +22,7 @@ final class AppNavigationTest extends TestCase
     {
         $this->withoutVite();
 
-        $this->get('/auth/login')->assertOk()->assertInertia(fn (Assert $page) => $page
+        $this->get(route('login'))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->where('navigation.entries', [])
             ->where('topbar', null)
             ->where('impersonating', false)
@@ -34,7 +34,7 @@ final class AppNavigationTest extends TestCase
         $this->withoutVite();
         $this->actingAs(User::factory()->create(['is_admin' => true]));
 
-        $response = $this->get('/inclusive-radar/institutions');
+        $response = $this->get(route('inclusive-radar.institutions.index'));
 
         $response->assertOk()->assertInertia(fn (Assert $page) => $page
             ->where('navigation.currentItemKey', 'institutions')
@@ -54,7 +54,7 @@ final class AppNavigationTest extends TestCase
                     'Sistema',
                 ], $entries->pluck('title')->filter()->values()->all());
                 self::assertContains('institutions', array_column($registrations['children'] ?? [], 'key'));
-                self::assertSame('/auth/dashboard', $links->firstWhere('key', 'dashboard')['href']);
+                self::assertSame('/autenticacao/painel', $links->firstWhere('key', 'dashboard')['href']);
                 foreach (['reports', 'backups', 'audit', 'settings', 'website'] as $adminOnly) {
                     self::assertNotNull($links->firstWhere('key', $adminOnly), $adminOnly);
                 }
@@ -80,7 +80,7 @@ final class AppNavigationTest extends TestCase
         $professional->position->permissions()->sync($ids);
         $user = User::factory()->create(['is_admin' => false, 'professional_id' => $professional->id]);
 
-        $this->actingAs($user)->get('/notifications')->assertOk()->assertInertia(fn (Assert $page) => $page
+        $this->actingAs($user)->get(route('notifications.index', absolute: false))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->where('navigation.entries', function ($entries): bool {
                 $items = collect($entries)->filter(fn ($entry) => isset($entry['href']))->keyBy('key');
                 self::assertSame([
@@ -90,6 +90,7 @@ final class AppNavigationTest extends TestCase
                     'aee-records',
                     'pedagogical-records',
                     'notifications',
+                    'help',
                     'about',
                 ], $items->keys()->all());
                 self::assertNull(collect($entries)->firstWhere('key', 'registrations'));
@@ -112,19 +113,19 @@ final class AppNavigationTest extends TestCase
             $owner->notifications()->create([
                 'id' => (string) Str::uuid(),
                 'type' => 'test',
-                'data' => ['title' => $title, 'message' => 'Mensagem', 'url' => '/notifications'],
+                'data' => ['title' => $title, 'message' => 'Mensagem', 'url' => route('notifications.index', absolute: false)],
                 'read_at' => $readAt,
             ]);
         }
 
-        $this->actingAs($user)->withSession(['impersonator_id' => $other->id])->get('/notifications')
+        $this->actingAs($user)->withSession(['impersonator_id' => $other->id])->get(route('notifications.index', absolute: false))
             ->assertOk()->assertInertia(fn (Assert $page) => $page
             ->where('impersonating', true)
             ->where('topbar.unreadCount', 1)
             ->where('topbar.institutionName', 'Instituição do Gnai')
             ->has('topbar.notifications', 1)
             ->where('topbar.notifications.0.title', 'Minha notificação')
-            ->where('topbar.notifications.0.href', '/notifications')
+            ->where('topbar.notifications.0.href', route('notifications.index', absolute: false))
             ->has('auth.user.photo_url')
             ->missing('auth.user.password')
             );

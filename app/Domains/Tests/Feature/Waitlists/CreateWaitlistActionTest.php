@@ -11,6 +11,8 @@ use App\Domains\Domain\Models\Items\Item;
 use App\Domains\Domain\Enums\Loans\LoanStatus;
 use App\Domains\Domain\Exceptions\Loans\InvalidLoanableResource;
 use App\Domains\Domain\Models\Loans\Loan;
+use App\Domains\Domain\Enums\Students\StudentStatus;
+use App\Domains\Domain\Exceptions\Students\InvalidStudent;
 use App\Domains\Domain\Models\Students\Student;
 use App\Domains\Application\Actions\Waitlists\CreateWaitlistAction;
 use App\Domains\Application\Data\Waitlists\CreateWaitlistData;
@@ -27,7 +29,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_creates_a_waiting_waitlist_for_an_item_without_stock(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = $this->item(quantityAvailable: 0);
 
         $waitlist = app(CreateWaitlistAction::class)->execute(
@@ -52,7 +54,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_creates_a_waitlist_when_item_status_blocks_loans(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = $this->item(quantityAvailable: 1, status: ResourceStatus::UNDER_MAINTENANCE);
 
         $waitlist = app(CreateWaitlistAction::class)->execute(
@@ -66,7 +68,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_rejects_waitlist_when_item_is_available(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = $this->item(quantityAvailable: 1);
 
         $this->expectException(InvalidWaitlist::class);
@@ -83,7 +85,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_rejects_waitlist_for_digital_item(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = Item::factory()->assistiveTechnology()->digital()->create();
 
         $this->expectException(InvalidWaitlist::class);
@@ -100,7 +102,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_rejects_item_of_a_different_type(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = $this->item(quantityAvailable: 0);
 
         $this->expectException(InvalidLoanableResource::class);
@@ -118,7 +120,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_rejects_duplicate_active_waitlist(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = $this->item(quantityAvailable: 0);
         Waitlist::factory()->forAssistiveTechnology($item)->forStudent($student)->notified()->create();
 
@@ -134,7 +136,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_allows_a_new_waitlist_after_a_cancelled_one(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = $this->item(quantityAvailable: 0);
         Waitlist::factory()->forAssistiveTechnology($item)->forStudent($student)->cancelled()->create();
 
@@ -150,7 +152,7 @@ final class CreateWaitlistActionTest extends TestCase
     public function test_it_rejects_waitlist_when_beneficiary_has_open_loan(): void
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create();
+        $student = Student::factory()->active()->create();
         $item = $this->item(quantityAvailable: 0);
         Loan::factory()->forAssistiveTechnology($item)->forStudent($student)->create([
             'status' => LoanStatus::ACTIVE,
@@ -158,6 +160,23 @@ final class CreateWaitlistActionTest extends TestCase
 
         $this->expectException(InvalidWaitlist::class);
         $this->expectExceptionMessage('Este beneficiário já possui um empréstimo ativo deste recurso.');
+
+        app(CreateWaitlistAction::class)->execute(
+            data: $this->data($item, $student),
+            registeredBy: $user->id,
+        );
+    }
+
+    public function test_it_rejects_a_waitlist_for_a_student_in_intake(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['status' => StudentStatus::INTAKE]);
+        $item = $this->item(quantityAvailable: 0);
+
+        $this->expectException(InvalidStudent::class);
+        $this->expectExceptionMessage(
+            'O aluno está em acolhimento. Nesta situação, somente solicitações de atendimento podem ser cadastradas.'
+        );
 
         app(CreateWaitlistAction::class)->execute(
             data: $this->data($item, $student),

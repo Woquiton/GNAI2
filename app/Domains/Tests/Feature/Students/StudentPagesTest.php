@@ -60,7 +60,8 @@ final class StudentPagesTest extends TestCase
             ->component('Students/Create')
             ->where('defaultGender', 'not_specified')
             ->has('genders')
-            ->has('studentStatuses', 4)
+            ->has('studentStatuses', 5)
+            ->where('studentStatuses.intake', 'Em acolhimento')
             ->has('followUpTypes', 3));
         $edit->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Students/Edit')
@@ -170,9 +171,14 @@ final class StudentPagesTest extends TestCase
 
         $response->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Students/Show')
-            ->where('student.deficiencies.0.severity_label', 'Moderada')
-            ->where('student.guardians.0.relationship_label', $guardian->relationshipLabel())
             ->where('student.person.address_html', '<p>Rua <b>Central</b></p>&lt;img src=x onerror=alert(1)&gt;'));
+
+        $this->get(route('specialized-educational-support.students.show', [$student, 'tab' => 'support-profiles']))
+            ->assertOk()->assertInertia(fn (Assert $page) => $page
+                ->where('supportProfiles.0.severity_label', 'Moderada'));
+        $this->get(route('specialized-educational-support.students.show', [$student, 'tab' => 'guardians']))
+            ->assertOk()->assertInertia(fn (Assert $page) => $page
+                ->where('guardians.0.relationship_label', $guardian->relationshipLabel()));
     }
 
     public function test_it_restricts_view_only_users_to_the_allowed_sections(): void

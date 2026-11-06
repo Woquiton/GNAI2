@@ -16,11 +16,15 @@ abstract class TestCase extends BaseTestCase
 
         $this->assertSafeTestingDatabase();
         $this->withoutMiddleware(ValidateCsrfToken::class);
+        // Os endpoints web, inclusive JSON, compartilham a sessão do mesmo navegador.
+        $this->withCredentials();
+        $this->withCookie(config('session.cookie'), $this->app['session.store']->getId());
     }
 
     private function prepareSafeTestingEnvironment(): void
     {
         $this->forceEnvironmentValue('APP_ENV', 'testing');
+        $this->forceEnvironmentValue('APP_URL', 'http://localhost');
         $this->forceEnvironmentValue('DB_CONNECTION', 'sqlite');
         $this->forceEnvironmentValue('DB_DATABASE', ':memory:');
         $this->forceEnvironmentValue('CACHE_STORE', 'array');
