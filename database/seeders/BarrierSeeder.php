@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Enums\BarrierStatus;
-use App\Domain\Enums\InspectionType;
-use App\Domain\Enums\Priority;
-use App\Domain\Models\Barrier;
-use App\Domain\Models\BarrierCategory;
-use App\Domain\Models\Inspection;
-use App\Domain\Models\Institution;
-use App\Domain\Models\Location;
-use App\Domain\Models\Person;
-use App\Domain\Models\Professional;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Enums\Barriers\BarrierStatus;
+use App\Domains\Domain\Enums\Inspections\InspectionType;
+use App\Shared\Domain\Enums\Priority;
+use App\Domains\Domain\Models\Barriers\Barrier;
+use App\Domains\Domain\Models\BarrierCategories\BarrierCategory;
+use App\Domains\Domain\Models\Inspections\Inspection;
+use App\Domains\Domain\Models\Institutions\Institution;
+use App\Domains\Domain\Models\Locations\Location;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Professionals\Professional;
+use App\Domains\Domain\Models\Students\Student;
 use Carbon\Carbon;
 use Database\Seeders\DeficiencySeeder;
 use Database\Seeders\ProfessionalSeeder;

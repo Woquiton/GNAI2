@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Domain\Enums\BarrierStatus;
-use App\Domain\Enums\ConservationState;
-use App\Domain\Enums\InspectionType;
-use App\Domain\Models\Item;
-use App\Domain\Models\Barrier;
-use App\Domain\Models\Inspection;
-use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Domain\Enums\Barriers\BarrierStatus;
+use App\Domains\Domain\Enums\Items\ConservationState;
+use App\Domains\Domain\Enums\Inspections\InspectionType;
+use App\Domains\Domain\Models\Items\Item;
+use App\Domains\Domain\Models\Barriers\Barrier;
+use App\Domains\Domain\Models\Inspections\Inspection;
+use App\Domains\Domain\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InspectionFactory extends Factory

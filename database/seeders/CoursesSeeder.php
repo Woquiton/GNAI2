@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Models\Course;
+use App\Domains\Domain\Models\Courses\Course;
 use Illuminate\Database\Seeder;
 
 class CoursesSeeder extends Seeder

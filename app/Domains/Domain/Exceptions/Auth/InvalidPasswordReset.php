@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Domain\Exceptions\Auth;
+
+use App\Shared\Domain\Exceptions\BusinessRuleException;
+
+final class InvalidPasswordReset extends BusinessRuleException
+{
+    public static function invalidToken(): self
+    {
+        return new self('Token inválido ou expirado.');
+    }
+}

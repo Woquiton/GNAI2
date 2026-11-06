@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Enums\AttendanceType;
-use App\Domain\Enums\SessionStatus;
+use App\Domains\Domain\Enums\Sessions\AttendanceType;
+use App\Domains\Domain\Enums\Sessions\SessionStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Enums\ProfessionalStatus;
-use App\Domain\Models\Person;
-use App\Domain\Models\Position;
-use App\Domain\Models\Professional;
+use App\Domains\Domain\Enums\Professionals\ProfessionalStatus;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Positions\Position;
+use App\Domains\Domain\Models\Professionals\Professional;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class ProfessionalFactory extends Factory

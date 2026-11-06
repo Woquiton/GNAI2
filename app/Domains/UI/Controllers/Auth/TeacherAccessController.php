@@ -1,0 +1,106 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\UI\Controllers\Auth;
+
+use App\Domains\Application\Actions\Auth\Sessions\StartSessionSecurityAction;
+use App\Domains\Application\Actions\Auth\TeacherAccess\ConfirmTeacherAccessTokenAction;
+use App\Domains\Application\Actions\Auth\TeacherAccess\RequestTeacherAccessLinkAction;
+use App\Domains\Application\Data\Auth\TeacherAccess\RequestTeacherAccessLinkData;
+use App\Domains\Domain\Exceptions\Auth\InvalidTeacherAccessToken;
+use App\Domains\Application\Queries\Settings\GetTeacherAccessSettingsQuery;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
+use Throwable;
+
+final class TeacherAccessController
+{
+    private const MAX_ATTEMPTS_PER_EMAIL = 5;
+
+    private const MAX_ATTEMPTS_PER_IP = 20;
+
+    private const DECAY_SECONDS = 3600;
+
+    public function showRequestForm(GetTeacherAccessSettingsQuery $query): InertiaResponse
+    {
+        return Inertia::render('Auth/TeacherAccess/Request', ['allowedDomains' => $query->execute()]);
+    }
+
+    public function sendLink(RequestTeacherAccessLinkData $data, RequestTeacherAccessLinkAction $action, Request $request): RedirectResponse
+    {
+        $email = Str::lower(trim($data->email));
+        $emailKey = 'teacher-access:email:'.$email;
+        $ipKey = 'teacher-access:ip:'.$request->ip();
+
+        if (RateLimiter::tooManyAttempts($emailKey, self::MAX_ATTEMPTS_PER_EMAIL)
+            || RateLimiter::tooManyAttempts($ipKey, self::MAX_ATTEMPTS_PER_IP)) {
+            return back()->with(
+                'warning',
+                'Muitas tentativas. Aguarde um pouco antes de solicitar um novo link.',
+            );
+        }
+
+        RateLimiter::hit($emailKey, self::DECAY_SECONDS);
+        RateLimiter::hit($ipKey, self::DECAY_SECONDS);
+
+        try {
+            $action->execute($data, $request->ip());
+        } catch (Throwable) {
+            // Falha de envio já foi registrada em sent_emails; a resposta ao
+            // usuário permanece genérica para não vazar se o e-mail existe.
+        }
+
+        return back()->with(
+            'status',
+            'Se este e-mail estiver cadastrado, você receberá um link de acesso.',
+        );
+    }
+
+    public function showConfirm(string $token, Request $request): InertiaResponse
+    {
+        $this->logoutAnyExistingSession($request);
+
+        return Inertia::render('Auth/TeacherAccess/Confirm', ['token' => $token]);
+    }
+
+    public function confirm(string $token, ConfirmTeacherAccessTokenAction $action, Request $request): RedirectResponse
+    {
+        $this->logoutAnyExistingSession($request);
+
+        try {
+            $user = $action->execute($token);
+        } catch (InvalidTeacherAccessToken $exception) {
+            return redirect()
+                ->route('teacher-access.request')
+                ->with('error', $exception->getMessage());
+        }
+
+        Auth::login($user, remember: false);
+        $request->session()->regenerate();
+        app(StartSessionSecurityAction::class)->execute();
+
+        return redirect()
+            ->route('teacher-portal.index')
+            ->with('success', 'Acesso confirmado com sucesso.');
+    }
+
+    /**
+     * O link de acesso deve sempre autenticar exatamente a identidade do
+     * token, nunca herdar uma sessão (de qualquer pessoa) que já estivesse
+     * aberta no mesmo navegador/aparelho.
+     */
+    private function logoutAnyExistingSession(Request $request): void
+    {
+        if (Auth::check()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+    }
+}

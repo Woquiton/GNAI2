@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Models\Inspection;
-use App\Domain\Models\InspectionEvidence;
+use App\Domains\Domain\Models\Inspections\Inspection;
+use App\Domains\Domain\Models\Inspections\InspectionEvidence;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InspectionEvidenceFactory extends Factory

@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Models\Pei;
-use App\Domain\Models\PeiDiscipline;
-use App\Domain\Models\Semester;
-use App\Domain\Models\Student;
-use App\Domain\Models\TeacherCourseDiscipline;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Peis\Pei;
+use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
+use App\Domains\Domain\Models\Semesters\Semester;
+use App\Domains\Domain\Models\Students\Student;
+use App\Domains\Domain\Models\Teachers\TeacherCourseDiscipline;
 use Illuminate\Database\Seeder;
 
 class PeiSeeder extends Seeder

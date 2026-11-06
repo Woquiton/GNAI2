@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Models\Person;
-use App\Domain\Models\Position;
-use App\Domain\Models\Professional;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Positions\Position;
+use App\Domains\Domain\Models\Professionals\Professional;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

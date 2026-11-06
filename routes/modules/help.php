@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Help\UI\Controllers\HelpController;
+use App\Domains\UI\Controllers\Help\HelpController;
 use Illuminate\Support\Facades\Route;
 
 // Central de Ajuda: artigos em resources/help, para todo usuário autenticado.

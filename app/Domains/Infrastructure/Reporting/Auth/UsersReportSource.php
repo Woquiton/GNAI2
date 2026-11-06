@@ -1,0 +1,74 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Infrastructure\Reporting\Auth;
+
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Professionals\Professional;
+use App\Domains\Domain\Models\Teachers\Teacher;
+use App\Domains\Application\Services\Reporting\ReportOptionCatalog;
+use App\Domains\Domain\DTOs\Reporting\ReportRequestDTO;
+use App\Domains\Domain\Enums\Reporting\ReportColumnType;
+use App\Domains\Infrastructure\Sources\Reporting\EloquentReportSource;
+use Illuminate\Database\Eloquent\Builder;
+
+final class UsersReportSource extends EloquentReportSource
+{
+    public function key(): string
+    {
+        return 'auth.users';
+    }
+
+    public function label(): string
+    {
+        return 'Usuários';
+    }
+
+    protected function model(): string
+    {
+        return User::class;
+    }
+
+    /**
+     * O administrador superior do Gnai não é membro da equipe da unidade.
+     */
+    public function query(ReportRequestDTO $request): Builder
+    {
+        return parent::query($request)->where('is_super_admin', false);
+    }
+
+    protected function with(): array
+    {
+        return ['professional.person', 'teacher.person'];
+    }
+
+    protected function definitions(): array
+    {
+        return [
+            'name' => ['label' => 'Nome'], 'email' => ['label' => 'E-mail'],
+            'role' => [
+                'label' => 'Perfil',
+                'type' => ReportColumnType::SELECT,
+                'options' => ReportOptionCatalog::userRoles(),
+            ],
+            'is_admin' => ['label' => 'Administrador', 'type' => ReportColumnType::BOOLEAN],
+            'email_verified_at' => ['label' => 'E-mail verificado em', 'type' => ReportColumnType::DATE],
+            'created_at' => ['label' => 'Criado em', 'type' => ReportColumnType::DATE],
+        ];
+    }
+
+    protected function filterable(): array
+    {
+        return ['name', 'email', 'role', 'is_admin', 'email_verified_at', 'created_at'];
+    }
+
+    protected function relationPolicy(string $parentModel, string $relationName): array
+    {
+        $excluded = in_array($parentModel, [Professional::class, Teacher::class], true)
+            ? ['name', 'email']
+            : [];
+
+        return ['exclude' => $excluded];
+    }
+}

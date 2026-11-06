@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Enums\LoanStatus;
-use App\Domain\Models\Item;
-use App\Domain\Models\Loan;
-use App\Domain\Models\Professional;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Enums\Loans\LoanStatus;
+use App\Domains\Domain\Models\Items\Item;
+use App\Domains\Domain\Models\Loans\Loan;
+use App\Domains\Domain\Models\Professionals\Professional;
+use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LoanFactory extends Factory

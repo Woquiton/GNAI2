@@ -211,11 +211,11 @@ Para alunos, consulte estes arquivos reais; em outra tela, localize os equivalen
 | Contrato | Referência |
 | --- | --- |
 | Endpoints e middlewares `can:*` | `routes/business.php`, no grupo com prefixo `specialized-educational-support` |
-| Páginas Inertia, operações e redirects | `app/UI/Controllers/StudentController.php` |
-| Opções e defaults de criação/edição | `app/Application/Queries/Students/StudentFormQuery.php` |
-| Dados de apresentação e permissões | `app/UI/Presenters/StudentPagePresenter.php` |
-| Nomes, tipos e validações | `app/Application/Data/Students/CreateStudentData.php` e `UpdateStudentData.php` |
-| Normalização de entrada de pessoa | `app/Application/Data/People/Concerns/NormalizesPersonInput.php` |
+| Páginas Inertia, operações e redirects | `app/Domains/UI/Controllers/Students/StudentController.php` |
+| Opções e defaults de criação/edição | `app/Domains/Application/Queries/Students/StudentFormQuery.php` |
+| Dados de apresentação e permissões | `app/Domains/UI/Presenters/Students/StudentPagePresenter.php` |
+| Nomes, tipos e validações | `app/Domains/Application/Data/Students/CreateStudentData.php` e `UpdateStudentData.php` |
+| Normalização de entrada de pessoa | `app/Domains/Application/Data/People/Concerns/NormalizesPersonInput.php` |
 | Dados compartilhados e flash | `app/Shared/Infrastructure/Http/Middleware/HandleInertiaRequests.php` |
 
 A referência cria por POST em `/alunos/salvar` e atualiza por PUT em `/alunos/{id}`, via POST multipart com `_method`. O controller redireciona para o prontuário com mensagem de sucesso. Essas URLs e destinos são exemplos, não uma convenção de URLs obrigatória para novos módulos.

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Models\Barrier;
-use App\Domain\Models\Inspection;
-use App\Domain\Models\Item;
-use App\Domain\Models\Person;
-use App\Domain\Models\Student;
-use App\Domain\Models\StudentCourse;
-use App\Domain\Models\StudentDeficiency;
-use App\Domain\Models\StudentDocument;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Barriers\Barrier;
+use App\Domains\Domain\Models\Inspections\Inspection;
+use App\Domains\Domain\Models\Items\Item;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Students\Student;
+use App\Domains\Domain\Models\StudentCourses\StudentCourse;
+use App\Domains\Domain\Models\StudentDeficiencies\StudentDeficiency;
+use App\Domains\Domain\Models\StudentDocuments\StudentDocument;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;

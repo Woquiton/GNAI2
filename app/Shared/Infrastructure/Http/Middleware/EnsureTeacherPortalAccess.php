@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Http\Middleware;
 
-use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Domain\Models\Auth\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

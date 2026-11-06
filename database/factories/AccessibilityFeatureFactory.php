@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Models\AccessibilityFeature;
+use App\Domains\Domain\Models\AccessibilityFeatures\AccessibilityFeature;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AccessibilityFeatureFactory extends Factory

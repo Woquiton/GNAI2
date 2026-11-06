@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Enums\Priority;
-use App\Domain\Models\Barrier;
-use App\Domain\Models\BarrierCategory;
-use App\Domain\Models\Institution;
+use App\Domains\Domain\Models\Auth\User;
+use App\Shared\Domain\Enums\Priority;
+use App\Domains\Domain\Models\Barriers\Barrier;
+use App\Domains\Domain\Models\BarrierCategories\BarrierCategory;
+use App\Domains\Domain\Models\Institutions\Institution;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BarrierFactory extends Factory

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Models\Course;
+use App\Domains\Domain\Models\Courses\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class CourseFactory extends Factory

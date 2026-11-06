@@ -7,8 +7,8 @@
 ])
 
 @php
-    $pdfHeader = app(\App\Domains\Settings\Application\Queries\GetPdfHeaderSettingsQuery::class)->execute();
-    $logoPath = app(\App\Domains\Settings\Infrastructure\Storage\PdfHeaderLogoStorage::class)->absolutePath($pdfHeader);
+    $pdfHeader = app(\App\Domains\Application\Queries\Settings\GetPdfHeaderSettingsQuery::class)->execute();
+    $logoPath = app(\App\Domains\Infrastructure\Storage\Settings\PdfHeaderLogoStorage::class)->absolutePath($pdfHeader);
     $metaItems = collect($meta)->filter(fn ($value): bool => filled($value));
 @endphp
 

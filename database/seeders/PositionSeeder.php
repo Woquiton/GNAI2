@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Application\Actions\Permissions\SyncPermissionsAction;
-use App\Domains\Auth\Application\Permissions\PermissionCache;
-use App\Domains\Auth\Domain\Models\Permission;
-use App\Domain\Models\Position;
+use App\Domains\Application\Actions\Auth\Permissions\SyncPermissionsAction;
+use App\Domains\Application\Permissions\Auth\PermissionCache;
+use App\Domains\Domain\Models\Auth\Permission;
+use App\Domains\Domain\Models\Positions\Position;
 use Illuminate\Database\Seeder;
 
 class PositionSeeder extends Seeder

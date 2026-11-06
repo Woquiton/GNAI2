@@ -1,14 +1,14 @@
 <?php
 
-use App\Domains\Auth\UI\Controllers\ForgotPasswordController;
-use App\Domains\Auth\UI\Controllers\ImpersonationController;
-use App\Domains\Auth\UI\Controllers\LoginController;
-use App\Domains\Auth\UI\Controllers\ProfileController;
-use App\Domains\Auth\UI\Controllers\ResetPasswordController;
-use App\Domains\Auth\UI\Controllers\SessionController;
-use App\Domains\Auth\UI\Controllers\TablePreferenceController;
-use App\Domains\Auth\UI\Controllers\TeacherAccessController;
-use App\Domains\Dashboard\UI\Controllers\DashboardController;
+use App\Domains\UI\Controllers\Auth\ForgotPasswordController;
+use App\Domains\UI\Controllers\Auth\ImpersonationController;
+use App\Domains\UI\Controllers\Auth\LoginController;
+use App\Domains\UI\Controllers\Auth\ProfileController;
+use App\Domains\UI\Controllers\Auth\ResetPasswordController;
+use App\Domains\UI\Controllers\Auth\SessionController;
+use App\Domains\UI\Controllers\Auth\TablePreferenceController;
+use App\Domains\UI\Controllers\Auth\TeacherAccessController;
+use App\Domains\UI\Controllers\Dashboard\DashboardController;
 
 Route::get('/', function () {
     return auth()->check()

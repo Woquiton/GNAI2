@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Models\Deficiency;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Models\Deficiencies\Deficiency;
+use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

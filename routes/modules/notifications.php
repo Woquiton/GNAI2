@@ -1,8 +1,8 @@
 <?php
 
-use App\Domains\Notifications\UI\Controllers\EmailComposeController;
-use App\Domains\Notifications\UI\Controllers\EmailDeliveryController;
-use App\Domains\Notifications\UI\Controllers\EmailMailboxController;
+use App\Domains\UI\Controllers\Notifications\EmailComposeController;
+use App\Domains\UI\Controllers\Notifications\EmailDeliveryController;
+use App\Domains\UI\Controllers\Notifications\EmailMailboxController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('can:email.view')->prefix('emails')->name('emails.')->group(function (): void {

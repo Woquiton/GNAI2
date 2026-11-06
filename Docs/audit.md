@@ -15,17 +15,17 @@ O desenho segue a auditoria do projeto controle-bar, adaptado ao Gnai: sem multi
 
 ## Tornar um model auditável
 
-1. `implements Auditable` e `use AuditsChanges;` (`app/Domains/Audit`).
+1. `implements Auditable` e `use AuditsChanges;` (`app/Domains/Domain/Contracts/Audit` e `app/Domains/Infrastructure/Eloquent/Audit`).
 2. `auditType()`: apelido estável em snake_case. Nunca mude depois de publicado, pois os registros antigos dependem dele.
 3. `auditLabel()`: nome do tipo em pt-BR, usado no filtro.
 4. `auditedFields()`: lista branca de colunas com rótulo e formato (`AuditedField::text`, `richText`, `number`, `money`, `date`, `dateTime`, `time`, `boolean`, `enum`, `reference`, `list`, `file`, `secret`). Senhas e tokens usam `secret`: o valor nunca é gravado.
 5. `unauditedFields()`: colunas deliberadamente fora, além de `id` e timestamps. Toda coluna nova precisa entrar em uma das duas listas.
 6. `auditDescription()`: como o registro aparece na frase, com artigo ("o aluno Maria Souza").
-7. Registre a classe em `AuditableEntities` no provider responsável pelos models (Auth, Backup, ResourceServiceProvider, Website). Sem o registro, o tipo não aparece no filtro e os rótulos não são resolvidos.
+7. Registre a classe em `AuditableEntities` no provider responsável pelos models (AuthServiceProvider, BackupServiceProvider, ResourceServiceProvider, WebsiteServiceProvider). Sem o registro, o tipo não aparece no filtro e os rótulos não são resolvidos.
 
 ## Atividades recentes do painel
 
-O feed do painel lê o mesmo histórico, filtrado aos documentos do AEE listados em `ActivityFeedSource` (`app/Domains/Dashboard/Domain/Enums`): Estudo de Caso, PAEE, adaptação curricular do PEI, avaliação individual AEE e atendimento pedagógico. A frase é a mesma da tela de Auditoria. O item vira link quando o documento ainda existe e o usuário tem a permissão de visualizá-lo. Professores veem só os documentos dos alunos com quem têm PEI vigente.
+O feed do painel lê o mesmo histórico, filtrado aos documentos do AEE listados em `ActivityFeedSource` (`app/Domains/Domain/Enums/Dashboard`): Estudo de Caso, PAEE, adaptação curricular do PEI, avaliação individual AEE e atendimento pedagógico. A frase é a mesma da tela de Auditoria. O item vira link quando o documento ainda existe e o usuário tem a permissão de visualizá-lo. Professores veem só os documentos dos alunos com quem têm PEI vigente.
 
 Para incluir um documento no feed, torne o model auditável e acrescente um caso ao enum com permissão, rota e vínculo com o aluno.
 

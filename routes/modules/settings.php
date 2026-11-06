@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Settings\UI\Controllers\SettingsController;
+use App\Domains\UI\Controllers\Settings\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 // Configurações

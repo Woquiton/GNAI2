@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Models\Course;
-use App\Domain\Models\Person;
-use App\Domain\Models\Semester;
-use App\Domain\Models\Teacher;
-use App\Domain\Models\TeacherCourseDiscipline;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Courses\Course;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Semesters\Semester;
+use App\Domains\Domain\Models\Teachers\Teacher;
+use App\Domains\Domain\Models\Teachers\TeacherCourseDiscipline;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

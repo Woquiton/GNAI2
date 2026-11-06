@@ -16,7 +16,7 @@
     </x-pdf.row>
     <x-pdf.row>
         <x-pdf.info-item label="Local" :value="$session->location ?: 'Não informado'" colspan="2" />
-        <x-pdf.info-item label="Formato" :value="\App\Domain\Enums\SessionType::labelFor($session->type)" />
+        <x-pdf.info-item label="Formato" :value="\App\Domains\Domain\Enums\Sessions\SessionType::labelFor($session->type)" />
         <x-pdf.info-item label="Duração" :value="$aeeRecord->duration ?: 'Não informada'" />
     </x-pdf.row>
     <x-pdf.row>

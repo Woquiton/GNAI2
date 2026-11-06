@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Models\Course;
-use App\Domain\Models\Semester;
-use App\Domain\Models\Student;
-use App\Domain\Models\StudentCourse;
+use App\Domains\Domain\Models\Courses\Course;
+use App\Domains\Domain\Models\Semesters\Semester;
+use App\Domains\Domain\Models\Students\Student;
+use App\Domains\Domain\Models\StudentCourses\StudentCourse;
 use Illuminate\Database\Seeder;
 
 class StudentCourseSeeder extends Seeder

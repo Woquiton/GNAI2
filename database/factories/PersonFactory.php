@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Enums\Gender;
-use App\Domain\Models\Person;
+use App\Domains\Domain\Enums\People\Gender;
+use App\Domains\Domain\Models\People\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class PersonFactory extends Factory

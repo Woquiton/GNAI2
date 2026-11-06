@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Models\Semester;
+use App\Domains\Domain\Models\Semesters\Semester;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class SemesterFactory extends Factory

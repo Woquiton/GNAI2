@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Models\Semester;
+use App\Domains\Domain\Models\Semesters\Semester;
 use Illuminate\Database\Seeder;
 
 class SemesterSeeder extends Seeder

@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Audit\UI\Controllers\AuditController;
+use App\Domains\UI\Controllers\Audit\AuditController;
 use Illuminate\Support\Facades\Route;
 
 // Histórico de alterações do sistema inteiro.

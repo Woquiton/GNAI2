@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Enums\WaitlistStatus;
-use App\Domain\Models\Item;
-use App\Domain\Models\Waitlist;
-use App\Domain\Models\Professional;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Enums\Waitlists\WaitlistStatus;
+use App\Domains\Domain\Models\Items\Item;
+use App\Domains\Domain\Models\Waitlists\Waitlist;
+use App\Domains\Domain\Models\Professionals\Professional;
+use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WaitlistFactory extends Factory

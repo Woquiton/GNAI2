@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Backup\UI\Controllers\BackupController;
+use App\Domains\UI\Controllers\Backup\BackupController;
 use Illuminate\Support\Facades\Route;
 
 //Backups

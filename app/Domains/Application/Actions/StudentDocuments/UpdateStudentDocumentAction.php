@@ -1,0 +1,84 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Application\Actions\StudentDocuments;
+
+use App\Domains\Application\Data\StudentDocuments\UpdateStudentDocumentData;
+use App\Domains\Domain\DTOs\StudentDocuments\UpdateStudentDocumentDTO;
+use App\Domains\Domain\Models\StudentDocuments\StudentDocument;
+use App\Domains\Infrastructure\Storage\StudentDocuments\StudentDocumentStorage;
+use App\Domains\Domain\Models\Students\Student;
+use Illuminate\Support\Facades\DB;
+use Throwable;
+
+final readonly class UpdateStudentDocumentAction
+{
+    public function __construct(
+        private StudentDocumentStorage $storage,
+    ) {}
+
+    /**
+     * @throws Throwable
+     */
+    public function execute(StudentDocument $document, UpdateStudentDocumentData $data): StudentDocument
+    {
+        $newFileData = $data->file !== null
+            ? $this->storage->store(
+                $data->file,
+                $document->student_id,
+                $data->type,
+            )
+            : null;
+        $oldFilePath = null;
+
+        try {
+            $updatedDocument = DB::transaction(function () use ($document, $data, $newFileData, &$oldFilePath): StudentDocument {
+                $lockedDocument = StudentDocument::query()
+                    ->lockForUpdate()
+                    ->findOrFail($document->getKey());
+                $student = Student::query()
+                    ->lockForUpdate()
+                    ->findOrFail($lockedDocument->student_id);
+                $student->ensureIsActive();
+
+                if ($newFileData !== null) {
+                    $oldFilePath = $lockedDocument->file_path;
+                    $filePath = $newFileData['file_path'];
+                    $originalName = $newFileData['original_name'];
+                    $mimeType = $newFileData['mime_type'];
+                    $fileSize = $newFileData['file_size'];
+                } else {
+                    $filePath = $lockedDocument->file_path;
+                    $originalName = $lockedDocument->original_name;
+                    $mimeType = $lockedDocument->mime_type;
+                    $fileSize = $lockedDocument->file_size;
+                }
+
+                $lockedDocument->revise(new UpdateStudentDocumentDTO(
+                    title: $data->title,
+                    type: $data->type,
+                    filePath: $filePath,
+                    originalName: $originalName,
+                    mimeType: $mimeType,
+                    fileSize: $fileSize,
+                ));
+                $lockedDocument->save();
+
+                return $lockedDocument->load(['student.person', 'semester', 'uploader']);
+            });
+        } catch (Throwable $exception) {
+            if ($newFileData !== null) {
+                $this->storage->deleteQuietly($newFileData['file_path']);
+            }
+
+            throw $exception;
+        }
+
+        if ($oldFilePath !== null) {
+            $this->storage->deleteQuietly($oldFilePath);
+        }
+
+        return $updatedDocument;
+    }
+}

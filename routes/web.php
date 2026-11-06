@@ -1,7 +1,7 @@
 <?php
 
-use App\UI\Controllers\TeacherPortalController;
-use App\Domains\Notifications\UI\Controllers\NotificationController;
+use App\Domains\UI\Controllers\Teachers\TeacherPortalController;
+use App\Domains\UI\Controllers\Notifications\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 

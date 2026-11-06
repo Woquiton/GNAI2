@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Domain\DTOs\Reporting;
+
+final readonly class ReportRequestDTO
+{
+    /**
+     * @param  list<string>  $columns
+     * @param  list<ReportFilterDTO>  $filters
+     */
+    public function __construct(
+        public string $source,
+        public array $columns,
+        public array $filters,
+        public bool $filterRelatedValues = false,
+    ) {}
+}

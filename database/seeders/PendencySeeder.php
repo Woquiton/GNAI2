@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Models\Pendency;
-use App\Domain\Models\Professional;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Pendencies\Pendency;
+use App\Domains\Domain\Models\Professionals\Professional;
 use Illuminate\Database\Seeder;
 
 class PendencySeeder extends Seeder

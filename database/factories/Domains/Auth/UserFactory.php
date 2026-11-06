@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Domains\Auth;
 
-use App\Domains\Auth\Domain\Models\User;
+use App\Domains\Domain\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

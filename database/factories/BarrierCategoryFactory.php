@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Models\BarrierCategory;
+use App\Domains\Domain\Models\BarrierCategories\BarrierCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BarrierCategoryFactory extends Factory

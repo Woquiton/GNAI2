@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Domains\Auth\Application\Permissions\PermissionRegistry;
-use App\Domains\Auth\Domain\Models\Permission;
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Models\Institution;
-use App\Domain\Models\Professional;
+use App\Domains\Application\Permissions\Auth\PermissionRegistry;
+use App\Domains\Domain\Models\Auth\Permission;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Institutions\Institution;
+use App\Domains\Domain\Models\Professionals\Professional;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;

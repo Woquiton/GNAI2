@@ -1,13 +1,13 @@
 <?php
 
-use App\Domains\Audit\Infrastructure\Providers\AuditServiceProvider;
-use App\Domains\Auth\Infrastructure\Providers\AuthServiceProvider;
-use App\Domains\Backup\Infrastructure\Providers\BackupServiceProvider;
-use App\Infrastructure\Providers\ResourceServiceProvider;
-use App\Domains\Notifications\Infrastructure\Providers\NotificationsServiceProvider;
-use App\Domains\Reporting\Infrastructure\Providers\ReportingServiceProvider;
-use App\Domains\Settings\Infrastructure\Providers\SettingsServiceProvider;
-use App\Domains\Website\Infrastructure\Providers\WebsiteServiceProvider;
+use App\Domains\Infrastructure\Providers\Audit\AuditServiceProvider;
+use App\Domains\Infrastructure\Providers\Auth\AuthServiceProvider;
+use App\Domains\Infrastructure\Providers\Backup\BackupServiceProvider;
+use App\Providers\ResourceServiceProvider;
+use App\Domains\Infrastructure\Providers\Notifications\NotificationsServiceProvider;
+use App\Domains\Infrastructure\Providers\Reporting\ReportingServiceProvider;
+use App\Domains\Infrastructure\Providers\Settings\SettingsServiceProvider;
+use App\Domains\Infrastructure\Providers\Website\WebsiteServiceProvider;
 use App\Providers\AppServiceProvider;
 
 return [

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Models\Publication;
+use App\Domains\Domain\Models\Publications\Publication;
 use Illuminate\Database\Seeder;
 
 class PublicationSeeder extends Seeder

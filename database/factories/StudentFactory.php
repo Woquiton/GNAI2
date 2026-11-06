@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Enums\StudentFollowUpType;
-use App\Domain\Enums\StudentStatus;
-use App\Domain\Models\Person;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Enums\Students\StudentFollowUpType;
+use App\Domains\Domain\Enums\Students\StudentStatus;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class StudentFactory extends Factory

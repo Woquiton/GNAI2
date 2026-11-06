@@ -12,20 +12,19 @@ Esta convenção segue o padrão de testes da branch `main`. Consulte-a sempre q
 
 ## Onde ficam
 
-Recursos de negócio de `app/{Application,Domain,Infrastructure,UI}/` têm testes em
-`tests/Unit` e `tests/Feature`, espelhando a camada e o recurso, com namespace `Tests\Unit`
-ou `Tests\Feature`. Os demais domínios mantêm os testes junto de seu código:
+Os testes de negócio ficam em `app/Domains/Tests`, espelhando as camadas e responsabilidades
+com o recurso dentro delas, como no código de aplicação.
 
 | O que se testa | Caminho |
 | --- | --- |
-| Actions, Queries e fluxos com banco | `app/Domains/<Dominio>/Tests/Feature/<Recurso>/<Classe>Test.php` |
-| Mapeamento e padrões dos Data | `app/Domains/<Dominio>/Tests/Unit/Application/Data/<Recurso>/<Data>Test.php` |
-| Policies de aplicação | `app/Domains/<Dominio>/Tests/Unit/Application/Policies/<Recurso>/<Policy>Test.php` |
-| Regras de domínio dos models | `app/Domains/<Dominio>/Tests/Unit/Domain/Models/<Model>Test.php` |
-| Value objects | `app/Domains/<Dominio>/Tests/Unit/Domain/ValueObjects/<ValueObject>Test.php` |
+| Actions, Queries e fluxos com banco | `app/Domains/Tests/Feature/<Recurso>/<Classe>Test.php` |
+| Mapeamento e padrões dos Data | `app/Domains/Tests/Unit/Application/Data/<Recurso>/<Data>Test.php` |
+| Policies de aplicação | `app/Domains/Tests/Unit/Application/Policies/<Recurso>/<Policy>Test.php` |
+| Regras de domínio dos models | `app/Domains/Tests/Unit/Domain/Models/<Recurso>/<Model>Test.php` |
+| Value objects | `app/Domains/Tests/Unit/Domain/ValueObjects/<Recurso>/<ValueObject>Test.php` |
 | Código transversal de `app/Shared` e integrações gerais | `tests/Unit` e `tests/Feature` |
 
-O domínio precisa estar listado na suíte `Domains` do `phpunit.xml` para os testes rodarem.
+A suíte `Domains` do `phpunit.xml` descobre recursivamente `app/Domains/Tests`.
 
 ## Formato
 

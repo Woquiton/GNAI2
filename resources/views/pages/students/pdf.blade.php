@@ -85,7 +85,7 @@
                 <tr>
                     <td class="pdf-cell">{{ $plain($deficiency->name) }}</td>
                     <td class="pdf-cell">
-                        {{ \App\Domain\Enums\DeficiencySeverity::tryFrom((string) ($deficiency->pivot?->severity ?? ''))?->label() ?? 'Não informada' }}
+                        {{ \App\Domains\Domain\Enums\StudentDeficiencies\DeficiencySeverity::tryFrom((string) ($deficiency->pivot?->severity ?? ''))?->label() ?? 'Não informada' }}
                     </td>
                     <td class="pdf-cell">{!! $rich($deficiency->pivot?->notes) !!}</td>
                 </tr>

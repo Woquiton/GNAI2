@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Enums\AttendanceType;
-use App\Domain\Enums\SessionStatus;
-use App\Domain\Enums\SessionType;
-use App\Domain\Models\Professional;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Enums\Sessions\AttendanceType;
+use App\Domains\Domain\Enums\Sessions\SessionStatus;
+use App\Domains\Domain\Enums\Sessions\SessionType;
+use App\Domains\Domain\Models\Professionals\Professional;
+use App\Domains\Domain\Models\Students\Student;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Models\Discipline;
+use App\Domains\Domain\Models\Disciplines\Discipline;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class DisciplineFactory extends Factory

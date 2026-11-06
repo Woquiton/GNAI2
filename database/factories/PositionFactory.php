@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Models\Position;
+use App\Domains\Domain\Models\Positions\Position;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class PositionFactory extends Factory

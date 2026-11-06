@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Models\Institution;
-use App\Domain\Models\Location;
+use App\Domains\Domain\Models\Institutions\Institution;
+use App\Domains\Domain\Models\Locations\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LocationFactory extends Factory

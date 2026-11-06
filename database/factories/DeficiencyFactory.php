@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domain\Models\Deficiency;
+use App\Domains\Domain\Models\Deficiencies\Deficiency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class DeficiencyFactory extends Factory

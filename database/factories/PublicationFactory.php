@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Models\Publication;
+use App\Domains\Domain\Models\Publications\Publication;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PublicationFactory extends Factory

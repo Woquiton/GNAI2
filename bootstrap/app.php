@@ -1,11 +1,11 @@
 <?php
 
-use App\Domains\Audit\UI\Middleware\StartAuditOperation;
-use App\Domains\Auth\UI\Middleware\ApplyTablePageSize;
-use App\Domains\Auth\UI\Middleware\EnforceSessionSecurity;
-use App\Domains\Auth\UI\Middleware\BlockReadOnlyImpersonationWrites;
-use App\Domains\Auth\UI\Middleware\EnsureUserIsAdmin;
-use App\Domains\Settings\UI\Middleware\ConfigureSessionLifetime;
+use App\Domains\UI\Middleware\Audit\StartAuditOperation;
+use App\Domains\UI\Middleware\Auth\ApplyTablePageSize;
+use App\Domains\UI\Middleware\Auth\EnforceSessionSecurity;
+use App\Domains\UI\Middleware\Auth\BlockReadOnlyImpersonationWrites;
+use App\Domains\UI\Middleware\Auth\EnsureUserIsAdmin;
+use App\Domains\UI\Middleware\Settings\ConfigureSessionLifetime;
 use App\Shared\Application\Exceptions\AccessDeniedException;
 use App\Shared\Domain\Exceptions\BusinessRuleException;
 use App\Shared\Infrastructure\Http\Middleware\EnsureTeacherPortalAccess;

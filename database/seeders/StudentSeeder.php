@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Models\Person;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Database\Seeder;
 
 class StudentSeeder extends Seeder

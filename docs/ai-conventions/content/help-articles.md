@@ -1,6 +1,6 @@
 # Artigos da Central de Ajuda
 
-A Central de Ajuda (`/ajuda`, item **Ajuda** do grupo **Sistema** da sidebar) apresenta artigos em Markdown versionados em `resources/help/`. O domínio `app/Domains/Help` lê os arquivos, pesquisa pelos termos digitados e converte o conteúdo em HTML; as telas ficam em `resources/js/pages/Help/` e `resources/js/components/Help/`. Esta convenção define como escrever e organizar os artigos.
+A Central de Ajuda (`/ajuda`, item **Ajuda** do grupo **Sistema** da sidebar) apresenta artigos em Markdown versionados em `resources/help/`. O repositório `app/Domains/Infrastructure/Help/MarkdownHelpArticleRepository.php` lê os arquivos, pesquisa pelos termos digitados e converte o conteúdo em HTML; as telas ficam em `resources/js/pages/Help/` e `resources/js/components/Help/`. Esta convenção define como escrever e organizar os artigos.
 
 ## Arquivo e endereço
 

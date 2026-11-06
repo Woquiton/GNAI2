@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Models\Institution;
+use App\Domains\Domain\Models\Institutions\Institution;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InstitutionFactory extends Factory

@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\UI\Controllers\Auth;
+
+use App\Domains\Application\Actions\Auth\Sessions\AuthenticateUserAction;
+use App\Domains\Application\Actions\Auth\Sessions\LogoutUserAction;
+use App\Domains\Application\Actions\Auth\Sessions\StartSessionSecurityAction;
+use App\Domains\Application\Data\Auth\Sessions\LoginData;
+use App\Domains\Domain\Exceptions\Auth\InactiveProfessionalAccount;
+use App\Domains\Domain\Exceptions\Auth\InvalidCredentials;
+use App\Domains\Domain\Exceptions\Auth\UserWithoutAccess;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
+
+final class LoginController
+{
+    public function showLoginForm(): InertiaResponse
+    {
+        return Inertia::render('Auth/Login');
+    }
+
+    public function login(
+        LoginData $data,
+        AuthenticateUserAction $action,
+        Request $request,
+        StartSessionSecurityAction $startSession,
+    ): RedirectResponse
+    {
+        try {
+            $action->execute($data);
+            $request->session()->regenerate();
+            $startSession->execute();
+        } catch (InvalidCredentials|InactiveProfessionalAccount $exception) {
+            return back()
+                ->withInput(['email' => $data->email])
+                ->withErrors(['email' => $exception->getMessage()]);
+        } catch (UserWithoutAccess $exception) {
+            return back()
+                ->withInput(['email' => $data->email])
+                ->with('error', $exception->getMessage());
+        }
+
+        return redirect()
+            ->route('dashboard')
+            ->with('success', 'Login realizado com sucesso.');
+    }
+
+    public function logout(Request $request, LogoutUserAction $action): RedirectResponse
+    {
+        $action->execute();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        Inertia::clearHistory();
+
+        return redirect()->route('login');
+    }
+}

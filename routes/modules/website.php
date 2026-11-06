@@ -1,7 +1,7 @@
 <?php
 
-use App\Domains\Website\UI\Controllers\PublicWebsiteController;
-use App\Domains\Website\UI\Controllers\WebsiteBuilderController;
+use App\Domains\UI\Controllers\Website\PublicWebsiteController;
+use App\Domains\UI\Controllers\Website\WebsiteBuilderController;
 use Illuminate\Support\Facades\Route;
 
 // Site público white label (sem autenticação)

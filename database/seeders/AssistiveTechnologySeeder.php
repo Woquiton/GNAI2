@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Enums\ItemType;
-use App\Domain\Enums\ConservationState;
-use App\Domain\Enums\InspectionType;
-use App\Domain\Enums\ResourceStatus;
-use App\Domain\Models\Item;
+use App\Domains\Domain\Enums\Items\ItemType;
+use App\Domains\Domain\Enums\Items\ConservationState;
+use App\Domains\Domain\Enums\Inspections\InspectionType;
+use App\Domains\Domain\Enums\Items\ResourceStatus;
+use App\Domains\Domain\Models\Items\Item;
 use Database\Seeders\DeficiencySeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

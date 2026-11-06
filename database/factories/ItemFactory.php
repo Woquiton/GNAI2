@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Domain\Enums\ConservationState;
-use App\Domain\Enums\ItemType;
-use App\Domain\Enums\ResourceStatus;
-use App\Domain\Models\AccessibilityFeature;
-use App\Domain\Models\Item;
-use App\Domain\Models\Deficiency;
+use App\Domains\Domain\Enums\Items\ConservationState;
+use App\Domains\Domain\Enums\Items\ItemType;
+use App\Domains\Domain\Enums\Items\ResourceStatus;
+use App\Domains\Domain\Models\AccessibilityFeatures\AccessibilityFeature;
+use App\Domains\Domain\Models\Items\Item;
+use App\Domains\Domain\Models\Deficiencies\Deficiency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ItemFactory extends Factory

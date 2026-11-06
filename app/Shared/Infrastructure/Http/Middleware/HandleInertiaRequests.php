@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Http\Middleware;
 
-use App\Domains\Auth\Application\Queries\Preferences\TablePreferencesQuery;
-use App\Domains\Auth\Application\Queries\Sessions\GetSessionSecurityStateQuery;
-use App\Domains\Auth\Domain\Models\User;
-use App\Domains\Auth\Infrastructure\Session\ImpersonationSession;
-use App\Domains\Auth\UI\Presenters\SessionSecurityPresenter;
+use App\Domains\Application\Queries\Auth\Preferences\TablePreferencesQuery;
+use App\Domains\Application\Queries\Auth\Sessions\GetSessionSecurityStateQuery;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Infrastructure\Session\Auth\ImpersonationSession;
+use App\Domains\UI\Presenters\Auth\SessionSecurityPresenter;
 use App\Shared\Infrastructure\Navigation\AppNavigation;
 use App\Shared\Infrastructure\Navigation\AppTopbar;
 use Illuminate\Http\Request;

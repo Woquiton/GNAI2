@@ -1,0 +1,141 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Application\Actions\Notifications\Email;
+
+use App\Domains\Domain\DTOs\Notifications\EmailDeliveryReceiptDTO;
+use App\Domains\Domain\Enums\Notifications\EmailDeliveryStatus;
+use App\Domains\Domain\Enums\Notifications\EmailPurpose;
+use App\Domains\Domain\Models\Notifications\EmailDelivery;
+use App\Domains\Infrastructure\Mail\Notifications\EmailDeliveryReceiptStore;
+use App\Domains\Infrastructure\Mail\Notifications\TransactionalEmail;
+use App\Domains\Infrastructure\Mail\Settings\MailSettingsConfigurator;
+use Illuminate\Mail\Transport\ArrayTransport;
+use Illuminate\Mail\Transport\LogTransport;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mime\Email;
+use Throwable;
+
+final readonly class SendEmailAction
+{
+    public function __construct(
+        private EmailDeliveryReceiptStore $receipts,
+        private RecordEmailResultAction $recordResult,
+        private MailSettingsConfigurator $mailSettings,
+    ) {}
+
+    public function execute(string $deliveryId): void
+    {
+        Cache::lock('email-delivery:'.$deliveryId, 60)->block(5, function () use ($deliveryId): void {
+            // Uma nova execução recupera o resultado pendente sem chamar o transporte novamente.
+            $receipt = $this->receipts->find($deliveryId);
+            if ($receipt !== null) {
+                $this->recordResult->execute($receipt);
+
+                return;
+            }
+            $delivery = EmailDelivery::query()->find($deliveryId);
+            if ($delivery === null || in_array($delivery->status, [
+                EmailDeliveryStatus::SENT,
+                EmailDeliveryStatus::DRAFT,
+                EmailDeliveryStatus::RECEIVED,
+                EmailDeliveryStatus::BOUNCED,
+                EmailDeliveryStatus::NO_EMAIL,
+                EmailDeliveryStatus::NOT_SENT,
+                EmailDeliveryStatus::FAILED,
+                EmailDeliveryStatus::UNCONFIRMED,
+            ], true)) {
+                return;
+            }
+            if ($delivery->status === EmailDeliveryStatus::PROCESSING) {
+                // O worker anterior pode ter parado depois do aceite pelo transporte.
+                $delivery->update(['status' => EmailDeliveryStatus::UNCONFIRMED]);
+
+                return;
+            }
+            $delivery->update([
+                'status' => EmailDeliveryStatus::PROCESSING,
+                'attempts' => $delivery->attempts + 1,
+                'last_attempt_at' => now(),
+                'error_type' => null,
+            ]);
+            try {
+                Mail::getFacadeRoot();
+                $settings = $this->mailSettings->apply();
+                Mail::purge();
+                $mailer = Mail::mailer();
+                $transport = $mailer->getSymfonyTransport();
+                $realDelivery = ! ($transport instanceof LogTransport || $transport instanceof ArrayTransport);
+                $domain = substr(strrchr((string) config('mail.from.address'), '@') ?: '@gnai.local', 1);
+                $messageId = $delivery->id.'@'.$domain;
+                // Persistir antes do transporte permite correlacionar até uma rejeição imediata.
+                $delivery->update([
+                    'message_id' => $messageId,
+                    'gmail_account_hash' => $settings !== null && strtolower((string) $settings->host) === 'smtp.gmail.com'
+                        ? hash('sha256', strtolower((string) $settings->username)) : null,
+                ]);
+                if ($delivery->purpose === EmailPurpose::MANUAL->value) {
+                    $delivery->update(['payload' => [
+                        ...$delivery->payload,
+                        'sender_address' => config('mail.from.address'),
+                        'sender_name' => config('mail.from.name'),
+                    ]]);
+                }
+                $email = new TransactionalEmail(
+                    $delivery->subject, $delivery->view, $delivery->text_view, $delivery->payload,
+                );
+                $email->withSymfonyMessage(function (Email $message) use ($messageId): void {
+                    $message->getHeaders()->remove('Message-ID');
+                    $message->getHeaders()->addIdHeader('Message-ID', $messageId);
+                });
+                $pending = $mailer->to($delivery->recipient_email, $delivery->recipient_name);
+                if ($delivery->purpose === EmailPurpose::MANUAL->value) {
+                    $pending->to($delivery->payload['to']);
+                    $pending->cc($delivery->payload['cc'] ?? []);
+                    $pending->bcc($delivery->payload['bcc'] ?? []);
+                }
+                $message = $pending->sendNow($email);
+            } catch (Throwable $exception) {
+                try {
+                    $delivery->update([
+                        'status' => EmailDeliveryStatus::QUEUED,
+                        'error_type' => $exception::class,
+                    ]);
+                } catch (Throwable $trackingException) {
+                    Log::warning('Não foi possível registrar a tentativa de envio.', [
+                        'email_delivery_id' => $deliveryId,
+                        'exception' => $trackingException,
+                    ]);
+                }
+                throw $exception;
+            }
+            // SMTP já aceitou a mensagem: falha de rastreamento não deve provocar outro envio.
+            $sent = $realDelivery && $message !== null;
+            $receipt = new EmailDeliveryReceiptDTO(
+                $deliveryId,
+                $sent ? EmailDeliveryStatus::SENT : EmailDeliveryStatus::NOT_SENT,
+                $sent ? now()->toDateTimeString() : null,
+                $sent ? $message->getMessageId() : null,
+            );
+            try {
+                $this->receipts->put($receipt);
+            } catch (Throwable $exception) {
+                Log::error('Não foi possível guardar o resultado para recuperação do rastreamento.', [
+                    'email_delivery_id' => $deliveryId,
+                    'exception' => $exception,
+                ]);
+            }
+            try {
+                $this->recordResult->execute($receipt);
+            } catch (Throwable $exception) {
+                Log::error('E-mail processado, mas não foi possível atualizar seu rastreamento.', [
+                    'email_delivery_id' => $deliveryId,
+                    'exception' => $exception,
+                ]);
+            }
+        });
+    }
+}

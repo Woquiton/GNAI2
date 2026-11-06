@@ -1,8 +1,8 @@
 <?php
 
-use App\Domains\Notifications\Application\Actions\Email\RecoverEmailResultsAction;
-use App\Domains\Settings\Application\Queries\GetBackupSettingsQuery;
-use App\Domains\Settings\Application\Queries\GetMailSettingsQuery;
+use App\Domains\Application\Actions\Notifications\Email\RecoverEmailResultsAction;
+use App\Domains\Application\Queries\Settings\GetBackupSettingsQuery;
+use App\Domains\Application\Queries\Settings\GetMailSettingsQuery;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 

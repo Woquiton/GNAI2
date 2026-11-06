@@ -10,7 +10,7 @@
 @php
     $notInformed = 'Não informado';
     // Mesmo padrão da visualização: sem tipo gravado, a publicação é tratada como evento.
-    $typeLabel = ($publication->type ?? \App\Domain\Enums\PublicationType::EVENT)->label();
+    $typeLabel = ($publication->type ?? \App\Domains\Domain\Enums\Publications\PublicationType::EVENT)->label();
     $scheduleStatusLabel = match ($publication->scheduleStatus()) {
         'upcoming' => 'Em breve',
         'ongoing' => 'Acontecendo',

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domain\Models\Location;
+use App\Domains\Domain\Models\Locations\Location;
 
 class LocationSeeder extends Seeder
 {

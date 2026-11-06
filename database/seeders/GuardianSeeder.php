@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Enums\GuardianRelationship;
-use App\Domain\Models\Guardian;
-use App\Domain\Models\Person;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Enums\Guardians\GuardianRelationship;
+use App\Domains\Domain\Models\Guardians\Guardian;
+use App\Domains\Domain\Models\People\Person;
+use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Database\Seeder;
 
 class GuardianSeeder extends Seeder

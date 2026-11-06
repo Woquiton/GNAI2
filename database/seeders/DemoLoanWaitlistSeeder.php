@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Domains\Auth\Domain\Models\User;
-use App\Domain\Enums\ItemType;
-use App\Domain\Enums\ConservationState;
-use App\Domain\Enums\LoanStatus;
-use App\Domain\Enums\ResourceStatus;
-use App\Domain\Enums\WaitlistStatus;
-use App\Domain\Models\Item;
-use App\Domain\Models\Student;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Enums\Items\ItemType;
+use App\Domains\Domain\Enums\Items\ConservationState;
+use App\Domains\Domain\Enums\Loans\LoanStatus;
+use App\Domains\Domain\Enums\Items\ResourceStatus;
+use App\Domains\Domain\Enums\Waitlists\WaitlistStatus;
+use App\Domains\Domain\Models\Items\Item;
+use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;

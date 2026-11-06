@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Reporting\UI\Controllers\ReportController;
+use App\Domains\UI\Controllers\Reporting\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function (): void {
