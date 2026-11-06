@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-FROM php:8.3-fpm-alpine@sha256:9fcec48321d890240d700ccdc2b475420c87d398826e68c3d8830b8fca663e5c AS php_builder
+FROM php:8.3.36-fpm-alpine@sha256:472b872f5460b04ef75fdbe7e237bed3e0f0f0c6e3ede67254ddd009a6c520fa AS php_builder
 
 RUN apk add --no-cache \
     $PHPIZE_DEPS \
@@ -64,7 +64,7 @@ COPY tsconfig.json ./
 
 RUN npm run build
 
-FROM php:8.3-fpm-alpine@sha256:9fcec48321d890240d700ccdc2b475420c87d398826e68c3d8830b8fca663e5c
+FROM php:8.3.36-fpm-alpine@sha256:472b872f5460b04ef75fdbe7e237bed3e0f0f0c6e3ede67254ddd009a6c520fa
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
