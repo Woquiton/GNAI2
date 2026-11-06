@@ -55,7 +55,7 @@ export default function EmailIndex({
             value,
             `${label} (${counts[value] ?? 0})`,
         ]),
-    );
+    ) as EmailIndexProps['statusOptions'];
 
     function selectMessage(id: string, checked: boolean): void {
         setSelection((values) =>
