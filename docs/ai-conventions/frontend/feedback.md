@@ -19,4 +19,4 @@ Feedback é requisito de paridade: login/logout, CRUD, ativação, upload, impor
 ## Processamento
 
 - Indique a operação, desabilite o submit e impeça envios duplicados; após falha, permita corrigir e tentar de novo. `Forms/LoginForm` e `Forms/ForgotPasswordForm` usam `form.processing`, texto de processamento e `aria-busy`.
-- `UI/AppLoader`, montado uma vez em `main.tsx`, acompanha as trocas de página do Inertia com o preloader do Ubold. Ele não substitui o estado de processamento de formulários e operações.
+- `UI/AppLoader`, montado uma vez em `main.tsx`, acompanha as trocas de página do Inertia com o preloader preservado do tema, sobre uma camada cinza translúcida (`--ui-color-loading-overlay`), no mesmo tom e opacidade do modal de confirmação. A página permanece visível ao fundo durante o carregamento. Ele não substitui o estado de processamento de formulários e operações.

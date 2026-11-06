@@ -2,7 +2,7 @@
     position: fixed;
     inset: 0;
     z-index: 999999;
-    background-color: #ffffff;
+    background-color: var(--ui-color-loading-overlay);
     opacity: 1;
     transition: opacity 180ms ease-out;
     will-change: opacity;

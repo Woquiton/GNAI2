@@ -87,6 +87,7 @@
     /* Superfícies e bordas */
     --ui-color-surface: #ffffff;
     --ui-color-surface-alt: #ebeff2;
+    --ui-color-loading-overlay: rgba(54, 64, 74, 0.8);
     --ui-color-surface-hover: #f9f9f9;
     --ui-color-surface-hover-alt: #f4f8fb;
     --ui-color-table-header: #f6f1ff;
