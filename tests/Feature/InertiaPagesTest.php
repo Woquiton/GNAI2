@@ -35,7 +35,7 @@ final class InertiaPagesTest extends TestCase
         $response = $this->actingAs($user)->get('/specialized-educational-support/students');
 
         $response->assertOk()->assertInertia(fn (Assert $page) => $page
-            ->component('Inclusion/Students/Index')
+            ->component('Students/Index')
             ->where('auth.user.id', $user->id)
             ->missing('auth.user.password')
             ->missing('auth.user.remember_token')
@@ -73,7 +73,7 @@ final class InertiaPagesTest extends TestCase
         $response = $this->get($url.'?search=teste', [
             'X-Inertia' => 'true',
             'X-Inertia-Version' => $initial->viewData('page')['version'],
-            'X-Inertia-Partial-Component' => 'Inclusion/Barriers/Index',
+            'X-Inertia-Partial-Component' => 'Barriers/Index',
             'X-Inertia-Partial-Data' => 'barriers',
             'X-Requested-With' => 'XMLHttpRequest',
             'Accept' => 'text/html, application/xhtml+xml',
@@ -81,7 +81,7 @@ final class InertiaPagesTest extends TestCase
 
         $response->assertOk()
             ->assertHeader('X-Inertia', 'true')
-            ->assertJsonPath('component', 'Inclusion/Barriers/Index')
+            ->assertJsonPath('component', 'Barriers/Index')
             ->assertJsonStructure(['props' => ['barriers' => ['data', 'links']]])
             ->assertJsonMissingPath('props.auth');
     }

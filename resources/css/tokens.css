@@ -1,0 +1,165 @@
+/* Variáveis institucionais compartilhadas; sem estilos de layout legados. */
+@import './variables.css';
+
+/*
+ * Tokens do Gnai.
+ *
+ * - Marca: o roxo institucional (--ui-color-gnai-primary) é a cor primária do produto.
+ *   --ui-color-primary aponta para ele; o azul do tema permanece somente como --ui-color-theme-blue.
+ * - Componentes consomem tokens; páginas não definem cores, raios, sombras ou anéis de foco próprios.
+ */
+:root {
+    /* Tipografia */
+    --ui-font-body: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --ui-font-ui: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --ui-font-gnai-heading: var(
+        --font-family-heading,
+        'Segoe UI',
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif
+    );
+    --ui-font-gnai-body: var(--font-family-base, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif);
+
+    --ui-font-size-xs: 12px;
+    --ui-font-size-sm: 13px;
+    --ui-font-size-md: 14px;
+    --ui-font-size-lg: 16px;
+    --ui-font-size-xl: 18px;
+    --ui-font-size-form-label: var(--ui-font-size-lg);
+    --ui-font-size-detail-label: var(--ui-font-size-md);
+    --ui-font-size-section-title: var(--ui-font-size-xl);
+
+    /* Espaçamento (base 4px) */
+    --ui-space-1: 4px;
+    --ui-space-2: 8px;
+    --ui-space-3: 12px;
+    --ui-space-4: 16px;
+    --ui-space-5: 20px;
+    --ui-space-6: 24px;
+    --ui-space-7: 28px;
+    --ui-space-8: 32px;
+
+    /* Raios e sombras */
+    --ui-radius-sm: 3px;
+    --ui-radius-md: 5px;
+    --ui-radius-lg: 8px;
+    --ui-radius-pill: 999px;
+    --ui-shadow-card: 0 1px 1px rgba(0, 0, 0, 0.05);
+    --ui-shadow-sticky: 0 -2px 6px color-mix(in srgb, var(--ui-color-shadow) 45%, transparent);
+
+    /* Foco visível compartilhado por botões, links e controles */
+    --ui-focus-ring-color: var(--ui-color-input-focus-border);
+    --ui-focus-ring-width: 2px;
+    --ui-focus-ring-offset: 3px;
+
+    /*
+     * Foco por teclado (Tab, setas, teclas de acesso). Mais forte que o foco do clique: anel
+     * contínuo que acompanha o arredondamento do controle, fresta clara e halo translúcido.
+     * Áreas escuras ou estreitas redefinem estas variáveis localmente (ver styles/accessibility.css).
+     */
+    --ui-focus-keyboard-color: var(--ui-color-input-focus-border);
+    --ui-focus-keyboard-width: 3px;
+    --ui-focus-keyboard-offset: 3px;
+    --ui-focus-keyboard-gap-color: var(--ui-color-surface);
+    --ui-focus-keyboard-halo-size: 4px;
+    --ui-focus-keyboard-halo-strength: 30%;
+
+    /* Barra de atalhos de acessibilidade */
+    --ui-skip-links-bg: var(--ui-color-gnai-primary);
+    --ui-skip-links-text: #ffffff;
+    --ui-skip-links-active-bg: #ffffff;
+    --ui-skip-links-active-text: var(--ui-color-gnai-primary);
+
+    /* Texto */
+    --ui-color-text: #36404a;
+    --ui-color-text-muted: #828282;
+    --ui-color-text-inverse: #ffffff;
+    --ui-color-legacy-text: #797979;
+    --ui-color-legacy-muted: #98a6ad;
+    --ui-color-heading: #505458;
+    --ui-color-page-title: var(--text-purple-dark);
+    --ui-color-page-subtitle: rgba(33, 37, 41, 0.75);
+    --ui-color-link: #337ab7;
+    --ui-color-link-hover: #23527c;
+
+    /* Superfícies e bordas */
+    --ui-color-surface: #ffffff;
+    --ui-color-surface-alt: #ebeff2;
+    --ui-color-surface-hover: #f9f9f9;
+    --ui-color-surface-hover-alt: #f4f8fb;
+    --ui-color-table-header: #f6f1ff;
+    --ui-color-tag-bg: var(--ui-color-table-header);
+    --ui-color-tag-text: var(--ui-color-form-label);
+    --ui-color-border-soft: #edf0f0;
+    --ui-color-border-subtle: rgba(0, 0, 0, 0.1);
+    --ui-color-border-control: #eaeaea;
+    --ui-color-card-border: #ced4da;
+    --ui-color-section-divider: var(--border-color);
+    --ui-color-shadow: rgba(0, 0, 0, 0.15);
+
+    /* Marca e ações */
+    --ui-color-gnai-primary: var(--primary-color);
+    --ui-color-gnai-primary-hover: var(--color-primary-hover);
+    --ui-color-primary: var(--ui-color-gnai-primary);
+    --ui-color-primary-hover: var(--ui-color-gnai-primary-hover);
+    --ui-color-theme-blue: #3b82f6;
+    --ui-color-custom: #14b8a6;
+    --ui-color-list-action: var(--ui-color-gnai-primary);
+    --ui-color-list-action-hover: var(--ui-color-gnai-primary-hover);
+    --ui-color-save: var(--ui-color-success);
+    --ui-color-save-hover: var(--ui-color-success-hover);
+    --ui-color-cancel: var(--button-secondary-bg);
+    --ui-color-cancel-hover: var(--button-secondary-hover);
+    --ui-color-cancel-text: var(--button-secondary-text);
+    --ui-color-dark-blue: #2e5cb8;
+    --ui-color-dark-blue-hover: #244a96;
+    --ui-color-dark-red: #dc3545;
+    --ui-color-dark-red-hover: #b52a37;
+
+    /* Formulários */
+    --ui-color-form-label: var(--text-purple-dark);
+    --ui-color-input-border: var(--input-border-color);
+    --ui-color-input-focus-border: var(--input-focus-border-color);
+
+    /* Estados semânticos */
+    --ui-color-danger: #ef4444;
+    --ui-color-info: #06b6d4;
+    --ui-color-info-light: var(--color-info-light);
+    --ui-color-info-text: var(--color-info-text);
+    --ui-color-success: var(--color-success);
+    --ui-color-success-hover: var(--color-success-hover);
+    --ui-color-warning: #f59e0b;
+    /* Âmbar dos títulos de aviso: legível como texto grande (3:1) sobre o branco. */
+    --ui-color-warning-strong: #b45309;
+    --ui-color-inverse: #64748b;
+    --ui-color-pink: #fb6d9d;
+    --ui-color-purple: #7266ba;
+
+    /* Listagens */
+    --ui-list-control-height: 30px;
+    --ui-list-control-padding-block: 4px;
+    --ui-list-control-padding-inline: 10px;
+    --ui-list-control-font-size: var(--ui-font-size-sm);
+
+    /* Navegação */
+    --ui-sidebar-bg: #1d1c20;
+    --ui-sidebar-text: #ffffff;
+    --ui-sidebar-accent: #a78bfa;
+    --ui-sidebar-active-bg: var(--ui-color-gnai-primary);
+    --ui-sidebar-active-text: #ffffff;
+    --ui-sidebar-flyout-border: var(--ui-color-gnai-primary);
+    /* Lista que abre ao passar o ponteiro com o menu recolhido: fundo claro, como no Ubold. */
+    --ui-sidebar-flyout-bg: #ffffff;
+    --ui-sidebar-flyout-text: #75798b;
+    --ui-sidebar-flyout-accent: var(--ui-color-gnai-primary);
+    --ui-sidebar-flyout-hover-bg: var(--ui-color-surface-hover-alt);
+
+    --ui-institution-hover-color: color-mix(in srgb, var(--ui-color-text) 80%, transparent);
+
+    --ui-topbar-height: 60px;
+    --ui-sidebar-width: 240px;
+    --ui-sidebar-small-width: 180px;
+    --ui-sidebar-collapsed-width: 70px;
+}

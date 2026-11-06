@@ -6,7 +6,7 @@ namespace App\Domains\Auth\Application\Actions\TeacherAccess;
 
 use App\Domains\Auth\Application\Data\TeacherAccess\RequestTeacherAccessLinkData;
 use App\Domains\Auth\Domain\Models\TeacherAccessToken;
-use App\Domains\Inclusion\Domain\Models\Teacher;
+use App\Domain\Models\Teacher;
 use App\Domains\Notifications\Application\Actions\Email\QueueEmailAction;
 use App\Domains\Notifications\Domain\DTOs\EmailMessageDTO;
 use Illuminate\Support\Facades\DB;

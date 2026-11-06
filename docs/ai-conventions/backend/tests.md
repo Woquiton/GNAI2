@@ -12,7 +12,9 @@ Esta convenção segue o padrão de testes da branch `main`. Consulte-a sempre q
 
 ## Onde ficam
 
-Os testes ficam no domínio dono do código, espelhando a estrutura de `app/Domains/<Dominio>/`:
+Recursos de negócio de `app/{Application,Domain,Infrastructure,UI}/` têm testes em
+`tests/Unit` e `tests/Feature`, espelhando a camada e o recurso, com namespace `Tests\Unit`
+ou `Tests\Feature`. Os demais domínios mantêm os testes junto de seu código:
 
 | O que se testa | Caminho |
 | --- | --- |
@@ -40,6 +42,6 @@ O domínio precisa estar listado na suíte `Domains` do `phpunit.xml` para os te
 
 ## Execução
 
-- Suíte padrão: `make test` (Unit e Domains). Integração das páginas Inertia: `make test TEST=tests/Feature/InertiaPagesTest.php`.
+- Suíte padrão: `make test` (Unit, Domains e Feature). Integração das páginas Inertia: `make test TEST=tests/Feature/InertiaPagesTest.php`.
 - Para ver o resultado de cada teste sem depender do formatador do `artisan test`, use `docker compose --env-file .env.dev -f docker-compose.dev.yml exec app php vendor/bin/phpunit --testsuite Unit,Domains,Feature`.
 - Em migrações comuns de telas continuam valendo os limites do `AGENTS.md`: não crie nem rode testes automaticamente sem pedido. Quando a tarefa envolver testes, siga esta convenção e entregue a suíte verde.

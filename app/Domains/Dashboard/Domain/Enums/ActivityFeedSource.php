@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Domains\Dashboard\Domain\Enums;
 
 use App\Domains\Audit\Domain\Contracts\Auditable;
-use App\Domains\Inclusion\Domain\Models\AeeStudentEvaluation;
-use App\Domains\Inclusion\Domain\Models\CaseStudy;
-use App\Domains\Inclusion\Domain\Models\Paee;
-use App\Domains\Inclusion\Domain\Models\PedagogicalRecord;
-use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
+use App\Domain\Models\AeeStudentEvaluation;
+use App\Domain\Models\CaseStudy;
+use App\Domain\Models\Paee;
+use App\Domain\Models\PedagogicalRecord;
+use App\Domain\Models\PeiDiscipline;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 

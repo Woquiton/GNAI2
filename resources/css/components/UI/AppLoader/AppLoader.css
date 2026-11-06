@@ -1,0 +1,35 @@
+.animationload.appLoader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background-color: #ffffff;
+    opacity: 1;
+    transition: opacity 180ms ease-out;
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.animationload.appLoader.appLoader--hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.animationload.appLoader .loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin: -100px 0 0 -100px;
+    background-image: url('/images/preloader.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 24px;
+    text-align: center;
+}
+
+html.app-loader-scroll-lock,
+body.app-loader-scroll-lock {
+    overflow: hidden;
+}

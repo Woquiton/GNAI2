@@ -1,22 +1,14 @@
 <?php
 
-use App\Domains\Inclusion\UI\Controllers\TeacherPortalController;
+use App\UI\Controllers\TeacherPortalController;
 use App\Domains\Notifications\UI\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('web')->group(function () {
-    // Catálogo local para apoiar a migração das telas para React.
-    if (app()->environment('local', 'testing')) {
-        Route::redirect('/react', '/react/index.html');
-        Route::get('/react/{page}', fn () => Inertia::render('Catalog/Catalog'))
-            ->where('page', '[A-Za-z0-9_-]+\\.html')
-            ->name('react.catalog');
-    }
-
     Route::redirect('/', '/sobre-nos');
 
-    Route::group([], base_path('routes/modules/inclusion.php'));
+    Route::group([], base_path('routes/business.php'));
     Route::middleware('auth')->group(base_path('routes/modules/notifications.php'));
 
     Route::middleware(['auth'])

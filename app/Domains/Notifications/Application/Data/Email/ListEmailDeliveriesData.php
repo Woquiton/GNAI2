@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Notifications\Application\Data\Email;
 
-use App\Domains\Inclusion\Domain\Enums\TagModule;
+use App\Domain\Enums\TagModule;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryContext;
 use App\Domains\Notifications\Domain\Enums\EmailDeliveryStatus;
 use App\Domains\Notifications\Domain\Enums\EmailMailboxFolder;

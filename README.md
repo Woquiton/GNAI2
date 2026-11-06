@@ -18,10 +18,10 @@ Por baixo, é uma aplicação Laravel 12 (PHP 8.3) com MySQL 8, usando Docker
 Compose para rodar tudo de forma isolada — tanto no computador de
 desenvolvimento quanto no servidor de produção.
 
-O frontend é React/TypeScript com Inertia e fica em `resources/react`.
+O frontend é React/TypeScript com Inertia e fica em `resources/js`.
 Controllers de telas respondem com componentes React e props; os assets ficam
-em `public/assets/react`. O catálogo local de componentes está disponível em
-`http://localhost/react/index.html`. Consulte o [guia React](resources/react/README.md).
+em `public/assets`. Os componentes reutilizáveis ficam em
+`resources/js/components`. Consulte o [guia React](resources/js/README.md).
 
 ## O que você precisa ter instalado
 
@@ -723,7 +723,7 @@ Os adaptadores IMAP e o armazenamento privado ficam em Infrastructure.
 
 ## Listagem e catálogo de itens
 
-Em `/inclusao/itens`, os modos **Listagem** e **Catálogo** usam o mesmo paginador,
+Em `/itens`, os modos **Listagem** e **Catálogo** usam o mesmo paginador,
 os filtros e as permissões existentes. O catálogo segue a composição dos produtos
 do Ubold, com animação de entrada e reposicionamento dos cards e respeito a
 `prefers-reduced-motion`. A tabela permanece montada ao alternar os modos.

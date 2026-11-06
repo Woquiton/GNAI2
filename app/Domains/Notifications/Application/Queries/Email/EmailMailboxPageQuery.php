@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Notifications\Application\Queries\Email;
 
-use App\Domains\Inclusion\Domain\Enums\TagModule;
-use App\Domains\Inclusion\Domain\Models\Tag;
+use App\Domain\Enums\TagModule;
+use App\Domain\Models\Tag;
 use App\Domains\Notifications\Domain\Enums\EmailMailboxFolder;
 use App\Domains\Settings\Application\Queries\GetMailSettingsQuery;
 

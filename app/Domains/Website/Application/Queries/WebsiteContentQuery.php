@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Website\Application\Queries;
 
-use App\Domains\Inclusion\Domain\Enums\ProfessionalStatus;
-use App\Domains\Inclusion\Domain\Models\Professional;
-use App\Domains\Inclusion\Domain\Models\Publication;
+use App\Domain\Enums\ProfessionalStatus;
+use App\Domain\Models\Professional;
+use App\Domain\Models\Publication;
 use App\Domains\Website\UI\Presenters\WebsitePresenter;
 
 /**

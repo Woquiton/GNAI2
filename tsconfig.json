@@ -11,7 +11,10 @@
         "esModuleInterop": true,
         "allowImportingTsExtensions": true,
         "types": ["vite/client"],
-        "paths": { "@/*": ["./resources/react/*"] }
+        "paths": {
+            "@/*": ["./resources/js/*"],
+            "@styles/*": ["./resources/css/*"]
+        }
     },
-    "include": ["resources/react/**/*.ts", "resources/react/**/*.tsx"]
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.tsx"]
 }

@@ -5,40 +5,46 @@ Esta convenção define a organização de pastas, os níveis de componentes, os
 ## Organização de pastas
 
 ```text
-resources/react/
+resources/js/
   main.tsx                     # resolve somente pages/**; atribui AppLayout às telas de negócio
-  pages/<Dominio>/<Recurso>/   # entradas Inertia: Index, Create, Edit, Show e subtelas
+  pages/<Recurso>/   # entradas Inertia: Index, Create, Edit, Show e subtelas
   components/
     Forms/ Tables/ Navigation/ UI/   # nível global
-    Inclusion/<Recurso>/             # nível de domínio e específico do recurso
+    <Recurso>/                       # recursos de negócio, sem módulo agregador
       <Recurso>.types.ts             # contratos recebidos dos controllers
       <Recurso>.constants.ts         # rótulos, filtros vazios, opções e mapas de tom
       <Recurso>.routes.ts            # URLs das rotas e breadcrumb do recurso
       <Recurso>DeleteModal.tsx       # peças compartilhadas pelas telas do recurso
       Form/  List/  Details/         # partes por responsabilidade
   hooks/ utils/                # somente o que é realmente transversal e sem UI
-  styles/                      # reset, tokens, globais e ícones
-  catalog/                     # demonstrações do tema: app/, pages/, components/ e types/
+resources/css/
+  reset.css tokens.css globals.css accessibility.css app-shell.css icons.css variables.css
+  components/                  # espelha os proprietários em resources/js/components/
+  pages/                       # estilos de páginas, incluindo about-us.css
+resources/images/              # imagens processadas pelo Vite
+public/images/                 # imagens servidas diretamente
+public/assets/
+  js/ fonts/ plugins/          # dependências locais, recursos e licenças
 ```
 
-- `pages/` contém apenas as entradas resolvidas por `Inertia::render('Dominio/Recurso/Acao')`. Uma página recebe as props do controller, chama os hooks do recurso e compõe os componentes; não define formulários, colunas, tipos ou CSS próprios.
-- `components/Inclusion/<Recurso>/` guarda tudo o que pertence ao recurso. Use as subpastas somente quando houver conteúdo: `Form/` (formulário, seções, `use<Recurso>Form.ts`, tipos do payload), `List/` (filtros, colunas e tabela) e `Details/` (blocos da visualização e ações do rodapé).
-- Tipos, constantes, hooks e CSS ficam com seu proprietário. Não crie `types/`, `constants/` ou `hooks/` globais para conteúdo de um domínio. Valores não ficam em `*.types.ts`.
-- O catálogo demonstrativo vive em `catalog/` e só é aberto por `pages/Catalog/Catalog.tsx`. Componentes de domínios fictícios do tema (CRM, e-commerce, e-mail, preços, faturas) ficam em `catalog/components/`; widgets genéricos do tema (gráficos, painéis, tabelas de plugins) continuam em `components/` para uso futuro do produto. O produto não importa nada de `catalog/`; o ESLint bloqueia essas importações.
+- `pages/` contém apenas as entradas resolvidas por `Inertia::render('Recurso/Acao')`. Uma página recebe as props do controller, chama os hooks do recurso e compõe os componentes; não define formulários, colunas, tipos ou CSS próprios.
+- `components/<Recurso>/` guarda tudo o que pertence ao recurso. Use as subpastas somente quando houver conteúdo: `Form/` (formulário, seções, `use<Recurso>Form.ts`, tipos do payload), `List/` (filtros, colunas e tabela) e `Details/` (blocos da visualização e ações do rodapé).
+- Tipos, constantes e hooks ficam com seu proprietário em `resources/js/`. CSS fica em `resources/css/`, espelhando o caminho do proprietário, e é importado por `@styles/`. Não crie `types/`, `constants/` ou `hooks/` globais para conteúdo de um domínio. Valores não ficam em `*.types.ts`.
+- O catálogo demonstrativo do Ubold foi removido. Componentes convertidos, incluindo widgets genéricos (gráficos, painéis e tabelas de plugins), permanecem em `components/` para uso do produto. Assets de terceiros e suas licenças permanecem em `public/assets/`.
 
 ## Três níveis de reutilização
 
 | Nível | Onde fica | Exemplos |
 | --- | --- | --- |
 | Global | `components/{Forms,Tables,Navigation,UI}` | `FormFields`, `FormLayout`, `TableListLayout`, `TableListFilters`, `BusinessPage`, `DetailGrid`, `ConfirmActionModal` |
-| Domínio | `components/Inclusion/<Recurso>/` (ou `components/Inclusion/` para peças de vários recursos) | `ItemDeleteModal`, `itemBreadcrumb`, `Inclusion/GeoMap`, `Inspections/*` |
+| Domínio | `components/<Recurso>/` (ou `components/` para peças de vários recursos) | `ItemDeleteModal`, `itemBreadcrumb`, `GeoMap`, `Inspections/*` |
 | Específico | Subpastas `Form/`, `List/`, `Details/` | `ItemIdentificationFields`, `itemColumns`, `ItemDetails` |
 
 Extraia um componente quando ele tiver responsabilidade própria (uma seção de formulário, a configuração das colunas, um bloco de detalhes) ou for reutilizado. Não crie componentes que apenas envolvem um único campo.
 
 ## Base compartilhada
 
-Os caminhos são relativos a `resources/react/components/`.
+Os caminhos são relativos a `resources/js/components/`.
 
 | Necessidade | Componente ou hook |
 | --- | --- |
@@ -87,7 +93,7 @@ Select2, Summernote, Datepicker, Clockpicker, Timepicker, Switchery e demais plu
 
 ## Estilos e tokens
 
-- `styles/tokens.css` é a fonte de cores, tipografia, espaçamento (`--ui-space-*`), raios (`--ui-radius-*`) e foco (`--ui-focus-ring-*`). `--ui-color-primary` é o roxo institucional; o azul do tema permanece somente como `--ui-color-theme-blue`.
+- `resources/css/tokens.css` é a fonte de cores, tipografia, espaçamento (`--ui-space-*`), raios (`--ui-radius-*`) e foco (`--ui-focus-ring-*`). `--ui-color-primary` é o roxo institucional; o azul do tema permanece somente como `--ui-color-theme-blue`.
 - `UI/Button` define cada tom apenas por variáveis `--button-*`; o anel de foco é o mesmo para todos os tons. Não fixe cores, raios ou anéis de foco em páginas.
 - CSS local organiza somente a composição particular do proprietário. Grades de filtros, grades de detalhes, etiquetas e espaçamentos de cards vêm dos componentes globais. Uma tela nunca importa CSS de outra tela ou recurso; padrões comuns viram componente.
 - Evite `style` inline, exceto para valores calculados em tempo de execução (largura medida, variável CSS derivada de props).
@@ -102,6 +108,6 @@ Select2, Summernote, Datepicker, Clockpicker, Timepicker, Switchery e demais plu
 
 O typescript-eslint ainda não suporta o TypeScript 7 nativo; `eslint.config.js` resolve o parser com o pacote `typescript-eslint-runtime` (TypeScript 6) somente para o lint.
 
-O ESLint impede que componentes, hooks e utilitários importem páginas, que hooks e utilitários importem componentes e que o produto importe o catálogo. Erros devem ficar em zero; avisos indicam débitos a corrigir quando a área for alterada.
+O ESLint impede que componentes, hooks e utilitários importem páginas, que hooks e utilitários importem componentes. Erros devem ficar em zero; avisos indicam débitos a corrigir quando a área for alterada.
 
 Na escrita do JSX, mantenha o `return` declarativo: extraia condicionais encadeadas, rótulos calculados e montagens de opções para variáveis ou funções antes do `return`, e mova blocos extensos para componentes com responsabilidade própria.

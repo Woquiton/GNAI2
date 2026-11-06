@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Website\Application\Data;
 
-use App\Domains\Inclusion\Domain\Enums\PublicationType;
+use App\Domain\Enums\PublicationType;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;

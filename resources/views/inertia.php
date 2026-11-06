@@ -24,7 +24,7 @@
     <link rel="icon" type="image/png" href="<?= e(asset('images/favicon.png')) ?>">
 <?php } ?>
     <?= app(\Illuminate\Foundation\Vite::class)->reactRefresh() ?>
-    <?= app(\Illuminate\Foundation\Vite::class)(['resources/react/main.tsx']) ?>
+    <?= app(\Illuminate\Foundation\Vite::class)(['resources/js/main.tsx']) ?>
 </head>
 <body>
     <script data-page="root" type="application/json"><?= json_encode($page, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) ?></script>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Notifications\Domain\Models;
 
-use App\Domains\Inclusion\Domain\Models\Tag;
+use App\Domain\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

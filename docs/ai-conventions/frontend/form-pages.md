@@ -6,7 +6,7 @@ Esta convenção documenta o padrão já implementado no cadastro e na edição 
 
 ## Composição atual
 
-O formulário de Itens é a referência da organização em pastas descrita em [arquitetura](architecture.md): a página (`pages/Inclusion/Items/Create.tsx`) compõe `BusinessPage` e `ItemForm`; `components/Inclusion/Items/Form/` reúne `ItemForm`, `useItemForm`, os tipos do payload e uma seção por responsabilidade (`ItemIdentificationFields`, `ItemManagementFields`, `ItemInspectionFields`). Os campos usam `Forms/FormFields` e o envio usa `useFormSubmission`.
+O formulário de Itens é a referência da organização em pastas descrita em [arquitetura](architecture.md): a página (`pages/Items/Create.tsx`) compõe `BusinessPage` e `ItemForm`; `components/Items/Form/` reúne `ItemForm`, `useItemForm`, os tipos do payload e uma seção por responsabilidade (`ItemIdentificationFields`, `ItemManagementFields`, `ItemInspectionFields`). Os campos usam `Forms/FormFields` e o envio usa `useFormSubmission`.
 
 ```tsx
 <TextInputField
@@ -28,14 +28,14 @@ Os caminhos abaixo são referências da implementação atual, não uma obrigaç
 
 | Responsabilidade | Arquivo de referência |
 | --- | --- |
-| Página de cadastro e título | [Create.tsx](../../../resources/react/pages/Inclusion/Students/Create.tsx) |
-| Página de edição, registro existente e identidade do formulário | [Edit.tsx](../../../resources/react/pages/Inclusion/Students/Edit.tsx) |
-| Composição da página, breadcrumbs, cabeçalho e feedback | `Navigation/BusinessPage` + `Inclusion/Students/Students.routes.ts` |
-| Dados, campos, seções, submissão, upload e processamento | [StudentForm.tsx](../../../resources/react/components/Inclusion/Students/Form/StudentForm.tsx) |
-| Layout dos campos e adaptações responsivas do exemplo | [StudentForm.css](../../../resources/react/components/Inclusion/Students/Form/StudentForm.css) |
-| Tipos recebidos e auxiliares do domínio | `components/Inclusion/Students/Students.types.ts`, `Students.constants.ts` e `Students.routes.ts` |
+| Página de cadastro e título | [Create.tsx](../../../resources/js/pages/Students/Create.tsx) |
+| Página de edição, registro existente e identidade do formulário | [Edit.tsx](../../../resources/js/pages/Students/Edit.tsx) |
+| Composição da página, breadcrumbs, cabeçalho e feedback | `Navigation/BusinessPage` + `Students/Students.routes.ts` |
+| Dados, campos, seções, submissão, upload e processamento | [StudentForm.tsx](../../../resources/js/components/Students/Form/StudentForm.tsx) |
+| Layout dos campos e adaptações responsivas do exemplo | [StudentForm.css](../../../resources/css/components/Students/Form/StudentForm.css) |
+| Tipos recebidos e auxiliares do domínio | `components/Students/Students.types.ts`, `Students.constants.ts` e `Students.routes.ts` |
 | Falhas de conexão e de resposta HTTP | `components/Forms/FormLayout/useFormSubmission.ts` |
-| Resolução Inertia e layout compartilhado | `resources/react/main.tsx` e `resources/react/components/Navigation/AppLayout/AppLayout.tsx` |
+| Resolução Inertia e layout compartilhado | `resources/js/main.tsx` e `resources/js/components/Navigation/AppLayout/AppLayout.tsx` |
 
 A página compõe o cabeçalho e recebe as props reais do controller. O componente de formulário controla os dados, erros, envio e estados locais. Componentes compartilhados encapsulam controles, estilos e plugins. As ações principais ficam no rodapé sticky do formulário, sem repetição no cabeçalho.
 
@@ -64,7 +64,7 @@ As seções atuais têm título em maiúsculas, ícone decorativo e divisor cinz
 
 ### Biblioteca interna de componentes
 
-Os caminhos desta tabela são relativos a `resources/react/components/`.
+Os caminhos desta tabela são relativos a `resources/js/components/`.
 
 | Necessidade | Componente e utilização |
 | --- | --- |
@@ -96,7 +96,7 @@ Use imports diretos com `@/` entre pastas e `./` para arquivos locais. Leia os t
 
 ### Identidade visual e organização dos campos
 
-As fontes e cores compartilhadas estão em `resources/react/styles/tokens.css`, que importa as variáveis de cores de `resources/css/variables.css`. O CSS de cada componente define sua aparência; o CSS do proprietário do formulário define apenas a composição necessária.
+As fontes e cores compartilhadas estão em `resources/css/tokens.css`, que importa as variáveis de cores de `resources/css/variables.css`. O CSS de cada componente define sua aparência; o CSS do proprietário do formulário define apenas a composição necessária.
 
 | Elemento | Padrão atual a reutilizar |
 | --- | --- |
@@ -149,7 +149,7 @@ O nome e o ID acima pertencem ao exemplo; adapte-os ao cadastro. Use hierarquia 
 - Durante o envio, sinalize `aria-busy`, bloqueie campos e ações apropriados e impeça submits duplicados. Alunos usam `fieldset disabled`, props `disabled` dos adaptadores e uma trava em `useRef`, liberada em `onFinish`. O Cancelar do rodapé recebe o estado de processamento. Não confie apenas no `fieldset` para widgets com elementos gerados fora dele.
 - Mantenha mensagens como “Salvando...” e status compreensíveis. `FormActions.status` anuncia o andamento; `form.progress` é usado quando houver upload. Falhas devem permitir corrigir e tentar novamente.
 
-As falhas de conexão e de resposta HTTP são apresentadas por `Forms/FormLayout/useFormSubmission`, que também impede envio duplicado, aplica multipart com `_method` quando há arquivos e focaliza o primeiro campo inválido. Ligue `formRef` ao `FormLayout`. Requisições fora de formulários usam `notifyOperationFailure`/`notifyConnectionFailure` de `UI/NotificationToast/operationFeedback`. O hook do recurso (`Inclusion/Students/Form/useStudentForm`) usa esse transporte compartilhado. Formulários com arquivos e centenas de campos, como o construtor do site, passam `jsonPayload: true`: os dados seguem num único campo `_payload` (JSON) e só os arquivos vão como multipart, nas mesmas posições. O middleware `ExpandJsonPayload` abre esse campo antes do `SanitizeRichTextInput` e aplica o mesmo tratamento de espaços e vazios dos campos comuns, então o Data, as regras e os nomes dos erros não mudam. Sem isso, o limite `max_input_vars` do PHP descartaria o fim do envio, inclusive o `_method`.
+As falhas de conexão e de resposta HTTP são apresentadas por `Forms/FormLayout/useFormSubmission`, que também impede envio duplicado, aplica multipart com `_method` quando há arquivos e focaliza o primeiro campo inválido. Ligue `formRef` ao `FormLayout`. Requisições fora de formulários usam `notifyOperationFailure`/`notifyConnectionFailure` de `UI/NotificationToast/operationFeedback`. O hook do recurso (`Students/Form/useStudentForm`) usa esse transporte compartilhado. Formulários com arquivos e centenas de campos, como o construtor do site, passam `jsonPayload: true`: os dados seguem num único campo `_payload` (JSON) e só os arquivos vão como multipart, nas mesmas posições. O middleware `ExpandJsonPayload` abre esse campo antes do `SanitizeRichTextInput` e aplica o mesmo tratamento de espaços e vazios dos campos comuns, então o Data, as regras e os nomes dos erros não mudam. Sem isso, o limite `max_input_vars` do PHP descartaria o fim do envio, inclusive o `_method`.
 
 ## Padrões condicionais
 
@@ -187,13 +187,13 @@ No modo padrão com `id`, o conteúdo editável recebe `${id}-input`; o `FormFie
 
 A referência bloqueia Salvar após falha de carregamento do editor e apresenta erro no campo; nos formulários sem outra particularidade, `Forms/FormLayout/useEditorFailure` entrega `editorFailed` e `reportEditorFailure` para isso. Todo campo salvo por editor é exibido com `UI/RichTextContent` a partir de HTML sanitizado no backend, nunca como texto com `preserveLineBreaks`, que mostraria as tags. Não declare HTML recebido como seguro por ter vindo do editor: respeite o tratamento do backend. `StudentPagePresenter` disponibiliza `address_html` por `RichTextSanitizer`. A descrição dos itens usa `UI/RichTextContent` para exibir o HTML já sanitizado, preservando listas, tabelas, imagens e formatação sem depender do CSS do editor. As entidades do HTML sanitizado permanecem escapadas; nunca faça uma decodificação posterior antes de inserir o conteúdo no DOM.
 
-Plugins usam os assets locais de `public/assets/react/`, com adaptadores que carregam suas dependências e limpam listeners/instâncias ao desmontar. Não importe Bootstrap global, não reinicialize os plugins por tela e não instale bibliotecas equivalentes sem necessidade comprovada.
+Plugins usam os assets locais de `public/assets/`, com adaptadores que carregam suas dependências e limpam listeners/instâncias ao desmontar. Não importe Bootstrap global, não reinicialize os plugins por tela e não instale bibliotecas equivalentes sem necessidade comprovada.
 
 ### Mapas vinculados à instituição
 
-Use `Inclusion/GeoMap` com a instituição em `reference`, incluindo suas coordenadas e `default_zoom`. A sede e o zoom padrão definem o enquadramento inicial em cadastro, edição e visualização; `value` continua representando a posição real da barreira ou do ponto de referência. Não substitua o zoom cadastrado por valores fixos nas telas de edição. Ao trocar de instituição, o mapa atualiza o enquadramento e mantém os comportamentos existentes de seleção do marcador. Sem instituição selecionada/vinculada, preserve o fallback da funcionalidade. O zoom zero é válido e não deve ser tratado como ausência de configuração.
+Use `GeoMap` com a instituição em `reference`, incluindo suas coordenadas e `default_zoom`. A sede e o zoom padrão definem o enquadramento inicial em cadastro, edição e visualização; `value` continua representando a posição real da barreira ou do ponto de referência. Não substitua o zoom cadastrado por valores fixos nas telas de edição. Ao trocar de instituição, o mapa atualiza o enquadramento e mantém os comportamentos existentes de seleção do marcador. Sem instituição selecionada/vinculada, preserve o fallback da funcionalidade. O zoom zero é válido e não deve ser tratado como ausência de configuração.
 
-Nos cadastros com mapa (barreiras, instituições e pontos de referência), o formulário e a visualização dividem o card com `Inclusion/MapSplit`: a seção de identificação fica em `MapSplitMain`, à esquerda, e o mapa com seus controles fica em `MapSplitAside`, uma coluna menor à direita. Abaixo de 1100 px as colunas se empilham. Nas barreiras, a coluna principal agrupa os campos curtos em três por linha e a vistoria segue abaixo do mapa. Em instituições e pontos de referência, a Configuração fica abaixo da Identificação, o mapa fica sozinho à direita e `MapSplit wideAside` alarga sua coluna; com menos espaço, os campos ficam em duas colunas. Coleções extensas, como o histórico de vistorias, ficam fora da divisão, na largura total do card.
+Nos cadastros com mapa (barreiras, instituições e pontos de referência), o formulário e a visualização dividem o card com `MapSplit`: a seção de identificação fica em `MapSplitMain`, à esquerda, e o mapa com seus controles fica em `MapSplitAside`, uma coluna menor à direita. Abaixo de 1100 px as colunas se empilham. Nas barreiras, a coluna principal agrupa os campos curtos em três por linha e a vistoria segue abaixo do mapa. Em instituições e pontos de referência, a Configuração fica abaixo da Identificação, o mapa fica sozinho à direita e `MapSplit wideAside` alarga sua coluna; com menos espaço, os campos ficam em duas colunas. Coleções extensas, como o histórico de vistorias, ficam fora da divisão, na largura total do card.
 
 ## Particularidades do formulário de alunos
 
@@ -210,15 +210,15 @@ Para alunos, consulte estes arquivos reais; em outra tela, localize os equivalen
 
 | Contrato | Referência |
 | --- | --- |
-| Endpoints e middlewares `can:*` | `routes/modules/inclusion.php`, no grupo com prefixo `specialized-educational-support` |
-| Páginas Inertia, operações e redirects | `app/Domains/Inclusion/UI/Controllers/StudentController.php` |
-| Opções e defaults de criação/edição | `app/Domains/Inclusion/Application/Queries/Students/StudentFormQuery.php` |
-| Dados de apresentação e permissões | `app/Domains/Inclusion/UI/Presenters/StudentPagePresenter.php` |
-| Nomes, tipos e validações | `app/Domains/Inclusion/Application/Data/Students/CreateStudentData.php` e `UpdateStudentData.php` |
-| Normalização de entrada de pessoa | `app/Domains/Inclusion/Application/Data/People/Concerns/NormalizesPersonInput.php` |
+| Endpoints e middlewares `can:*` | `routes/business.php`, no grupo com prefixo `specialized-educational-support` |
+| Páginas Inertia, operações e redirects | `app/UI/Controllers/StudentController.php` |
+| Opções e defaults de criação/edição | `app/Application/Queries/Students/StudentFormQuery.php` |
+| Dados de apresentação e permissões | `app/UI/Presenters/StudentPagePresenter.php` |
+| Nomes, tipos e validações | `app/Application/Data/Students/CreateStudentData.php` e `UpdateStudentData.php` |
+| Normalização de entrada de pessoa | `app/Application/Data/People/Concerns/NormalizesPersonInput.php` |
 | Dados compartilhados e flash | `app/Shared/Infrastructure/Http/Middleware/HandleInertiaRequests.php` |
 
-A referência cria por POST em `/inclusao/alunos/salvar` e atualiza por PUT em `/inclusao/alunos/{id}`, via POST multipart com `_method`. O controller redireciona para o prontuário com mensagem de sucesso. Essas URLs e destinos são exemplos, não uma convenção de URLs obrigatória para novos módulos.
+A referência cria por POST em `/alunos/salvar` e atualiza por PUT em `/alunos/{id}`, via POST multipart com `_method`. O controller redireciona para o prontuário com mensagem de sucesso. Essas URLs e destinos são exemplos, não uma convenção de URLs obrigatória para novos módulos.
 
 Preserve nomes de campos, enums, formato das datas, arquivos e flags aceitos pelo backend. Não substitua validações, permissões, queries/actions ou regras de negócio por condições visuais. Os erros de validação chegam por Inertia em `form.errors`; os redirects e flash devem seguir os contratos existentes. Não acrescente capabilities ao usuário compartilhado nem invente permissões que o servidor não fornece.
 

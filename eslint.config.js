@@ -45,15 +45,11 @@ const [
     import('globals'),
 ]);
 
-/** Fronteiras de dependência descritas em resources/react/AGENTS.md. */
+/** Fronteiras de dependência descritas em resources/js/AGENTS.md. */
 const pageImports = {
     group: ['@/pages/*', '@/pages/**'],
     message:
         'Componentes, hooks e utilitários não dependem de páginas. Mova o código compartilhado para components/.',
-};
-const appImports = {
-    group: ['@/app/*', '@/app/**', '@/catalog/*', '@/catalog/**'],
-    message: 'O produto não depende do catálogo demonstrativo.',
 };
 const uiImports = {
     group: ['@/components/*', '@/components/**'],
@@ -71,12 +67,11 @@ export default tseslint.config(
             'vendor/**',
             'node_modules/**',
             'storage/**',
-            'resources/js/**',
             'resources/css/**',
         ],
     },
     {
-        files: ['resources/react/**/*.{ts,tsx}'],
+        files: ['resources/js/**/*.{ts,tsx}'],
         extends: [
             js.configs.recommended,
             ...tseslint.configs.recommended,
@@ -136,47 +131,27 @@ export default tseslint.config(
             eqeqeq: ['error', 'smart'],
             curly: ['warn', 'all'],
             'prefer-const': 'error',
-            'no-restricted-imports': ['error', { patterns: [appImports] }],
         },
     },
     {
-        files: ['resources/react/components/**/*.{ts,tsx}'],
+        files: ['resources/js/components/**/*.{ts,tsx}'],
         rules: {
-            'no-restricted-imports': ['error', { patterns: [pageImports, appImports] }],
+            'no-restricted-imports': ['error', { patterns: [pageImports] }],
         },
     },
     {
-        files: ['resources/react/hooks/**/*.{ts,tsx}'],
+        files: ['resources/js/hooks/**/*.{ts,tsx}'],
         rules: {
-            'no-restricted-imports': ['error', { patterns: [pageImports, appImports, uiImports] }],
+            'no-restricted-imports': ['error', { patterns: [pageImports, uiImports] }],
         },
     },
     {
-        files: ['resources/react/{utils,types}/**/*.{ts,tsx}'],
+        files: ['resources/js/{utils,types}/**/*.{ts,tsx}'],
         rules: {
             'no-restricted-imports': [
                 'error',
-                { patterns: [pageImports, appImports, uiImports, upperLayerImports] },
+                { patterns: [pageImports, uiImports, upperLayerImports] },
             ],
-        },
-    },
-    {
-        // O catálogo reúne demonstrações do tema e pode compor qualquer camada.
-        files: [
-            'resources/react/catalog/**/*.{ts,tsx}',
-            'resources/react/pages/Catalog/**/*.{ts,tsx}',
-        ],
-        rules: {
-            'no-restricted-imports': 'off',
-            '@typescript-eslint/no-unused-vars': 'warn',
-            '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/no-unused-expressions': 'warn',
-            'react/no-unescaped-entities': 'off',
-            'react/no-array-index-key': 'off',
-            'jsx-a11y/anchor-is-valid': 'off',
-            'prefer-const': 'warn',
-            'prefer-spread': 'warn',
-            'jsx-a11y/no-redundant-roles': 'warn',
         },
     },
     {

@@ -2,36 +2,36 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Inclusion\DemoLoanWaitlistSeeder;
-use Database\Seeders\Inclusion\PublicationSeeder;
-use Database\Seeders\Inclusion\InstitutionSeeder;
-use Database\Seeders\Inclusion\LocationSeeder;
-use Database\Seeders\Inclusion\BarrierSeeder;
+use Database\Seeders\DemoLoanWaitlistSeeder;
+use Database\Seeders\PublicationSeeder;
+use Database\Seeders\InstitutionSeeder;
+use Database\Seeders\LocationSeeder;
+use Database\Seeders\BarrierSeeder;
 use Illuminate\Database\Seeder;
-use Database\Seeders\Inclusion\SemesterSeeder;
-use Database\Seeders\Inclusion\StudentDeficiencySeeder;
-use Database\Seeders\Inclusion\DeficiencySeeder;
-use Database\Seeders\Inclusion\PositionSeeder;
-use Database\Seeders\Inclusion\PSPUSeeder;
-use Database\Seeders\Inclusion\StudentSeeder;
-use Database\Seeders\Inclusion\CoursesSeeder;
-use Database\Seeders\Inclusion\DisciplinesSeeder;
-use Database\Seeders\Inclusion\CourseDisciplineSeeder;
-use Database\Seeders\Inclusion\StudentCourseSeeder;
-use Database\Seeders\Inclusion\AeeRecordSeeder;
-use Database\Seeders\Inclusion\PedagogicalRecordSeeder;
-use Database\Seeders\Inclusion\PendencySeeder;
-use Database\Seeders\Inclusion\GuardianSeeder;
-use Database\Seeders\Inclusion\DisciplineSeeder;
-use Database\Seeders\Inclusion\PeiSeeder;
-use Database\Seeders\Inclusion\ProfessionalSeeder;
-use Database\Seeders\Inclusion\AttendanceSessionSeeder;
-use Database\Seeders\Inclusion\TeacherSeeder;
-use Database\Seeders\Inclusion\BarrierCategorySeeder;
-use Database\Seeders\Inclusion\AccessibilityFeatureSeeder;
-use Database\Seeders\Inclusion\TagSeeder;
-use Database\Seeders\Inclusion\AssistiveTechnologySeeder;
-use Database\Seeders\Inclusion\AccessibleEducationalMaterialSeeder;
+use Database\Seeders\SemesterSeeder;
+use Database\Seeders\StudentDeficiencySeeder;
+use Database\Seeders\DeficiencySeeder;
+use Database\Seeders\PositionSeeder;
+use Database\Seeders\PSPUSeeder;
+use Database\Seeders\StudentSeeder;
+use Database\Seeders\CoursesSeeder;
+use Database\Seeders\DisciplinesSeeder;
+use Database\Seeders\CourseDisciplineSeeder;
+use Database\Seeders\StudentCourseSeeder;
+use Database\Seeders\AeeRecordSeeder;
+use Database\Seeders\PedagogicalRecordSeeder;
+use Database\Seeders\PendencySeeder;
+use Database\Seeders\GuardianSeeder;
+use Database\Seeders\DisciplineSeeder;
+use Database\Seeders\PeiSeeder;
+use Database\Seeders\ProfessionalSeeder;
+use Database\Seeders\AttendanceSessionSeeder;
+use Database\Seeders\TeacherSeeder;
+use Database\Seeders\BarrierCategorySeeder;
+use Database\Seeders\AccessibilityFeatureSeeder;
+use Database\Seeders\TagSeeder;
+use Database\Seeders\AssistiveTechnologySeeder;
+use Database\Seeders\AccessibleEducationalMaterialSeeder;
 
 class DatabaseSeeder extends Seeder
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domains\Website\UI\Presenters;
 
-use App\Domains\Inclusion\Domain\Enums\PublicationType;
-use App\Domains\Inclusion\Domain\Models\Professional;
-use App\Domains\Inclusion\Domain\Models\Publication;
-use App\Domains\Inclusion\Domain\Models\PublicationMedia;
-use App\Domains\Inclusion\Domain\Models\PublicationSpeaker;
+use App\Domain\Enums\PublicationType;
+use App\Domain\Models\Professional;
+use App\Domain\Models\Publication;
+use App\Domain\Models\PublicationMedia;
+use App\Domain\Models\PublicationSpeaker;
 use App\Domains\Website\Domain\Models\WebsiteSetting;
 use App\Domains\Website\Domain\Support\WebsiteDefaults;
 use App\Domains\Website\Domain\Support\AboutAppearance;

@@ -4,7 +4,7 @@ Esta convenção reúne o padrão compartilhado das telas de visualização do G
 
 ## Estrutura comum
 
-A visualização de Itens é a referência: `pages/Inclusion/Items/Show.tsx` compõe `BusinessPage` (com `documentTitle` e `busy`), `Details/ItemDetails`, `Details/ItemDetailsActions` e o modal de exclusão do recurso, com `useConfirmedAction` para a exclusão. Os pares rótulo/valor usam `UI/DetailGrid` + `UI/DetailField`, e valores múltiplos usam `UI/TagList`; não defina grades de detalhes nem etiquetas no CSS do domínio.
+A visualização de Itens é a referência: `pages/Items/Show.tsx` compõe `BusinessPage` (com `documentTitle` e `busy`), `Details/ItemDetails`, `Details/ItemDetailsActions` e o modal de exclusão do recurso, com `useConfirmedAction` para a exclusão. Os pares rótulo/valor usam `UI/DetailGrid` + `UI/DetailField`, e valores múltiplos usam `UI/TagList`; não defina grades de detalhes nem etiquetas no CSS do domínio.
 
 - Use a estrutura de página de negócio já integrada, com `Navigation/PageTitle` e breadcrumb fornecidos pelo wrapper do domínio.
 - Reutilize `UI/CardBox` e `Forms/FormSection variant="inline"` para organizar os dados. Títulos e ícones de seção usam o cinza compartilhado; labels usam `--ui-color-form-label` em tamanho menor e valores usam `--ui-color-text`, para leitura sem aparência de formulário desabilitado.

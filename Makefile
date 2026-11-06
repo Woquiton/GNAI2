@@ -128,15 +128,15 @@ build-assets:
 # -----------------------------
 # PHPUnit / Testes
 # ex: make test
-#     make test TEST=app/Domains/Inclusion/Tests/Feature/Waitlists
+#     make test TEST=tests/Feature/Waitlists
 #     make coverage
-#     make coverage TEST=app/Domains/Inclusion/Tests/Feature/Waitlists
+#     make coverage TEST=tests/Feature/Waitlists
 # -----------------------------
 test:
 	@if [ -n "$(TEST)" ]; then \
 		$(COMPOSE) exec app php artisan test $(TEST); \
 	else \
-		$(COMPOSE) exec app php artisan test --testsuite=Unit,Domains; \
+		$(COMPOSE) exec app php artisan test --testsuite=Unit,Domains,Feature; \
 	fi
 
 coverage:

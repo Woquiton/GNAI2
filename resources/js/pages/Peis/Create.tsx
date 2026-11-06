@@ -1,0 +1,22 @@
+import PeiCreateForm from '@/components/Peis/Form/PeiCreateForm';
+import { peiCreateBreadcrumb } from '@/components/Peis/Peis.routes';
+import type { PeiCreateProps } from '@/components/Peis/Peis.types';
+import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
+import { peiCreateTour } from '@/components/Peis/peiTours';
+
+export default function PeisCreatePage({
+    student,
+    course,
+    semester,
+}: PeiCreateProps): React.JSX.Element {
+    return (
+        <BusinessPage
+            title="Gerar Novo PEI"
+            subtitle="Revise as informações abaixo. O sistema criará automaticamente o PEI com base nesses dados."
+            breadcrumbItems={peiCreateBreadcrumb(student)}
+            tour={peiCreateTour}
+        >
+            <PeiCreateForm student={student} course={course} semester={semester} />
+        </BusinessPage>
+    );
+}

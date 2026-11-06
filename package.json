@@ -5,8 +5,8 @@
     "scripts": {
         "dev": "vite",
         "check": "tsc --noEmit",
-        "lint": "eslint resources/react eslint.config.js vite.config.js",
-        "lint:fix": "eslint resources/react eslint.config.js vite.config.js --fix",
+        "lint": "eslint resources/js eslint.config.js vite.config.js",
+        "lint:fix": "eslint resources/js eslint.config.js vite.config.js --fix",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "build": "npm run check && vite build"

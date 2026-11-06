@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Website\Application\Queries;
 
-use App\Domains\Inclusion\Domain\Enums\TagModule;
-use App\Domains\Inclusion\Domain\Models\Publication;
-use App\Domains\Inclusion\Domain\Models\Tag;
+use App\Domain\Enums\TagModule;
+use App\Domain\Models\Publication;
+use App\Domain\Models\Tag;
 use App\Domains\Website\Application\Data\ListPublicPublicationsData;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;

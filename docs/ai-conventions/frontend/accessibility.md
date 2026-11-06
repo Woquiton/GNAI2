@@ -1,6 +1,6 @@
 # Convenção de acessibilidade do frontend
 
-Vale para as telas e os componentes do Gnai em `resources/react/` (área autenticada, Portal do Professor, autenticação e site público). Exemplos demonstrativos do catálogo (`resources/react/catalog/`) e componentes de referência do template não precisam seguir este padrão.
+Vale para as telas e os componentes do Gnai em `resources/js/` (área autenticada, Portal do Professor, autenticação e site público). O catálogo demonstrativo do tema foi removido. Componentes preservados como referência devem seguir este padrão ao serem integrados a uma tela.
 
 ## Base normativa
 
@@ -16,7 +16,7 @@ Vale para as telas e os componentes do Gnai em `resources/react/` (área autenti
 - **Teclado:** `styles/accessibility.css` aplica a todo elemento com `:focus-visible` um anel de 3 px que acompanha o arredondamento do controle, com fresta clara e halo translúcido.
 - O anel usa `!important` de propósito, para vencer resets `outline: 0` de plugins legados. Não crie outro estilo de foco por tela.
 
-Os tokens ficam em `styles/tokens.css` e podem ser redefinidos localmente por um componente:
+Os tokens ficam em `resources/css/tokens.css` e podem ser redefinidos localmente por um componente:
 
 | Token | Função |
 | --- | --- |

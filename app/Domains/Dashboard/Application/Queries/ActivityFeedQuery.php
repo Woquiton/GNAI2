@@ -7,7 +7,7 @@ namespace App\Domains\Dashboard\Application\Queries;
 use App\Domains\Audit\Domain\Models\AuditRecord;
 use App\Domains\Auth\Domain\Models\User;
 use App\Domains\Dashboard\Domain\Enums\ActivityFeedSource;
-use App\Domains\Inclusion\Domain\Models\PeiDiscipline;
+use App\Domain\Models\PeiDiscipline;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 

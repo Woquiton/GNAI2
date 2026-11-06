@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Website\UI\Controllers;
 
-use App\Domains\Inclusion\Domain\Enums\PublicationType;
-use App\Domains\Inclusion\Domain\Models\Publication;
+use App\Domain\Enums\PublicationType;
+use App\Domain\Models\Publication;
 use App\Domains\Website\Application\Data\ListPublicPublicationsData;
 use App\Domains\Website\Application\Queries\PublicPublicationsQuery;
 use App\Domains\Website\Application\Queries\WebsiteContentQuery;

@@ -13,12 +13,15 @@ export default defineConfig(({ command }) => ({
         },
     },
     resolve: {
-        alias: { '@': fileURLToPath(new URL('./resources/react', import.meta.url)) },
+        alias: {
+            '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
+            '@styles': fileURLToPath(new URL('./resources/css', import.meta.url)),
+        },
     },
     plugins: [
         react(),
         laravel({
-            input: ['resources/react/main.tsx', 'resources/css/pages/about-us.css'],
+            input: ['resources/js/main.tsx', 'resources/css/pages/about-us.css'],
             refresh: command === 'serve',
         }),
     ],

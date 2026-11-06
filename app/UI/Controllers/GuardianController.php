@@ -1,0 +1,140 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\UI\Controllers;
+
+use App\Application\Actions\Guardians\CreateGuardianAction;
+use App\Application\Actions\Guardians\DeleteGuardianAction;
+use App\Application\Actions\Guardians\UpdateGuardianAction;
+use App\Application\Data\Guardians\CreateGuardianData;
+use App\Application\Data\Guardians\ListGuardiansData;
+use App\Application\Data\Guardians\UpdateGuardianData;
+use App\Application\Queries\Guardians\GuardianFormQuery;
+use App\Application\Queries\Guardians\ListGuardiansQuery;
+use App\Application\Queries\Guardians\ShowGuardianQuery;
+use App\Domain\Models\Guardian;
+use App\Domain\Models\Student;
+use App\Shared\Infrastructure\Security\RichTextSanitizer;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
+use Throwable;
+
+final class GuardianController
+{
+    public function index(Student $student, ListGuardiansData $filters, ListGuardiansQuery $query, GuardianFormQuery $form, Request $request): InertiaResponse
+    {
+        $student->loadMissing('person');
+        $guardians = $query->execute($student, $filters);
+        $guardians->through(static function (Guardian $guardian): Guardian {
+            $guardian->person?->append('photo_url');
+
+            return $guardian;
+        });
+        $relationships = $form->relationshipOptions();
+
+        return Inertia::render(
+            'Guardians/Index',
+            [
+                ...compact('student', 'guardians', 'relationships'),
+                'filters' => [
+                    'name' => $filters->name ?? '',
+                    'email' => $filters->email ?? '',
+                    'relationship' => $filters->relationship?->value ?? '',
+                ],
+                'can' => [
+                    'create' => $request->user()?->can('guardian.create') ?? false,
+                    'view' => $request->user()?->can('guardian.view') ?? false,
+                    'delete' => $request->user()?->can('guardian.delete') ?? false,
+                ],
+            ],
+        );
+    }
+
+    public function show(Guardian $guardian, ShowGuardianQuery $query, Request $request): InertiaResponse
+    {
+        $guardian = $query->execute($guardian);
+        $guardian->person?->append('photo_url');
+        $student = $guardian->student;
+
+        return Inertia::render(
+            'Guardians/Show',
+            [
+                ...compact('guardian', 'student'),
+                'display' => [
+                    'relationshipLabel' => $guardian->relationship?->label(),
+                    'genderLabel' => $guardian->person?->gender?->label(),
+                    'age' => $guardian->person?->birth_date?->age,
+                    'addressHtml' => RichTextSanitizer::sanitize($guardian->person?->address ?? '', decodeEntities: false),
+                ],
+                'can' => [
+                    'update' => $request->user()?->can('guardian.update') ?? false,
+                    'delete' => $request->user()?->can('guardian.delete') ?? false,
+                ],
+            ],
+        );
+    }
+
+    public function create(Student $student, GuardianFormQuery $form): InertiaResponse
+    {
+        return Inertia::render(
+            'Guardians/Create',
+            $form->forCreation($student),
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function store(CreateGuardianData $data, Student $student, CreateGuardianAction $action): RedirectResponse
+    {
+        $action->execute($student, $data);
+
+        return redirect()
+            ->route('specialized-educational-support.students.show', [
+                'student' => $student,
+                'tab' => 'guardians',
+            ])
+            ->with('success', 'Responsável vinculado com sucesso.');
+    }
+
+    public function edit(Student $student, Guardian $guardian, GuardianFormQuery $form): InertiaResponse
+    {
+        return Inertia::render(
+            'Guardians/Edit',
+            $form->forUpdate($student, $guardian),
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function update(UpdateGuardianData $data, Student $student, Guardian $guardian, UpdateGuardianAction $action): RedirectResponse
+    {
+        $action->execute($student, $guardian, $data);
+
+        return redirect()
+            ->route('specialized-educational-support.students.show', [
+                'student' => $student,
+                'tab' => 'guardians',
+            ])
+            ->with('success', 'Dados do responsável atualizados com sucesso.');
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function destroy(Student $student, Guardian $guardian, DeleteGuardianAction $action): RedirectResponse
+    {
+        $action->execute($student, $guardian);
+
+        return redirect()
+            ->route('specialized-educational-support.students.show', [
+                'student' => $student,
+                'tab' => 'guardians',
+            ])
+            ->with('success', 'Responsável removido.');
+    }
+}

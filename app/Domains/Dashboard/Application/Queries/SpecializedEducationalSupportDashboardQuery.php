@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domains\Dashboard\Application\Queries;
 
-use App\Domains\Inclusion\Domain\Enums\Priority;
-use App\Domains\Inclusion\Domain\Enums\SessionStatus;
-use App\Domains\Inclusion\Domain\Models\Course;
-use App\Domains\Inclusion\Domain\Models\Pei;
-use App\Domains\Inclusion\Domain\Models\Pendency;
-use App\Domains\Inclusion\Domain\Models\Professional;
-use App\Domains\Inclusion\Domain\Models\Session;
-use App\Domains\Inclusion\Domain\Models\Student;
+use App\Domain\Enums\Priority;
+use App\Domain\Enums\SessionStatus;
+use App\Domain\Models\Course;
+use App\Domain\Models\Pei;
+use App\Domain\Models\Pendency;
+use App\Domain\Models\Professional;
+use App\Domain\Models\Session;
+use App\Domain\Models\Student;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
