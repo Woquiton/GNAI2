@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domains\Application\Actions\Teachers;
 
-use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Application\Data\Teachers\UpdateTeacherData;
+use App\Domains\Application\Policies\Auth\AdministratorAccessPolicy;
 use App\Domains\Domain\DTOs\People\UpdatePersonDTO;
+use App\Domains\Domain\DTOs\Teachers\UpdateTeacherDTO;
 use App\Domains\Domain\Enums\People\Gender;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Teachers\Teacher;
 use App\Domains\Domain\ValueObjects\People\Cpf;
 use App\Domains\Domain\ValueObjects\People\Phone;
 use App\Domains\Domain\ValueObjects\Students\Registration;
-use App\Domains\Application\Data\Teachers\UpdateTeacherData;
-use App\Domains\Domain\DTOs\Teachers\UpdateTeacherDTO;
-use App\Domains\Domain\Models\Teachers\Teacher;
 use App\Domains\Infrastructure\Storage\Teachers\TeacherPhotoStorage;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -21,12 +22,13 @@ final readonly class UpdateTeacherAction
 {
     public function __construct(
         private TeacherPhotoStorage $photoStorage,
+        private AdministratorAccessPolicy $administratorAccess,
     ) {}
 
     /**
      * @throws Throwable
      */
-    public function execute(Teacher $teacher, UpdateTeacherData $data): Teacher
+    public function execute(Teacher $teacher, UpdateTeacherData $data, ?User $actor = null): Teacher
     {
         $newPhotoPath = $data->photo !== null
             ? $this->photoStorage->store($data->photo)
@@ -34,7 +36,7 @@ final readonly class UpdateTeacherAction
         $oldPhotoPath = null;
 
         try {
-            $updatedTeacher = DB::transaction(function () use ($teacher, $data, $newPhotoPath, &$oldPhotoPath): Teacher {
+            $updatedTeacher = DB::transaction(function () use ($teacher, $data, $actor, $newPhotoPath, &$oldPhotoPath): Teacher {
                 $lockedTeacher = Teacher::query()
                     ->with('person')
                     ->lockForUpdate()
@@ -73,6 +75,9 @@ final readonly class UpdateTeacherAction
 
                 $lockedTeacher->revise($teacherDTO);
                 $lockedTeacher->save();
+
+                // Uma conta compartilhada com a equipe pode ter acesso administrativo.
+                $this->administratorAccess->ensureCanChangeEmail($actor, $lockedTeacher->user, (string) $person->email);
 
                 // Um registro por vez: a alteração do usuário entra na auditoria.
                 User::query()

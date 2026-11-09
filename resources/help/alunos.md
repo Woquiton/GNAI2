@@ -174,6 +174,8 @@ No rodapé do prontuário, clique em **PDF**. A ficha abre em uma nova aba com o
 
 O sistema volta para a listagem e mostra "Aluno removido com sucesso.". A exclusão só é permitida para alunos sem nenhum vínculo: responsáveis, perfis de atendimento, PEIs, cursos, documentos, agendamentos, avaliações de atendimento AEE, empréstimos, solicitações de atendimento ou solicitações na fila de espera.
 
+A pessoa, sua foto e os demais papéis permanecem no [cadastro central de pessoas](/ajuda/pessoas).
+
 ## Dúvidas comuns
 
 **Aparece "O aluno está em acolhimento. Nesta situação, somente solicitações de atendimento podem ser cadastradas."**

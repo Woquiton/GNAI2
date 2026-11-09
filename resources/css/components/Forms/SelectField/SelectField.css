@@ -261,3 +261,9 @@
     color: var(--ui-color-gnai-primary);
     font-weight: 600;
 }
+
+.selectField__textIconOption {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}

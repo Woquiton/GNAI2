@@ -1,8 +1,10 @@
 export interface SelectFieldOption {
     value: string;
     label: string;
-    /** Classe do ícone das fontes locais exibido no lugar do texto quando o campo usa `iconOnly`. */
+    /** Classe do ícone local, exibido com `iconOnly` ou `iconsWithText`. */
     iconClass?: string;
+    iconColor?: string;
+    iconLabel?: string;
 }
 export interface SelectFieldGroup {
     label: string;

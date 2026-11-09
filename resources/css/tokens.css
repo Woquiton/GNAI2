@@ -131,6 +131,8 @@
     --ui-color-info-text: var(--color-info-text);
     --ui-color-success: var(--color-success);
     --ui-color-success-hover: var(--color-success-hover);
+    --ui-color-special-tag: #b8860b;
+    --ui-color-special-tag-on-accent: #fbd46d;
     --ui-color-warning: #f59e0b;
     /* Âmbar dos títulos de aviso: legível como texto grande (3:1) sobre o branco. */
     --ui-color-warning-strong: #b45309;

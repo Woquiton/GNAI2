@@ -5,7 +5,8 @@ export interface TagRecord {
     id: number;
     name: string;
     is_active: boolean;
-    module: 'publications' | 'inbox';
+    module: 'publications' | 'inbox' | 'people';
+    system_key?: string | null;
     module_label: string;
     color: string;
     publications_count?: number;

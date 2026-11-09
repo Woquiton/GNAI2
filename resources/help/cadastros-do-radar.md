@@ -28,7 +28,7 @@ A exclusão não tem bloqueio. Se o recurso ainda descreve itens existentes, pre
 
 ## Etiquetas
 
-Organizam as **Publicações** e os marcadores da **Inbox**. Cada etiqueta tem nome,
+Organizam **Pessoas**, **Publicações** e os marcadores da **Inbox**. Cada etiqueta tem nome,
 módulo, cor e situação. Uma etiqueta de Publicações aparece no cadastro de
 publicações; uma etiqueta de Inbox aparece como marcador na lateral e no menu
 **Aplicar marcador** dos e-mails. Os módulos têm listas independentes.
@@ -37,7 +37,7 @@ Para cadastrar:
 
 1. Acesse **Gestão do núcleo → Cadastros → Etiquetas** e clique em **Cadastrar etiqueta**.
 2. Preencha **Nome da Etiqueta** (obrigatório, até 100 caracteres e sem repetir outra do mesmo módulo).
-3. Em **Módulo**, selecione **Publicações** ou **Inbox**.
+3. Em **Módulo**, selecione **Pessoas**, **Publicações** ou **Inbox**.
 4. Em **Cor**, abra a paleta pelo botão com a amostra da cor, ao lado do campo, ou digite o código no formato **#RRGGBB**.
 5. Deixe **Etiqueta Ativa** marcada para disponibilizar novas aplicações no módulo escolhido.
 6. Clique em **Cadastrar**.
@@ -56,7 +56,7 @@ na lateral e pode ser consultada ou removida, mas não aplicada novamente. No ca
 de publicações, etiquetas inativas já vinculadas continuam disponíveis na edição.
 
 Uma etiqueta em uso não pode mudar de módulo. Nesse caso, crie outra etiqueta no
-novo módulo. A exclusão retira a etiqueta dos vínculos, sem apagar publicações,
+novo módulo. Etiquetas vinculadas a pessoas devem ser desvinculadas antes da exclusão ou apenas desativadas. As especiais não podem ser alteradas ou excluídas. Nos demais módulos, a exclusão retira a etiqueta dos vínculos, sem apagar publicações,
 e-mails ou a organização restante da Inbox.
 
 ## Categorias de Barreiras
@@ -119,3 +119,7 @@ Bloqueios:
 - **"Esta categoria não pode ser excluída pois possui barreiras ativas."** Resolva as barreiras da categoria ou desative-a desmarcando **Ativar no Sistema**.
 - **"A latitude deve estar entre -90 e 90."** / **"A longitude deve estar entre -180 e 180."** Marque o ponto pelo mapa ou corrija o valor digitado.
 - **"Selecione a instituição"** ao clicar no mapa de um ponto de referência: escolha a **Instituição Base** primeiro.
+
+## Organizar etiquetas de pessoas
+
+O módulo **Pessoas** permite criar etiquetas convencionais para organizar o cadastro central. As etiquetas especiais **Aluno**, **Professor**, **Equipe** e **Responsáveis** vêm cadastradas e são protegidas. Para atribuí-las, preencha os dados específicos no [cadastro de pessoas](/ajuda/pessoas). Uma pessoa pode acumular vários papéis.

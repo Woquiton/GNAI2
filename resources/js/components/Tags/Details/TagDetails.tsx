@@ -20,6 +20,9 @@ export default function TagDetails({ tag }: { tag: TagRecord }): React.JSX.Eleme
                     <DetailField label="Nome da Etiqueta" wide>
                         {tag.name}
                     </DetailField>
+                    <DetailField label="Tipo">
+                        {tag.system_key ? 'Especial, gerenciada pelo sistema' : 'Convencional'}
+                    </DetailField>
                     <DetailField label="Módulo">{tag.module_label}</DetailField>
                     <DetailField label="Cor">
                         <span>

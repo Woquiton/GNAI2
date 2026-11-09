@@ -1,0 +1,4 @@
+.selectField .select2-search-choice,
+.selectFieldDropdown .select2-highlighted {
+    --ui-color-special-tag: var(--ui-color-special-tag-on-accent);
+}

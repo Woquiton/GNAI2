@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace App\Domains\Domain\Models\Auth;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Domains\Domain\Contracts\Audit\Auditable;
-use App\Domains\Domain\ValueObjects\Audit\AuditedField;
-use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
 use App\Domains\Application\Actions\Auth\Passwords\QueuePasswordResetEmailAction;
+use App\Domains\Domain\Contracts\Audit\Auditable;
 use App\Domains\Domain\DTOs\Auth\Users\ResetUserPasswordDTO;
+use App\Domains\Domain\Enums\People\PersonRole;
+use App\Domains\Domain\Exceptions\People\InvalidPerson;
 use App\Domains\Domain\Models\Backup\Backup;
 use App\Domains\Domain\Models\Loans\Loan;
+use App\Domains\Domain\Models\People\Person;
 use App\Domains\Domain\Models\Professionals\Professional;
 use App\Domains\Domain\Models\Teachers\Teacher;
 use App\Domains\Domain\Models\Waitlists\Waitlist;
+use App\Domains\Domain\ValueObjects\Audit\AuditedField;
+use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
 use Database\Factories\Domains\Auth\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -151,6 +154,34 @@ class User extends Authenticatable implements Auditable
         return filled($this->photo)
             ? asset('storage/'.$this->photo)
             : asset('images/default-user.jpg');
+    }
+
+    public function linkToPerson(Person $person): void
+    {
+        if (! $person->teacher && ! $person->professional) {
+            throw new InvalidPerson('O acesso deve ser vinculado a um professor ou integrante da equipe.');
+        }
+        $this->fill([
+            'name' => $person->name,
+            'email' => $person->email,
+            'teacher_id' => $person->teacher?->getKey(),
+            'professional_id' => $person->professional?->getKey(),
+            'role' => $person->professional !== null ? 'professional' : 'teacher',
+        ]);
+    }
+
+    public function detachPersonRole(PersonRole $role): void
+    {
+        if ($role === PersonRole::PROFESSIONAL) {
+            $this->professional_id = null;
+            $this->is_admin = false;
+            $this->role = 'teacher';
+        } elseif ($role === PersonRole::TEACHER) {
+            $this->teacher_id = null;
+            $this->role = 'professional';
+        } else {
+            throw new InvalidPerson('Este papel não possui vínculo de acesso ao sistema.');
+        }
     }
 
     /**

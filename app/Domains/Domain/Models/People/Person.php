@@ -5,24 +5,27 @@ declare(strict_types=1);
 namespace App\Domains\Domain\Models\People;
 
 use App\Domains\Domain\Contracts\Audit\Auditable;
-use App\Domains\Domain\ValueObjects\Audit\AuditedField;
-use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
-use App\Domains\Domain\Models\Guardians\Guardian;
 use App\Domains\Domain\DTOs\People\CreatePersonDTO;
 use App\Domains\Domain\DTOs\People\UpdatePersonDTO;
 use App\Domains\Domain\Enums\People\Gender;
+use App\Domains\Domain\Enums\People\PersonRole;
 use App\Domains\Domain\Exceptions\People\InvalidPerson;
-use App\Domains\Domain\ValueObjects\People\Cpf;
-use App\Domains\Domain\ValueObjects\People\Phone;
+use App\Domains\Domain\Models\Guardians\Guardian;
 use App\Domains\Domain\Models\Professionals\Professional;
 use App\Domains\Domain\Models\Students\Student;
+use App\Domains\Domain\Models\Tags\Tag;
 use App\Domains\Domain\Models\Teachers\Teacher;
+use App\Domains\Domain\ValueObjects\Audit\AuditedField;
+use App\Domains\Domain\ValueObjects\People\Cpf;
+use App\Domains\Domain\ValueObjects\People\Phone;
+use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
 use Carbon\CarbonImmutable;
 use Database\Factories\PersonFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Throwable;
@@ -106,6 +109,61 @@ final class Person extends Model implements Auditable
         return $this->photo
             ? asset('storage/'.$this->photo)
             : asset('images/default-user.jpg');
+    }
+
+    public function hasRole(PersonRole $role): bool
+    {
+        $record = $this->{$role->relationName()};
+
+        return $role === PersonRole::GUARDIAN ? $record->isNotEmpty() : $record !== null;
+    }
+
+    /** @return list<PersonRole> */
+    public function registeredRoles(): array
+    {
+        return array_values(array_filter(
+            PersonRole::cases(),
+            fn (PersonRole $role): bool => $this->hasRole($role),
+        ));
+    }
+
+    /** @param list<string> $roles */
+    public function ensureRolesArePreserved(array $roles): void
+    {
+        foreach ($this->registeredRoles() as $role) {
+            if (! in_array($role->value, $roles, true)) {
+                throw new InvalidPerson('Para remover um papel, use a exclusão do respectivo cadastro, que verifica seus vínculos e históricos.');
+            }
+        }
+    }
+
+    /** @param list<int> $studentIds */
+    public function ensureGuardianLinksArePreserved(array $studentIds): void
+    {
+        if ($this->guardians->pluck('student_id')->diff($studentIds)->isNotEmpty()) {
+            throw new InvalidPerson('Remova vínculos de responsáveis pelo cadastro do aluno, preservando as verificações de histórico.');
+        }
+    }
+
+    public function ensureHasSingleAccessAccount(int $accountCount): void
+    {
+        if ($accountCount > 1) {
+            throw new InvalidPerson('Esta pessoa possui duas contas de acesso. Unifique os acessos antes de alterar o cadastro central.');
+        }
+    }
+
+    /** @param iterable<Tag> $tags */
+    public function ensureConventionalTagsCanBeAssigned(iterable $tags): void
+    {
+        $assignedIds = $this->tags->modelKeys();
+        foreach ($tags as $tag) {
+            $tag->ensureCanBeAppliedToPerson(in_array($tag->getKey(), $assignedIds, true));
+        }
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'person_tag');
     }
 
     public function student(): HasOne

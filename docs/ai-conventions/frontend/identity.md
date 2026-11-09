@@ -7,6 +7,7 @@ A migração moderniza a tecnologia e a apresentação do Gnai preservando ident
 - Interface em pt-BR e marca **Gnai**. Não exponha "Bold", "Interface", nomes do template ou dados fictícios do catálogo; revise menus, títulos e rodapé dos componentes reutilizados.
 - `resources/css/tokens.css` consolida cores, tipografia, espaçamento, raios e foco. `--ui-color-primary` aponta para o roxo institucional (`--ui-color-gnai-primary`, `#322b75` em `resources/css/variables.css`); o azul do tema fica isolado em `--ui-color-theme-blue`.
 - A paleta temática vigente é a **Digital moderna**: verde `#16a34a`, azul `#3b82f6`, âmbar `#f59e0b`, vermelho `#ef4444`, ciano `#06b6d4`, grafite `#64748b` e verde-azulado `#14b8a6`. Esses tons substituem a paleta Ubold de 2014–2016 nos tokens sem alterar o roxo institucional do Gnai.
+- Etiquetas especiais usam dourado (`--ui-color-special-tag`, `#b8860b`). Nas listagens e no select unificado de etiquetas de pessoas, uma estrela dourada identifica o tipo, com tooltip “Etiqueta Especial” no hover e no foco por teclado.
 - Não fixe cores de marca nas páginas, não crie paletas ou variantes locais de roxo/azul e não importe todo o CSS legado. `UI/Button` define seus tons só por variáveis, sem `!important`.
 - Evite dimensões rígidas que quebrem telas menores; preserve labels, foco, teclado e apresentação acessível dos erros.
 - Uma reprodução temporária de outro tema, pedida pelo usuário, vale apenas para a tela indicada.

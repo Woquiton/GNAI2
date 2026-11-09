@@ -41,6 +41,14 @@ class TagSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('Etiquetas padrão de Publicações e Inbox preparadas.');
+        foreach (['student' => 'Aluno', 'teacher' => 'Professor', 'professional' => 'Equipe', 'guardian' => 'Responsáveis'] as $key => $name) {
+            DB::table('tags')->insertOrIgnore([
+                'module' => 'people', 'name' => $name, 'system_key' => $key,
+                'color' => '#b8860b', 'is_active' => true,
+                'created_at' => $now, 'updated_at' => $now,
+            ]);
+        }
+
+        $this->command->info('Etiquetas padrão de Pessoas, Publicações e Inbox preparadas.');
     }
 }

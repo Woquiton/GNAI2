@@ -126,6 +126,7 @@ final class AppNavigation
                 ['professionals', 'Equipe', 'specialized-educational-support.professionals.index', 'ti-id-badge', ['professional.view'], ['specialized-educational-support.professionals.*']],
                 ['teachers', 'Professores', 'specialized-educational-support.teachers.index', 'ti-blackboard', ['teacher.view'], ['specialized-educational-support.teachers.*']],
                 ['registrations', 'Cadastros', null, 'ti-folder', [], [], [
+                    ['people', 'Pessoas', 'inclusive-radar.people.index', 'fa fa-users', ['person.view'], ['inclusive-radar.people.*']],
                     ['deficiencies', 'Perfis de Atendimento', 'specialized-educational-support.deficiencies.index', 'ti-heart', ['deficiency.view'], ['specialized-educational-support.deficiencies.*']],
                     ['positions', 'Cargos', 'specialized-educational-support.positions.index', 'ti-briefcase', ['position.view'], ['specialized-educational-support.positions.*']],
                     ['semesters', 'Semestres', 'specialized-educational-support.semesters.index', 'ti-layout-column2', ['semester.view'], ['specialized-educational-support.semesters.*']],

@@ -4,6 +4,7 @@ return [
     'entities' => [
         'email' => 'Central de E-mails',
         'people' => 'Pessoas',
+        'person' => 'Pessoas',
         'deficiency' => 'Perfis de Atendimento',
         'position' => 'Cargos',
         'semester' => 'Semestres',

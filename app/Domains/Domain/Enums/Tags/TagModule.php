@@ -8,12 +8,14 @@ enum TagModule: string
 {
     case PUBLICATIONS = 'publications';
     case INBOX = 'inbox';
+    case PEOPLE = 'people';
 
     public function label(): string
     {
         return match ($this) {
             self::PUBLICATIONS => 'Publicações',
             self::INBOX => 'Inbox',
+            self::PEOPLE => 'Pessoas',
         };
     }
 

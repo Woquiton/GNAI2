@@ -23,10 +23,10 @@ export const tagListTour: TableListTourConfig = {
     helpHref: HELP_HREF,
     filters: [
         'Digite o nome da etiqueta para encontrá-la. A lista se atualiza sozinha enquanto você digita.',
-        'Em Módulo, escolha Publicações ou Inbox. Em Status, consulte etiquetas ativas ou inativas.',
+        'Em Módulo, escolha Pessoas, Publicações ou Inbox. Em Status, consulte etiquetas ativas ou inativas.',
     ],
     table: [
-        'Cada linha mostra nome, módulo, cor e situação. Etiquetas ativas de Publicações classificam publicações; etiquetas ativas de Inbox são os marcadores dos e-mails.',
+        'Cada linha mostra nome, módulo, cor e situação. Etiquetas especiais são protegidas e representam papéis no cadastro de pessoas. Etiquetas ativas de Publicações classificam publicações; etiquetas ativas de Inbox são os marcadores dos e-mails.',
         'Use o botão de olho, no fim da linha, para abrir a etiqueta.',
     ],
 };
@@ -53,7 +53,7 @@ function tagFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
             group,
             title: 'Módulo',
             content:
-                'Escolha Publicações ou Inbox. O módulo define onde a etiqueta aparece para seleção. Etiquetas já aplicadas não podem trocar de módulo; crie outra etiqueta para o novo módulo.',
+                'Escolha Pessoas, Publicações ou Inbox. O módulo define onde a etiqueta aparece para seleção. Etiquetas já aplicadas não podem trocar de módulo; crie outra etiqueta para o novo módulo.',
         },
         {
             id: 'tag-color',

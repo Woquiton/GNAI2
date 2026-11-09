@@ -1,0 +1,13 @@
+.tagName {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tagName__specialIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ui-color-special-tag);
+    border-radius: 0.2rem;
+}

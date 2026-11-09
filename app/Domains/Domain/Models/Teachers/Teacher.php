@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Domains\Domain\Models\Teachers;
 
 use App\Domains\Domain\Contracts\Audit\Auditable;
-use App\Domains\Domain\ValueObjects\Audit\AuditedField;
-use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
-use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\DTOs\Teachers\CreateTeacherDTO;
+use App\Domains\Domain\DTOs\Teachers\UpdateTeacherDTO;
 use App\Domains\Domain\Exceptions\Courses\InvalidCourse;
+use App\Domains\Domain\Exceptions\Teachers\InvalidTeacher;
+use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Domain\Models\Courses\Course;
 use App\Domains\Domain\Models\Disciplines\Discipline;
 use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
 use App\Domains\Domain\Models\People\Person;
 use App\Domains\Domain\Models\Semesters\Semester;
-use App\Domains\Domain\DTOs\Teachers\CreateTeacherDTO;
-use App\Domains\Domain\DTOs\Teachers\UpdateTeacherDTO;
-use App\Domains\Domain\Exceptions\Teachers\InvalidTeacher;
+use App\Domains\Domain\ValueObjects\Audit\AuditedField;
+use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -61,6 +61,16 @@ class Teacher extends Model implements Auditable
             'person_id' => $data->personId,
             'registration' => $data->registration->value(),
         ]);
+    }
+
+    public function ensureCanBeDeleted(bool $hasPeiDisciplines, bool $hasAuthoredPedagogicalRecords): void
+    {
+        if ($hasPeiDisciplines) {
+            throw new InvalidTeacher('Não é possível excluir este professor pois ele possui registros de acompanhamento em Planos Educacionais Individualizados (PEI).');
+        }
+        if ($hasAuthoredPedagogicalRecords) {
+            throw new InvalidTeacher('Não é possível excluir este professor pois o usuário dele é autor de registros de PEI, PAEE ou estudo de caso.');
+        }
     }
 
     public function revise(UpdateTeacherDTO $data): void

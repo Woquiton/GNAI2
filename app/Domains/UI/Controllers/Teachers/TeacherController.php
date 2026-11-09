@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\UI\Controllers\Teachers;
 
-use App\Domains\Application\Queries\Semesters\CurrentSemesterQuery;
-use App\Domains\Domain\Models\Semesters\Semester;
 use App\Domains\Application\Actions\Teachers\CopyTeacherCourseDisciplinesAction;
 use App\Domains\Application\Actions\Teachers\CreateTeacherAction;
 use App\Domains\Application\Actions\Teachers\DeleteTeacherAction;
@@ -16,11 +14,13 @@ use App\Domains\Application\Data\Teachers\CreateTeacherData;
 use App\Domains\Application\Data\Teachers\ListTeachersData;
 use App\Domains\Application\Data\Teachers\UpdateTeacherData;
 use App\Domains\Application\Data\Teachers\UpdateTeacherDisciplinesData;
+use App\Domains\Application\Queries\Semesters\CurrentSemesterQuery;
 use App\Domains\Application\Queries\Teachers\ListTeachersQuery;
 use App\Domains\Application\Queries\Teachers\PreviousAssignmentSemesterQuery;
 use App\Domains\Application\Queries\Teachers\ShowTeacherQuery;
 use App\Domains\Application\Queries\Teachers\TeacherDisciplinesFormQuery;
 use App\Domains\Application\Queries\Teachers\TeacherFormQuery;
+use App\Domains\Domain\Models\Semesters\Semester;
 use App\Domains\Domain\Models\Teachers\Teacher;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
 use Illuminate\Http\RedirectResponse;
@@ -131,9 +131,9 @@ final class TeacherController
     /**
      * @throws Throwable
      */
-    public function update(UpdateTeacherData $data, Teacher $teacher, UpdateTeacherAction $action): RedirectResponse
+    public function update(UpdateTeacherData $data, Teacher $teacher, UpdateTeacherAction $action, Request $request): RedirectResponse
     {
-        $action->execute($teacher, $data);
+        $action->execute($teacher, $data, $request->user());
 
         return redirect()
             ->route('specialized-educational-support.teachers.index')

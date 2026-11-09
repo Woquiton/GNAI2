@@ -2,7 +2,12 @@ import { useEffect, useLayoutEffect, useRef, useState, type SelectHTMLAttributes
 import { loadExternalScript } from '@/utils/loadExternalScript';
 import { loadExternalStylesheet } from '@/utils/loadExternalStylesheet';
 import { joinClassNames } from '@/utils/joinClassNames';
-import type { SelectFieldCollection, SelectFieldGroup, SelectFieldOption, SelectFieldRuntime } from './SelectField.types';
+import type {
+    SelectFieldCollection,
+    SelectFieldGroup,
+    SelectFieldOption,
+    SelectFieldRuntime,
+} from './SelectField.types';
 import '@styles/components/Forms/TextInput/TextInput.css';
 import '@styles/components/Forms/SelectField/SelectField.css';
 
@@ -34,6 +39,21 @@ function formatIconOption(data: Select2OptionData): string {
     );
 }
 
+/** Texto e ícone opcionais, tanto no menu quanto nos valores selecionados. */
+function formatTextIconOption(data: Select2OptionData): string {
+    const metadata = data.element?.[0]?.dataset;
+    const text = escapeHtml(metadata?.optionLabel ?? data.text ?? '');
+    const icon = optionIcon(data);
+    if (!icon) return text;
+    const color = escapeHtml(metadata?.iconColor ?? 'inherit');
+    const label = escapeHtml(metadata?.iconLabel ?? '');
+    return (
+        `<span class="selectField__textIconOption">${text}` +
+        `<span role="img" aria-label="${label}" title="${label}" style="color:${color}">` +
+        `<i class="${escapeHtml(icon)}" aria-hidden="true"></i></span></span>`
+    );
+}
+
 export default function SelectField({
     id,
     name,
@@ -43,6 +63,7 @@ export default function SelectField({
     defaultValue,
     enhanced = true,
     iconOnly = false,
+    iconsWithText = false,
     iconSearch = false,
     placeholder = 'Selecione',
     searchable = true,
@@ -59,6 +80,8 @@ export default function SelectField({
     enhanced?: boolean;
     /** Mostra as opções e o valor escolhido pelos ícones (`iconClass`), em grade e sem busca. */
     iconOnly?: boolean;
+    /** Exibe o texto acompanhado do ícone opcional de cada opção. */
+    iconsWithText?: boolean;
     /** Mantém a grade de ícones com busca por nome. */
     iconSearch?: boolean;
     /** `null` remove a opção vazia, para listas que sempre têm um valor escolhido. */
@@ -148,6 +171,12 @@ export default function SelectField({
                               optionIcon(data)
                                   ? 'selectField__iconResult'
                                   : 'selectField__textResult',
+                      }
+                    : {}),
+                ...(!iconOnly && iconsWithText
+                    ? {
+                          formatResult: formatTextIconOption,
+                          formatSelection: formatTextIconOption,
                       }
                     : {}),
                 ...(!iconOnly && !searchable ? { minimumResultsForSearch: -1 } : {}),
@@ -269,7 +298,16 @@ export default function SelectField({
             disposed = true;
             cleanup?.();
         };
-    }, [enhanced, iconOnly, iconSearch, searchable, id, props.multiple, allowCreate]);
+    }, [
+        enhanced,
+        iconOnly,
+        iconsWithText,
+        iconSearch,
+        searchable,
+        id,
+        props.multiple,
+        allowCreate,
+    ]);
     return (
         <div
             className={joinClassNames(
@@ -302,8 +340,17 @@ export default function SelectField({
                     <option value="">{placeholder}</option>
                 )}
                 {(options ?? groups.flatMap((group) => group.options)).map((option) => (
-                    <option value={option.value} key={option.value} data-icon={option.iconClass}>
-                        {option.label}
+                    <option
+                        value={option.value}
+                        key={option.value}
+                        data-icon={option.iconClass}
+                        data-icon-color={option.iconColor}
+                        data-icon-label={option.iconLabel}
+                        data-option-label={option.label}
+                    >
+                        {iconsWithText && option.iconLabel
+                            ? `${option.label} (${option.iconLabel})`
+                            : option.label}
                     </option>
                 ))}
             </select>

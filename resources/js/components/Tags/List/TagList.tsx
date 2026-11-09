@@ -45,7 +45,8 @@ export default function TagList({
                             }
                         }
                         remove={
-                            permissions.destroy && {
+                            permissions.destroy &&
+                            !tag.system_key && {
                                 label: `Excluir ${tag.name}`,
                                 disabled: processing,
                                 onClick: () => onDelete(tag),

@@ -1,5 +1,6 @@
 import type { TableListColumn } from '@/components/Tables/TableList/TableList';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
+import TagName from '../TagName';
 import type { TagRecord } from '../Tags.types';
 
 export const tagColumns: TableListColumn<TagRecord>[] = [
@@ -8,7 +9,7 @@ export const tagColumns: TableListColumn<TagRecord>[] = [
         label: 'Nome',
         width: '30%',
         fixed: 'start',
-        render: (tag) => tag.name,
+        render: (tag) => <TagName name={tag.name} special={Boolean(tag.system_key)} />,
     },
     {
         id: 'module',

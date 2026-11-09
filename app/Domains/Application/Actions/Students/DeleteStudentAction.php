@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Application\Actions\Students;
 
-use App\Domains\Domain\Models\People\Person;
-use App\Domains\Application\Queries\Students\PersonHasOtherRolesQuery;
 use App\Domains\Application\Queries\Students\StudentHasLinkedRecordsQuery;
+use App\Domains\Domain\Models\People\Person;
 use App\Domains\Domain\Models\Students\Student;
-use App\Domains\Infrastructure\Storage\Students\StudentPhotoStorage;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -16,8 +14,6 @@ final readonly class DeleteStudentAction
 {
     public function __construct(
         private StudentHasLinkedRecordsQuery $hasLinkedRecords,
-        private PersonHasOtherRolesQuery $hasOtherRoles,
-        private StudentPhotoStorage $photoStorage,
     ) {}
 
     /**
@@ -25,11 +21,11 @@ final readonly class DeleteStudentAction
      */
     public function execute(Student $student): void
     {
-        $photoPath = DB::transaction(function () use ($student): ?string {
+        DB::transaction(function () use ($student): void {
             $lockedStudent = Student::query()
                 ->lockForUpdate()
                 ->findOrFail($student->getKey());
-            $person = Person::query()
+            Person::query()
                 ->lockForUpdate()
                 ->findOrFail($lockedStudent->person_id);
 
@@ -37,19 +33,9 @@ final readonly class DeleteStudentAction
                 $this->hasLinkedRecords->execute($lockedStudent),
             );
 
-            $personHasOtherRoles = $this->hasOtherRoles->execute($person, $lockedStudent);
             $lockedStudent->delete();
 
-            if ($personHasOtherRoles) {
-                return null;
-            }
-
-            $photoPath = $person->getRawOriginal('photo');
-            $person->delete();
-
-            return $photoPath;
+            // A identidade e a foto permanecem no cadastro central de pessoas.
         });
-
-        $this->photoStorage->delete($photoPath);
     }
 }

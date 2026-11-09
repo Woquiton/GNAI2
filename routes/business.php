@@ -17,15 +17,16 @@ use App\Domains\UI\Controllers\Paees\PaeeController;
 use App\Domains\UI\Controllers\PedagogicalRecords\PedagogicalRecordController;
 use App\Domains\UI\Controllers\Peis\PeiController;
 use App\Domains\UI\Controllers\Pendencies\PendencyController;
+use App\Domains\UI\Controllers\People\PersonController;
 use App\Domains\UI\Controllers\Positions\PositionController;
 use App\Domains\UI\Controllers\Professionals\ProfessionalController;
 use App\Domains\UI\Controllers\Publications\PublicationController;
 use App\Domains\UI\Controllers\Semesters\SemesterController;
 use App\Domains\UI\Controllers\Sessions\SessionController;
-use App\Domains\UI\Controllers\Students\StudentController;
 use App\Domains\UI\Controllers\StudentCourses\StudentCourseController;
 use App\Domains\UI\Controllers\StudentDeficiencies\StudentDeficiencyController;
 use App\Domains\UI\Controllers\StudentDocuments\StudentDocumentController;
+use App\Domains\UI\Controllers\Students\StudentController;
 use App\Domains\UI\Controllers\SupportRequests\SupportRequestController;
 use App\Domains\UI\Controllers\Tags\TagController;
 use App\Domains\UI\Controllers\Teachers\TeacherController;
@@ -54,6 +55,17 @@ Route::name('inclusive-radar.')->group(function (): void {
     |--------------------------------------------------------------------------
     */
     Route::middleware(['auth'])->group(function () {
+        Route::get('/pessoas', [PersonController::class, 'index'])
+            ->name('people.index')->middleware('can:person.view');
+        Route::get('/pessoas/criar', [PersonController::class, 'create'])
+            ->name('people.create')->middleware('can:person.create');
+        Route::post('/pessoas/salvar', [PersonController::class, 'store'])
+            ->name('people.store')->middleware('can:person.create');
+        Route::get('/pessoas/{person}/editar', [PersonController::class, 'edit'])
+            ->name('people.edit')->middleware('can:person.update');
+        Route::put('/pessoas/{person}/salvar', [PersonController::class, 'update'])
+            ->name('people.update')->middleware('can:person.update');
+
         // ------------------- CATEGORIAS DAS BARREIRAS -------------------
         Route::get('/categorias-de-barreira', [BarrierCategoryController::class, 'index'])
             ->name('barrier-categories.index')->middleware('can:barrier-category.index');

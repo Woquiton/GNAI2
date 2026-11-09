@@ -83,7 +83,7 @@ Mais detalhes em [Portal do Professor](/ajuda/portal-do-professor).
 ## Editar ou excluir um professor
 
 - **Editar**: abra o professor, clique em **Editar**, altere os dados e clique em **Salvar**. O sistema mostra "Professor atualizado com sucesso." Alterar o e-mail muda também o login do professor.
-- **Excluir**: clique em **Excluir** na listagem ou na visualização e confirme. O sistema mostra "Professor removido com sucesso." A exclusão remove também a conta de acesso e a matriz curricular do professor.
+- **Excluir**: clique em **Excluir** na listagem ou na visualização e confirme. O sistema mostra "Professor removido com sucesso." A exclusão remove a matriz curricular e a conta de acesso do professor, exceto quando a conta é compartilhada com a Equipe. Nesse caso, o acesso da equipe permanece. A pessoa e sua foto ficam preservadas no [cadastro central de pessoas](/ajuda/pessoas).
 
 A exclusão é bloqueada quando o professor já tem adaptações registradas em algum PEI ou quando a conta dele é autora de PEI, PAEE ou estudo de caso. Esses registros guardam quem os criou e não podem perder essa informação.
 

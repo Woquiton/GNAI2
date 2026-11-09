@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Domains\Domain\Models\Guardians;
 
 use App\Domains\Domain\Contracts\Audit\Auditable;
-use App\Domains\Domain\ValueObjects\Audit\AuditedField;
-use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
 use App\Domains\Domain\DTOs\Guardians\CreateGuardianDTO;
 use App\Domains\Domain\DTOs\Guardians\UpdateGuardianDTO;
 use App\Domains\Domain\Enums\Guardians\GuardianRelationship;
@@ -14,6 +12,8 @@ use App\Domains\Domain\Exceptions\Guardians\InvalidGuardian;
 use App\Domains\Domain\Models\PedagogicalRecords\PedagogicalRecord;
 use App\Domains\Domain\Models\People\Person;
 use App\Domains\Domain\Models\Students\Student;
+use App\Domains\Domain\ValueObjects\Audit\AuditedField;
+use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
 use Database\Factories\GuardianFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -78,6 +78,11 @@ final class Guardian extends Model implements Auditable
                 'O responsável deve ser vinculado a um aluno e a uma pessoa persistidos.'
             );
         }
+
+        if ((int) $student->person_id === (int) $person->getKey()) {
+            throw new InvalidGuardian('A pessoa não pode ser responsável por si mesma.');
+        }
+        $student->ensureIsActive();
 
         return new self([
             'student_id' => $student->getKey(),

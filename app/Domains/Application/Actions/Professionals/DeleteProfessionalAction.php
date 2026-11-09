@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Domains\Application\Actions\Professionals;
 
 use App\Domains\Application\Policies\Auth\AdministratorAccessPolicy;
+use App\Domains\Application\Permissions\Auth\PermissionCache;
+use App\Domains\Application\Queries\Professionals\ProfessionalHasLinkedRecordsQuery;
+use App\Domains\Domain\Enums\People\PersonRole;
 use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Domain\Models\People\Person;
-use App\Domains\Application\Queries\Professionals\PersonHasOtherRolesQuery;
-use App\Domains\Application\Queries\Professionals\ProfessionalHasLinkedRecordsQuery;
 use App\Domains\Domain\Models\Professionals\Professional;
-use App\Domains\Infrastructure\Storage\Professionals\ProfessionalPhotoStorage;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -18,9 +18,8 @@ final readonly class DeleteProfessionalAction
 {
     public function __construct(
         private ProfessionalHasLinkedRecordsQuery $hasLinkedRecords,
-        private PersonHasOtherRolesQuery $hasOtherRoles,
-        private ProfessionalPhotoStorage $photoStorage,
         private AdministratorAccessPolicy $administratorAccess,
+        private PermissionCache $permissionCache,
     ) {}
 
     /**
@@ -28,7 +27,7 @@ final readonly class DeleteProfessionalAction
      */
     public function execute(Professional $professional, ?User $actor): void
     {
-        $photoPath = DB::transaction(function () use ($professional, $actor): ?string {
+        DB::transaction(function () use ($professional, $actor): void {
             $lockedProfessional = Professional::query()
                 ->lockForUpdate()
                 ->findOrFail($professional->getKey());
@@ -43,25 +42,24 @@ final readonly class DeleteProfessionalAction
                 $lockedProfessional->user()->first(),
             );
 
-            $person = Person::query()
+            Person::query()
                 ->lockForUpdate()
                 ->findOrFail($lockedProfessional->person_id);
-            $personHasOtherRoles = $this->hasOtherRoles->execute($person, $lockedProfessional);
 
             // Pelo model, não pela query: a exclusão do usuário entra na auditoria.
-            $lockedProfessional->user?->delete();
-            $lockedProfessional->delete();
-
-            if ($personHasOtherRoles) {
-                return null;
+            $user = $lockedProfessional->user;
+            if ($user !== null) {
+                $user->detachPersonRole(PersonRole::PROFESSIONAL);
+                if ($user->hasPersonProfile()) {
+                    $user->save();
+                } else {
+                    $user->delete();
+                }
             }
+            $lockedProfessional->delete();
+            DB::afterCommit(fn () => $this->permissionCache->invalidate());
 
-            $photoPath = $person->getRawOriginal('photo');
-            $person->delete();
-
-            return $photoPath;
+            // A identidade e a foto permanecem no cadastro central de pessoas.
         });
-
-        $this->photoStorage->delete($photoPath);
     }
 }

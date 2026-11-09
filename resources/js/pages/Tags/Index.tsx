@@ -36,7 +36,7 @@ export default function TagsIndexPage({
     return (
         <TableListLayout
             title="Etiquetas"
-            subtitle="Gerencie as etiquetas de publicações e os marcadores da Inbox."
+            subtitle="Gerencie etiquetas de pessoas, publicações e marcadores da Inbox."
             breadcrumbItems={tagBreadcrumb()}
             tour={tagListTour}
             create={can.create && { href: tagUrls.create, label: 'Cadastrar etiqueta' }}
