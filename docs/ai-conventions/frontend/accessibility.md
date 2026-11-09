@@ -91,3 +91,22 @@ Com `prefers-reduced-motion: reduce` ativo no sistema, animações, transições
 - **Percepção:** estados não dependem só de cor. O contraste mínimo é 4,5:1 para texto e 3:1 para ícones, bordas de controles e anel de foco.
 - **Estrutura:** há um único `<main>` por tela (`BusinessPage`), títulos em ordem e imagens informativas com `alt`; as decorativas usam `alt=""`.
 - **Foco:** o anel de teclado aparece em todos os controles novos, inclusive em fundos escuros e áreas com rolagem.
+
+## Preferências de apresentação
+
+A topbar oferece o ícone de contraste, que abre as opções em `TopBarAccessibilityAction`,
+reutilizando `Modal` e `Button`. Alto contraste redefine os tokens em `tokens.css`:
+fundo preto, texto branco, links e foco amarelos. `accessibility.css` cobre também
+cores fixas de componentes legados, sem inverter as imagens.
+
+O ajuste de tamanho vai de 90% a 150%, em passos de 10%. Usa zoom do documento
+para ampliar também fontes em pixels e os controles que as contêm. Não limita o zoom
+nativo do navegador. A impressão mantém escala 1.
+
+`utils/accessibilityPreferences.ts` aplica as preferências antes da renderização e
+salva em `localStorage` (`gnai.accessibility`). O hook compartilhado sincroniza os
+controles e outras abas; armazenamento indisponível não impede o uso na página atual.
+Não são preferências da conta nem eventos de auditoria de registros de negócio.
+
+A página autenticada `/acessibilidade`, disponível na sidebar em Sistema, explica
+contraste, tamanho, teclado, atalhos, leitura e movimento reduzido, e tem tutorial ao vivo.

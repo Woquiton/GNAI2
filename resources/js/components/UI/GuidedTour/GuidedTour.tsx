@@ -128,11 +128,28 @@ export default function GuidedTour({ tour, onClose }: GuidedTourProps): React.JS
         let previous = '';
 
         function measure(): void {
+            // DOMRect inclui o zoom; top/left e dimensões CSS usam coordenadas locais.
+            const scale =
+                Number.parseFloat(
+                    getComputedStyle(document.documentElement)
+                        .getPropertyValue('--ui-accessibility-scale'),
+                ) || 1;
             const card = cardRef.current?.getBoundingClientRect();
+            const target = enclosingRect(findTourTargets(step.target));
+            const localTarget = target
+                ? {
+                      top: target.top / scale,
+                      left: target.left / scale,
+                      width: target.width / scale,
+                      height: target.height / scale,
+                  }
+                : null;
             const next = computeTourLayout(
-                enclosingRect(findTourTargets(step.target)),
-                card ? { width: card.width, height: card.height } : FALLBACK_CARD_SIZE,
-                { width: window.innerWidth, height: window.innerHeight },
+                localTarget,
+                card
+                    ? { width: card.width / scale, height: card.height / scale }
+                    : FALLBACK_CARD_SIZE,
+                { width: window.innerWidth / scale, height: window.innerHeight / scale },
                 topBarOffset(),
             );
             const key = JSON.stringify(next);

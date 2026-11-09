@@ -60,7 +60,10 @@ export default function MorrisChart({
                 resize: false,
             });
             return {
-                resize: () => chart.redraw(),
+                resize: () => {
+                    chart.raphael?.setSize(element.clientWidth, element.clientHeight);
+                    chart.redraw();
+                },
                 destroy: () => {
                     chartWindow.jQuery(element).off();
                     chart.raphael?.remove();

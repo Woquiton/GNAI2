@@ -74,3 +74,72 @@ html:has(.formActions__bar--fixed) {
         scroll-behavior: auto !important;
     }
 }
+
+/* O zoom mantém proporcionais fontes em px, rem e controles de plugins legados. */
+html {
+    zoom: var(--ui-accessibility-scale, 1);
+}
+
+/*
+ * Cores fixas de componentes legados também recebem a paleta.
+ * Não invertemos imagens ou vídeos. Bordas e ícones continuam visíveis.
+ */
+html[data-high-contrast='true'] body,
+html[data-high-contrast='true']
+    body
+    *:not(img):not(video):not(canvas):not(svg):not(svg *):not(.guidedTour):not(
+        .guidedTour__spotlight
+    ):not(.guidedTour__backdrop):not(.modalLayer):not(.modalLayer__backdrop):not(
+        .modalLayer__dialog
+    ) {
+    background-color: var(--ui-color-surface) !important;
+    background-image: none !important;
+    color: var(--ui-color-text) !important;
+    border-color: var(--ui-color-text) !important;
+    text-shadow: none !important;
+    --ui-focus-keyboard-color: #ffff00;
+}
+
+html[data-high-contrast='true'] a,
+html[data-high-contrast='true'] a *,
+html[data-high-contrast='true'] button,
+html[data-high-contrast='true'] button * {
+    color: var(--ui-color-link) !important;
+}
+
+html[data-high-contrast='true'] a {
+    text-decoration: underline;
+}
+
+/* A sidebar já identifica os links pela estrutura de navegação. */
+html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout) a,
+html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout) a * {
+    text-decoration: none !important;
+}
+
+/* Campos precisam de contorno; botões preservam a borda definida pelo componente.
+ * Assim, ações com ícone na topbar não ganham caixas permanentes. */
+html[data-high-contrast='true'] :is(input, select, textarea) {
+    border: 1px solid var(--ui-color-text) !important;
+}
+
+html[data-high-contrast='true'] :is([aria-pressed='true'], [aria-current='page']) {
+    outline: 2px solid var(--ui-color-link);
+    outline-offset: -2px;
+}
+
+html[data-high-contrast='true'] :disabled {
+    opacity: 1;
+    border-style: dashed !important;
+}
+
+html[data-high-contrast='true'] ::placeholder {
+    color: var(--ui-color-text) !important;
+    opacity: 1;
+}
+
+@media print {
+    html {
+        zoom: 1;
+    }
+}

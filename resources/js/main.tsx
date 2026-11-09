@@ -3,7 +3,11 @@ import type { ComponentType, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppLayout from '@/components/Navigation/AppLayout/AppLayout';
 import AppLoader from '@/components/UI/AppLoader/AppLoader';
-import { installFocusModality } from '@/utils/accessibilityPreferences';
+import {
+    applyAccessibilityPreferences,
+    readAccessibilityPreferences,
+    installFocusModality,
+} from '@/utils/accessibilityPreferences';
 import '@styles/reset.css';
 import '@styles/tokens.css';
 import '@styles/globals.css';
@@ -34,6 +38,7 @@ function usesAppLayout(name: string): boolean {
 
 // O modo de foco vale antes da primeira renderização, inclusive no login.
 installFocusModality();
+applyAccessibilityPreferences(readAccessibilityPreferences());
 
 void createInertiaApp({
     id: 'root',

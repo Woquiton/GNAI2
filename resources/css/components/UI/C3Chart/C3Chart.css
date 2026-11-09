@@ -22,3 +22,12 @@
 .c3-tooltip th {
     background-color: #36404a;
 }
+
+/* Textos SVG usam fill, que não acompanha a propriedade color do tema. */
+html[data-high-contrast='true'] .c3 text {
+    fill: var(--ui-color-text) !important;
+}
+
+html[data-high-contrast='true'] .c3 :is(.c3-axis, .c3-grid) :is(path, line) {
+    stroke: var(--ui-color-text) !important;
+}

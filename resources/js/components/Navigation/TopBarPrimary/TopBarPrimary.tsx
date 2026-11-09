@@ -7,6 +7,7 @@ import { initWaves } from '@/utils/initWaves';
 import RightSidebar from '@/components/Navigation/RightSidebar/RightSidebar';
 import TopBarNotificationsDropdown from './TopBarNotificationsDropdown';
 import TopBarProfileDropdown from './TopBarProfileDropdown';
+import TopBarAccessibilityAction from './TopBarAccessibilityAction';
 import { useFullscreenToggle } from './useFullscreenToggle';
 
 interface TopBarPrimaryProps {
@@ -169,6 +170,7 @@ export default function TopBarPrimary({
 
                         <ul className="topbar__navList nav navbar-nav navbar-right pull-right">
                             {actionsContent}
+                            <TopBarAccessibilityAction />
                             <TopBarNotificationsDropdown
                                 items={notificationItems}
                                 unreadCount={unreadCount}

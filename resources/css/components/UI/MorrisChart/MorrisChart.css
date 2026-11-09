@@ -10,3 +10,7 @@
 .morris-hover.morris-default-style .morris-hover-point {
     color: #f4f8fb !important;
 }
+
+html[data-high-contrast='true'] [data-chart-ready] svg text {
+    fill: var(--ui-color-text) !important;
+}

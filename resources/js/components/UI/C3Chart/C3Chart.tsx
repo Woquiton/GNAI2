@@ -13,8 +13,18 @@ export default function C3Chart({
 }): React.JSX.Element {
     const mount = useCallback<ChartMount>(
         (element) => {
-            const chart = chartWindow.c3.generate({ ...options, bindto: element });
-            return { resize: () => chart.resize(), destroy: () => chart.destroy() };
+            // C3 mede getBoundingClientRect por padrão, que já inclui o zoom do documento.
+            // A biblioteca precisa da largura local para não aplicar a ampliação duas vezes.
+            const size = options.size as Record<string, unknown> | undefined;
+            const chart = chartWindow.c3.generate({
+                ...options,
+                size: { ...size, width: element.clientWidth },
+                bindto: element,
+            });
+            return {
+                resize: () => chart.resize({ width: element.clientWidth }),
+                destroy: () => chart.destroy(),
+            };
         },
         [options],
     );

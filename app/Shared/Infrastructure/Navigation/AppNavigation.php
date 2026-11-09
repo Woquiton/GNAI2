@@ -151,6 +151,7 @@ final class AppNavigation
                 ['audit', 'Auditoria', 'audit.index', 'ti-shield', ['audit.index'], ['audit.*']],
                 ['backups', 'Backups', 'backup.backups.index', 'ti-cloud-down', ['backup.index'], ['backup.backups.*']],
                 ['help', 'Ajuda', 'help.index', 'ti-help-alt', [], ['help.*']],
+                ['accessibility', 'Acessibilidade', 'accessibility.index', 'md md-accessibility', [], ['accessibility.*']],
                 ['about', 'Sobre o Sistema', 'about-us', 'ti-info-alt', [], ['about-us']],
             ]],
         ];

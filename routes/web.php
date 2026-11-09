@@ -59,6 +59,9 @@ Route::middleware('web')->group(function () {
         return view('pages.about-us');
     })->name('about-us');
 
+    Route::middleware('auth')->get('/acessibilidade', fn () => Inertia::render('Accessibility/Index'))
+        ->name('accessibility.index');
+
     Route::middleware(['auth'])->get('/guia-de-uso', function () {
         if (request()->header('X-Inertia')) {
             return Inertia::location(route('user-guide'));

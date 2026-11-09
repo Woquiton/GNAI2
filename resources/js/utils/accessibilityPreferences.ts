@@ -53,3 +53,63 @@ export function installFocusModality(): void {
     );
     document.addEventListener('pointerdown', () => setFocusMode('pointer'), true);
 }
+
+export interface AccessibilityPreferences {
+    highContrast: boolean;
+    scale: number;
+}
+
+const PREFERENCES_KEY = 'gnai.accessibility';
+const PREFERENCES_EVENT = 'gnai:accessibility';
+export const MIN_ACCESSIBILITY_SCALE = 90;
+export const MAX_ACCESSIBILITY_SCALE = 150;
+
+export function readAccessibilityPreferences(): AccessibilityPreferences {
+    try {
+        const saved = JSON.parse(localStorage.getItem(PREFERENCES_KEY) ?? '{}');
+        return {
+            highContrast: saved?.highContrast === true,
+            scale: [90, 100, 110, 120, 130, 140, 150].includes(saved?.scale)
+                ? saved.scale
+                : 100,
+        };
+    } catch {
+        return { highContrast: false, scale: 100 };
+    }
+}
+
+export function applyAccessibilityPreferences(preferences: AccessibilityPreferences): void {
+    document.documentElement.dataset.highContrast = String(preferences.highContrast);
+    document.documentElement.style.setProperty('--ui-accessibility-scale', String(preferences.scale / 100));
+}
+
+export function saveAccessibilityPreferences(preferences: AccessibilityPreferences): void {
+    applyAccessibilityPreferences(preferences);
+    try {
+        localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
+    } catch {
+        // A preferência continua ativa mesmo quando o navegador bloqueia armazenamento.
+    }
+    window.dispatchEvent(new CustomEvent(PREFERENCES_EVENT, { detail: preferences }));
+}
+
+export function subscribeAccessibilityPreferences(
+    listener: (preferences: AccessibilityPreferences) => void,
+): () => void {
+    const changed = (event: Event): void => {
+        listener((event as CustomEvent<AccessibilityPreferences>).detail);
+    };
+    const stored = (event: StorageEvent): void => {
+        if (event.key === PREFERENCES_KEY || event.key === null) {
+            const preferences = readAccessibilityPreferences();
+            applyAccessibilityPreferences(preferences);
+            listener(preferences);
+        }
+    };
+    window.addEventListener(PREFERENCES_EVENT, changed);
+    window.addEventListener('storage', stored);
+    return () => {
+        window.removeEventListener(PREFERENCES_EVENT, changed);
+        window.removeEventListener('storage', stored);
+    };
+}

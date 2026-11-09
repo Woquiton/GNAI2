@@ -1,0 +1,16 @@
+.accessibilityControls {
+    display: grid;
+    gap: var(--ui-space-3);
+}
+
+.accessibilityControls__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-3);
+    align-items: center;
+}
+
+.accessibilityControls h2 {
+    font-size: var(--ui-font-size-xl);
+    margin: 0;
+}
