@@ -31,11 +31,3 @@ export const paeeStatusTones: Record<string, TableLabelTone> = {
     under_review: 'warning',
 };
 
-/** Descrição curta de cada etapa do status do atendimento, pela chave enviada pelo backend. */
-export const studentStatusStepDescriptions: Record<string, string> = {
-    'current-course': 'Vinculação do aluno ao curso.',
-    'technical-report': 'Inserção do laudo médico.',
-    'case-study': 'Elaboração do estudo de caso.',
-    paee: 'Plano de Atendimento Educacional Especializado.',
-    pei: 'Plano Educacional Individualizado.',
-};

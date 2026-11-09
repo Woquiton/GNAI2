@@ -11,7 +11,7 @@ O cadastro de alunos reúne os dados pessoais e acadêmicos de cada estudante at
 
 ## Conhecer as telas de alunos com o tutorial
 
-A listagem, o cadastro, a edição e o prontuário do aluno têm um tutorial na própria tela, assim como as telas de cursos do aluno. Clique no botão com o ícone de informação, na barra do topo, para abrir. Na listagem, ele mostra os filtros, o botão de colunas, como ajustar a largura das colunas e a quantidade de registros por página. No prontuário, ele mostra o resumo, as abas, a lateral **Status do atendimento** e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
+A listagem, o cadastro, a edição e o prontuário do aluno têm um tutorial na própria tela, assim como as telas de cursos do aluno. Clique no botão com o ícone de informação, na barra do topo, para abrir. Na listagem, ele mostra os filtros, o botão de colunas, como ajustar a largura das colunas e a quantidade de registros por página. No prontuário, ele mostra o resumo, os cards de **Status do atendimento**, as abas e os botões do rodapé. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
 
 ## Encontrar um aluno na listagem
 
@@ -82,26 +82,24 @@ Mudar o acompanhamento não altera nem cancela agendamentos existentes e não re
 
 ## Consultar o prontuário do aluno
 
-O prontuário abre ao visualizar um aluno ou logo depois de cadastrá-lo. No topo fica a faixa compacta de identificação, com foto, matrícula, situação, tipo de acompanhamento, data de ingresso e perfis de atendimento. O **Status do atendimento** fica na lateral direita do prontuário.
+O prontuário abre ao visualizar um aluno ou logo depois de cadastrá-lo. No topo fica a faixa compacta de identificação, com foto, matrícula, situação, tipo de acompanhamento, data de ingresso e perfis de atendimento. Logo abaixo ficam os quatro cards de **Status do atendimento**, acima das abas.
 
-### Lateral Status do atendimento
+### Cards de Status do atendimento
 
-A lateral mostra a sequência do acompanhamento e só oferece uma ação quando os pré-requisitos e a permissão do usuário permitem. Use a seta para expandir ou recolher; o sistema lembra a escolha neste navegador. Em telas menores, ela abre sobre o conteúdo e pode ser fechada pela seta, pelo fundo ou pela tecla Esc.
+Os quatro cards mostram a situação de **Laudo**, **Estudo de Caso**, **PAEE** e **PEI**. As ações só aparecem quando os pré-requisitos e a permissão do usuário permitem. Em telas menores, os cards se organizam em menos colunas.
 
 | Etapa | Como fica "ok" | Atalho |
 | --- | --- | --- |
-| **Solicitação de atendimento** | Há pelo menos uma solicitação vinculada, independentemente do andamento. Mostra **Registrada** em verde ou **Não registrada** em tom neutro; essa informação não entra na contagem de etapas concluídas ou pendentes. | **Ver** abre a aba **Solicitações**. |
-| **Vínculo com curso** | O aluno tem uma matrícula vigente. | **Ver** abre o vínculo atual; **Iniciar** abre o cadastro quando ainda não há curso vigente. |
 | **Laudo** | Há um documento do tipo Laudo anexado. | **Ver** abre a aba **Documentos**; **Iniciar** abre o envio de documento. |
 | **Estudo de Caso** | O Estudo de Caso atual está concluído. | **Ver**, **Continuar** ou **Iniciar** abre a etapa correspondente. |
 | **PAEE** | Há um PAEE ativo. | **Ver** abre o PAEE; **Iniciar** aparece quando o fluxo permite criar um. |
 | **PEI** | Há um PEI atual. | **Ver** abre o PEI; **Iniciar** aparece quando o aluno tem situação ativa, curso e PAEE vigentes e semestre atual. |
 
-A lateral também avisa quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado. Quando recolhida, ela continua mostrando quantas etapas estão concluídas e pendentes e se há alertas.
+Abaixo dos cards aparecem os avisos quando o PAEE está com a revisão vencida ou quando o PAEE ativo não está apoiado por um Estudo de Caso concluído nem por um laudo anexado. Solicitações de atendimento e vínculos com cursos continuam disponíveis nas abas próprias.
 
 ### Abas do prontuário
 
-Cada aba só aparece para quem tem permissão de consultá-la. O conteúdo aparece diretamente abaixo das abas, sem repetir o título da aba selecionada. Quando houver mais abas do que o espaço disponível, arraste a faixa para os lados ou use as setas das bordas; no celular, deslize com o dedo. As abas com tabelas carregam seus registros quando são abertas pela primeira vez; a estrutura e o indicador de carregamento aparecem imediatamente, e os registros permanecem disponíveis ao voltar para uma aba já consultada. Use os filtros acima de cada tabela para localizar registros dentro da aba.
+Cada aba só aparece para quem tem permissão de consultá-la. O conteúdo aparece diretamente abaixo das abas, sem repetir o título da aba selecionada. Quando houver mais abas do que o espaço disponível, elas continuam na linha seguinte, inclusive no celular, sem precisar rolar para os lados. As abas com tabelas carregam seus registros quando são abertas pela primeira vez; a estrutura e o indicador de carregamento aparecem imediatamente, e os registros permanecem disponíveis ao voltar para uma aba já consultada. Use os filtros acima de cada tabela para localizar registros dentro da aba.
 
 | Aba | Conteúdo |
 | --- | --- |
@@ -166,6 +164,8 @@ Na aba **Cursos do aluno**, visualize o curso desejado. No rodapé:
 ## Gerar a ficha do aluno em PDF
 
 No rodapé do prontuário, clique em **PDF**. A ficha abre em uma nova aba com os dados do aluno e o histórico dos atendimentos AEE e pedagógicos que você tem permissão de ver.
+
+Os atendimentos aparecem ao final da ficha, separados por modalidade, do mais recente para o mais antigo, sem limite de quantidade. Cada registro mostra data, profissional e presença. Nos atendimentos AEE, a ficha inclui participação e avaliação do desenvolvimento; nos pedagógicos, o registro do acompanhamento. Em caso de falta, mostra o motivo da ausência.
 
 ## Excluir um aluno
 

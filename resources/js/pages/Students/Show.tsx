@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import StudentDetailsActions from '@/components/Students/Details/StudentDetailsActions';
-import StudentRecordWorkspace from '@/components/Students/Details/StudentRecordWorkspace';
+import StudentStatusPanel from '@/components/Students/Details/StudentStatusPanel';
 import StudentRecordSummary from '@/components/Students/Details/StudentRecordSummary';
 import { createStudentRecordTabs } from '@/components/Students/Details/studentRecordTabs';
 import StudentDeleteModal from '@/components/Students/StudentDeleteModal';
@@ -199,23 +199,22 @@ export default function StudentsShow(props: StudentShowProps): React.JSX.Element
             tour={studentRecordTour}
         >
             <StudentRecordSummary {...props} />
-            <StudentRecordWorkspace statusPanel={statusPanel}>
-                <Tabs
-                    items={tabs}
-                    initialActiveId={activeTab}
-                    variant="standard"
-                    dragToScroll
-                    tourTarget={STUDENT_TOUR_TARGETS.tabs}
-                    onChange={(tab) => selectTab(tab as StudentRecordTabId)}
-                />
-                <StudentDetailsActions
-                    studentId={student.id}
-                    studentName={student.person.name}
-                    permissions={permissions}
-                    deleting={removal.processing}
-                    onDelete={() => removal.open(student)}
-                />
-            </StudentRecordWorkspace>
+            <StudentStatusPanel panel={statusPanel} />
+            <Tabs
+                items={tabs}
+                initialActiveId={activeTab}
+                variant="standard"
+                wrap
+                tourTarget={STUDENT_TOUR_TARGETS.tabs}
+                onChange={(tab) => selectTab(tab as StudentRecordTabId)}
+            />
+            <StudentDetailsActions
+                studentId={student.id}
+                studentName={student.person.name}
+                permissions={permissions}
+                deleting={removal.processing}
+                onDelete={() => removal.open(student)}
+            />
             <StudentDeleteModal
                 student={removal.target}
                 processing={removal.processing}

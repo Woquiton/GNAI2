@@ -90,7 +90,7 @@ A exclusão apaga também os objetivos, recursos e revisões do PAEE. Ela é blo
 | Ativo | Situação do PAEE recém-criado. |
 | Em revisão | Uma revisão manual foi registrada. |
 
-A coluna **Atual** das listagens indica qual versão está vigente. Na lateral **Status do atendimento** do aluno aparece o aviso "O PAEE está com a revisão vencida desde..." quando a data da próxima revisão já passou.
+A coluna **Atual** das listagens indica qual versão está vigente. Abaixo dos cards de **Status do atendimento** do aluno aparece o aviso "O PAEE está com a revisão vencida desde..." quando a data da próxima revisão já passou.
 
 ## Dúvidas comuns
 

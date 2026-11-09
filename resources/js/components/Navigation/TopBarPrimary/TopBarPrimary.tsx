@@ -99,7 +99,7 @@ export default function TopBarPrimary({
         setProfileOpen(false);
     }
 
-    function toggleProfile(event: React.MouseEvent<HTMLAnchorElement>): void {
+    function toggleProfile(event: React.MouseEvent<HTMLButtonElement>): void {
         event.preventDefault();
         setProfileOpen((open: boolean) => !open);
         setNotificationsOpen(false);
@@ -225,6 +225,7 @@ export default function TopBarPrimary({
                                 ref={profileRef}
                                 isOpen={profileOpen}
                                 onToggle={toggleProfile}
+                                onClose={() => setProfileOpen(false)}
                                 preventNavigation={preventNavigation}
                             />
                         </ul>

@@ -27,6 +27,8 @@ interface TabsProps {
     onChange?: (id: string) => void;
     /** Permite arrastar horizontalmente a faixa de abas e mostra controles nas bordas. */
     dragToScroll?: boolean;
+    /** Distribui as abas em novas linhas, sem rolagem horizontal. */
+    wrap?: boolean;
     /** Valor de `data-tour` da faixa de abas, para o tutorial ao vivo destacá-la. */
     tourTarget?: string;
 }
@@ -37,6 +39,7 @@ export default function Tabs({
     variant = 'standard',
     onChange,
     dragToScroll = true,
+    wrap = false,
     tourTarget,
 }: TabsProps): React.JSX.Element {
     const [activeId, setActiveId] = useState<string>(initialActiveId ?? items[0]?.id ?? '');
@@ -148,6 +151,7 @@ export default function Tabs({
             role="tablist"
             animated={variant === 'standard' || variant === 'material'}
             dragToScroll={dragToScroll}
+            wrap={wrap}
             tourTarget={tourTarget}
         >
             {navigationItems}

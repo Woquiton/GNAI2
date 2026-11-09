@@ -1,6 +1,6 @@
 ---
 titulo: Minha conta e perfil
-resumo: Como abrir o seu perfil, atualizar seus dados pessoais, trocar ou remover a foto e alterar a sua senha.
+resumo: Como atualizar seu perfil, foto e senha e escolher a paleta de cor da sua conta.
 categoria: Primeiros passos
 palavras-chave: perfil, meu perfil, minha conta, conta, dados pessoais, editar perfil, alterar dados, atualizar cadastro, nome, e-mail, cpf, telefone, matrícula, endereço, data de nascimento, gênero, foto, foto de perfil, avatar, trocar foto, remover foto, câmera, webcam, senha, trocar senha, alterar senha, mudar senha, nova senha, senha atual, segurança, tutorial, tour
 ordem: 3
@@ -18,6 +18,19 @@ A tela **Meu Perfil** tem um tutorial na própria tela. Clique no botão com o �
 2. Clique em **Perfil**.
 
 A tela **Meu Perfil** mostra, à esquerda, a sua foto, o seu nome, o cargo e o vínculo (por exemplo, **Profissional Apoio** ou **Corpo Docente**).
+
+## Escolher minha paleta de cor
+
+1. Clique na sua foto, no canto superior direito.
+2. Abaixo de **Perfil**, clique em **Paleta de cor**.
+3. Escolha **Lilás** ou **Roxo escuro**. A barra do topo, a seleção do menu lateral e as ações que usam a cor primária mudam durante a prévia.
+4. Confira o aviso de contraste da opção selecionada e clique em **Salvar**.
+
+O lilás é o padrão. Com texto branco, ele tem contraste de 4,32:1, abaixo dos 4,5:1 exigidos pela WCAG AA para textos de tamanho normal. O roxo escuro oferece contraste maior (12,08:1). O aviso avalia essa combinação de cores, não a acessibilidade de toda a tela.
+
+A escolha fica salva somente na sua conta e é carregada ao entrar novamente. As demais cores do sistema permanecem iguais. **Cancelar** ou fechar o modal desfaz a prévia. Se houver falha ao salvar, você pode tentar novamente; fechar sem salvar mantém a preferência anterior. Durante o acesso como outro usuário, essa opção não fica disponível.
+
+Se **Alto contraste** estiver ativo, ele tem prioridade sobre a paleta e a prévia. Sua escolha continua salva e aparece ao desativar **Alto contraste** no botão de acessibilidade da barra superior. Os avisos de contraste de Lilás e Roxo escuro consideram as cores com alto contraste desativado.
 
 ## Atualizar meus dados pessoais
 

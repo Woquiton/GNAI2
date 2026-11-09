@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\UI\Controllers\Auth\ColorPaletteController;
 use App\Domains\UI\Controllers\Auth\ForgotPasswordController;
 use App\Domains\UI\Controllers\Auth\ImpersonationController;
 use App\Domains\UI\Controllers\Auth\LoginController;
@@ -50,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/perfil', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/perfil/conta', [ProfileController::class, 'updateAccount'])->name('profile.account.update');
+    Route::put('/preferencias/paleta-de-cor', [ColorPaletteController::class, 'update'])
+        ->name('preferences.color-palette.update');
     Route::put('/preferencias/tabelas/colunas', [TablePreferenceController::class, 'updateColumns'])
         ->name('preferences.tables.columns.update');
     Route::put('/preferencias/tabelas/visualizacao', [TablePreferenceController::class, 'updateView'])

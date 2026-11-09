@@ -11,6 +11,9 @@
     position: relative;
     min-width: 0;
 }
+.tabs__navViewport--wrap {
+    overflow: visible;
+}
 .tabs__navViewport--draggable {
     cursor: grab;
     scrollbar-width: none;
@@ -125,8 +128,9 @@
     opacity: 0;
     transition:
         right 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-        left 0.38s cubic-bezier(0.4, 0, 0.2, 1) 0.06s;
-    will-change: left, right;
+        left 0.38s cubic-bezier(0.4, 0, 0.2, 1) 0.06s,
+        top 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: left, right, top;
 }
 .tabs__indicator--ready {
     opacity: 1;
@@ -537,6 +541,41 @@
 .tabs--standard .tabs__content:focus-visible {
     outline: 2px solid var(--ui-color-gnai-primary);
     outline-offset: 3px;
+}
+
+.tabs .tabs__nav--wrap {
+    position: relative;
+    flex-wrap: wrap;
+    width: 100%;
+    min-width: 0;
+    border-bottom: 0;
+}
+
+.tabs__rowLine {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 2px;
+    background: var(--ui-color-card-border);
+    pointer-events: none;
+}
+
+.tabs__nav--wrap .tabs__indicator {
+    z-index: 1;
+}
+
+.tabs .tabs__nav--wrap > li {
+    max-width: 100%;
+}
+
+.tabs .tabs__nav--wrap .tabs__button {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.tabs__nav--wrap .tabs__label {
+    min-width: 0;
 }
 
 @keyframes tabsPanelIn {

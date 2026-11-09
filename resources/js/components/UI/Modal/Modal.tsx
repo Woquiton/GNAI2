@@ -51,6 +51,7 @@ interface ModalProps {
     bodyClassName?: string;
     bootstrap?: boolean;
     closeOnBackdrop?: boolean;
+    closeDisabled?: boolean;
     /** Seletor do controle que recebe o foco ao abrir; por padrão, o primeiro focável. */
     initialFocus?: string;
 }
@@ -70,6 +71,7 @@ export default function Modal({
     bodyClassName,
     bootstrap = false,
     closeOnBackdrop = true,
+    closeDisabled = false,
     initialFocus,
 }: ModalProps): React.JSX.Element | null {
     const titleId = useId();
@@ -189,7 +191,7 @@ export default function Modal({
     }, []);
 
     const requestClose = (): void => {
-        if (isClosing || closingRef.current) return;
+        if (closeDisabled || isClosing || closingRef.current) return;
         clearTimers();
         closingRef.current = true;
         setIsClosing(true);
@@ -239,7 +241,7 @@ export default function Modal({
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isMounted, isClosing]);
+    }, [isMounted, isClosing, closeDisabled]);
 
     useLayoutEffect(() => {
         if (
@@ -417,6 +419,7 @@ export default function Modal({
                                     type="button"
                                     className="modalLayer__close"
                                     aria-label="Fechar"
+                                    disabled={closeDisabled}
                                     onClick={requestClose}
                                 >
                                     ×

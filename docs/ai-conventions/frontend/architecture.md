@@ -79,6 +79,8 @@ Abas que navegam entre URLs usam `Navigation/PageTabs`. Quando representam visua
 
 `Tabs` horizontal e `PageTabs` compartilham `Navigation/Tabs/TabNavigation`: altura mínima de 46 px, texto de 14 px, padding de 10 × 18 px (10 × 14 px no celular), linha na largura disponível e indicador elástico limitado à aba selecionada. Abas ocupam a largura do próprio conteúdo. Quando excedem a faixa, o componente habilita arraste com `grab`/`grabbing`, toque e controles de borda; arrastar não ativa uma aba. Use esse padrão também por `RecordTabs`, sem duplicar medidas ou animações no domínio.
 
+`Tabs` aceita `wrap` para telas que precisam manter todas as abas visíveis em múltiplas linhas. Nesse modo, `TabNavigation` mantém o indicador elástico na largura e na linha da aba selecionada, sem arraste nem controles de rolagem e com os mesmos controles de teclado. Cada fileira tem uma linha cinza na largura disponível; o indicador roxo usa a mesma posição para cobri-la sob a aba ativa. O indicador acompanha as mudanças de linha e de tamanho da interface; movimento reduzido desativa as transições. O prontuário do aluno usa essa opção; o padrão das demais telas permanece com a faixa horizontal.
+
 ### Contrato dos campos
 
 Todos os campos compostos recebem `id`, `label`, `error`, `required`, `hint`/`hintLabel` e `fieldClassName`. O campo liga sozinho `aria-describedby` à dica e ao erro e marca o controle como inválido. `onChange` sempre entrega o valor (`string`, `string[]`, `number[]`), nunca o evento. Para composições que os campos não cobrem, use `FormField` com o controle isolado e `fieldDescribedBy` de `Forms/FormField/fieldDescription.ts`. `TextInput`, `TextArea` e `SelectField` aceitam `invalid`.

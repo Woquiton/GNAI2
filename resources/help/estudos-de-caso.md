@@ -26,7 +26,7 @@ A listagem geral não tem botão de cadastro: o Estudo de Caso é sempre criado 
 ## Criar um Estudo de Caso
 
 1. Abra o aluno em **Atendimento → Alunos** e acesse a aba **Estudos de Caso**.
-2. Clique em **Cadastrar**. Outra opção é o botão **Iniciar** da etapa **Estudo de Caso** na lateral **Status do atendimento**.
+2. Clique em **Cadastrar**. Outra opção é o botão **Iniciar** do card **Estudo de Caso** em **Status do atendimento**, acima das abas.
 3. Preencha as seções do formulário (campos na tabela abaixo).
 4. Em **Barreiras Identificadas** e **Estratégias Propostas**, use os botões **Barreira** e **Estratégia** para adicionar quantos itens forem necessários.
 5. Clique em **Salvar**. O sistema mostra "Estudo de Caso criado com sucesso." e abre a visualização.

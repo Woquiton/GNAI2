@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Http\Middleware;
 
+use App\Domains\Application\Queries\Auth\Preferences\ColorPaletteQuery;
 use App\Domains\Application\Queries\Auth\Preferences\TablePreferencesQuery;
 use App\Domains\Application\Queries\Auth\Sessions\GetSessionSecurityStateQuery;
+use App\Domains\Domain\Enums\Auth\PrimaryColorPalette;
 use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Infrastructure\Session\Auth\ImpersonationSession;
 use App\Domains\UI\Presenters\Auth\SessionSecurityPresenter;
@@ -49,6 +51,9 @@ final class HandleInertiaRequests extends Middleware
             'impersonating' => fn () => $request->session()->has('impersonator_id'),
             'impersonationReadOnly' => fn () => app(ImpersonationSession::class)->readOnly(),
             'tablePreferences' => fn () => $this->tablePreferences($request),
+            'colorPalette' => Inertia::always(fn () => $request->user() instanceof User
+                ? app(ColorPaletteQuery::class)->execute($request->user())->value
+                : PrimaryColorPalette::Lilac->value),
             'flash' => fn () => [
                 'response_id' => (string) Str::uuid(),
                 'success' => $request->session()->get('success'),

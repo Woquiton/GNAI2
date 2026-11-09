@@ -92,7 +92,7 @@ A alteração da situação é manual. A solicitação não entra em fila de esp
 
 Na listagem, filtre por **Buscar**, **Situação** ou **Aluno**. A busca localiza nome do aluno, nome do solicitante ou número do protocolo. O seletor de colunas permite mostrar matrícula, vínculo do solicitante, responsável pelo registro e última atualização.
 
-A aba **Solicitações**, ao final do prontuário, reúne todos os registros daquele aluno e oferece filtros por protocolo, solicitante e situação. Os fluxos abertos por ela preservam o retorno à aba. Na lateral **Status do atendimento**, **Solicitação de atendimento** informa apenas **Registrada** ou **Não registrada**, sem usar o andamento da solicitação e sem criar uma pendência obrigatória.
+A aba **Solicitações**, ao final do prontuário, reúne todos os registros daquele aluno e oferece filtros por protocolo, solicitante e situação. Os fluxos abertos por ela preservam o retorno à aba.
 
 Use **PDF** na visualização para abrir o documento em uma nova aba. Ele inclui os dados da solicitação, a análise, os encaminhamentos e os nomes dos anexos, com o cabeçalho institucional definido em **Sistema → Configurações → PDFs**. Os arquivos anexos devem ser baixados separadamente.
 

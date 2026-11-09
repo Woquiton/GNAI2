@@ -405,6 +405,15 @@
     font-size: 14px;
 }
 
+button.topbarDropdown__profileLink {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
 .text-custom {
     color: var(--ui-color-custom);
 }

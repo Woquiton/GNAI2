@@ -1,0 +1,54 @@
+.colorPalette {
+    display: grid;
+    gap: var(--ui-space-4);
+    color: var(--ui-color-text);
+}
+
+.colorPalette p {
+    margin: 0;
+}
+
+.colorPalette__options {
+    display: grid;
+    gap: var(--ui-space-4);
+    min-width: 0;
+    padding: 0;
+    border: 0;
+}
+
+.colorPalette__options legend {
+    margin-bottom: var(--ui-space-3);
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-lg);
+    font-weight: 600;
+}
+
+.colorPalette__option {
+    padding: var(--ui-space-3);
+    border: 1px solid var(--ui-color-border-control);
+    border-radius: var(--ui-radius-md);
+}
+
+.colorPalette__option:has(input:checked) {
+    border-color: var(--ui-color-primary);
+}
+
+.colorPalette__sample {
+    padding: var(--ui-space-3);
+    margin-top: var(--ui-space-2);
+    border-radius: var(--ui-radius-sm);
+    color: var(--ui-color-text-inverse);
+    overflow-wrap: anywhere;
+}
+
+.colorPalette__option--lilac .colorPalette__sample {
+    background: #6c63ff;
+}
+
+.colorPalette__option--purple .colorPalette__sample {
+    background: #322b75;
+}
+
+.colorPalette .inlineAlert--warning {
+    color: var(--color-warning-text);
+}

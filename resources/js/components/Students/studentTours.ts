@@ -1,11 +1,9 @@
 import { helpUrls } from '@/components/Help/Help.routes';
 import type { TableListTourConfig } from '@/components/Tables/TableList/TableList';
 import type {
-    GuidedTourDemo,
     GuidedTourPageConfig,
     GuidedTourStep,
 } from '@/components/UI/GuidedTour/GuidedTour.types';
-import { openDisclosureDemo } from '@/components/UI/GuidedTour/guidedTourDemos';
 
 /** Valores de `data-tour` das partes do cadastro e do prontuário do aluno. */
 export const STUDENT_TOUR_TARGETS = {
@@ -15,14 +13,11 @@ export const STUDENT_TOUR_TARGETS = {
     formActions: 'student-form-actions',
     summary: 'student-summary',
     tabs: 'student-tabs',
-    statusSidebar: 'student-status-sidebar',
+    statusPanel: 'student-status-panel',
     recordActions: 'student-record-actions',
 } as const;
 
 const targets = STUDENT_TOUR_TARGETS;
-
-/** Abaixo desta largura a lateral de status abre sobre o conteúdo e prende o foco. */
-const STATUS_SIDEBAR_OVERLAY_QUERY = '(max-width: 1279px)';
 
 export const studentListTour: TableListTourConfig = {
     helpHref: helpUrls.show('alunos', 'encontrar-um-aluno-na-listagem'),
@@ -101,18 +96,6 @@ export const studentEditTour: GuidedTourPageConfig = {
     steps: studentFormSteps('edit'),
 };
 
-/** Abre a lateral recolhida para mostrar as etapas; em telas menores ela vira diálogo e fica fechada. */
-function statusSidebarDemo(sidebar: HTMLElement | null): GuidedTourDemo {
-    if (!sidebar || window.matchMedia(STATUS_SIDEBAR_OVERLAY_QUERY).matches) {
-        return {};
-    }
-
-    return openDisclosureDemo(sidebar.querySelector('.studentStatusSidebar__railButton'), {
-        closeButton: () => sidebar.querySelector('.studentStatusSidebar__header button'),
-        note: 'Abrimos a lateral para você ver. Ela fecha de novo no próximo passo.',
-    });
-}
-
 export const studentRecordTour: GuidedTourPageConfig = {
     helpHref: helpUrls.show('alunos', 'consultar-o-prontuario-do-aluno'),
     steps: [
@@ -124,23 +107,22 @@ export const studentRecordTour: GuidedTourPageConfig = {
                 'Aqui ficam a foto, o nome e os dados principais do aluno, como matrícula, situação e tipo de acompanhamento.',
         },
         {
+            id: 'student-status-panel',
+            target: targets.statusPanel,
+            title: 'Status do atendimento',
+            content: [
+                'Estes quatro cards mostram a situação do Laudo, do Estudo de Caso, do PAEE e do PEI.',
+                'Use Ver, Continuar ou Iniciar conforme a etapa. Os botões aparecem quando os pré-requisitos e suas permissões permitem. Os avisos do PAEE ficam abaixo dos cards.',
+            ],
+        },
+        {
             id: 'student-tabs',
             target: targets.tabs,
             title: 'Abas do prontuário',
             content: [
                 'Cada aba mostra uma parte do acompanhamento do aluno, como dados pessoais, cursos, responsáveis, planos, documentos e atendimentos.',
-                'Clique em uma aba para abrir. Se as abas não couberem, arraste a faixa para os lados. Você vê só as abas que tem permissão para abrir.',
+                'Clique em uma aba para abrir. Quando não couberem na largura da tela, as abas continuam na linha de baixo. Você vê só as abas que tem permissão para abrir.',
             ],
-        },
-        {
-            id: 'student-status-sidebar',
-            target: targets.statusSidebar,
-            title: 'Status do atendimento',
-            content: [
-                'Esta lateral mostra as etapas do atendimento do aluno: o que já foi feito e o que ainda falta.',
-                'Clique na seta para abrir ou fechar. Cada etapa tem um botão para ver, começar ou continuar.',
-            ],
-            onEnter: statusSidebarDemo,
         },
         {
             id: 'student-record-actions',

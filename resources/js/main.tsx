@@ -1,4 +1,4 @@
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import type { ComponentType, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppLayout from '@/components/Navigation/AppLayout/AppLayout';
@@ -8,6 +8,7 @@ import {
     readAccessibilityPreferences,
     installFocusModality,
 } from '@/utils/accessibilityPreferences';
+import { applyColorPalette } from '@/utils/colorPalette';
 import '@styles/reset.css';
 import '@styles/tokens.css';
 import '@styles/globals.css';
@@ -58,6 +59,31 @@ void createInertiaApp({
         return page;
     },
     setup({ el, App, props }) {
+        type PaletteProps = typeof props.initialPage.props;
+        const palettes = new Map<number, unknown>();
+        function userId(pageProps: PaletteProps): number | undefined {
+            return (pageProps.auth as { user?: { id: number } | null } | undefined)?.user?.id;
+        }
+        function rememberPalette(pageProps: PaletteProps): void {
+            const id = userId(pageProps);
+            if (id !== undefined) palettes.set(id, pageProps.colorPalette);
+            applyColorPalette(pageProps.colorPalette);
+        }
+
+        rememberPalette(props.initialPage.props);
+        router.on('navigate', (event) => {
+            const pageProps = event.detail.page.props;
+            const id = userId(pageProps);
+            // Voltar no navegador não deve restaurar a paleta antiga de uma página em cache.
+            applyColorPalette(
+                id !== undefined && palettes.has(id)
+                    ? palettes.get(id)
+                    : pageProps.colorPalette,
+            );
+        });
+        router.on('success', (event) => {
+            rememberPalette(event.detail.page.props);
+        });
         createRoot(el).render(
             <>
                 <AppLoader />

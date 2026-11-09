@@ -281,11 +281,20 @@ final class StudentController
     public function pdf(
         Student $student,
         StudentPdfQuery $query,
+        StudentAeeEvaluationsQuery $aeeEvaluationsQuery,
+        StudentPedagogicalRecordsQuery $pedagogicalRecordsQuery,
+        Request $request,
     ): Response {
-        // Os atendimentos AEE e pedagógicos têm PDFs de histórico próprios e não entram na ficha.
         $student = $query->execute($student);
 
-        $pdf = Pdf::loadView('pages.students.pdf', compact('student'));
+        $user = $request->user();
+        $aeeEvaluations = $user instanceof User ? $aeeEvaluationsQuery->history($student, $user)->reverse()->values() : collect();
+        $pedagogicalRecords = $user instanceof User ? $pedagogicalRecordsQuery->history($student, $user)->reverse()->values() : collect();
+
+        $pdf = Pdf::loadView(
+            'pages.students.pdf',
+            compact('student', 'aeeEvaluations', 'pedagogicalRecords'),
+        );
 
         PdfPageNumberer::apply($pdf);
 

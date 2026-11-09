@@ -502,5 +502,69 @@
         <p class="pdf-empty">Nenhum PEI atual encontrado para este aluno.</p>
     @endforelse
 
+    {{-- ================= ATENDIMENTOS DO ALUNO (MAIS RECENTES PRIMEIRO) ================= --}}
+    <div class="category-header">Atendimentos do Aluno</div>
+
+    <x-pdf.section-title title="Atendimentos Especializados (AEE)" />
+    @if($aeeEvaluations->isNotEmpty())
+        <table class="pdf-table pdf-data-table">
+            <tr>
+                <th class="pdf-cell pdf-w-16">Data</th>
+                <th class="pdf-cell pdf-w-24">Profissional</th>
+                <th class="pdf-cell pdf-w-12">Presença</th>
+                <th class="pdf-cell">Participação/Desenvolvimento</th>
+            </tr>
+            @foreach($aeeEvaluations as $evaluation)
+                @php $session = $evaluation->aeeRecord?->attendanceSession; @endphp
+                <tr>
+                    <td class="pdf-cell">{{ $date($session?->session_date) }}</td>
+                    <td class="pdf-cell">{{ $plain($session?->professional?->person?->name) }}</td>
+                    <td class="pdf-cell">{{ $yesNo($evaluation->is_present) }}</td>
+                    <td class="pdf-cell">
+                        @if($evaluation->is_present)
+                            {!! $rich($evaluation->student_participation) !!}
+                            @if(filled($evaluation->development_evaluation))
+                                <div class="break-word">{!! $rich($evaluation->development_evaluation) !!}</div>
+                            @endif
+                        @else
+                            Falta: {!! $rich($evaluation->absence_reason) !!}
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+    @else
+        <p class="pdf-empty">Nenhum atendimento especializado registrado para este aluno.</p>
+    @endif
+
+    <x-pdf.section-title title="Atendimentos Pedagógicos" />
+    @if($pedagogicalRecords->isNotEmpty())
+        <table class="pdf-table pdf-data-table">
+            <tr>
+                <th class="pdf-cell pdf-w-16">Data</th>
+                <th class="pdf-cell pdf-w-24">Profissional</th>
+                <th class="pdf-cell pdf-w-12">Presença</th>
+                <th class="pdf-cell">Acompanhamento</th>
+            </tr>
+            @foreach($pedagogicalRecords as $record)
+                @php $session = $record->attendanceSession; @endphp
+                <tr>
+                    <td class="pdf-cell">{{ $date($session?->session_date) }}</td>
+                    <td class="pdf-cell">{{ $plain($session?->professional?->person?->name) }}</td>
+                    <td class="pdf-cell">{{ $yesNo($record->is_present) }}</td>
+                    <td class="pdf-cell">
+                        @if($record->is_present)
+                            {!! $rich($record->systematic_pedagogical_follow_up_record) !!}
+                        @else
+                            Falta: {!! $rich($record->absence_reason) !!}
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+    @else
+        <p class="pdf-empty">Nenhum atendimento pedagógico registrado para este aluno.</p>
+    @endif
+
 </body>
 </html>

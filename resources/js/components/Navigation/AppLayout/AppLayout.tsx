@@ -1,5 +1,7 @@
 import SessionActivity from '@/components/Auth/Session/SessionActivity';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
+import ColorPaletteModal from '@/components/Navigation/ColorPalette/ColorPaletteModal';
+import { currentColorPalette, type ColorPalette } from '@/utils/colorPalette';
 import { usePage } from '@inertiajs/react';
 import RenderErrorScreen from '@/components/Errors/RenderErrorScreen';
 import AppFooter from '@/components/Navigation/AppFooter/AppFooter';
@@ -26,6 +28,7 @@ const FOOTER_ID = 'rodape';
 export default function AppLayout({ children }: { children: ReactNode }): React.JSX.Element {
     const { props, url } = usePage<AppLayoutProps>();
     const sidebar = useAppSidebar(url);
+    const [paletteToEdit, setPaletteToEdit] = useState<ColorPalette | null>(null);
     const { auth, navigation, topbar, impersonating, impersonationReadOnly } = props;
 
     if (!auth.user) {
@@ -45,6 +48,15 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
               ]
             : []),
         { label: 'Perfil', iconClass: 'ti-user', href: '/autenticacao/perfil' },
+        ...(!impersonating
+            ? [
+                  {
+                      label: 'Paleta de cor',
+                      iconClass: 'ti-palette',
+                      onSelect: () => setPaletteToEdit(currentColorPalette()),
+                  },
+              ]
+            : []),
         ...(impersonating
             ? [
                   {
@@ -80,6 +92,12 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
     return (
         <PageErrorBoundary resetKey={url} fallback={<RenderErrorScreen homeHref={HOME_HREF} />}>
             <SessionActivity />
+            {paletteToEdit ? (
+                <ColorPaletteModal
+                    palette={paletteToEdit}
+                    onClose={() => setPaletteToEdit(null)}
+                />
+            ) : null}
             <SkipLinks items={skipLinks} />
             {/* O tutorial envolve a barra do topo (botão) e o conteúdo (tutorial de cada tela). */}
             <GuidedTourProvider>

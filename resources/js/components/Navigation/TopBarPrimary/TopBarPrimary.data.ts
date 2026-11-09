@@ -7,6 +7,7 @@ export interface NotificationItem {
 
 export interface ProfileLink {
     href?: string;
+    onSelect?: () => void;
     method?: 'get' | 'post';
     iconClass: string;
     label: string;

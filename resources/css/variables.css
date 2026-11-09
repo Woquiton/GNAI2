@@ -6,6 +6,17 @@
    1. CORES PRIMÁRIAS
    ───────────────────────────────────────────── */
 :root {
+    --primary-color:          #6c63ff;
+    --primary-color-medium:   #8b7fd6;
+    --primary-color-light:    #ede9fe;
+    --primary-color-dark:     #564fcc;
+
+    --color-primary:          #6c63ff;
+    --color-primary-hover:    #564fcc;
+    --color-primary-rgb:      108, 99, 255;
+}
+
+:root[data-primary-palette='purple'] {
     --primary-color:          #322b75;
     --primary-color-medium:   #6c63ff;
     --primary-color-light:    #8a7fd4;
