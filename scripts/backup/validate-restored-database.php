@@ -114,6 +114,21 @@ foreach (['people' => ['photo', 'public'], 'student_documents' => ['file_path', 
     }
 }
 
+foreach ($manifest['website_snapshot']['media_sha256'] ?? [] as $archivePath => $expectedHash) {
+    $prefix = 'var/www/storage/app/public/';
+    if (! str_starts_with($archivePath, $prefix) || str_contains($archivePath, '..')) {
+        $failures[] = 'Invalid website media path in the manifest.';
+
+        continue;
+    }
+
+    $path = substr($archivePath, strlen($prefix));
+    if (! Storage::disk('public')->exists($path)
+        || ! hash_equals($expectedHash, hash('sha256', Storage::disk('public')->get($path)))) {
+        $failures[] = 'Missing or changed website media: '.$path;
+    }
+}
+
 foreach ([
     User::class,
     Person::class,

@@ -36,6 +36,7 @@
     flex-direction: column;
     height: 450px;
     position: relative;
+    border: 1px solid var(--ui-color-card-border);
     border-radius: var(--ui-radius-sm);
     background: var(--ui-color-surface);
     box-shadow: var(--ui-shadow-card);

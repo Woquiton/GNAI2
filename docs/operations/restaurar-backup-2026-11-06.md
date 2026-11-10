@@ -9,11 +9,14 @@ nenhum servidor de produção foi acessado.
 ## Origem e destino
 
 - SHA-256 do ZIP original: `db926874473c975fefc4a66dbbc0e55f5752e466a887ec27db12199b3abae405`.
-- SHA-256 do ZIP convertido: `c07c7b3815cea9dc633ba13aea8d74c76368ee1dd4d60bb8eae2ca0bdb26300f`.
+- SHA-256 do ZIP convertido com o site NAPNE: `14f613af444113b6e95dd9a295fb13ff7f671808745e744defacba96ed0a1cc4`.
 - Histórico usado para converter os dados: commit `0af6f380a3557908a54669c601f99645551de545`.
-- Estrutura de destino: commit `11198d3b`, com 80 migrations, uma por tabela.
-- O ZIP convertido contém o SQL completo, `restore/manifest.json` e os 133 arquivos
-  de storage do ZIP original. O manifesto inclui contagens, hashes dos registros
+- Estrutura de base: commit `11198d3b`, com 80 migrations, uma por tabela. O ZIP
+  atualizado inclui também as migrations de lembretes do PEI e altura da logo,
+  totalizando 82 migrations marcadas como aplicadas. Use o código `d5d0c647` ou posterior.
+- O ZIP convertido contém o SQL completo, `restore/manifest.json`, os 133 arquivos
+  de storage do ZIP original e as duas imagens atuais do site, totalizando 135
+  arquivos de storage. O manifesto inclui contagens, hashes dos registros
   por tabela e o de/para. Não contém nomes de pessoas ou valores dos registros.
 
 ## De/para aplicado
@@ -22,7 +25,7 @@ As migrations históricas pendentes foram executadas em um banco temporário,
 sem conectar ao banco de produção. Depois, as tabelas atuais foram recriadas pelas
 80 migrations e receberam somente as colunas de destino, preservando os IDs.
 O histórico antigo de migrations não foi copiado: o SQL convertido já contém as
-80 migrations atuais marcadas como aplicadas.
+80 migrations da base marcadas como aplicadas, mais as duas incrementais citadas acima.
 
 | Origem | Destino e regra |
 | --- | --- |
@@ -41,7 +44,7 @@ O histórico antigo de migrations não foi copiado: o SQL convertido já contém
 | `student_contexts` | **3 registros de teste descartados por instrução do usuário**; não foram criados Estudos de Caso nem PAEEs |
 | `peis` | **1 PEI de teste descartado por instrução do usuário**, junto de seus dependentes; não havia adaptações por disciplina |
 | `teacher_courses`, `discipline_teacher` | Tabelas antigas vazias não integram o esquema final |
-| Tabelas novas | Criadas vazias, exceto as sete etiquetas iniciais e o catálogo de permissões |
+| Tabelas novas | Criadas vazias, exceto as sete etiquetas iniciais, o catálogo de permissões e a configuração local do site NAPNE acrescentada em 10/11 |
 
 O catálogo ficou com 208 permissões: contempla o catálogo atual e mantém entradas
 históricas remanescentes. Os vínculos com cargos passaram de 479 para 453 pela
@@ -49,7 +52,31 @@ unificação de permissões equivalentes; não foi executado `permissions:sync -
 Foram preservadas 12 contas, incluindo os três administradores e o administrador
 superior identificado pela regra histórica. Nenhuma senha foi redefinida.
 
-## Validação local realizada
+## Configuração do site incluída em 10/11/2026
+
+O SQL do ZIP atualizado contém a configuração atual de `website_settings`: nome
+vazio para usar a logo, slogan, altura da logo, identidade, cores e aparências das
+seções, contatos, redes sociais e conteúdo do construtor. A logo e a foto de fundo
+do banner estão nos caminhos de storage referenciados pelo próprio registro.
+Os cards de dúvidas frequentes mantêm o espaçamento compacto de 12 px.
+
+A estrutura de `website_settings` inclui `logo_height`. A de `pei_disciplines`
+inclui o controle de lembretes; seus dados de origem continuam vazios. As outras
+78 tabelas do dump foram preservadas byte a byte. Não foi feito um novo dump
+geral do banco local: registros locais de navegação ou de teste não foram incluídos.
+
+O manifesto atualiza os hashes de `website_settings`, `migrations` e do SQL, e
+acrescenta os hashes das duas imagens em `website_snapshot.media_sha256`.
+Foram conferidos o CRC de todas as entradas do ZIP, os hashes do SQL e das imagens,
+e a preservação dos arquivos originais. Esta inclusão não repetiu a restauração
+completa anteriormente realizada e não alterou o banco local.
+
+A versão convertida anterior foi preservada na raiz como
+`2026-11-06-12-05-02-atualizado-sem-site.zip`, com SHA-256
+`c07c7b3815cea9dc633ba13aea8d74c76368ee1dd4d60bb8eae2ca0bdb26300f`.
+O ZIP original de produção permanece sem alterações.
+
+## Validação local da conversão original
 
 - Restauração do próprio ZIP convertido no MySQL local, após recriação do esquema.
 - Comparação do esquema: 80 tabelas de aplicação, 752 colunas, 250 índices e 128
@@ -90,11 +117,15 @@ docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php s
 ```
 
 Continue somente se o validador terminar com sucesso. O SQL contém a estrutura
-do snapshot `11198d3b` e seu histórico correto; **não execute `migrate:fresh` depois
+da base `11198d3b`, as incrementais de lembretes do PEI e altura da logo e o
+histórico correspondente; **não execute `migrate:fresh` depois
 da importação**. O modo `--allow-pending-migrations` aceita migrations novas no
 código, mas continua exigindo os mesmos registros e hashes do backup, inclusive
-seu histórico de migrations. Execute as migrations incrementais depois da
-validação, incluindo o controle de lembretes das adaptações do PEI. Não repita a
+seu histórico de migrations. Ele também confere as imagens do site pelos hashes
+do manifesto. Execute as migrations ainda pendentes depois da validação: neste
+snapshot, `2026_11_10_000120_add_custom_type_to_student_documents_table` e
+`2026_11_10_000121_add_teacher_portal_visibility_to_student_documents_table`.
+Não repita a
 comparação com o manifesto antigo após modificar o banco. Então libere o ambiente:
 
 ```bash
@@ -106,7 +137,8 @@ docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php a
 ```
 
 A homologação manual deve conferir login com uma conta existente, prontuário,
-empréstimos, perfis dos itens e abertura de fotos, documentos e evidências.
+empréstimos, perfis dos itens, abertura de fotos, documentos e evidências, além do
+site em `/site`, com a logo, a foto de fundo, as cores e os contatos do NAPNE.
 
 ## Contagens por tabela de origem
 
@@ -145,7 +177,7 @@ validação exata dos registros convertidos.
 | `jobs` | 0 | `jobs` | 0 |
 | `loans` | 2 | `loans` | 2 |
 | `locations` | 1 | `locations` | 1 |
-| `migrations` | 62 | `migrations` | 80 |
+| `migrations` | 62 | `migrations` | 82 |
 | `notifications` | 0 | `notifications` | 0 |
 | `password_reset_tokens` | 4 | `password_reset_tokens` | 4 |
 | `pedagogical_record_guardians` | 1 | `pedagogical_record_guardians` | 1 |
