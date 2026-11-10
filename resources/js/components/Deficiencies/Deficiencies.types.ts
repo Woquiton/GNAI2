@@ -14,6 +14,8 @@ export interface DeficiencyPaginator extends TableListPage {
 }
 
 export type DeficiencyFilters = {
+    created_from: string;
+    created_to: string;
     name: string;
     cid_code: string;
     is_active: string;

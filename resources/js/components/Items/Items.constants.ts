@@ -8,6 +8,12 @@ export const itemTypeLabels: Record<ItemType, string> = {
 };
 
 export const emptyItemFilters: ItemFilters = {
+    asset_code: '',
+    deficiency_ids: '',
+    is_loanable: '',
+
+    created_from: '',
+    created_to: '',
     name: '',
     item_type: '',
     is_digital: '',

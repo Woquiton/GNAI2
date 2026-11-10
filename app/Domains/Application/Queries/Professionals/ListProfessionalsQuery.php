@@ -16,6 +16,17 @@ final class ListProfessionalsQuery
     public function execute(ListProfessionalsData $filters): LengthAwarePaginator
     {
         $query = Professional::query()
+            ->when(filled($filters->phone), fn ($query) => $query->whereHas(
+                'person',
+                fn ($related) => $related->where('phone', 'like', '%'.trim($filters->phone).'%'),
+            ))
+            ->when($filters->showOnWebsite !== null, fn ($query) => $query->where('show_on_website', $filters->showOnWebsite))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->select('professionals.*')
             ->join('people', 'people.id', '=', 'professionals.person_id')
             ->with(['person', 'position']);

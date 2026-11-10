@@ -20,11 +20,19 @@ final class ListProfessionalsData extends Data
         public ?int $position = null,
         public ?ProfessionalStatus $status = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
+        public ?string $phone = null,
+        public ?bool $showOnWebsite = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'phone' => ['nullable', 'string', 'max:255'],
+            'show_on_website' => ['nullable', 'boolean'],
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255'],
             'registration' => ['nullable', 'string', 'max:50'],

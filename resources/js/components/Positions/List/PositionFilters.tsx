@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { positionStatusOptions } from '../Positions.constants';
@@ -19,7 +20,14 @@ export default function PositionFilters({
     onSubmit,
 }: PositionFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar cargos" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+            }
+            label="Filtrar cargos"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="position-filter-name"
                 name="name"

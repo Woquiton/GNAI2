@@ -8,6 +8,7 @@ use App\Domains\Domain\Enums\Items\ItemType;
 use App\Domains\Domain\Enums\Items\ResourceStatus;
 use Illuminate\Validation\Rules\Enum;
 use Spatie\LaravelData\Attributes\MapInputName;
+use App\Domains\Application\Rules\Deficiencies\DeficiencyFilterIds;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
@@ -23,11 +24,21 @@ final class ListItemsData extends Data
         public ?bool $available = null,
         public ?int $accessibilityFeatureId = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
+        public ?string $assetCode = null,
+        public ?string $deficiencyIds = null,
+        public ?bool $isLoanable = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'asset_code' => ['nullable', 'string', 'max:255'],
+            'deficiency_ids' => ['nullable', new DeficiencyFilterIds],
+            'is_loanable' => ['nullable', 'boolean'],
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'item_type' => ['nullable', new Enum(ItemType::class)],
             'status' => ['nullable'],

@@ -9,6 +9,7 @@ use App\Domains\Domain\Enums\Students\StudentStatus;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\MapInputName;
+use App\Domains\Application\Rules\Deficiencies\DeficiencyFilterIds;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
@@ -22,9 +23,11 @@ final class ListStudentsData extends Data
         public ?string $registration = null,
         public ?StudentStatus $status = null,
         public ?int $courseId = null,
-        public ?int $deficiencyId = null,
+        public ?string $deficiencyId = null,
         public int $perPage = 10,
         public ?string $followUpType = null,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
     ) {}
 
     public static function prepareForPipeline(array $properties): array
@@ -46,6 +49,8 @@ final class ListStudentsData extends Data
     public static function rules(): array
     {
         return [
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:11'],
             'email' => ['nullable', 'string', 'max:255'],
@@ -64,15 +69,7 @@ final class ListStudentsData extends Data
                     Rule::exists('courses', 'id'),
                 ),
             ],
-            'deficiency_id' => [
-                'nullable',
-                'integer',
-                'min:0',
-                Rule::when(
-                    static fn (Fluent $input): bool => (int) ($input->deficiency_id ?? 0) > 0,
-                    Rule::exists('deficiencies', 'id'),
-                ),
-            ],
+            'deficiency_id' => ['nullable', new DeficiencyFilterIds(allowWithoutProfile: true)],
             'per_page' => ['integer', 'min:1', 'max:100'],
         ];
     }

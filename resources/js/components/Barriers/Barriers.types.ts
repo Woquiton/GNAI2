@@ -75,7 +75,18 @@ export interface BarrierPaginator extends TableListPage {
     data: BarrierRecord[];
 }
 
-export type BarrierFilters = { name: string; category: string; priority: string; status: string };
+export type BarrierFilters = {
+    institution_name: string;
+    location_name: string;
+    is_active: string;
+
+    created_from: string;
+    created_to: string;
+    name: string;
+    category: string;
+    priority: string;
+    status: string;
+};
 
 export interface BarrierListPermissions {
     create: boolean;

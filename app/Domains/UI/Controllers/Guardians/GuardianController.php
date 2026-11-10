@@ -40,6 +40,9 @@ final class GuardianController
             [
                 ...compact('student', 'guardians', 'relationships'),
                 'filters' => [
+                    'phone' => $filters->phone ?? '',
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'email' => $filters->email ?? '',
                     'relationship' => $filters->relationship?->value ?? '',

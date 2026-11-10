@@ -1,6 +1,11 @@
 import type { TeacherFilters } from './Teachers.types';
 
 export const emptyTeacherFilters: TeacherFilters = {
+    course_name: '',
+    discipline_name: '',
+
+    created_from: '',
+    created_to: '',
     name: '',
     email: '',
     registration: '',

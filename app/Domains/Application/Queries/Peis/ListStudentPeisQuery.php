@@ -19,6 +19,12 @@ final readonly class ListStudentPeisQuery
     public function execute(Student $student, ListPeisData $filters, ?User $user): LengthAwarePaginator
     {
         $query = Pei::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->where('student_id', $student->getKey())
             ->with(['student.person', 'semester', 'course']);
 

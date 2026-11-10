@@ -35,6 +35,8 @@ const listSteps = tableListTourSteps({
         'A lista se atualiza sozinha.',
     ],
     moreFilters: [
+        'Em Perfil de atendimento, marque os perfis desejados. A lista só pesquisa ao clicar fora do seletor. Pelo teclado, saia com Tab ou feche com Esc para aplicar.',
+        'Pesquise pelo Código patrimonial ou pelo Perfil de atendimento e escolha se o item Permite empréstimo.',
         'Aqui você filtra pelo Status, ativo ou inativo, e pela Disponibilidade, com ou sem unidades disponíveis.',
         'O número ao lado do nome mostra quantos desses filtros estão em uso.',
     ],

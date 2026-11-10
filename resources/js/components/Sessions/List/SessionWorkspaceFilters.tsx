@@ -41,6 +41,30 @@ export default function SessionWorkspaceFilters({
 
     return (
         <TableListFilters
+            moreFilters={
+                <>
+                    <SelectInputField
+                        id="session-filter-type"
+                        name="type"
+                        label="Tipo"
+                        placeholder="Todos os Tipos"
+                        value={values.type}
+                        options={options.types}
+                        error={errors.type}
+                        onChange={(value) => update('type', value)}
+                    />
+                    <SelectInputField
+                        id="session-filter-status"
+                        name="status"
+                        label="Status"
+                        placeholder="Todos os Status"
+                        value={values.status}
+                        options={options.statuses}
+                        error={errors.status}
+                        onChange={(value) => update('status', value)}
+                    />
+                </>
+            }
             label="Filtrar calendário e listagem de agendamentos"
             onSubmit={submit}
             onClear={clear}
@@ -75,26 +99,6 @@ export default function SessionWorkspaceFilters({
                     onChange={(value) => update('professional', value)}
                 />
             ) : null}
-            <SelectInputField
-                id="session-filter-type"
-                name="type"
-                label="Tipo"
-                placeholder="Todos os Tipos"
-                value={values.type}
-                options={options.types}
-                error={errors.type}
-                onChange={(value) => update('type', value)}
-            />
-            <SelectInputField
-                id="session-filter-status"
-                name="status"
-                label="Status"
-                placeholder="Todos os Status"
-                value={values.status}
-                options={options.statuses}
-                error={errors.status}
-                onChange={(value) => update('status', value)}
-            />
         </TableListFilters>
     );
 }

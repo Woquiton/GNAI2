@@ -167,3 +167,19 @@ Clique em **Excluir** na listagem ou na página de detalhes e confirme em **Conf
 - **"Não é possível alterar o status do item enquanto houver empréstimos ativos."** Registre as devoluções antes de mudar o status.
 - **"Não é possível excluir um item com empréstimos ativos."** Registre a devolução dos empréstimos em andamento.
 - **Por que o item não aparece para empréstimo?** Confira se está ativo, se permite empréstimos, se o status é Disponível ou Em uso, se o estado de conservação não é Ruim e se há unidades disponíveis. Quando não houver unidades, use a [Fila de Espera](/ajuda/fila-de-espera).
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+### Filtros de itens
+
+Em **Mais filtros**, pesquise pelo Código patrimonial ou pelo Perfil de atendimento e escolha se o item Permite empréstimo. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.
+
+## Filtrar por vários perfis de atendimento
+
+Em **Mais filtros**, abra **Perfil de atendimento** e marque os checkboxes dos perfis desejados. A lista permanece como está enquanto você marca as opções. Clique fora do seletor para aplicar a pesquisa. Pelo teclado, saia do seletor com Tab ou feche com Esc para aplicar.
+
+A pesquisa encontra registros com pelo menos um dos perfis marcados. Desmarque todos para consultar todos os perfis. A borracha também limpa essa seleção.

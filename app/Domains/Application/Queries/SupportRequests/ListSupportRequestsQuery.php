@@ -12,7 +12,13 @@ final class ListSupportRequestsQuery
 {
     public function execute(ListSupportRequestsData $filters): LengthAwarePaginator
     {
-        return SupportRequest::query()->with(['student.person', 'creator.professional.person', 'creator.teacher.person'])
+        return SupportRequest::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))->with(['student.person', 'creator.professional.person', 'creator.teacher.person'])
             ->when($filters->search, function ($query, string $search): void {
                 $query->where(function ($query) use ($search): void {
                     $query->where('requester_name', 'like', "%{$search}%")

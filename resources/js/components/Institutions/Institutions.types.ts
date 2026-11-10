@@ -19,6 +19,12 @@ export interface InstitutionPaginator extends TableListPage {
 }
 
 export type InstitutionFilters = {
+    short_name: string;
+    district: string;
+    has_barriers: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     location: string;
     is_active: string;

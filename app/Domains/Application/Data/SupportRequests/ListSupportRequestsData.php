@@ -18,11 +18,15 @@ final class ListSupportRequestsData extends Data
         public ?string $status = null,
         public ?int $studentId = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'search' => ['nullable', 'string', 'max:255'],
             'status' => ['nullable', Rule::enum(SupportRequestStatus::class)],
             'student_id' => ['nullable', 'integer', 'exists:students,id'],

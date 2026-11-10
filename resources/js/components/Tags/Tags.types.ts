@@ -18,6 +18,8 @@ export interface TagPaginator extends TableListPage {
 }
 
 export type TagFilters = {
+    created_from: string;
+    created_to: string;
     name: string;
     is_active: string;
     module: string;

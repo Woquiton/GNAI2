@@ -16,6 +16,12 @@ final class ListBarrierCategoriesQuery
     public function execute(ListBarrierCategoriesData $filters): LengthAwarePaginator
     {
         $query = BarrierCategory::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->withCount('barriers');
 
         if (filled($filters->name)) {

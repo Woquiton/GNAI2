@@ -67,7 +67,13 @@ export interface SupportRequestOptions {
     reasonTypes: SupportRequestOption[];
     reasonProfiles: SupportRequestOption[];
 }
-export type SupportRequestFilters = { search: string; status: string; student_id: string };
+export type SupportRequestFilters = {
+    created_from: string;
+    created_to: string;
+    search: string;
+    status: string;
+    student_id: string;
+};
 export interface SupportRequestPaginator extends TableListPage {
     data: SupportRequestSummary[];
 }

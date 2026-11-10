@@ -17,6 +17,20 @@ final class ListTeachersQuery
     public function execute(ListTeachersData $filters): LengthAwarePaginator
     {
         return Teacher::query()
+            ->when(filled($filters->courseName), fn ($query) => $query->whereHas(
+                'courseDisciplines.course',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->courseName).'%'),
+            ))
+            ->when(filled($filters->disciplineName), fn ($query) => $query->whereHas(
+                'disciplines',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->disciplineName).'%'),
+            ))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with('person')
             ->join('people', 'people.id', '=', 'teachers.person_id')
             ->select('teachers.*')

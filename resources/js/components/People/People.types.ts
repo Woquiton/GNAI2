@@ -78,9 +78,18 @@ export interface PersonListRow {
     roles: string[];
     tags: string[];
 }
+export type PersonFilters = {
+    name: string;
+    tag_id: string;
+    created_from: string;
+    created_to: string;
+    email: string;
+    phone: string;
+};
+
 export interface PeopleIndexProps {
     people: TableListPage & { data: PersonListRow[] };
     tags: { id: number; name: string; system_key: PersonRole | null }[];
-    filters: Partial<{ name: string; tag_id: string }>;
+    filters: Partial<PersonFilters>;
     can: { create: boolean; edit: boolean };
 }

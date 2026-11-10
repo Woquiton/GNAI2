@@ -99,3 +99,9 @@ A coluna **Atual** das listagens indica qual versão está vigente. Abaixo dos c
 - **"O sistema não possui semestre atual cadastrado."** Cadastre ou marque o semestre atual em **Gestão do núcleo → Cadastros → Semestres**.
 - **A barreira desejada não aparece em Barreira Vinculada.** A lista mostra apenas as barreiras do Estudo de Caso que deu origem ao PAEE.
 - **A tecnologia assistiva não aparece em Recursos.** A lista mostra os itens do tipo tecnologia assistiva ativos em **Recursos e acessibilidade → Itens**.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.

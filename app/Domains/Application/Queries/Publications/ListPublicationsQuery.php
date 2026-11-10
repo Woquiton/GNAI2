@@ -15,7 +15,22 @@ final class ListPublicationsQuery
      */
     public function execute(ListPublicationsData $filters): LengthAwarePaginator
     {
-        $query = Publication::query();
+        $query = Publication::query()
+            ->when(filled($filters->authorName), fn ($query) => $query->whereHas(
+                'author',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->authorName).'%'),
+            ))
+            ->when(filled($filters->tagName), fn ($query) => $query->whereHas(
+                'tags',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->tagName).'%'),
+            ))
+            ->when($filters->isFeatured !== null, fn ($query) => $query->where('is_featured', $filters->isFeatured))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ));
 
         if (filled($filters->title)) {
             $query->where('title', 'like', '%'.trim($filters->title).'%');

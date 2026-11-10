@@ -22,6 +22,8 @@ export interface PositionPaginator extends TableListPage {
 }
 
 export type PositionFilters = {
+    created_from: string;
+    created_to: string;
     name: string;
     description: string;
     is_active: string;

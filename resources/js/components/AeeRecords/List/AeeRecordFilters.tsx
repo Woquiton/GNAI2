@@ -53,21 +53,29 @@ export default function AeeRecordFilters({
         is_present: aeePresenceFilterOptions,
     };
 
+    const renderFilter = (name: AeeRecordFilterName) => (
+        <SelectInputField
+            key={name}
+            id={`${idPrefix}-filter-${name.replace('_', '-')}`}
+            name={name}
+            label={aeeRecordFilterLabels[name].label}
+            placeholder={aeeRecordFilterLabels[name].placeholder}
+            options={options[name]}
+            value={values[name]}
+            error={errors[name]}
+            onChange={(value) => onUpdate(name, value)}
+        />
+    );
+    const moreFilters = fields.length > 2 ? fields.slice(2).map(renderFilter) : undefined;
+
     return (
-        <TableListFilters label={label} onClear={onClear} onSubmit={onSubmit}>
-            {fields.map((name) => (
-                <SelectInputField
-                    key={name}
-                    id={`${idPrefix}-filter-${name.replace('_', '-')}`}
-                    name={name}
-                    label={aeeRecordFilterLabels[name].label}
-                    placeholder={aeeRecordFilterLabels[name].placeholder}
-                    options={options[name]}
-                    value={values[name]}
-                    error={errors[name]}
-                    onChange={(value) => onUpdate(name, value)}
-                />
-            ))}
+        <TableListFilters
+            moreFilters={moreFilters}
+            label={label}
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
+            {fields.slice(0, 2).map(renderFilter)}
         </TableListFilters>
     );
 }

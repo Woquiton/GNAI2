@@ -16,11 +16,21 @@ final class ListInstitutionsData extends Data
         public ?string $location = null,
         public ?bool $isActive = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
+        public ?string $shortName = null,
+        public ?string $district = null,
+        public ?bool $hasBarriers = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'short_name' => ['nullable', 'string', 'max:255'],
+            'district' => ['nullable', 'string', 'max:255'],
+            'has_barriers' => ['nullable', 'boolean'],
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'location' => ['nullable', 'string', 'max:255'],
             'is_active' => ['nullable', 'boolean'],

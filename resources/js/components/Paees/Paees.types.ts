@@ -23,6 +23,8 @@ export interface PaeePaginator extends TableListPage {
 }
 
 export type PaeeListFilters = {
+    created_from: string;
+    created_to: string;
     status: string;
     semester_id: string;
     search: string;

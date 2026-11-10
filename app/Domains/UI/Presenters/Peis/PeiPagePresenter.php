@@ -320,13 +320,15 @@ final class PeiPagePresenter
     }
 
     /**
-     * @return array{semester_id: string, version: string, is_finished: string}
+     * @return array{created_from: string, created_to: string, semester_id: string, version: string, is_finished: string}
      */
     private function listFilterValues(ListPeisData $filters): array
     {
         $isFinished = $filters->isFinished;
 
         return [
+            'created_from' => $filters->createdFrom ?? '',
+            'created_to' => $filters->createdTo ?? '',
             'semester_id' => $filters->semesterId === null ? '' : (string) $filters->semesterId,
             'version' => $filters->version === null ? '' : (string) $filters->version,
             'is_finished' => $isFinished === null || $isFinished === ''

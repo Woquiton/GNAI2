@@ -98,3 +98,13 @@ A exclusão é bloqueada quando o professor já tem adaptações registradas em 
 - **"Uma ou mais disciplinas informadas não pertencem ao curso ... ou estão inativas."**: A matriz do curso ou o status da disciplina mudou enquanto você editava. Abra **Gerenciar Disciplinas** novamente.
 - **"Este link de acesso é inválido, já foi usado ou expirou."**: O professor deve pedir um novo link pela opção **Sou professor(a): entrar com e-mail**.
 - **O professor não vê um aluno no portal**: Confira se o PEI do aluno é o vigente e se tem uma disciplina atribuída a esse professor.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+### Filtros de professores
+
+Em **Mais filtros**, pesquise por curso ou disciplina vinculada ao professor. Os vínculos de qualquer semestre entram nessa pesquisa. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.

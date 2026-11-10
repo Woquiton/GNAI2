@@ -84,3 +84,7 @@ A exclusão apaga o arquivo do servidor e remove o registro do histórico. O sis
 - **"O backup deve ser um arquivo ZIP."** ou **"O backup deve possuir no máximo 100 MB."**: confira o formato e o tamanho do arquivo importado.
 - **"O arquivo físico não existe no servidor."**: o arquivo ZIP foi removido da pasta de backups; o registro some da lista na próxima vez que a tela for aberta.
 - **"Falha ao restaurar backup."** ou **"Falha ao gerar arquivo de backup."**: a operação não foi concluída. Tente novamente e, se o erro continuar, acione o suporte técnico.
+
+## Usar os filtros complementares
+
+Na listagem, abra **Mais filtros** para selecionar **Responsável**. Combine essas opções com os campos principais. No celular, abra **Filtros** primeiro. A borracha limpa todos os filtros, inclusive os recolhidos.

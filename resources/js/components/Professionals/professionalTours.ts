@@ -31,6 +31,7 @@ export const professionalListTour: TableListTourConfig = {
         'A lista se atualiza sozinha enquanto você digita ou escolhe uma opção.',
     ],
     moreFilters: [
+        'Pesquise pelo Telefone e escolha se o profissional é Exibido no site.',
         'Aqui você filtra também pelo e-mail e pela matrícula.',
         'O número ao lado do nome mostra quantos desses filtros estão em uso.',
     ],

@@ -29,6 +29,8 @@ export interface CaseStudyPaginator {
 }
 
 export type CaseStudyListFilters = {
+    created_from: string;
+    created_to: string;
     search: string;
     status: string;
     semester_id: string;

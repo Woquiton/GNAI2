@@ -94,6 +94,8 @@ export interface StudentCoursePaginator extends TableListPage {
 }
 
 export type StudentCourseFilters = {
+    created_from: string;
+    created_to: string;
     course_id: string;
     academic_year: string;
     is_current: string;

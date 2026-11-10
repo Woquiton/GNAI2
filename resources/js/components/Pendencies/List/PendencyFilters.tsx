@@ -32,7 +32,35 @@ export default function PendencyFilters({
     onSubmit,
 }: PendencyFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar pendências" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <SelectInputField
+                        id="pendency-filter-priority"
+                        name="priority"
+                        label="Prioridade"
+                        placeholder="Todas"
+                        options={priorityOptions(priorities)}
+                        value={values.priority}
+                        error={errors.priority}
+                        onChange={(value) => onUpdate('priority', value)}
+                    />
+                    <SelectInputField
+                        id="pendency-filter-status"
+                        name="is_completed"
+                        label="Status"
+                        placeholder="Todos"
+                        options={pendencyStatusOptions}
+                        value={values.is_completed}
+                        error={errors.is_completed}
+                        onChange={(value) => onUpdate('is_completed', value)}
+                    />
+                </>
+            }
+            label="Filtrar pendências"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="pendency-filter-title"
                 name="title"
@@ -55,26 +83,6 @@ export default function PendencyFilters({
                     onChange={(value) => onUpdate('assigned_to', value)}
                 />
             ) : null}
-            <SelectInputField
-                id="pendency-filter-priority"
-                name="priority"
-                label="Prioridade"
-                placeholder="Todas"
-                options={priorityOptions(priorities)}
-                value={values.priority}
-                error={errors.priority}
-                onChange={(value) => onUpdate('priority', value)}
-            />
-            <SelectInputField
-                id="pendency-filter-status"
-                name="is_completed"
-                label="Status"
-                placeholder="Todos"
-                options={pendencyStatusOptions}
-                value={values.is_completed}
-                error={errors.is_completed}
-                onChange={(value) => onUpdate('is_completed', value)}
-            />
         </TableListFilters>
     );
 }

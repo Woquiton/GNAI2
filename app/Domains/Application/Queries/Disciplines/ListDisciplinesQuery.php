@@ -15,7 +15,21 @@ final class ListDisciplinesQuery
      */
     public function execute(ListDisciplinesData $filters): LengthAwarePaginator
     {
-        $query = Discipline::query();
+        $query = Discipline::query()
+            ->when(filled($filters->courseName), fn ($query) => $query->whereHas(
+                'courses',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->courseName).'%'),
+            ))
+            ->when(filled($filters->teacherName), fn ($query) => $query->whereHas(
+                'teachers.person',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->teacherName).'%'),
+            ))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ));
 
         if (filled($filters->name)) {
             $query->where('name', 'like', trim($filters->name).'%');

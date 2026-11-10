@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import type { FieldOption } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
@@ -25,7 +26,14 @@ export default function PaeeFilters({
     onSubmit,
 }: PaeeFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar PAEEs" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+            }
+            label="Filtrar PAEEs"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             {showSearch ? (
                 <TextInputField
                     id="paee-filter-search"

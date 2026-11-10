@@ -16,11 +16,15 @@ final class ListStudentCoursesData extends Data
         public ?string $academicYear = null,
         public ?bool $isCurrent = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'course_id' => ['nullable', 'integer', 'exists:courses,id'],
             'academic_year' => ['nullable', 'digits:4'],
             'is_current' => ['nullable', 'boolean'],

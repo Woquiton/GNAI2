@@ -78,7 +78,17 @@ export interface PublicationFormOptions {
     publicBaseUrl: string;
 }
 
-export type PublicationFilters = { title: string; is_active: string; type: string };
+export type PublicationFilters = {
+    author_name: string;
+    tag_name: string;
+    is_featured: string;
+
+    created_from: string;
+    created_to: string;
+    title: string;
+    is_active: string;
+    type: string;
+};
 export interface PublicationListPermissions {
     create: boolean;
     show: boolean;

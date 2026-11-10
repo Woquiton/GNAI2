@@ -54,6 +54,10 @@ final class TeacherController
             [
                 'teachers' => $teachers,
                 'filters' => [
+                    'course_name' => $filters->courseName ?? '',
+                    'discipline_name' => $filters->disciplineName ?? '',
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'email' => $filters->email ?? '',
                     'registration' => $filters->registration ?? '',

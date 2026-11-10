@@ -123,3 +123,17 @@ Bloqueios:
 ## Organizar etiquetas de pessoas
 
 O módulo **Pessoas** permite criar etiquetas convencionais para organizar o cadastro central. As etiquetas especiais **Aluno**, **Professor**, **Equipe** e **Responsáveis** vêm cadastradas e são protegidas. Para atribuí-las, preencha os dados específicos no [cadastro de pessoas](/ajuda/pessoas). Uma pessoa pode acumular vários papéis.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+### Filtros de instituições
+
+Em **Mais filtros**, filtre por Sigla / nome curto, Bairro / distrito e pela existência de Barreiras vinculadas. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.
+
+### Filtros de pontos de referência
+
+Em **Mais filtros**, pesquise pelo Tipo de local e escolha se o ponto deve ter Barreiras vinculadas. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.

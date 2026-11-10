@@ -17,6 +17,16 @@ final class ListGuardiansQuery
     public function execute(Student $student, ListGuardiansData $filters): LengthAwarePaginator
     {
         $query = Guardian::query()
+            ->when(filled($filters->phone), fn ($query) => $query->whereHas(
+                'person',
+                fn ($related) => $related->where('phone', 'like', '%'.trim($filters->phone).'%'),
+            ))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->select('student_guardians.*')
             ->join('people', 'people.id', '=', 'student_guardians.person_id')
             ->with('person')

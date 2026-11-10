@@ -1,6 +1,8 @@
 import type { PeiListFilters, PeiListRecord } from './Peis.types';
 
 export const emptyPeiFilters: PeiListFilters = {
+    created_from: '',
+    created_to: '',
     student_id: '',
     semester_id: '',
     version: '',

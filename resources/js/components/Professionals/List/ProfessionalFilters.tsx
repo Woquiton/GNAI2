@@ -1,4 +1,5 @@
-import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
+import { booleanOptions, optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import type { ProfessionalFilters as ProfessionalFilterValues } from '../Professionals.types';
@@ -54,7 +55,31 @@ export default function ProfessionalFilters({
     return (
         <TableListFilters
             label="Filtrar profissionais"
-            moreFilters={moreFilters}
+            moreFilters={
+                <>
+                    {moreFilters}
+                    <TextInputField
+                        id="professionals-filter-phone"
+                        name="phone"
+                        label="Telefone"
+                        maxLength={255}
+                        value={values.phone}
+                        error={errors.phone}
+                        onChange={(value) => onUpdate('phone', value)}
+                    />
+                    <SelectInputField
+                        id="professionals-filter-show_on_website"
+                        name="show_on_website"
+                        label="Exibido no site"
+                        placeholder="Todos"
+                        options={booleanOptions('Sim', 'Não')}
+                        value={values.show_on_website}
+                        error={errors.show_on_website}
+                        onChange={(value) => onUpdate('show_on_website', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
             onClear={onClear}
             onSubmit={onSubmit}
         >

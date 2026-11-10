@@ -21,6 +21,10 @@ const targets = LOCATION_TOUR_TARGETS;
 const HELP_HREF = helpUrls.show('cadastros-do-radar', 'localizacoes');
 
 export const locationListTour: TableListTourConfig = {
+    moreFilters: [
+        'Pesquise pelo Tipo de local e escolha se o ponto deve ter Barreiras vinculadas.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: HELP_HREF,
     actions:
         'Cadastrar ponto de referência abre o formulário de um novo prédio, bloco, sala ou outra área da instituição.',

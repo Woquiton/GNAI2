@@ -28,6 +28,10 @@ final class PersonController
         return Inertia::render('People/Index', [
             'people' => $people,
             'filters' => [
+                'email' => $filters->email ?? '',
+                'phone' => $filters->phone ?? '',
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
                 'name' => $filters->name ?? '',
                 'tag_id' => $filters->tagId === null ? '' : (string) $filters->tagId,
             ],

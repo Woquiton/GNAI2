@@ -16,11 +16,15 @@ final class ListDeficienciesData extends Data
         public ?string $cidCode = null,
         public ?bool $isActive = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'cid_code' => ['nullable', 'string', 'max:20'],
             'is_active' => ['nullable', 'boolean'],

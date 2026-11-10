@@ -2,6 +2,10 @@ import type { PersonPhotoType } from '@/components/Forms/PersonPhotoUpload/Perso
 import type { GuardianFilters } from './Guardians.types';
 
 export const emptyGuardianFilters: GuardianFilters = {
+    phone: '',
+
+    created_from: '',
+    created_to: '',
     name: '',
     email: '',
     relationship: '',

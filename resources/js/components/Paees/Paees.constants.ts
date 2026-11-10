@@ -3,6 +3,8 @@ import type { TableLabelTone } from '@/components/UI/TableLabel/TableLabel';
 import type { PaeeListFilters } from './Paees.types';
 
 export const emptyPaeeFilters: PaeeListFilters = {
+    created_from: '',
+    created_to: '',
     status: '',
     semester_id: '',
     search: '',

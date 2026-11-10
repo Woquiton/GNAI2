@@ -48,6 +48,11 @@ export interface ProfessionalListRecord {
 }
 
 export type ProfessionalFilters = {
+    phone: string;
+    show_on_website: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     email: string;
     registration: string;

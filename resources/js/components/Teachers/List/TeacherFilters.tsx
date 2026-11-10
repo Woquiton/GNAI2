@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import type { TeacherFilters as TeacherFilterValues } from '../Teachers.types';
@@ -18,7 +19,34 @@ export default function TeacherFilters({
     onSubmit,
 }: TeacherFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar professores" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="teachers-filter-course_name"
+                        name="course_name"
+                        label="Curso vinculado (qualquer semestre)"
+                        maxLength={255}
+                        value={values.course_name}
+                        error={errors.course_name}
+                        onChange={(value) => onUpdate('course_name', value)}
+                    />
+                    <TextInputField
+                        id="teachers-filter-discipline_name"
+                        name="discipline_name"
+                        label="Disciplina vinculada (qualquer semestre)"
+                        maxLength={255}
+                        value={values.discipline_name}
+                        error={errors.discipline_name}
+                        onChange={(value) => onUpdate('discipline_name', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
+            label="Filtrar professores"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="teacher-filter-name"
                 name="name"

@@ -17,11 +17,15 @@ final class ListPeisData extends Data
         public null|bool|string|int $isFinished = null,
         public ?int $version = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'per_page' => ['integer', 'min:1', 'max:100'],
         ];
     }

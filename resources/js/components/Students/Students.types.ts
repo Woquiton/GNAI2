@@ -41,6 +41,8 @@ export interface StudentFormOptions extends StudentOptions {
 }
 export type StudentEditProps = StudentFormOptions & { student: Student };
 export type StudentFilters = Record<
+    | 'created_from'
+    | 'created_to'
     | 'name'
     | 'phone'
     | 'email'

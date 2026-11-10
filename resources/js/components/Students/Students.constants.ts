@@ -5,6 +5,8 @@ export const STUDENT_FAILURE_TEXT =
     'Não foi possível concluir a operação. Atualize a página e tente novamente.';
 
 export const emptyStudentFilters: StudentFilters = {
+    created_from: '',
+    created_to: '',
     name: '',
     phone: '',
     email: '',
@@ -30,4 +32,3 @@ export const paeeStatusTones: Record<string, TableLabelTone> = {
     active: 'success',
     under_review: 'warning',
 };
-

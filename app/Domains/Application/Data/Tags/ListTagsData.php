@@ -18,11 +18,15 @@ final class ListTagsData extends Data
         public ?bool $isActive = null,
         public int $perPage = 10,
         public ?string $module = null,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:100'],
             'is_active' => ['nullable', 'boolean'],
             'per_page' => ['integer', 'min:1', 'max:100'],

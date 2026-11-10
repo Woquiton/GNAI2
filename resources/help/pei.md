@@ -173,3 +173,9 @@ Os PDFs abrem em outra aba do navegador.
 - **"Este PEI não possui adaptações sob sua responsabilidade."** O professor tentou abrir um PEI em que não tem adaptação.
 - **"Não é possível adicionar disciplinas a um PEI finalizado."** ou **"Este PEI já foi finalizado e não permite alterações."** Após finalizar, as adaptações não podem ser cadastradas nem excluídas; para uma nova estrutura, gere uma nova versão.
 - **O professor não encontra a adaptação no portal.** Confira se ele é o professor responsável pela adaptação e se ela pertence à versão atual do PEI. Adaptações de versões antigas mostram "Esta adaptação pertence a uma versão antiga do PEI e não pode mais ser editada por aqui."
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.

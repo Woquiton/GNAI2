@@ -22,6 +22,10 @@ const targets = BARRIER_TOUR_TARGETS;
 const HELP_SLUG = 'barreiras';
 
 export const barrierListTour: TableListTourConfig = {
+    moreFilters: [
+        'Pesquise pela Instituição ou pelo Ponto de referência e escolha se o Registro ativo deve ser Sim ou Não.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: helpUrls.show(HELP_SLUG, 'consultar-barreiras-vistorias-e-pdf'),
     actions:
         'Clique em Relatar barreira para registrar um novo problema de acessibilidade encontrado na instituição.',

@@ -44,6 +44,11 @@ final class ProfessionalController
                         $status->value => $status->color(),
                     ]),
                 'filters' => [
+                    'phone' => $filters->phone ?? '',
+                    'show_on_website' => $filters->showOnWebsite === null ? '' : (string) (int) $filters->showOnWebsite,
+
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'email' => $filters->email ?? '',
                     'registration' => $filters->registration ?? '',

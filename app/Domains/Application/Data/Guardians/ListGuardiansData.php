@@ -18,11 +18,17 @@ final class ListGuardiansData extends Data
         public ?string $email = null,
         public ?GuardianRelationship $relationship = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
+        public ?string $phone = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'phone' => ['nullable', 'string', 'max:255'],
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255'],
             'relationship' => ['nullable', Rule::enum(GuardianRelationship::class)],

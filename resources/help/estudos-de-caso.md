@@ -112,3 +112,9 @@ A exclusão apaga também as barreiras, estratégias e contribuições do Estudo
 - **"Não é possível remover um Estudo de Caso que já possui PAEE vinculado."** A exclusão é bloqueada para preservar a base do PAEE.
 - **"Selecione uma categoria de barreira disponível no cadastro."** A categoria escolhida não está ativa em **Categorias de Barreiras**. Escolha outra ou peça a reativação.
 - **"Selecione pelo menos um apoio necessário."** Marque ao menos uma opção em **Apoios necessários**; se não houver apoio, marque **Nenhum**.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.

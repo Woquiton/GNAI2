@@ -17,6 +17,12 @@ final class ListStudentCoursesQuery
     public function execute(Student $student, ListStudentCoursesData $filters): LengthAwarePaginator
     {
         return StudentCourse::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with(['course', 'semester'])
             ->where('student_id', $student->getKey())
             ->when($filters->courseId !== null, static function ($query) use ($filters): void {

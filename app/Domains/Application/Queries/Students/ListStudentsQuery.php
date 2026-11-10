@@ -17,6 +17,12 @@ final class ListStudentsQuery
     public function execute(ListStudentsData $filters, ?int $teacherId = null): LengthAwarePaginator
     {
         $query = Student::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->select('students.*')
             ->join('people', 'people.id', '=', 'students.person_id')
             ->with(['person', 'currentCourse.course']);
@@ -73,13 +79,21 @@ final class ListStudentsQuery
             );
         }
 
-        if ($filters->deficiencyId === 0) {
-            $query->whereDoesntHave('deficiencies');
-        } elseif ($filters->deficiencyId !== null) {
-            $query->whereHas(
-                'deficiencies',
-                fn (Builder $deficiencyQuery): Builder => $deficiencyQuery->where('deficiencies.id', $filters->deficiencyId),
-            );
+        if (filled($filters->deficiencyId)) {
+            $profileIds = array_map('intval', explode(',', $filters->deficiencyId));
+            $withoutProfile = in_array(0, $profileIds, true);
+            $profileIds = array_values(array_filter($profileIds, fn (int $id): bool => $id !== 0));
+            $query->where(function (Builder $profiles) use ($profileIds, $withoutProfile): void {
+                if ($profileIds !== []) {
+                    $profiles->whereHas(
+                        'deficiencies',
+                        fn (Builder $related) => $related->whereIn('deficiencies.id', $profileIds),
+                    );
+                }
+                if ($withoutProfile) {
+                    $profiles->orWhereDoesntHave('deficiencies');
+                }
+            });
         }
 
         return $query

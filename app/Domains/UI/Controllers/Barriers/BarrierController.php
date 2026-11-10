@@ -37,6 +37,11 @@ final class BarrierController
         return Inertia::render('Barriers/Index', [
             'barriers' => $barriers,
             'filters' => [
+                'institution_name' => $filters->institutionName ?? '',
+                'location_name' => $filters->locationName ?? '',
+                'is_active' => $filters->isActive === null ? '' : (string) (int) $filters->isActive,
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
                 'name' => $filters->name ?? '',
                 'category' => $filters->category ?? '',
                 'priority' => $filters->priority ?? '',

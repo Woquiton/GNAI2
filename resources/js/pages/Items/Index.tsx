@@ -19,6 +19,7 @@ export default function ItemsIndexPage({
     filters: initialFilters,
     itemTypeOptions,
     accessibilityFeatureOptions,
+    deficiencyOptions,
     can,
 }: ItemIndexProps): React.JSX.Element {
     const errors = usePage().props.errors as Record<string, string | undefined>;
@@ -57,6 +58,7 @@ export default function ItemsIndexPage({
                 loadingLabel="Atualizando itens"
             >
                 <ItemFilters
+                    deficiencyOptions={deficiencyOptions}
                     values={filters.values}
                     itemTypeOptions={itemTypeOptions}
                     accessibilityFeatureOptions={accessibilityFeatureOptions}

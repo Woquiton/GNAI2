@@ -18,6 +18,20 @@ final class ListItemsQuery
     {
         $imageTypes = ['image/jpeg', 'image/png', 'image/webp'];
         $query = Item::query()
+            ->when(filled($filters->assetCode), fn ($query) => $query->where(
+                'asset_code', 'like', '%'.trim($filters->assetCode).'%',
+            ))
+            ->when(filled($filters->deficiencyIds), fn ($query) => $query->whereHas(
+                'deficiencies',
+                fn ($related) => $related->whereIn('deficiencies.id', explode(',', $filters->deficiencyIds)),
+            ))
+            ->when($filters->isLoanable !== null, fn ($query) => $query->where('is_loanable', $filters->isLoanable))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with([
                 'deficiencies',
                 'accessibilityFeatures',

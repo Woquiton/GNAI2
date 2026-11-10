@@ -21,7 +21,19 @@ final class ListPeopleQuery
 
     public function execute(ListPeopleData $filters): LengthAwarePaginator
     {
-        $query = Person::query()->with(['student', 'teacher', 'professional', 'guardians', 'tags']);
+        $query = Person::query()
+            ->when(filled($filters->email), fn ($query) => $query->where(
+                'email', 'like', '%'.trim($filters->email).'%',
+            ))
+            ->when(filled($filters->phone), fn ($query) => $query->where(
+                'phone', 'like', '%'.trim($filters->phone).'%',
+            ))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))->with(['student', 'teacher', 'professional', 'guardians', 'tags']);
         if (filled($filters->name)) {
             $query->where('name', 'like', '%'.$filters->name.'%');
         }

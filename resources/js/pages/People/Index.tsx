@@ -6,7 +6,14 @@ import type { PeopleIndexProps } from '@/components/People/People.types';
 import { personUrls, personBreadcrumb } from '@/components/People/People.routes';
 import { peopleListTour } from '@/components/People/personTours';
 
-const emptyFilters = { name: '', tag_id: '' };
+const emptyFilters = {
+    email: '',
+    phone: '',
+    created_from: '',
+    created_to: '',
+    name: '',
+    tag_id: '',
+};
 
 export default function PeopleIndexPage({
     people,

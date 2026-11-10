@@ -2,6 +2,10 @@ import type { GuidedTourPageConfig } from '@/components/UI/GuidedTour/GuidedTour
 import type { TableListTourConfig } from '@/components/Tables/TableList/TableList';
 
 export const peopleListTour: TableListTourConfig = {
+    moreFilters: [
+        'Pesquise também pelo E-mail ou Telefone da pessoa.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: '/ajuda/pessoas',
     filters: [
         'Pesquise pelo nome ou filtre por qualquer etiqueta, convencional ou especial. As especiais aparecem com estrela dourada. Uma pessoa pode ter vários papéis.',

@@ -87,6 +87,8 @@ final class CaseStudyPagePresenter
                 ->all(),
             'statuses' => $this->options(self::STATUSES),
             'filters' => [
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
                 'search' => (string) ($filters->search ?? ''),
                 'status' => (string) ($filters->status ?? ''),
                 'semester_id' => $filters->semesterId === null ? '' : (string) $filters->semesterId,

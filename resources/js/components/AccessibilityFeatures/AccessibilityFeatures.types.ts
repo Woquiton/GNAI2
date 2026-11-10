@@ -14,6 +14,8 @@ export interface AccessibilityFeaturePaginator extends TableListPage {
 }
 
 export type AccessibilityFeatureFilters = {
+    created_from: string;
+    created_to: string;
     name: string;
     is_active: string;
 };

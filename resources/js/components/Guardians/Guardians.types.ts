@@ -35,6 +35,10 @@ export type GuardianCreateProps = GuardianFormOptions & { defaultGender?: string
 export type GuardianEditProps = GuardianFormOptions & { guardian: GuardianRecord };
 
 export type GuardianFilters = {
+    phone: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     email: string;
     relationship: string;

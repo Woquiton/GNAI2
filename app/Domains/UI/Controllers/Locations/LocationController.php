@@ -31,6 +31,11 @@ final class LocationController
         return Inertia::render('Locations/Index', [
             'locations' => $locations,
             'filters' => [
+                'type' => $filters->type ?? '',
+                'has_barriers' => $filters->hasBarriers === null ? '' : (string) (int) $filters->hasBarriers,
+
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
                 'name' => $filters->name ?? '',
                 'institution_name' => $filters->institutionName ?? '',
                 'is_active' => $filters->isActive === null ? '' : (string) (int) $filters->isActive,

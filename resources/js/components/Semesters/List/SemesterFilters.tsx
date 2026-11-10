@@ -19,7 +19,35 @@ export default function SemesterFilters({
     onSubmit,
 }: SemesterFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar semestres" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="semester-filter-label"
+                        name="label"
+                        label="Rótulo"
+                        maxLength={255}
+                        placeholder="Rótulo..."
+                        value={values.label}
+                        error={errors.label}
+                        onChange={(value) => onUpdate('label', value)}
+                    />
+                    <SelectInputField
+                        id="semester-filter-current"
+                        name="is_current"
+                        label="Status"
+                        placeholder="Todos"
+                        options={semesterFilterOptions.current}
+                        value={values.is_current}
+                        error={errors.is_current}
+                        onChange={(value) => onUpdate('is_current', value)}
+                    />
+                </>
+            }
+            label="Filtrar semestres"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="semester-filter-year"
                 name="year"
@@ -40,26 +68,6 @@ export default function SemesterFilters({
                 value={values.term}
                 error={errors.term}
                 onChange={(value) => onUpdate('term', value)}
-            />
-            <TextInputField
-                id="semester-filter-label"
-                name="label"
-                label="Rótulo"
-                maxLength={255}
-                placeholder="Rótulo..."
-                value={values.label}
-                error={errors.label}
-                onChange={(value) => onUpdate('label', value)}
-            />
-            <SelectInputField
-                id="semester-filter-current"
-                name="is_current"
-                label="Status"
-                placeholder="Todos"
-                options={semesterFilterOptions.current}
-                value={values.is_current}
-                error={errors.is_current}
-                onChange={(value) => onUpdate('is_current', value)}
             />
         </TableListFilters>
     );

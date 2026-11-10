@@ -14,6 +14,12 @@ final class ListPaeesQuery
     public function execute(ListPaeesData $filters, ?Student $student = null): LengthAwarePaginator
     {
         return Paee::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with(['student.person', 'creator', 'semester', 'caseStudy'])
             ->when($student !== null, fn ($query) => $query->where('student_id', $student->getKey()))
             ->when($filters->status !== null, fn ($query) => $query->where('status', $filters->status))

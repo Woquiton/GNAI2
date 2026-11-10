@@ -31,6 +31,10 @@ final class DisciplineController
             [
                 'disciplines' => $disciplines,
                 'filters' => [
+                    'course_name' => $filters->courseName ?? '',
+                    'teacher_name' => $filters->teacherName ?? '',
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'is_active' => $filters->isActive === null ? '' : (string) (int) $filters->isActive,
                 ],

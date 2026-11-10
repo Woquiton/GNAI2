@@ -3,6 +3,12 @@ import type { TableLabelTone } from '@/components/UI/TableLabel/TableLabel';
 import type { BarrierFilters } from './Barriers.types';
 
 export const emptyBarrierFilters: BarrierFilters = {
+    institution_name: '',
+    location_name: '',
+    is_active: '',
+
+    created_from: '',
+    created_to: '',
     name: '',
     category: '',
     priority: '',

@@ -1,3 +1,5 @@
+import CheckboxSelect from '@/components/Forms/CheckboxSelect/CheckboxSelect';
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import {
     optionsFromNamed,
@@ -45,6 +47,16 @@ export default function StudentFilters({
     ];
     const moreFilters = (
         <>
+            <TextInputField
+                id="filter-registration"
+                name="registration"
+                label="Matrícula"
+                maxLength={50}
+                placeholder="Matrícula..."
+                value={values.registration}
+                error={errors.registration}
+                onChange={(value) => onUpdate('registration', value)}
+            />
             <SelectInputField
                 id="filter-follow_up_type"
                 name="follow_up_type"
@@ -78,11 +90,10 @@ export default function StudentFilters({
                 error={errors.email}
                 onChange={(value) => onUpdate('email', value)}
             />
-            <SelectInputField
+            <CheckboxSelect
                 id="filter-deficiency_id"
                 name="deficiency_id"
                 label="Perfil de atendimento"
-                placeholder="Perfil de atendimento (Todos)"
                 options={profileOptions}
                 value={values.deficiency_id}
                 error={errors.deficiency_id}
@@ -94,7 +105,12 @@ export default function StudentFilters({
     return (
         <TableListFilters
             label="Filtrar alunos"
-            moreFilters={moreFilters}
+            moreFilters={
+                <>
+                    {moreFilters}
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
             onClear={onClear}
             onSubmit={onSubmit}
         >

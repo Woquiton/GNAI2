@@ -37,6 +37,8 @@ export interface PeiPaginator extends TableListPage {
 }
 
 export type PeiListFilters = {
+    created_from: string;
+    created_to: string;
     student_id: string;
     semester_id: string;
     version: string;

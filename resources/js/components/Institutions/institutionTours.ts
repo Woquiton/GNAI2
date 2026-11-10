@@ -21,6 +21,10 @@ const targets = INSTITUTION_TOUR_TARGETS;
 const HELP_HREF = helpUrls.show('cadastros-do-radar', 'instituicoes');
 
 export const institutionListTour: TableListTourConfig = {
+    moreFilters: [
+        'Filtre por Sigla / nome curto, Bairro / distrito e pela existência de Barreiras vinculadas.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: HELP_HREF,
     actions: [
         'Cadastrar instituição abre o formulário da sede onde o Radar Inclusivo funciona.',

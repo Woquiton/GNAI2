@@ -48,3 +48,13 @@ Utilize a exclusão do cadastro correspondente. O sistema mantém as verificaç�
 - **Não consigo salvar uma pessoa com vários papéis:** confira as permissões para salvar ou atualizar cada cadastro e os erros dos campos específicos.
 - **Não consigo inativar uma pessoa da equipe:** pendências e atendimentos registrados podem impedir a inativação.
 - **O CPF ou e-mail já existe:** localize a pessoa na central e acrescente o papel ao cadastro existente.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+### Filtros de pessoas
+
+Em **Mais filtros**, pesquise também pelo E-mail ou Telefone da pessoa. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.

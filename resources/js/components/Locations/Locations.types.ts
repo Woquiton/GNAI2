@@ -1,8 +1,4 @@
-import type {
-    GeoMapMarker,
-    GeoMapReference,
-    GeoPoint,
-} from '@/components/GeoMap/GeoMap.types';
+import type { GeoMapMarker, GeoMapReference, GeoPoint } from '@/components/GeoMap/GeoMap.types';
 import type { FieldOption } from '@/components/Forms/FormFields/FormFields.types';
 import type { TableListPage } from '@/components/Tables/TableList/TableList';
 
@@ -28,6 +24,11 @@ export interface LocationPaginator extends TableListPage {
 }
 
 export type LocationFilters = {
+    type: string;
+    has_barriers: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     institution_name: string;
     is_active: string;

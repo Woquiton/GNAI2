@@ -23,6 +23,7 @@ use App\Domains\Application\Queries\Items\ShowItemQuery;
 use App\Domains\Domain\Enums\Items\ItemType;
 use App\Domains\Domain\Exceptions\Items\AssetCodeAlreadyInUse;
 use App\Domains\Domain\Models\Items\Item;
+use App\Domains\Domain\Models\Deficiencies\Deficiency;
 use App\Domains\UI\Presenters\Items\ItemPresenter;
 use App\Domains\Domain\Models\Loans\Loan;
 use App\Domains\UI\Presenters\Loans\LoanPresenter;
@@ -48,9 +49,16 @@ final class ItemController
             'Items/Index',
             [
                 'items' => $presenter->items($query->execute($filters)),
+                'deficiencyOptions' => Deficiency::query()->orderBy('name')->get(['id', 'name']),
                 'accessibilityFeatureOptions' => ['' => 'Recurso de acessibilidade (Todos)'] + $filterOptions->execute(),
                 'itemTypeOptions' => ['' => 'Tipo do item (Todos)'] + ItemType::options(),
                 'filters' => $request->only([
+                    'asset_code',
+                    'deficiency_ids',
+                    'is_loanable',
+
+                    'created_from',
+                    'created_to',
                     'name',
                     'item_type',
                     'is_digital',

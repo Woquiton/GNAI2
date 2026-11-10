@@ -33,6 +33,8 @@ final class TagController
                 'tags' => $tags,
                 'modules' => TagModule::options(),
                 'filters' => [
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'module' => $filters->module ?? '',
                     'is_active' => $filters->isActive === null ? '' : ($filters->isActive ? '1' : '0'),

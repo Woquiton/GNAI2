@@ -6,6 +6,8 @@ export const STUDENT_COURSE_RECORD_TAB = 'academic-data';
 export const UNKNOWN_COURSE = 'Curso não identificado';
 
 export const emptyStudentCourseFilters: StudentCourseFilters = {
+    created_from: '',
+    created_to: '',
     course_id: '',
     academic_year: '',
     is_current: '',

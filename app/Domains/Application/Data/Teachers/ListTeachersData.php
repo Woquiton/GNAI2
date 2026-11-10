@@ -18,11 +18,19 @@ final class ListTeachersData extends Data
         public ?string $email = null,
         public ?string $registration = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
+        public ?string $courseName = null,
+        public ?string $disciplineName = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'course_name' => ['nullable', 'string', 'max:255'],
+            'discipline_name' => ['nullable', 'string', 'max:255'],
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255'],
             'registration' => ['nullable', 'string', 'max:50'],

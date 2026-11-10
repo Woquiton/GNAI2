@@ -1,3 +1,5 @@
+import { booleanOptions } from '@/components/Forms/FormFields/fieldOptions';
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { institutionStatusOptions } from '../Institutions.constants';
@@ -19,7 +21,44 @@ export default function InstitutionFilters({
     onSubmit,
 }: InstitutionFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar instituições" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="institutions-filter-short_name"
+                        name="short_name"
+                        label="Sigla / nome curto"
+                        maxLength={255}
+                        value={values.short_name}
+                        error={errors.short_name}
+                        onChange={(value) => onUpdate('short_name', value)}
+                    />
+                    <TextInputField
+                        id="institutions-filter-district"
+                        name="district"
+                        label="Bairro / distrito"
+                        maxLength={255}
+                        value={values.district}
+                        error={errors.district}
+                        onChange={(value) => onUpdate('district', value)}
+                    />
+                    <SelectInputField
+                        id="institutions-filter-has_barriers"
+                        name="has_barriers"
+                        label="Barreiras vinculadas"
+                        placeholder="Todos"
+                        options={booleanOptions('Sim', 'Não')}
+                        value={values.has_barriers}
+                        error={errors.has_barriers}
+                        onChange={(value) => onUpdate('has_barriers', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
+            label="Filtrar instituições"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="institution-filter-name"
                 name="name"

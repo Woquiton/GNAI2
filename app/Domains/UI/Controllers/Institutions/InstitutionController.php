@@ -28,6 +28,12 @@ final class InstitutionController
         return Inertia::render('Institutions/Index', [
             'institutions' => $institutions,
             'filters' => [
+                'short_name' => $filters->shortName ?? '',
+                'district' => $filters->district ?? '',
+                'has_barriers' => $filters->hasBarriers === null ? '' : (string) (int) $filters->hasBarriers,
+
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
                 'name' => $filters->name ?? '',
                 'location' => $filters->location ?? '',
                 'is_active' => $filters->isActive === null ? '' : (string) (int) $filters->isActive,

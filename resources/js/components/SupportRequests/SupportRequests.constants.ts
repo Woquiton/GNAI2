@@ -2,6 +2,8 @@ import type { TableLabelTone } from '@/components/UI/TableLabel/TableLabel';
 import type { SupportRequestFilters } from './SupportRequests.types';
 
 export const emptySupportRequestFilters: SupportRequestFilters = {
+    created_from: '',
+    created_to: '',
     search: '',
     status: '',
     student_id: '',

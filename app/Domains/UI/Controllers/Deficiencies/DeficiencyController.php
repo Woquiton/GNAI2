@@ -35,6 +35,8 @@ final class DeficiencyController
             [
                 'deficiencies' => $deficiencies,
                 'filters' => [
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'cid_code' => $filters->cidCode ?? '',
                     'is_active' => $filters->isActive === null ? '' : (string) (int) $filters->isActive,

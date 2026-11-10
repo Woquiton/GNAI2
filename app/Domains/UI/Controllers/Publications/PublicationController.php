@@ -46,7 +46,18 @@ final class PublicationController
             'Publications/Index',
             [
                 'publications' => $publications,
-                'filters' => $request->only(['title', 'is_active', 'type', 'per_page']),
+                'filters' => $request->only([
+                    'author_name',
+                    'tag_name',
+                    'is_featured',
+
+                    'created_from',
+                    'created_to',
+                    'title',
+                    'is_active',
+                    'type',
+                    'per_page',
+                ]),
                 'types' => PublicationType::options(),
                 'can' => [
                     'create' => $request->user()?->can('publication.create') ?? false,

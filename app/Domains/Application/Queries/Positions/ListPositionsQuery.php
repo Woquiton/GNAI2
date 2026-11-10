@@ -15,7 +15,13 @@ final class ListPositionsQuery
      */
     public function execute(ListPositionsData $filters): LengthAwarePaginator
     {
-        $query = Position::query();
+        $query = Position::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ));
 
         if (filled($filters->name)) {
             $query->where('name', 'like', trim($filters->name).'%');

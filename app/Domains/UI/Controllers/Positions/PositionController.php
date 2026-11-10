@@ -33,6 +33,8 @@ final class PositionController
             [
                 'positions' => $positions,
                 'filters' => [
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'description' => $filters->description ?? '',
                     'is_active' => $filters->isActive === null ? '' : (string) (int) $filters->isActive,

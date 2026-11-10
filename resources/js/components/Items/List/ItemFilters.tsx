@@ -1,10 +1,13 @@
-import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
+import CheckboxSelect from '@/components/Forms/CheckboxSelect/CheckboxSelect';
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
+import { booleanOptions, optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { itemFilterOptions } from '../Items.constants';
 import type { ItemFilters as ItemFilterValues } from '../Items.types';
 
 interface ItemFiltersProps {
+    deficiencyOptions: Array<{ id: number; name: string }>;
     values: ItemFilterValues;
     itemTypeOptions: Record<string, string>;
     accessibilityFeatureOptions: Record<string, string>;
@@ -15,6 +18,7 @@ interface ItemFiltersProps {
 }
 
 export default function ItemFilters({
+    deficiencyOptions,
     values,
     itemTypeOptions,
     accessibilityFeatureOptions,
@@ -51,7 +55,43 @@ export default function ItemFilters({
     return (
         <TableListFilters
             label="Filtrar itens"
-            moreFilters={moreFilters}
+            moreFilters={
+                <>
+                    {moreFilters}
+                    <TextInputField
+                        id="items-filter-asset_code"
+                        name="asset_code"
+                        label="Código patrimonial"
+                        maxLength={255}
+                        value={values.asset_code}
+                        error={errors.asset_code}
+                        onChange={(value) => onUpdate('asset_code', value)}
+                    />
+                    <CheckboxSelect
+                        id="items-filter-deficiency_ids"
+                        name="deficiency_ids"
+                        label="Perfil de atendimento"
+                        options={deficiencyOptions.map((profile) => ({
+                            value: String(profile.id),
+                            label: profile.name,
+                        }))}
+                        value={values.deficiency_ids}
+                        error={errors.deficiency_ids}
+                        onChange={(value) => onUpdate('deficiency_ids', value)}
+                    />
+                    <SelectInputField
+                        id="items-filter-is_loanable"
+                        name="is_loanable"
+                        label="Permite empréstimo"
+                        placeholder="Todos"
+                        options={booleanOptions('Sim', 'Não')}
+                        value={values.is_loanable}
+                        error={errors.is_loanable}
+                        onChange={(value) => onUpdate('is_loanable', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
             onClear={onClear}
             onSubmit={onSubmit}
         >

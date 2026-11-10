@@ -94,3 +94,13 @@ Reduza o arquivo ou converta-o para um dos formatos aceitos e tente novamente.
 
 **Aparece "Este CPF já está cadastrado para outra pessoa." ao cadastrar um responsável**
 O CPF já pertence a outra pessoa no sistema. Confira o número digitado.
+
+## Filtrar pelo período de cadastro
+
+Na listagem de responsáveis, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+### Filtros de responsáveis
+
+Em **Mais filtros**, pesquise também pelo Telefone do responsável. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.

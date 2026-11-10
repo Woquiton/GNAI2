@@ -196,3 +196,19 @@ Cada curso só pode ser vinculado uma vez ao mesmo aluno. Se o curso estiver no 
 
 **Aparece "Este curso está desativado e não pode ser vinculado."**
 O curso foi desativado em **Gestão do núcleo → Cadastros → Cursos**.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+Em **Mais filtros**, você também pode pesquisar pela **Matrícula** do aluno.
+
+## Filtrar por vários perfis de atendimento
+
+Em **Mais filtros**, abra **Perfil de atendimento** e marque os checkboxes dos perfis desejados. A lista permanece como está enquanto você marca as opções. Clique fora do seletor para aplicar a pesquisa. Pelo teclado, saia do seletor com Tab ou feche com Esc para aplicar.
+
+A pesquisa encontra registros com pelo menos um dos perfis marcados. Desmarque todos para consultar todos os perfis. A borracha também limpa essa seleção.
+
+A opção **Sem perfil de atendimento** também pode ser combinada com os demais perfis para incluir alunos sem vínculo.

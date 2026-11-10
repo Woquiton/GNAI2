@@ -47,6 +47,12 @@ function countActiveFields(region: HTMLElement | null): number {
             if (filled) active.add(field.name);
         });
 
+    region
+        ?.querySelectorAll<HTMLElement>('[data-filter-name][data-filter-value]')
+        .forEach((field) => {
+            if (field.dataset.filterValue?.trim()) active.add(field.dataset.filterName ?? '');
+        });
+
     return active.size;
 }
 

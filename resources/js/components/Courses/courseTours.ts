@@ -27,6 +27,10 @@ const HELP_HREF = helpUrls.show('cadastros-do-atendimento', 'cursos');
 const ROLLOVER_GROUP = 'Alunos do Curso';
 
 export const courseListTour: TableListTourConfig = {
+    moreFilters: [
+        'Use Disciplina da matriz para encontrar cursos que oferecem uma disciplina. Informe parte do nome.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: HELP_HREF,
     filters: [
         'Digite o nome do curso para encontrá-lo. Você também pode filtrar pelo Status: ativo ou inativo.',

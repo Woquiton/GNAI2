@@ -16,6 +16,16 @@ final class ListCoursesQuery
     public function execute(ListCoursesData $filters): LengthAwarePaginator
     {
         $query = Course::query()
+            ->when(filled($filters->disciplineName), fn ($query) => $query->whereHas(
+                'disciplines',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->disciplineName).'%'),
+            ))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->withCount(['disciplines', 'studentCourses']);
 
         if (filled($filters->name)) {

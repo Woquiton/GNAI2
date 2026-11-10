@@ -30,6 +30,10 @@ const HELP_SLUG = 'publicacoes';
 type FormMode = 'create' | 'edit';
 
 export const publicationListTour: TableListTourConfig = {
+    moreFilters: [
+        'Pesquise por Autor ou Etiqueta e escolha se a publicação está Em destaque.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: helpUrls.show(HELP_SLUG, 'consultar-as-publicacoes'),
     actions:
         'Clique em Cadastrar publicação para escrever uma notícia, um evento, um comunicado, um artigo ou um registro para o site.',

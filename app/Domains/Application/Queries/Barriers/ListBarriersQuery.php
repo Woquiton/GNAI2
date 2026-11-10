@@ -17,6 +17,21 @@ final readonly class ListBarriersQuery
         $barrierMorphClass = (new Barrier)->getMorphClass();
 
         return Barrier::query()
+            ->when(filled($filters->institutionName), fn ($query) => $query->whereHas(
+                'institution',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->institutionName).'%'),
+            ))
+            ->when(filled($filters->locationName), fn ($query) => $query->whereHas(
+                'location',
+                fn ($related) => $related->where('name', 'like', '%'.trim($filters->locationName).'%'),
+            ))
+            ->when($filters->isActive !== null, fn ($query) => $query->where('is_active', $filters->isActive))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with(['category', 'location', 'deficiencies', 'inspections.evidences', 'registeredBy'])
             ->when($name !== '', fn (Builder $query) => $query->where('name', 'like', "%{$name}%"))
             ->when($filters->category, function (Builder $query) use ($filters): void {

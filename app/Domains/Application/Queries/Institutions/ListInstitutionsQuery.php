@@ -16,6 +16,21 @@ final class ListInstitutionsQuery
     public function execute(ListInstitutionsData $filters): LengthAwarePaginator
     {
         $query = Institution::query()
+            ->when(filled($filters->shortName), fn ($query) => $query->where(
+                'short_name', 'like', '%'.trim($filters->shortName).'%',
+            ))
+            ->when(filled($filters->district), fn ($query) => $query->where(
+                'district', 'like', '%'.trim($filters->district).'%',
+            ))
+            ->when($filters->hasBarriers !== null, fn ($query) => $filters->hasBarriers
+                ? $query->has('barriers')
+                : $query->doesntHave('barriers'))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with(['locations', 'barriers']);
 
         if (filled($filters->name)) {

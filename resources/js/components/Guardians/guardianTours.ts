@@ -22,6 +22,10 @@ const targets = GUARDIAN_TOUR_TARGETS;
 const HELP_SLUG = 'alunos-responsaveis-e-documentos';
 
 export const guardianListTour: TableListTourConfig = {
+    moreFilters: [
+        'Pesquise também pelo Telefone do responsável.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: helpUrls.show(HELP_SLUG, 'adicionar-um-responsavel'),
     actions: [
         'Voltar leva para o prontuário do aluno, na aba Responsáveis. Cadastrar abre a tela para adicionar um responsável.',

@@ -15,6 +15,8 @@ export interface BarrierCategoryPaginator extends TableListPage {
 }
 
 export type BarrierCategoryFilters = {
+    created_from: string;
+    created_to: string;
     name: string;
     is_active: string;
 };

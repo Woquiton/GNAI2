@@ -2,6 +2,8 @@ import { booleanOptions } from '@/components/Forms/FormFields/fieldOptions';
 import type { DeficiencyFilters } from './Deficiencies.types';
 
 export const emptyDeficiencyFilters: DeficiencyFilters = {
+    created_from: '',
+    created_to: '',
     name: '',
     cid_code: '',
     is_active: '',

@@ -23,7 +23,25 @@ export default function BackupFilters({
     const userOptions = users.map((user) => ({ value: String(user.id), label: user.name }));
 
     return (
-        <TableListFilters label="Filtrar backups" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <SelectInputField
+                        id="backup-filter-user"
+                        name="user_id"
+                        label="Responsável"
+                        placeholder="Todos os responsáveis"
+                        options={userOptions}
+                        value={values.user_id}
+                        error={errors.user_id}
+                        onChange={(value) => onUpdate('user_id', value)}
+                    />
+                </>
+            }
+            label="Filtrar backups"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="backup-filter-name"
                 name="name"
@@ -43,16 +61,6 @@ export default function BackupFilters({
                 value={values.status}
                 error={errors.status}
                 onChange={(value) => onUpdate('status', value)}
-            />
-            <SelectInputField
-                id="backup-filter-user"
-                name="user_id"
-                label="Responsável"
-                placeholder="Todos os responsáveis"
-                options={userOptions}
-                value={values.user_id}
-                error={errors.user_id}
-                onChange={(value) => onUpdate('user_id', value)}
             />
         </TableListFilters>
     );

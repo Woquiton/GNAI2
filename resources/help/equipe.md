@@ -101,3 +101,13 @@ Use os filtros da listagem: **Nome do profissional**, **E-mail**, **Matrícula**
 - **"Você não pode excluir seu próprio registro de profissional."**: Peça a outro usuário com permissão.
 - **"Somente o administrador superior do Gnai pode desativar ou remover um administrador."**: Profissionais administradores só podem ser inativados ou excluídos pelo administrador superior.
 - **O profissional não recebeu o link de senha**: Ele pode pedir um novo link pela opção **Esqueceu sua senha?** na tela de login. Veja [Acesso ao sistema](/ajuda/acesso-ao-sistema).
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+### Filtros de profissionais
+
+Em **Mais filtros**, pesquise pelo Telefone e escolha se o profissional é Exibido no site. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.

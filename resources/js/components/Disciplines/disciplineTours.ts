@@ -20,6 +20,10 @@ const targets = DISCIPLINE_TOUR_TARGETS;
 const HELP_HREF = helpUrls.show('cadastros-do-atendimento', 'disciplinas');
 
 export const disciplineListTour: TableListTourConfig = {
+    moreFilters: [
+        'Pesquise por Curso vinculado ou Professor vinculado. Informe parte do nome para encontrar as disciplinas correspondentes.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: HELP_HREF,
     filters: [
         'Em Nome da Disciplina, digite parte do nome para encontrar uma disciplina.',

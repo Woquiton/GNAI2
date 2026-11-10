@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { accessibilityFeatureStatusOptions } from '../AccessibilityFeatures.constants';
@@ -20,6 +21,9 @@ export default function AccessibilityFeatureFilters({
 }: AccessibilityFeatureFiltersProps): React.JSX.Element {
     return (
         <TableListFilters
+            moreFilters={
+                <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+            }
             label="Filtrar recursos de acessibilidade"
             onClear={onClear}
             onSubmit={onSubmit}

@@ -17,6 +17,18 @@ final class ListLocationsQuery
     public function execute(ListLocationsData $filters): LengthAwarePaginator
     {
         $query = Location::query()
+            ->when(filled($filters->type), fn ($query) => $query->where(
+                'type', 'like', '%'.trim($filters->type).'%',
+            ))
+            ->when($filters->hasBarriers !== null, fn ($query) => $filters->hasBarriers
+                ? $query->has('barriers')
+                : $query->doesntHave('barriers'))
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with('institution');
 
         if (filled($filters->name)) {

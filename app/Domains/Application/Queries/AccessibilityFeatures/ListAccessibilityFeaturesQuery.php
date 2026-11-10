@@ -15,7 +15,13 @@ final class ListAccessibilityFeaturesQuery
      */
     public function execute(ListAccessibilityFeaturesData $filters): LengthAwarePaginator
     {
-        $query = AccessibilityFeature::query();
+        $query = AccessibilityFeature::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ));
 
         if (filled($filters->name)) {
             $query->where('name', 'like', '%'.trim($filters->name).'%');

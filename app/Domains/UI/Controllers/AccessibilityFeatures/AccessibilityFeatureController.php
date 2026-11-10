@@ -31,6 +31,8 @@ final class AccessibilityFeatureController
             [
                 'features' => $features,
                 'filters' => [
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'is_active' => $filters->isActive === null ? '' : ($filters->isActive ? '1' : '0'),
                 ],

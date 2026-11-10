@@ -172,3 +172,19 @@ Desmarque a disciplina na edição do curso e salve. Os vínculos de professores
 - **"Já existe um curso com esse nome."** ou **"Já existe uma disciplina com esse nome."**: Use o cadastro existente ou escolha outro nome.
 - **"Este cargo está desativado e não pode ser vinculado a um profissional."**: Ative o cargo antes de usá-lo no cadastro da equipe.
 - **Um cadastro não aparece em um formulário**: Confira se ele está ativo. Perfis, cargos, disciplinas e cursos desativados não são oferecidos em novos vínculos.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens de cursos e disciplinas, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+Na listagem de **Semestres**, **Mais filtros** reúne **Rótulo** e **Status**. Ano e período continuam na barra principal.
+
+### Filtros de cursos
+
+Em **Mais filtros**, use Disciplina da matriz para encontrar cursos que oferecem uma disciplina. Informe parte do nome. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.
+
+### Filtros de disciplinas
+
+Em **Mais filtros**, pesquise por Curso vinculado ou Professor vinculado. Informe parte do nome para encontrar as disciplinas correspondentes. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.

@@ -16,11 +16,15 @@ final class ListPositionsData extends Data
         public ?string $description = null,
         public ?bool $isActive = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'is_active' => ['nullable', 'boolean'],

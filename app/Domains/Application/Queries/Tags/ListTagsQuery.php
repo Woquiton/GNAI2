@@ -15,7 +15,13 @@ final class ListTagsQuery
      */
     public function execute(ListTagsData $filters): LengthAwarePaginator
     {
-        $query = Tag::query();
+        $query = Tag::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ));
         $query->when($filters->module, fn ($query, $module) => $query->where('module', $module));
 
         if (filled($filters->name)) {

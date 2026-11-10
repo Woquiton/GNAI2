@@ -110,3 +110,13 @@ Clique em **Excluir** na listagem ou nos detalhes e confirme em **Confirmar excl
 ## Consultar o semestre de origem
 
 Nos relatórios, **Semestre de origem** permite selecionar o contexto temporal do registro. A origem é identificada pela data efetiva no calendário; nos registros de atendimento, acompanha o agendamento. **Sem vínculo: revisar calendário** indica que ainda falta uma correspondência única. A troca do semestre atual preserva a origem já definida. Consulte [Relatórios](/ajuda/relatorios#consultar-origem-e-movimentacoes-por-semestre) para distinguir origem, datas e histórico.
+
+## Filtrar pelo período de cadastro
+
+Nas listagens, abra **Mais filtros** e use **Cadastrado a partir de** e **Cadastrado até** para consultar registros pelo dia em que foram cadastrados. Você pode preencher só uma das datas ou as duas; os dias informados entram no resultado. Esses campos podem ser combinados com os demais filtros.
+
+A lista se atualiza automaticamente. O número ao lado de **Mais filtros** indica quantos filtros estão preenchidos nessa área. Use a borracha para limpar todos os filtros. No celular, abra **Filtros** para encontrar **Mais filtros**.
+
+### Filtros de barreiras
+
+Em **Mais filtros**, pesquise pela Instituição ou pelo Ponto de referência e escolha se o Registro ativo deve ser Sim ou Não. Combine esses critérios com os demais campos da listagem. Campos de texto aceitam parte do valor.

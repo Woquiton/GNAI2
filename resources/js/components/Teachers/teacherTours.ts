@@ -25,6 +25,10 @@ const targets = TEACHER_TOUR_TARGETS;
 const HELP_SLUG = 'professores';
 
 export const teacherListTour: TableListTourConfig = {
+    moreFilters: [
+        'Pesquise por curso ou disciplina vinculada ao professor. Os vínculos de qualquer semestre entram nessa pesquisa.',
+        'Você pode combinar esses critérios com o período de cadastro. A borracha limpa todos os filtros.',
+    ],
     helpHref: helpUrls.show(HELP_SLUG),
     actions: [
         'Cadastrar professor abre o formulário de um novo professor.',

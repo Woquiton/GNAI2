@@ -48,6 +48,8 @@ final class PaeePagePresenter
                 ->values()
                 ->all(),
             'filters' => [
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
                 'status' => (string) ($filters->status ?? ''),
                 'semester_id' => $filters->semesterId === null ? '' : (string) $filters->semesterId,
                 'search' => (string) ($filters->search ?? ''),

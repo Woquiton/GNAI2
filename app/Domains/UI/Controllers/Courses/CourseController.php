@@ -36,6 +36,9 @@ final class CourseController
             [
                 'courses' => $courses,
                 'filters' => [
+                    'discipline_name' => $filters->disciplineName ?? '',
+                    'created_from' => $filters->createdFrom ?? '',
+                    'created_to' => $filters->createdTo ?? '',
                     'name' => $filters->name ?? '',
                     'is_active' => $filters->isActive === null ? '' : (string) (int) $filters->isActive,
                 ],

@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import type { SelectFieldOption } from '@/components/Forms/SelectField/SelectField.types';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
@@ -26,7 +27,14 @@ export default function CaseStudyFilters({
     onSubmit,
 }: CaseStudyFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar Estudos de Caso" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+            }
+            label="Filtrar Estudos de Caso"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             {showSearch ? (
                 <TextInputField
                     id="case-study-filter-search"

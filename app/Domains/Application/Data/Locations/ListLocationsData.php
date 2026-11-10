@@ -16,11 +16,19 @@ final class ListLocationsData extends Data
         public ?string $institutionName = null,
         public ?bool $isActive = null,
         public int $perPage = 10,
+        public ?string $createdFrom = null,
+        public ?string $createdTo = null,
+        public ?string $type = null,
+        public ?bool $hasBarriers = null,
     ) {}
 
     public static function rules(): array
     {
         return [
+            'type' => ['nullable', 'string', 'max:255'],
+            'has_barriers' => ['nullable', 'boolean'],
+            'created_from' => ['nullable', 'date_format:Y-m-d'],
+            'created_to' => ['nullable', 'date_format:Y-m-d'],
             'name' => ['nullable', 'string', 'max:255'],
             'institution_name' => ['nullable', 'string', 'max:255'],
             'is_active' => ['nullable', 'boolean'],

@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { peiStatusOptions } from '../Peis.constants';
@@ -40,7 +41,14 @@ export default function PeiFilters({
         ) : null;
 
     return (
-        <TableListFilters label="Filtrar PEIs" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+            }
+            label="Filtrar PEIs"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             {studentFilter}
             <SelectInputField
                 id="pei-filter-semester"

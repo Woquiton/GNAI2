@@ -1,3 +1,5 @@
+import { booleanOptions } from '@/components/Forms/FormFields/fieldOptions';
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { locationStatusOptions } from '../Locations.constants';
@@ -20,6 +22,30 @@ export default function LocationFilters({
 }: LocationFiltersProps): React.JSX.Element {
     return (
         <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="locations-filter-type"
+                        name="type"
+                        label="Tipo de local"
+                        maxLength={255}
+                        value={values.type}
+                        error={errors.type}
+                        onChange={(value) => onUpdate('type', value)}
+                    />
+                    <SelectInputField
+                        id="locations-filter-has_barriers"
+                        name="has_barriers"
+                        label="Barreiras vinculadas"
+                        placeholder="Todos"
+                        options={booleanOptions('Sim', 'Não')}
+                        value={values.has_barriers}
+                        error={errors.has_barriers}
+                        onChange={(value) => onUpdate('has_barriers', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
             label="Filtrar pontos de referência"
             onClear={onClear}
             onSubmit={onSubmit}

@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { courseStatusOptions } from '../Courses.constants';
@@ -19,7 +20,25 @@ export default function CourseFilters({
     onSubmit,
 }: CourseFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar cursos" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="courses-filter-discipline_name"
+                        name="discipline_name"
+                        label="Disciplina da matriz"
+                        maxLength={255}
+                        value={values.discipline_name}
+                        error={errors.discipline_name}
+                        onChange={(value) => onUpdate('discipline_name', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
+            label="Filtrar cursos"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="course-filter-name"
                 name="name"

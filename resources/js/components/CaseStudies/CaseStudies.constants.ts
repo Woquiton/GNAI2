@@ -1,6 +1,8 @@
 import type { CaseStudyListFilters } from './CaseStudies.types';
 
 export const emptyCaseStudyFilters: CaseStudyListFilters = {
+    created_from: '',
+    created_to: '',
     search: '',
     status: '',
     semester_id: '',

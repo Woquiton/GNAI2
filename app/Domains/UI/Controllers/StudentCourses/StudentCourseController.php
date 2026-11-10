@@ -43,6 +43,8 @@ final class StudentCourseController
                 ->map(static fn (mixed $name, int|string $id): array => ['value' => (string) $id, 'label' => (string) $name])
                 ->values(),
             'filters' => [
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
                 'course_id' => $filters->courseId === null ? '' : (string) $filters->courseId,
                 'academic_year' => $filters->academicYear ?? '',
                 'is_current' => $filters->isCurrent === null ? '' : (string) (int) $filters->isCurrent,

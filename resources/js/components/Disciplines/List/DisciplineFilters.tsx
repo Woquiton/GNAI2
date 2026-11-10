@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { disciplineStatusOptions } from '../Disciplines.constants';
@@ -19,7 +20,34 @@ export default function DisciplineFilters({
     onSubmit,
 }: DisciplineFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar disciplinas" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="disciplines-filter-course_name"
+                        name="course_name"
+                        label="Curso vinculado"
+                        maxLength={255}
+                        value={values.course_name}
+                        error={errors.course_name}
+                        onChange={(value) => onUpdate('course_name', value)}
+                    />
+                    <TextInputField
+                        id="disciplines-filter-teacher_name"
+                        name="teacher_name"
+                        label="Professor vinculado"
+                        maxLength={255}
+                        value={values.teacher_name}
+                        error={errors.teacher_name}
+                        onChange={(value) => onUpdate('teacher_name', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
+            label="Filtrar disciplinas"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="discipline-filter-name"
                 name="name"

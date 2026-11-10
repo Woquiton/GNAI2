@@ -2,6 +2,12 @@ import { booleanOptions } from '@/components/Forms/FormFields/fieldOptions';
 import type { InstitutionFilters } from './Institutions.types';
 
 export const emptyInstitutionFilters: InstitutionFilters = {
+    short_name: '',
+    district: '',
+    has_barriers: '',
+
+    created_from: '',
+    created_to: '',
     name: '',
     location: '',
     is_active: '',

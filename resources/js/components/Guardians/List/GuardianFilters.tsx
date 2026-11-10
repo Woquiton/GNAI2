@@ -1,3 +1,4 @@
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { optionsFromRecord } from '@/components/Forms/FormFields/fieldOptions';
 import { SelectInputField, TextInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
@@ -21,7 +22,25 @@ export default function GuardianFilters({
     onSubmit,
 }: GuardianFiltersProps): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar responsáveis" onClear={onClear} onSubmit={onSubmit}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="guardians-filter-phone"
+                        name="phone"
+                        label="Telefone"
+                        maxLength={255}
+                        value={values.phone}
+                        error={errors.phone}
+                        onChange={(value) => onUpdate('phone', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
+            label="Filtrar responsáveis"
+            onClear={onClear}
+            onSubmit={onSubmit}
+        >
             <TextInputField
                 id="guardian-filter-name"
                 name="name"

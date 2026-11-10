@@ -13,6 +13,11 @@ export interface DisciplinePaginator extends TableListPage {
 }
 
 export type DisciplineFilters = {
+    course_name: string;
+    teacher_name: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     is_active: string;
 };

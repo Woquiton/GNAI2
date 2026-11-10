@@ -1,3 +1,5 @@
+import { booleanOptions } from '@/components/Forms/FormFields/fieldOptions';
+import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
 import { TextInputField, SelectInputField } from '@/components/Forms/FormFields/FormFields';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import type { PublicationFilters as Filters, SelectOption } from '../Publications.types';
@@ -17,7 +19,44 @@ export default function PublicationFilters({
     onSubmit: () => void;
 }): React.JSX.Element {
     return (
-        <TableListFilters label="Filtrar publicações" onSubmit={onSubmit} onClear={onClear}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <TextInputField
+                        id="publications-filter-author_name"
+                        name="author_name"
+                        label="Autor"
+                        maxLength={255}
+                        value={values.author_name}
+                        error={errors.author_name}
+                        onChange={(value) => onUpdate('author_name', value)}
+                    />
+                    <TextInputField
+                        id="publications-filter-tag_name"
+                        name="tag_name"
+                        label="Etiqueta"
+                        maxLength={255}
+                        value={values.tag_name}
+                        error={errors.tag_name}
+                        onChange={(value) => onUpdate('tag_name', value)}
+                    />
+                    <SelectInputField
+                        id="publications-filter-is_featured"
+                        name="is_featured"
+                        label="Em destaque"
+                        placeholder="Todos"
+                        options={booleanOptions('Sim', 'Não')}
+                        value={values.is_featured}
+                        error={errors.is_featured}
+                        onChange={(value) => onUpdate('is_featured', value)}
+                    />
+                    <TableListCreatedFilters values={values} errors={errors} onUpdate={onUpdate} />
+                </>
+            }
+            label="Filtrar publicações"
+            onSubmit={onSubmit}
+            onClear={onClear}
+        >
             <TextInputField
                 id="publication-title-filter"
                 name="title"

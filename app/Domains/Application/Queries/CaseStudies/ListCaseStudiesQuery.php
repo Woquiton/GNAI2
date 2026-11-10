@@ -14,6 +14,12 @@ final class ListCaseStudiesQuery
     public function execute(ListCaseStudiesData $filters, ?Student $student = null): LengthAwarePaginator
     {
         return CaseStudy::query()
+            ->when($filters->createdFrom, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '>=', $filters->createdFrom,
+            ))
+            ->when($filters->createdTo, fn ($query) => $query->whereDate(
+                $query->getModel()->qualifyColumn('created_at'), '<=', $filters->createdTo,
+            ))
             ->with(['student.person', 'creator', 'semester'])
             ->withCount('paees')
             ->when($student !== null, fn ($query) => $query->where('student_id', $student->getKey()))

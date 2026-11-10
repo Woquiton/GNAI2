@@ -35,6 +35,12 @@ export interface ItemPaginator extends TableListPage {
 }
 
 export type ItemFilters = {
+    asset_code: string;
+    deficiency_ids: string;
+    is_loanable: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     item_type: string;
     is_digital: string;
@@ -51,6 +57,7 @@ export interface ItemListPermissions {
 }
 
 export interface ItemIndexProps {
+    deficiencyOptions: NamedRecord[];
     items: ItemPaginator;
     filters: Partial<ItemFilters>;
     itemTypeOptions: Record<string, string>;

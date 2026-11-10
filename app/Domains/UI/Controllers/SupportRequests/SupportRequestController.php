@@ -36,7 +36,13 @@ final readonly class SupportRequestController
     {
         return Inertia::render('SupportRequests/Index', [
             'requests' => $query->execute($filters)->through(fn ($record) => $this->presenter->summary($record)),
-            'filters' => ['search' => $filters->search ?? '', 'status' => $filters->status ?? '', 'student_id' => $filters->studentId === null ? '' : (string) $filters->studentId],
+            'filters' => [
+                'created_from' => $filters->createdFrom ?? '',
+                'created_to' => $filters->createdTo ?? '',
+                'search' => $filters->search ?? '',
+                'status' => $filters->status ?? '',
+                'student_id' => $filters->studentId === null ? '' : (string) $filters->studentId,
+            ],
             'statuses' => $form->choices()['statuses'],
             'students' => $form->students(),
             'can' => $this->presenter->permissions($request),

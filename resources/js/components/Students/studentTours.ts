@@ -26,6 +26,7 @@ export const studentListTour: TableListTourConfig = {
         'A lista se atualiza sozinha enquanto você digita ou escolhe uma opção.',
     ],
     moreFilters: [
+        'Em Perfil de atendimento, marque os perfis desejados. A lista só pesquisa ao clicar fora do seletor. Pelo teclado, saia com Tab ou feche com Esc para aplicar.',
         'Aqui você filtra também pelo tipo de acompanhamento, pelo telefone, pelo e-mail e pelo perfil de atendimento.',
         'O número ao lado do nome mostra quantos desses filtros estão em uso.',
     ],

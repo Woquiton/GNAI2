@@ -6,4 +6,14 @@ export const scheduleStatusLabels: Record<ScheduleStatus, string> = {
     finished: 'Encerrado',
 };
 
-export const emptyPublicationFilters: PublicationFilters = { title: '', is_active: '', type: '' };
+export const emptyPublicationFilters: PublicationFilters = {
+    author_name: '',
+    tag_name: '',
+    is_featured: '',
+
+    created_from: '',
+    created_to: '',
+    title: '',
+    is_active: '',
+    type: '',
+};

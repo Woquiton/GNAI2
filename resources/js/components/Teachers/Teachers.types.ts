@@ -49,6 +49,11 @@ export interface TeacherDisciplinesProps {
 }
 
 export type TeacherFilters = {
+    course_name: string;
+    discipline_name: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     email: string;
     registration: string;

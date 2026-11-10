@@ -31,7 +31,35 @@ export default function SessionStudentFilters({
     });
 
     return (
-        <TableListFilters label="Filtrar agendamentos" onSubmit={submit} onClear={clear}>
+        <TableListFilters
+            moreFilters={
+                <>
+                    <SelectInputField
+                        id="session-filter-type"
+                        name="type"
+                        label="Tipo"
+                        placeholder="Tipo (Todos)"
+                        value={values.type}
+                        options={options.types}
+                        error={errors.type}
+                        onChange={(value) => update('type', value)}
+                    />
+                    <SelectInputField
+                        id="session-filter-status"
+                        name="status"
+                        label="Status"
+                        placeholder="Status (Todos)"
+                        value={values.status}
+                        options={options.statuses}
+                        error={errors.status}
+                        onChange={(value) => update('status', value)}
+                    />
+                </>
+            }
+            label="Filtrar agendamentos"
+            onSubmit={submit}
+            onClear={clear}
+        >
             <SelectInputField
                 id="session-filter-professional"
                 name="professional"
@@ -41,26 +69,6 @@ export default function SessionStudentFilters({
                 options={options.professionals ?? []}
                 error={errors.professional}
                 onChange={(value) => update('professional', value)}
-            />
-            <SelectInputField
-                id="session-filter-type"
-                name="type"
-                label="Tipo"
-                placeholder="Tipo (Todos)"
-                value={values.type}
-                options={options.types}
-                error={errors.type}
-                onChange={(value) => update('type', value)}
-            />
-            <SelectInputField
-                id="session-filter-status"
-                name="status"
-                label="Status"
-                placeholder="Status (Todos)"
-                value={values.status}
-                options={options.statuses}
-                error={errors.status}
-                onChange={(value) => update('status', value)}
             />
         </TableListFilters>
     );

@@ -31,6 +31,10 @@ export interface CoursePaginator extends TableListPage {
 }
 
 export type CourseFilters = {
+    discipline_name: string;
+
+    created_from: string;
+    created_to: string;
     name: string;
     is_active: string;
 };
