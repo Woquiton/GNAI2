@@ -8,49 +8,49 @@
         'sistema' => 'Sistema',
     ];
     $features = [
-        ['atendimento', 'Alunos', 'Cadastro, prontuário e acompanhamento dos estudantes atendidos pelo núcleo.', 'bi bi-person'],
-        ['atendimento', 'Solicitações de Atendimento', 'Acolhimento das demandas, análise, encaminhamentos e acompanhamento das solicitações.', 'bi bi-file-earmark-text'],
-        ['atendimento', 'Responsáveis', 'Contatos e vínculos dos responsáveis com cada aluno.', 'bi bi-person-hearts'],
-        ['atendimento', 'Documentos do Aluno', 'Laudos, avaliações e outros documentos reunidos no prontuário.', 'bi bi-folder2-open'],
-        ['atendimento', 'Histórico Acadêmico', 'Matrículas, cursos e acompanhamento do período do aluno por semestre.', 'bi bi-clock-history'],
-        ['atendimento', 'Agendamentos', 'Agenda de atendimentos, participantes, cancelamentos e registro de presença.', 'bi bi-calendar-check'],
-        ['atendimento', 'Fila de Espera', 'Acompanhamento dos estudantes e profissionais que aguardam itens para empréstimo.', 'bi bi-hourglass-split'],
-        ['atendimento', 'Atendimentos Especializados', 'Registros, avaliações e histórico dos atendimentos educacionais especializados.', 'bi bi-clipboard2-check'],
-        ['atendimento', 'Atendimentos Pedagógicos', 'Acompanhamentos dos alunos, presença dos responsáveis e histórico pedagógico.', 'bi bi-chat-square-text'],
-        ['planos', 'Estudos de Caso', 'Observação, escuta, barreiras e estratégias para compreender as necessidades do aluno.', 'bi bi-clipboard-data'],
-        ['planos', 'PAEEs', 'Planos de Atendimento Educacional Especializado, com objetivos, recursos e revisões.', 'bi bi-signpost-split'],
-        ['planos', 'PEIs', 'Planos Educacionais Individualizados e adaptações por disciplina, com histórico de revisões.', 'bi bi-file-text'],
-        ['recursos', 'Itens', 'Catálogo unificado de tecnologias assistivas e materiais pedagógicos acessíveis.', 'bi bi-box-seam'],
-        ['recursos', 'Empréstimos', 'Disponibilidade dos itens, empréstimos, devoluções e acompanhamento dos prazos.', 'bi bi-arrow-left-right'],
-        ['recursos', 'Barreiras', 'Registro e acompanhamento das barreiras de acessibilidade da instituição.', 'bi bi-slash-circle'],
-        ['recursos', 'Vistorias e Evidências', 'Histórico de vistorias, fotos e arquivos relacionados a itens e barreiras.', 'bi bi-search'],
-        ['gestao', 'Relatórios', 'Seleção de dados, filtros e geração de relatórios para acompanhar o trabalho do núcleo.', 'bi bi-bar-chart'],
-        ['gestao', 'Equipe', 'Cadastro dos profissionais, cargos e permissões de acesso.', 'bi bi-person-badge'],
-        ['gestao', 'Professores', 'Cadastro e vínculos com cursos e disciplinas por semestre.', 'bi bi-mortarboard'],
-        ['gestao', 'Portal do Professor', 'Acesso dos professores aos alunos e às adaptações curriculares sob sua responsabilidade.', 'bi bi-easel'],
-        ['gestao', 'Pessoas', 'Cadastro unificado de alunos, responsáveis, professores e profissionais.', 'bi bi-people'],
-        ['gestao', 'Perfis de Atendimento', 'Perfis e condições associados às necessidades de acompanhamento dos alunos.', 'bi bi-heart-pulse'],
-        ['gestao', 'Cargos', 'Funções da equipe e permissões de acesso aos recursos do sistema.', 'bi bi-briefcase'],
-        ['gestao', 'Semestres', 'Calendário letivo e vínculos dos registros com seus períodos de referência.', 'bi bi-calendar3'],
-        ['gestao', 'Cursos', 'Matriz curricular, períodos e organização dos vínculos acadêmicos.', 'bi bi-mortarboard'],
-        ['gestao', 'Disciplinas', 'Componentes curriculares dos cursos e vínculos com professores.', 'bi bi-journal-bookmark'],
-        ['gestao', 'Recursos de Acessibilidade', 'Classificação dos recursos de acessibilidade associados aos itens.', 'bi bi-universal-access'],
-        ['gestao', 'Etiquetas', 'Organização de pessoas, publicações e mensagens com etiquetas por contexto.', 'bi bi-tags'],
-        ['gestao', 'Categorias de Barreiras', 'Classificação das barreiras físicas, comunicacionais e de outras naturezas.', 'bi bi-grid'],
+        ['atendimento', 'Alunos', 'Cadastro, prontuário e acompanhamento dos estudantes atendidos pelo núcleo.', 'ti-user'],
+        ['atendimento', 'Solicitações de Atendimento', 'Acolhimento das demandas, análise, encaminhamentos e acompanhamento das solicitações.', 'ti-receipt'],
+        ['atendimento', 'Responsáveis', 'Contatos e vínculos dos responsáveis com cada aluno.', 'fa fa-users'],
+        ['atendimento', 'Documentos do Aluno', 'Laudos, avaliações e outros documentos reunidos no prontuário.', 'fa fa-folder-open-o'],
+        ['atendimento', 'Histórico Acadêmico', 'Matrículas, cursos e acompanhamento do período do aluno por semestre.', 'fa fa-graduation-cap'],
+        ['atendimento', 'Agendamentos', 'Agenda de atendimentos, participantes, cancelamentos e registro de presença.', 'ti-calendar'],
+        ['atendimento', 'Fila de Espera', 'Acompanhamento dos estudantes e profissionais que aguardam itens para empréstimo.', 'ti-time'],
+        ['atendimento', 'Atendimentos Especializados', 'Registros, avaliações e histórico dos atendimentos educacionais especializados.', 'ti-book'],
+        ['atendimento', 'Atendimentos Pedagógicos', 'Acompanhamentos dos alunos, presença dos responsáveis e histórico pedagógico.', 'ti-write'],
+        ['planos', 'Estudos de Caso', 'Observação, escuta, barreiras e estratégias para compreender as necessidades do aluno.', 'ti-clipboard'],
+        ['planos', 'PAEEs', 'Planos de Atendimento Educacional Especializado, com objetivos, recursos e revisões.', 'ti-direction-alt'],
+        ['planos', 'PEIs', 'Planos Educacionais Individualizados e adaptações por disciplina, com histórico de revisões.', 'ti-file'],
+        ['recursos', 'Itens', 'Catálogo unificado de tecnologias assistivas e materiais pedagógicos acessíveis.', 'ti-package'],
+        ['recursos', 'Empréstimos', 'Disponibilidade dos itens, empréstimos, devoluções e acompanhamento dos prazos.', 'ti-exchange-vertical'],
+        ['recursos', 'Barreiras', 'Registro e acompanhamento das barreiras de acessibilidade da instituição.', 'ti-na'],
+        ['recursos', 'Vistorias e Evidências', 'Histórico de vistorias, fotos e arquivos relacionados a itens e barreiras.', 'fa fa-search'],
+        ['gestao', 'Relatórios', 'Seleção de dados, filtros e geração de relatórios para acompanhar o trabalho do núcleo.', 'ti-bar-chart'],
+        ['gestao', 'Equipe', 'Cadastro dos profissionais, cargos e permissões de acesso.', 'ti-id-badge'],
+        ['gestao', 'Professores', 'Cadastro e vínculos com cursos e disciplinas por semestre.', 'ti-blackboard'],
+        ['gestao', 'Portal do Professor', 'Acesso dos professores aos alunos e às adaptações curriculares sob sua responsabilidade.', 'md md-school'],
+        ['gestao', 'Pessoas', 'Cadastro unificado de alunos, responsáveis, professores e profissionais.', 'fa fa-users'],
+        ['gestao', 'Perfis de Atendimento', 'Perfis e condições associados às necessidades de acompanhamento dos alunos.', 'ti-heart'],
+        ['gestao', 'Cargos', 'Funções da equipe e permissões de acesso aos recursos do sistema.', 'ti-briefcase'],
+        ['gestao', 'Semestres', 'Calendário letivo e vínculos dos registros com seus períodos de referência.', 'ti-layout-column2'],
+        ['gestao', 'Cursos', 'Matriz curricular, períodos e organização dos vínculos acadêmicos.', 'ti-medall'],
+        ['gestao', 'Disciplinas', 'Componentes curriculares dos cursos e vínculos com professores.', 'ti-agenda'],
+        ['gestao', 'Recursos de Acessibilidade', 'Classificação dos recursos de acessibilidade associados aos itens.', 'ti-wheelchair'],
+        ['gestao', 'Etiquetas', 'Organização de pessoas, publicações e mensagens com etiquetas por contexto.', 'fa fa-tags'],
+        ['gestao', 'Categorias de Barreiras', 'Classificação das barreiras físicas, comunicacionais e de outras naturezas.', 'ti-layout-grid2'],
         ['gestao', 'Instituições', 'Cadastro das instituições e de suas informações de localização.', 'ti-home'],
-        ['gestao', 'Localizações', 'Pontos de referência, salas e setores vinculados às instituições.', 'bi bi-geo-alt'],
-        ['comunicacao', 'Pendências', 'Responsáveis, prioridades, prazos e acompanhamento das tarefas do núcleo.', 'bi bi-exclamation-triangle'],
-        ['comunicacao', 'Publicações', 'Notícias, eventos, comunicados e outros conteúdos do site institucional.', 'bi bi-megaphone'],
-        ['comunicacao', 'Personalização do Site', 'Organização das seções, identidade e informações do site público.', 'bi bi-palette'],
-        ['comunicacao', 'Notificações', 'Avisos e atualizações relacionados às operações do sistema.', 'bi bi-bell'],
-        ['sistema', 'Dashboard', 'Indicadores, atalhos e atividades recentes do núcleo.', 'bi bi-speedometer2'],
-        ['sistema', 'Inbox', 'Consulta dos e-mails enviados, respostas recebidas e acompanhamento das entregas.', 'bi bi-envelope'],
-        ['sistema', 'Configurações', 'Preferências e parâmetros de funcionamento da instalação.', 'bi bi-gear'],
-        ['sistema', 'Auditoria', 'Consulta ao histórico de alterações e aos responsáveis pelas operações.', 'bi bi-shield-check'],
-        ['sistema', 'Backups', 'Geração, envio, download e restauração de cópias de segurança.', 'bi bi-cloud-arrow-down'],
-        ['sistema', 'Ajuda e Tutoriais', 'Orientações na Central de Ajuda e tutoriais ao vivo nas telas do sistema.', 'bi bi-question-circle'],
-        ['sistema', 'Acessibilidade', 'Alto contraste, ajuste de tamanho e recursos de navegação por teclado.', 'bi bi-universal-access'],
-        ['sistema', 'Acesso e Permissões', 'Autenticação, recuperação de senha e autorização por perfil e permissão.', 'bi bi-shield-lock'],
+        ['gestao', 'Localizações', 'Pontos de referência, salas e setores vinculados às instituições.', 'ti-location-pin'],
+        ['comunicacao', 'Pendências', 'Responsáveis, prioridades, prazos e acompanhamento das tarefas do núcleo.', 'ti-alert'],
+        ['comunicacao', 'Publicações', 'Notícias, eventos, comunicados e outros conteúdos do site institucional.', 'ti-announcement'],
+        ['comunicacao', 'Personalização do Site', 'Organização das seções, identidade e informações do site público.', 'ti-palette'],
+        ['comunicacao', 'Notificações', 'Avisos e atualizações relacionados às operações do sistema.', 'ti-bell'],
+        ['sistema', 'Dashboard', 'Indicadores, atalhos e atividades recentes do núcleo.', 'ti-dashboard'],
+        ['sistema', 'Inbox', 'Consulta dos e-mails enviados, respostas recebidas e acompanhamento das entregas.', 'ti-email'],
+        ['sistema', 'Configurações', 'Preferências e parâmetros de funcionamento da instalação.', 'ti-settings'],
+        ['sistema', 'Auditoria', 'Consulta ao histórico de alterações e aos responsáveis pelas operações.', 'ti-shield'],
+        ['sistema', 'Backups', 'Geração, envio, download e restauração de cópias de segurança.', 'ti-cloud-down'],
+        ['sistema', 'Ajuda e Tutoriais', 'Orientações na Central de Ajuda e tutoriais ao vivo nas telas do sistema.', 'ti-help-alt'],
+        ['sistema', 'Acessibilidade', 'Alto contraste, ajuste de tamanho e recursos de navegação por teclado.', 'md md-accessibility'],
+        ['sistema', 'Acesso e Permissões', 'Autenticação, recuperação de senha e autorização por perfil e permissão.', 'ti-lock'],
     ];
 @endphp
 <!DOCTYPE html>
@@ -63,7 +63,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     @viteReactRefresh
     @vite(['resources/js/about.tsx', 'resources/css/pages/about-us.css'])
 </head>
@@ -71,7 +70,7 @@
     <div id="about-content" class="siteLayout" data-site-contrast="0" data-site-alignment="0">
     <a class="about-skip" href="#conteudo">Pular para o conteúdo</a>
     <a href="{{ route('login') }}" class="access-btn" aria-label="Acessar o sistema">
-        <i class="bi bi-box-arrow-in-right"></i>
+        <i class="fa fa-sign-in" aria-hidden="true"></i>
         <span>Acessar o Sistema</span>
     </a>
 
@@ -138,7 +137,7 @@
             <div class="features-grid" id="featuresGrid">
                 @foreach ($features as [$group, $name, $description, $icon])
                     <div class="feature-card" data-cat="{{ $group }}">
-                        <div class="feature-icon {{ ['purple', 'violet', 'green', 'pink'][$loop->index % 4] }}" aria-hidden="true"><i class="{{ $icon }}"></i></div>
+                        <div class="feature-icon {{ ['purple', 'violet', 'green', 'pink'][$loop->index % 4] }}" aria-hidden="true"><i class="{{ $icon }}" aria-hidden="true"></i></div>
                         <div><h3 class="feature-name">{{ $name }}</h3><p class="feature-desc">{{ $description }}</p></div>
                     </div>
                 @endforeach
@@ -161,28 +160,28 @@
 
                 <div class="sistema-card sistema-aee">
                     <div class="sistema-card-header">
-                        <div class="sistema-icon"><i class="bi bi-people-fill"></i></div>
+                        <div class="sistema-icon"><i class="fa fa-users" aria-hidden="true"></i></div>
                         <div>
                             <div class="sistema-name">Atendimento Educacional Especializado</div>
                             <div class="sistema-tagline">Foco no aluno e na equipe</div>
                         </div>
                     </div>
                     <ul class="sistema-items">
-                        <li><i class="bi bi-check2"></i> Alunos, responsáveis e solicitações de atendimento</li>
-                        <li><i class="bi bi-check2"></i> Equipe de profissionais</li>
-                        <li><i class="bi bi-check2"></i> Professores vinculados</li>
-                        <li><i class="bi bi-check2"></i> Documentos e histórico acadêmico</li>
-                        <li><i class="bi bi-check2"></i> Estudos de Caso, PAEEs e PEIs</li>
-                        <li><i class="bi bi-check2"></i> Atendimentos Especializados</li>
-                        <li><i class="bi bi-check2"></i> Atendimentos pedagógicos</li>
-                        <li><i class="bi bi-check2"></i> Controle de pendências</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Alunos, responsáveis e solicitações de atendimento</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Equipe de profissionais</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Professores vinculados</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Documentos e histórico acadêmico</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Estudos de Caso, PAEEs e PEIs</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Atendimentos Especializados</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Atendimentos pedagógicos</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Controle de pendências</li>
                     </ul>
                 </div>
 
                 <div class="sistemas-divisor">
                     <div class="sistemas-divisor-line"></div>
                     <div class="sistemas-divisor-badge">
-                        <i class="bi bi-link-45deg"></i>
+                        <i class="ti-link" aria-hidden="true"></i>
                         integrados
                     </div>
                     <div class="sistemas-divisor-line"></div>
@@ -190,19 +189,19 @@
 
                 <div class="sistema-card sistema-radar">
                     <div class="sistema-card-header">
-                        <div class="sistema-icon"><i class="bi bi-broadcast"></i></div>
+                        <div class="sistema-icon"><i class="ti-signal" aria-hidden="true"></i></div>
                         <div>
                             <div class="sistema-name">Radar Inclusivo</div>
                             <div class="sistema-tagline">Foco nos recursos e na instituição</div>
                         </div>
                     </div>
                     <ul class="sistema-items">
-                        <li><i class="bi bi-check2"></i> Itens: tecnologias assistivas e materiais acessíveis</li>
-                        <li><i class="bi bi-check2"></i> Registro de barreiras</li>
-                        <li><i class="bi bi-check2"></i> Vistorias e evidências</li>
-                        <li><i class="bi bi-check2"></i> Empréstimos de recursos</li>
-                        <li><i class="bi bi-check2"></i> Fila de espera</li>
-                        <li><i class="bi bi-check2"></i> Perfis e recursos de acessibilidade</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Itens: tecnologias assistivas e materiais acessíveis</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Registro de barreiras</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Vistorias e evidências</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Empréstimos de recursos</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Fila de espera</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i> Perfis e recursos de acessibilidade</li>
                     </ul>
                 </div>
             </div>
@@ -229,11 +228,16 @@
                     <span class="team-role-badge role-dev">Desenvolvimento</span>
                     <div class="team-name">Djavan Teixeira Lopes</div>
                     <a href="mailto:djavanlopesteixeira@gmail.com" class="team-email">
-                        <i class="bi bi-envelope"></i> djavanlopesteixeira@gmail.com
+                        <i class="ti-email" aria-hidden="true"></i> djavanlopesteixeira@gmail.com
                     </a>
-                    <a href="https://github.com/Djavantl" target="_blank" rel="noopener noreferrer" class="team-email">
-                        <i class="bi bi-github"></i> github.com/Djavantl
-                    </a>
+                    <div class="team-socials">
+                        <a href="https://github.com/Djavantl" target="_blank" rel="noopener noreferrer" class="team-email">
+                            <i class="fa fa-github" aria-hidden="true"></i> GitHub
+                        </a>
+                        <a href="https://www.linkedin.com/in/djavan-teixeira-lopes" target="_blank" rel="noopener noreferrer" class="team-email" aria-label="LinkedIn de Djavan Teixeira Lopes (abre em nova aba)">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i> LinkedIn
+                        </a>
+                    </div>
                 </div>
 
                 <div class="team-card">
@@ -245,11 +249,16 @@
                     <span class="team-role-badge role-dev">Desenvolvimento</span>
                     <div class="team-name">Marley Teixeira Meira</div>
                     <a href="mailto:mxrlrey@gmail.com" class="team-email">
-                        <i class="bi bi-envelope"></i> mxrlrey@gmail.com
+                        <i class="ti-email" aria-hidden="true"></i> mxrlrey@gmail.com
                     </a>
-                    <a href="https://github.com/Mxrlrey" target="_blank" rel="noopener noreferrer" class="team-email">
-                        <i class="bi bi-github"></i> github.com/Mxrlrey
-                    </a>
+                    <div class="team-socials">
+                        <a href="https://github.com/Mxrlrey" target="_blank" rel="noopener noreferrer" class="team-email">
+                            <i class="fa fa-github" aria-hidden="true"></i> GitHub
+                        </a>
+                        <a href="https://www.linkedin.com/in/marley-teixeira" target="_blank" rel="noopener noreferrer" class="team-email" aria-label="LinkedIn de Marley Teixeira Meira (abre em nova aba)">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i> LinkedIn
+                        </a>
+                    </div>
                 </div>
 
                 <div class="team-card">
@@ -261,10 +270,10 @@
                     <span class="team-role-badge role-orient">Orientação</span>
                     <div class="team-name">Prof. Woquiton Fernandes</div>
                     <a href="mailto:woquiton@gmail.com" class="team-email">
-                        <i class="bi bi-envelope"></i> woquiton@gmail.com
+                        <i class="ti-email" aria-hidden="true"></i> woquiton@gmail.com
                     </a>
                     <a href="https://github.com/Woquiton" target="_blank" rel="noopener noreferrer" class="team-email">
-                        <i class="bi bi-github"></i> github.com/Woquiton
+                        <i class="fa fa-github" aria-hidden="true"></i> GitHub
                     </a>
                 </div>
             </div>
