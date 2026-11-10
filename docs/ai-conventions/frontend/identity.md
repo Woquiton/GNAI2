@@ -17,7 +17,7 @@ A migração moderniza a tecnologia e a apresentação do Gnai preservando ident
 
 ## Cabeçalho e navegação da página
 
-- `Navigation/PageTitle`, usado por `BusinessPage`, é o cabeçalho de negócio: título roxo escuro, peso 700, fonte legada, até 2 rem; subtítulo na fonte legada, 1 rem, cinza do antigo `text-muted`. Usa `h1` sem mudar a aparência e recebe ações por `actions`, à direita, com quebra responsiva. `Navigation/PageHeader` permanece só como referência Ubold.
+- `Navigation/PageTitle`, usado por `BusinessPage`, é o cabeçalho de negócio: título roxo escuro, peso 700, fonte legada, até 2 rem; subtítulo na fonte legada, 1 rem, cinza do antigo `text-muted`. Usa `h1` sem mudar a aparência e recebe ações por `actions`, à direita, com quebra responsiva. A referência Ubold de `Navigation/PageHeader` foi removida por não ter uso; consulte o histórico do git.
 - Cada módulo e cadastro da sidebar usa um ícone distinto, com significado relacionado à sua função. Confira os itens e subitens de `AppNavigation` antes de escolher um ícone das bibliotecas já disponíveis no Gnai.
 - `Navigation/PageBreadcrumb`: links azuis (`#337ab7`), hover e foco em azul escuro (`#23527c`). Não reproduza cabeçalho ou breadcrumb por página.
 

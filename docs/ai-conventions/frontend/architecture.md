@@ -30,7 +30,7 @@ public/assets/
 - `pages/` contém apenas as entradas resolvidas por `Inertia::render('Recurso/Acao')`. Uma página recebe as props do controller, chama os hooks do recurso e compõe os componentes; não define formulários, colunas, tipos ou CSS próprios.
 - `components/<Recurso>/` guarda tudo o que pertence ao recurso. Use as subpastas somente quando houver conteúdo: `Form/` (formulário, seções, `use<Recurso>Form.ts`, tipos do payload), `List/` (filtros, colunas e tabela) e `Details/` (blocos da visualização e ações do rodapé).
 - Tipos, constantes e hooks ficam com seu proprietário em `resources/js/`. CSS fica em `resources/css/`, espelhando o caminho do proprietário, e é importado por `@styles/`. Não crie `types/`, `constants/` ou `hooks/` globais para conteúdo de um domínio. Valores não ficam em `*.types.ts`.
-- O catálogo demonstrativo do Ubold foi removido. Componentes convertidos, incluindo widgets genéricos (gráficos, painéis e tabelas de plugins), permanecem em `components/` para uso do produto. Assets de terceiros e suas licenças permanecem em `public/assets/`.
+- O catálogo demonstrativo do Ubold foi removido. Componentes convertidos usados pelas telas permanecem em `components/`. Componentes sem uso e seus estilos exclusivos foram removidos; consulte o histórico do git para referências do tema. Assets de terceiros e suas licenças permanecem em `public/assets/`.
 
 ## Três níveis de reutilização
 
@@ -68,9 +68,9 @@ Os caminhos são relativos a `resources/js/components/`.
 | Diálogos | `UI/Modal` (foco inicial, contenção por Tab e retorno ao disparador; `initialFocus`) e `UI/ConfirmActionModal` |
 | Falhas de operação | `UI/NotificationToast/operationFeedback`: `notifyOperationFailure`, `notifyConnectionFailure` |
 | Controles isolados | `Forms/`: `TextInput`, `TextArea`, `SelectField`, `ChoiceControl`, `ChoiceGroup`, `ToggleControl`, `MaskedInput`, `DatePicker`, `FileUploadButton`, `FileDropzone`, `EvidenceUpload`, `ImageUploadField`, `PersonPhotoUpload`, `FormSection`, `FormActions` |
-| Agrupamento, ações e estados | `UI/Button`, `UI/CardBox`, `UI/Panel`, `UI/InlineAlert`, `UI/AppLoader`, `UI/ErrorState`, `UI/Tooltip`, `UI/SearchInput` |
+| Agrupamento, ações e estados | `UI/Button`, `UI/CardBox`, `UI/InlineAlert`, `UI/AppLoader`, `UI/ErrorState`, `UI/Tooltip`, `UI/SearchInput` |
 | Alternar modos de visualização | `UI/SegmentedControl`: grupo grafite com `value`, `options` e `onChange`; usado no builder, na auditoria e em Listagem/Catálogo |
-| Navegação e tabelas | `Navigation/Tabs`, `Navigation/Pagination`, `Navigation/PageTitle`, `Navigation/PageBreadcrumb`, `Tables/Table`, `Tables/DataTable`; `Navigation/PageHeader` é só referência Ubold |
+| Navegação e tabelas | `Navigation/Tabs`, `Navigation/Pagination`, `Navigation/PageTitle`, `Navigation/PageBreadcrumb`, `Tables/Table` |
 | Estrutura compartilhada | `Navigation/AppLayout` (atribuído em `main.tsx`), `AuthLayout` com `AccountLayout`, `TeacherPortalLayout`, `TopBarPrimary`, `SidebarPrimary`, `AppFooter`, `SkipLinks`. Não repita header, footer, barras ou navegação por página |
 
 `useTableListAction` continua disponível como alias de `useConfirmedAction` nas listagens existentes.
