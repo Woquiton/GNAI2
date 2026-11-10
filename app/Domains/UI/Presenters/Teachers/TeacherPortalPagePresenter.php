@@ -222,35 +222,11 @@ final class TeacherPortalPagePresenter
                     'evaluations_html' => $this->richText($item->evaluations),
                     'opinion_html' => filled($item->opinion) ? $this->richText($item->opinion) : null,
                     'can_edit' => (int) $item->teacher_id === $teacherId,
-                    'is_started' => $this->hasPlanningContent($item),
+                    'is_started' => $item->hasPlanningContent(),
                 ])
                 ->values()
                 ->all(),
         ];
-    }
-
-    private function hasPlanningContent(PeiDiscipline $discipline): bool
-    {
-        foreach ([
-            'specific_objectives',
-            'objectives_deadline',
-            'content_programmatic',
-            'curricular_reference',
-            'methodologies',
-            'materials_and_assistive_technology',
-            'evaluations',
-            'opinion',
-            'complementary_records',
-        ] as $field) {
-            $text = html_entity_decode(strip_tags((string) $discipline->{$field}), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            $text = trim(str_replace("\u{00A0}", ' ', $text));
-
-            if ($text !== '' && $text !== PeiDiscipline::PLACEHOLDER_TEXT) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /** Texto simples mantém as quebras de linha; HTML é sanitizado como no PEI administrativo. */

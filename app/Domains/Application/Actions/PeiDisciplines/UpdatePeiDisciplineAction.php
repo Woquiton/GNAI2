@@ -11,6 +11,7 @@ use App\Domains\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
 use App\Domains\Domain\DTOs\PeiDisciplines\UpdatePeiDisciplineDTO;
 use App\Domains\Domain\Exceptions\PeiDisciplines\InvalidPeiDiscipline;
 use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
+use App\Domains\Domain\Models\PeiDisciplineRevisions\PeiDisciplineRevision;
 use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Exceptions\Students\InvalidStudent;
 use App\Domains\Domain\Models\Teachers\Teacher;
@@ -143,7 +144,7 @@ final readonly class UpdatePeiDisciplineAction
                 $lockedPeiDiscipline->revisions()->create([
                     'reviewed_at' => now()->toDateString(),
                     'what_changed' => 'Campo(s) alterado(s): '.$changedFieldsWithLabels->values()->implode(', ').'.',
-                    'why' => 'Revisão registrada automaticamente ao salvar a edição da adaptação.',
+                    'why' => PeiDisciplineRevision::AUTOMATIC_REASON,
                     'reviewer_id' => (int) $user->getKey(),
                 ]);
             }

@@ -142,7 +142,7 @@ final readonly class PeiDisciplineFormQuery
                     $assignments->where('course_id', $pei->course_id)
                         ->where('semester_id', $pei->semester_id);
                 })
-                ->orWhereKey($peiDiscipline->teacher_id))
+                ->orWhere('teachers.id', $peiDiscipline->teacher_id))
             ->with('person')
             ->orderBy('id')
             ->get();
@@ -158,7 +158,7 @@ final readonly class PeiDisciplineFormQuery
         return Discipline::query()
             ->where(fn ($query) => $query
                 ->whereIn('id', $pei->course->disciplines->modelKeys())
-                ->orWhereKey($peiDiscipline->discipline_id))
+                ->orWhere('disciplines.id', $peiDiscipline->discipline_id))
             ->orderBy('name')
             ->get();
     }

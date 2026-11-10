@@ -113,17 +113,26 @@ final class PeiPagePresenter
         if ($canViewDisciplines) {
             $disciplines = $pei->peiDisciplines()
                 ->with(['discipline', 'teacher.person'])
+                ->withExists([
+                    'revisions as has_teacher_changes' => fn ($revisions) => $revisions
+                        ->where('why', PeiDisciplineRevision::AUTOMATIC_REASON)
+                        ->whereHas('reviewer', fn ($reviewer) => $reviewer
+                            ->whereColumn('users.teacher_id', 'pei_disciplines.teacher_id')),
+                ])
                 ->latest()
                 ->get()
                 ->map(function (PeiDiscipline $item) use ($pei, $userId, $isAdministrator, $canUpdateDiscipline, $canDeleteDiscipline): array {
                     // A adaptação continua editável após finalizar o PEI; só a exclusão é bloqueada.
                     $isCreator = $isAdministrator || ($userId !== null && (int) $item->creator_id === $userId);
+                    $isStarted = $item->hasPlanningContent();
 
                     return [
                         'id' => (int) $item->getKey(),
                         'discipline_name' => $item->discipline?->name,
                         'teacher_name' => $item->teacher?->person?->name,
                         'created_at' => $item->created_at?->toDateString(),
+                        'is_started' => $isStarted,
+                        'teacher_has_started' => $isStarted && (bool) $item->has_teacher_changes,
                         'can_update' => $isCreator && $canUpdateDiscipline,
                         'can_delete' => $isCreator && ! $pei->is_finished && $canDeleteDiscipline,
                     ];

@@ -7,6 +7,7 @@ import {
     type TableListColumn,
 } from '@/components/Tables/TableList/TableList';
 import Button from '@/components/UI/Button/Button';
+import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { dateLabel } from '@/utils/formatters';
 import { NOT_INFORMED } from '../Peis.constants';
 import { peiDisciplineUrls } from '../Peis.routes';
@@ -17,15 +18,17 @@ const columns: TableListColumn[] = [
     {
         id: 'discipline',
         label: 'Disciplina',
-        width: '32%',
+        width: '23%',
         fixed: 'start',
     },
-    { id: 'teacher', label: 'Professor responsável', width: '28%' },
-    { id: 'created', label: 'Cadastrada em', width: '16%' },
+    { id: 'teacher', label: 'Professor responsável', width: '22%' },
+    { id: 'filling', label: 'Preenchimento', width: '12%' },
+    { id: 'teacher-started', label: 'Professor iniciou', width: '13%' },
+    { id: 'created', label: 'Cadastrada em', width: '12%' },
     {
         id: 'actions',
         label: 'Ações',
-        width: '24%',
+        width: '18%',
         fixed: 'end',
     },
 ];
@@ -46,11 +49,25 @@ interface PeiDisciplineRowProps {
 
 function PeiDisciplineRow({ peiId, item, canPdf }: PeiDisciplineRowProps): React.JSX.Element {
     const name = item.discipline_name || 'disciplina não identificada';
+    const teacherStatus = item.teacher_has_started ? 'Sim' : 'Sem registro';
+    const teacherStatusDescription = item.teacher_has_started
+        ? 'Há conteúdo preenchido e alterações salvas pelo professor responsável no histórico.'
+        : 'Não há registro de alterações de conteúdo salvas pelo professor responsável.';
 
     return (
         <tr>
             <td>{item.discipline_name || NOT_INFORMED}</td>
             <td>{item.teacher_name || NOT_INFORMED}</td>
+            <td>
+                <TableLabel tone={item.is_started ? 'success' : 'warning'}>
+                    {item.is_started ? 'Iniciada' : 'A preencher'}
+                </TableLabel>
+            </td>
+            <td title={teacherStatusDescription}>
+                <TableLabel tone={item.teacher_has_started ? 'success' : 'inverse'}>
+                    {teacherStatus}
+                </TableLabel>
+            </td>
             <td>{dateLabel(item.created_at)}</td>
             <td>
                 <TableActions>

@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class PeiDisciplineRevision extends Model
 {
+    public const AUTOMATIC_REASON = 'Revisão registrada automaticamente ao salvar a edição da adaptação.';
+
     protected $table = 'pei_discipline_revisions';
 
     protected $fillable = [

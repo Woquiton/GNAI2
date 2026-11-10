@@ -11,6 +11,7 @@ interface TeacherPortalRecordListProps<T> {
     renderItem: (item: T) => ReactNode;
     className?: string;
     itemClassName?: string;
+    itemTourTarget?: (item: T) => string | undefined;
 }
 
 /** Coleção somente leitura de uma seção (barreiras, objetivos...); vazia não é exibida. */
@@ -21,6 +22,7 @@ export default function TeacherPortalRecordList<T>({
     renderItem,
     className,
     itemClassName,
+    itemTourTarget,
 }: TeacherPortalRecordListProps<T>): React.JSX.Element | null {
     if (!items.length) {
         return null;
@@ -34,6 +36,7 @@ export default function TeacherPortalRecordList<T>({
                     <li
                         key={itemKey(item)}
                         className={joinClassNames('teacherPortal__listItem', itemClassName)}
+                        data-tour={itemTourTarget?.(item)}
                     >
                         {renderItem(item)}
                     </li>

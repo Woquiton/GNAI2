@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import RecordTabs from '@/components/Navigation/RecordTabs/RecordTabs';
 import TeacherPortalLayout from '@/components/Navigation/TeacherPortalLayout/TeacherPortalLayout';
@@ -7,10 +7,9 @@ import TeacherPortalStudentSummary from '@/components/TeacherPortal/Details/Teac
 import { createTeacherPortalStudentTabs } from '@/components/TeacherPortal/Details/teacherPortalStudentTabs';
 import { teacherPortalBreadcrumb } from '@/components/TeacherPortal/TeacherPortal.routes';
 import type { TeacherPortalStudentShowProps } from '@/components/TeacherPortal/TeacherPortal.types';
-import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import {
     TEACHER_PORTAL_TOUR_TARGETS,
-    teacherPortalStudentTour,
+    createTeacherPortalStudentTour,
 } from '@/components/TeacherPortal/teacherPortalTours';
 
 export default function TeacherPortalStudentShowPage(
@@ -18,6 +17,7 @@ export default function TeacherPortalStudentShowPage(
 ): React.JSX.Element {
     const { student, status, initialTab } = props;
     const [activeTab, setActiveTab] = useState<string>(initialTab);
+    const tour = useMemo(() => createTeacherPortalStudentTour(props.pei), [props.pei]);
 
     useEffect(() => {
         setActiveTab(initialTab);
@@ -28,8 +28,7 @@ export default function TeacherPortalStudentShowPage(
             title={student.name}
             subtitle={`Matrícula: ${student.registration ?? 'não informada'}`}
             breadcrumbItems={teacherPortalBreadcrumb({ current: student.name })}
-            actions={<TableLabel tone="inverse">Modo leitura</TableLabel>}
-            tour={teacherPortalStudentTour}
+            tour={tour}
             className="teacherPortal"
         >
             <TeacherPortalStudentSummary student={student} status={status} />

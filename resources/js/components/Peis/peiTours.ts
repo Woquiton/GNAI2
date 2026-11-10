@@ -181,6 +181,18 @@ export const peiShowTour: GuidedTourPageConfig = {
             ],
         },
         {
+            id: 'pei-discipline-filling',
+            target: targets.disciplines,
+            availableWith: targets.disciplinesTabLabel,
+            onEnter: tabDemo('disciplines', 'Adaptações curriculares'),
+            group: TABS_GROUP,
+            title: 'Acompanhar o preenchimento',
+            content: [
+                'Preenchimento mostra A preencher enquanto houver apenas campos vazios ou textos provisórios. Iniciada indica que já existe conteúdo salvo, inclusive pela equipe.',
+                'Professor iniciou mostra Sim quando há conteúdo e alterações salvas pelo responsável no histórico. Sem registro significa que não há essa confirmação; preencher pelo coordenador não marca o professor como participante.',
+            ],
+        },
+        {
             id: 'pei-attendance',
             target: targets.attendance,
             availableWith: targets.recordTabs,

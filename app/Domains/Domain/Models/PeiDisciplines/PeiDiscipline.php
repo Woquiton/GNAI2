@@ -169,6 +169,30 @@ final class PeiDiscipline extends Model implements Auditable
         }
     }
 
+    public function hasPlanningContent(): bool
+    {
+        foreach ([
+            'specific_objectives',
+            'objectives_deadline',
+            'content_programmatic',
+            'curricular_reference',
+            'methodologies',
+            'materials_and_assistive_technology',
+            'evaluations',
+            'opinion',
+            'complementary_records',
+        ] as $field) {
+            $text = html_entity_decode(strip_tags((string) $this->{$field}), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $text = trim(str_replace("\u{00A0}", ' ', $text));
+
+            if ($text !== '' && $text !== self::PLACEHOLDER_TEXT) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function pei(): BelongsTo
     {
         return $this->belongsTo(Pei::class, 'pei_id');

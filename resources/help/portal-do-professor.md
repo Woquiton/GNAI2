@@ -12,6 +12,8 @@ O Portal do Professor é a área do Gnai para os professores vinculados ao PEI d
 
 As telas do portal têm um tutorial que explica cada parte na própria tela. Clique no ícone de informação, na barra do topo, para abrir o tutorial. Ele mostra a lista dos seus alunos, a situação do aluno com as abas, onde fica o botão **Editar minha adaptação** e como salvar o planejamento. Use **Próximo** e **Voltar** para seguir, **Ver todos os passos** para pular para uma parte e o **X** ou a tecla **Esc** para sair.
 
+No aluno, o tutorial destaca exemplos reais da aba **PEI**, quando existirem: uma adaptação preenchida de outro professor, que você pode consultar; uma sua já iniciada, que você pode editar; e uma sua ainda não iniciada, que você pode começar pelo botão verde. Cada explicação só aparece se houver um exemplo correspondente. Se você estiver em outra aba, o tutorial abre o PEI para mostrar o exemplo e depois retorna à aba anterior.
+
 ## O que preciso para acessar o portal?
 
 - Estar cadastrado(a) em **Gestão do núcleo → Professores** com o seu e-mail. Se a instalação restringir domínios, o e-mail também precisa usar um dos domínios exibidos na tela de acesso.
@@ -70,7 +72,7 @@ Em **Visualizar**, a tela do aluno mostra a matrícula, o quadro **Situação do
 
 Os laudos são sempre exibidos. Os demais anexos só aparecem quando o núcleo ativa **Mostrar no portal do professor** no documento. Se o acesso for retirado, links antigos também deixam de abrir o arquivo.
 
-Nada pode ser alterado nessa tela, que mostra o selo **Modo leitura**. Use **Voltar**, no rodapé, para retornar à lista.
+Os dados do aluno são apresentados para consulta. Use **Voltar**, no rodapé, para retornar à lista.
 
 Na aba **PEI**, o rodapé também mostra **Adaptações para iniciar** quando houver disciplinas suas ainda não iniciadas. O número no botão indica quantas estão pendentes. Clique para abrir uma janela com essas disciplinas e escolha uma para ir direto ao formulário, sem rolar pelas adaptações do aluno. Adaptações de outros professores e as suas já iniciadas ficam fora dessa janela.
 

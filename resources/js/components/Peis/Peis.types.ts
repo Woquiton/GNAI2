@@ -138,6 +138,8 @@ export interface PeiAttendanceSummary {
 
 export interface PeiDisciplineSummary {
     id: number;
+    is_started: boolean;
+    teacher_has_started: boolean;
     discipline_name: string | null;
     teacher_name: string | null;
     created_at: string | null;

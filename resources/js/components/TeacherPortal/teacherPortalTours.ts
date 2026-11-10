@@ -1,6 +1,7 @@
 import { PROFILE_TOUR_TARGETS } from '@/components/Profile/profileTours';
 import { helpUrls } from '@/components/Help/Help.routes';
 import type { TableListTourConfig } from '@/components/Tables/TableList/TableListLayout';
+import type { TeacherPortalPei } from './TeacherPortal.types';
 import type {
     GuidedTourDemo,
     GuidedTourPageConfig,
@@ -12,6 +13,9 @@ export const TEACHER_PORTAL_TOUR_TARGETS = {
     summary: 'teacher-portal-summary',
     tabs: 'teacher-portal-tabs',
     peiTab: 'teacher-portal-pei-tab',
+    colleagueAdaptation: 'teacher-portal-colleague-adaptation',
+    editAdaptation: 'teacher-portal-edit-adaptation',
+    startAdaptation: 'teacher-portal-start-adaptation',
     studentActions: 'teacher-portal-student-actions',
     planning: 'teacher-portal-planning',
     formActions: 'teacher-portal-form-actions',
@@ -68,9 +72,8 @@ export const teacherPortalIndexTour: TableListTourConfig = {
     steps: [portalViewStep],
 };
 
-export const teacherPortalStudentTour: GuidedTourPageConfig = {
+const teacherPortalStudentTour: GuidedTourPageConfig = {
     helpHref: helpUrls.show(HELP_SLUG, 'consultar-a-situacao-do-aluno-modo-leitura'),
-    actions: 'O selo Modo leitura avisa que nada pode ser alterado nesta tela.',
     steps: [
         portalViewStep,
         {
@@ -103,6 +106,39 @@ export const teacherPortalStudentTour: GuidedTourPageConfig = {
             onEnter: peiTabDemo,
         },
         {
+            id: targets.colleagueAdaptation,
+            target: targets.colleagueAdaptation,
+            availableWith: targets.peiTab,
+            title: 'Adaptação de outro professor',
+            content: [
+                'Esta disciplina está atribuída a outro professor e já tem conteúdo preenchido. Você pode consultar o planejamento do seu colega.',
+                'Você não pode alterar essa adaptação. Os botões de iniciar e editar aparecem somente nas suas disciplinas.',
+            ],
+            onEnter: peiTabDemo,
+        },
+        {
+            id: targets.editAdaptation,
+            target: targets.editAdaptation,
+            availableWith: targets.peiTab,
+            title: 'Sua adaptação já iniciada',
+            content: [
+                'Esta adaptação é sua e já tem conteúdo salvo. Você pode continuar o preenchimento ou revisar o planejamento.',
+                'Clique em Editar minha adaptação para abrir o formulário. Suas mudanças só são gravadas quando você clica em Salvar.',
+            ],
+            onEnter: peiTabDemo,
+        },
+        {
+            id: targets.startAdaptation,
+            target: targets.startAdaptation,
+            availableWith: targets.peiTab,
+            title: 'Sua adaptação para iniciar',
+            content: [
+                'Esta disciplina está atribuída a você, mas o planejamento ainda está vazio ou com os textos provisórios A preencher.',
+                'Clique no botão verde Iniciar minha adaptação para preencher. Abrir o formulário sem salvar mantém a adaptação como não iniciada.',
+            ],
+            onEnter: peiTabDemo,
+        },
+        {
             id: 'teacher-portal-student-actions',
             target: targets.studentActions,
             title: 'Voltar e acessar adaptações',
@@ -113,6 +149,23 @@ export const teacherPortalStudentTour: GuidedTourPageConfig = {
         },
     ],
 };
+
+/** Mantém apenas os exemplos existentes, inclusive quando o tutorial começa em outra aba. */
+export function createTeacherPortalStudentTour(pei: TeacherPortalPei | null): GuidedTourPageConfig {
+    const disciplines = pei?.disciplines ?? [];
+    const examples: Record<string, boolean> = {
+        [targets.colleagueAdaptation]: disciplines.some((item) => !item.can_edit && item.is_started),
+        [targets.editAdaptation]: disciplines.some((item) => item.can_edit && item.is_started),
+        [targets.startAdaptation]: disciplines.some((item) => item.can_edit && !item.is_started),
+    };
+
+    return {
+        ...teacherPortalStudentTour,
+        steps: teacherPortalStudentTour.steps.filter(
+            (step) => !(step.id in examples) || examples[step.id],
+        ),
+    };
+}
 
 export const teacherPortalDisciplineTour: GuidedTourPageConfig = {
     helpHref: helpUrls.show(HELP_SLUG, 'editar-a-adaptacao-da-minha-disciplina-no-pei'),

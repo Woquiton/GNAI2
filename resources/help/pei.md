@@ -76,6 +76,15 @@ O sistema cria todas as adaptações de uma vez e mostra, por exemplo, "2 adapta
 
 O conteúdo de cada adaptação pode ser preenchido por quem a cadastrou (pela tela do PEI) ou pelo professor responsável (pelo Portal do Professor).
 
+Na tabela de **Adaptações curriculares**, acompanhe as colunas:
+
+| Coluna | Significado |
+| --- | --- |
+| **Preenchimento** | **A preencher** indica campos vazios ou apenas textos provisórios. **Iniciada** indica algum conteúdo real salvo, pelo professor ou pela equipe. Não significa que todos os campos estejam completos. |
+| **Professor iniciou** | **Sim** indica conteúdo preenchido e uma revisão automática gerada por alterações salvas pelo professor responsável. **Sem registro** indica que não há essa confirmação no histórico. Alterações salvas pelo coordenador e comentários de revisão adicionados manualmente não contam como preenchimento pelo professor. |
+
+Abrir o formulário, cancelar ou salvar sem alterar conteúdo não registra início pelo professor. Para documentos antigos sem revisões automáticas, **Sem registro** não confirma que o professor nunca participou, apenas que o histórico não comprova sua participação.
+
 1. Na aba **Adaptações curriculares**, use a ação de editar da disciplina (ou abra a adaptação e clique em **Editar**).
 2. Na tela **Editar Adaptação Curricular**, a seção **Identificação (Somente Leitura)** mostra o professor e a disciplina. Preencha a seção **Planejamento Adaptado**.
 3. Clique em **Salvar**. O sistema mostra "Adaptação de disciplina atualizada com sucesso."

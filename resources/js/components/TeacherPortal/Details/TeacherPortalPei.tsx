@@ -5,6 +5,7 @@ import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { teacherPortalUrls } from '../TeacherPortal.routes';
+import { TEACHER_PORTAL_TOUR_TARGETS } from '../teacherPortalTours';
 import type { TeacherPortalPei as Pei, TeacherPortalPeiDiscipline } from '../TeacherPortal.types';
 import TeacherPortalRecordList, { TeacherPortalEmpty } from './TeacherPortalRecordList';
 import '@styles/components/TeacherPortal/Details/TeacherPortalDetails.css';
@@ -63,6 +64,16 @@ function PeiDiscipline({
     );
 }
 
+function disciplineTourTarget(discipline: TeacherPortalPeiDiscipline): string | undefined {
+    if (discipline.can_edit) {
+        return discipline.is_started
+            ? TEACHER_PORTAL_TOUR_TARGETS.editAdaptation
+            : TEACHER_PORTAL_TOUR_TARGETS.startAdaptation;
+    }
+
+    return discipline.is_started ? TEACHER_PORTAL_TOUR_TARGETS.colleagueAdaptation : undefined;
+}
+
 function PeiContent({ pei }: { pei: Pei }): React.JSX.Element {
     return (
         <>
@@ -78,6 +89,7 @@ function PeiContent({ pei }: { pei: Pei }): React.JSX.Element {
                     itemKey={(discipline) => discipline.id}
                     className="teacherPortal__notice"
                     itemClassName="teacherPortal__discipline"
+                    itemTourTarget={disciplineTourTarget}
                     renderItem={(discipline) => <PeiDiscipline discipline={discipline} />}
                 />
             ) : (
