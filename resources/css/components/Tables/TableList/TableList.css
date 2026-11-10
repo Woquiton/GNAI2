@@ -62,16 +62,28 @@
     }
 }
 
-.tableListCard :is(input, select).textInput {
+.tableListCard :is(input, select, .checkboxSelect__trigger).textInput {
     height: var(--ui-list-control-height);
     padding: var(--ui-list-control-padding-block) var(--ui-list-control-padding-inline);
     font-size: var(--ui-list-control-font-size);
 }
 
 .tableListCard .selectField .select2-container {
+    box-sizing: border-box;
     min-height: var(--ui-list-control-height);
     padding: var(--ui-list-control-padding-block) var(--ui-list-control-padding-inline);
     font-size: var(--ui-list-control-font-size);
+}
+
+/* O Select2 usa 22px de entrelinha, que somavam 32px com padding e bordas. */
+.tableListCard .selectField .select2-container:not(.select2-container-multi) {
+    height: var(--ui-list-control-height);
+}
+
+.tableListCard .selectField .select2-container .select2-choice {
+    line-height: calc(
+        var(--ui-list-control-height) - 2 * var(--ui-list-control-padding-block) - 2px
+    ) !important;
 }
 
 .tableListCard .selectField .select2-container-multi {

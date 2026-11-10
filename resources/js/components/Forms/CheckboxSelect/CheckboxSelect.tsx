@@ -148,9 +148,6 @@ export default function CheckboxSelect({
                         role="group"
                         aria-label={label}
                     >
-                        <p className="checkboxSelect__hint">
-                            Marque os perfis. Clique fora para pesquisar.
-                        </p>
                         {options.map((option) => (
                             <ChoiceControl
                                 key={option.value}
