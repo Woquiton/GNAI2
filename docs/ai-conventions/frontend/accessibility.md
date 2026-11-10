@@ -195,3 +195,16 @@ Referências complementares:
 [foco, 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) e
 [pausar movimento, 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html).
 A conformidade do conteúdo final continua dependendo de homologação manual.
+
+### Menu público e página Sobre
+
+O Sobre reutiliza `Website/SiteAccessibility`, com as mesmas preferências e ferramentas
+do site público. Entrelinha, alinhamento e contraste usam seletores com opções explícitas;
+recursos binários usam botões com `aria-pressed`. A ampliação de 200% corresponde a duas
+vezes o tamanho natural de cada texto, sem multiplicar o ajuste anterior.
+
+`useSiteTextPresentation` desativa transições durante a restauração e medição das fontes
+(`data-site-measuring`), resolve o layout e só então as reativa. Isso também vale no cleanup:
+medir uma fonte em transição causava acumulação a cada mudança de percentual.
+O painel fica fora da árvore ampliada. O conteúdo deve quebrar linhas e reorganizar grades,
+preservando textos e ações, inclusive em 320 px e nas combinações com fonte simples e entrelinha.

@@ -86,3 +86,33 @@ Se o seu sistema operacional estiver configurado para reduzir movimentos (opçã
 - Botões que mostram só um ícone têm nome descritivo, lido pelos leitores de tela; ao passar o mouse, o nome aparece como dica.
 - Campos têm rótulo ligado ao controle, e os obrigatórios são marcados com asterisco (*) junto ao rótulo. Erros aparecem logo abaixo do campo e são associados a ele.
 - Mensagens de resultado, como sucesso ou erro ao salvar, aparecem no canto superior direito e são anunciadas. Passar o mouse ou o foco sobre a mensagem pausa o tempo de exibição.
+
+## Usar as opções na página Sobre o Sistema
+
+Na página **Sobre o Sistema**, o botão flutuante de acessibilidade abre o mesmo
+**Menu de acessibilidade** do site público. Ele oferece tamanho do texto,
+espaçamento entre linhas, alinhamento, fonte simples, contraste, tons de cinza,
+controle de imagens e animações, destaque de links, máscara de leitura, foco e
+estrutura de títulos da página. As preferências são compartilhadas com o site
+público e ficam salvas no navegador, separadas dos ajustes administrativos.
+
+Para voltar à apresentação original, use **Restaurar configurações**. Feche com Esc ou
+pelo botão de fechar; o foco retorna ao botão que abriu o painel.
+
+As funcionalidades da página estão organizadas nos grupos atuais do menu.
+Use os botões acima dos tópicos para escolher uma área ou **Todos** para ver a lista completa.
+
+### Escolher os ajustes de leitura
+
+Use **+** e **−** em **Tamanho do texto** para escolher de 100% a 200%.
+Em 200%, o texto tem duas vezes o tamanho original. O menu de acessibilidade
+continua separado da ampliação do conteúdo, para permitir que você altere ou
+restaure os ajustes.
+
+**Espaçamento entre linhas**, **Alinhamento do texto** e **Contraste** têm listas
+com as opções disponíveis. Abra a lista e escolha diretamente o valor desejado.
+As demais ferramentas indicam **Ativado** ou **Desativado** e podem ser combinadas.
+
+No celular, o painel cabe na largura da tela e permite rolar suas ferramentas.
+O conteúdo ampliado se reorganiza; pode ser necessário rolar mais para baixo,
+sem perder os textos nas laterais.

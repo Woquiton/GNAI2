@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { usePage } from '@inertiajs/react';
 import Modal from '@/components/UI/Modal/Modal';
 import Button from '@/components/UI/Button/Button';
 import SiteAccessibilityTool from './SiteAccessibilityTool';
+import SiteAccessibilityChoice from './SiteAccessibilityChoice';
 import SiteReadingMask from './SiteReadingMask';
 import {
     DEFAULT_SITE_ACCESSIBILITY,
@@ -19,33 +19,41 @@ const CONTRASTS = ['Padrão', 'Escuro', 'Claro', 'Alto contraste'];
 export default function SiteAccessibility({
     preferences: reading,
     onChange,
+    pageUrl = '',
 }: {
+    pageUrl?: string;
     preferences: SiteAccessibilityPreferences;
     onChange: (next: SiteAccessibilityPreferences) => void;
 }): React.JSX.Element {
     const [open, setOpen] = useState(false);
     const [structureOpen, setStructureOpen] = useState(false);
     const [headings, setHeadings] = useState<HTMLElement[]>([]);
+    const headingKeys = useRef(new WeakMap<HTMLElement, string>());
+    const nextHeadingKey = useRef(0);
     const [destination, setDestination] = useState<HTMLElement | null>(null);
-    const { url } = usePage();
     const previousStructure = useRef(false);
 
     useEffect(() => {
         setOpen(false);
         setDestination(null);
-    }, [url]);
+    }, [pageUrl]);
 
     useEffect(() => {
         if (!open) return;
-        setHeadings(Array.from(
-            document.querySelectorAll<HTMLElement>(
-                '.siteLayout__main :is(h1, h2, h3, h4, h5, h6)',
-            ),
-        ).filter((heading) =>
-            !!heading.textContent?.trim()
-            && heading.getClientRects().length > 0
-            && !heading.closest('[inert], [aria-hidden="true"]'),
-        ));
+        const visibleHeadings = Array.from(
+            document.querySelectorAll<HTMLElement>('.siteLayout__main :is(h1, h2, h3, h4, h5, h6)'),
+        ).filter(
+            (heading) =>
+                !!heading.textContent?.trim() &&
+                heading.getClientRects().length > 0 &&
+                !heading.closest('[inert], [aria-hidden="true"]'),
+        );
+        for (const heading of visibleHeadings) {
+            if (!headingKeys.current.has(heading)) {
+                headingKeys.current.set(heading, `heading-${nextHeadingKey.current++}`);
+            }
+        }
+        setHeadings(visibleHeadings);
     }, [open]);
 
     useEffect(() => {
@@ -84,7 +92,12 @@ export default function SiteAccessibility({
         return () => cancelAnimationFrame(frame);
     }, [destination, open]);
 
-    function toggle(key: Exclude<keyof SiteAccessibilityPreferences, 'lineHeight' | 'alignment' | 'scale' | 'contrast'>): void {
+    function toggle(
+        key: Exclude<
+            keyof SiteAccessibilityPreferences,
+            'lineHeight' | 'alignment' | 'scale' | 'contrast'
+        >,
+    ): void {
         onChange({ ...reading, [key]: !reading[key] });
     }
 
@@ -93,7 +106,7 @@ export default function SiteAccessibility({
         setStructureOpen(false);
     }
 
-    const scaleIndex = SITE_TEXT_SCALES.indexOf(reading.scale as typeof SITE_TEXT_SCALES[number]);
+    const scaleIndex = SITE_TEXT_SCALES.indexOf(reading.scale as (typeof SITE_TEXT_SCALES)[number]);
     const changed = Object.entries(reading).some(
         ([key, value]) =>
             value !== DEFAULT_SITE_ACCESSIBILITY[key as keyof SiteAccessibilityPreferences],
@@ -126,7 +139,9 @@ export default function SiteAccessibility({
                     <circle cx="12" cy="4" r="2" />
                     <path d="M4 9h16M12 9v6M12 15l-4 7M12 15l4 7" />
                 </svg>
-                {changed ? <span className="siteAccessibility__indicator" aria-hidden="true" /> : null}
+                {changed ? (
+                    <span className="siteAccessibility__indicator" aria-hidden="true" />
+                ) : null}
             </button>
             {reading.readingMask && !open ? <SiteReadingMask /> : null}
             <Modal
@@ -141,15 +156,23 @@ export default function SiteAccessibility({
                 </p>
                 <div className="siteAccessibility__tools" hidden={structureOpen}>
                     <div className="siteAccessibility__tool siteAccessibility__textSize">
-                        <i className="fa fa-text-height siteAccessibility__toolIcon" aria-hidden="true" />
+                        <i
+                            className="fa fa-text-height siteAccessibility__toolIcon"
+                            aria-hidden="true"
+                        />
                         <span className="siteAccessibility__toolLabel">Tamanho do texto</span>
                         <div className="siteAccessibility__sizeControls">
                             <button
                                 type="button"
                                 title="Diminuir tamanho"
-                                aria-label="Diminuir tamanho do texto e da interface"
+                                aria-label="Diminuir tamanho do texto"
                                 disabled={scaleIndex <= 0}
-                                onClick={() => onChange({ ...reading, scale: SITE_TEXT_SCALES[scaleIndex - 1] })}
+                                onClick={() =>
+                                    onChange({
+                                        ...reading,
+                                        scale: SITE_TEXT_SCALES[scaleIndex - 1],
+                                    })
+                                }
                             >
                                 −
                             </button>
@@ -159,27 +182,32 @@ export default function SiteAccessibility({
                             <button
                                 type="button"
                                 title="Aumentar tamanho"
-                                aria-label="Aumentar tamanho do texto e da interface"
+                                aria-label="Aumentar tamanho do texto"
                                 disabled={scaleIndex >= SITE_TEXT_SCALES.length - 1}
-                                onClick={() => onChange({ ...reading, scale: SITE_TEXT_SCALES[scaleIndex + 1] })}
+                                onClick={() =>
+                                    onChange({
+                                        ...reading,
+                                        scale: SITE_TEXT_SCALES[scaleIndex + 1],
+                                    })
+                                }
                             >
                                 +
                             </button>
                         </div>
                     </div>
-                    <SiteAccessibilityTool
+                    <SiteAccessibilityChoice
                         label="Espaçamento entre linhas"
                         icon="fa fa-arrows-v"
-                        active={reading.lineHeight > 0}
-                        value={LINE_HEIGHTS[reading.lineHeight]}
-                        onClick={() => onChange({ ...reading, lineHeight: (reading.lineHeight + 1) % 4 })}
+                        options={LINE_HEIGHTS}
+                        value={reading.lineHeight}
+                        onChange={(value) => onChange({ ...reading, lineHeight: value })}
                     />
-                    <SiteAccessibilityTool
+                    <SiteAccessibilityChoice
                         label="Alinhamento do texto"
                         icon="fa fa-align-left"
-                        active={reading.alignment > 0}
-                        value={ALIGNMENTS[reading.alignment]}
-                        onClick={() => onChange({ ...reading, alignment: (reading.alignment + 1) % 4 })}
+                        options={ALIGNMENTS}
+                        value={reading.alignment}
+                        onChange={(value) => onChange({ ...reading, alignment: value })}
                     />
                     <SiteAccessibilityTool
                         label="Fonte simples"
@@ -187,12 +215,12 @@ export default function SiteAccessibility({
                         active={reading.readableFont}
                         onClick={() => toggle('readableFont')}
                     />
-                    <SiteAccessibilityTool
+                    <SiteAccessibilityChoice
                         label="Contraste"
                         icon="fa fa-adjust"
-                        active={reading.contrast > 0}
-                        value={CONTRASTS[reading.contrast]}
-                        onClick={() => onChange({ ...reading, contrast: (reading.contrast + 1) % 4 })}
+                        options={CONTRASTS}
+                        value={reading.contrast}
+                        onChange={(value) => onChange({ ...reading, contrast: value })}
                     />
                     <SiteAccessibilityTool
                         label="Tons de cinza"
@@ -262,14 +290,15 @@ export default function SiteAccessibility({
                     </p>
                     {headings.length ? (
                         <ul>
-                            {headings.map((heading, index) => {
+                            {headings.map((heading) => {
                                 const level = Number(heading.tagName.slice(1));
                                 const label = heading.textContent?.trim() ?? '';
-                                const description = 'Ir para ' + label + ', título de nível ' + level;
+                                const description =
+                                    'Ir para ' + label + ', título de nível ' + level;
 
                                 return (
                                     <li
-                                        key={index}
+                                        key={headingKeys.current.get(heading)}
                                         style={{ marginInlineStart: (level - 1) * 8 }}
                                     >
                                         <button
@@ -295,7 +324,9 @@ export default function SiteAccessibility({
                                 );
                             })}
                         </ul>
-                    ) : <p>Nenhum título disponível nesta página.</p>}
+                    ) : (
+                        <p>Nenhum título disponível nesta página.</p>
+                    )}
                 </nav>
                 <Button
                     tone="list-action"

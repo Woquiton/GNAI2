@@ -1,3 +1,58 @@
+@php
+    $featureGroups = [
+        'atendimento' => 'Atendimento',
+        'planos' => 'Planos e acompanhamento',
+        'recursos' => 'Recursos e acessibilidade',
+        'gestao' => 'Gestão do núcleo',
+        'comunicacao' => 'Comunicação',
+        'sistema' => 'Sistema',
+    ];
+    $features = [
+        ['atendimento', 'Alunos', 'Cadastro, prontuário e acompanhamento dos estudantes atendidos pelo núcleo.', 'bi bi-person'],
+        ['atendimento', 'Solicitações de Atendimento', 'Acolhimento das demandas, análise, encaminhamentos e acompanhamento das solicitações.', 'bi bi-file-earmark-text'],
+        ['atendimento', 'Responsáveis', 'Contatos e vínculos dos responsáveis com cada aluno.', 'bi bi-person-hearts'],
+        ['atendimento', 'Documentos do Aluno', 'Laudos, avaliações e outros documentos reunidos no prontuário.', 'bi bi-folder2-open'],
+        ['atendimento', 'Histórico Acadêmico', 'Matrículas, cursos e acompanhamento do período do aluno por semestre.', 'bi bi-clock-history'],
+        ['atendimento', 'Agendamentos', 'Agenda de atendimentos, participantes, cancelamentos e registro de presença.', 'bi bi-calendar-check'],
+        ['atendimento', 'Fila de Espera', 'Acompanhamento dos estudantes e profissionais que aguardam itens para empréstimo.', 'bi bi-hourglass-split'],
+        ['atendimento', 'Atendimentos Especializados', 'Registros, avaliações e histórico dos atendimentos educacionais especializados.', 'bi bi-clipboard2-check'],
+        ['atendimento', 'Atendimentos Pedagógicos', 'Acompanhamentos dos alunos, presença dos responsáveis e histórico pedagógico.', 'bi bi-chat-square-text'],
+        ['planos', 'Estudos de Caso', 'Observação, escuta, barreiras e estratégias para compreender as necessidades do aluno.', 'bi bi-clipboard-data'],
+        ['planos', 'PAEEs', 'Planos de Atendimento Educacional Especializado, com objetivos, recursos e revisões.', 'bi bi-signpost-split'],
+        ['planos', 'PEIs', 'Planos Educacionais Individualizados e adaptações por disciplina, com histórico de revisões.', 'bi bi-file-text'],
+        ['recursos', 'Itens', 'Catálogo unificado de tecnologias assistivas e materiais pedagógicos acessíveis.', 'bi bi-box-seam'],
+        ['recursos', 'Empréstimos', 'Disponibilidade dos itens, empréstimos, devoluções e acompanhamento dos prazos.', 'bi bi-arrow-left-right'],
+        ['recursos', 'Barreiras', 'Registro e acompanhamento das barreiras de acessibilidade da instituição.', 'bi bi-slash-circle'],
+        ['recursos', 'Vistorias e Evidências', 'Histórico de vistorias, fotos e arquivos relacionados a itens e barreiras.', 'bi bi-search'],
+        ['gestao', 'Relatórios', 'Seleção de dados, filtros e geração de relatórios para acompanhar o trabalho do núcleo.', 'bi bi-bar-chart'],
+        ['gestao', 'Equipe', 'Cadastro dos profissionais, cargos e permissões de acesso.', 'bi bi-person-badge'],
+        ['gestao', 'Professores', 'Cadastro e vínculos com cursos e disciplinas por semestre.', 'bi bi-mortarboard'],
+        ['gestao', 'Portal do Professor', 'Acesso dos professores aos alunos e às adaptações curriculares sob sua responsabilidade.', 'bi bi-easel'],
+        ['gestao', 'Pessoas', 'Cadastro unificado de alunos, responsáveis, professores e profissionais.', 'bi bi-people'],
+        ['gestao', 'Perfis de Atendimento', 'Perfis e condições associados às necessidades de acompanhamento dos alunos.', 'bi bi-heart-pulse'],
+        ['gestao', 'Cargos', 'Funções da equipe e permissões de acesso aos recursos do sistema.', 'bi bi-briefcase'],
+        ['gestao', 'Semestres', 'Calendário letivo e vínculos dos registros com seus períodos de referência.', 'bi bi-calendar3'],
+        ['gestao', 'Cursos', 'Matriz curricular, períodos e organização dos vínculos acadêmicos.', 'bi bi-mortarboard'],
+        ['gestao', 'Disciplinas', 'Componentes curriculares dos cursos e vínculos com professores.', 'bi bi-journal-bookmark'],
+        ['gestao', 'Recursos de Acessibilidade', 'Classificação dos recursos de acessibilidade associados aos itens.', 'bi bi-universal-access'],
+        ['gestao', 'Etiquetas', 'Organização de pessoas, publicações e mensagens com etiquetas por contexto.', 'bi bi-tags'],
+        ['gestao', 'Categorias de Barreiras', 'Classificação das barreiras físicas, comunicacionais e de outras naturezas.', 'bi bi-grid'],
+        ['gestao', 'Instituições', 'Cadastro das instituições e de suas informações de localização.', 'ti-home'],
+        ['gestao', 'Localizações', 'Pontos de referência, salas e setores vinculados às instituições.', 'bi bi-geo-alt'],
+        ['comunicacao', 'Pendências', 'Responsáveis, prioridades, prazos e acompanhamento das tarefas do núcleo.', 'bi bi-exclamation-triangle'],
+        ['comunicacao', 'Publicações', 'Notícias, eventos, comunicados e outros conteúdos do site institucional.', 'bi bi-megaphone'],
+        ['comunicacao', 'Personalização do Site', 'Organização das seções, identidade e informações do site público.', 'bi bi-palette'],
+        ['comunicacao', 'Notificações', 'Avisos e atualizações relacionados às operações do sistema.', 'bi bi-bell'],
+        ['sistema', 'Dashboard', 'Indicadores, atalhos e atividades recentes do núcleo.', 'bi bi-speedometer2'],
+        ['sistema', 'Inbox', 'Consulta dos e-mails enviados, respostas recebidas e acompanhamento das entregas.', 'bi bi-envelope'],
+        ['sistema', 'Configurações', 'Preferências e parâmetros de funcionamento da instalação.', 'bi bi-gear'],
+        ['sistema', 'Auditoria', 'Consulta ao histórico de alterações e aos responsáveis pelas operações.', 'bi bi-shield-check'],
+        ['sistema', 'Backups', 'Geração, envio, download e restauração de cópias de segurança.', 'bi bi-cloud-arrow-down'],
+        ['sistema', 'Ajuda e Tutoriais', 'Orientações na Central de Ajuda e tutoriais ao vivo nas telas do sistema.', 'bi bi-question-circle'],
+        ['sistema', 'Acessibilidade', 'Alto contraste, ajuste de tamanho e recursos de navegação por teclado.', 'bi bi-universal-access'],
+        ['sistema', 'Acesso e Permissões', 'Autenticação, recuperação de senha e autorização por perfil e permissão.', 'bi bi-shield-lock'],
+    ];
+@endphp
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,14 +64,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    @vite('resources/css/pages/about-us.css')
+    @viteReactRefresh
+    @vite(['resources/js/about.tsx', 'resources/css/pages/about-us.css'])
 </head>
 <body>
+    <div id="about-content" class="siteLayout" data-site-contrast="0" data-site-alignment="0">
+    <a class="about-skip" href="#conteudo">Pular para o conteúdo</a>
     <a href="{{ route('login') }}" class="access-btn" aria-label="Acessar o sistema">
         <i class="bi bi-box-arrow-in-right"></i>
         <span>Acessar o Sistema</span>
     </a>
 
+    <main id="conteudo" class="siteLayout__main" tabindex="-1">
     <section class="hero">
         <div class="hero-bg">
             <div class="hero-orb hero-orb-1"></div>
@@ -36,24 +95,24 @@
             <p class="hero-sub">
                 Gestor de Núcleos de Acessibilidade e Inclusão.
                 Plataforma completa para apoio à gestão educacional inclusiva,
-                acompanhamento de estudantes, PEIs, tecnologias assistivas e processos institucionais.
+                acompanhamento de estudantes, Estudos de Caso, PAEEs, PEIs e recursos de acessibilidade.
             </p>
 
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <span class="hero-stat-num">33</span>
+                    <span class="hero-stat-num">{{ count($features) }}</span>
                     <span class="hero-stat-label">Funcionalidades</span>
                 </div>
                 <div class="hero-stat">
                     <span class="hero-stat-num">2</span>
-                    <span class="hero-stat-label">Sistemas</span>
+                    <span class="hero-stat-label">Módulos integrados</span>
                 </div>
             </div>
         </div>
 
         <div class="hero-scroll">
             <div class="hero-scroll-line"></div>
-            scroll
+            Explore a página
         </div>
     </section>
 
@@ -63,151 +122,26 @@
                 <p class="section-label">Funcionalidades</p>
                 <h2 class="section-title">Tudo que você precisa<br>em um só lugar</h2>
                 <p class="section-desc">
-                    O GNAI reúne dois grandes sistemas integrados: o <strong>Atendimento Educacional Especializado</strong>
-                    e o <strong>Radar Inclusivo</strong>, cobrindo desde o cadastro até o acompanhamento completo.
+                    O Gnai integra o <strong>Atendimento Educacional Especializado</strong>
+                    e o <strong>Radar Inclusivo</strong>. As funcionalidades abaixo seguem os grupos atuais
+                    do menu, do acolhimento ao acompanhamento e à gestão do núcleo.
                 </p>
             </div>
 
-            <div class="feature-tabs" role="tablist">
-                <button class="feature-tab active" onclick="filterFeatures('all', this)">Todos</button>
-                <button class="feature-tab" onclick="filterFeatures('sistema', this)">Sistema</button>
-                <button class="feature-tab" onclick="filterFeatures('aee', this)">AEE</button>
-                <button class="feature-tab" onclick="filterFeatures('radar', this)">Radar Inclusivo</button>
+            <div class="feature-tabs" role="group" aria-label="Filtrar funcionalidades por área">
+                <button type="button" class="feature-tab active" aria-pressed="true" aria-controls="featuresGrid" onclick="filterFeatures('all', this)">Todos</button>
+                @foreach ($featureGroups as $key => $label)
+                    <button type="button" class="feature-tab" aria-pressed="false" aria-controls="featuresGrid" onclick="filterFeatures('{{ $key }}', this)">{{ $label }}</button>
+                @endforeach
             </div>
 
             <div class="features-grid" id="featuresGrid">
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon purple"><i class="bi bi-speedometer2"></i></div>
-                    <div><div class="feature-name">Dashboard</div><div class="feature-desc">Visão geral com indicadores, atalhos e informações rápidas do sistema.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon violet"><i class="bi bi-bar-chart"></i></div>
-                    <div><div class="feature-name">Relatórios</div><div class="feature-desc">Geração e visualização de dados consolidados: estatísticas e acompanhamento.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon pink"><i class="bi bi-bell"></i></div>
-                    <div><div class="feature-name">Notificações</div><div class="feature-desc">Avisos importantes do sistema: eventos, atualizações e alertas.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon violet"><i class="bi bi-shield-lock"></i></div>
-                    <div><div class="feature-name">Acesso e Permissões</div><div class="feature-desc">Autenticação, recuperação de senha e controle de acesso por perfil e permissão.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon green"><i class="bi bi-cloud-arrow-down"></i></div>
-                    <div><div class="feature-name">Backups</div><div class="feature-desc">Gerenciamento de cópias de segurança para proteção dos dados.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon purple"><i class="bi bi-heart-pulse"></i></div>
-                    <div><div class="feature-name">Deficiências</div><div class="feature-desc">Cadastro dos tipos de deficiência dos alunos atendidos.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon violet"><i class="bi bi-briefcase"></i></div>
-                    <div><div class="feature-name">Cargos</div><div class="feature-desc">Define funções dos profissionais e suas permissões de acesso.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon green"><i class="bi bi-calendar3"></i></div>
-                    <div><div class="feature-name">Semestres</div><div class="feature-desc">Organiza os períodos letivos da instituição.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon purple"><i class="bi bi-mortarboard"></i></div>
-                    <div><div class="feature-name">Cursos</div><div class="feature-desc">Cadastro dos cursos oferecidos pela instituição.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon violet"><i class="bi bi-book-half"></i></div>
-                    <div><div class="feature-name">Disciplinas</div><div class="feature-desc">Cadastro das disciplinas vinculadas aos cursos.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon green"><i class="bi bi-universal-access"></i></div>
-                    <div><div class="feature-name">Recursos de Acessibilidade</div><div class="feature-desc">Cadastro de categorias de recursos: braille, intérprete, etc.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon pink"><i class="bi bi-grid"></i></div>
-                    <div><div class="feature-name">Categorias de Barreiras</div><div class="feature-desc">Classificação das barreiras: física, comunicacional, etc.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon purple"><i class="bi bi-building-fill"></i></div>
-                    <div><div class="feature-name">Instituições</div><div class="feature-desc">Cadastro da instituição base do sistema.</div></div>
-                </div>
-                <div class="feature-card" data-cat="sistema">
-                    <div class="feature-icon green"><i class="bi bi-geo-alt"></i></div>
-                    <div><div class="feature-name">Localizações</div><div class="feature-desc">Locais físicos dentro das instituições: salas, setores, etc.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon purple"><i class="bi bi-people"></i></div>
-                    <div><div class="feature-name">Alunos</div><div class="feature-desc">Cadastro e gestão completa dos alunos atendidos pelo AEE.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon violet"><i class="bi bi-person-badge"></i></div>
-                    <div><div class="feature-name">Equipe</div><div class="feature-desc">Profissionais do AEE: psicólogos, pedagogos e especialistas.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon green"><i class="bi bi-mortarboard"></i></div>
-                    <div><div class="feature-name">Professores</div><div class="feature-desc">Cadastro de professores vinculados aos alunos atendidos.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon purple"><i class="bi bi-person-hearts"></i></div>
-                    <div><div class="feature-name">Responsáveis</div><div class="feature-desc">Cadastro e acompanhamento dos responsáveis vinculados a cada aluno.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon green"><i class="bi bi-journal-text"></i></div>
-                    <div><div class="feature-name">Contexto do Aluno</div><div class="feature-desc">Caracterização do aluno com histórico, versionamento, restauração e emissão em PDF.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon pink"><i class="bi bi-folder2-open"></i></div>
-                    <div><div class="feature-name">Documentos do Aluno</div><div class="feature-desc">Gestão de laudos, avaliações, planos e outros documentos do prontuário.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon violet"><i class="bi bi-clock-history"></i></div>
-                    <div><div class="feature-name">Histórico Acadêmico</div><div class="feature-desc">Vínculos do aluno com cursos, anos acadêmicos e definição do curso atual.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon pink"><i class="bi bi-file-text"></i></div>
-                    <div><div class="feature-name">PEIs</div><div class="feature-desc">Planos Educacionais Individualizados de cada aluno.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon purple"><i class="bi bi-calendar-check"></i></div>
-                    <div><div class="feature-name">Agendamentos</div><div class="feature-desc">Organização da agenda, disponibilidade, cancelamento e acompanhamento dos atendimentos.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon green"><i class="bi bi-clipboard2-check"></i></div>
-                    <div><div class="feature-name">Atendimentos Especializados</div><div class="feature-desc">Registro, avaliação e histórico dos atendimentos educacionais especializados.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon violet"><i class="bi bi-chat-square-text"></i></div>
-                    <div><div class="feature-name">Atendimentos Pedagógicos</div><div class="feature-desc">Registro e histórico dos acompanhamentos pedagógicos realizados com alunos e responsáveis.</div></div>
-                </div>
-                <div class="feature-card" data-cat="aee">
-                    <div class="feature-icon pink"><i class="bi bi-exclamation-triangle"></i></div>
-                    <div><div class="feature-name">Pendências</div><div class="feature-desc">Itens que precisam de atenção ou resolução imediata.</div></div>
-                </div>
-                <div class="feature-card" data-cat="radar">
-                    <div class="feature-icon violet"><i class="bi bi-cpu"></i></div>
-                    <div><div class="feature-name">Tecnologias Assistivas</div><div class="feature-desc">Controle de equipamentos e recursos tecnológicos para acessibilidade.</div></div>
-                </div>
-                <div class="feature-card" data-cat="radar">
-                    <div class="feature-icon green"><i class="bi bi-book"></i></div>
-                    <div><div class="feature-name">Materiais Pedagógicos</div><div class="feature-desc">Materiais adaptados para apoio ao ensino inclusivo.</div></div>
-                </div>
-                <div class="feature-card" data-cat="radar">
-                    <div class="feature-icon pink"><i class="bi bi-slash-circle"></i></div>
-                    <div><div class="feature-name">Barreiras</div><div class="feature-desc">Registro de problemas de acessibilidade encontrados.</div></div>
-                </div>
-                <div class="feature-card" data-cat="radar">
-                    <div class="feature-icon purple"><i class="bi bi-arrow-left-right"></i></div>
-                    <div><div class="feature-name">Empréstimos</div><div class="feature-desc">Controle de empréstimo e devolução de recursos assistivos.</div></div>
-                </div>
-                <div class="feature-card" data-cat="radar">
-                    <div class="feature-icon violet"><i class="bi bi-hourglass-split"></i></div>
-                    <div><div class="feature-name">Fila de Espera</div><div class="feature-desc">Gestão de pessoas aguardando recursos ou atendimento.</div></div>
-                </div>
-                <div class="feature-card" data-cat="radar">
-                    <div class="feature-icon green"><i class="bi bi-calendar-day"></i></div>
-                    <div><div class="feature-name">Publicações</div><div class="feature-desc">Notícias, eventos, comunicados, artigos e registros da instituição.</div></div>
-                </div>
-                <div class="feature-card" data-cat="radar">
-                    <div class="feature-icon pink"><i class="bi bi-search"></i></div>
-                    <div><div class="feature-name">Vistorias e Evidências</div><div class="feature-desc">Histórico de inspeções e evidências de barreiras, tecnologias e materiais acessíveis.</div></div>
-                </div>
+                @foreach ($features as [$group, $name, $description, $icon])
+                    <div class="feature-card" data-cat="{{ $group }}">
+                        <div class="feature-icon {{ ['purple', 'violet', 'green', 'pink'][$loop->index % 4] }}" aria-hidden="true"><i class="{{ $icon }}"></i></div>
+                        <div><h3 class="feature-name">{{ $name }}</h3><p class="feature-desc">{{ $description }}</p></div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -216,7 +150,7 @@
         <div class="container">
             <div class="sistemas-header">
                 <p class="section-label">Arquitetura</p>
-                <h2 class="section-title">Dois sistemas,<br>uma plataforma</h2>
+                <h2 class="section-title">Dois módulos,<br>uma plataforma</h2>
                 <p class="section-desc">
                     O GNAI integra o ciclo completo do atendimento inclusivo, do acompanhamento
                     individual do aluno à gestão dos recursos e acessibilidade da instituição.
@@ -234,11 +168,11 @@
                         </div>
                     </div>
                     <ul class="sistema-items">
-                        <li><i class="bi bi-check2"></i> Alunos e responsáveis</li>
+                        <li><i class="bi bi-check2"></i> Alunos, responsáveis e solicitações de atendimento</li>
                         <li><i class="bi bi-check2"></i> Equipe de profissionais</li>
                         <li><i class="bi bi-check2"></i> Professores vinculados</li>
-                        <li><i class="bi bi-check2"></i> Contextos, documentos e histórico acadêmico</li>
-                        <li><i class="bi bi-check2"></i> Planos Educacionais (PEIs)</li>
+                        <li><i class="bi bi-check2"></i> Documentos e histórico acadêmico</li>
+                        <li><i class="bi bi-check2"></i> Estudos de Caso, PAEEs e PEIs</li>
                         <li><i class="bi bi-check2"></i> Atendimentos Especializados</li>
                         <li><i class="bi bi-check2"></i> Atendimentos pedagógicos</li>
                         <li><i class="bi bi-check2"></i> Controle de pendências</li>
@@ -263,13 +197,12 @@
                         </div>
                     </div>
                     <ul class="sistema-items">
-                        <li><i class="bi bi-check2"></i> Tecnologias assistivas</li>
-                        <li><i class="bi bi-check2"></i> Materiais pedagógicos</li>
+                        <li><i class="bi bi-check2"></i> Itens: tecnologias assistivas e materiais acessíveis</li>
                         <li><i class="bi bi-check2"></i> Registro de barreiras</li>
                         <li><i class="bi bi-check2"></i> Vistorias e evidências</li>
                         <li><i class="bi bi-check2"></i> Empréstimos de recursos</li>
                         <li><i class="bi bi-check2"></i> Fila de espera</li>
-                        <li><i class="bi bi-check2"></i> Publicações</li>
+                        <li><i class="bi bi-check2"></i> Perfis e recursos de acessibilidade</li>
                     </ul>
                 </div>
             </div>
@@ -298,7 +231,7 @@
                     <a href="mailto:djavanlopesteixeira@gmail.com" class="team-email">
                         <i class="bi bi-envelope"></i> djavanlopesteixeira@gmail.com
                     </a>
-                    <a href="https://github.com/Djavantl" target="_blank" class="team-email">
+                    <a href="https://github.com/Djavantl" target="_blank" rel="noopener noreferrer" class="team-email">
                         <i class="bi bi-github"></i> github.com/Djavantl
                     </a>
                 </div>
@@ -314,7 +247,7 @@
                     <a href="mailto:mxrlrey@gmail.com" class="team-email">
                         <i class="bi bi-envelope"></i> mxrlrey@gmail.com
                     </a>
-                    <a href="https://github.com/Mxrlrey" target="_blank" class="team-email">
+                    <a href="https://github.com/Mxrlrey" target="_blank" rel="noopener noreferrer" class="team-email">
                         <i class="bi bi-github"></i> github.com/Mxrlrey
                     </a>
                 </div>
@@ -330,7 +263,7 @@
                     <a href="mailto:woquiton@gmail.com" class="team-email">
                         <i class="bi bi-envelope"></i> woquiton@gmail.com
                     </a>
-                    <a href="https://github.com/Woquiton" target="_blank" class="team-email">
+                    <a href="https://github.com/Woquiton" target="_blank" rel="noopener noreferrer" class="team-email">
                         <i class="bi bi-github"></i> github.com/Woquiton
                     </a>
                 </div>
@@ -338,33 +271,56 @@
         </div>
     </section>
 
-    <footer class="about-footer">
+    </main>
+    <footer class="about-footer" id="rodape">
         <div class="about-footer-logo">GNAI</div>
         <div class="about-footer-inst">Instituto Federal Baiano, Campus Guanambi</div>
         <div class="about-footer-year">ADS · 2026 · Todos os direitos reservados</div>
     </footer>
+    </div>
+    <div id="about-accessibility"></div>
     <script>
         function filterFeatures(cat, btn) {
-            document.querySelectorAll('.feature-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.feature-tab').forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-pressed', 'false');
+            });
             btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
             document.querySelectorAll('.feature-card').forEach(card => {
-                card.classList.toggle('hidden', cat !== 'all' && card.dataset.cat !== cat);
+                card.hidden = cat !== 'all' && card.dataset.cat !== cat;
             });
         }
 
         const obs = new IntersectionObserver(entries => {
             entries.forEach((e, i) => {
                 if (e.isIntersecting) {
+                    const paused = document.getElementById('about-content').dataset.sitePauseMotion === 'true';
                     setTimeout(() => {
                         e.target.style.opacity = '1';
                         e.target.style.transform = 'translateY(0)';
-                    }, (i % 6) * 60);
+                    }, paused ? 0 : (i % 6) * 60);
                     obs.unobserve(e.target);
                 }
             });
         }, { threshold: 0.1 });
 
+        const readingMotion = new MutationObserver(() => {
+            if (document.getElementById('about-content').dataset.sitePauseMotion !== 'true') return;
+            document.querySelectorAll('.feature-card, .team-card').forEach(card => {
+                card.style.opacity = '1';
+                card.style.transform = 'none';
+                obs.unobserve(card);
+            });
+        });
+        readingMotion.observe(document.getElementById('about-content'), {
+            attributes: true,
+            attributeFilter: ['data-site-pause-motion'],
+        });
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         document.querySelectorAll('.feature-card, .team-card').forEach(c => {
+            if (reduceMotion) return;
             c.style.opacity = '0';
             c.style.transform = 'translateY(16px)';
             c.style.transition = 'opacity 0.4s ease, transform 0.4s ease';

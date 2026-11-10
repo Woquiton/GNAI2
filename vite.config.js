@@ -21,7 +21,11 @@ export default defineConfig(({ command }) => ({
     plugins: [
         react(),
         laravel({
-            input: ['resources/js/main.tsx', 'resources/css/pages/about-us.css'],
+            input: [
+                'resources/js/main.tsx',
+                'resources/js/about.tsx',
+                'resources/css/pages/about-us.css',
+            ],
             refresh: command === 'serve',
         }),
     ],

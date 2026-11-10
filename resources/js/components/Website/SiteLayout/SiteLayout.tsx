@@ -313,6 +313,7 @@ export default function SiteLayout({
                 </footer>
                 {!preview ? (
                     <SiteAccessibility
+                        pageUrl={url}
                         preferences={reading.preferences}
                         onChange={reading.update}
                     />

@@ -9,22 +9,31 @@ type SavedStyle = {
 
 const LINE_MULTIPLIERS = [1, 1.3, 1.6, 2];
 const ICON_SELECTOR = [
-    '.fa', '.md', '[class^="ti-"]', '[class*=" ti-"]',
-    '[class^="icon-"]', '[class*=" icon-"]',
-    '[class^="ion-"]', '[class*=" ion-"]',
+    '.fa',
+    '.md',
+    '.bi',
+    '[class^="ti-"]',
+    '[class*=" ti-"]',
+    '[class^="icon-"]',
+    '[class*=" icon-"]',
+    '[class^="ion-"]',
+    '[class*=" ion-"]',
 ].join(', ');
 
 function hasReadableText(element: HTMLElement): boolean {
     if (
-        element.matches(ICON_SELECTOR)
-        || element.closest('[aria-hidden="true"]')
-        || ['SCRIPT', 'STYLE', 'SVG', 'IMG', 'VIDEO', 'CANVAS'].includes(element.tagName)
-    ) return false;
+        element.matches(ICON_SELECTOR) ||
+        element.closest('[aria-hidden="true"]') ||
+        ['SCRIPT', 'STYLE', 'SVG', 'IMG', 'VIDEO', 'CANVAS'].includes(element.tagName)
+    )
+        return false;
 
-    return ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)
-        || Array.from(element.childNodes).some(
+    return (
+        ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ||
+        Array.from(element.childNodes).some(
             (node) => node.nodeType === Node.TEXT_NODE && !!node.textContent?.trim(),
-        );
+        )
+    );
 }
 
 /** Amplia os tamanhos naturais em lote e preserva a proporção das linhas, sem multiplicar heranças. */
@@ -45,21 +54,40 @@ export function useSiteTextPresentation(
 
         function restore(): void {
             saved.forEach((style, element) => {
-                if (style.fontSize) element.style.setProperty('font-size', style.fontSize, style.fontPriority);
+                if (style.fontSize)
+                    element.style.setProperty('font-size', style.fontSize, style.fontPriority);
                 else element.style.removeProperty('font-size');
-                if (style.lineHeight) element.style.setProperty('line-height', style.lineHeight, style.linePriority);
+                if (style.lineHeight)
+                    element.style.setProperty('line-height', style.lineHeight, style.linePriority);
                 else element.style.removeProperty('line-height');
             });
         }
 
+        function withoutTransitions(action: () => void): void {
+            site!.dataset.siteMeasuring = 'true';
+            try {
+                action();
+                // Resolve o layout final antes de reativar transições: a próxima medição
+                // não pode capturar a fonte no meio de uma animação de `transition: all`.
+                site!.getBoundingClientRect();
+            } finally {
+                delete site!.dataset.siteMeasuring;
+            }
+        }
+
         function apply(): void {
+            withoutTransitions(measure);
+        }
+
+        function measure(): void {
             frame = 0;
             restore();
             saved.forEach((_, element) => {
                 if (!site!.contains(element)) saved.delete(element);
             });
-            const elements = Array.from(site!.querySelectorAll<HTMLElement>('*'))
-                .filter((element) => element instanceof HTMLElement && hasReadableText(element));
+            const elements = Array.from(site!.querySelectorAll<HTMLElement>('*')).filter(
+                (element) => element instanceof HTMLElement && hasReadableText(element),
+            );
             const measurements = elements.map((element) => {
                 if (!saved.has(element)) {
                     saved.set(element, {
@@ -79,7 +107,11 @@ export function useSiteTextPresentation(
             measurements.forEach(({ element, size, height }) => {
                 if (!Number.isFinite(size) || size <= 0) return;
                 element.style.setProperty('font-size', size * multiplier + 'px', 'important');
-                element.style.setProperty('line-height', height * multiplier * spacing + 'px', 'important');
+                element.style.setProperty(
+                    'line-height',
+                    height * multiplier * spacing + 'px',
+                    'important',
+                );
             });
         }
 
@@ -94,7 +126,7 @@ export function useSiteTextPresentation(
             childList: true,
             characterData: true,
             attributes: true,
-            attributeFilter: ['aria-hidden', 'inert'],
+            attributeFilter: ['aria-hidden', 'inert', 'hidden'],
             subtree: true,
         });
         const resize = new ResizeObserver(() => {
@@ -110,7 +142,7 @@ export function useSiteTextPresentation(
             content.disconnect();
             resize.disconnect();
             window.removeEventListener('resize', schedule);
-            restore();
+            withoutTransitions(restore);
         };
     }, [active, lineHeight, readableFont, root, scale]);
 
@@ -120,7 +152,10 @@ export function useSiteTextPresentation(
         const html = document.documentElement;
         const previous = html.style.getPropertyValue('--site-public-header-height');
         const update = (): void => {
-            html.style.setProperty('--site-public-header-height', header.getBoundingClientRect().height + 'px');
+            html.style.setProperty(
+                '--site-public-header-height',
+                header.getBoundingClientRect().height + 'px',
+            );
         };
         update();
         const observer = new ResizeObserver(update);
