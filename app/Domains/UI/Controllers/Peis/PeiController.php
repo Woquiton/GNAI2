@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Domains\UI\Controllers\Peis;
 
-use App\Domains\Application\Resolvers\Auth\AuthenticatedUserResolver;
-use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Application\Actions\PeiDisciplineRevisions\AddPeiDisciplineRevisionAction;
-use App\Domains\Application\Data\PeiDisciplineRevisions\AddPeiDisciplineRevisionData;
 use App\Domains\Application\Actions\PeiDisciplines\BulkAssignPeiDisciplinesAction;
 use App\Domains\Application\Actions\PeiDisciplines\DeletePeiDisciplineAction;
 use App\Domains\Application\Actions\PeiDisciplines\UpdatePeiDisciplineAction;
-use App\Domains\Application\Data\PeiDisciplines\BulkAssignPeiDisciplinesData;
-use App\Domains\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
-use App\Domains\Application\Queries\PeiDisciplines\PeiDisciplineFormQuery;
-use App\Domains\Application\Queries\PeiDisciplines\TeacherDisciplinesQuery;
-use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
+use App\Domains\Application\Actions\PeiDisciplines\UpdatePeiDisciplineRemindersAction;
 use App\Domains\Application\Actions\Peis\CreatePeiAction;
 use App\Domains\Application\Actions\Peis\DeletePeiAction;
 use App\Domains\Application\Actions\Peis\FinishPeiAction;
+use App\Domains\Application\Data\PeiDisciplineRevisions\AddPeiDisciplineRevisionData;
+use App\Domains\Application\Data\PeiDisciplines\BulkAssignPeiDisciplinesData;
+use App\Domains\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
 use App\Domains\Application\Data\Peis\ListPeisData;
+use App\Domains\Application\Queries\PeiDisciplines\PeiDisciplineFormQuery;
+use App\Domains\Application\Queries\PeiDisciplines\TeacherDisciplinesQuery;
 use App\Domains\Application\Queries\Peis\ListAllPeisQuery;
 use App\Domains\Application\Queries\Peis\ListStudentPeisQuery;
 use App\Domains\Application\Queries\Peis\PeiAttendanceSummaryQuery;
@@ -27,10 +25,13 @@ use App\Domains\Application\Queries\Peis\PeiFilterOptionsQuery;
 use App\Domains\Application\Queries\Peis\PeiFormQuery;
 use App\Domains\Application\Queries\Peis\ShowPeiQuery;
 use App\Domains\Application\Queries\Peis\TeacherPeiAccessQuery;
-use App\Domains\Domain\Models\Peis\Pei;
-use App\Domains\UI\Presenters\Peis\PeiPagePresenter;
+use App\Domains\Application\Resolvers\Auth\AuthenticatedUserResolver;
 use App\Domains\Domain\Exceptions\Students\InvalidStudent;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
+use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Models\Students\Student;
+use App\Domains\UI\Presenters\Peis\PeiPagePresenter;
 use App\Shared\Infrastructure\Pdf\PdfPageNumberer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
@@ -425,6 +426,32 @@ final class PeiController
         return redirect()
             ->route('specialized-educational-support.pei-discipline.show', [$pei, $peiDiscipline])
             ->with('success', 'Revisão da adaptação registrada com sucesso.');
+    }
+
+    public function stopDisciplineReminders(
+        Pei $pei,
+        PeiDiscipline $peiDiscipline,
+        Request $request,
+        UpdatePeiDisciplineRemindersAction $action,
+        AuthenticatedUserResolver $authenticatedUser,
+    ): RedirectResponse {
+        $this->ensureCanView($pei, $request);
+        $action->execute($peiDiscipline, $authenticatedUser->fromRequest($request), false);
+
+        return back()->with('success', 'Lembretes de preenchimento encerrados.');
+    }
+
+    public function resumeDisciplineReminders(
+        Pei $pei,
+        PeiDiscipline $peiDiscipline,
+        Request $request,
+        UpdatePeiDisciplineRemindersAction $action,
+        AuthenticatedUserResolver $authenticatedUser,
+    ): RedirectResponse {
+        $this->ensureCanView($pei, $request);
+        $action->execute($peiDiscipline, $authenticatedUser->fromRequest($request), true);
+
+        return back()->with('success', 'Lembretes retomados. A próxima verificação será após cinco dias.');
     }
 
     public function teacherDisciplines(Request $request, Pei $pei, TeacherDisciplinesQuery $query): JsonResponse

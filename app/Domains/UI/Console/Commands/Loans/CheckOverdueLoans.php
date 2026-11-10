@@ -1,40 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domains\UI\Console\Commands\Loans;
 
-use App\Domains\Domain\Models\Auth\User;
-use App\Domains\Domain\Enums\Loans\LoanStatus;
-use App\Domains\Domain\Models\Loans\Loan;
-use App\Domains\Infrastructure\Notifications\Loans\LoanOverdueNotification;
+use App\Domains\Application\Actions\Loans\NotifyOverdueLoansAction;
 use Illuminate\Console\Command;
 
-class CheckOverdueLoans extends Command
+final class CheckOverdueLoans extends Command
 {
     protected $signature = 'loans:check-overdue';
 
-    protected $description = 'Verifica empréstimos atrasados e notifica os administradores';
+    protected $description = 'Notifica o operador do empréstimo e administradores autorizados sobre devoluções em atraso';
 
-    public function handle()
+    public function handle(NotifyOverdueLoansAction $action): int
     {
-        // Pega todos os empréstimos ativos cuja data de entrega já passou
-        $overdueLoans = Loan::where('status', LoanStatus::ACTIVE->value)
-            ->where('due_date', '<=', today())
-            ->get();
+        $this->info($action->execute().' notificação(ões) de atraso registrada(s).');
 
-        if ($overdueLoans->isEmpty()) {
-            $this->info('Nenhum empréstimo atrasado hoje.');
-
-            return;
-        }
-
-        $admins = User::all();
-
-        foreach ($overdueLoans as $loan) {
-            foreach ($admins as $admin) {
-                $admin->notify(new LoanOverdueNotification($loan));
-            }
-        }
-
-        $this->info($overdueLoans->count().' notificações de atraso enviadas.');
+        return self::SUCCESS;
     }
 }

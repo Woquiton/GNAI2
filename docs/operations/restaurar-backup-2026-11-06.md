@@ -86,15 +86,20 @@ docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T db sh -c 
 
 cp -R storage/app/private/restauracao-20261106/var/www/storage/app/. storage/app/
 
-docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php scripts/backup/validate-restored-database.php storage/app/private/restauracao-20261106/restore/manifest.json
-docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php artisan migrate:status
+docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php scripts/backup/validate-restored-database.php storage/app/private/restauracao-20261106/restore/manifest.json --allow-pending-migrations
 ```
 
-Continue somente se o validador terminar com sucesso. O SQL já contém a estrutura
-atual e o histórico correto; **não execute `migrate:fresh` depois da importação**.
-Então libere o ambiente:
+Continue somente se o validador terminar com sucesso. O SQL contém a estrutura
+do snapshot `11198d3b` e seu histórico correto; **não execute `migrate:fresh` depois
+da importação**. O modo `--allow-pending-migrations` aceita migrations novas no
+código, mas continua exigindo os mesmos registros e hashes do backup, inclusive
+seu histórico de migrations. Execute as migrations incrementais depois da
+validação, incluindo o controle de lembretes das adaptações do PEI. Não repita a
+comparação com o manifesto antigo após modificar o banco. Então libere o ambiente:
 
 ```bash
+docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php artisan migrate --force
+docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php artisan migrate:status
 docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php artisan cache:clear
 docker compose --env-file .env.prod -f docker-compose.prod.yml start queue scheduler
 docker compose --env-file .env.prod -f docker-compose.prod.yml exec -T app php artisan up

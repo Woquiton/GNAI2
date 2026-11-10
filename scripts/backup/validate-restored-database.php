@@ -25,8 +25,9 @@ $app->make(Kernel::class)->bootstrap();
 
 // Read-only: validates the configured database against a manifest made during conversion.
 $manifestPath = $argv[1] ?? null;
+$allowPendingMigrations = in_array('--allow-pending-migrations', array_slice($argv, 2), true);
 if ($manifestPath === null || ! is_file($manifestPath)) {
-    fwrite(STDERR, "Usage: php scripts/backup/validate-restored-database.php manifest.json\n");
+    fwrite(STDERR, "Usage: php scripts/backup/validate-restored-database.php manifest.json [--allow-pending-migrations]\n");
     exit(1);
 }
 
@@ -98,7 +99,10 @@ foreach (['loans' => 'loanable', 'waitlists' => 'waitlistable', 'inspections' =>
 $expectedMigrations = array_map(fn (string $file): string => basename($file, '.php'), glob(database_path('migrations/*.php')));
 $actualMigrations = $db->table('migrations')->orderBy('migration')->pluck('migration')->all();
 sort($expectedMigrations);
-if ($expectedMigrations !== $actualMigrations) {
+// O manifesto continua validando exatamente o histórico importado. Este modo
+// permite apenas migrations novas no código, antes de executar migrate.
+if (array_diff($actualMigrations, $expectedMigrations) !== []
+    || (! $allowPendingMigrations && $expectedMigrations !== $actualMigrations)) {
     $failures[] = 'Migration ledger differs from the current migration files.';
 }
 

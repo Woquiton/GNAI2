@@ -28,6 +28,7 @@ export const PEI_TOUR_TARGETS = {
     disciplineFormActions: 'pei-discipline-form-actions',
     disciplineDetails: 'pei-discipline-details',
     disciplineRevisions: 'pei-discipline-revisions',
+    disciplineReminders: 'pei-discipline-reminders',
     disciplineDetailsActions: 'pei-discipline-details-actions',
 } as const;
 
@@ -301,6 +302,15 @@ export const peiDisciplineShowTour: GuidedTourPageConfig = {
             title: 'Adaptações Razoáveis e/ou Acessibilidades Curriculares',
             content:
                 'Mostra o planejamento da disciplina: objetivos, prazo, conteúdo, referência curricular, metodologias, recursos, avaliação, registros complementares e parecer.',
+        },
+        {
+            id: 'pei-discipline-reminders',
+            target: targets.disciplineReminders,
+            title: 'Lembretes de preenchimento',
+            content: [
+                'Quem criou a adaptação recebe um aviso quando o professor registra o primeiro preenchimento ou altera o conteúdo.',
+                'Se o planejamento continuar vazio, o sistema lembra a cada cinco dias. O criador ou um administrador pode encerrar os lembretes quando não forem mais necessários e retomá-los depois.',
+            ],
         },
         {
             id: 'pei-discipline-revisions',

@@ -1,8 +1,4 @@
-import {
-    studentRecordUrl,
-    studentUrl,
-    studentsBase,
-} from '@/components/Students/Students.routes';
+import { studentRecordUrl, studentUrl, studentsBase } from '@/components/Students/Students.routes';
 import type { PageBreadcrumbItem } from '@/components/Navigation/PageBreadcrumb/PageBreadcrumb';
 import { resourceBreadcrumb } from '@/components/Navigation/PageBreadcrumb/resourceBreadcrumb';
 import type { PeiCreateProps } from './Peis.types';
@@ -35,6 +31,10 @@ export const peiDisciplineUrls = {
     destroy: (peiId: number, id: number) => `${base}/${peiId}/disciplinas/${id}`,
     pdf: (peiId: number, id: number) => `${base}/${peiId}/disciplinas/${id}/pdf`,
     revisions: (peiId: number, id: number) => `${base}/${peiId}/disciplinas/${id}/revisoes`,
+    stopReminders: (peiId: number, id: number) =>
+        `${base}/${peiId}/disciplinas/${id}/lembretes/encerrar`,
+    resumeReminders: (peiId: number, id: number) =>
+        `${base}/${peiId}/disciplinas/${id}/lembretes/retomar`,
 };
 
 const studentsCrumb: PageBreadcrumbItem = { label: 'Alunos', href: studentsBase };

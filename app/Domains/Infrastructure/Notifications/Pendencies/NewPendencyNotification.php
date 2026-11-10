@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Infrastructure\Notifications\Pendencies;
 
+use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Domain\Models\Pendencies\Pendency;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -15,6 +16,7 @@ final class NewPendencyNotification extends Notification
 
     public function __construct(
         private readonly Pendency $pendency,
+        private readonly ?User $assignedBy = null,
     ) {}
 
     /**
@@ -35,8 +37,10 @@ final class NewPendencyNotification extends Notification
         return [
             'pendency_id' => $pendency->id,
             'title' => $pendency->title,
-            'message' => 'Você foi atribuído(a) a uma nova pendência.',
-            'assigned_by' => $pendency->creator?->name,
+            'message' => $this->assignedBy === null
+                ? 'Você foi atribuído(a) a uma nova pendência.'
+                : 'Você agora é responsável por esta pendência.',
+            'assigned_by' => $this->assignedBy?->name ?? $pendency->creator?->name,
             'priority' => $pendency->priority?->value,
             'url' => route('specialized-educational-support.pendencies.show', $pendency->id, absolute: false),
             'created_at' => $pendency->created_at?->toDateTimeString(),

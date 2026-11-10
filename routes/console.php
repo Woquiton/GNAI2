@@ -39,8 +39,15 @@ Schedule::command('backup:automatic')
 
 // Roda verificacao de emprestimos em atraso
 Schedule::command('loans:check-overdue')
+    ->withoutOverlapping()
     ->dailyAt('12:05')
     ->timezone('America/Bahia')
     ->onFailure(function () {
         Log::error('Falha ao processar verificação de empréstimos em atraso.');
     });
+
+Schedule::command('peis:remind-pending-adaptations')
+    ->dailyAt('08:00')
+    ->timezone('America/Bahia')
+    ->withoutOverlapping()
+    ->description('Lembra adaptações pendentes, respeitando o intervalo de cinco dias e os encerramentos');

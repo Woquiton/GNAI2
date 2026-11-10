@@ -201,6 +201,11 @@ export interface PeiDisciplineShowProps {
         name: string;
     };
     peiDiscipline: PeiDisciplineDetails;
+    reminders: {
+        hasPlanningContent: boolean;
+        stoppedAt: string | null;
+        applicable: boolean;
+    };
     revisions: PeiDisciplineRevision[];
     can: PeiDisciplineShowPermissions;
 }

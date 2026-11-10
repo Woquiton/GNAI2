@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\UI\Presenters\Peis;
 
+use App\Domains\Application\Data\Peis\ListPeisData;
+use App\Domains\Domain\Enums\Students\StudentStatus;
 use App\Domains\Domain\Models\AeeRecords\AeeStudentEvaluation;
 use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Domain\Models\Disciplines\Discipline;
@@ -11,10 +13,8 @@ use App\Domains\Domain\Models\Paees\Paee;
 use App\Domains\Domain\Models\PedagogicalRecords\PedagogicalRecord;
 use App\Domains\Domain\Models\PeiDisciplineRevisions\PeiDisciplineRevision;
 use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
-use App\Domains\Application\Data\Peis\ListPeisData;
 use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Models\Semesters\Semester;
-use App\Domains\Domain\Enums\Students\StudentStatus;
 use App\Domains\Domain\Models\Students\Student;
 use App\Shared\Domain\Support\AeeLabels;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
@@ -226,6 +226,11 @@ final class PeiPagePresenter
                     'Nenhum registro complementar informado.',
                 ),
                 'opinion_html' => $this->richText($peiDiscipline->opinion),
+            ],
+            'reminders' => [
+                'hasPlanningContent' => $peiDiscipline->hasPlanningContent(),
+                'stoppedAt' => $peiDiscipline->reminders_stopped_at?->format('d/m/Y H:i'),
+                'applicable' => (bool) $pei->is_current && ! $pei->is_finished && $pei->student->status === StudentStatus::ACTIVE,
             ],
             'revisions' => $peiDiscipline->revisions
                 ->map(fn (PeiDisciplineRevision $revision): array => [

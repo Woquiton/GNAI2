@@ -9,6 +9,7 @@ import type {
     PeiDisciplineShowProps,
 } from '../../Peis.types';
 import PeiDisciplineRevisions from './PeiDisciplineRevisions';
+import PeiDisciplineReminders from './PeiDisciplineReminders';
 import { PEI_TOUR_TARGETS } from '../../peiTours';
 
 type DetailHtmlField = keyof Omit<
@@ -35,7 +36,7 @@ const fields: Array<{ name: DetailHtmlField; label: string; wide?: boolean }> = 
 
 type PeiDisciplineDetailsProps = Pick<
     PeiDisciplineShowProps,
-    'pei' | 'peiDiscipline' | 'revisions' | 'can'
+    'pei' | 'peiDiscipline' | 'revisions' | 'can' | 'reminders'
 >;
 
 /** Planejamento adaptado da disciplina e suas revisões. */
@@ -43,6 +44,7 @@ export default function PeiDisciplineDetails({
     pei,
     peiDiscipline,
     revisions,
+    reminders,
     can,
 }: PeiDisciplineDetailsProps): React.JSX.Element {
     return (
@@ -66,6 +68,12 @@ export default function PeiDisciplineDetails({
                     ))}
                 </DetailGrid>
             </FormSection>
+            <PeiDisciplineReminders
+                peiId={pei.id}
+                disciplineId={peiDiscipline.id}
+                reminders={reminders}
+                canManage={can.update}
+            />
             <PeiDisciplineRevisions
                 action={peiDisciplineUrls.revisions(pei.id, peiDiscipline.id)}
                 revisions={revisions}

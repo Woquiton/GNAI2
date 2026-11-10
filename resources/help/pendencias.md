@@ -63,6 +63,8 @@ O sistema mostra "Pendência completada com sucesso." e quem criou a pendência 
 
 Somente quem criou a pendência pode editá-la, e apenas enquanto ela não estiver concluída. Os campos e as regras são os mesmos da criação.
 
+Se você trocar o **Profissional Responsável**, o novo responsável recebe o aviso "Você agora é responsável por esta pendência.", desde que tenha conta com acesso a pendências e não seja você mesmo. Salvar mantendo o mesmo responsável não repete esse aviso.
+
 ## Excluir uma pendência
 
 1. Na listagem, clique no ícone de excluir da linha, ou abra a pendência e clique em **Excluir**.

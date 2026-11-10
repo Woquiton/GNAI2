@@ -11,6 +11,7 @@ export default function PeisDisciplinesShowPage({
     student,
     peiDiscipline,
     revisions,
+    reminders,
     can,
 }: PeiDisciplineShowProps): React.JSX.Element {
     const disciplineName = peiDisciplineName(peiDiscipline);
@@ -31,6 +32,7 @@ export default function PeisDisciplinesShowPage({
                 pei={pei}
                 peiDiscipline={peiDiscipline}
                 revisions={revisions}
+                reminders={reminders}
                 can={can}
             />
             <PeiDisciplineDetailsActions

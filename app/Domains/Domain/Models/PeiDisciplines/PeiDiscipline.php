@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\Domains\Domain\Models\PeiDisciplines;
 
 use App\Domains\Domain\Contracts\Audit\Auditable;
-use App\Domains\Domain\ValueObjects\Audit\AuditedField;
-use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
-use App\Domains\Domain\Models\Auth\User;
-use App\Domains\Domain\Models\Disciplines\Discipline;
-use App\Domains\Domain\Models\PeiDisciplineRevisions\PeiDisciplineRevision;
 use App\Domains\Domain\DTOs\PeiDisciplines\CreatePeiDisciplineDTO;
 use App\Domains\Domain\DTOs\PeiDisciplines\UpdatePeiDisciplineDTO;
 use App\Domains\Domain\Exceptions\PeiDisciplines\InvalidPeiDiscipline;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Disciplines\Discipline;
+use App\Domains\Domain\Models\PeiDisciplineRevisions\PeiDisciplineRevision;
 use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Models\Teachers\Teacher;
+use App\Domains\Domain\ValueObjects\Audit\AuditedField;
+use App\Domains\Infrastructure\Eloquent\Audit\AuditsChanges;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +33,11 @@ final class PeiDiscipline extends Model implements Auditable
     public const PLACEHOLDER_TEXT = 'A preencher.';
 
     protected $table = 'pei_disciplines';
+
+    protected $casts = [
+        'reminder_cycle_started_at' => 'datetime',
+        'reminders_stopped_at' => 'datetime',
+    ];
 
     protected $fillable = [
         'pei_id',
@@ -66,6 +71,8 @@ final class PeiDiscipline extends Model implements Auditable
             // PEI e professor não têm coluna de nome própria (o nome do professor mora em `people`); ficam pelo id.
             'pei_id' => AuditedField::number('ID do PEI'),
             'creator_id' => AuditedField::reference('Criada por', User::class),
+            'reminders_stopped_at' => AuditedField::dateTime('Lembretes encerrados em'),
+            'reminders_stopped_by' => AuditedField::reference('Lembretes encerrados por', User::class),
             'teacher_id' => AuditedField::reference('Professor responsável', Teacher::class, 'person.name'),
             'discipline_id' => AuditedField::reference('Disciplina', Discipline::class),
             'specific_objectives' => AuditedField::text('Objetivos específicos'),
@@ -78,6 +85,11 @@ final class PeiDiscipline extends Model implements Auditable
             'opinion' => AuditedField::text('Parecer'),
             'complementary_records' => AuditedField::text('Registros complementares'),
         ];
+    }
+
+    public static function unauditedFields(): array
+    {
+        return ['reminder_cycle_started_at'];
     }
 
     public function auditDescription(): string

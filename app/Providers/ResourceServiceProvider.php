@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Domains\Infrastructure\Audit\AuditableEntities;
 use App\Domains\Domain\Models\AccessibilityFeatures\AccessibilityFeature;
 use App\Domains\Domain\Models\AeeRecords\AeeRecord;
 use App\Domains\Domain\Models\AeeRecords\AeeStudentEvaluation;
-use App\Domains\Domain\Models\Barriers\Barrier;
 use App\Domains\Domain\Models\BarrierCategories\BarrierCategory;
+use App\Domains\Domain\Models\Barriers\Barrier;
 use App\Domains\Domain\Models\CaseStudies\CaseStudy;
 use App\Domains\Domain\Models\CaseStudies\CaseStudyBarrier;
 use App\Domains\Domain\Models\CaseStudies\CaseStudyContribution;
@@ -29,8 +28,8 @@ use App\Domains\Domain\Models\Paees\PaeeObjective;
 use App\Domains\Domain\Models\Paees\PaeeResource;
 use App\Domains\Domain\Models\Paees\PaeeReview;
 use App\Domains\Domain\Models\PedagogicalRecords\PedagogicalRecord;
-use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
+use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Models\Pendencies\Pendency;
 use App\Domains\Domain\Models\People\Person;
 use App\Domains\Domain\Models\Positions\Position;
@@ -38,11 +37,11 @@ use App\Domains\Domain\Models\Professionals\Professional;
 use App\Domains\Domain\Models\Publications\Publication;
 use App\Domains\Domain\Models\Semesters\Semester;
 use App\Domains\Domain\Models\Sessions\Session;
-use App\Domains\Domain\Models\Students\Student;
 use App\Domains\Domain\Models\StudentCourses\StudentCourse;
 use App\Domains\Domain\Models\StudentCourses\StudentCourseSemester;
 use App\Domains\Domain\Models\StudentDeficiencies\StudentDeficiency;
 use App\Domains\Domain\Models\StudentDocuments\StudentDocument;
+use App\Domains\Domain\Models\Students\Student;
 use App\Domains\Domain\Models\SupportRequests\SupportRequest;
 use App\Domains\Domain\Models\SupportRequests\SupportRequestAttachment;
 use App\Domains\Domain\Models\Tags\Tag;
@@ -50,12 +49,13 @@ use App\Domains\Domain\Models\Teachers\Teacher;
 use App\Domains\Domain\Models\Teachers\TeacherCourseDiscipline;
 use App\Domains\Domain\Models\Teachers\TeacherGlobalPermission;
 use App\Domains\Domain\Models\Waitlists\Waitlist;
+use App\Domains\Infrastructure\Audit\AuditableEntities;
 use App\Domains\UI\Console\Commands\Loans\CheckOverdueLoans;
+use App\Domains\UI\Console\Commands\PeiDisciplines\SendPendingPeiDisciplineReminders;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Registra os recursos de negócio do Gnai: comando de empréstimos em atraso
- * e models auditáveis.
+ * Registra os comandos de avisos operacionais e os models auditáveis do Gnai.
  */
 final class ResourceServiceProvider extends ServiceProvider
 {
@@ -63,6 +63,7 @@ final class ResourceServiceProvider extends ServiceProvider
     {
         $this->commands([
             CheckOverdueLoans::class,
+            SendPendingPeiDisciplineReminders::class,
         ]);
 
         $this->app->make(AuditableEntities::class)->register(

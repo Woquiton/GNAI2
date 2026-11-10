@@ -116,7 +116,7 @@ Um empréstimo ativo cuja previsão de devolução já passou é considerado atr
 
 - na listagem, o **Prazo** aparece destacado;
 - na visualização e na edição aparece o aviso "Este item está com a devolução atrasada.";
-- uma vez por dia, o Gnai envia aos usuários a notificação **Empréstimo Atrasado**, com o item, o beneficiário e há quantos dias está atrasado. A notificação leva direto ao empréstimo.
+- uma vez por dia, por volta das 12h05 no horário da Bahia, o Gnai envia a notificação **Empréstimo Atrasado** ao usuário que registrou o empréstimo e aos administradores que podem visualizar empréstimos. Ela informa o item, o beneficiário e o atraso, com link direto ao empréstimo. A mesma pessoa recebe no máximo um aviso por empréstimo no mesmo dia.
 
 ## Registrar uma devolução
 

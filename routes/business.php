@@ -588,6 +588,8 @@ Route::name('specialized-educational-support.')->group(function (): void {
         Route::get('/peis/{pei}/disciplinas/{peiDiscipline}/editar', [PeiController::class, 'editDiscipline'])->name('pei-discipline.edit')->middleware('can:pei-discipline.update')->scopeBindings();
         Route::put('/peis/{pei}/disciplinas/{peiDiscipline}', [PeiController::class, 'updateDiscipline'])->name('pei-discipline.update')->middleware('can:pei-discipline.update')->scopeBindings();
         Route::delete('/peis/{pei}/disciplinas/{peiDiscipline}', [PeiController::class, 'destroyDiscipline'])->name('pei-discipline.destroy')->middleware('can:pei-discipline.delete')->scopeBindings();
+        Route::patch('/peis/{pei}/disciplinas/{peiDiscipline}/lembretes/encerrar', [PeiController::class, 'stopDisciplineReminders'])->name('pei-discipline.reminders.stop')->middleware('can:pei-discipline.update')->scopeBindings();
+        Route::patch('/peis/{pei}/disciplinas/{peiDiscipline}/lembretes/retomar', [PeiController::class, 'resumeDisciplineReminders'])->name('pei-discipline.reminders.resume')->middleware('can:pei-discipline.update')->scopeBindings();
         Route::post('/peis/{pei}/disciplinas/{peiDiscipline}/revisoes', [PeiController::class, 'addDisciplineRevision'])->name('pei-discipline.revisions.store')->middleware('can:pei-discipline.update')->scopeBindings();
         Route::get('/peis/{pei}/disciplinas-do-professor', [PeiController::class, 'teacherDisciplines'])->name('teacher-disciplines');
 

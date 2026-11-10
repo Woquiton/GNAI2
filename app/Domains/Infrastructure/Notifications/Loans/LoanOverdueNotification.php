@@ -40,12 +40,13 @@ final class LoanOverdueNotification extends Notification
             ?? 'N/A';
 
         $itemName = $loan->loanable?->name ?? 'Item';
-        $daysOverdue = abs((int) ceil(now()->diffInDays($loan->due_date, false)));
+        $daysOverdue = max(0, (int) floor($loan->due_date->diffInDays(now())));
+        $delay = $daysOverdue > 0 ? "há {$daysOverdue} dia(s)" : 'desde hoje';
 
         return [
             'loan_id' => $loan->id,
             'title' => 'Empréstimo Atrasado',
-            'message' => "O item '{$itemName}' está com o beneficiário {$beneficiary} e encontra-se atrasado há {$daysOverdue} dia(s).",
+            'message' => "A devolução do item '{$itemName}', emprestado a {$beneficiary}, está em atraso {$delay}.",
             'url' => route('inclusive-radar.loans.show', $loan->id, absolute: false),
         ];
     }

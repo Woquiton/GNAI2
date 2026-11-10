@@ -138,6 +138,21 @@ Depois de finalizado:
 - o PEI deixa de seguir novas versões do PAEE e mantém o PAEE que o fundamentou;
 - passa a ser possível gerar uma nova versão.
 
+## Acompanhar o preenchimento das adaptações
+
+Quando o professor responsável salva conteúdo no planejamento pela primeira vez, quem criou a adaptação recebe **Adaptação iniciada** em [Notificações](/ajuda/notificacoes). Novas alterações feitas pelo professor geram **Adaptação atualizada**. Cada aviso tem um link direto para a adaptação. Salvar sem alterar o conteúdo não gera aviso, e o professor não recebe um aviso para si quando também é o criador.
+
+Se o planejamento continuar vazio ou apenas com **A preencher.**, quem criou a adaptação recebe um lembrete após cinco dias e, depois, a cada cinco dias. A rotina verifica as pendências diariamente às 8h, no horário da Bahia. Não é necessário cadastrar um prazo.
+
+Na visualização da adaptação, a seção **Lembretes de preenchimento** permite:
+
+1. Clicar em **Encerrar lembretes** e confirmar quando o acompanhamento não for mais necessário.
+2. Clicar em **Retomar lembretes** e confirmar se precisar cobrar o preenchimento novamente. Um novo intervalo de cinco dias começa na retomada.
+
+Esses botões ficam disponíveis a quem criou a adaptação ou a um administrador, com permissão de edição. Encerrar os lembretes não exclui a adaptação nem impede seu preenchimento. Se o professor responsável for trocado, o intervalo de cinco dias recomeça; uma decisão anterior de encerrar os lembretes é preservada.
+
+Os lembretes não são enviados para PEIs finalizados, versões antigas ou alunos que não estão ativos. Também não são enviados a usuários sem acesso à adaptação. Basta haver conteúdo real em qualquer campo do planejamento, preenchido pelo professor ou pela equipe, para interromper a cobrança automática. Isso indica que o preenchimento começou; a conclusão do PEI continua seguindo suas próprias regras.
+
 ## Criar uma nova versão do PEI
 
 1. Finalize o PEI atual.

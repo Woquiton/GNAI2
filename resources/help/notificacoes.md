@@ -44,13 +44,18 @@ As notificações lidas continuam no histórico; elas apenas deixam de aparecer 
 | Notificação | Quando acontece | Quem recebe |
 | --- | --- | --- |
 | Título da pendência, com a mensagem "Você foi atribuído(a) a uma nova pendência." | Uma pendência é criada. | O profissional responsável pela pendência. |
+| Título da pendência, com a mensagem "Você agora é responsável por esta pendência." | O responsável é trocado na edição. Salvar sem trocar o responsável não gera outro aviso. | O novo responsável, quando tem conta com acesso a pendências e não é quem realizou a alteração. |
 | **Pendência concluída** | O responsável marca a pendência como concluída. | Quem criou a pendência. |
 | **Próximo da fila disponível** | Um item emprestável é devolvido ou um empréstimo é excluído, e há alguém aguardando esse item na fila de espera. A notificação leva direto ao cadastro do empréstimo, já preenchido com o item e o beneficiário. | O usuário que registrou a devolução ou a exclusão do empréstimo. |
-| **Empréstimo Atrasado** | Verificação automática diária, por volta das 12h05 (horário da Bahia), dos empréstimos ativos com data de devolução igual ou anterior ao dia. Informa o item, o beneficiário e os dias de atraso. | Todos os usuários do sistema. |
+| **Empréstimo Atrasado** | Verificação automática diária, por volta das 12h05 (horário da Bahia), dos empréstimos ativos cuja previsão de devolução já passou. No máximo um aviso por empréstimo e destinatário no mesmo dia. | O usuário que registrou o empréstimo e os administradores, desde que possam visualizar empréstimos. |
+| **Adaptação iniciada** | O professor responsável salva conteúdo no planejamento pela primeira vez. | Quem criou a adaptação, quando é outra pessoa e continua com acesso a ela. |
+| **Adaptação atualizada** | O professor responsável altera o conteúdo do planejamento novamente. Salvar sem mudanças não gera aviso. | Quem criou a adaptação, quando é outra pessoa e continua com acesso a ela. |
+| **Adaptação aguardando preenchimento** | Após cinco dias sem conteúdo no planejamento, com nova verificação a cada cinco dias. A rotina roda diariamente às 8h, no horário da Bahia. | Quem criou a adaptação e continua com acesso a ela. |
 
-Veja também [Pendências](/ajuda/pendencias).
+Os avisos de adaptações levam diretamente ao planejamento da disciplina. Os lembretes param quando houver conteúdo, quando forem encerrados manualmente, quando o PEI estiver finalizado ou deixar de ser vigente, ou quando o aluno deixar de estar ativo. Veja [Acompanhar o preenchimento das adaptações](/ajuda/pei#acompanhar-o-preenchimento-das-adaptacoes) e [Pendências](/ajuda/pendencias).
 
 ## Dúvidas comuns
 
 - **Recebo o mesmo aviso de atraso todos os dias**: a verificação de empréstimos atrasados roda diariamente e gera um novo aviso para cada empréstimo ativo vencido, até que ele seja devolvido.
+- **Não preciso mais cobrar uma adaptação**: abra a adaptação e use **Encerrar lembretes**. Marcar uma notificação como lida não encerra esse acompanhamento.
 - **"Notificação não encontrada."**: a notificação não existe mais ou pertence a outro usuário.

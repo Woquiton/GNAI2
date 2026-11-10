@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domains\Application\Actions\PeiDisciplines;
 
-use App\Domains\Domain\Models\Auth\User;
-use App\Domains\Domain\Exceptions\Disciplines\InvalidDiscipline;
-use App\Domains\Domain\Models\Disciplines\Discipline;
 use App\Domains\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
 use App\Domains\Domain\DTOs\PeiDisciplines\UpdatePeiDisciplineDTO;
+use App\Domains\Domain\Exceptions\Disciplines\InvalidDiscipline;
 use App\Domains\Domain\Exceptions\PeiDisciplines\InvalidPeiDiscipline;
-use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
-use App\Domains\Domain\Models\PeiDisciplineRevisions\PeiDisciplineRevision;
-use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Exceptions\Students\InvalidStudent;
+use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Domain\Models\Disciplines\Discipline;
+use App\Domains\Domain\Models\PeiDisciplineRevisions\PeiDisciplineRevision;
+use App\Domains\Domain\Models\PeiDisciplines\PeiDiscipline;
+use App\Domains\Domain\Models\Peis\Pei;
 use App\Domains\Domain\Models\Teachers\Teacher;
 use App\Domains\Domain\Models\Teachers\TeacherCourseDiscipline;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,6 +23,8 @@ use Throwable;
 
 final readonly class UpdatePeiDisciplineAction
 {
+    public function __construct(private NotifyPeiDisciplineChangeAction $notifications) {}
+
     /**
      * @throws InvalidDiscipline
      * @throws InvalidPeiDiscipline
@@ -109,6 +111,10 @@ final readonly class UpdatePeiDisciplineAction
                 'objectives_deadline' => 'Prazo das metas/objetivos',
             ];
             $before = $lockedPeiDiscipline->only(array_keys($fieldLabels));
+            $hadTeacherChanges = $lockedPeiDiscipline->revisions()
+                ->whereHas('reviewer', fn ($reviewer) => $reviewer->where('teacher_id', $lockedPeiDiscipline->teacher_id))
+                ->where('why', PeiDisciplineRevision::AUTOMATIC_REASON)
+                ->exists();
 
             $peiDisciplineDTO = new UpdatePeiDisciplineDTO(
                 specificObjectives: $data->specificObjectives,
@@ -127,6 +133,11 @@ final readonly class UpdatePeiDisciplineAction
                 discipline: $discipline,
                 data: $peiDisciplineDTO,
             );
+
+            if ($teacherChanged) {
+                // O novo responsável recebe cinco dias antes de um lembrete de pendência.
+                $lockedPeiDiscipline->reminder_cycle_started_at = now();
+            }
 
             try {
                 $lockedPeiDiscipline->save();
@@ -147,6 +158,9 @@ final readonly class UpdatePeiDisciplineAction
                     'why' => PeiDisciplineRevision::AUTOMATIC_REASON,
                     'reviewer_id' => (int) $user->getKey(),
                 ]);
+                if ($lockedPeiDiscipline->hasPlanningContent() || $hadTeacherChanges) {
+                    $this->notifications->execute($lockedPeiDiscipline, $user, ! $hadTeacherChanges);
+                }
             }
 
             return $lockedPeiDiscipline->load(['pei.student.person', 'teacher.person', 'discipline', 'creator']);
