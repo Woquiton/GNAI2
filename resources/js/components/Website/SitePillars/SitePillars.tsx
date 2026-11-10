@@ -23,7 +23,7 @@ export default function SitePillars({
         '--pillars-subtitle-size': `${appearance.subtitle_size}px`,
         '--pillars-divider-color': color(appearance.divider_color, 'var(--site-primary)'),
         background: appearance.gradient_enabled
-            ? `linear-gradient(${appearance.gradient_direction}, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
+            ? `linear-gradient(${appearance.gradient_direction} in srgb, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
             : background,
     } as CSSProperties;
 

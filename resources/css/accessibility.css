@@ -87,10 +87,12 @@ html {
 html[data-high-contrast='true'] body,
 html[data-high-contrast='true']
     body
-    *:not(img):not(video):not(canvas):not(svg):not(svg *):not(.guidedTour):not(
-        .guidedTour__spotlight
-    ):not(.guidedTour__backdrop):not(.modalLayer):not(.modalLayer__backdrop):not(
-        .modalLayer__dialog
+    :where(
+        *:not(img):not(video):not(canvas):not(svg):not(svg *):not(.guidedTour):not(
+            .guidedTour__spotlight
+        ):not(.guidedTour__backdrop):not(.modalLayer):not(.modalLayer__backdrop):not(
+            .modalLayer__dialog
+        ):not([data-site-accessibility-overlay])
     ) {
     background-color: var(--ui-color-surface) !important;
     background-image: none !important;
@@ -111,9 +113,11 @@ html[data-high-contrast='true'] a {
     text-decoration: underline;
 }
 
-/* A sidebar já identifica os links pela estrutura de navegação. */
-html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout) a,
-html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout) a * {
+/* Navegação e ações já são identificadas pela composição, sem sublinhar logos ou ícones. */
+html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout, .topbar) a,
+html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout, .topbar) a *,
+html[data-high-contrast='true'] a.button,
+html[data-high-contrast='true'] a.button * {
     text-decoration: none !important;
 }
 

@@ -9,6 +9,8 @@ export function useSummernote(
     host: RefObject<HTMLDivElement | null>,
     {
         defaultValue = '',
+        value,
+        styleTags,
         mode = 'standard',
         height = 350,
         label = 'Editor de texto',
@@ -22,6 +24,12 @@ export function useSummernote(
     }: SummernoteEditorProps,
 ): void {
     const initialValue = useRef(defaultValue);
+    const controlledValue = useRef(value);
+    controlledValue.current = value;
+    const writeValue = useRef<((html: string) => void) | undefined>(undefined);
+    useEffect(() => {
+        if (value !== undefined) writeValue.current?.(value);
+    }, [value]);
     const callback = useRef(onChange);
     callback.current = onChange;
     const state = useRef({ disabled, invalid, describedBy });
@@ -64,7 +72,7 @@ export function useSummernote(
             const { keyMap } = runtime.summernote.options;
             const keyMapWithoutTab = { pc: withoutTab(keyMap.pc), mac: withoutTab(keyMap.mac) };
             holder = document.createElement('div');
-            holder.innerHTML = initialValue.current;
+            holder.innerHTML = controlledValue.current ?? initialValue.current;
             root.append(holder);
             overlay = document.createElement('div');
             overlay.className = 'summernoteOverlay';
@@ -85,6 +93,7 @@ export function useSummernote(
                     focus: false,
                     keyMap: keyMapWithoutTab,
                     ...(toolbar ? { toolbar } : {}),
+                    ...(styleTags ? { styleTags } : {}),
                     onChange: (html: string): void => {
                         if (!cancelled && !state.current.disabled) callback.current?.(html);
                     },
@@ -93,6 +102,12 @@ export function useSummernote(
             document.querySelectorAll('body > .note-air-layout').forEach((node) => {
                 if (!oldAirNodes.has(node)) overlay!.append(node);
             });
+            writeValue.current = (html) => {
+                if (!editor || editor.code() === html) return;
+                editor.code(html);
+                const source = root.querySelector<HTMLTextAreaElement>('.note-codable');
+                if (source) source.value = html;
+            };
             const containers = [root, overlay];
             for (const container of containers) {
                 container
@@ -177,6 +192,7 @@ export function useSummernote(
         return () => {
             cancelled = true;
             updateControls.current = undefined;
+            writeValue.current = undefined;
             labelListeners.forEach(({ element, handler }) =>
                 element.removeEventListener('click', handler),
             );
@@ -197,5 +213,5 @@ export function useSummernote(
             holder?.remove();
             overlay?.remove();
         };
-    }, [host, mode, height, label, id, toolbar]);
+    }, [host, mode, height, label, id, toolbar, styleTags]);
 }

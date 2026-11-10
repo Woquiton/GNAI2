@@ -65,11 +65,14 @@ export default function SiteLink({
         <a
             href={href}
             className={className}
-            aria-label={ariaLabel}
+            aria-label={external && ariaLabel ? `${ariaLabel} (abre em nova aba)` : ariaLabel}
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener noreferrer' : undefined}
         >
             {children}
+            {external && !ariaLabel ? (
+                <span className="siteSections__srOnly"> (abre em nova aba)</span>
+            ) : null}
         </a>
     );
 }

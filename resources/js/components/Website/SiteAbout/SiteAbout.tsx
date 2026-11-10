@@ -29,7 +29,7 @@ export default function SiteAbout({
         '--about-text-column': `${100 - appearance.image_width}fr`,
         '--about-divider-color': color(appearance.divider_color, 'var(--site-primary)'),
         background: appearance.gradient_enabled
-            ? `linear-gradient(${appearance.gradient_direction}, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
+            ? `linear-gradient(${appearance.gradient_direction} in srgb, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
             : background,
     } as CSSProperties;
 
@@ -74,7 +74,7 @@ export default function SiteAbout({
                             <SiteLink
                                 href={section.button_url}
                                 className="siteSections__button"
-                                ariaLabel={section.button_label}
+                                ariaLabel={`${section.button_label}: ${section.title}`}
                             >
                                 <span
                                     className="siteAbout__button"

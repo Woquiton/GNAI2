@@ -149,3 +149,12 @@
     outline: 3px solid #fff;
     outline-offset: -6px;
 }
+
+/* O painel opaco mantém o contraste do texto mesmo sobre fotos e banners variáveis. */
+.siteHero__textPanel {
+    max-width: min(100%, var(--hero-content-width));
+    margin-inline: auto;
+    padding: clamp(16px, 3cqi, 32px);
+    border-radius: var(--site-radius);
+    pointer-events: auto;
+}

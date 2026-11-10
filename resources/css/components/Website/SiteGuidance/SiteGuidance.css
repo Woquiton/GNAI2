@@ -187,3 +187,24 @@
         transform: none;
     }
 }
+
+/* Os controles do carrossel têm superfície própria, independente da cor da seção. */
+.siteGuidance__carousel .bootstrapCarousel__pause,
+.siteGuidance__carousel .bootstrapCarousel__control {
+    background: #ffffff;
+    color: var(--site-primary);
+    border: 1px solid var(--site-primary);
+}
+.siteGuidance__carousel .bootstrapCarousel__indicators li,
+.siteGuidance__carousel .bootstrapCarousel__indicators li.active {
+    background: transparent;
+    border: 0;
+}
+.siteGuidance__carousel .bootstrapCarousel__indicators button::before {
+    background: #ffffff;
+    border-color: var(--site-primary);
+}
+.siteGuidance__carousel .bootstrapCarousel__indicators .active button::before {
+    background: var(--site-primary);
+    box-shadow: 0 0 0 1px #ffffff;
+}

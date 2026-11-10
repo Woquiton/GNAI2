@@ -54,7 +54,8 @@ export default function SiteSections({
             renderers[section.type] &&
             (preview ? section.enabled : isWebsiteSectionVisible(section, content)),
     );
-    const mainHeroId = visible.find((section) => section.type === 'hero')?.id;
+    // Um banner movido para baixo não pode introduzir h1 depois de títulos h2.
+    const mainHeroId = visible[0]?.type === 'hero' ? visible[0].id : undefined;
 
     return (
         <div className="siteSections">

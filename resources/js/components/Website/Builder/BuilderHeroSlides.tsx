@@ -158,13 +158,25 @@ export default function BuilderHeroSlides({
                                         tone="dark-red"
                                         size="sm"
                                         disabled={disabled}
-                                        onClick={() =>
-                                            onChange({
-                                                slides: slides.filter(
-                                                    (item) => item.id !== slide.id,
-                                                ),
-                                            })
-                                        }
+                                        onClick={() => {
+                                            const remaining = slides.filter(
+                                                (item) => item.id !== slide.id,
+                                            );
+                                            onChange({ slides: remaining });
+                                            requestAnimationFrame(() => {
+                                                const next = remaining[
+                                                    Math.min(slideIndex, remaining.length - 1)
+                                                ];
+                                                const target = next
+                                                    ? document.getElementById(
+                                                          `website-section-${section.id}-slide-${next.id}-alt`,
+                                                      )
+                                                    : document.querySelector<HTMLElement>(
+                                                          '.websiteBuilder__slides + .removableField__add',
+                                                      );
+                                                target?.focus();
+                                            });
+                                        }}
                                     />
                                 </div>
                             </li>

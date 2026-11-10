@@ -102,3 +102,51 @@ Quando há erro, a seção com problema recebe a marca **Revisar** na lista e o 
 - **"Descreva a imagem da seção "Sobre nós" no texto alternativo."**: preencha o texto alternativo da imagem dessa seção.
 - **"Use um link iniciado por http://, https://, /, #, mailto: ou tel:."**: corrija o endereço do botão ou do item.
 - **"A imagem do banner não está mais disponível. Selecione o arquivo novamente."**: envie a imagem de novo e salve.
+
+## Revisar a acessibilidade antes de publicar
+
+O bloco **Acessibilidade antes de publicar** mostra pendências de conteúdo durante a edição. Clique em **Revisar** para abrir o campo correspondente. Ao salvar, o Gnai faz também a verificação de contraste e do texto formatado. Se houver uma pendência, a atualização não é publicada e os valores preenchidos continuam no formulário.
+
+- Preencha um título para cada seção visível e para cada item.
+- Em **Dúvidas frequentes**, escreva a pergunta e a resposta.
+- Em **Orientações e documentos**, informe o título e o endereço do material.
+- Quando adicionar uma ação, preencha tanto seu texto quanto o destino.
+- Descreva imagens informativas, incluindo a informação importante de cartazes e convites. Não use apenas o nome do arquivo.
+- No modo **Textos sobre o fundo**, a imagem do banner é decorativa. Coloque toda a informação nos campos de título e texto de apoio. O texto recebe um painel de fundo opaco para continuar legível sobre qualquer foto.
+- O logo é identificado pelo nome do site ao lado da imagem. Não é necessário repetir essa descrição.
+- Ao escolher cores, o contraste dos textos deve atingir pelo menos 4,5:1. O sistema considera as cores herdadas, os degradês e os estados de passagem do ponteiro das ações configuráveis. Se a combinação não passar, ajuste a cor do texto ou do fundo.
+
+As seções ocultas podem ter títulos e textos em preparação. As regras de formato e upload de arquivos continuam sendo verificadas.
+
+### Descrever imagens e tabelas dentro do texto
+
+Na seção **Sobre nós**, depois de inserir imagens ou tabelas no editor:
+
+1. Preencha **Descrição da imagem** para cada imagem inserida, nos campos exibidos abaixo do texto.
+2. Preencha **Título da tabela** para cada tabela.
+3. Se a primeira linha da tabela identifica as colunas, clique em **Usar primeira linha como cabeçalho**.
+4. Use a formatação de subtítulos a partir do nível 3, sem saltar níveis.
+5. Use as cores de **Aparência** da seção. Remova cores trazidas de outros programas com a opção de limpar formatação do editor.
+
+## Navegar pelo site com acessibilidade
+
+O site público oferece um botão flutuante com o símbolo de acessibilidade, na lateral direita. Ele abre o **Menu de acessibilidade**, com ferramentas em cartões:
+
+- **Tamanho do texto**: use − e + nos níveis 100%, 125%, 150%, 175% e 200%. O espaçamento das linhas acompanha o tamanho para não sobrepor o texto; o painel de ferramentas mantém seu tamanho.
+- **Espaçamento entre linhas**: alterne entre o padrão e os multiplicadores 1,3×, 1,6× e 2×.
+- **Alinhamento do texto**: escolha padrão, à esquerda, centralizado ou à direita.
+- **Fonte simples**: use uma fonte sem serifa do dispositivo.
+- **Contraste**: alterne entre padrão, escuro, claro e alto contraste. **Tons de cinza** retira as cores do conteúdo.
+- **Máscara de leitura**: destaque uma faixa que acompanha o ponteiro ou o foco pelo teclado.
+- **Ocultar imagens**: oculte as imagens visualmente, preservando suas descrições para tecnologias assistivas.
+- **Pausar animações**: interrompa animações e o avanço automático dos carrosséis.
+- **Destacar links**: aplique fundo amarelo, texto preto e contorno aos links, inclusive aos que contêm imagens. No hover e no foco por teclado, o fundo muda para laranja. O efeito só aparece quando essa opção é ativada. **Destacar foco** reforça o contorno do controle em uso; o foco básico de teclado continua disponível sem ativar essa ferramenta.
+- **Estrutura da página**: abre uma tela com os títulos de H1 a H6, com recuo das subseções. Escolha um título para ir até ele ou use **Voltar às ferramentas**.
+
+As preferências do site ficam salvas no navegador, separadas das configurações do painel administrativo. **Restaurar configurações** retorna todas as ferramentas do site ao padrão. Escape fecha o painel e devolve o foco ao botão que o abriu.
+
+No início da página, pressione Tab para acessar os atalhos para conteúdo, página inicial, menu e rodapé. As teclas de acesso são 1, 2, 3 e 4, respectivamente. No Chrome e Edge, use Alt + número; no Firefox, Alt + Shift + número. A combinação pode variar conforme o sistema operacional.
+
+O menu pode ser usado pelo teclado. Escape fecha o menu aberto e retorna ao botão que o abriu. Carrosséis oferecem controles para trocar os itens e pausar a apresentação. Ao receber foco, a rotação automática para e só volta com **Retomar**. A preferência de reduzir movimento do dispositivo também é respeitada.
+
+Antes de considerar a revisão concluída, abra **Ver site** e confira a navegação com Tab e Shift + Tab, a ampliação no navegador e a leitura por tecnologia assistiva. As verificações automáticas não avaliam sozinhas se uma descrição é adequada ou se toda a informação de uma imagem foi transcrita.

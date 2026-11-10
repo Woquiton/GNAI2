@@ -10,6 +10,8 @@
 .summernoteEditor .note-editor {
     border: 1px solid #eee;
     position: relative;
+    /* Menus da barra devem ultrapassar o editor; a área de texto mantém sua rolagem. */
+    overflow: visible;
 }
 .summernoteEditor--invalid .note-editor {
     border-color: var(--ui-color-danger) !important;

@@ -22,6 +22,7 @@ import '@styles/components/Website/Builder/WebsiteBuilder.css';
 
 type Props = {
     faq?: boolean;
+    required: boolean;
     resource?: boolean;
     linkOptions?: BuilderLinkOption[];
     numbered?: boolean;
@@ -42,6 +43,7 @@ type Props = {
 
 export default function BuilderPillarItemEditor({
     faq = false,
+    required,
     resource = false,
     linkOptions = [],
     numbered = false,
@@ -297,10 +299,12 @@ export default function BuilderPillarItemEditor({
                                         id={id('title')}
                                         label={faq ? 'Pergunta' : 'Título'}
                                         error={error('title')}
+                                        requiredIndicator={required}
                                     >
                                         <TextInput
                                             id={id('title')}
                                             value={item.title}
+                                            required={required}
                                             maxLength={120}
                                             disabled={disabled}
                                             invalid={!!error('title')}

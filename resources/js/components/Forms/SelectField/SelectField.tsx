@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type SelectHTMLAttributes
 import { loadExternalScript } from '@/utils/loadExternalScript';
 import { loadExternalStylesheet } from '@/utils/loadExternalStylesheet';
 import { joinClassNames } from '@/utils/joinClassNames';
+import { installSelectDropdownPosition } from './selectDropdownPosition';
 import type {
     SelectFieldCollection,
     SelectFieldGroup,
@@ -190,7 +191,38 @@ export default function SelectField({
                     `${count} resultado(s). Use as setas para navegar e Enter para selecionar.`,
             });
             plugin.current = instance;
-            const dropdownElement = instance.data('select2')?.dropdown[0];
+            const select2 = instance.data('select2');
+            const dropdownElement = select2?.dropdown[0];
+            const selectContainer =
+                element.previousElementSibling instanceof HTMLElement
+                    ? element.previousElementSibling
+                    : null;
+            const restoreDropdownPosition =
+                select2 && selectContainer instanceof HTMLElement
+                    ? installSelectDropdownPosition(select2, selectContainer)
+                    : undefined;
+            // O plugin abre no mousedown e seleciona no mouseup. O mesmo gesto de
+            // abertura não pode escolher uma opção se a lista surgir sob o ponteiro.
+            const finishOpeningClick = (event: MouseEvent): void => {
+                if (event.target instanceof Node && dropdownElement?.contains(event.target)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            };
+            const beginOpeningClick = (event: MouseEvent): void => {
+                if (
+                    event.button === 0 &&
+                    !selectContainer?.classList.contains('select2-dropdown-open') &&
+                    (event.target as HTMLElement | null)?.closest('.select2-choice')
+                ) {
+                    document.removeEventListener('mouseup', finishOpeningClick, true);
+                    document.addEventListener('mouseup', finishOpeningClick, {
+                        capture: true,
+                        once: true,
+                    });
+                }
+            };
+            selectContainer?.addEventListener('mousedown', beginOpeningClick, true);
             const animateDropdownClose = (): void => {
                 if (!dropdownElement) return;
                 window.clearTimeout(dropdownCloseTimer);
@@ -259,7 +291,6 @@ export default function SelectField({
             // dela ao rolar a tela já a abria. Barrado esse evento, um toque de verdade ainda abre
             // pelo `mousedown` que o navegador emite ao soltar o dedo sem arrastar; a rolagem não
             // emite esse evento. Fica só na caixa da seleção: a lista aberta segue com o toque.
-            const selectContainer = element.previousElementSibling;
             const ignoreTouchStart = (event: Event): void => {
                 if ((event.target as HTMLElement | null)?.closest('.select2-choice')) {
                     event.stopPropagation();
@@ -275,6 +306,9 @@ export default function SelectField({
             element.addEventListener('invalid', invalid);
             cleanup = () => {
                 window.clearTimeout(dropdownCloseTimer);
+                restoreDropdownPosition?.();
+                selectContainer?.removeEventListener('mousedown', beginOpeningClick, true);
+                document.removeEventListener('mouseup', finishOpeningClick, true);
                 searchInput?.removeEventListener('keydown', createOnEnter, true);
                 dropdownElement?.removeEventListener('mousedown', createOnClick);
                 plugin.current = null;

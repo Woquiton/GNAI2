@@ -26,6 +26,8 @@ export function AppearanceColorField({
             <div className="websiteBuilder__color">
                 <input
                     type="color"
+                    aria-invalid={!!error}
+                    aria-describedby={error ? `${id}-error` : undefined}
                     aria-label={`Selecionar ${label.toLowerCase()}`}
                     title={`Selecionar ${label.toLowerCase()}`}
                     value={/^#[0-9a-f]{6}$/i.test(value) ? value : '#322b75'}

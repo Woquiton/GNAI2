@@ -18,6 +18,7 @@ import type {
     WebsiteSite,
 } from '@/components/Website/Website.types';
 import BuilderIdentityFields from '@/components/Website/Builder/BuilderIdentityFields';
+import BuilderAccessibilityReview from './BuilderAccessibilityReview';
 import BuilderPreview from '@/components/Website/Builder/BuilderPreview';
 import BuilderSectionEditor from '@/components/Website/Builder/BuilderSectionEditor';
 import BuilderSectionList from '@/components/Website/Builder/BuilderSectionList';
@@ -105,6 +106,7 @@ export default function WebsiteBuilderForm({
     can,
 }: WebsiteBuilderProps): React.JSX.Element {
     const [editorFailed, setEditorFailed] = useState(false);
+    const [structureAnnouncement, setStructureAnnouncement] = useState('');
     const editorBody = useRef<HTMLDivElement>(null);
     const pendingFocus = useRef<FocusRequest | null>(null);
     const [focusRequest, setFocusRequest] = useState(0);
@@ -202,6 +204,11 @@ export default function WebsiteBuilderForm({
     }
 
     function moveSection(index: number, offset: -1 | 1): void {
+        const target = index + offset;
+        if (target < 0 || target >= sections.length) return;
+        setStructureAnnouncement(
+            `${sections[index].title || 'Seção'} movida para a posição ${target + 1}.`,
+        );
         form.setData((data) => {
             const next = [...data.sections];
             const target = index + offset;
@@ -220,9 +227,14 @@ export default function WebsiteBuilderForm({
 
         form.setData((data) => ({ ...data, sections: remaining }));
 
-        if (removed?.id === selectedId) {
-            setSelectedId(remaining[Math.min(index, remaining.length - 1)]?.id ?? IDENTITY_ID);
-        }
+        const nextId = remaining[Math.min(index, remaining.length - 1)]?.id ?? IDENTITY_ID;
+        if (removed?.id === selectedId) setSelectedId(nextId);
+        setStructureAnnouncement(`${removed?.title || 'Seção'} removida da página.`);
+        requestAnimationFrame(() => {
+            document.querySelector<HTMLElement>(
+                `[data-builder-section-id="${CSS.escape(nextId)}"]`,
+            )?.focus();
+        });
     }
 
     function addSection(type: WebsiteSectionType): void {
@@ -286,7 +298,11 @@ export default function WebsiteBuilderForm({
                 parent = parent.parentElement;
             }
 
-            visible?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            visible?.scrollIntoView({
+                block: 'center',
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                    ? 'auto' : 'smooth',
+            });
             target?.focus({ preventScroll: true });
         };
 
@@ -464,6 +480,15 @@ export default function WebsiteBuilderForm({
             encType="multipart/form-data"
             onSubmit={submit}
         >
+            <span className="websiteBuilder__announcement" role="status" aria-live="polite">
+                {structureAnnouncement}
+            </span>
+            <BuilderAccessibilityReview
+                data={form.data}
+                errors={errors}
+                disabled={form.processing}
+                onEdit={openEditor}
+            />
             <CardBox className="websiteBuilder__content">
                 <div className="websiteBuilder">
                     <div className="websiteBuilder__editor">

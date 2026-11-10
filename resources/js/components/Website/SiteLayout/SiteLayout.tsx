@@ -1,6 +1,15 @@
-import { Head } from '@inertiajs/react';
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { Head, usePage } from '@inertiajs/react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import SiteAccessibility from '../SiteAccessibility/SiteAccessibility';
+import { useSiteAccessibilityPreferences } from '../SiteAccessibility/useSiteAccessibilityPreferences';
+import { useSiteTextPresentation } from '../SiteAccessibility/useSiteTextPresentation';
+import SkipLinks from '@/components/Navigation/SkipLinks/SkipLinks';
+import {
+    applyAccessibilityPreferences,
+    readAccessibilityPreferences,
+} from '@/utils/accessibilityPreferences';
 import { joinClassNames } from '@/utils/joinClassNames';
+import { mixAppearanceColors } from '../WebsiteAppearance';
 import { websiteRoutes } from '../Website.routes';
 import type { WebsiteSeo, WebsiteSite } from '../Website.types';
 import SiteLink, { SitePreviewContext } from './SiteLink';
@@ -62,7 +71,7 @@ export function SiteSocialLinks({
                 <li key={network.key}>
                     <SiteLink
                         href={site.social[network.key] ?? '#'}
-                        ariaLabel={`${network.label} de ${site.name} (abre em nova aba)`}
+                        ariaLabel={`${network.label} de ${site.name}`}
                     >
                         <i className={network.icon} aria-hidden="true" />
                     </SiteLink>
@@ -90,7 +99,38 @@ export default function SiteLayout({
     children: ReactNode;
 }): React.JSX.Element {
     const [menuOpen, setMenuOpen] = useState(false);
-    const style = { '--site-primary': site.primary_color } as CSSProperties;
+    const reading = useSiteAccessibilityPreferences();
+    const siteRoot = useRef<HTMLDivElement>(null);
+    const menuToggle = useRef<HTMLButtonElement>(null);
+    const { url } = usePage();
+
+    useEffect(() => {
+        setMenuOpen(false);
+    }, [url]);
+    useLayoutEffect(() => {
+        if (preview) return;
+        // O site tem ajustes próprios; o painel flutuante permanece operável ao ampliar a página.
+        applyAccessibilityPreferences({ highContrast: false, scale: 100 });
+        return () => applyAccessibilityPreferences(readAccessibilityPreferences());
+    }, [preview]);
+
+    useSiteTextPresentation(
+        siteRoot,
+        reading.preferences.scale,
+        reading.preferences.lineHeight,
+        !preview,
+        reading.preferences.readableFont,
+    );
+
+    const primary = site.primary_color;
+    const style = {
+        '--site-primary': primary,
+        '--site-reading-align': ['start', 'left', 'center', 'right'][reading.preferences.alignment],
+        '--site-primary-soft': mixAppearanceColors(primary, '#ffffff', 0.09),
+        '--site-primary-strong': mixAppearanceColors(primary, '#000000', 0.82),
+        '--site-primary-tint': mixAppearanceColors(primary, '#ffffff', 0.18),
+        '--site-border': mixAppearanceColors(primary, '#e9ecef', 0.12),
+    } as CSSProperties;
     const year = new Date().getFullYear();
 
     return (
@@ -114,18 +154,40 @@ export default function SiteLayout({
                 </Head>
             ) : null}
             <div
+                ref={siteRoot}
                 className={joinClassNames('siteLayout', preview && 'siteLayout--preview')}
                 style={style}
+                data-site-contrast={preview ? 0 : reading.preferences.contrast}
+                data-site-text-scale={preview ? 100 : reading.preferences.scale}
+                data-site-readable-font={!preview && reading.preferences.readableFont}
+                data-site-line-height={preview ? 0 : reading.preferences.lineHeight}
+                data-site-alignment={preview ? 0 : reading.preferences.alignment}
+                data-site-grayscale={!preview && reading.preferences.grayscale}
+                data-site-hide-images={!preview && reading.preferences.hideImages}
+                data-site-pause-motion={!preview && reading.preferences.pauseMotion}
+                data-site-highlight-links={!preview && reading.preferences.highlightLinks}
+                data-site-strong-focus={!preview && reading.preferences.strongFocus}
             >
                 {!preview ? (
-                    <a href="#site-content" className="siteLayout__skip">
-                        Pular para o conteúdo
-                    </a>
+                    <SkipLinks items={[
+                        { label: 'Conteúdo', accessKey: '1', targetId: 'site-content' },
+                        { label: 'Página inicial', accessKey: '2', href: websiteRoutes.home },
+                        {
+                            label: 'Menu',
+                            accessKey: '3',
+                            targetId: 'site-navigation',
+                            onBeforeFocus: () => {
+                                if (menuToggle.current?.getClientRects().length) setMenuOpen(true);
+                            },
+                        },
+                        { label: 'Rodapé', accessKey: '4', targetId: 'site-footer' },
+                    ]} />
                 ) : null}
                 <header className="siteLayout__header">
                     <div className="siteLayout__container siteLayout__headerInner">
                         <SiteBrand site={site} />
                         <button
+                            ref={menuToggle}
                             type="button"
                             className="siteLayout__menuToggle"
                             aria-expanded={menuOpen}
@@ -133,6 +195,12 @@ export default function SiteLayout({
                             aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
                             title={menuOpen ? 'Fechar menu' : 'Abrir menu'}
                             onClick={() => setMenuOpen((open) => !open)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Escape' && menuOpen) {
+                                    event.preventDefault();
+                                    setMenuOpen(false);
+                                }
+                            }}
                         >
                             <i
                                 className={menuOpen ? 'fa fa-times' : 'fa fa-bars'}
@@ -146,6 +214,20 @@ export default function SiteLayout({
                                 menuOpen && 'siteLayout__nav--open',
                             )}
                             aria-label="Navegação do site"
+                            onKeyDown={(event) => {
+                                if (event.key === 'Escape' && menuOpen) {
+                                    event.preventDefault();
+                                    setMenuOpen(false);
+                                    if (menuToggle.current?.getClientRects().length) {
+                                        menuToggle.current.focus();
+                                    }
+                                }
+                            }}
+                            onClick={(event) => {
+                                if (event.target instanceof Element && event.target.closest('a')) {
+                                    setMenuOpen(false);
+                                }
+                            }}
                         >
                             <ul>
                                 {navigation.map((item) => (
@@ -165,6 +247,7 @@ export default function SiteLayout({
                                 ))}
                             </ul>
                         </nav>
+
                     </div>
                 </header>
                 {preview ? (
@@ -174,7 +257,7 @@ export default function SiteLayout({
                         {children}
                     </main>
                 )}
-                <footer className="siteLayout__footer">
+                <footer id={preview ? undefined : 'site-footer'} className="siteLayout__footer" tabIndex={-1}>
                     <div className="siteLayout__container siteLayout__footerGrid">
                         <div className="siteLayout__footerBrand">
                             <SiteBrand site={site} />
@@ -228,6 +311,12 @@ export default function SiteLayout({
                         </span>
                     </div>
                 </footer>
+                {!preview ? (
+                    <SiteAccessibility
+                        preferences={reading.preferences}
+                        onChange={reading.update}
+                    />
+                ) : null}
             </div>
         </SitePreviewContext.Provider>
     );

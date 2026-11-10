@@ -18,11 +18,11 @@ export function itemCardStyle(appearance: PillarCardAppearance): CSSProperties {
         '--pillar-card-border-width': `${appearance.card_border_width}px`,
         '--pillar-card-border': color(appearance.card_border_color, 'var(--site-border)'),
         '--pillar-card-background': appearance.gradient_enabled
-            ? `linear-gradient(${appearance.gradient_direction}, ${background}, ${end})`
+            ? `linear-gradient(${appearance.gradient_direction} in srgb, ${background}, ${end})`
             : background,
         '--pillar-card-shadow': shadow(appearance.card_shadow),
         '--pillar-hover-background': appearance.gradient_enabled
-            ? `linear-gradient(${appearance.gradient_direction}, ${hoverBackground}, ${end})`
+            ? `linear-gradient(${appearance.gradient_direction} in srgb, ${hoverBackground}, ${end})`
             : hoverBackground,
         '--pillar-hover-border': color(appearance.hover_border_color, 'var(--pillar-card-border)'),
         '--pillar-hover-lift': `-${appearance.hover_lift}px`,
@@ -104,7 +104,7 @@ export default function SiteItemCard({
                         <SiteLink
                             href={item.url}
                             className="siteSections__more siteSections__resourceLink"
-                            ariaLabel={`Consultar: ${item.title}`}
+                            ariaLabel={`Consultar material: ${item.title}`}
                         >
                             Consultar material{' '}
                             <i className="fa fa-arrow-right" aria-hidden="true" />

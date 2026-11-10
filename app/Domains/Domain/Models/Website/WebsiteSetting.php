@@ -202,6 +202,7 @@ final class WebsiteSetting extends Model implements Auditable
     {
         if (
             $section['type'] === WebsiteSectionType::ABOUT->value
+            && ($section['enabled'] ?? true)
             && $section['image_path'] !== null
             && $section['image_alt'] === ''
         ) {

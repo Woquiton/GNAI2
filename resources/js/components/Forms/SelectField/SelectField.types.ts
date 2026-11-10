@@ -10,6 +10,10 @@ export interface SelectFieldGroup {
     label: string;
     options: SelectFieldOption[];
 }
+export interface SelectFieldInstance {
+    dropdown: { 0?: HTMLElement };
+    positionDropdown: () => void;
+}
 export interface SelectFieldCollection {
     select2: (
         options: Record<string, unknown> | string,
@@ -20,7 +24,7 @@ export interface SelectFieldCollection {
         handler: (event: { originalEvent?: Event }) => void,
     ) => SelectFieldCollection;
     off: (event: string) => SelectFieldCollection;
-    data: (key: 'select2') => { dropdown: { 0?: HTMLElement } } | undefined;
+    data: (key: 'select2') => SelectFieldInstance | undefined;
 }
 export interface SelectFieldRuntime {
     (element: HTMLElement): SelectFieldCollection;

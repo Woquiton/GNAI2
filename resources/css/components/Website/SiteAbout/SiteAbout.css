@@ -104,3 +104,11 @@
         height: min(var(--about-image-height), 420px);
     }
 }
+
+/* O conteúdo formatado herda a combinação de cores validada para o corpo da seção. */
+.siteAbout .siteAbout__body :is(h3, h4, h5, h6, a, a:hover, code, pre, blockquote, caption, th, td) {
+    color: inherit;
+}
+.siteAbout .siteAbout__body :is(table, thead, tbody, tr, th, td, code, pre) {
+    background: transparent;
+}

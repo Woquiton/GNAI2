@@ -6,6 +6,7 @@ import type {
 
 /** Valores de `data-tour` das partes da administração do site. */
 export const WEBSITE_BUILDER_TOUR_TARGETS = {
+    accessibility: 'website-builder-accessibility',
     tabs: 'website-builder-tabs',
     sectionsTabLabel: 'website-builder-sections-tab',
     editTabLabel: 'website-builder-edit-tab',
@@ -87,6 +88,15 @@ const PREVIEW_GROUP = 'Prévia';
 export const websiteBuilderEditTour: GuidedTourPageConfig = {
     helpHref: helpUrls.show(HELP_SLUG, 'abrir-o-construtor-e-a-previa'),
     steps: [
+        {
+            id: 'website-builder-accessibility',
+            target: targets.accessibility,
+            title: 'Acessibilidade antes de publicar',
+            content: [
+                'Revise os títulos, as descrições de imagens e os destinos das ações. O botão Revisar abre o campo correspondente.',
+                'Ao salvar, o sistema verifica também as cores e o conteúdo formatado. Confira o site publicado com teclado e leitor de tela.',
+            ],
+        },
         {
             id: 'website-builder-tabs',
             target: targets.tabs,

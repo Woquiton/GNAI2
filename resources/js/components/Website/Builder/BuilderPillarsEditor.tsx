@@ -196,10 +196,16 @@ export default function BuilderPillarsEditor({
                     <FormSection title="Título" variant="inline" iconClass="fa fa-font">
                         <FormGrid>
                             <FormGridWide>
-                                <FormField id={id('title')} label="Título" error={error('title')}>
+                                <FormField
+                                    id={id('title')}
+                                    label="Título"
+                                    error={error('title')}
+                                    requiredIndicator={section.enabled}
+                                >
                                     <TextInput
                                         id={id('title')}
                                         value={section.title}
+                                        required={section.enabled}
                                         maxLength={160}
                                         disabled={disabled}
                                         invalid={!!error('title')}
@@ -521,6 +527,7 @@ export default function BuilderPillarsEditor({
                             <ol className="websiteBuilder__pillarItems">
                                 {section.items.map((item, itemIndex) => (
                                     <BuilderPillarItemEditor
+                                        required={section.enabled}
                                         key={item.editor_key ?? itemIndex}
                                         numbered={numbered}
                                         faq={section.type === 'faq'}
@@ -538,13 +545,18 @@ export default function BuilderPillarsEditor({
                                         editTarget={editTarget}
                                         onChange={(values) => updateItem(itemIndex, values)}
                                         onMove={(offset) => moveItem(itemIndex, offset)}
-                                        onRemove={() =>
-                                            onChange({
-                                                items: section.items.filter(
-                                                    (_, current) => current !== itemIndex,
-                                                ),
-                                            })
-                                        }
+                                        onRemove={() => {
+                                            const remaining = section.items.filter(
+                                                (_, current) => current !== itemIndex,
+                                            );
+                                            onChange({ items: remaining });
+                                            requestAnimationFrame(() => {
+                                                const selector = remaining.length
+                                                    ? `.websiteBuilder__pillarItems > li:nth-child(${Math.min(itemIndex + 1, remaining.length)}) summary`
+                                                    : '.websiteBuilder__pillarItems + .removableField__add';
+                                                document.querySelector<HTMLElement>(selector)?.focus();
+                                            });
+                                        }}
                                     />
                                 ))}
                             </ol>

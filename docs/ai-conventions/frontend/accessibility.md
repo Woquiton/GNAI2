@@ -4,7 +4,7 @@ Vale para as telas e os componentes do Gnai em `resources/js/` (área autenticad
 
 ## Base normativa
 
-- **LBI — Lei Brasileira de Inclusão (Lei 13.146/2015), art. 63**: sítios mantidos por órgãos de governo ou instituições públicas devem ser acessíveis segundo as melhores práticas e diretrizes internacionais.
+- **LBI — Lei Brasileira de Inclusão (Lei 13.146/2015), art. 63**: sítios mantidos por empresas com sede ou representação comercial no País ou por órgãos de governo devem ser acessíveis segundo as melhores práticas e diretrizes internacionais.
 - **eMAG 3.1 — Modelo de Acessibilidade em Governo Eletrônico**, padrão do gov.br: atalhos de teclado para conteúdo, menu, busca e rodapé; barra de acessibilidade no topo; alto contraste; foco visível; ordem lógica de navegação.
 - **WCAG 2.2, nível AA** (referência do eMAG e da ABNT NBR 17225:2025): em especial 1.4.3 Contraste mínimo, 1.4.11 Contraste não textual, 2.1.1 Teclado, 2.4.1 Ignorar blocos, 2.4.3 Ordem do foco, 2.4.7 Foco visível, 2.4.11 Foco não encoberto, 2.5.3 Rótulo no nome e 2.3.3 Animação a partir de interações.
 
@@ -94,10 +94,13 @@ Com `prefers-reduced-motion: reduce` ativo no sistema, animações, transições
 
 ## Preferências de apresentação
 
-A topbar oferece o ícone de contraste, que abre as opções em `TopBarAccessibilityAction`,
-reutilizando `Modal` e `Button`. Alto contraste redefine os tokens em `tokens.css`:
+A topbar oferece o ícone de acessibilidade, que abre as opções em `TopBarAccessibilityAction`,
+pelo diálogo UI/AccessibilityPreferencesDialog. O site público usa o painel lateral Website/SiteAccessibility com preferências próprias. Alto contraste redefine os tokens em `tokens.css`:
 fundo preto, texto branco, links e foco amarelos. `accessibility.css` cobre também
 cores fixas de componentes legados, sem inverter as imagens.
+Na topbar, na sidebar e nos links apresentados como botões, o alto contraste não acrescenta
+sublinhado a textos, logos ou ícones. Links no corpo dos textos continuam sublinhados.
+O destaque de foco por teclado permanece ativo.
 
 O ajuste de tamanho vai de 90% a 150%, em passos de 10%. Usa zoom do documento
 para ampliar também fontes em pixels e os controles que as contêm. Não limita o zoom
@@ -110,3 +113,85 @@ Não são preferências da conta nem eventos de auditoria de registros de negóc
 
 A página autenticada `/acessibilidade`, disponível na sidebar em Sistema, explica
 contraste, tamanho, teclado, atalhos, leitura e movimento reduzido, e tem tutorial ao vivo.
+
+## Autoria acessível no construtor do site
+
+O construtor segue também o princípio das [ATAG 2.0](https://www.w3.org/WAI/standards-guidelines/atag/):
+o editor precisa ser operável e ajudar o autor a produzir conteúdo acessível.
+
+- WebsiteAccessibility, em Application/Rules/Website, complementa UpdateWebsiteData com regras de conteúdo nas seções habilitadas: títulos, pares de texto/destino de ações, identificação de materiais, respostas de FAQ, descrições de imagens e âncoras locais.
+- Imagens mantidas são identificadas pelo ID e tipo da seção já salva, nunca por caminhos enviados pelo cliente. Sobre nós exige descrição; imagens de fundo no banner textual são decorativas e têm alternativa no próprio texto.
+- Conteúdo formatado é sanitizado antes da verificação. Imagens precisam de descrição; links precisam de nome e destino; subtítulos começam em h3; tabelas precisam de legenda e cabeçalhos com escopo. As cores do corpo vêm da aparência da seção, sem cores inline que contornem a análise.
+- WebsiteAppearanceAccessibility resolve cores herdadas do tema e compara texto/fundo com mínimo conservador de 4,5:1, inclusive para títulos. WebsiteContrast calcula luminância sRGB, contraste sem arredondar o resultado e o pior contraste no percurso contínuo de degradês sRGB. Hover é verificado separadamente. O banner textual recebe painel opaco para não depender da luminância desconhecida de fotografias.
+- A revisão do builder apresenta pendências com acesso ao campo correspondente. BuilderRichTextFields oferece edição por teclado das descrições e títulos de tabelas, sem exigir HTML; a conversão da primeira linha em cabeçalho é uma decisão explícita do autor.
+- SummernoteEditor aceita value controlado e styleTags opcionais. Atualizações vindas dos campos auxiliares sincronizam o editor; conteúdo idêntico não é reescrito para preservar o cursor. Os demais consumidores podem continuar com defaultValue.
+- A prévia é inerte: a edição equivalente permanece disponível na lista e nos campos. Não coloque controles de edição exclusivos de clique duplo ou arraste.
+- SiteLayout reutiliza SkipLinks e o painel Website/SiteAccessibility; o menu fecha com Escape e devolve o foco. Carrosséis param ao receber foco, só retomam por ação explícita e respeitam movimento reduzido. Slides inativos continuam inertes.
+- Não anuncie conformidade integral apenas porque a validação passou. Qualidade editorial das alternativas, conteúdo externo, tecnologias assistivas e reflow precisam de homologação manual.
+
+Referências: [LBI, art. 63](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm),
+[eMAG 3.1](https://emag.governoeletronico.gov.br/),
+[WCAG 2.2](https://www.w3.org/TR/WCAG22/) e
+[padrão de carrossel da WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/).
+
+## Painel de acessibilidade do site público
+
+O site usa um lançador flutuante com símbolo de acessibilidade e painel lateral de ferramentas
+em cartões, na identidade roxa do Gnai. A apresentação do painel é exclusiva do site; a topbar
+administrativa mantém seu diálogo compacto.
+
+Website/SiteAccessibility reutiliza Modal e Button. Todos os ajustes de leitura do site ficam em useSiteAccessibilityPreferences
+e no armazenamento gnai.site.accessibility: tamanho de texto, contraste, entrelinha, alinhamento, fonte simples, tons de
+cinza, máscara de leitura, imagens ocultas, pausa de movimento, destaque de links e foco.
+A prévia do builder não recebe esses ajustes pessoais.
+
+O lançador e o painel ficam em portal fora de SiteLayout, para não serem afetados pelos filtros
+de leitura. A máscara é transparente, não intercepta eventos e acompanha também o foco por
+teclado; ela sai enquanto o painel está aberto. Ocultar imagens usa opacidade, preservando
+as alternativas na árvore de acessibilidade.
+
+BootstrapCarousel observa data-site-pause-motion e suspende sua rotação quando solicitado,
+além de respeitar movimento reduzido e pausa por foco. A ferramenta Estrutura da página lista
+títulos disponíveis de h1 a h6, indica o nível visualmente e no nome acessível e recua as
+subseções. Só move o foco ao destino depois que o diálogo termina de fechar.
+Todos os listeners, observers e quadros pendentes são removidos ao desmontar.
+
+O destaque extra de links é optativo; não reintroduza sublinhados por padrão nos controles.
+
+## Comportamento das ferramentas de leitura
+
+O comportamento foi conferido em navegador no site de referência
+[Espaço Empresarial SAJ](https://espacoempresarialsaj.com.br/), pelo acionamento das ferramentas
+habilitadas e leitura de seus efeitos. O Gnai aplica as seguintes adaptações:
+
+| Ferramenta | Comportamento do Gnai |
+| --- | --- |
+| Tamanho | 100%, 125%, 150%, 175% e 200%; mede os tamanhos naturais em lote, amplia cada texto uma vez e preserva a proporção das linhas. O painel fica fora do conteúdo ampliado. |
+| Entrelinha | Multiplicadores 1,3×, 1,6× e 2× sobre a altura natural; não fixa uma altura menor que a do texto ampliado. |
+| Alinhamento | Padrão, esquerda, centro ou direita; não força justificação. |
+| Fonte simples | Arial/Helvetica; preserva fontes de ícones. |
+| Contraste | Padrão, escuro, claro e alto contraste; paletas explícitas sem inverter fotografias e sem tornar opacas as camadas de sobreposição. |
+| Tons de cinza | Filtra o conteúdo, preservando o painel e os atalhos. |
+| Ocultar imagens | Usa opacidade para preservar as descrições na árvore de acessibilidade, em vez de visibility:hidden. |
+| Pausar animações | Suspende CSS e a rotação JavaScript dos carrosséis; o movimento reduzido do sistema continua sendo respeitado. |
+| Destacar links | Fundo amarelo, texto preto e contorno; no hover/foco, fundo laranja. Inclui links com imagens e permanece optativo. |
+| Máscara | Faixa transparente com escurecimento externo, acompanhando ponteiro ou foco e sem bloquear interações. |
+| Foco | Reforço de contorno opcional; foco básico de teclado é permanente. |
+| Estrutura | Tela própria com H1 a H6, recuo, nomes acessíveis e retorno às ferramentas; o foco segue ao destino após fechar. |
+
+useSiteTextPresentation remove seus estilos antes de medir novamente, evita multiplicar heranças,
+acompanha conteúdo novo e mudanças de largura e restaura os estilos originais ao desativar ou sair.
+A altura real do cabeçalho define a margem de rolagem para não encobrir o destino do foco.
+
+Ao entrar no site público, SiteLayout aplica temporariamente tamanho e contraste neutros ao
+documento; ao sair, restaura as preferências administrativas salvas. A migração inicial das
+preferências antigas não altera o armazenamento do painel administrativo.
+
+Referências complementares:
+[uso de cor, WCAG 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html),
+[ampliação, 1.4.4](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html),
+[reflow, 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html),
+[espaçamento, 1.4.12](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html),
+[foco, 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) e
+[pausar movimento, 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html).
+A conformidade do conteúdo final continua dependendo de homologação manual.

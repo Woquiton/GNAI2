@@ -114,9 +114,11 @@ export default function BuilderHeroAppearance({
                 error={fieldError}
                 hint={hint}
                 requiredIndicator={
-                    key === 'image_alt' &&
-                    appearance?.mode === 'banners' &&
-                    (!!section.image || (!!section.image_url && !section.remove_image))
+                    section.enabled && (
+                        key === 'title' ||
+                        (key === 'image_alt' && appearance?.mode === 'banners' &&
+                            (!!section.image || (!!section.image_url && !section.remove_image)))
+                    )
                 }
             >
                 <TextInput
@@ -124,6 +126,11 @@ export default function BuilderHeroAppearance({
                     name={`sections[${index}][${key}]`}
                     value={section[key]}
                     maxLength={maxLength}
+                    required={section.enabled && (
+                        key === 'title' ||
+                        (key === 'image_alt' && appearance?.mode === 'banners' &&
+                            (!!section.image || (!!section.image_url && !section.remove_image)))
+                    )}
                     disabled={disabled}
                     invalid={!!fieldError}
                     aria-describedby={
@@ -148,6 +155,20 @@ export default function BuilderHeroAppearance({
                 disabled={disabled}
                 className="websiteBuilder__heroFields websiteBuilder__appearanceFields"
             >
+                {appearance.mode === 'banners' ? (
+                    <FormSection
+                        title="Identificação do banner"
+                        variant="inline"
+                        iconClass="fa fa-font"
+                    >
+                        {textField(
+                            'title',
+                            'Título',
+                            160,
+                            'Este título identifica o conjunto de banners para leitores de tela.',
+                        )}
+                    </FormSection>
+                ) : null}
                 {appearance.mode === 'text' ? (
                     <>
                         <FormSection

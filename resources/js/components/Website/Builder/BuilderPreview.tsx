@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { subscribeAccessibilityPreferences } from '@/utils/accessibilityPreferences';
 import SegmentedControl from '@/components/UI/SegmentedControl/SegmentedControl';
 import SiteLayout from '@/components/Website/SiteLayout/SiteLayout';
 import SiteSections from '@/components/Website/SiteSections/SiteSections';
@@ -240,17 +241,21 @@ export default function BuilderPreview({
                 return;
             }
 
+            const zoom = Number.parseFloat(
+                getComputedStyle(document.documentElement).getPropertyValue('--ui-accessibility-scale'),
+            ) || 1;
             const actions = document.querySelector('.websiteBuilderPage .formActions__bar');
-            const bottomGap = (actions?.getBoundingClientRect().height ?? 60) + 16;
+            const bottomGap = (actions ? actions.getBoundingClientRect().height / zoom : 60) + 16;
             const stickyTop = Number.parseFloat(window.getComputedStyle(panel.current).top) || 16;
-            const top = Math.max(stickyTop, panel.current.getBoundingClientRect().top);
-            setPanelHeight(Math.max(180, Math.floor(window.innerHeight - top - bottomGap)));
+            const top = Math.max(stickyTop, panel.current.getBoundingClientRect().top / zoom);
+            setPanelHeight(Math.max(180, Math.floor(window.innerHeight / zoom - top - bottomGap)));
         };
         const schedule = (): void => {
             if (!frame) frame = window.requestAnimationFrame(measure);
         };
 
         measure();
+        const unsubscribe = subscribeAccessibilityPreferences(schedule);
         window.addEventListener('scroll', schedule, { passive: true });
         window.addEventListener('resize', schedule);
         const observer = new ResizeObserver(schedule);
@@ -261,6 +266,7 @@ export default function BuilderPreview({
             window.removeEventListener('scroll', schedule);
             window.removeEventListener('resize', schedule);
             observer.disconnect();
+            unsubscribe();
         };
     }, []);
 
@@ -290,8 +296,11 @@ export default function BuilderPreview({
 
         if (!selectedId || !viewport.current || !frame.current) return;
 
+        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? 'auto' : 'smooth';
+
         if (selectedId === IDENTITY_ID) {
-            viewport.current.scrollTo({ top: 0, behavior: 'smooth' });
+            viewport.current.scrollTo({ top: 0, behavior });
             return;
         }
 
@@ -303,7 +312,7 @@ export default function BuilderPreview({
 
         viewport.current.scrollTo({
             top: Math.max(0, target.offsetTop * scale - 24),
-            behavior: 'smooth',
+            behavior,
         });
     }, [selectedId, scale, device]);
 

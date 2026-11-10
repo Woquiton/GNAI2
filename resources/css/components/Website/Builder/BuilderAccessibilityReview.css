@@ -1,0 +1,68 @@
+.builderAccessibilityReview {
+    padding: var(--ui-space-5);
+    margin-bottom: var(--ui-space-5);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-lg);
+    background: var(--ui-color-surface);
+    line-height: 1.6;
+}
+.builderAccessibilityReview__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-2);
+    color: var(--ui-color-gnai-primary);
+}
+.builderAccessibilityReview__heading h2 {
+    margin: 0;
+    font-size: var(--ui-font-size-xl);
+}
+.builderAccessibilityReview p {
+    margin: var(--ui-space-2) 0;
+}
+.builderAccessibilityReview summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+.builderAccessibilityReview__issues {
+    display: grid;
+    gap: var(--ui-space-3);
+    list-style: none;
+    padding: 0;
+    margin: var(--ui-space-4) 0;
+}
+.builderAccessibilityReview__issues li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ui-space-3);
+    padding: var(--ui-space-3);
+    border-left: 3px solid var(--ui-color-warning-strong);
+}
+.builderAccessibilityReview details ul {
+    padding-left: var(--ui-space-5);
+}
+
+.builderRichTextFields {
+    display: grid;
+    gap: var(--ui-space-3);
+    padding: var(--ui-space-4);
+    margin-top: var(--ui-space-3);
+    border: 1px solid var(--ui-color-card-border);
+    border-radius: var(--ui-radius-md);
+}
+.builderRichTextFields p {
+    margin: var(--ui-space-2) 0;
+    line-height: 1.6;
+}
+
+.websiteBuilder__announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}

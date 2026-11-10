@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Application\Data\Website;
 
+use App\Domains\Application\Rules\Website\WebsiteAccessibility;
 use App\Domains\Domain\Enums\Website\WebsiteSectionType;
 use App\Domains\Domain\Models\Website\WebsiteSetting;
 use App\Domains\Domain\Support\Website\AboutAppearance;
@@ -51,6 +52,7 @@ final class UpdateWebsiteData extends Data
         $appearanceRules = [
             'sections.*.hero.badge_text' => ['nullable', 'string', 'max:120'],
             'sections.*.slides' => ['sometimes', 'array', 'max:8'],
+            'sections.*.slides.*' => ['array'],
             'sections.*.slides.*.id' => ['required', 'string', 'max:40', 'regex:/^[A-Za-z0-9_-]+$/'],
             'sections.*.slides.*.image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'sections.*.slides.*.remove_image' => ['sometimes', 'boolean'],
@@ -101,6 +103,7 @@ final class UpdateWebsiteData extends Data
             'website_url' => ['nullable', 'url:http,https', 'max:255'],
             'footer_text' => ['nullable', 'string', 'max:500'],
             'sections' => ['sometimes', 'array', 'max:20'],
+            'sections.*' => ['array'],
             'sections.*.id' => ['required', 'string', 'max:40', 'regex:/^[A-Za-z0-9_-]+$/', 'distinct'],
             'sections.*.type' => ['required', Rule::enum(WebsiteSectionType::class)],
             'sections.*.enabled' => ['sometimes', 'boolean'],
@@ -115,6 +118,7 @@ final class UpdateWebsiteData extends Data
             'sections.*.remove_image' => ['sometimes', 'boolean'],
             'sections.*.limit' => ['nullable', 'integer', 'min:1', 'max:12'],
             'sections.*.items' => ['sometimes', 'array', 'max:12'],
+            'sections.*.items.*' => ['array'],
             'sections.*.items.*.icon' => ['nullable', 'string', 'max:60', 'regex:/^[a-z0-9 -]*$/'],
             'sections.*.items.*.url' => ['nullable', 'string', 'max:500', 'regex:/^(https?:\/\/|\/|#|mailto:|tel:)\S*$/i'],
             'sections.*.items.*.title' => ['nullable', 'string', 'max:120'],
@@ -223,6 +227,8 @@ final class UpdateWebsiteData extends Data
 
             $sections = $validator->getData()['sections'] ?? [];
             $previousSections = collect(WebsiteSetting::current()->sections ?? [])->keyBy('id');
+
+            WebsiteAccessibility::validate($validator, $previousSections->all());
 
             foreach ($sections as $index => $section) {
                 if ($section['type'] !== WebsiteSectionType::HERO->value) {

@@ -274,3 +274,36 @@
         transition: none;
     }
 }
+
+/* O alvo de clique é maior que a bolinha, sem depender de arraste ou de precisão fina. */
+.bootstrapCarousel__indicators li,
+.bootstrapCarousel__indicators li.active {
+    width: 28px;
+    height: 28px;
+    margin: 2px;
+    border: 0;
+    background: transparent;
+    text-indent: 0;
+}
+.bootstrapCarousel__indicators li button {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+}
+.bootstrapCarousel__indicators li button::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background: #000000;
+}
+.bootstrapCarousel__indicators li.active button::before {
+    background: #ffffff;
+    box-shadow: 0 0 0 1px #000000;
+}
+.bootstrapCarousel__pause {
+    min-height: 32px;
+    background: #000000;
+}

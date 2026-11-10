@@ -9,6 +9,17 @@
  * - Componentes consomem tokens; páginas não definem cores, raios, sombras ou anéis de foco próprios.
  */
 :root {
+    /* Ferramentas de leitura: combinações independentes da paleta de marca. */
+    --ui-a11y-highlight-bg: #ffff00;
+    --ui-a11y-highlight-hover-bg: #ffa500;
+    --ui-a11y-highlight-text: #000000;
+    --ui-a11y-dark-bg: #18181b;
+    --ui-a11y-dark-text: #fafafa;
+    --ui-a11y-dark-link: #facc14;
+    --ui-a11y-light-bg: #ffffff;
+    --ui-a11y-light-text: #000000;
+    --ui-a11y-light-link: #0000d3;
+
     /* Tipografia */
     --ui-font-body: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --ui-font-ui: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;

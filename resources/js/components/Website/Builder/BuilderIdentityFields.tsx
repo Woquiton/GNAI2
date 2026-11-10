@@ -102,6 +102,8 @@ export default function BuilderIdentityFields({
                         <div className="websiteBuilder__color">
                             <input
                                 type="color"
+                                aria-invalid={!!errors.primary_color}
+                                aria-describedby={describedBy('primary_color')}
                                 aria-label="Selecionar cor principal"
                                 title="Selecionar cor principal"
                                 value={

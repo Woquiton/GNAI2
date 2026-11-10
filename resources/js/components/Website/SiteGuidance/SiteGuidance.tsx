@@ -44,7 +44,7 @@ export default function SiteGuidance({
         '--guidance-hover-shadow': shadow(appearance.hover_shadow),
         '--guidance-hover-lift': `-${appearance.hover_lift}px`,
         background: appearance.gradient_enabled
-            ? `linear-gradient(${appearance.gradient_direction}, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
+            ? `linear-gradient(${appearance.gradient_direction} in srgb, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
             : background,
     } as CSSProperties;
 
@@ -139,6 +139,7 @@ export default function SiteGuidance({
                     >
                         <SiteLink
                             href={section.button_url}
+                            ariaLabel={`${section.button_label}: ${section.title}`}
                             className={`siteSections__guidanceLink siteGuidance__action siteGuidance__action--${appearance.action_style}${appearance.hover_enabled ? ' siteGuidance__action--hover' : ''}`}
                         >
                             {section.button_label}

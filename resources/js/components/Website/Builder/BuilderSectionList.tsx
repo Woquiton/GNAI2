@@ -65,6 +65,7 @@ export default function BuilderSectionList({
                         type="button"
                         className="websiteBuilder__sectionSelect"
                         aria-pressed={identitySelected}
+                        data-builder-section-id={IDENTITY_ID}
                         title="Editar identidade: topo e rodapé do site"
                         disabled={disabled}
                         onClick={() => onSelect(IDENTITY_ID)}
@@ -103,6 +104,7 @@ export default function BuilderSectionList({
                                 type="button"
                                 className="websiteBuilder__sectionSelect"
                                 aria-pressed={selected}
+                                data-builder-section-id={section.id}
                                 title={`Editar ${name}`}
                                 disabled={disabled}
                                 onClick={() => onSelect(section.id)}

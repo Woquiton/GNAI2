@@ -3,7 +3,7 @@ import BootstrapCarousel from '@/components/UI/BootstrapCarousel/BootstrapCarous
 import SiteLink from '../SiteLayout/SiteLink';
 import type { HeroAlignment, HeroSlide, WebsiteSection, WebsiteSite } from '../Website.types';
 import '@styles/components/Website/SiteHero/SiteHero.css';
-import { appearanceColor as color } from '../WebsiteAppearance';
+import { appearanceColor as color, mixAppearanceColors } from '../WebsiteAppearance';
 
 function align(value: HeroAlignment): CSSProperties {
     return {
@@ -53,7 +53,7 @@ export default function SiteHero({
 
     const overlayStyle: CSSProperties = {
         background: appearance.gradient_enabled
-            ? `linear-gradient(${appearance.gradient_direction}, ${start}, ${end})`
+            ? `linear-gradient(${appearance.gradient_direction} in srgb, ${start}, ${end})`
             : start,
     };
 
@@ -120,73 +120,88 @@ export default function SiteHero({
                         />
                     ) : null}
                     <div className="siteLayout__container siteHero__content">
-                        {appearance.badge_visible ? (
-                            <div
-                                className="siteHero__row"
-                                style={{ textAlign: appearance.badge_align }}
-                            >
-                                <span
-                                    className="siteHero__badge"
-                                    style={{
-                                        borderRadius: appearance.badge_radius,
-                                        color: color(appearance.badge_color, '#ffffff'),
-                                        backgroundColor: color(
-                                            appearance.badge_background,
-                                            'rgba(255, 255, 255, 0.1)',
-                                        ),
-                                    }}
-                                >
-                                    {appearance.badge_text || site.name}
-                                </span>
-                            </div>
-                        ) : null}
-                        <Heading
-                            className="siteHero__title"
+                        <div
+                            className="siteHero__textPanel"
                             style={{
-                                ...align(appearance.title_align),
-                                color: color(appearance.title_color, '#ffffff'),
+                                backgroundColor: color(appearance.background_color, 'var(--site-primary)'),
                             }}
                         >
-                            {section.title || site.name}
-                        </Heading>
-                        {section.subtitle ? (
-                            <p
-                                className="siteHero__text"
-                                style={{
-                                    ...align(appearance.subtitle_align),
-                                    color: color(appearance.subtitle_color, '#ffffff'),
-                                }}
-                            >
-                                {section.subtitle}
-                            </p>
-                        ) : null}
-                        {section.button_label && section.button_url ? (
-                            <div
-                                className="siteHero__row"
-                                style={{ textAlign: appearance.button_align }}
-                            >
-                                <SiteLink href={section.button_url} className="siteHero__button">
+                            {appearance.badge_visible ? (
+                                <div
+                                    className="siteHero__row"
+                                    style={{ textAlign: appearance.badge_align }}
+                                >
                                     <span
+                                        className="siteHero__badge"
                                         style={{
-                                            color: color(
-                                                appearance.button_color,
-                                                'var(--site-primary)',
-                                            ),
+                                            borderRadius: appearance.badge_radius,
+                                            color: color(appearance.badge_color, '#ffffff'),
                                             backgroundColor: color(
-                                                appearance.button_background,
-                                                '#ffffff',
+                                                appearance.badge_background,
+                                                mixAppearanceColors(
+                                                    '#ffffff',
+                                                    color(appearance.background_color, site.primary_color),
+                                                    0.1,
+                                                ),
                                             ),
-                                            borderRadius: appearance.button_radius,
-                                            boxShadow: appearance.button_shadow
-                                                ? `0 ${appearance.button_shadow / 3}px ${appearance.button_shadow}px rgba(0, 0, 0, 0.3)`
-                                                : 'none',
                                         }}
                                     >
-                                        {section.button_label}
+                                        {appearance.badge_text || site.name}
                                     </span>
-                                </SiteLink>
-                            </div>
-                        ) : null}
+                                </div>
+                            ) : null}
+                            <Heading
+                                className="siteHero__title"
+                                style={{
+                                    ...align(appearance.title_align),
+                                    color: color(appearance.title_color, '#ffffff'),
+                                }}
+                            >
+                                {section.title || site.name}
+                            </Heading>
+                            {section.subtitle ? (
+                                <p
+                                    className="siteHero__text"
+                                    style={{
+                                        ...align(appearance.subtitle_align),
+                                        color: color(appearance.subtitle_color, '#ffffff'),
+                                    }}
+                                >
+                                    {section.subtitle}
+                                </p>
+                            ) : null}
+                            {section.button_label && section.button_url ? (
+                                <div
+                                    className="siteHero__row"
+                                    style={{ textAlign: appearance.button_align }}
+                                >
+                                    <SiteLink
+                                        href={section.button_url}
+                                        className="siteHero__button"
+                                        ariaLabel={`${section.button_label}: ${section.title || site.name}`}
+                                    >
+                                        <span
+                                            style={{
+                                                color: color(
+                                                    appearance.button_color,
+                                                    'var(--site-primary)',
+                                                ),
+                                                backgroundColor: color(
+                                                    appearance.button_background,
+                                                    '#ffffff',
+                                                ),
+                                                borderRadius: appearance.button_radius,
+                                                boxShadow: appearance.button_shadow
+                                                    ? `0 ${appearance.button_shadow / 3}px ${appearance.button_shadow}px rgba(0, 0, 0, 0.3)`
+                                                    : 'none',
+                                            }}
+                                        >
+                                            {section.button_label}
+                                        </span>
+                                    </SiteLink>
+                                </div>
+                            ) : null}
+                        </div>
                     </div>
                 </>
             ) : (

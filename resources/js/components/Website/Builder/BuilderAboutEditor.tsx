@@ -15,10 +15,19 @@ import {
 } from '@/components/Website/Builder/BuilderAppearanceFields';
 import type { BuilderSection } from '@/components/Website/Builder/websiteBuilder';
 
+import BuilderRichTextFields from './BuilderRichTextFields';
 import BuilderLinkField, {
     type BuilderLinkOption,
 } from '@/components/Website/Builder/BuilderLinkField';
 import '@styles/components/Website/Builder/WebsiteBuilder.css';
+
+const BODY_STYLE_TAGS = ['p', 'h3', 'h4', 'h5', 'h6', 'blockquote'];
+const BODY_TOOLBAR: Array<[string, string[]]> = [
+    ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+    ['paragraph', ['ul', 'ol']],
+    ['insert', ['link', 'picture', 'table']],
+    ['view', ['codeview', 'fullscreen']],
+];
 
 type Props = {
     section: BuilderSection;
@@ -130,6 +139,11 @@ export default function BuilderAboutEditor({
             value: section[key],
             maxLength,
             disabled,
+            required: section.enabled && (
+                key === 'title' ||
+                (key === 'image_alt' &&
+                    (!!section.image || (!!section.image_url && !section.remove_image)))
+            ),
             'aria-describedby': error(key) ? `${id(key)}-error` : undefined,
             onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                 onChange({ [key]: event.target.value }),
@@ -141,8 +155,11 @@ export default function BuilderAboutEditor({
                     label={label}
                     error={error(key)}
                     requiredIndicator={
-                        key === 'image_alt' &&
-                        (!!section.image || (!!section.image_url && !section.remove_image))
+                        section.enabled && (
+                            key === 'title' ||
+                            (key === 'image_alt' &&
+                                (!!section.image || (!!section.image_url && !section.remove_image)))
+                        )
                     }
                 >
                     {key === 'subtitle' ? (
@@ -191,23 +208,34 @@ export default function BuilderAboutEditor({
                                 <FormField
                                     id={`${id('body')}-input`}
                                     label="Texto"
+                                    hint="Descreva as imagens inseridas, dê nome aos links e comece os subtítulos pelo nível 3. Use as cores da seção."
                                     error={error('body')}
                                 >
                                     <SummernoteEditor
                                         key={section.id}
                                         id={id('body')}
                                         label="Texto da seção"
-                                        defaultValue={section.body}
+                                        value={section.body}
+                                        toolbar={BODY_TOOLBAR}
+                                        styleTags={BODY_STYLE_TAGS}
                                         height={180}
                                         disabled={disabled}
                                         invalid={!!error('body')}
-                                        describedBy={
-                                            error('body') ? `${id('body')}-input-error` : undefined
-                                        }
+                                        describedBy={[
+                                            `${id('body')}-input-hint`,
+                                            error('body') ? `${id('body')}-input-error` : null,
+                                        ].filter(Boolean).join(' ')}
                                         onLoadError={onEditorError}
                                         onChange={(body) => onChange({ body })}
                                     />
                                 </FormField>
+                                <BuilderRichTextFields
+                                    id={id('body')}
+                                    html={section.body}
+                                    required={section.enabled}
+                                    disabled={disabled}
+                                    onChange={(body) => onChange({ body })}
+                                />
                             </FormGridWide>
                             {select('body_align', 'Alinhamento do texto', [
                                 ...appearanceAlignments,

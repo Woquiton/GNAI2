@@ -3,6 +3,9 @@ import type { CSSProperties } from 'react';
 export interface SummernoteEditorProps {
     /** Trusted initial HTML, read once when the editor is mounted. */
     defaultValue?: string;
+    /** Conteúdo controlado, para atualizar descrições de imagens fora do editor. */
+    value?: string;
+    styleTags?: string[];
     mode?: 'standard' | 'inline';
     height?: number;
     label?: string;
@@ -18,7 +21,10 @@ export interface SummernoteEditorProps {
 }
 export interface SummernoteCollection {
     summernote: (options: Record<string, unknown>) => SummernoteCollection;
-    code: () => string;
+    code: {
+        (): string;
+        (html: string): SummernoteCollection;
+    };
     destroy: () => void;
     data: (key: string) => unknown;
     on: (events: string, callback: () => void) => SummernoteCollection;

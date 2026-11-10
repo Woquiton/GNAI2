@@ -41,32 +41,11 @@
     color: inherit;
 }
 
-.siteLayout :focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--site-primary) 55%, #fff);
-    outline-offset: 2px;
-}
-
 .siteLayout__container {
     width: 100%;
     max-width: 1180px;
     margin: 0 auto;
     padding: 0 24px;
-}
-
-.siteLayout__skip {
-    position: absolute;
-    top: -100px;
-    left: 16px;
-    z-index: 100;
-    padding: 10px 16px;
-    border-radius: 8px;
-    background: var(--site-primary);
-    color: #fff !important;
-    font-weight: 600;
-}
-
-.siteLayout__skip:focus {
-    top: 12px;
 }
 
 /* Cabeçalho */
@@ -387,4 +366,64 @@
     padding: 4px;
     border-radius: 4px;
     background: #fff;
+}
+
+.siteLayout :is(a, button, summary) {
+    touch-action: manipulation;
+}
+.siteLayout a,
+.siteLayout button,
+.siteLayout summary {
+    overflow-wrap: anywhere;
+}
+.siteLayout__footer,
+.siteLayout__copyright,
+.siteLayout__footerLinks a,
+.siteLayout__footerContact a {
+    color: #ffffff;
+}
+/* O anel de duas cores permanece perceptível em superfícies claras e escuras. */
+.siteLayout {
+    --ui-focus-keyboard-color: var(--color-white);
+    --ui-focus-keyboard-offset: 2px;
+    --ui-focus-keyboard-shadow: 0 0 0 5px var(--color-black);
+}
+.siteLayout :focus-visible {
+    outline: var(--ui-focus-keyboard-width) solid var(--ui-focus-keyboard-color);
+    box-shadow: var(--ui-focus-keyboard-shadow);
+    outline-offset: var(--ui-focus-keyboard-offset);
+}
+html:has(.siteLayout:not(.siteLayout--preview)) {
+    scroll-padding-top: calc(var(--site-public-header-height, 84px) + 16px);
+}
+.siteLayout :is(.siteSections__richText, .websitePublic__content) {
+    overflow-wrap: anywhere;
+}
+.siteLayout :is(.siteSections__richText, .websitePublic__content) a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.siteLayout :is(.siteSections__richText, .websitePublic__content) table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+}
+.siteLayout :is(.siteSections__richText, .websitePublic__content) :is(th, td) {
+    overflow-wrap: anywhere;
+}
+.siteLayout :is(.siteSections__richText, .websitePublic__content) pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+.siteLayout :is(.siteSections__richText, .websitePublic__content) img {
+    max-width: 100%;
+    height: auto;
+}
+@container site (max-width: 760px) {
+    .siteLayout__headerInner {
+        flex-wrap: wrap;
+    }
+    .siteLayout__brand {
+        flex: 1 1 140px;
+    }
 }

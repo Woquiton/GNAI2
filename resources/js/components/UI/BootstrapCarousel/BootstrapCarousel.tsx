@@ -43,10 +43,12 @@ export default function BootstrapCarousel({
     const [isAnimating, setIsAnimating] = useState<boolean>(false);
     const animationTimerRef = useRef<number | null>(null);
     const dragStartXRef = useRef<number | null>(null);
+    const rotationIntent = useRef<boolean | null>(null);
+    const carousel = useRef<HTMLDivElement>(null);
 
     const [stopped, setStopped] = useState(false);
-    const [focused, setFocused] = useState(false);
     const [reducedMotion, setReducedMotion] = useState(false);
+    const [motionPaused, setMotionPaused] = useState(false);
     const slideCount = slides.length;
 
     useEffect(() => {
@@ -55,6 +57,16 @@ export default function BootstrapCarousel({
         update();
         media.addEventListener('change', update);
         return () => media.removeEventListener('change', update);
+    }, []);
+
+    useEffect(() => {
+        const site = carousel.current?.closest<HTMLElement>('.siteLayout');
+        if (!site) return;
+        const update = (): void => setMotionPaused(site.dataset.sitePauseMotion === 'true');
+        update();
+        const observer = new MutationObserver(update);
+        observer.observe(site, { attributes: true, attributeFilter: ['data-site-pause-motion'] });
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -93,15 +105,15 @@ export default function BootstrapCarousel({
             setPreviousIndex(null);
             setIsAnimating(false);
             animationTimerRef.current = null;
-        }, 600);
+        }, reducedMotion || motionPaused ? 0 : 600);
     }
 
     useEffect(() => {
         if (
             !autoplay ||
             stopped ||
-            focused ||
             reducedMotion ||
+            motionPaused ||
             slideCount < 2 ||
             paused ||
             isAnimating
@@ -124,8 +136,8 @@ export default function BootstrapCarousel({
         slideCount,
         autoplay,
         stopped,
-        focused,
         reducedMotion,
+        motionPaused,
     ]);
 
     useEffect(
@@ -139,13 +151,14 @@ export default function BootstrapCarousel({
 
     return (
         <div
+            ref={carousel}
             className="bootstrapCarousel slide"
             role="region"
             aria-roledescription="carrossel"
             aria-label={ariaLabel}
-            onFocusCapture={() => setFocused(true)}
-            onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false);
+            onFocusCapture={(event) => {
+                // Ao entrar pelo teclado, só uma ação explícita pode retomar a rotação.
+                if (!event.currentTarget.contains(event.relatedTarget)) setStopped(true);
             }}
             data-active-index={activeIndex}
             onMouseEnter={() => setPaused(true)}
@@ -190,6 +203,23 @@ export default function BootstrapCarousel({
                 setPaused(false);
             }}
         >
+            {showPause && autoplay && slideCount > 1 && !reducedMotion && !motionPaused ? (
+                <button
+                    type="button"
+                    className="bootstrapCarousel__pause"
+                    title={stopped ? 'Retomar apresentação' : 'Pausar apresentação'}
+                    onPointerDown={() => { rotationIntent.current = !stopped; }}
+                    onPointerCancel={() => { rotationIntent.current = null; }}
+                    onPointerLeave={() => { rotationIntent.current = null; }}
+                    onBlur={() => { rotationIntent.current = null; }}
+                    onClick={() => {
+                        setStopped(rotationIntent.current ?? !stopped);
+                        rotationIntent.current = null;
+                    }}
+                >
+                    {stopped ? 'Retomar' : 'Pausar'}
+                </button>
+            ) : null}
             <ol className="bootstrapCarousel__indicators">
                 {slides.map((slide: BootstrapCarouselSlide, index: number) => (
                     <li
@@ -208,7 +238,11 @@ export default function BootstrapCarousel({
                 ))}
             </ol>
 
-            <div className="bootstrapCarousel__inner">
+            <div
+                className="bootstrapCarousel__inner"
+                aria-live={!autoplay || stopped || reducedMotion || motionPaused ? 'polite' : 'off'}
+                aria-atomic="false"
+            >
                 {slides.map((slide: BootstrapCarouselSlide, index: number) => {
                     const isActive = index === activeIndex;
                     const isPrevious = previousIndex === index;
@@ -283,16 +317,6 @@ export default function BootstrapCarousel({
                         <span className="bootstrapCarousel__srOnly">Próximo</span>
                     </button>
                 </>
-            ) : null}
-            {showPause && autoplay && slideCount > 1 && !reducedMotion ? (
-                <button
-                    type="button"
-                    className="bootstrapCarousel__pause"
-                    title={stopped ? 'Retomar apresentação' : 'Pausar apresentação'}
-                    onClick={() => setStopped((value) => !value)}
-                >
-                    {stopped ? 'Retomar' : 'Pausar'}
-                </button>
             ) : null}
         </div>
     );

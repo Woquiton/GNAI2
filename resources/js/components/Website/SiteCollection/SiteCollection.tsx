@@ -66,7 +66,7 @@ export default function SiteCollection({
         '--guidance-hover-shadow': shadow(appearance.hover_shadow),
         '--guidance-hover-lift': `-${appearance.hover_lift}px`,
         background: appearance.gradient_enabled
-            ? `linear-gradient(${appearance.gradient_direction}, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
+            ? `linear-gradient(${appearance.gradient_direction} in srgb, ${background}, ${color(appearance.gradient_end_color, 'var(--site-primary-soft)')})`
             : background,
         ...cardStyle,
     } as CSSProperties;
@@ -137,6 +137,7 @@ export default function SiteCollection({
                     >
                         <SiteLink
                             href={resolvedActionUrl}
+                            ariaLabel={`${resolvedActionLabel}: ${section.title || fallbackTitle}`}
                             className={`siteSections__guidanceLink siteGuidance__action siteGuidance__action--${appearance.action_style}${appearance.hover_enabled ? ' siteGuidance__action--hover' : ''}`}
                         >
                             {resolvedActionLabel}
