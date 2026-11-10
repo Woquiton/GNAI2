@@ -104,6 +104,13 @@ popular o banco com dados de exemplo (alunos, profissionais etc. fictícios):
 make seed
 ```
 
+### Restaurar o backup anterior à reorganização
+
+Para o arquivo `2026-11-06-12-05-02.zip`, use o ZIP convertido e o
+[de/para com o procedimento de restauração testado](docs/operations/restaurar-backup-2026-11-06.md).
+O documento registra os dados preservados, a exclusão dos contextos e do PEI de
+teste autorizada pelo usuário e a validação do resultado nas migrations atuais.
+
 ### Banco novo desta versão
 
 As migrations foram reorganizadas em **uma migration por tabela**, datadas de

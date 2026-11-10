@@ -16,3 +16,7 @@ public/build
 public/hot
 public/storage
 vendor
+
+# Backups e arquivos restaurados não devem entrar na imagem.
+/*.zip
+/storage/app
