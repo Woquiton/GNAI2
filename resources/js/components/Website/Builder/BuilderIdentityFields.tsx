@@ -4,10 +4,11 @@ import FormSection from '@/components/Forms/FormSection/FormSection';
 import ImageUploadField from '@/components/Forms/ImageUploadField/ImageUploadField';
 import TextArea from '@/components/Forms/TextArea/TextArea';
 import TextInput from '@/components/Forms/TextInput/TextInput';
+import { AppearanceRangeField } from './BuilderAppearanceFields';
 import type { BuilderFormData } from '@/components/Website/Builder/websiteBuilder';
 import '@styles/components/Website/Builder/WebsiteBuilder.css';
 
-type TextKey = Exclude<keyof BuilderFormData, 'logo' | 'remove_logo' | 'sections'>;
+type TextKey = Exclude<keyof BuilderFormData, 'logo' | 'logo_height' | 'remove_logo' | 'sections'>;
 
 type Props = {
     data: BuilderFormData;
@@ -87,8 +88,8 @@ export default function BuilderIdentityFields({
                 <FormGrid>
                     {text('site_name', 'Nome do site', {
                         maxLength: 120,
-                        required: true,
                         placeholder: 'Ex.: NAPNE',
+                        hint: 'Opcional. Deixe vazio se o nome já estiver na logo.',
                     })}
                     {text('tagline', 'Slogan', {
                         placeholder: 'Frase curta exibida abaixo do nome',
@@ -145,6 +146,16 @@ export default function BuilderIdentityFields({
                             onError={onImageError}
                         />
                     </FormField>
+                    <AppearanceRangeField
+                        id="website-logo_height"
+                        label="Altura da logo (px)"
+                        value={data.logo_height}
+                        min={32}
+                        max={120}
+                        disabled={disabled}
+                        error={errors.logo_height}
+                        onChange={(value) => onChange('logo_height', value)}
+                    />
                 </FormGrid>
             </FormSection>
             <FormSection

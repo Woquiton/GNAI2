@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import BootstrapCarousel from '@/components/UI/BootstrapCarousel/BootstrapCarousel';
+import { joinClassNames } from '@/utils/joinClassNames';
 import SiteLink from '../SiteLayout/SiteLink';
 import type { HeroAlignment, HeroSlide, WebsiteSection, WebsiteSite } from '../Website.types';
 import '@styles/components/Website/SiteHero/SiteHero.css';
@@ -24,8 +25,10 @@ export default function SiteHero({
 }): React.JSX.Element {
     const appearance = section.hero;
     const Heading = isMainHeading ? 'h1' : 'h2';
+    const heading = section.title || site.accessible_name;
+    const badgeText = appearance?.badge_text || site.name;
     // O presenter também preenche a aparência dos banners salvos antes desta configuração.
-    if (!appearance) return <Heading>{section.title || site.name}</Heading>;
+    if (!appearance) return <Heading>{heading}</Heading>;
 
     const banners = appearance.mode === 'banners';
     const images: HeroSlide[] = (section.slides ?? []).filter((slide) => slide.image_url);
@@ -56,6 +59,15 @@ export default function SiteHero({
             ? `linear-gradient(${appearance.gradient_direction} in srgb, ${start}, ${end})`
             : start,
     };
+    const panelStyle: CSSProperties = {
+        ...(images.length ? align(appearance.title_align) : {}),
+        backgroundColor: color(appearance.background_color, 'var(--site-primary)'),
+    };
+    const sectionClassName = joinClassNames(
+        'siteHero',
+        banners ? 'siteHero--banners' : 'siteHero--text',
+        images.length > 0 && 'siteHero--withImage',
+    );
 
     function image(slide: HeroSlide): React.JSX.Element {
         const picture = (
@@ -88,9 +100,9 @@ export default function SiteHero({
 
     return (
         <section
-            className={`siteHero ${banners ? 'siteHero--banners' : 'siteHero--text'}`}
+            className={sectionClassName}
             style={style}
-            aria-label={site.name}
+            aria-label={heading}
         >
             <div className="siteHero__media">
                 {images.length > 1 ? (
@@ -120,13 +132,8 @@ export default function SiteHero({
                         />
                     ) : null}
                     <div className="siteLayout__container siteHero__content">
-                        <div
-                            className="siteHero__textPanel"
-                            style={{
-                                backgroundColor: color(appearance.background_color, 'var(--site-primary)'),
-                            }}
-                        >
-                            {appearance.badge_visible ? (
+                        <div className="siteHero__textPanel" style={panelStyle}>
+                            {appearance.badge_visible && Boolean(badgeText) ? (
                                 <div
                                     className="siteHero__row"
                                     style={{ textAlign: appearance.badge_align }}
@@ -146,7 +153,7 @@ export default function SiteHero({
                                             ),
                                         }}
                                     >
-                                        {appearance.badge_text || site.name}
+                                        {badgeText}
                                     </span>
                                 </div>
                             ) : null}
@@ -157,7 +164,7 @@ export default function SiteHero({
                                     color: color(appearance.title_color, '#ffffff'),
                                 }}
                             >
-                                {section.title || site.name}
+                                {heading}
                             </Heading>
                             {section.subtitle ? (
                                 <p
@@ -178,7 +185,7 @@ export default function SiteHero({
                                     <SiteLink
                                         href={section.button_url}
                                         className="siteHero__button"
-                                        ariaLabel={`${section.button_label}: ${section.title || site.name}`}
+                                        ariaLabel={`${section.button_label}: ${heading}`}
                                     >
                                         <span
                                             style={{
@@ -205,7 +212,7 @@ export default function SiteHero({
                     </div>
                 </>
             ) : (
-                <Heading className="siteSections__srOnly">{section.title || site.name}</Heading>
+                <Heading className="siteSections__srOnly">{heading}</Heading>
             )}
         </section>
     );

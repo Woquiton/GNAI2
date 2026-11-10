@@ -32,7 +32,7 @@ final readonly class PublicWebsiteController
             'sections' => $this->presenter->sections($setting),
             'content' => $content->execute(),
             'seo' => [
-                'title' => $site['name'],
+                'title' => $site['accessible_name'],
                 'description' => $site['tagline'],
             ],
         ]);
@@ -46,8 +46,8 @@ final readonly class PublicWebsiteController
             'site' => $site,
             'members' => $content->team(),
             'seo' => [
-                'title' => "Equipe - {$site['name']}",
-                'description' => "Conheça a equipe do {$site['name']}.",
+                'title' => "Equipe - {$site['accessible_name']}",
+                'description' => "Conheça a equipe do {$site['accessible_name']}.",
             ],
         ]);
     }
@@ -68,8 +68,8 @@ final readonly class PublicWebsiteController
             'types' => PublicationType::options(),
             'tags' => $query->tags(),
             'seo' => [
-                'title' => "Publicações - {$site['name']}",
-                'description' => "Notícias, eventos e comunicados do {$site['name']}.",
+                'title' => "Publicações - {$site['accessible_name']}",
+                'description' => "Notícias, eventos e comunicados do {$site['accessible_name']}.",
             ],
         ]);
     }
@@ -88,7 +88,7 @@ final readonly class PublicWebsiteController
             'publication' => $detail,
             'related' => $related,
             'seo' => [
-                'title' => "{$detail['seo_title']} - {$site['name']}",
+                'title' => "{$detail['seo_title']} - {$site['accessible_name']}",
                 'description' => $detail['seo_description'] ?: $detail['summary'],
                 'image' => $detail['cover_url'],
             ],

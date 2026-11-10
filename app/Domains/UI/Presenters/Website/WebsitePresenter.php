@@ -34,11 +34,14 @@ final class WebsitePresenter
     public function site(WebsiteSetting $setting): array
     {
         $social = is_array($setting->social_links) ? $setting->social_links : [];
+        $name = trim((string) $setting->site_name);
 
         return [
-            'name' => $setting->site_name ?: WebsiteDefaults::identity()['site_name'],
+            'name' => $name,
+            'accessible_name' => $name !== '' ? $name : (trim((string) $setting->tagline) ?: 'Site institucional'),
             'tagline' => $setting->tagline,
             'logo_url' => WebsiteMediaStorage::url($setting->logo_path),
+            'logo_height' => (int) ($setting->logo_height ?? 46),
             'primary_color' => $setting->primary_color ?: WebsiteDefaults::PRIMARY_COLOR,
             'contact_email' => $setting->contact_email,
             'contact_phone' => $setting->contact_phone,
@@ -110,6 +113,7 @@ final class WebsitePresenter
             'tagline' => $setting->tagline,
             'primary_color' => $setting->primary_color,
             'logo_url' => $this->site($setting)['logo_url'],
+            'logo_height' => (int) ($setting->logo_height ?? 46),
             'contact_email' => $setting->contact_email,
             'contact_phone' => $setting->contact_phone,
             'address' => $setting->address,

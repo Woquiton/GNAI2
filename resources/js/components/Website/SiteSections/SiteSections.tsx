@@ -59,7 +59,7 @@ export default function SiteSections({
 
     return (
         <div className="siteSections">
-            {!mainHeroId ? <h1 className="siteSections__srOnly">{site.name}</h1> : null}
+            {!mainHeroId ? <h1 className="siteSections__srOnly">{site.accessible_name}</h1> : null}
             {visible.map((section) => {
                 const Renderer = renderers[section.type];
 

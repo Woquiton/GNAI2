@@ -118,6 +118,7 @@ export default function WebsiteBuilderForm({
         tagline: settings.tagline ?? '',
         primary_color: settings.primary_color ?? '#322b75',
         logo: null,
+        logo_height: settings.logo_height ?? 46,
         remove_logo: false,
         contact_email: settings.contact_email ?? '',
         contact_phone: settings.contact_phone ?? '',
@@ -157,9 +158,12 @@ export default function WebsiteBuilderForm({
     const previewSite = useMemo<WebsiteSite>(
         () => ({
             ...site,
-            name: form.data.site_name.trim() || 'Nome do site',
+            name: form.data.site_name.trim(),
+            accessible_name:
+                form.data.site_name.trim() || form.data.tagline.trim() || 'Site institucional',
             tagline: form.data.tagline.trim() || null,
             logo_url: logoUrl ?? (form.data.remove_logo ? null : settings.logo_url),
+            logo_height: form.data.logo_height,
             primary_color: /^#[0-9a-f]{6}$/i.test(form.data.primary_color)
                 ? form.data.primary_color
                 : site.primary_color,

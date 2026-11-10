@@ -11,7 +11,11 @@ export default function WebsitePublicPublicationsPage(
             <SitePageHeader
                 eyebrow="Publicações"
                 title="Notícias, eventos e comunicados"
-                subtitle={`Acompanhe as novidades, os eventos e os registros do ${site.name}.`}
+                subtitle={
+                    site.name
+                        ? `Acompanhe as novidades, os eventos e os registros do ${site.name}.`
+                        : 'Acompanhe as novidades, os eventos e os registros do núcleo.'
+                }
                 trail={[{ label: 'Publicações' }]}
             />
             <PublicPublicationList {...props} />

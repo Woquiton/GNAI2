@@ -74,7 +74,7 @@ export default function BuilderSectionList({
                         <span className="websiteBuilder__sectionText">
                             <span className="websiteBuilder__sectionType">Identidade</span>
                             <span className="websiteBuilder__sectionTitle">
-                                {siteName || 'Nome do site'}
+                                {siteName || 'Sem nome'}
                             </span>
                         </span>
                         <TableLabel tone="inverse">Topo e rodapé</TableLabel>

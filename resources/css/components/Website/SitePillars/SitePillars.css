@@ -63,7 +63,8 @@
 .sitePillars--type-faq .sitePillars__grid {
     align-items: start;
 }
-.sitePillars--type-faq .siteSections__question {
+.sitePillars--type-faq .siteSections__question,
+.sitePillars--type-faq .siteSections__question:first-child {
     margin: 0;
     padding: 0;
     border: 0;

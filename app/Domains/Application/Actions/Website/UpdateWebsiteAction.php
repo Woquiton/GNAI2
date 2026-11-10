@@ -94,6 +94,7 @@ final readonly class UpdateWebsiteAction
                 primaryColor: $data->primaryColor,
                 tagline: $data->tagline,
                 logoPath: $logoPath,
+                logoHeight: $data->logoHeight,
                 contactEmail: $data->contactEmail,
                 contactPhone: $data->contactPhone,
                 address: $data->address,

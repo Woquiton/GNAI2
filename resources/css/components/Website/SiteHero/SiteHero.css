@@ -158,3 +158,8 @@
     border-radius: var(--site-radius);
     pointer-events: auto;
 }
+
+.siteHero--withImage .siteHero__textPanel {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 16px 48px rgba(20, 32, 40, 0.16);
+}

@@ -19,6 +19,7 @@ final class WebsiteDefaults
             'site_name' => 'NAI',
             'tagline' => 'Núcleo de Acessibilidade e Inclusão',
             'logo_path' => null,
+            'logo_height' => 46,
             'primary_color' => self::PRIMARY_COLOR,
             'contact_email' => null,
             'contact_phone' => null,

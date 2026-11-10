@@ -22,6 +22,7 @@ export type BuilderSettings = {
     tagline: string | null;
     primary_color: string | null;
     logo_url: string | null;
+    logo_height: number;
     contact_email: string | null;
     contact_phone: string | null;
     address: string | null;
@@ -37,6 +38,7 @@ export type BuilderFormData = {
     tagline: string;
     primary_color: string;
     logo: File | null;
+    logo_height: number;
     remove_logo: boolean;
     contact_email: string;
     contact_phone: string;
@@ -54,6 +56,7 @@ export const identityFields = [
     'tagline',
     'primary_color',
     'logo',
+    'logo_height',
     'contact_email',
     'contact_phone',
     'address',

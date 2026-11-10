@@ -10,7 +10,7 @@ final readonly class UpdateWebsiteDTO
      * @param  list<array<string, mixed>>  $sections
      */
     public function __construct(
-        public string $siteName,
+        public ?string $siteName,
         public string $primaryColor,
         public ?string $tagline = null,
         public ?string $logoPath = null,
@@ -23,5 +23,6 @@ final readonly class UpdateWebsiteDTO
         public ?string $websiteUrl = null,
         public ?string $footerText = null,
         public array $sections = [],
+        public int $logoHeight = 46,
     ) {}
 }

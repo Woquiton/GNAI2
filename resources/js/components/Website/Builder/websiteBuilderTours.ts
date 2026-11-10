@@ -127,6 +127,8 @@ export const websiteBuilderEditTour: GuidedTourPageConfig = {
             content: [
                 'O primeiro item é sempre a Identidade, com o topo e o rodapé do site.',
                 'Clique nele para mudar o nome do site, o slogan, a cor principal, o logo, os contatos e as redes sociais.',
+                'O nome é opcional. Deixe-o vazio quando a logo já tiver o nome do núcleo; a prévia mostra essa escolha no topo e no rodapé.',
+                'Use Altura da logo (px) para aumentar ou diminuir a imagem no topo e no rodapé e conferir o resultado na prévia antes de salvar.',
             ],
             onEnter: sectionsTabDemo,
         },

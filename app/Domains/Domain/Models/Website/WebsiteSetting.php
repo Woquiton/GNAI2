@@ -37,6 +37,7 @@ final class WebsiteSetting extends Model implements Auditable
         'site_name',
         'tagline',
         'logo_path',
+        'logo_height',
         'primary_color',
         'contact_email',
         'contact_phone',
@@ -47,6 +48,7 @@ final class WebsiteSetting extends Model implements Auditable
     ];
 
     protected $casts = [
+        'logo_height' => 'integer',
         'social_links' => 'array',
         'sections' => 'array',
     ];
@@ -67,6 +69,7 @@ final class WebsiteSetting extends Model implements Auditable
             'site_name' => AuditedField::text('Nome do site'),
             'tagline' => AuditedField::text('Slogan'),
             'logo_path' => AuditedField::file('Logo'),
+            'logo_height' => AuditedField::number('Altura da logo (px)'),
             'primary_color' => AuditedField::text('Cor principal'),
             'contact_email' => AuditedField::text('E-mail de contato'),
             'contact_phone' => AuditedField::text('Telefone de contato'),
@@ -100,9 +103,10 @@ final class WebsiteSetting extends Model implements Auditable
     public function revise(UpdateWebsiteDTO $data): void
     {
         $this->fill([
-            'site_name' => trim($data->siteName),
+            'site_name' => trim((string) $data->siteName),
             'tagline' => self::normalizeNullableText($data->tagline),
             'logo_path' => $data->logoPath,
+            'logo_height' => max(32, min(120, $data->logoHeight)),
             'primary_color' => strtolower($data->primaryColor),
             'contact_email' => self::normalizeNullableText($data->contactEmail),
             'contact_phone' => self::normalizeNullableText($data->contactPhone),

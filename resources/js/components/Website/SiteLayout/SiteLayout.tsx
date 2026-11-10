@@ -35,21 +35,27 @@ function SiteBrand({ site }: { site: WebsiteSite }): React.JSX.Element {
         <SiteLink
             href={websiteRoutes.home}
             className="siteLayout__brand"
-            ariaLabel={`${site.name}, página inicial`}
+            ariaLabel={`${site.accessible_name}, página inicial`}
         >
             {site.logo_url ? (
                 <img src={site.logo_url} alt="" className="siteLayout__logo" />
             ) : (
                 <span className="siteLayout__monogram" aria-hidden="true">
-                    {site.name.slice(0, 1).toUpperCase()}
+                    {site.name ? (
+                        site.name.slice(0, 1).toUpperCase()
+                    ) : (
+                        <i className="fa fa-university" aria-hidden="true" />
+                    )}
                 </span>
             )}
-            <span className="siteLayout__brandText">
-                <span className="siteLayout__brandName">{site.name}</span>
-                {site.tagline ? (
-                    <span className="siteLayout__brandTagline">{site.tagline}</span>
-                ) : null}
-            </span>
+            {site.name || site.tagline ? (
+                <span className="siteLayout__brandText">
+                    {site.name ? <span className="siteLayout__brandName">{site.name}</span> : null}
+                    {site.tagline ? (
+                        <span className="siteLayout__brandTagline">{site.tagline}</span>
+                    ) : null}
+                </span>
+            ) : null}
         </SiteLink>
     );
 }
@@ -71,7 +77,7 @@ export function SiteSocialLinks({
                 <li key={network.key}>
                     <SiteLink
                         href={site.social[network.key] ?? '#'}
-                        ariaLabel={`${network.label} de ${site.name}`}
+                        ariaLabel={`${network.label} de ${site.accessible_name}`}
                     >
                         <i className={network.icon} aria-hidden="true" />
                     </SiteLink>
@@ -125,6 +131,7 @@ export default function SiteLayout({
     const primary = site.primary_color;
     const style = {
         '--site-primary': primary,
+        '--site-logo-height': `${site.logo_height ?? 46}px`,
         '--site-reading-align': ['start', 'left', 'center', 'right'][reading.preferences.alignment],
         '--site-primary-soft': mixAppearanceColors(primary, '#ffffff', 0.09),
         '--site-primary-strong': mixAppearanceColors(primary, '#000000', 0.82),
@@ -304,7 +311,8 @@ export default function SiteLayout({
                     </div>
                     <div className="siteLayout__container siteLayout__copyright">
                         <span>
-                            © {year} {site.name}. Todos os direitos reservados.
+                            © {year}
+                            {site.name ? ` ${site.name}` : ''}. Todos os direitos reservados.
                         </span>
                         <span>
                             Plataforma <SiteLink href="/sobre-nos">Gnai</SiteLink>

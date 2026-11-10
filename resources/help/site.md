@@ -40,15 +40,18 @@ As alterações aparecem na prévia na hora, mas só vão para o site depois de 
 
 | Campo | Observação |
 | --- | --- |
-| **Nome do site** | Obrigatório, até 120 caracteres. |
+| **Nome do site** | Opcional, até 120 caracteres. Deixe vazio se o nome já estiver na logo. |
 | **Slogan** | Frase curta exibida abaixo do nome, até 255 caracteres. |
 | **Cor principal** | Obrigatória, no formato hexadecimal (por exemplo, #322b75). |
 | **Logo** | JPG, PNG ou WEBP com até 4 MB. |
+| **Altura da logo (px)** | De 32 a 120 px. O padrão é 46 px. Ajusta a logo no topo e no rodapé, com atualização imediata na prévia e largura limitada para caber na tela. |
 | **E-mail**, **Telefone**, **Endereço** | Contatos exibidos no site. |
 | **Instagram**, **Facebook**, **YouTube**, **Site institucional** | Links completos, começando com http:// ou https://. |
 | **Texto do rodapé** | Até 500 caracteres. |
 
 3. Clique em **Salvar**.
+
+Com o nome vazio, a prévia e o site público não exibem um nome ao lado da logo no topo e no rodapé. O slogan continua aparecendo se estiver preenchido; deixe-o vazio também para mostrar apenas a logo. Os links e o título da aba do navegador usam o slogan ou uma identificação genérica quando não há nome.
 
 ## Adicionar, ordenar, ocultar ou remover seções
 
@@ -75,6 +78,8 @@ Os campos variam conforme o tipo da seção:
 - **Contato**: usa os contatos informados em **Identidade**.
 
 As seções também oferecem ajustes de aparência, como cores, alinhamento, espaçamento e degradê. O botão **Padrão** de uma cor volta ao padrão do tema.
+
+No **Banner principal** com foto de fundo, o texto permanece sobre um painel sólido para manter a leitura. O alinhamento do título também posiciona esse painel à esquerda, ao centro ou à direita; a largura do conteúdo define quanto espaço ele ocupa sobre a foto.
 
 ## Por que uma seção não aparece no site?
 

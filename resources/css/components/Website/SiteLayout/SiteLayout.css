@@ -67,6 +67,7 @@
     align-items: center;
     gap: 24px;
     min-height: 76px;
+    padding-block: 12px;
 }
 
 .siteLayout__brand {
@@ -81,8 +82,9 @@
 .siteLayout__logo {
     display: block;
     width: auto;
-    max-width: 160px;
-    height: 46px;
+    min-width: 0;
+    max-width: min(320px, 50cqi, calc(var(--site-logo-height, 46px) * 3.5));
+    height: var(--site-logo-height, 46px);
     object-fit: contain;
 }
 

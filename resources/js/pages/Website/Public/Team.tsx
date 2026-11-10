@@ -13,7 +13,11 @@ export default function WebsitePublicTeamPage({
             <SitePageHeader
                 eyebrow="Equipe"
                 title="Nossa equipe"
-                subtitle={`Conheça as pessoas que fazem o ${site.name} acontecer no dia a dia.`}
+                subtitle={
+                    site.name
+                        ? `Conheça as pessoas que fazem o ${site.name} acontecer no dia a dia.`
+                        : 'Conheça as pessoas que fazem parte da nossa equipe.'
+                }
                 trail={[{ label: 'Equipe' }]}
             />
             <PublicTeamList members={members} />

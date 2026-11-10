@@ -8,8 +8,11 @@ export interface WebsiteSocialLinks {
 /** Identidade white label do site, preparada pelo WebsitePresenter. */
 export interface WebsiteSite {
     name: string;
+    /** Identificação para links e títulos, mesmo quando o nome visível está vazio. */
+    accessible_name: string;
     tagline: string | null;
     logo_url: string | null;
+    logo_height: number;
     primary_color: string;
     contact_email: string | null;
     contact_phone: string | null;

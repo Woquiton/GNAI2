@@ -31,7 +31,7 @@ final class UpdateWebsiteData extends Data
      * @param  list<array<string, mixed>>  $sections
      */
     public function __construct(
-        public string $siteName,
+        public ?string $siteName,
         public string $primaryColor,
         public ?string $tagline = null,
         public ?UploadedFile $logo = null,
@@ -45,6 +45,7 @@ final class UpdateWebsiteData extends Data
         public ?string $websiteUrl = null,
         public ?string $footerText = null,
         public array $sections = [],
+        public int $logoHeight = 46,
     ) {}
 
     public static function rules(): array
@@ -89,10 +90,11 @@ final class UpdateWebsiteData extends Data
 
         return [
             ...$appearanceRules,
-            'site_name' => ['required', 'string', 'max:120'],
+            'site_name' => ['nullable', 'string', 'max:120'],
             'tagline' => ['nullable', 'string', 'max:255'],
             'primary_color' => ['required', 'string', 'regex:/^#[0-9a-fA-F]{6}$/'],
             'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'logo_height' => ['sometimes', 'integer', 'min:32', 'max:120'],
             'remove_logo' => ['sometimes', 'boolean'],
             'contact_email' => ['nullable', 'email', 'max:255'],
             'contact_phone' => ['nullable', 'string', 'max:40'],
@@ -183,7 +185,6 @@ final class UpdateWebsiteData extends Data
             'sections.*.slides.*.alt.max' => 'A descrição pode ter até 255 caracteres.',
             'sections.*.slides.*.url.regex' => 'Use um link iniciado por http://, https://, /, #, mailto: ou tel:.',
             'sections.*.slides.*.url.max' => 'O link pode ter até 500 caracteres.',
-            'site_name.required' => 'Informe o nome do site.',
             'site_name.max' => 'O nome do site não pode ultrapassar 120 caracteres.',
             'tagline.max' => 'O slogan não pode ultrapassar 255 caracteres.',
             'primary_color.required' => 'Escolha a cor principal do site.',
@@ -191,6 +192,9 @@ final class UpdateWebsiteData extends Data
             'logo.image' => 'A logo deve ser uma imagem.',
             'logo.mimes' => 'A logo deve estar em JPG, PNG ou WEBP.',
             'logo.max' => 'A logo não pode ultrapassar 4 MB.',
+            'logo_height.integer' => 'Informe uma altura inteira para a logo.',
+            'logo_height.min' => 'A altura da logo deve ser de pelo menos 32 px.',
+            'logo_height.max' => 'A altura da logo pode ser de até 120 px.',
             'contact_email.email' => 'Informe um e-mail de contato válido.',
             'instagram_url.url' => 'Informe um link válido, começando com http:// ou https://.',
             'facebook_url.url' => 'Informe um link válido, começando com http:// ou https://.',
