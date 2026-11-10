@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Preferência de uma tela para um usuário: `per_page` e `view_mode` na chave da rota e
  * `columns` (id da coluna => visível) na chave `rota#tabela`.
+ * A chave `teacher_portal` guarda `content_width` (centered/full), só para o portal.
+ * Durante a personificação, as preferências pertencem ao operador da conta de origem.
  * A chave `appearance` guarda `primary_palette`, a paleta primária do usuário.
  */
 final class UserTablePreference extends Model

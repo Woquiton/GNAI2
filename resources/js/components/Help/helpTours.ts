@@ -1,3 +1,4 @@
+import { pageBackActionsTourStep } from '@/components/Navigation/PageBackActions/pageBackActionsTour';
 import type {
     GuidedTourDemo,
     GuidedTourPageConfig,
@@ -93,6 +94,7 @@ export const helpIndexTour: GuidedTourPageConfig = {
                 'Clique no título para abrir o artigo direto no trecho que responde à sua pesquisa.',
             ],
         },
+        pageBackActionsTourStep,
     ],
 };
 

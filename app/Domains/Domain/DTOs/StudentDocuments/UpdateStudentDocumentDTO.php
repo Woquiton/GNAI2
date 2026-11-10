@@ -15,5 +15,7 @@ final readonly class UpdateStudentDocumentDTO
         public string $originalName,
         public ?string $mimeType,
         public ?int $fileSize,
+        public ?string $customType = null,
+        public bool $showInTeacherPortal = false,
     ) {}
 }

@@ -65,7 +65,7 @@ interface ButtonCommonProps {
     children?: React.ReactNode;
     'aria-label'?: string;
     'aria-expanded'?: boolean;
-    'aria-haspopup'?: 'menu';
+    'aria-haspopup'?: 'menu' | 'dialog';
     'aria-controls'?: string;
     'aria-describedby'?: string;
     /** Estado de botões de alternância; aplicado somente ao elemento <button>. */

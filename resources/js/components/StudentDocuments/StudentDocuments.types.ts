@@ -8,6 +8,8 @@ export interface StudentDocumentRecord {
     student_id: number;
     title: string;
     type: string;
+    custom_type: string | null;
+    show_in_teacher_portal: boolean;
     original_name: string;
 }
 
@@ -15,6 +17,7 @@ export interface StudentDocumentRecord {
 export interface StudentDocumentFormOptions {
     student: StudentDocumentStudent;
     types: Record<string, string>;
+    customTypes: string[];
     semester: { label: string } | null;
 }
 

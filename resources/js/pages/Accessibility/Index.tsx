@@ -1,3 +1,4 @@
+import PageBackActions from '@/components/Navigation/PageBackActions/PageBackActions';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { resourceBreadcrumb } from '@/components/Navigation/PageBreadcrumb/resourceBreadcrumb';
 import AccessibilityContent from '@/components/Accessibility/AccessibilityContent';
@@ -14,6 +15,7 @@ export default function Index(): React.JSX.Element {
             tour={accessibilityTour}
         >
             <AccessibilityContent />
+            <PageBackActions />
         </BusinessPage>
     );
 }

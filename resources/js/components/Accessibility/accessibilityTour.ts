@@ -1,3 +1,4 @@
+import { pageBackActionsTourStep } from '@/components/Navigation/PageBackActions/pageBackActionsTour';
 import type { GuidedTourPageConfig } from '@/components/UI/GuidedTour/GuidedTour.types';
 
 export const ACCESSIBILITY_TOUR_TARGETS = {
@@ -53,5 +54,6 @@ export const accessibilityTour: GuidedTourPageConfig = {
                 'A Central de Ajuda reúne instruções de uso.',
             ],
         },
+        pageBackActionsTourStep,
     ],
 };

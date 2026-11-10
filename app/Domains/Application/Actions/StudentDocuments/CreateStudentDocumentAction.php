@@ -9,6 +9,7 @@ use App\Domains\Application\Data\StudentDocuments\CreateStudentDocumentData;
 use App\Domains\Domain\DTOs\StudentDocuments\CreateStudentDocumentDTO;
 use App\Domains\Domain\Exceptions\StudentDocuments\InvalidStudentDocument;
 use App\Domains\Domain\Models\StudentDocuments\StudentDocument;
+use App\Domains\Application\Queries\StudentDocuments\StudentDocumentCustomTypesQuery;
 use App\Domains\Infrastructure\Storage\StudentDocuments\StudentDocumentStorage;
 use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ final readonly class CreateStudentDocumentAction
 {
     public function __construct(
         private StudentDocumentStorage $storage,
+        private StudentDocumentCustomTypesQuery $customTypes,
         private CurrentSemesterQuery $currentSemesterQuery,
     ) {}
 
@@ -52,6 +54,8 @@ final readonly class CreateStudentDocumentAction
                     new CreateStudentDocumentDTO(
                         title: $data->title,
                         type: $data->type,
+                        customType: $this->customTypes->canonicalName($data->customType),
+                        showInTeacherPortal: $data->showInTeacherPortal,
                         filePath: $fileData['file_path'],
                         originalName: $fileData['original_name'],
                         mimeType: $fileData['mime_type'],

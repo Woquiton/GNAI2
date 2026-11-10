@@ -4,6 +4,7 @@ import { profileUrls } from '../Profile.routes';
 import { PROFILE_TOUR_TARGETS } from '../profileTours';
 
 interface ProfileFormActionsProps {
+    cancelHref?: string;
     processing: boolean;
     photoValidating: boolean;
     /** Editor rico que não carregou: o envio fica bloqueado. */
@@ -36,7 +37,7 @@ export default function ProfileFormActions(props: ProfileFormActionsProps): Reac
     return (
         <FormActions status={submissionStatus(props)} tourTarget={PROFILE_TOUR_TARGETS.formActions}>
             <Button
-                href={profileUrls.dashboard}
+                href={props.cancelHref ?? profileUrls.dashboard}
                 tone="cancel"
                 label="Cancelar"
                 title="Cancelar e voltar ao início"

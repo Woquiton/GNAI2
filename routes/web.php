@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\UI\Controllers\Teachers\TeacherPortalController;
+use App\Domains\UI\Controllers\Auth\TeacherProfileController;
 use App\Domains\UI\Controllers\Notifications\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -75,6 +76,8 @@ Route::middleware('web')->group(function () {
         ->name('teacher-portal.')
         ->group(function () {
             Route::get('/', [TeacherPortalController::class, 'index'])->name('index');
+            Route::get('/perfil', [TeacherProfileController::class, 'edit'])->name('profile.edit');
+            Route::put('/perfil', [TeacherProfileController::class, 'update'])->name('profile.update');
             Route::get('/alunos/{student}', [TeacherPortalController::class, 'showStudent'])->name('students.show');
             Route::get('/documentos/{document}', [TeacherPortalController::class, 'viewDocument'])->name('documents.view');
             Route::get('/adaptacoes/{peiDiscipline}/editar', [TeacherPortalController::class, 'editDiscipline'])->name('discipline.edit');

@@ -18,11 +18,8 @@ type ColumnVisibility = Record<string, boolean>;
 export function useTableColumnPreferences(columnIds: readonly string[]) {
     const { props } = usePage<{
         tablePreferences?: TableListSharedPreferences;
-        impersonating?: boolean;
     }>();
     const preferences = props.tablePreferences;
-    // Na personificação a escolha vale só na tela, sem alterar o usuário personificado.
-    const persistent = !props.impersonating;
     const signature = columnIds.join(',');
     const key = preferences?.route
         ? `${preferences.route}#${tableListSignature(signature)}`
@@ -38,7 +35,7 @@ export function useTableColumnPreferences(columnIds: readonly string[]) {
     }, [key]);
 
     function persist(next: ColumnVisibility): void {
-        if (!key || !persistent) return;
+        if (!key) return;
 
         const headers = { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' };
 

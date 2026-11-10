@@ -49,7 +49,7 @@ const documentColumns: TableListColumn<TeacherPortalDocument>[] = [
     },
 ];
 
-/** Aba "Laudo e Documentos": todos os anexos do aluno, abertos em outra aba. */
+/** Aba "Laudo e Documentos": laudos e anexos liberados para o professor, abertos em outra aba. */
 export default function TeacherPortalDocuments({
     documents,
 }: {

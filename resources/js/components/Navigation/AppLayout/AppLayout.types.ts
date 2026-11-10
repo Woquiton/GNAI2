@@ -4,6 +4,7 @@ import type { SidebarEntry } from '@/components/Navigation/SidebarPrimary/Sideba
 import type { NotificationItem } from '@/components/Navigation/TopBarPrimary/TopBarPrimary.data';
 
 export interface AppLayoutProps {
+    usesTeacherPortal: boolean;
     colorPalette: ColorPalette;
     sessionSecurity: SessionSecurityState | null;
     auth: { user: { name: string; photo_url: string } | null };

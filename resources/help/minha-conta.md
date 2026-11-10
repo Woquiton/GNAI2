@@ -6,7 +6,7 @@ palavras-chave: perfil, meu perfil, minha conta, conta, dados pessoais, editar p
 ordem: 3
 ---
 
-Em **Meu Perfil** você mantém atualizados os seus dados, a sua foto e a sua senha. O conteúdo da tela depende do tipo de conta: quem faz parte da equipe ou do corpo docente vê os dados pessoais completos; contas administrativas sem vínculo com a equipe veem apenas os dados de acesso.
+Em **Meu Perfil** você mantém seus dados e sua foto atualizados. As opções de edição e de senha dependem do seu acesso. O conteúdo da tela depende do tipo de conta: quem faz parte da equipe vê os dados pessoais completos; professores que acessam somente o portal podem editar o nome e a foto; contas administrativas sem vínculo com a equipe veem apenas os dados de acesso.
 
 ## Conhecer a tela com o tutorial
 
@@ -28,13 +28,13 @@ A tela **Meu Perfil** mostra, à esquerda, a sua foto, o seu nome, o cargo e o v
 
 O lilás é o padrão. Com texto branco, ele tem contraste de 4,32:1, abaixo dos 4,5:1 exigidos pela WCAG AA para textos de tamanho normal. O roxo escuro oferece contraste maior (12,08:1). O aviso avalia essa combinação de cores, não a acessibilidade de toda a tela.
 
-A escolha fica salva somente na sua conta e é carregada ao entrar novamente. As demais cores do sistema permanecem iguais. **Cancelar** ou fechar o modal desfaz a prévia. Se houver falha ao salvar, você pode tentar novamente; fechar sem salvar mantém a preferência anterior. Durante o acesso como outro usuário, essa opção não fica disponível.
+A escolha fica salva somente na sua conta e é carregada ao entrar novamente. As demais cores do sistema permanecem iguais. **Cancelar** ou fechar o modal desfaz a prévia. Se houver falha ao salvar, você pode tentar novamente; fechar sem salvar mantém a preferência anterior. Durante o acesso como outro usuário, a paleta é carregada e salva na conta de quem está personificando, inclusive no modo somente leitura. A preferência do usuário personificado permanece preservada.
 
 Se **Alto contraste** estiver ativo, ele tem prioridade sobre a paleta e a prévia. Sua escolha continua salva e aparece ao desativar **Alto contraste** no botão de acessibilidade da barra superior. Os avisos de contraste de Lilás e Roxo escuro consideram as cores com alto contraste desativado.
 
 ## Atualizar meus dados pessoais
 
-Vale para quem tem cadastro na equipe ou no corpo docente.
+Vale para quem tem acesso como integrante da equipe. No Portal do Professor, veja [Atualizar meu nome e minha foto](/ajuda/portal-do-professor#atualizar-meu-nome-e-minha-foto).
 
 1. Abra o perfil.
 2. Altere os campos da seção **Dados Pessoais**:

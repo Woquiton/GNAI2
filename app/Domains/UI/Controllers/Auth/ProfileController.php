@@ -28,6 +28,10 @@ final class ProfileController
     ): InertiaResponse|RedirectResponse {
         $user = $authenticatedUser->fromRequest($request);
 
+        if ($user->teacher_id !== null && $user->professional_id === null && ! $user->isAdmin()) {
+            return redirect()->route('teacher-portal.profile.edit');
+        }
+
         // Contas sem vínculo com a equipe (ex.: administrador superior) têm apenas o perfil de conta.
         if (! $user->hasPersonProfile()) {
             return Inertia::render('Profile/Account', $accountQuery->execute($user));

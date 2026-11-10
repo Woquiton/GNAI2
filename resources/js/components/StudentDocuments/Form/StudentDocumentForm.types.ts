@@ -4,6 +4,8 @@ import type { InertiaFormProps } from '@inertiajs/react';
 export type StudentDocumentFormData = {
     title: string;
     type: string;
+    custom_type: string;
+    show_in_teacher_portal: boolean;
     file: File | null;
 };
 

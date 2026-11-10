@@ -19,6 +19,10 @@ export function useStudentDocumentForm({
     const form = useForm<StudentDocumentFormData>({
         title: studentDocument?.title ?? '',
         type: studentDocument?.type ?? '',
+        custom_type: studentDocument?.custom_type ?? '',
+        show_in_teacher_portal:
+            studentDocument?.type === 'technical report' ||
+            (studentDocument?.show_in_teacher_portal ?? false),
         file: null,
     });
     const { formRef, submit } = useFormSubmission(form);

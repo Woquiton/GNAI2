@@ -5,7 +5,9 @@ export const teacherPortalBase = '/professor';
 /** Endereços das rotas do Portal do Professor (prefixo `/professor`). */
 export const teacherPortalUrls = {
     index: teacherPortalBase,
+    profile: `${teacherPortalBase}/perfil`,
     student: (studentId: number) => `${teacherPortalBase}/alunos/${studentId}`,
+    studentPei: (studentId: number) => `${teacherPortalBase}/alunos/${studentId}?tab=pei`,
     document: (documentId: number) => `${teacherPortalBase}/documentos/${documentId}`,
     editDiscipline: (peiDisciplineId: number) =>
         `${teacherPortalBase}/adaptacoes/${peiDisciplineId}/editar`,

@@ -8,7 +8,7 @@ use App\Domains\Application\Actions\Auth\Preferences\SaveTablePreferenceAction;
 use App\Domains\Application\Queries\Auth\Preferences\TablePreferencesQuery;
 use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Domain\Models\Auth\UserTablePreference;
-use App\Domains\Infrastructure\Session\Auth\ImpersonationSession;
+use App\Domains\Application\Queries\Auth\Preferences\PreferenceOwnerQuery;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ final readonly class ApplyTablePageSize
     public function __construct(
         private TablePreferencesQuery $preferences,
         private SaveTablePreferenceAction $save,
-        private ImpersonationSession $impersonation,
+        private PreferenceOwnerQuery $owners,
     ) {}
 
     /**
@@ -38,11 +38,13 @@ final readonly class ApplyTablePageSize
             return $next($request);
         }
 
+        $user = $this->owners->execute($user);
+
         if ($request->query->has('per_page')) {
             $size = filter_var($request->query('per_page'), FILTER_VALIDATE_INT);
 
-            // Na personificação a escolha vale só para a visita, sem alterar o usuário personificado.
-            if (UserTablePreference::isPageSize($size) && ! $this->impersonation->active()) {
+            // Na personificação, a escolha pertence ao operador da conta de origem.
+            if (UserTablePreference::isPageSize($size)) {
                 $this->save->execute($user, $routeName, ['per_page' => $size]);
             }
 

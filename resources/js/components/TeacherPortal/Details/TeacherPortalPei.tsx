@@ -14,7 +14,10 @@ function PeiDiscipline({
 }: {
     discipline: TeacherPortalPeiDiscipline;
 }): React.JSX.Element {
-    const editLabel = `Editar minha adaptação de ${discipline.discipline_name ?? 'disciplina'}`;
+    const actionLabel = discipline.is_started ? 'Editar minha adaptação' : 'Iniciar minha adaptação';
+    const actionTitle = `${actionLabel} de ${discipline.discipline_name ?? 'disciplina'}`;
+    const actionTone = discipline.is_started ? 'warning' : 'create';
+    const actionIcon = discipline.is_started ? 'fa fa-pencil' : 'fa fa-plus';
 
     return (
         <>
@@ -47,12 +50,12 @@ function PeiDiscipline({
                 <div className="teacherPortal__disciplineActions">
                     <Button
                         href={teacherPortalUrls.editDiscipline(discipline.id)}
-                        tone="warning"
+                        tone={actionTone}
                         size="sm"
-                        leftIconClass="fa fa-pencil"
-                        label="Editar minha adaptação"
-                        title={editLabel}
-                        aria-label={editLabel}
+                        leftIconClass={actionIcon}
+                        label={actionLabel}
+                        title={actionTitle}
+                        aria-label={actionTitle}
                     />
                 </div>
             ) : null}

@@ -14,6 +14,7 @@ final class StudentDocumentFormQuery
 {
     public function __construct(
         private readonly CurrentSemesterQuery $currentSemesterQuery,
+        private readonly StudentDocumentCustomTypesQuery $customTypes,
     ) {}
 
     /**
@@ -33,6 +34,7 @@ final class StudentDocumentFormQuery
         return [
             'student' => $student->loadMissing('person'),
             'types' => StudentDocumentType::labels(),
+            'customTypes' => $this->customTypes->execute(),
             'semester' => $semester,
         ];
     }
@@ -46,6 +48,7 @@ final class StudentDocumentFormQuery
             'studentDocument' => $document,
             'student' => $student->loadMissing('person'),
             'types' => StudentDocumentType::labels(),
+            'customTypes' => $this->customTypes->execute(),
             'semester' => $this->currentSemesterQuery->execute(),
         ];
     }

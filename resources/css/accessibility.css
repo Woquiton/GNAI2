@@ -114,8 +114,8 @@ html[data-high-contrast='true'] a {
 }
 
 /* Navegação e ações já são identificadas pela composição, sem sublinhar logos ou ícones. */
-html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout, .topbar) a,
-html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout, .topbar) a *,
+html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout, .topbar, .teacherPortalLayout__topbar) a,
+html[data-high-contrast='true'] :is(.sidebarPrimary, .sidebarPrimary__collapsedFlyout, .topbar, .teacherPortalLayout__topbar) a *,
 html[data-high-contrast='true'] a.button,
 html[data-high-contrast='true'] a.button * {
     text-decoration: none !important;

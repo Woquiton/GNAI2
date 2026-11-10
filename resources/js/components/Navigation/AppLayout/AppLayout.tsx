@@ -1,3 +1,4 @@
+import TeacherPortalLayout from '@/components/Navigation/TeacherPortalLayout/TeacherPortalLayout';
 import SessionActivity from '@/components/Auth/Session/SessionActivity';
 import { useState, type ReactNode } from 'react';
 import ColorPaletteModal from '@/components/Navigation/ColorPalette/ColorPaletteModal';
@@ -31,6 +32,10 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
     const [paletteToEdit, setPaletteToEdit] = useState<ColorPalette | null>(null);
     const { auth, navigation, topbar, impersonating, impersonationReadOnly } = props;
 
+    if (props.usesTeacherPortal) {
+        return <TeacherPortalLayout>{children}</TeacherPortalLayout>;
+    }
+
     if (!auth.user) {
         return <>{children}</>;
     }
@@ -48,15 +53,11 @@ export default function AppLayout({ children }: { children: ReactNode }): React.
               ]
             : []),
         { label: 'Perfil', iconClass: 'ti-user', href: '/autenticacao/perfil' },
-        ...(!impersonating
-            ? [
-                  {
-                      label: 'Paleta de cor',
-                      iconClass: 'ti-palette',
-                      onSelect: () => setPaletteToEdit(currentColorPalette()),
-                  },
-              ]
-            : []),
+        {
+            label: 'Paleta de cor',
+            iconClass: 'ti-palette',
+            onSelect: () => setPaletteToEdit(currentColorPalette()),
+        },
         ...(impersonating
             ? [
                   {

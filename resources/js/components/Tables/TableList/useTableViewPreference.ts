@@ -10,7 +10,6 @@ import {
 
 interface ViewPreferencePageProps {
     tablePreferences?: TableListSharedPreferences;
-    impersonating?: boolean;
     auth?: { user?: { id: number } | null };
     [key: string]: unknown;
 }
@@ -45,7 +44,7 @@ export function useTableViewPreference() {
             );
         }
         if (key) remember();
-        if (!key || props.impersonating) return;
+        if (!key) return;
         // A ordem das gravações acompanha os cliques, mesmo com uma conexão lenta.
         pending.current = pending.current.then(async () => {
             try {

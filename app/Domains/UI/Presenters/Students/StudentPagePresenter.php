@@ -148,7 +148,7 @@ final class StudentPagePresenter
     {
         return $documents->map(fn (StudentDocument $document): array => [
             ...$document->toArray(),
-            'type_label' => $document->type->label(),
+            'type_label' => $document->type_label,
             'semester_label' => $document->semester?->label,
         ])->all();
     }

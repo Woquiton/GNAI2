@@ -1,3 +1,5 @@
+import type { TableListPage } from '@/components/Tables/TableList/TableList';
+
 export interface TeacherPortalAssignment {
     id: number;
     student_id: number;
@@ -6,8 +8,19 @@ export interface TeacherPortalAssignment {
     course_name: string | null;
 }
 
+export type TeacherAssignmentFilters = {
+    student: string;
+    discipline: string;
+    course: string;
+};
+
+export interface TeacherAssignmentPaginator extends TableListPage {
+    data: TeacherPortalAssignment[];
+}
+
 export interface TeacherPortalIndexProps {
-    assignments: TeacherPortalAssignment[];
+    assignments: TeacherAssignmentPaginator;
+    filters: Partial<TeacherAssignmentFilters>;
 }
 
 export interface TeacherPortalCaseStudy {
@@ -75,6 +88,7 @@ export interface TeacherPortalPeiDiscipline {
     evaluations_html: string;
     opinion_html: string | null;
     can_edit: boolean;
+    is_started: boolean;
 }
 
 export interface TeacherPortalStudent {
@@ -105,6 +119,7 @@ export interface TeacherPortalPei {
 }
 
 export interface TeacherPortalStudentShowProps {
+    initialTab: 'documents' | 'case-study' | 'paee' | 'pei';
     student: TeacherPortalStudent;
     status: TeacherPortalStudentStatus;
     documents: TeacherPortalDocument[];
@@ -131,4 +146,14 @@ export interface TeacherPortalDisciplineRecord {
 
 export interface TeacherPortalDisciplineEditProps {
     peiDiscipline: TeacherPortalDisciplineRecord;
+}
+
+export interface TeacherProfileProps {
+    person: {
+        id: number;
+        name: string;
+        photo: string | null;
+        photo_url: string;
+    };
+    email: string;
 }

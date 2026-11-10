@@ -4,6 +4,7 @@ import type { GuidedTourPageConfig } from '@/components/UI/GuidedTour/GuidedTour
 /** Valores de `data-tour` do envio e da edição do documento do aluno. */
 export const STUDENT_DOCUMENT_TOUR_TARGETS = {
     information: 'student-document-information',
+    visibility: 'student-document-visibility',
     file: 'student-document-file',
     formActions: 'student-document-form-actions',
 } as const;
@@ -12,6 +13,16 @@ const targets = STUDENT_DOCUMENT_TOUR_TARGETS;
 const HELP_SLUG = 'alunos-responsaveis-e-documentos';
 const CREATE_GROUP = 'Envio do documento';
 const EDIT_GROUP = 'Edição do documento';
+
+const visibilityStep = {
+    id: 'student-document-visibility',
+    target: targets.visibility,
+    title: 'Mostrar no portal do professor',
+    content: [
+        'Para os demais tipos de documento, esta opção começa desativada. Ative se os professores vinculados ao aluno puderem consultar o anexo.',
+        'Laudos são sempre mostrados no portal. Ao escolher Laudo, a opção fica ativada e não pode ser desativada.',
+    ],
+};
 
 export const studentDocumentCreateTour: GuidedTourPageConfig = {
     helpHref: helpUrls.show(HELP_SLUG, 'enviar-um-documento-do-aluno'),
@@ -23,9 +34,10 @@ export const studentDocumentCreateTour: GuidedTourPageConfig = {
             title: 'Informações do Documento',
             content: [
                 'Dê um título ao documento, como Laudo Médico Psicológico 2024, e escolha o Tipo de Documento. Os campos com asterisco (*) são obrigatórios.',
-                'O Semestre Atual é preenchido sozinho com o semestre atual do sistema.',
+                'Você pode digitar um novo tipo na busca e pressionar Enter, ou escolher Outro e informar o nome. Após salvar, ele pode ser reutilizado enquanto houver documentos usando esse nome. O Semestre Atual é definido pelo sistema.',
             ],
         },
+        visibilityStep,
         {
             id: 'student-document-file',
             target: targets.file,
@@ -59,9 +71,10 @@ export const studentDocumentEditTour: GuidedTourPageConfig = {
             title: 'Informações Gerais',
             content: [
                 'Aqui você muda o título e o tipo do documento. Os campos com asterisco (*) são obrigatórios.',
-                'O Semestre Atual aparece só para consulta.',
+                'Escolha um tipo existente ou digite um novo nome na busca e pressione Enter. Os tipos personalizados também aparecem no filtro dos documentos. O Semestre Atual aparece só para consulta.',
             ],
         },
+        visibilityStep,
         {
             id: 'student-document-file',
             target: targets.file,

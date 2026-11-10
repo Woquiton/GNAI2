@@ -1,8 +1,7 @@
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import RecordTabs from '@/components/Navigation/RecordTabs/RecordTabs';
 import TeacherPortalLayout from '@/components/Navigation/TeacherPortalLayout/TeacherPortalLayout';
-import TeacherPortalAccessNotice from '@/components/TeacherPortal/Details/TeacherPortalAccessNotice';
 import TeacherPortalStudentActions from '@/components/TeacherPortal/Details/TeacherPortalStudentActions';
 import TeacherPortalStudentSummary from '@/components/TeacherPortal/Details/TeacherPortalStudentSummary';
 import { createTeacherPortalStudentTabs } from '@/components/TeacherPortal/Details/teacherPortalStudentTabs';
@@ -17,7 +16,12 @@ import {
 export default function TeacherPortalStudentShowPage(
     props: TeacherPortalStudentShowProps,
 ): React.JSX.Element {
-    const { student, status } = props;
+    const { student, status, initialTab } = props;
+    const [activeTab, setActiveTab] = useState<string>(initialTab);
+
+    useEffect(() => {
+        setActiveTab(initialTab);
+    }, [initialTab, student.id]);
 
     return (
         <BusinessPage
@@ -28,13 +32,14 @@ export default function TeacherPortalStudentShowPage(
             tour={teacherPortalStudentTour}
             className="teacherPortal"
         >
-            <TeacherPortalAccessNotice />
             <TeacherPortalStudentSummary student={student} status={status} />
             <RecordTabs
                 items={createTeacherPortalStudentTabs(props)}
+                initialActiveId={activeTab}
                 tourTarget={TEACHER_PORTAL_TOUR_TARGETS.tabs}
+                onChange={setActiveTab}
             />
-            <TeacherPortalStudentActions />
+            <TeacherPortalStudentActions pei={props.pei} activeTab={activeTab} />
         </BusinessPage>
     );
 }

@@ -2,7 +2,7 @@
 titulo: Portal do Professor
 resumo: Como o professor entra pelo link enviado ao e-mail cadastrado, consulta os alunos vinculados e edita a adaptação da sua disciplina no PEI.
 categoria: Primeiros passos
-palavras-chave: portal do professor, professor, professora, docente, corpo docente, acesso do professor, link de acesso, link mágico, entrar sem senha, e-mail cadastrado, domínios aceitos, meus alunos, adaptação, adaptação curricular, editar adaptação, minha disciplina, pei, plano educacional individualizado, objetivos específicos, conteúdo programático, metodologias, processo de avaliação, parecer, modo leitura, laudo, estudo de caso, paee, link expirado, link inválido, tutorial, tour
+palavras-chave: portal do professor, professor, professora, docente, corpo docente, acesso do professor, link de acesso, link mágico, entrar sem senha, e-mail cadastrado, domínios aceitos, meus alunos, adaptação, adaptação curricular, editar adaptação, minha disciplina, pei, plano educacional individualizado, objetivos específicos, conteúdo programático, metodologias, processo de avaliação, parecer, modo leitura, laudo, estudo de caso, paee, link expirado, link inválido, tutorial, tour, perfil, nome, foto, paleta de cor, acessibilidade, alto contraste, tamanho do texto, ajuda
 ordem: 6
 ---
 
@@ -10,7 +10,7 @@ O Portal do Professor é a área do Gnai para os professores vinculados ao PEI d
 
 ## Conhecer o portal com o tutorial
 
-As telas do portal têm um tutorial que explica cada parte na própria tela. Clique em **Tutorial**, na barra do topo, ao lado de **Sair**. Ele mostra a lista dos seus alunos, a situação do aluno com as abas, onde fica o botão **Editar minha adaptação** e como salvar o planejamento. Use **Próximo** e **Voltar** para seguir, **Ver todos os passos** para pular para uma parte e o **X** ou a tecla **Esc** para sair.
+As telas do portal têm um tutorial que explica cada parte na própria tela. Clique no ícone de informação, na barra do topo, para abrir o tutorial. Ele mostra a lista dos seus alunos, a situação do aluno com as abas, onde fica o botão **Editar minha adaptação** e como salvar o planejamento. Use **Próximo** e **Voltar** para seguir, **Ver todos os passos** para pular para uma parte e o **X** ou a tecla **Esc** para sair.
 
 ## O que preciso para acessar o portal?
 
@@ -51,7 +51,11 @@ A tela **Meus Alunos e Adaptações (PEI)** lista cada adaptação vinculada a v
 - **Visualizar**: abre a situação do aluno em modo leitura.
 - **Editar**: abre a adaptação da sua disciplina para preenchimento.
 
-Sem vínculos, a tela mostra "Nenhum aluno com adaptação vinculada a você no momento.".
+Use os filtros **Aluno**, **Disciplina** e **Curso** para encontrar os vínculos correspondentes. Eles aceitam parte do nome e podem ser combinados. A lista se atualiza automaticamente; use a borracha para limpar os critérios. No celular, o botão **Filtros** mostra os campos adicionais.
+
+O rodapé mostra o total de registros encontrados, a navegação entre páginas e a quantidade por página (10, 25, 50 ou 100). A quantidade escolhida fica salva na sua conta. Durante a personificação, essa preferência pertence a quem está personificando. Trocar os filtros volta à primeira página.
+
+Quando não há resultados, a tabela informa que nenhum aluno com adaptação foi encontrado para os filtros informados.
 
 ## Consultar a situação do aluno (modo leitura)
 
@@ -59,16 +63,22 @@ Em **Visualizar**, a tela do aluno mostra a matrícula, o quadro **Situação do
 
 | Aba | Conteúdo |
 | --- | --- |
-| **Laudo e Documentos** | Documentos do aluno, com tipo, título e data de envio. Use **Visualizar** para abrir o arquivo. |
+| **PEI** | Aba inicial: versão atual e se está **Finalizado** ou **Em preenchimento**, com as adaptações de todas as disciplinas e seus professores. |
 | **Estudo de Caso** | Versão vigente: status, semestre, origem da demanda, observações, escutas, barreiras, estratégias e contribuições. |
 | **PAEE** | Versão vigente: frequência, duração, formato, local, apoios, objetivos, recursos e revisões. |
-| **PEI** | Versão atual e se está **Finalizado** ou **Em preenchimento**, com as adaptações de todas as disciplinas e seus professores. |
+| **Laudo e Documentos** | Laudos e documentos liberados pelo núcleo para o portal, com tipo, título e data de envio. Use **Visualizar** para abrir o arquivo. |
+
+Os laudos são sempre exibidos. Os demais anexos só aparecem quando o núcleo ativa **Mostrar no portal do professor** no documento. Se o acesso for retirado, links antigos também deixam de abrir o arquivo.
 
 Nada pode ser alterado nessa tela, que mostra o selo **Modo leitura**. Use **Voltar**, no rodapé, para retornar à lista.
 
+Na aba **PEI**, o rodapé também mostra **Adaptações para iniciar** quando houver disciplinas suas ainda não iniciadas. O número no botão indica quantas estão pendentes. Clique para abrir uma janela com essas disciplinas e escolha uma para ir direto ao formulário, sem rolar pelas adaptações do aluno. Adaptações de outros professores e as suas já iniciadas ficam fora dessa janela.
+
+Para as suas disciplinas já iniciadas, use **Adaptações para editar**, em laranja, no mesmo rodapé. O botão mostra a quantidade e abre uma janela apenas com os nomes dessas disciplinas. Escolha uma para abrir diretamente o formulário de edição. Cada botão aparece somente quando houver adaptações correspondentes.
+
 ## Editar a adaptação da minha disciplina no PEI
 
-1. Na lista, clique em **Editar** na linha da disciplina. Outra opção: na aba **PEI** do aluno, clique em **Editar minha adaptação**, que aparece só nas suas disciplinas.
+1. Na lista, clique em **Editar** na linha da disciplina. Outra opção: na aba **PEI** do aluno, clique em **Iniciar minha adaptação** ou **Editar minha adaptação**, que aparecem só nas suas disciplinas.
 2. Preencha a seção **Planejamento Adaptado**:
 
 | Campo | Regra |
@@ -85,17 +95,46 @@ Nada pode ser alterado nessa tela, que mostra o selo **Modo leitura**. Use **Vol
 
 3. Clique em **Salvar**, no rodapé.
 
-Com sucesso, você volta à lista com a mensagem "Adaptação atualizada com sucesso.". Cada salvamento que muda algum campo registra automaticamente uma revisão da adaptação, com os campos alterados. Para desistir, clique em **Cancelar**.
+Com sucesso, você volta à lista com a mensagem "Adaptação atualizada com sucesso.". Cada salvamento que muda algum campo registra automaticamente uma revisão da adaptação, com os campos alterados. Para desistir, clique em **Cancelar**: você volta ao mesmo aluno, com a aba **PEI** aberta, sem salvar as alterações.
 
 Você só edita as adaptações em que é o(a) professor(a) responsável, e somente na versão atual do PEI. Um PEI finalizado continua aceitando ajustes.
+
+Na aba **PEI**, o botão **Iniciar minha adaptação** aparece em verde enquanto os campos estiverem vazios ou somente com o texto provisório "A preencher.". Quando algum campo do planejamento já tiver conteúdo preenchido e salvo, o botão passa a ser **Editar minha adaptação**, em laranja. Abrir o formulário sem salvar não muda essa indicação.
 
 ## Ver as atualizações mais recentes do aluno
 
 O portal sempre mostra a situação atual do aluno. Se o Estudo de Caso, o PAEE ou o PEI mudarem, recarregue a página ou, se a sessão tiver sido encerrada, peça um novo link de acesso.
 
+## Atualizar meu nome e minha foto
+
+1. Clique na sua foto, no canto superior direito, e escolha **Perfil**.
+2. Atualize **Nome Completo**, obrigatório, de 3 a 255 caracteres.
+3. Em **Alterar Foto**, escolha ou arraste uma imagem JPG ou PNG de até 2 MB. Você também pode usar a câmera ou remover a foto atual.
+4. Clique em **Salvar**. Com sucesso, aparece "Seu perfil foi atualizado com sucesso!".
+
+**Cancelar** volta para seus alunos e adaptações sem salvar. O **E-mail de acesso** aparece apenas para consulta. Para mudar esse e-mail ou outros dados cadastrais, procure a equipe do núcleo. O portal não oferece alteração de senha: o acesso continua pelo link enviado ao e-mail.
+
+## Centralizar o conteúdo do portal
+
+Na barra do topo, use o botão **Centralizar conteúdo** para aproximar as informações em telas grandes. O conteúdo fica centralizado, com espaços livres nas laterais e largura máxima de 1.200 pixels. Os botões fixos de salvar acompanham essa largura. Para voltar, use **Usar largura total** no mesmo botão. As setas indicam a próxima ação: para dentro centraliza, para fora expande. A troca de largura tem uma transição suave, desativada quando o sistema estiver configurado para reduzir movimentos.
+
+A escolha vale para as telas do Portal do Professor e fica salva na sua conta. Sem uma escolha salva, o portal usa o modo foco, com o conteúdo centralizado. Em telas menores, o conteúdo continua se ajustando ao espaço disponível.
+
+Durante a personificação, o portal usa as preferências de quem está personificando. Alterações de largura, paleta, colunas e quantidade de registros por página ficam na conta dessa pessoa, inclusive em modo somente leitura. As preferências do professor personificado permanecem preservadas. Contraste e tamanho da interface continuam sendo preferências deste navegador.
+
+## Escolher a paleta e ajustar a acessibilidade
+
+No menu da sua foto, escolha **Paleta de cor** para selecionar **Lilás** ou **Roxo escuro**. A prévia aparece ao selecionar; **Salvar** guarda a preferência na sua conta e **Cancelar** ou fechar desfaz a prévia. Durante a personificação, a paleta é carregada e salva na conta de quem está personificando, inclusive no modo somente leitura.
+
+No ícone de acessibilidade da barra superior, você pode ativar **Alto contraste** e ajustar o tamanho do texto e da interface de 90% a 150%. O alto contraste tem prioridade sobre a paleta. Esses ajustes de acessibilidade ficam neste navegador. O item **Acessibilidade** no menu da foto explica os recursos e atalhos.
+
+## Consultar a Central de Ajuda
+
+Clique na sua foto, no canto superior direito, e escolha **Central de Ajuda**. Pesquise um assunto ou abra um artigo. Os artigos respeitam as permissões da sua conta, e o portal mantém a sua barra de navegação durante a consulta. Na tela de pesquisa da Central de Ajuda, o botão **Voltar** no rodapé retorna ao Portal do Professor. Dentro de um artigo, **Voltar** retorna à pesquisa. A página **Acessibilidade** também tem **Voltar** no rodapé para retornar ao portal.
+
 ## Sair do portal
 
-Clique em **Sair**, na barra do topo. Em computadores compartilhados, sempre saia ao terminar.
+Clique na sua foto, no canto superior direito, e depois em **Sair**. Em computadores compartilhados, sempre saia ao terminar.
 
 ## Dúvidas comuns
 

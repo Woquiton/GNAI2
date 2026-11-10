@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Http\Middleware;
 
 use App\Domains\Application\Queries\Auth\Preferences\ColorPaletteQuery;
+use App\Domains\Application\Queries\Auth\Preferences\PreferenceOwnerQuery;
+use App\Domains\Application\Queries\Auth\Preferences\TeacherPortalViewQuery;
 use App\Domains\Application\Queries\Auth\Preferences\TablePreferencesQuery;
 use App\Domains\Application\Queries\Auth\Sessions\GetSessionSecurityStateQuery;
 use App\Domains\Domain\Enums\Auth\PrimaryColorPalette;
@@ -34,6 +36,10 @@ final class HandleInertiaRequests extends Middleware
                     'professional_id', 'teacher_id', 'photo_url',
                 ]),
             ],
+            'usesTeacherPortal' => fn () => $request->user() instanceof User
+                && $request->user()->teacher_id !== null
+                && $request->user()->professional_id === null
+                && ! $request->user()->isAdmin(),
             'sessionSecurity' => Inertia::always(function () use ($request) {
                 // Esta prop só é resolvida ao preparar uma resposta Inertia, inclusive na primeira visita.
                 $request->attributes->set('sessionSecurityInertiaResponse', true);
@@ -52,8 +58,10 @@ final class HandleInertiaRequests extends Middleware
             'impersonationReadOnly' => fn () => app(ImpersonationSession::class)->readOnly(),
             'tablePreferences' => fn () => $this->tablePreferences($request),
             'colorPalette' => Inertia::always(fn () => $request->user() instanceof User
-                ? app(ColorPaletteQuery::class)->execute($request->user())->value
+                ? app(ColorPaletteQuery::class)->execute(app(PreferenceOwnerQuery::class)->execute($request->user()))->value
                 : PrimaryColorPalette::Lilac->value),
+            'teacherPortalView' => Inertia::always(fn () => app(TeacherPortalViewQuery::class)
+                ->execute(app(PreferenceOwnerQuery::class)->execute($request->user()))),
             'flash' => fn () => [
                 'response_id' => (string) Str::uuid(),
                 'success' => $request->session()->get('success'),
@@ -71,7 +79,7 @@ final class HandleInertiaRequests extends Middleware
      */
     private function tablePreferences(Request $request): array
     {
-        $user = $request->user();
+        $user = app(PreferenceOwnerQuery::class)->execute($request->user());
         $routeName = $request->route()?->getName();
 
         return [

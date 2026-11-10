@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import '@styles/components/Navigation/PageBreadcrumb/PageBreadcrumb.css';
 
 export interface PageBreadcrumbItem {
@@ -11,25 +11,30 @@ interface PageBreadcrumbProps {
 }
 
 export default function PageBreadcrumb({ items }: PageBreadcrumbProps): React.JSX.Element {
+    const { usesTeacherPortal } = usePage<{ usesTeacherPortal: boolean }>().props;
+
     return (
         <ol className="pageBreadcrumb breadcrumb">
             {items.map((item: PageBreadcrumbItem, index: number) => {
+                const isPortalHome = usesTeacherPortal && item.href === '/autenticacao/painel';
+                const href = isPortalHome ? '/professor' : item.href;
+                const label = isPortalHome ? 'Portal do Professor' : item.label;
                 const isActive = index === items.length - 1;
 
                 return (
                     <li key={`${item.label}-${index}`} className={isActive ? 'active' : undefined}>
-                        {isActive || !item.href ? (
-                            item.label
+                        {isActive || !href ? (
+                            label
                         ) : (
                             <Link
-                                href={item.href}
+                                href={href}
                                 onClick={
-                                    item.href === '#'
+                                    href === '#'
                                         ? (event) => event.preventDefault()
                                         : undefined
                                 }
                             >
-                                {item.label}
+                                {label}
                             </Link>
                         )}
                     </li>

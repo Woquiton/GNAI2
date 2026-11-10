@@ -16,5 +16,7 @@ final readonly class CreateStudentDocumentDTO
         public ?string $mimeType,
         public ?int $fileSize,
         public int $uploadedBy,
+        public ?string $customType = null,
+        public bool $showInTeacherPortal = false,
     ) {}
 }

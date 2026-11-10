@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domains\UI\Controllers\Teachers;
 
 use App\Domains\Application\Resolvers\Auth\AuthenticatedUserResolver;
+use App\Domains\Application\Data\Teachers\ListTeacherAssignmentsData;
+use App\Domains\Application\Queries\Teachers\ListTeacherAssignmentsQuery;
 use App\Domains\Domain\Models\Auth\User;
 use App\Domains\Application\Actions\PeiDisciplines\UpdatePeiDisciplineAction;
 use App\Domains\Application\Data\PeiDisciplines\UpdatePeiDisciplineData;
@@ -26,18 +28,21 @@ final class TeacherPortalController
 {
     public function __construct(private readonly TeacherPortalPagePresenter $presenter) {}
 
-    public function index(Request $request): InertiaResponse
-    {
-        $teacherId = $this->teacherId($request);
+    public function index(
+        Request $request,
+        ListTeacherAssignmentsData $data,
+        ListTeacherAssignmentsQuery $query,
+    ): InertiaResponse {
+        $assignments = $query->execute($this->teacherId($request), $data);
 
-        $assignments = PeiDiscipline::query()
-            ->where('teacher_id', $teacherId)
-            ->whereHas('pei', fn ($query) => $query->where('is_current', true))
-            ->with(['discipline', 'pei.student.person', 'pei.course'])
-            ->get()
-            ->sortBy(fn (PeiDiscipline $item): string => $item->pei->student->person->name ?? '');
-
-        return Inertia::render('TeacherPortal/Index', $this->presenter->index($assignments));
+        return Inertia::render('TeacherPortal/Index', [
+            ...$this->presenter->index($assignments),
+            'filters' => [
+                'student' => $data->student ?? '',
+                'discipline' => $data->discipline ?? '',
+                'course' => $data->course ?? '',
+            ],
+        ]);
     }
 
     public function showStudent(Student $student, Request $request, StudentPdfQuery $query): InertiaResponse
@@ -47,7 +52,13 @@ final class TeacherPortalController
 
         $student = $query->execute($student);
 
-        return Inertia::render('TeacherPortal/StudentShow', $this->presenter->student($student, $teacherId));
+        $tab = $request->query('tab');
+
+        return Inertia::render('TeacherPortal/StudentShow', [
+            ...$this->presenter->student($student, $teacherId),
+            'initialTab' => in_array($tab, ['documents', 'case-study', 'paee', 'pei'], true)
+                ? $tab : 'pei',
+        ]);
     }
 
     public function editDiscipline(PeiDiscipline $peiDiscipline, Request $request): InertiaResponse
@@ -80,6 +91,8 @@ final class TeacherPortalController
     public function viewDocument(StudentDocument $document, Request $request, StudentDocumentStorage $storage): StreamedResponse
     {
         $this->ensureCanAccessStudent(Student::findOrFail($document->student_id), $this->teacherId($request));
+
+        abort_unless($document->isVisibleInTeacherPortal(), 403, 'Este documento não está disponível no portal do professor.');
 
         return $storage->inline($document);
     }

@@ -26,6 +26,12 @@ final readonly class UpdateProfileAction
      */
     public function execute(User $user, UpdateProfileData $data): void
     {
+        if ($user->teacher_id !== null && $user->professional_id === null && ! $user->isAdmin()) {
+            throw new InvalidProfile(
+                'No portal, atualize seu nome e sua foto em Meu Perfil. Para outros dados, procure a equipe do núcleo.'
+            );
+        }
+
         if ($user->is_admin && ! $user->professional_id) {
             throw new InvalidProfile(
                 'Administradores sem vínculo profissional não possuem perfil de dados pessoais para edição.'

@@ -11,7 +11,7 @@ O tutorial ao vivo (também chamado de tour guiado) explica a tela sobre ela mes
 | `GuidedTourProvider` | `components/UI/GuidedTour/`, montado no `AppLayout` | Guarda o tutorial da tela atual e abre o cartão |
 | `GuidedTour` e `GuidedTourTrail` | `components/UI/GuidedTour/` | Destaque, cartão, progresso e a lista "Ver todos os passos" |
 | `TopBarTourAction` | `components/Navigation/TopBarPrimary/` | Botão da barra do topo; só aparece quando a tela tem tutorial |
-| `PortalTourButton` | `components/Navigation/TeacherPortalLayout/` | Botão **Tutorial** da barra do Portal do Professor, que monta o próprio provedor |
+| `TopBarTourAction` no portal | `components/Navigation/TeacherPortalLayout/TeacherPortalActions` | Mesmo botão de informação da topbar, com o provedor próprio do portal |
 | Prop `tour` do `BusinessPage` | `components/Navigation/BusinessPage/` | Registra o tutorial da página e acrescenta os passos comuns |
 | Prop `tour` do `TableListLayout` | `components/Tables/TableList/` | Acrescenta os passos padrão das listagens (`tableListTour.ts`) |
 | `openDisclosureDemo` e `pressKey` | `components/UI/GuidedTour/guidedTourDemos.ts` | Ajudam a montar demonstrações que se desfazem sozinhas |

@@ -6,7 +6,7 @@ import TeacherPortalPaee from './TeacherPortalPaee';
 import TeacherPortalPei from './TeacherPortalPei';
 import { TEACHER_PORTAL_TOUR_TARGETS } from '../teacherPortalTours';
 
-/** Abas do prontuário em modo leitura, na ordem do atendimento: laudo, estudo, PAEE e PEI. */
+/** Abas do prontuário em modo leitura, com o PEI primeiro e os documentos por último. */
 export function createTeacherPortalStudentTabs({
     documents,
     caseStudy,
@@ -15,21 +15,29 @@ export function createTeacherPortalStudentTabs({
 }: TeacherPortalStudentShowProps): TabItem[] {
     return [
         {
-            id: 'documents',
-            label: 'Laudo e Documentos',
-            content: <TeacherPortalDocuments documents={documents} />,
+            id: 'pei',
+            label: 'PEI',
+            icon: 'fa fa-map-o',
+            content: <TeacherPortalPei pei={pei} />,
+            tourTarget: TEACHER_PORTAL_TOUR_TARGETS.peiTab,
         },
         {
             id: 'case-study',
             label: 'Estudo de Caso',
+            icon: 'fa fa-stethoscope',
             content: <TeacherPortalCaseStudy caseStudy={caseStudy} />,
         },
-        { id: 'paee', label: 'PAEE', content: <TeacherPortalPaee paee={paee} /> },
         {
-            id: 'pei',
-            label: 'PEI',
-            content: <TeacherPortalPei pei={pei} />,
-            tourTarget: TEACHER_PORTAL_TOUR_TARGETS.peiTab,
+            id: 'paee',
+            label: 'PAEE',
+            icon: 'fa fa-sitemap',
+            content: <TeacherPortalPaee paee={paee} />,
+        },
+        {
+            id: 'documents',
+            label: 'Laudo e Documentos',
+            icon: 'fa fa-folder-open-o',
+            content: <TeacherPortalDocuments documents={documents} />,
         },
     ];
 }

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Na personificação somente leitura, só consultas passam; encerrar a
- * personificação e sair continuam permitidos.
+ * personificação, sair e salvar as próprias preferências continuam permitidos.
  */
 final class BlockReadOnlyImpersonationWrites
 {
@@ -24,7 +24,11 @@ final class BlockReadOnlyImpersonationWrites
             $request->isMethodSafe()
             || ! $request->hasSession()
             || ! app(ImpersonationSession::class)->readOnly()
-            || $request->routeIs('admin.impersonate.leave', 'logout', 'session.activity')
+            || $request->routeIs(
+                'admin.impersonate.leave', 'logout', 'session.activity',
+                'preferences.color-palette.update', 'preferences.teacher-portal-view.update',
+                'preferences.tables.columns.update', 'preferences.tables.view.update',
+            )
         ) {
             return $next($request);
         }

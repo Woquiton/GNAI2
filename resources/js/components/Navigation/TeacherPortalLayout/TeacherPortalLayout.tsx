@@ -1,16 +1,16 @@
+import { joinClassNames } from '@/utils/joinClassNames';
 import SessionActivity from '@/components/Auth/Session/SessionActivity';
 import type { SessionSecurityState } from '@/components/Auth/Session/Session.types';
 import type { ReactNode } from 'react';
-import { Link, router, usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import RenderErrorScreen from '@/components/Errors/RenderErrorScreen';
 import AppFooter from '@/components/Navigation/AppFooter/AppFooter';
 import ImpersonationIndicator from '@/components/Navigation/ImpersonationIndicator/ImpersonationIndicator';
 import SkipLinks, { type SkipLinkItem } from '@/components/Navigation/SkipLinks/SkipLinks';
-import Button from '@/components/UI/Button/Button';
 import FlashNotifications from '@/components/UI/FlashNotifications/FlashNotifications';
 import GuidedTourProvider from '@/components/UI/GuidedTour/GuidedTourProvider';
-import { useGuidedTourState } from '@/components/UI/GuidedTour/useGuidedTour';
 import PageErrorBoundary from '@/components/UI/PageErrorBoundary/PageErrorBoundary';
+import TeacherPortalActions from './TeacherPortalActions';
 import '@styles/components/Navigation/TeacherPortalLayout/TeacherPortalLayout.css';
 
 const HOME_HREF = '/professor';
@@ -22,31 +22,10 @@ const SKIP_LINKS: SkipLinkItem[] = [
     { label: 'Rodapé', accessKey: '4', targetId: 'rodape' },
 ];
 
-/** Abre e fecha o tutorial da tela do portal; só aparece quando a tela tem um. */
-function PortalTourButton(): React.JSX.Element | null {
-    const { available, active, start, stop } = useGuidedTourState();
-
-    if (!available) {
-        return null;
-    }
-
-    return (
-        <Button
-            tone="white"
-            size="sm"
-            leftIconClass="icon-info"
-            label="Tutorial"
-            title={active ? 'Fechar o tutorial desta tela' : 'Abrir o tutorial desta tela'}
-            aria-label="Tutorial desta tela"
-            aria-expanded={active}
-            onClick={active ? stop : start}
-        />
-    );
-}
-
 interface TeacherPortalLayoutProps {
-    auth: { user: { name: string } | null };
+    auth: { user: { name: string; photo_url: string } | null };
     sessionSecurity: SessionSecurityState | null;
+    teacherPortalView: 'centered' | 'full';
     impersonating: boolean;
     impersonationReadOnly: boolean;
     [key: string]: unknown;
@@ -82,7 +61,12 @@ export default function TeacherPortalLayout({
             <SessionActivity />
             <SkipLinks items={SKIP_LINKS} />
             <GuidedTourProvider>
-                <div className="teacherPortalLayout">
+                <div
+                    className={joinClassNames(
+                        'teacherPortalLayout',
+                        props.teacherPortalView === 'centered' && 'teacherPortalLayout--centered',
+                    )}
+                >
                     <header className="teacherPortalLayout__topbar">
                         <Link
                             href={HOME_HREF}
@@ -98,24 +82,11 @@ export default function TeacherPortalLayout({
                         </Link>
                         <div className="teacherPortalLayout__session">
                             {sessionIdentity}
-                            <PortalTourButton />
-                            {props.sessionSecurity?.canLock ? (
-                                <Button
-                                    tone="white"
-                                    size="sm"
-                                    leftIconClass="fa fa-lock"
-                                    label="Bloquear tela"
-                                    onClick={() => router.post('/autenticacao/sessao/bloquear')}
-                                />
-                            ) : null}
-                            <Button
-                                tone="white"
-                                size="sm"
-                                leftIconClass="fa fa-sign-out"
-                                label="Sair"
-                                title="Sair do Gnai"
-                                aria-label="Sair do Gnai"
-                                onClick={() => router.post('/autenticacao/sair')}
+                            <TeacherPortalActions
+                                user={auth.user}
+                                canLock={props.sessionSecurity?.canLock === true}
+                                impersonating={impersonating}
+                                viewMode={props.teacherPortalView}
                             />
                         </div>
                     </header>

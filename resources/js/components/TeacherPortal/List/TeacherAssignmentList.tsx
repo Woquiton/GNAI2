@@ -1,32 +1,40 @@
 import {
-    TableListCard,
+    TableListFooter,
     TableListScroll,
-    TableListSummary,
     TableListTable,
 } from '@/components/Tables/TableList/TableList';
-import type { TeacherPortalIndexProps } from '../TeacherPortal.types';
+import type { TeacherAssignmentPaginator } from '../TeacherPortal.types';
 import { teacherAssignmentColumns } from './teacherAssignmentColumns';
 
 const listLabel = 'Alunos e adaptações vinculados a você';
 
-/** Todos os vínculos do professor em uma tabela com contagem estática, sem paginação. */
+/** Vínculos do professor filtrados e paginados pelo servidor. */
 export default function TeacherAssignmentList({
     assignments,
-}: TeacherPortalIndexProps): React.JSX.Element {
-    const summary = `${assignments.length} ${assignments.length === 1 ? 'registro' : 'registros'}`;
-
+    loading,
+    onPageSelect,
+}: {
+    assignments: TeacherAssignmentPaginator;
+    loading: boolean;
+    onPageSelect: (page: number) => void;
+}): React.JSX.Element {
     return (
-        <TableListCard aria-label={listLabel}>
+        <>
             <TableListScroll aria-label={listLabel}>
                 <TableListTable
                     columns={teacherAssignmentColumns}
-                    summary={summary}
-                    rows={assignments}
+                    page={assignments}
+                    rows={assignments.data}
                     rowKey={(item) => item.id}
-                    emptyMessage="Nenhum aluno com adaptação vinculada a você no momento."
+                    emptyMessage="Nenhum aluno com adaptação vinculado a você encontrado para os filtros informados."
                 />
             </TableListScroll>
-            <TableListSummary>{summary}</TableListSummary>
-        </TableListCard>
+            <TableListFooter
+                page={assignments}
+                disabled={loading}
+                paginationLabel="Paginação dos meus alunos e adaptações"
+                onSelect={onPageSelect}
+            />
+        </>
     );
 }

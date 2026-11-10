@@ -34,6 +34,7 @@ function submissionStatus(
 export default function StudentDocumentForm({
     student,
     types,
+    customTypes,
     semester,
     studentDocument,
 }: StudentDocumentFormProps): React.JSX.Element {
@@ -77,6 +78,7 @@ export default function StudentDocumentForm({
                     <StudentDocumentInfoFields
                         {...sectionProps}
                         types={types}
+                        customTypes={customTypes}
                         semester={semester}
                     />
                     <StudentDocumentFileFields

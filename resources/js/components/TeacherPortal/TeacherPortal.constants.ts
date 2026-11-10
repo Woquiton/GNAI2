@@ -31,3 +31,9 @@ export const TEACHER_DISCIPLINE_FIELDS: TeacherDisciplineField[] = [
 
 export const TEACHER_DISCIPLINE_FAILURE_TEXT =
     'Não foi possível salvar a adaptação. Tente novamente.';
+
+export const emptyTeacherAssignmentFilters = {
+    student: '',
+    discipline: '',
+    course: '',
+};

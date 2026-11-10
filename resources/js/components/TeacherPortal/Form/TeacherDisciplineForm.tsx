@@ -95,10 +95,11 @@ export default function TeacherDisciplineForm({
                 tourTarget={TEACHER_PORTAL_TOUR_TARGETS.formActions}
             >
                 <Button
-                    href={teacherPortalUrls.index}
+                    href={teacherPortalUrls.studentPei(peiDiscipline.student_id)}
                     tone="cancel"
                     label="Cancelar"
-                    aria-label="Cancelar e voltar para meus alunos"
+                    title="Cancelar e voltar ao PEI do aluno"
+                    aria-label="Cancelar e voltar ao PEI do aluno"
                     disabled={form.processing}
                 />
                 <Button

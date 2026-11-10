@@ -27,6 +27,8 @@ final class StudentDocument extends Model implements Auditable
         'student_id',
         'title',
         'type',
+        'custom_type',
+        'show_in_teacher_portal',
         'file_path',
         'original_name',
         'mime_type',
@@ -38,6 +40,7 @@ final class StudentDocument extends Model implements Auditable
     protected $casts = [
         'type' => StudentDocumentType::class,
         'file_size' => 'integer',
+        'show_in_teacher_portal' => 'boolean',
     ];
 
     public static function auditType(): string
@@ -56,6 +59,8 @@ final class StudentDocument extends Model implements Auditable
             'student_id' => AuditedField::reference('Aluno', Student::class, 'person.name'),
             'title' => AuditedField::text('Título do Documento'),
             'type' => AuditedField::enum('Tipo de Documento', StudentDocumentType::class),
+            'custom_type' => AuditedField::text('Tipo personalizado'),
+            'show_in_teacher_portal' => AuditedField::boolean('Mostrar no portal do professor'),
             'file_path' => AuditedField::file('Arquivo'),
             'original_name' => AuditedField::text('Nome original do arquivo'),
             'semester_id' => AuditedField::reference('Semestre', Semester::class, 'label'),
@@ -100,6 +105,18 @@ final class StudentDocument extends Model implements Auditable
         $this->fill(self::attributesFrom($data));
     }
 
+    public function getTypeLabelAttribute(): string
+    {
+        return $this->type === StudentDocumentType::OTHER && filled($this->custom_type)
+            ? $this->custom_type
+            : $this->type->label();
+    }
+
+    public function isVisibleInTeacherPortal(): bool
+    {
+        return $this->type === StudentDocumentType::TECHNICAL_REPORT || $this->show_in_teacher_portal;
+    }
+
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
@@ -116,13 +133,18 @@ final class StudentDocument extends Model implements Auditable
     }
 
     /**
-     * @return array<string, string|int|null>
+     * @return array<string, string|int|bool|null>
      */
     private static function attributesFrom(CreateStudentDocumentDTO|UpdateStudentDocumentDTO $data): array
     {
         return [
             'title' => trim($data->title),
             'type' => $data->type->value,
+            'show_in_teacher_portal' => $data->type === StudentDocumentType::TECHNICAL_REPORT
+                || $data->showInTeacherPortal,
+            'custom_type' => $data->type === StudentDocumentType::OTHER
+                ? (filled($data->customType) ? trim($data->customType) : null)
+                : null,
             'file_path' => $data->filePath,
             'original_name' => $data->originalName,
             'mime_type' => $data->mimeType,

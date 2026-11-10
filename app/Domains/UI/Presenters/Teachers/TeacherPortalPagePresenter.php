@@ -19,7 +19,7 @@ use App\Domains\Domain\Models\StudentDocuments\StudentDocument;
 use App\Domains\Domain\Models\Students\Student;
 use App\Shared\Domain\Support\AeeLabels;
 use App\Shared\Infrastructure\Security\RichTextSanitizer;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
  * Dados das telas do Portal do Professor (modo leitura do aluno e edição da
@@ -28,22 +28,20 @@ use Illuminate\Support\Collection;
 final class TeacherPortalPagePresenter
 {
     /**
-     * @param  Collection<int, PeiDiscipline>  $assignments
+     * @param  LengthAwarePaginator<int, PeiDiscipline>  $assignments
      * @return array<string, mixed>
      */
-    public function index(Collection $assignments): array
+    public function index(LengthAwarePaginator $assignments): array
     {
         return [
             'assignments' => $assignments
-                ->map(static fn (PeiDiscipline $item): array => [
+                ->through(static fn (PeiDiscipline $item): array => [
                     'id' => (int) $item->getKey(),
                     'student_id' => (int) $item->pei->student_id,
                     'student_name' => (string) ($item->pei->student->person?->name ?? ''),
                     'discipline_name' => $item->discipline?->name,
                     'course_name' => $item->pei->course?->name,
-                ])
-                ->values()
-                ->all(),
+                ]),
         ];
     }
 
@@ -71,9 +69,10 @@ final class TeacherPortalPagePresenter
                 'has_pei' => $pei !== null,
             ],
             'documents' => $student->documents
+                ->filter(static fn (StudentDocument $document): bool => $document->isVisibleInTeacherPortal())
                 ->map(static fn (StudentDocument $document): array => [
                     'id' => (int) $document->getKey(),
-                    'type_label' => $document->type?->label(),
+                    'type_label' => $document->type_label,
                     'title' => $document->title,
                     'created_at' => $document->created_at?->format('d/m/Y'),
                 ])
@@ -223,10 +222,35 @@ final class TeacherPortalPagePresenter
                     'evaluations_html' => $this->richText($item->evaluations),
                     'opinion_html' => filled($item->opinion) ? $this->richText($item->opinion) : null,
                     'can_edit' => (int) $item->teacher_id === $teacherId,
+                    'is_started' => $this->hasPlanningContent($item),
                 ])
                 ->values()
                 ->all(),
         ];
+    }
+
+    private function hasPlanningContent(PeiDiscipline $discipline): bool
+    {
+        foreach ([
+            'specific_objectives',
+            'objectives_deadline',
+            'content_programmatic',
+            'curricular_reference',
+            'methodologies',
+            'materials_and_assistive_technology',
+            'evaluations',
+            'opinion',
+            'complementary_records',
+        ] as $field) {
+            $text = html_entity_decode(strip_tags((string) $discipline->{$field}), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $text = trim(str_replace("\u{00A0}", ' ', $text));
+
+            if ($text !== '' && $text !== PeiDiscipline::PLACEHOLDER_TEXT) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /** Texto simples mantém as quebras de linha; HTML é sanitizado como no PEI administrativo. */

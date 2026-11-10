@@ -63,11 +63,17 @@ Os perfis vinculados aparecem na identificação do prontuário e podem ser usad
 
 1. No prontuário, abra a aba **Documentos** e clique em **Cadastrar**.
 2. Informe o **Título do Documento** (obrigatório), por exemplo "Laudo Médico Psicológico 2024".
-3. Escolha o **Tipo de Documento** (obrigatório): Histórico Escolar, Laudo, Relatório, Avaliação, Plano AEE ou Outro.
+3. Escolha o **Tipo de Documento** (obrigatório): Histórico Escolar, Laudo, Relatório, Avaliação, Plano AEE, Outro ou um tipo personalizado já utilizado. Para criar um nome, digite na busca e pressione Enter. Você também pode escolher **Outro** e preencher **Nome do tipo de documento**, com até 100 caracteres. Deixe o nome em branco para manter apenas **Outro**.
 4. Em **Selecionar Arquivo**, arraste o arquivo para a área tracejada ou clique nela para escolhê-lo (obrigatório): PDF, DOC, DOCX, JPG, JPEG ou PNG, com até 10 MB.
 5. Clique em **Realizar Upload**. O sistema volta ao prontuário e mostra "Documento enviado com sucesso.".
 
+O campo **Mostrar no portal do professor** controla se os professores vinculados ao aluno podem consultar o documento. Para os demais tipos, ele começa desativado. Ative somente para os anexos que devem aparecer no portal. Documentos ocultos também não podem ser abertos pelo professor por um link antigo.
+
+Para o tipo **Laudo**, a opção fica sempre ativada e não pode ser desativada. Ao mudar de Laudo para outro tipo, ela volta a ficar desativada e pode ser alterada. Nos documentos já existentes, os laudos continuam visíveis e os demais ficam ocultos até serem liberados pela edição.
+
 O campo **Semestre Atual** é preenchido automaticamente com o semestre atual do sistema. Documentos do tipo **Laudo** deixam o card **Laudo** em **Status do atendimento**, acima das abas do prontuário, com a situação **Anexado**.
+
+Os nomes personalizados ficam disponíveis para reutilização nos documentos de todos os alunos após salvar. Eles aparecem na coluna **Tipo** e no filtro **Tipo** da aba **Documentos**, conforme os documentos daquele aluno. Quando o último documento com um nome for excluído ou mudar de tipo, esse nome deixa de aparecer nas opções. Os tipos predefinidos continuam disponíveis no formulário.
 
 ## Visualizar, baixar, editar ou excluir um documento
 
@@ -75,7 +81,7 @@ Na aba **Documentos**, cada linha tem as ações:
 
 - **Visualizar**: abre o arquivo no navegador.
 - **Baixar**: faz o download do arquivo.
-- **Editar**: permite alterar título e tipo e, em **Substituir Arquivo**, enviar outro arquivo. Deixe em branco para manter o arquivo atual. Ao salvar, o sistema mostra "Documento atualizado com sucesso.".
+- **Editar**: permite alterar título, tipo e **Mostrar no portal do professor** e, em **Substituir Arquivo**, enviar outro arquivo. Deixe em branco para manter o arquivo atual. Ao salvar, o sistema mostra "Documento atualizado com sucesso.".
 - **Excluir**: pede a confirmação "Excluir permanentemente o documento ...?" e mostra "Documento removido com sucesso.".
 
 ## Dúvidas comuns

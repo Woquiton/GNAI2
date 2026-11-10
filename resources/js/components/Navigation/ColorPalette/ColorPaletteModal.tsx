@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { useEffect, useId, useLayoutEffect, useRef } from 'react';
 import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
 import FieldError from '@/components/Forms/FormField/FieldError';
@@ -16,7 +16,13 @@ const PALETTES: { value: ColorPalette; label: string; color: string }[] = [
     { value: 'purple', label: 'Roxo escuro', color: '#322b75' },
 ];
 
-function PaletteFooter({ processing, onSave }: { processing: boolean; onSave: () => void }) {
+function PaletteFooter({
+    processing,
+    onSave,
+}: {
+    processing: boolean;
+    onSave: () => void;
+}) {
     const close = useModalClose();
 
     return (
@@ -50,6 +56,7 @@ export default function ColorPaletteModal({
     palette: ColorPalette;
     onClose: () => void;
 }): React.JSX.Element {
+    const { props } = usePage<{ impersonating?: boolean }>();
     const id = useId();
     const form = useForm<{ palette: ColorPalette }>({ palette });
     const { formRef, submit } = useFormSubmission(form);
@@ -95,7 +102,12 @@ export default function ColorPaletteModal({
             closeDisabled={form.processing}
             closeOnBackdrop={!form.processing}
             initialFocus="input:checked"
-            footer={<PaletteFooter processing={form.processing} onSave={save} />}
+            footer={
+                <PaletteFooter
+                    processing={form.processing}
+                    onSave={save}
+                />
+            }
         >
             <form
                 ref={formRef}
@@ -111,6 +123,12 @@ export default function ColorPaletteModal({
                     institucionais. A prévia aparece na interface; só Salvar grava a escolha
                     para a sua conta.
                 </p>
+                {props.impersonating ? (
+                    <p>
+                        Durante a personificação, esta preferência é salva na sua conta de
+                        origem. A paleta do usuário personificado permanece preservada.
+                    </p>
+                ) : null}
                 <fieldset disabled={form.processing} className="colorPalette__options">
                     <legend>Escolha a cor primária</legend>
                     {PALETTES.map((option) => (
@@ -143,8 +161,8 @@ export default function ColorPaletteModal({
                     {preferences.highContrast ? (
                         <p>
                             O alto contraste está ativo e tem prioridade sobre a paleta. Você
-                            pode salvar sua escolha; a prévia e as cores escolhidas aparecem ao
-                            desativar Alto contraste no botão de acessibilidade da barra superior.
+                            verá a prévia e as cores escolhidas ao desativar Alto contraste no
+                            botão de acessibilidade da barra superior.
                             O aviso abaixo considera as cores com alto contraste desativado.
                         </p>
                     ) : null}

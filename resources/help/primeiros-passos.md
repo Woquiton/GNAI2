@@ -74,7 +74,7 @@ Durante o tutorial, a tela continua funcionando: você pode clicar na parte dest
 
 ## Como usar a Central de Ajuda
 
-A Central de Ajuda fica em **Sistema → Ajuda**, no menu lateral.
+A Central de Ajuda fica em **Sistema → Ajuda**, no menu lateral. No Portal do Professor, abra o menu da sua foto e escolha **Central de Ajuda**. Na tela de pesquisa, **Voltar**, no rodapé, retorna ao Painel ou ao Portal do Professor, conforme seu acesso. Dentro de um artigo, **Voltar** retorna à pesquisa.
 
 1. Digite na caixa de pesquisa o que você quer fazer ou a dúvida, com suas palavras (por exemplo, "trocar senha", "emprestar item" ou "finalizar PEI").
 2. Os resultados aparecem separados em abas por categoria, na mesma ordem dos grupos do menu: **Primeiros passos**, **Atendimento**, **Planos e acompanhamento**, **Recursos e acessibilidade**, **Gestão do núcleo**, **Comunicação** e **Sistema**.

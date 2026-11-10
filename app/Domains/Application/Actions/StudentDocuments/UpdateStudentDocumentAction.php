@@ -7,6 +7,7 @@ namespace App\Domains\Application\Actions\StudentDocuments;
 use App\Domains\Application\Data\StudentDocuments\UpdateStudentDocumentData;
 use App\Domains\Domain\DTOs\StudentDocuments\UpdateStudentDocumentDTO;
 use App\Domains\Domain\Models\StudentDocuments\StudentDocument;
+use App\Domains\Application\Queries\StudentDocuments\StudentDocumentCustomTypesQuery;
 use App\Domains\Infrastructure\Storage\StudentDocuments\StudentDocumentStorage;
 use App\Domains\Domain\Models\Students\Student;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,7 @@ final readonly class UpdateStudentDocumentAction
 {
     public function __construct(
         private StudentDocumentStorage $storage,
+        private StudentDocumentCustomTypesQuery $customTypes,
     ) {}
 
     /**
@@ -58,6 +60,8 @@ final readonly class UpdateStudentDocumentAction
                 $lockedDocument->revise(new UpdateStudentDocumentDTO(
                     title: $data->title,
                     type: $data->type,
+                    customType: $this->customTypes->canonicalName($data->customType),
+                    showInTeacherPortal: $data->showInTeacherPortal,
                     filePath: $filePath,
                     originalName: $originalName,
                     mimeType: $mimeType,

@@ -3,6 +3,7 @@ import type { HelpIndexProps } from '@/components/Help/Help.types';
 import HelpResults from '@/components/Help/List/HelpResults';
 import HelpSearch from '@/components/Help/List/HelpSearch';
 import { helpIndexTour } from '@/components/Help/helpTours';
+import PageBackActions from '@/components/Navigation/PageBackActions/PageBackActions';
 import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 import { useTableListFilters } from '@/components/Tables/TableList/useTableListFilters';
 import CardBox from '@/components/UI/CardBox/CardBox';
@@ -44,6 +45,7 @@ export default function HelpIndexPage({
                     approximate={approximate}
                 />
             </CardBox>
+            <PageBackActions />
         </BusinessPage>
     );
 }
