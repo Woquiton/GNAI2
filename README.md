@@ -104,6 +104,35 @@ popular o banco com dados de exemplo (alunos, profissionais etc. fictícios):
 make seed
 ```
 
+### Banco novo desta versão
+
+As migrations foram reorganizadas em **uma migration por tabela**, datadas de
+2026-11-10 e ordenadas pelas chaves estrangeiras. Cada arquivo já cria a estrutura
+final, sem executar renomeações, conversões de dados ou alterações históricas.
+O histórico anterior continua disponível no Git.
+
+Esta versão parte de um banco vazio. Em um banco que usava as migrations antigas,
+recrie as tabelas; executar apenas `migrate` tentaria criar tabelas já existentes.
+O comando `migrate:fresh` abaixo apaga todos os dados do banco configurado:
+
+```bash
+docker compose --env-file .env.dev -f docker-compose.dev.yml stop queue scheduler
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec -T app php artisan migrate:fresh --force
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec -T app php artisan permissions:sync
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec app php artisan auth:create-admin
+docker compose --env-file .env.dev -f docker-compose.dev.yml start queue scheduler
+```
+
+A criação de `tags` inclui as quatro etiquetas especiais de Pessoas e os três
+marcadores iniciais da Inbox. Os demais cadastros começam vazios. O comando
+`auth:create-admin` solicita os dados da primeira conta superior. `make seed`
+carrega dados demonstrativos e não faz parte da inicialização de produção.
+
+Na publicação com banco novo, use `.env.prod` e `docker-compose.prod.yml` nos
+comandos acima e mantenha a aplicação em manutenção durante a recriação. Depois
+desta inicialização, alterações futuras voltam a usar novas migrations
+incrementais e o comando `migrate` habitual.
+
 ### 3. Comandos do dia a dia
 
 ```bash
@@ -383,9 +412,8 @@ use **Atualizar** para consultar uma rejeição que chegou depois do aceite.
 
 ### Receber respostas aos e-mails do Gnai
 
-Aplique também a migration `2026_11_04_190000_add_incoming_email_metadata`, que
-acrescenta data de recebimento, vínculo com a mensagem anterior e índice de
-Message-ID. Em **Configurações → E-mail → Respostas do Gmail**, ative
+A tabela `email_deliveries` já inclui data de recebimento, vínculo com a mensagem
+anterior e índice de Message-ID. Em **Configurações → E-mail → Respostas do Gmail**, ative
 **Importar respostas do Gmail** e configure **Pasta das respostas recebidas**
 (padrão `INBOX`). Não há novas credenciais ou variáveis de ambiente.
 
@@ -408,8 +436,8 @@ confira que a resposta enviada pelo Gnai se destina ao remetente correto.
 
 ### Sincronizar pastas com o Gmail
 
-A migration `2026_11_04_200000_add_gmail_folder_sync_to_email_deliveries` acrescenta
-o vínculo por conta e X-GM-MSGID, a pasta compartilhada e a data da última consulta.
+A tabela `email_deliveries` já inclui o vínculo por conta e X-GM-MSGID, a pasta
+compartilhada e a data da última consulta.
 Ative **Sincronizar pastas com o Gmail** em **Configurações → E-mail → Pastas do Gmail**.
 A opção é por instalação, inicialmente desativada, e independe do recebimento de
 respostas e do monitoramento de rejeições.
@@ -445,12 +473,11 @@ sentidos e confira os resultados de falha e os efeitos em outro usuário da inst
 
 ### Etiquetas por módulo e marcadores da Inbox
 
-A migration `2026_11_04_210000_add_tag_modules_and_inbox_markers` adiciona módulo
-e cor ao cadastro existente de etiquetas. As etiquetas anteriores permanecem em
-Publicações; a unicidade do nome passa a valer por módulo. Inbox ganha as etiquetas
-Importante, Trabalho e Pessoal, também incluídas no seeder para novas instalações.
-Os antigos valores de `email_mailbox_states.label` são convertidos para `tag_id`,
-com chave estrangeira que remove somente o vínculo ao excluir uma etiqueta.
+A migration `2026_11_10_000021_create_tags_table` cria as etiquetas com módulo,
+cor e unicidade do nome por módulo. Inbox começa com as etiquetas Importante,
+Trabalho e Pessoal, também incluídas no seeder para dados demonstrativos.
+`email_mailbox_states.tag_id` tem chave estrangeira que remove somente o vínculo
+ao excluir uma etiqueta.
 
 O cadastro permite selecionar Publicações ou Inbox, situação e cor hexadecimal pela
 paleta Ubold local. Etiquetas em uso não podem trocar de módulo. Publicações validam
@@ -580,7 +607,7 @@ Professores que só acessam por link não passam pela tela de senha, mas também
 desconectados por inatividade e precisam solicitar outro link. O acesso por link
 não mantém mais um cookie de login permanente.
 
-A migration `2026_11_03_150000_add_password_configured_to_users.php` registra se
+A migration `2026_11_10_000037_create_users_table.php` registra se
 uma conta de professor tem senha própria. Para contas antigas, não é possível
 inferir isso pelo hash, pois o acesso por link também gerava uma senha aleatória.
 Um login bem-sucedido com senha, a definição no perfil ou a redefinição de senha
@@ -653,7 +680,7 @@ conexão configurada em `MAIL_QUEUE_CONNECTION`. Após publicar, atualize o cach
 de configuração em uso e reinicie o worker. O teste de envio das Configurações
 continua síncrono para apresentar o diagnóstico imediato.
 
-Aplique a migration `2026_11_03_170000_create_email_deliveries_table.php` e mantenha
+Aplique a migration `2026_11_10_000007_create_email_deliveries_table.php` e mantenha
 o worker da fila atualizado após publicar mudanças no código. Não é necessário
 adicionar colunas de e-mail em cada tabela de negócio. Os estados, tentativas,
 última tentativa, identificação da mensagem e aceite pelo serviço ficam no
@@ -696,9 +723,8 @@ Para delegar a consulta a um cargo, sincronize as permissões e conceda
 docker compose --env-file .env.dev -f docker-compose.dev.yml exec app php artisan permissions:sync
 ```
 
-Em produção, use `.env.prod` e `docker-compose.prod.yml`. A migration
-`2026_11_04_010000_add_email_delivery_history_indexes.php` acrescenta índices para
-as consultas por data, status e origem, sem alterar os registros do histórico.
+Em produção, use `.env.prod` e `docker-compose.prod.yml`. A tabela
+`email_deliveries` já é criada com índices para consultas por data, status e origem.
 
 O módulo permite pesquisar assunto e filtrar origem, status e período de
 registro, com contagens por status e paginação. O destinatário é descriptografado
@@ -753,9 +779,8 @@ uma ponte para alternar apenas a visão local. As ações do card ficam visívei
 seu destaque; sair do passo restaura a visão escolhida, sem gravar preferências
 ou recarregar a quantidade por página durante a demonstração.
 
-A migration `2026_11_04_020000_add_cover_evidence_to_items.php` acrescenta
-`items.cover_evidence_id`, uma referência opcional à imagem favorita de uma
-vistoria. A seleção requer `item.update` e `item.inspection.show`, valida o vínculo
+A tabela `items` já é criada com `cover_evidence_id`, uma referência opcional à
+imagem favorita de uma vistoria. A seleção requer `item.update` e `item.inspection.show`, valida o vínculo
 da evidência com o item e usa transação, bloqueio e conferência da capa anterior.
 `SetItemCoverAction` coordena os bloqueios e a persistência; `Item::setCover`
 concentra as regras de vínculo, formato de imagem e conferência da capa anterior.
