@@ -27,10 +27,10 @@ O menu lateral, à esquerda, reúne as funcionalidades por tarefa do núcleo:
 | **Planos e acompanhamento** | **Estudos de Caso**, **PAEEs** e **PEIs**. |
 | **Recursos e acessibilidade** | **Itens**, **Empréstimos** e **Barreiras**. |
 | **Gestão do núcleo** | **Relatórios**, **Equipe**, **Professores** e **Cadastros** (Perfis de Atendimento, Cargos, Semestres, Disciplinas, Cursos, Recursos de Acessibilidade, Etiquetas, Categorias de Barreiras, Instituições e Localizações). |
-| **Comunicação** | **Pendências**, **Publicações**, **Site** e **Notificações**. |
+| **Comunicação** | **Pendências**, **Site** (submenu com **Publicações** e **Personalização**) e **Notificações**. |
 | **Sistema** | **Configurações**, **Auditoria**, **Backups**, **Sobre o Sistema** e **Ajuda**. |
 
-O item da tela em que você está fica destacado no menu. **Cadastros** é um submenu: clique nele para ver os itens.
+O item da tela em que você está fica destacado no menu. **Cadastros** e **Site** são submenus: clique neles para expandir os itens.
 
 ## Recolher ou abrir o menu lateral
 

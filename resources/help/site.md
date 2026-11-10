@@ -7,7 +7,7 @@ ordem: 30
 permissoes: website.edit
 ---
 
-O Gnai possui um site público do núcleo, aberto a qualquer pessoa sem login, com a página inicial, a página da equipe e a página de publicações. Em **Comunicação → Site** você monta a página inicial: identidade (topo e rodapé) e seções, com uma prévia que mostra o resultado em tempo real antes de salvar.
+O Gnai possui um site público do núcleo, aberto a qualquer pessoa sem login, com a página inicial, a página da equipe e a página de publicações. Em **Comunicação → Site → Personalização** você monta a página inicial: identidade (topo e rodapé) e seções, com uma prévia que mostra o resultado em tempo real antes de salvar.
 
 ## Conhecer a administração do site com o tutorial
 
@@ -25,7 +25,7 @@ O conteúdo das publicações é cadastrado em [Publicações](/ajuda/publicacoe
 
 ## Abrir o construtor e a prévia
 
-1. Acesse **Comunicação → Site**.
+1. Acesse **Comunicação → Site → Personalização**.
 2. À esquerda ficam as abas **Seções** e **Edição**; à direita, a prévia da página inicial.
 3. Na prévia, alterne entre **Computador** e **Celular** para conferir as duas versões.
 4. Clique duas vezes em um elemento da prévia para abrir diretamente a edição dele.

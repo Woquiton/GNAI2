@@ -15,14 +15,14 @@ A listagem, o cadastro, a edição e a visualização da publicação têm um tu
 
 ## Consultar as publicações
 
-1. Acesse **Comunicação → Publicações**.
+1. Acesse **Comunicação → Site → Publicações**.
 2. A listagem mostra, entre outras colunas, **Título**, **Tipo**, **Data e hora de início**, **Data e hora de término**, **Andamento** e **Situação** (Publicado ou Rascunho).
 3. Filtre por **Título**, **Tipo** (Notícia, Evento, Comunicado, Artigo ou Registro) e **Situação** (Publicado ou Rascunho).
 4. Clique no ícone de visualizar da linha para abrir os detalhes.
 
 ## Cadastrar uma publicação
 
-1. Em **Comunicação → Publicações**, clique em **Cadastrar publicação**.
+1. Em **Comunicação → Site → Publicações**, clique em **Cadastrar publicação**.
 2. Preencha as seções do formulário, descritas abaixo.
 3. Clique em **Salvar**. O sistema mostra "Publicação criada com sucesso!".
 

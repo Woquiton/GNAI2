@@ -141,8 +141,10 @@ final class AppNavigation
             ]],
             ['Comunicação', [
                 ['pendencies', 'Pendências', 'specialized-educational-support.pendencies.index', 'ti-alert', ['pendency.view'], ['specialized-educational-support.pendencies.*']],
-                ['publications', 'Publicações', 'inclusive-radar.publications.index', 'ti-announcement', ['publication.index'], ['inclusive-radar.publications.*']],
-                ['website', 'Site', 'website.builder.edit', 'ti-world', ['website.edit'], ['website.builder.*']],
+                ['site', 'Site', null, 'ti-world', [], [], [
+                    ['publications', 'Publicações', 'inclusive-radar.publications.index', 'ti-announcement', ['publication.index'], ['inclusive-radar.publications.*']],
+                    ['website', 'Personalização', 'website.builder.edit', 'ti-palette', ['website.edit'], ['website.builder.*']],
+                ]],
                 ['notifications', 'Notificações', 'notifications.index', 'ti-bell', [], ['notifications.*']],
             ]],
             ['Sistema', [
