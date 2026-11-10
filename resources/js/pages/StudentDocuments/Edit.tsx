@@ -7,6 +7,7 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 export default function StudentDocumentsEditPage({
     student,
     types,
+    customTypes,
     semester,
     studentDocument,
 }: StudentDocumentEditProps): React.JSX.Element {
@@ -25,6 +26,7 @@ export default function StudentDocumentsEditPage({
                 key={studentDocument.id}
                 student={student}
                 types={types}
+                customTypes={customTypes}
                 semester={semester}
                 studentDocument={studentDocument}
             />

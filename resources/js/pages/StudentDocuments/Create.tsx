@@ -7,6 +7,7 @@ import BusinessPage from '@/components/Navigation/BusinessPage/BusinessPage';
 export default function StudentDocumentsCreatePage({
     student,
     types,
+    customTypes,
     semester,
 }: StudentDocumentFormOptions): React.JSX.Element {
     return (
@@ -19,7 +20,12 @@ export default function StudentDocumentsCreatePage({
             })}
             tour={studentDocumentCreateTour}
         >
-            <StudentDocumentForm student={student} types={types} semester={semester} />
+            <StudentDocumentForm
+                student={student}
+                types={types}
+                customTypes={customTypes}
+                semester={semester}
+            />
         </BusinessPage>
     );
 }
