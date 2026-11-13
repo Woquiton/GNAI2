@@ -42,8 +42,10 @@ final class AppNavigationTest extends TestCase
             ->where('navigation.entries', function ($entries): bool {
                 $entries = collect($entries);
                 $registrations = $entries->firstWhere('key', 'registrations');
+                $site = $entries->firstWhere('key', 'site');
                 $links = $entries->filter(fn ($entry) => isset($entry['href']))
-                    ->merge($registrations['children'] ?? []);
+                    ->merge($registrations['children'] ?? [])
+                    ->merge($site['children'] ?? []);
 
                 self::assertSame([
                     'Atendimento',
@@ -91,6 +93,7 @@ final class AppNavigationTest extends TestCase
                     'pedagogical-records',
                     'notifications',
                     'help',
+                    'accessibility',
                     'about',
                 ], $items->keys()->all());
                 self::assertNull(collect($entries)->firstWhere('key', 'registrations'));
@@ -107,7 +110,7 @@ final class AppNavigationTest extends TestCase
     {
         $this->withoutVite();
         $user = User::factory()->create(['is_admin' => true]);
-        $other = User::factory()->create(['is_admin' => true]);
+        $other = User::factory()->create(['is_admin' => true, 'is_super_admin' => true]);
         Institution::factory()->create(['name' => 'Instituição do Gnai']);
         foreach ([[$user, 'Minha notificação', null], [$user, 'Já lida', now()], [$other, 'Privada de outro usuário', null]] as [$owner, $title, $readAt]) {
             $owner->notifications()->create([

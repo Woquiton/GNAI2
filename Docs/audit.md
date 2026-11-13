@@ -1,8 +1,8 @@
 # Auditoria
 
-O histórico de alterações registra toda criação, alteração, exclusão e restauração dos registros de negócio do Gnai. A consulta fica no item **Auditoria** do grupo **Outros** da sidebar (`/audit`), protegida pela permissão `audit.index`. Administradores têm acesso por padrão; para outros cargos, conceda a permissão depois de sincronizar o catálogo com `php artisan permissions:sync`.
+O histórico de alterações registra toda criação, alteração, exclusão e restauração dos registros de negócio do Gnai. A consulta fica no item **Auditoria** do grupo **Sistema** da sidebar (`/auditoria`), protegida pela permissão `audit.index`. Administradores têm acesso por padrão; para outros cargos, conceda a permissão depois de sincronizar o catálogo com `php artisan permissions:sync`.
 
-O desenho segue a auditoria do projeto controle-bar, adaptado ao Gnai: sem multi-tenant, com nomes em inglês e com o "entrar como" no lugar da inspeção.
+O registro usa o autor autenticado, o administrador que representa outro perfil e o contexto da operação. A ajuda de uso está em [Auditoria](../resources/help/auditoria.md).
 
 ## Como funciona
 
@@ -12,6 +12,27 @@ O desenho segue a auditoria do projeto controle-bar, adaptado ao Gnai: sem multi
 - O autor é o usuário autenticado no momento da gravação. No "entrar como", o administrador original fica em `impersonator_*` e a frase mostra "Admin em nome de Maria". Sem usuário (comandos agendados), o autor é "Sistema".
 - Nomes de chaves estrangeiras e de listas de ids são gravados no momento da mudança (`referenced_names`), então o histórico mostra o nome que valia mesmo após renomear ou excluir o registro apontado. Quando o nome mora em outra tabela, use o caminho pela relação, como `person.name`.
 - A tela apresenta cada registro em linguagem simples e alterna para o log técnico cru, sem nova requisição.
+
+## Autenticação, inspeção e operações sem campos
+
+`RecordAuditActivityAction` grava eventos sem mudanças de campos: login com senha,
+logout, desbloqueio de uma sessão travada, início e fim da inspeção e consultas GET durante a inspeção de perfis.
+O desbloqueio usa `session_unlocked` somente após persistir a transição de uma sessão travada para ativa, sem registrar a senha. Sessões expiradas, senha inválida e sessão já ativa não geram esse evento.
+Os dados de identidade são capturados antes de a sessão ser encerrada ou trocada.
+A frase de início identifica quem inspecionou e qual perfil foi acessado; ações
+seguintes mostram "Administrador em nome de Usuário". O contexto marca segurança
+`elevated` e o modo de personificação. O filtro de autor encontra ambos.
+
+O middleware também registra como `processed` requisições autenticadas de escrita,
+com rota nomeada e sem auditoria detalhada na operação, quando não há resposta ou
+flash de erro. Isso comprova o processamento da requisição, sem afirmar quais
+campos mudaram. Rota e status ficam no contexto técnico; a apresentação usa os
+nomes das áreas da navegação, inclusive para registros antigos de operações.
+
+GETs normais e atualizações automáticas `session.activity` e `session.status`
+não geram esse registro complementar. Login por link do professor não deve ser
+presumido coberto pelo evento de login com senha. Os campos `social_links` e
+`sections` da configuração do site também são auditados.
 
 ## Tornar um model auditável
 
@@ -39,6 +60,6 @@ Para incluir um documento no feed, torne o model auditável e acrescente um caso
 
 ## Fora de escopo
 
-- Auditoria de leituras, logins e falhas de autenticação.
+- Auditoria de leituras fora da inspeção e de falhas de autenticação.
 - Retenção ou expurgo automático e exportação do histórico.
 - Histórico de um registro a partir da tela dele.

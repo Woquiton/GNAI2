@@ -1,5 +1,7 @@
 # Auditoria do menu de acessibilidade público e da página Sobre
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../README.md).
+
 Data: 2026-11-10. Páginas verificadas: `/sobre-nos` e `/site`, no ambiente local.
 A auditoria usou Chromium com Playwright em contexto isolado e axe-core. O perfil
 pessoal do navegador não foi usado e nenhum servidor de produção foi acessado.

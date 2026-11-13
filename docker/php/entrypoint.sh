@@ -118,16 +118,25 @@ bootstrap_laravel() {
     fi
 }
 
-if [ "${ROLE}" = "app" ]; then
+if [ "${ROLE}" = "app" ] || [ "${ROLE}" = "deploy" ]; then
     ensure_php_dependencies
 fi
 
 wait_for_database
 
-if [ "${ROLE}" = "app" ]; then
+if [ "${ROLE}" = "app" ] || [ "${ROLE}" = "deploy" ]; then
     bootstrap_laravel
 else
     wait_for_php_dependencies
+fi
+
+if [ "${ROLE}" = "deploy" ]; then
+    php artisan config:clear
+    php artisan route:clear
+    php artisan view:clear
+    php artisan migrate --force --no-interaction
+    php artisan permissions:sync --no-interaction
+    exit 0
 fi
 
 if [ "${ROLE}" = "app" ]; then

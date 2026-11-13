@@ -1,5 +1,7 @@
 # Auditoria de notificações operacionais
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../README.md).
+
 Data: 10/11/2026. Levantamento do código, sem executar rotinas de envio, migrations
 ou homologação em runtime.
 

@@ -1,5 +1,7 @@
 # Auditoria da estrutura acadêmica: cursos, disciplinas, professores, alunos e PEI
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../docs/README.md).
+
 Data: 2026-11-02. Escopo: os vínculos entre cursos, disciplinas, professores, semestres, matrículas, PEI, PAEE e responsáveis no domínio `Inclusion`. A auditoria foi feita por leitura de código. Nada foi executado, então os cenários de risco devem ser reproduzidos na homologação antes da correção.
 
 ## Conclusão

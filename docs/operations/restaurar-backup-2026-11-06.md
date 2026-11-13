@@ -1,5 +1,7 @@
 # Restaurar o backup de produção de 2026-11-06
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../README.md).
+
 O arquivo original `2026-11-06-12-05-02.zip` foi copiado para a raiz sem alteração.
 O arquivo pronto para as migrations atuais é
 `2026-11-06-12-05-02-atualizado.zip`, também na raiz. Ambos ficam fora do Git e da

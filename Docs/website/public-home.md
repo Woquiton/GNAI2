@@ -1,6 +1,6 @@
 # Home institucional do site público
 
-Auditoria e adaptação realizadas em 31/10/2026.
+Referência de composição definida na auditoria de 31/10/2026. As opções atuais de edição estão no artigo de [site institucional](../../resources/help/site.md); este documento registra a intenção e a estrutura original, não a disponibilidade de cada controle do editor atual.
 
 ## Finalidade
 

@@ -1,5 +1,7 @@
 # Auditoria do frontend React do Gnai
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../README.md).
+
 Data: 01/11/2026. Base inspecionada: commit `60e8263b`.
 
 ## Situação após a refatoração do working tree

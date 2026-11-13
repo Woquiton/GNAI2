@@ -12,6 +12,7 @@ enum AuditEvent: string
     case RESTORED = 'restored';
     case LOGIN = 'login';
     case LOGOUT = 'logout';
+    case SESSION_UNLOCKED = 'session_unlocked';
     case INSPECTED = 'inspected';
     case INSPECTION_ENDED = 'inspection_ended';
     case ACCESSED = 'accessed';
@@ -26,6 +27,7 @@ enum AuditEvent: string
             self::RESTORED => 'Restauração',
             self::LOGIN => 'Entrada',
             self::LOGOUT => 'Saída',
+            self::SESSION_UNLOCKED => 'Desbloqueio de sessão',
             self::INSPECTED => 'Inspeção',
             self::INSPECTION_ENDED => 'Fim da inspeção',
             self::ACCESSED => 'Consulta em inspeção',
@@ -43,6 +45,7 @@ enum AuditEvent: string
             self::RESTORED => 'restaurou',
             self::LOGIN => 'entrou em',
             self::LOGOUT => 'saiu de',
+            self::SESSION_UNLOCKED => 'desbloqueou',
             self::INSPECTED => 'inspecionou',
             self::INSPECTION_ENDED => 'encerrou a inspeção de',
             self::ACCESSED => 'consultou',

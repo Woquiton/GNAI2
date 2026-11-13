@@ -1,8 +1,6 @@
 .git
 .editorconfig
 .dockerignore
-.env
-.env.*
 .env*
 node_modules
 tests
@@ -20,3 +18,11 @@ vendor
 # Backups e arquivos restaurados não devem entrar na imagem.
 /*.zip
 /storage/app
+
+# Documentação técnica, testes de domínio e caches locais não são runtime.
+/Docs
+/docs
+/app/Domains/Tests
+/.phpunit.cache
+/.phpunit.result.cache
+/storage/framework/testing

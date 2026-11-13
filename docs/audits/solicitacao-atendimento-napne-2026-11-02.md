@@ -1,5 +1,7 @@
 # Auditoria: solicitação inicial de atendimento ao núcleo de inclusão
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../README.md).
+
 Data: 02/11/2026. Base do código: commit `31577555`.
 
 Escopo: extração do ODT fornecido, comparação com os contratos e telas existentes do Gnai e pesquisa em fontes oficiais. Nenhuma funcionalidade, regra de negócio ou banco foi alterado. Esta auditoria não homologa runtime nem substitui a aprovação do procedimento pela instituição.

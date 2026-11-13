@@ -11,7 +11,9 @@ A **Auditoria** guarda o histórico de alterações de todo o sistema. Cada cria
 
 As atualizações automáticas de atividade e de status da sessão não geram registros de auditoria.
 
-Também são registradas as entradas e saídas da conta, o início e o fim da inspeção de perfis e as consultas feitas durante a inspeção. Alterações nas seções e nos links sociais do site incluem os valores anteriores e novos.
+Também são registradas as entradas e saídas da conta, os desbloqueios de sessão, o início e o fim da inspeção de perfis e as consultas feitas durante a inspeção. Alterações nas seções e nos links sociais do site incluem os valores anteriores e novos.
+
+Ao desbloquear uma sessão travada com a senha correta, o registro aparece como "Maria desbloqueou sua sessão", com a ação **Desbloqueio de sessão**. Uma senha incorreta ou uma sessão expirada não gera esse evento.
 
 Operações autenticadas de alteração sem um histórico detalhado de campos aparecem como **Operação processada**, apresentadas com o nome da área em linguagem simples. A rota e o status da resposta ficam no log técnico. Esse registro indica que a requisição foi processada, sem afirmar quais dados mudaram. Requisições com erro informado não recebem esse registro complementar.
 
@@ -27,7 +29,7 @@ O **Histórico de Alterações** tem um tutorial na própria tela. Clique no bot
 | Coluna | Significado |
 | --- | --- |
 | **Registro** | Frase em linguagem simples, como "Maria alterou o aluno João". |
-| **Ação** | **Criação**, **Alteração**, **Exclusão**, **Restauração**, **Entrada**, **Saída**, **Inspeção**, **Fim da inspeção**, **Consulta em inspeção** ou **Operação processada**. |
+| **Ação** | **Criação**, **Alteração**, **Exclusão**, **Restauração**, **Entrada**, **Saída**, **Desbloqueio de sessão**, **Inspeção**, **Fim da inspeção**, **Consulta em inspeção** ou **Operação processada**. |
 | **Tipo** | O tipo do registro, como Aluno, PEI, Empréstimo ou Publicação. |
 | **Quem fez** | O usuário que fez a operação, ou **Sistema** quando ela veio de uma rotina automática. |
 | **Quando** | Data e hora da operação. |

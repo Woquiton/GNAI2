@@ -5,6 +5,7 @@ export type AuditEventValue =
     | 'restored'
     | 'login'
     | 'logout'
+    | 'session_unlocked'
     | 'inspected'
     | 'inspection_ended'
     | 'accessed'

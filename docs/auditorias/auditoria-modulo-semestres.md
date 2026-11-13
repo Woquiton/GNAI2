@@ -1,5 +1,7 @@
 # Auditoria: módulo de semestres e períodos letivos
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../README.md).
+
 Data: 02/11/2026. Base do código: commit `8fece578` (branch `feat/react`).
 
 Escopo: leitura do código, das migrations, dos seeders, das telas React, dos PDFs, dos relatórios e dos artigos de ajuda que tratam de semestres, mais pesquisa em documentação pública de outros sistemas educacionais. Nada foi alterado no código ou no banco. Nenhum servidor, teste ou banco foi executado. As conclusões sobre dados existentes em produção são inferidas do esquema; os dados reais não foram consultados (ver [Limitações](#limitações-desta-auditoria)).

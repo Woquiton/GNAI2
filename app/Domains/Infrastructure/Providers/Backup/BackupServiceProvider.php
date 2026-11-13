@@ -11,6 +11,8 @@ use App\Domains\Application\Contracts\Backup\PruneBackupsActionContract;
 use App\Domains\Domain\Models\Backup\Backup;
 use App\Domains\Infrastructure\Storage\Backup\BackupArchiveStorage;
 use App\Domains\UI\Console\Commands\Backup\BackupAutomatic;
+use App\Domains\UI\Console\Commands\Backup\DatabaseMaintenance;
+use App\Domains\UI\Console\Commands\Backup\RestoreBackup;
 use Illuminate\Support\ServiceProvider;
 
 final class BackupServiceProvider extends ServiceProvider
@@ -25,6 +27,8 @@ final class BackupServiceProvider extends ServiceProvider
     {
         $this->commands([
             BackupAutomatic::class,
+            DatabaseMaintenance::class,
+            RestoreBackup::class,
         ]);
 
         $this->app->make(AuditableEntities::class)->register(Backup::class);

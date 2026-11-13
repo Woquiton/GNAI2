@@ -1,194 +1,107 @@
-# Backup com Spatie Laravel Backup em Docker (Guia de Correção)
+# Backup e restauração em Docker
 
-Este guia resolve o problema em que o backup "reseta a página" ou falha silenciosamente ao usar **spatie/laravel-backup** em ambiente **Docker**.
+O Gnai usa Spatie Laravel Backup por meio das Actions de negócio. O Dockerfile
+já instala o cliente MySQL e a extensão ZIP; não é necessário instalar pacotes
+manualmente em um container em execução. O [guia de operação](../docs/operations/README.md)
+descreve ambiente, deploy, usuários e persistência.
 
----
-
-## 1. Verificar logs do Laravel (PASSO OBRIGATÓRIO)
-
-Sempre comece pelos logs.
-
-```bash
-tail -f storage/logs/laravel.log
-```
-
-Depois, tente gerar o backup novamente.
-
-Erros comuns encontrados:
-- `mysqldump: command not found`
-- `Permission denied`
-- `ZipArchive not found`
-
----
-
-## 2. Garantir mysql-client no container PHP
-
-O pacote **Spatie Backup** precisa do `mysqldump` dentro do **container app (PHP)**.
-
-No seu `Dockerfile`, certifique-se de ter:
-
-```dockerfile
-RUN apt-get update && apt-get install -y     mysql-client     zip     unzip
-```
-
-Depois, **rebuild o container**:
+## Gerar e listar
 
 ```bash
-docker compose build --no-cache
-docker compose up -d
+make backup
+make backup-db
+make list-bkp
 ```
 
----
+Escolha desenvolvimento ou produção no menu. Para seleção explícita, `ENV=dev`
+ou `ENV=prod` continua aceito. `make backup` chama `backup:automatic`, que usa
+`GenerateBackupAction`: gera o ZIP, registra o backup no banco e aplica a retenção
+definida em **Sistema → Configurações → Backups**. O responsável no terminal é
+**Sistema**. Não substitua esse fluxo por `backup:run` ao querer manter o catálogo
+do Gnai atualizado.
 
-## 3. Informar o caminho do mysqldump ao Laravel
+O ZIP inclui o banco e `storage/app`, excluindo diretórios de trabalho e a própria
+pasta dos backups. O disco `local` tem raiz em `storage/app/private`; o diretório
+padrão é `storage/app/private/GNAIbackups`, conforme `BACKUP_DISK_NAME`.
+O `.env`, a `APP_KEY` e o código não estão incluídos. Preserve-os separadamente.
 
-Edite o arquivo:
+`make backup-db` produz somente SQL, em
+`storage/app/private/<BACKUP_DISK_NAME>/db/`. Não cria um registro de backup
+completo. O dump é escrito em arquivo parcial privado e só recebe o nome final
+após sucesso, sem ignorar o código de saída do MySQL.
 
-```php
-config/database.php
-```
+`make list-bkp` usa a listagem de arquivos do Spatie. Para conferir o catálogo
+de registros, consulte também **Sistema → Backups**.
 
-Na conexão `mysql`, adicione:
+## Configurações
 
-```php
-'mysql' => [
-    // ...
-    'dump' => [
-        'dump_binary_path' => '/usr/bin',
-        'use_single_transaction',
-        'timeout' => 60 * 5,
-    ],
-],
-```
+- `BACKUP_DISK_NAME`: nome da pasta de arquivos no disco privado.
+- `BACKUP_MYSQL_BINARY_PATH`: caminho dos binários MySQL; `/usr/bin` na imagem.
+- `BACKUP_MYSQL_EXTRA_OPTIONS`: opções usadas pela infraestrutura de backup.
+- `BACKUP_ARCHIVE_PASSWORD`: senha opcional dos ZIPs, que deve ser preservada
+  junto da cópia correspondente para uma restauração posterior.
+- Horários e retenção: configuração pela interface, não por alteração manual
+  de rotinas de agendamento. O scheduler precisa permanecer ativo.
 
-Depois rode:
+Após alterar a infraestrutura ou o ambiente em produção, publique com
+`make deploy`. Depois de atualizar os arquivos do projeto, esse comando também
+inclui os comandos Artisan de manutenção usados pelos assistentes abaixo.
+
+## Restaurar SQL
 
 ```bash
-php artisan config:clear
+make restore-db
+make restore-db FILE="/caminho/backup.sql"
 ```
 
----
+Sem `FILE`, o assistente lista os SQLs na pasta privada de backups. Com `FILE`, o
+arquivo do host é montado somente para leitura em um container temporário.
+Confira o ambiente e a confirmação do banco de destino antes de prosseguir.
+O arquivo deve ser compatível com a estrutura e com a versão do código usada.
 
-## 4. Corrigir permissões das pastas (MUITO IMPORTANTE)
-
-Entre no container:
+## Restaurar ZIP completo
 
 ```bash
-docker exec -it gnai_app sh
+make restore-full
+make restore-full FILE="/caminho/backup.zip"
 ```
 
-Teste escrita:
+Sem `FILE`, o assistente lista os registros restauráveis com arquivo disponível.
+Um ZIP externo é validado pela infraestrutura do sistema e importado após
+confirmação. A restauração usa `RestoreBackupAction`, com as mesmas regras de
+validação e extração do fluxo da aplicação. Ela sobrescreve banco e uploads;
+não transforma automaticamente esquemas antigos em novas versões.
 
-```bash
-touch storage/app/test.txt
-```
+O procedimento específico de conversão do backup de 2026-11-06 fica no
+[registro histórico](../docs/operations/restaurar-backup-2026-11-06.md).
+Não execute `migrate:fresh` após restaurar um banco com dados.
 
-Se falhar, execute:
+## Confirmação, manutenção e falhas
 
-```bash
-chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
-```
+Antes de executar, o Make confirma o ambiente e pausa somente os workers que
+estavam ativos. O comando PHP pede a confirmação do arquivo. Após confirmar a
+restauração, coloca a aplicação em manutenção; uma manutenção preexistente é
+preservada. Os workers são retomados em caso de sucesso ou cancelamento anterior
+à alteração dos dados.
 
-Saia do container:
+Uma falha não é apresentada como sucesso e não retoma os workers automaticamente.
+Se a alteração de dados já começou, a aplicação permanece em manutenção. Confira
+o erro e o estado de banco e arquivos antes de retomar. Não há rollback automático
+de todo o banco importado. `make logs-app` auxilia no diagnóstico.
 
-```bash
-exit
-```
+`make db` e os comandos SQL usam a conexão Laravel. As credenciais ficam em um
+arquivo temporário privado, removido ao concluir ou falhar; a senha não é
+interpolada em comandos shell nem aparece nos argumentos do cliente MySQL.
 
----
+## Diagnóstico
 
-## 5. Conferir pasta de destino do backup
+| Sintoma | Verificação |
+| --- | --- |
+| Cliente MySQL ou extensão ZIP ausente | Reconstrua e publique a imagem atual com `make deploy`. |
+| Falha de escrita | Confira os volumes e execute `make perm` no ambiente correto. |
+| Conexão recusada | Confira host, porta e credenciais existentes; alterar o `.env` não altera usuários do MySQL. |
+| ZIP inválido ou criptografado | Confira integridade, conteúdo compatível e a senha usada ao gerar o arquivo. |
+| Não encontra o backup | Confira arquivo físico e catálogo; use `FILE` para um arquivo externo. |
+| Dados criptografados ilegíveis após restaurar | Confira se a instalação usa a `APP_KEY` original. |
 
-O Spatie cria backups em:
-
-```
-storage/app/{nome-do-backup}
-```
-
-No arquivo `config/backup.php`, verifique:
-
-```php
-'name' => 'GNAI',
-```
-
-O caminho final será:
-
-```
-storage/app/GNAI/
-```
-
-Garanta que a pasta existe (ou deixe o pacote criar).
-
----
-
-## 6. Testar o comando manualmente (ESSENCIAL)
-
-Dentro do container:
-
-```bash
-docker exec -it gnai_app php artisan backup:run
-```
-
-Se aparecer erro aqui, ele é o erro real do problema.
-
----
-
-## 7. BackupService com tratamento de erro (RECOMENDADO)
-
-No seu serviço de backup:
-
-```php
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Log;
-
-public function generate()
-{
-    $exitCode = Artisan::call('backup:run', [
-        '--disable-notifications' => true
-    ]);
-
-    $output = Artisan::output();
-
-    if ($exitCode !== 0) {
-        Log::error('Erro ao gerar backup: ' . $output);
-        throw new \Exception('Falha ao gerar backup.');
-    }
-}
-```
-
-Isso evita falhas silenciosas.
-
----
-
-## 8. Limpeza final (opcional)
-
-```bash
-php artisan optimize:clear
-```
-
----
-
-## Checklist Final
-
-- [ ] mysql-client instalado no container PHP  
-- [ ] dump_binary_path configurado  
-- [ ] Permissões corretas em storage/  
-- [ ] Comando funciona via terminal  
-- [ ] Logs sem erro  
-
----
-
-## Resultado esperado
-
-Após executar todos os passos, o backup será gerado corretamente em:
-
-```
-storage/app/GNAI/*.zip
-```
-
-E o botão da aplicação **não irá mais resetar a página**.
-
----
-
-✔ Guia validado para Docker + Laravel + Spatie Backup
+Para uso da interface e permissões, consulte [Backups na Central de Ajuda](../resources/help/backups.md).

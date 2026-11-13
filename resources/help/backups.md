@@ -34,6 +34,9 @@ Ao abrir a tela, o Gnai confere a pasta de backups do servidor: arquivos ZIP enc
 
 Ao concluir, o sistema mostra "Backup realizado com sucesso!" e a nova cópia aparece na lista com você como **Responsável**.
 
+Backups completos gerados pelo suporte no terminal também usam o fluxo do sistema
+e aparecem com responsável **Sistema**, aplicando a política de retenção configurada.
+
 ## Backup automático
 
 O Gnai gera backups automaticamente todos os dias, nos horários definidos em **Sistema → Configurações → Backups**. Sem configuração salva, o backup automático roda uma vez por dia, às 12:05. Os backups automáticos aparecem com o responsável **Sistema**. Veja [Configurações](/ajuda/configuracoes#definir-os-horarios-e-a-retencao-dos-backups-automaticos).

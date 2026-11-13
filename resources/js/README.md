@@ -1,58 +1,64 @@
-# React
+# Frontend React
 
-Frontend React/TypeScript integrado ao Laravel com Inertia.
+React 19 e TypeScript integrados ao Laravel com Inertia. O [README do projeto](../../README.md)
+e o [guia de operação](../../docs/operations/README.md) descrevem a inicialização
+com Docker. Não há servidor React separado do Laravel; Vite fornece os assets
+no desenvolvimento e publica o bundle na construção da imagem.
 
-- Código: `resources/js` (alias `@/`).
-- Estilos: `resources/css` (alias `@styles/`), com os caminhos dos componentes espelhados.
-- Imagens processadas pelo Vite: `resources/images`.
-- Imagens públicas: `public/images`.
-- Plugins, fontes e scripts de terceiros: `public/assets/{plugins,fonts,js}`.
+## Executar e verificar
 
-Na raiz do projeto:
+Com o ambiente de desenvolvimento preparado:
 
 ```bash
-npm ci
-npm run dev
-npm run check
-npm run build
+make npm-dev
+make npm-build
 ```
 
-No ambiente Docker existente, use o
-serviço `node` para os comandos npm. Não há servidor React separado.
+Escolha desenvolvimento no menu. O primeiro comando inicia o serviço `node`
+com Vite. O segundo instala as dependências no volume Node e executa o build,
+que inclui typecheck. Em produção, `make npm-build` e `make build-assets`
+executam o deploy completo, para manter PHP e assets na mesma versão.
 
-Para usar o PhpStorm ou outro editor instalado no computador, execute `npm ci`
-também no terminal local, na raiz do projeto. O Docker mantém as dependências em
-um volume próprio, que não preenche a pasta `node_modules` vista pelo editor.
-A instalação local permite resolver `react/jsx-runtime`, os tipos do React e o
-TypeScript. Os comandos de desenvolvimento da aplicação continuam no serviço
-`node` do Docker.
+Para executar verificações específicas, use o serviço Node:
 
-Controllers de telas retornam `Inertia::render('Recurso/Acao', $props)`.
-O identificador resolve diretamente o arquivo `pages/Recurso/Acao.tsx`.
-As páginas de negócio compõem os componentes do Gnai. Os dados enviados pelos controllers ficam
-disponíveis como props ou por `usePage()` do Inertia.
+```bash
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec node npm run check
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec node npm run lint
+docker compose --env-file .env.dev -f docker-compose.dev.yml exec node npm run format:check
+```
 
-`main.tsx` inicializa o Inertia. A única entrada HTML é `resources/views/inertia.php`,
-um documento PHP mínimo, sem layout Blade. O middleware compartilha usuário,
-mensagens de sessão e erros de validação. Listagens usam respostas Inertia,
-inclusive em requisições AJAX, sem fragmentos HTML de tabelas.
+Não há `npm test` nem suíte de testes de frontend no projeto. A homologação
+visual e funcional das telas é manual.
 
-Os templates e estilos antigos das telas podem ser consultados no histórico do git.
-Os scripts e estilos Blade antigos foram removidos. CSS global, tokens e estilos
-dos componentes ficam em `resources/css`; `variables.css` continua importado por
-`tokens.css`. Templates para PDFs e e-mails continuam dedicados a essas saídas. O Bootstrap instalado pelo npm foi removido; os plugins locais
-utilizados pelos componentes React continuam em `public/assets`.
+Para o editor no host resolver os tipos, `npm ci` local é opcional. O Docker
+usa um volume próprio de `node_modules`, que não preenche a pasta vista pelo
+editor. Não mantenha um segundo Vite local usando a mesma porta do serviço Node.
 
-Reutilize os componentes com imports diretos, por exemplo:
+## Organização e contratos
+
+- Entrada: `main.tsx`; páginas Inertia em `pages/<Recurso>/<Acao>.tsx`.
+- Componentes: `components/Forms`, `Tables`, `Navigation`, `UI` e pastas por recurso.
+- Alias de código: `@/`; estilos em `resources/css`, importados por `@styles/`.
+- Imagens processadas pelo Vite: `resources/images`; imagens públicas: `public/images`.
+- Plugins, fontes e scripts locais de terceiros: `public/assets/{plugins,fonts,js}`.
+
+Controllers usam `Inertia::render('Recurso/Acao', $props)`. `main.tsx` resolve a
+página e atribui o layout de negócio. O documento de entrada é
+`resources/views/inertia.php`. O middleware compartilha usuário, flash e erros.
+Listagens e recargas parciais usam respostas Inertia, sem fragmentos HTML por AJAX.
+
+Reutilize os componentes existentes com imports diretos:
 
 ```tsx
 import Button from '@/components/UI/Button/Button';
 import TextInput from '@/components/Forms/TextInput/TextInput';
 ```
 
-A entrada React carrega reset, tokens e estilos globais próprios. Os componentes
-carregam seus estilos e plugins locais. As páginas de negócio recebem os dados dos módulos pelos controllers.
-O catálogo demonstrativo do Ubold foi removido. Componentes convertidos e os plugins que eles utilizam permanecem disponíveis para
-o Gnai, com seus arquivos minificados, fontes, imagens necessárias e licenças.
-Pacotes sem uso foram removidos de `public/assets/plugins/`; dependências
-embutidas nos bundles preservados não precisam de cópias separadas.
+As regras de componentes, tokens, formulários, listagens, acessibilidade e
+tutoriais estão nas [convenções de arquitetura](../../docs/ai-conventions/frontend/architecture.md)
+e no [AGENTS local](AGENTS.md). Itens é o módulo de referência.
+
+O catálogo demonstrativo do tema e as telas Blade antigas foram removidos;
+consulte o histórico Git quando precisar do legado. A página Sobre, os PDFs e
+os e-mails mantêm seus templates dedicados. Preserve licenças e dependências
+embutidas dos assets de terceiros usados pelos componentes.

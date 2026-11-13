@@ -1,5 +1,7 @@
 # Semestres e histórico das operações
 
+> Registro histórico: descreve a revisão ou o procedimento na data indicada. Não representa, por si só, o estado atual do código nem uma instrução geral de deploy. Consulte o [índice da documentação](../docs/README.md).
+
 Data: 2026-11-03. Levantamento por leitura dos modelos, actions, migrations e fontes de relatórios. Não confirma o esquema aplicado nem o preenchimento da base. O mapa abaixo registra a situação encontrada antes da alteração. A seção de entrega descreve o que foi implementado nesta revisão.
 
 ## Objetivo

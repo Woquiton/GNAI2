@@ -8,7 +8,7 @@
 
 | Código | Descrição Detalhada |
 | --- | --- |
-| `RNF-GER-08` | **Clean Code:** Centralizar regras de negócio em **Services** específicos, promovendo a reutilização de código e facilitando a manutenção. |
+| `RNF-GER-08` | **Clean Code:** Centralizar operações em **Actions**, consultas em **Queries** e validação/normalização em **Data/Rules**, promovendo a reutilização de código e facilitando a manutenção. |
 | `RNF-GER-09` | **Alta Performance:** Uso obrigatório de **Eager Loading** (carregamento adiantado) para evitar o problema de consultas $N+1$ e otimização via índices no banco. |
 | `RNF-GER-10` | **Atomicidade:** Toda operação que envolva múltiplas tabelas ou registros deve ser encapsulada em uma **Database Transaction**. |
 
