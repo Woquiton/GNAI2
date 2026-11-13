@@ -46,7 +46,10 @@ final class AuditableEntities
     /** Nome do tipo para pessoas ('Aluno'); tipo que saiu do código aparece como foi gravado. */
     public function labelOf(string $type): string
     {
-        return isset($this->classes[$type]) ? $this->classes[$type]::auditLabel() : $type;
+        return isset($this->classes[$type]) ? $this->classes[$type]::auditLabel() : match ($type) {
+            'operation' => 'Operação',
+            default => $type,
+        };
     }
 
     /** @return array<string, class-string<Model&Auditable>> */
@@ -63,6 +66,8 @@ final class AuditableEntities
             $this->classes,
             array_keys($this->classes),
         );
+
+        $options[] = ['value' => 'operation', 'label' => 'Operação'];
 
         usort($options, fn (array $a, array $b): int => strcoll($a['label'], $b['label']));
 

@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Route;
 
 final class AppNavigation
 {
+    /** Nome de uma área, sem depender das permissões de quem consulta o histórico. */
+    public function labelForRoute(string $name): ?string
+    {
+        foreach ($this->leafItems() as $item) {
+            foreach ($item[5] as $pattern) {
+                if (\Illuminate\Support\Str::is($pattern, $name)) {
+                    return $item[1];
+                }
+            }
+        }
+
+        return null;
+    }
+
     public function forRequest(Request $request): array
     {
         $user = $request->user();

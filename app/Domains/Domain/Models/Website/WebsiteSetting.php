@@ -75,6 +75,8 @@ final class WebsiteSetting extends Model implements Auditable
             'contact_phone' => AuditedField::text('Telefone de contato'),
             'address' => AuditedField::text('Endereço'),
             'footer_text' => AuditedField::text('Texto do rodapé'),
+            'social_links' => AuditedField::text('Links sociais'),
+            'sections' => AuditedField::text('Seções do site'),
         ];
     }
 

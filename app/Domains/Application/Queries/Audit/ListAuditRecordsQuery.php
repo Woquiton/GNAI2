@@ -33,7 +33,9 @@ final class ListAuditRecordsQuery
             // Sem nome também: o autor excluído depois perde o id, mas não deixa de ser uma pessoa.
             $query->whereNull('actor_id')->whereNull('actor_name');
         } elseif ($filters->actor !== null) {
-            $query->where('actor_id', (int) $filters->actor);
+            $query->where(fn (Builder $query) => $query
+                ->where('actor_id', (int) $filters->actor)
+                ->orWhere('impersonator_id', (int) $filters->actor));
         }
 
         if ($filters->type !== null) {

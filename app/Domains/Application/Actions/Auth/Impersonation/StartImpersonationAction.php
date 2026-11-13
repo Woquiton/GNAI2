@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Application\Actions\Auth\Impersonation;
 
+use App\Domains\Application\Actions\Audit\RecordAuditActivityAction;
+use App\Domains\Domain\Enums\Audit\AuditEvent;
 use App\Domains\Domain\Enums\Auth\ImpersonationMode;
 use App\Domains\Domain\Exceptions\Auth\InvalidImpersonation;
 use App\Domains\Domain\Models\Auth\User;
@@ -37,6 +39,11 @@ final readonly class StartImpersonationAction
         if (! $target->canAccessSystem()) {
             throw InvalidImpersonation::targetWithoutAccess();
         }
+
+        app(RecordAuditActivityAction::class)->execute(
+            AuditEvent::INSPECTED, 'user', (string) $target->getKey(),
+            'o perfil '.$target->name, $impersonator, details: ['security_level' => 'elevated', 'mode' => $mode->value],
+        );
 
         $this->impersonationSession->start((int) $impersonator->getKey(), $mode);
 

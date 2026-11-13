@@ -34,6 +34,17 @@ final class AuditFilterOptionsQuery
             ->map(fn (object $row): array => ['value' => (string) $row->actor_id, 'label' => (string) $row->name])
             ->all();
 
+        $impersonators = AuditRecord::query()
+            ->whereNotNull('impersonator_id')
+            ->selectRaw('impersonator_id, MAX(impersonator_name) AS name')
+            ->groupBy('impersonator_id')
+            ->toBase()
+            ->get()
+            ->map(fn (object $row): array => ['value' => (string) $row->impersonator_id, 'label' => (string) $row->name])
+            ->all();
+
+        $actors = collect([...$actors, ...$impersonators])->unique('value')->sortBy('label')->values()->all();
+
         return [
             'actors' => [['value' => ListAuditRecordsData::SYSTEM_ACTOR, 'label' => 'Sistema (sem usuário)'], ...$actors],
             'types' => $this->entities->options(),

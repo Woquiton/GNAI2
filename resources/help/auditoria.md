@@ -9,6 +9,12 @@ permissoes: audit.index
 
 A **Auditoria** guarda o histórico de alterações de todo o sistema. Cada criação, alteração, exclusão ou restauração de um registro (alunos, atendimentos, planos, itens, empréstimos, publicações, usuários, backups, site e demais cadastros) fica registrada com o autor, a data e os campos que mudaram.
 
+As atualizações automáticas de atividade e de status da sessão não geram registros de auditoria.
+
+Também são registradas as entradas e saídas da conta, o início e o fim da inspeção de perfis e as consultas feitas durante a inspeção. Alterações nas seções e nos links sociais do site incluem os valores anteriores e novos.
+
+Operações autenticadas de alteração sem um histórico detalhado de campos aparecem como **Operação processada**, apresentadas com o nome da área em linguagem simples. A rota e o status da resposta ficam no log técnico. Esse registro indica que a requisição foi processada, sem afirmar quais dados mudaram. Requisições com erro informado não recebem esse registro complementar.
+
 ## Conhecer a tela com o tutorial
 
 O **Histórico de Alterações** tem um tutorial na própria tela. Clique no botão com o ícone de informação, na barra do topo, para abrir. Ele mostra os filtros, as colunas e a tabela, a paginação e o botão que abre os detalhes de cada operação. Veja como navegar pelo tutorial em [Conhecer a tela com o tutorial](/ajuda/primeiros-passos#conhecer-a-tela-com-o-tutorial).
@@ -21,7 +27,7 @@ O **Histórico de Alterações** tem um tutorial na própria tela. Clique no bot
 | Coluna | Significado |
 | --- | --- |
 | **Registro** | Frase em linguagem simples, como "Maria alterou o aluno João". |
-| **Ação** | **Criação**, **Alteração**, **Exclusão** ou **Restauração**. |
+| **Ação** | **Criação**, **Alteração**, **Exclusão**, **Restauração**, **Entrada**, **Saída**, **Inspeção**, **Fim da inspeção**, **Consulta em inspeção** ou **Operação processada**. |
 | **Tipo** | O tipo do registro, como Aluno, PEI, Empréstimo ou Publicação. |
 | **Quem fez** | O usuário que fez a operação, ou **Sistema** quando ela veio de uma rotina automática. |
 | **Quando** | Data e hora da operação. |
@@ -34,7 +40,7 @@ Use os filtros acima da tabela e combine-os como precisar:
 - **De** e **Até**: período da operação. A data final não pode ser anterior à inicial.
 - **Quem fez**: um usuário que aparece no histórico ou **Sistema (sem usuário)**, para as operações feitas por rotinas automáticas, como o backup automático.
 - **Tipo de registro**: por exemplo, Aluno, Agendamento, Empréstimo ou Usuário.
-- **Ação**: Criação, Alteração, Exclusão ou Restauração.
+- **Ação**: alterações de registros, autenticação, inspeção ou operações processadas.
 
 ## Ver o que mudou em uma operação
 
@@ -46,7 +52,7 @@ Senhas nunca são gravadas: o histórico registra apenas que a senha foi alterad
 
 ## Como aparecem as ações feitas com "acessar como"?
 
-Quando um administrador usa o acesso em nome de outro usuário, as operações aparecem em **Quem fez** como "Administrador em nome de Usuário". A busca por **O que você procura?** encontra essas operações tanto pelo nome do administrador quanto pelo nome do usuário representado.
+Quando um administrador usa o acesso em nome de outro usuário, as operações aparecem em **Quem fez** como "Administrador em nome de Usuário". O início aparece como "Administrador inspecionou o perfil Usuário", com o modo de acesso e a identificação de segurança elevada no log técnico. As consultas seguintes e as alterações identificam o administrador e o perfil representado. O filtro **Quem fez** encontra tanto o administrador quanto o usuário representado. A busca por **O que você procura?** encontra essas operações tanto pelo nome do administrador quanto pelo nome do usuário representado.
 
 ## Dúvidas comuns
 

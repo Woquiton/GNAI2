@@ -1,4 +1,14 @@
-export type AuditEventValue = 'created' | 'updated' | 'deleted' | 'restored';
+export type AuditEventValue =
+    | 'created'
+    | 'updated'
+    | 'deleted'
+    | 'restored'
+    | 'login'
+    | 'logout'
+    | 'inspected'
+    | 'inspection_ended'
+    | 'accessed'
+    | 'processed';
 
 export type AuditView = 'plain' | 'technical';
 

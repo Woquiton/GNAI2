@@ -27,12 +27,19 @@ final class AuditRecordPresenter
             $fields[] = $this->readableField($record, $field, $fieldsOfType[$field] ?? null, $change);
         }
 
+        $description = $record->entity_description;
+
+        // Apresenta também os registros antigos em linguagem simples, sem reescrever o histórico.
+        if ($record->entity_type === 'operation' && is_string($record->context['route'] ?? null)) {
+            $description = app(AuditOperationPresenter::class)->description($record->context['route']);
+        }
+
         return [
             'id' => $record->id,
             'date' => $record->created_at?->toIso8601String(),
             'event' => $record->event->value,
             'plain' => [
-                'summary' => "{$record->author()} {$record->event->verb()} {$record->entity_description}",
+                'summary' => "{$record->author()} {$record->event->verb()} {$description}",
                 'author' => $record->author(),
                 'type' => $this->entities->labelOf($record->entity_type),
                 'event' => $record->event->label(),

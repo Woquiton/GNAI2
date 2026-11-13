@@ -75,7 +75,7 @@ O administrador superior pode usar **Entrar como**, na visualização de um prof
 | Modo | O que permite |
 | --- | --- |
 | **Somente leitura** | Apenas consulta. Cadastros, edições e exclusões ficam bloqueados. |
-| **Acesso completo** | Usar o sistema livremente em nome do usuário. As alterações são auditadas com o nome do administrador. |
+| **Acesso completo** | Usar o sistema livremente em nome do usuário. As alterações são auditadas como "Administrador em nome de Usuário". |
 
 Durante o uso, o topo da tela indica a conta em uso e o modo selecionado, tanto na área da equipe quanto no Portal do Professor. Use o ícone de retorno **Voltar para a minha conta** para encerrar.
 
@@ -85,3 +85,5 @@ Durante o uso, o topo da tela indica a conta em uso e o modo selecionado, tanto 
 - **"Somente o administrador superior do Gnai pode conceder ou retirar o acesso de administrador."**: Apenas o administrador superior altera essa opção.
 - **"Este cargo está vinculado a um ou mais profissionais e não pode ser removido."**: Troque o cargo dos profissionais antes de excluí-lo.
 - **Liberei a permissão e o item ainda não aparece**: Recarregue a página. Se você trocou o cargo do profissional, veja o aviso em [Conceder permissões a um profissional](#conceder-permissoes-a-um-profissional).
+
+O início e o fim do acesso como outro usuário ficam na Auditoria, com o administrador, o perfil acessado e o modo escolhido. As consultas durante esse acesso também são registradas. Esses eventos e as ações em nome do perfil recebem identificação de segurança elevada no log técnico.

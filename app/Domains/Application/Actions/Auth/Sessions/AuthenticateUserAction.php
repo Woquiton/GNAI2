@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Application\Actions\Auth\Sessions;
 
+use App\Domains\Application\Actions\Audit\RecordAuditActivityAction;
 use App\Domains\Application\Data\Auth\Sessions\LoginData;
 use App\Domains\Domain\DTOs\Auth\Sessions\LoginCredentialsDTO;
+use App\Domains\Domain\Enums\Audit\AuditEvent;
 use App\Domains\Domain\Exceptions\Auth\InactiveProfessionalAccount;
 use App\Domains\Domain\Exceptions\Auth\InvalidCredentials;
 use App\Domains\Domain\Exceptions\Auth\UserWithoutAccess;
@@ -47,6 +49,10 @@ final readonly class AuthenticateUserAction
         if (! $user->password_configured) {
             $user->forceFill(['password_configured' => true])->save();
         }
+
+        app(RecordAuditActivityAction::class)->execute(
+            AuditEvent::LOGIN, 'user', (string) $user->getKey(), 'sua conta', $user,
+        );
 
         return $user;
     }

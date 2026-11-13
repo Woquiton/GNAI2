@@ -6,6 +6,7 @@ namespace App\Domains\Infrastructure\Audit;
 
 use App\Domains\Domain\Models\Audit\AuditRecord;
 use App\Domains\Domain\Models\Auth\User;
+use App\Domains\Infrastructure\Session\Auth\ImpersonationSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Throwable;
@@ -36,6 +37,7 @@ final class AuditContext
         $this->operation = (string) Str::uuid();
         $this->requestData = $requestData;
         $this->operationRecords = [];
+        $this->users = [];
     }
 
     public function operation(): string
@@ -46,7 +48,14 @@ final class AuditContext
     /** @return array<string, mixed> */
     public function requestData(): array
     {
-        return $this->requestData ?: ['origin' => app()->runningInConsole() ? 'console' : 'system'];
+        $data = $this->requestData ?: ['origin' => app()->runningInConsole() ? 'console' : 'system'];
+
+        if ($this->impersonator() !== null) {
+            $data['security_level'] = 'elevated';
+            $data['impersonation_mode'] = app(ImpersonationSession::class)->mode()?->value;
+        }
+
+        return $data;
     }
 
     /** Quem age: o usuário autenticado no momento da gravação. Sem usuário, o "Sistema". */
@@ -76,6 +85,11 @@ final class AuditContext
         return array_key_exists($id, $this->users)
             ? $this->users[$id]
             : $this->users[$id] = User::query()->find($id);
+    }
+
+    public function hasRecords(): bool
+    {
+        return $this->operationRecords !== [];
     }
 
     public function operationRecord(string $entityKey): ?AuditRecord
