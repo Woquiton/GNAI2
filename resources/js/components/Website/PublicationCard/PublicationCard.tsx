@@ -1,4 +1,5 @@
 import { joinClassNames } from '@/utils/joinClassNames';
+import { badgeColors } from '@/utils/badgeColors';
 import SiteLink from '../SiteLayout/SiteLink';
 import type {
     PublicationCardData,
@@ -116,8 +117,12 @@ export default function PublicationCard({
                     <div className="publicationCard__tags">
                         <span className="publicationCard__type">{publication.type_label}</span>
                         {publication.tags.map((tag) => (
-                            <span key={tag} className="publicationCard__category">
-                                {tag}
+                            <span
+                                key={tag.id}
+                                className="publicationCard__category"
+                                style={badgeColors(tag.color)}
+                            >
+                                {tag.name}
                             </span>
                         ))}
                         {schedule ? <ScheduleStatus schedule={schedule} /> : null}

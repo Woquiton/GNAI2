@@ -314,7 +314,7 @@ export interface PublicationCardData {
     summary: string;
     type: string;
     type_label: string;
-    tags: string[];
+    tags: { id: number; name: string; color: string }[];
     published_at: string | null;
     published_at_label: string | null;
     cover_url: string | null;

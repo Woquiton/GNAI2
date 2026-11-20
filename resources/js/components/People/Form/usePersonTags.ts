@@ -17,10 +17,14 @@ export function usePersonTags(options: PersonFormProps, state: PersonFormState) 
                 value: `role:${tag.system_key}`,
                 label: tag.name,
                 iconClass: 'fa fa-star',
-                iconColor: 'var(--ui-color-special-tag)',
+                badgeColor: tag.color,
                 iconLabel: 'Etiqueta Especial',
             })),
-        ...ordinaryTags.map((tag) => ({ value: `tag:${tag.id}`, label: tag.name })),
+        ...ordinaryTags.map((tag) => ({
+            value: `tag:${tag.id}`,
+            label: tag.name,
+            badgeColor: tag.color,
+        })),
     ].sort((left, right) => left.label.localeCompare(right.label, 'pt-BR'));
     const selectedValues = [
         ...form.data.roles.map((role) => `role:${role}`),

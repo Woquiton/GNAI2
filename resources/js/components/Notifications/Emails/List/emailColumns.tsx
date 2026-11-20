@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react';
 import ChoiceControl from '@/components/Forms/ChoiceControl/ChoiceControl';
+import TagName from '@/components/Tags/TagName';
 import type { TableListColumn } from '@/components/Tables/TableList/TableList';
 import Button from '@/components/UI/Button/Button';
 import EmailDeliveryIndicator from '@/components/UI/EmailDeliveryIndicator/EmailDeliveryIndicator';
@@ -62,13 +63,6 @@ export function emailColumns({
                         onClick={() => onStar(email)}
                     />
                     <EmailDeliveryIndicator email={email.delivery} label={email.purpose_label} />
-                    {email.label ? (
-                        <i
-                            className="fa fa-circle emailInbox__marker"
-                            style={{ color: email.label_color ?? undefined }}
-                            aria-label={`Marcador ${email.label_label}`}
-                        />
-                    ) : null}
                 </div>
             ),
         },
@@ -93,6 +87,12 @@ export function emailColumns({
             render: (email) => (
                 <Link href={destination(email)} className="emailInbox__messageLink">
                     <span className="emailInbox__subject">{email.subject || '(Sem assunto)'}</span>
+                    {email.label_label ? (
+                        <>
+                            {' '}
+                            <TagName name={email.label_label} color={email.label_color ?? undefined} />
+                        </>
+                    ) : null}
                     <span className="emailInbox__preview">
                         {' '}
                         — {email.preview || email.purpose_label}

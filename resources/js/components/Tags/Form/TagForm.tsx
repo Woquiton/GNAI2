@@ -34,6 +34,7 @@ function submissionStatus(processing: boolean, editing: boolean): string | undef
 export default function TagForm({ tag, canSubmit, modules }: TagFormProps): React.JSX.Element {
     const { form, errors, formRef, save } = useTagForm({ tag, canSubmit });
     const editing = Boolean(tag);
+    const special = Boolean(tag?.system_key);
     const submitLabel = editing ? 'Salvar' : 'Cadastrar';
 
     return (
@@ -65,6 +66,7 @@ export default function TagForm({ tag, canSubmit, modules }: TagFormProps): Reac
                                         maxLength={100}
                                         placeholder="Ex: Acessibilidade, Eventos, Editais, etc."
                                         value={form.data.name}
+                                        disabled={special}
                                         error={errors.name}
                                         onChange={(value) => form.setData('name', value)}
                                     />
@@ -78,6 +80,7 @@ export default function TagForm({ tag, canSubmit, modules }: TagFormProps): Reac
                                     required
                                     options={optionsFromRecord(modules)}
                                     value={form.data.module}
+                                    disabled={special}
                                     error={errors.module}
                                     onChange={(value) => form.setData('module', value)}
                                 />
@@ -118,7 +121,7 @@ export default function TagForm({ tag, canSubmit, modules }: TagFormProps): Reac
                                         />
                                     }
                                     checked={form.data.is_active}
-                                    disabled={form.processing}
+                                    disabled={special || form.processing}
                                     onChange={(checked) => form.setData('is_active', checked)}
                                 />
                             </div>

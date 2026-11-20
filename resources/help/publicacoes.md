@@ -34,7 +34,7 @@ A listagem, o cadastro, a edição e a visualização da publicação têm um tu
 | **Resumo** | Texto curto que acompanha o título, até 500 caracteres. |
 | **Autor** | Usuário do sistema. Vem preenchido com o seu usuário; pode ficar como "Sem autor". |
 | **Tipo** | Notícia, Evento, Comunicado, Artigo ou Registro. |
-| **Etiquetas** | Etiquetas ativas do módulo **Publicações**, no cadastro de **Etiquetas**. No site, servem de filtro. Etiquetas da Inbox ficam separadas. |
+| **Etiquetas** | Etiquetas ativas do módulo **Publicações**, no cadastro de **Etiquetas**. A cor cadastrada aparece nas etiquetas selecionadas e nas publicações. No site, servem de filtro. Etiquetas da Inbox ficam separadas. |
 | **Texto da publicação** | Conteúdo completo, com formatação. |
 
 ### Datas e local

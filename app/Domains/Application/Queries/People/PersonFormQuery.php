@@ -42,8 +42,8 @@ final class PersonFormQuery
             'positions' => Position::query()->orderBy('name')->get(['id', 'name']),
             'students' => $user->can('guardian.create') || $user->can('guardian.update')
                 ? Student::query()->with('person:id,name')->orderBy('id')->get()->map(fn ($student) => ['id' => $student->id, 'name' => $student->person->name.' — '.$student->registration]) : [],
-            'tags' => Tag::query()->where('module', 'people')->whereNull('system_key')->where('is_active', true)->orderBy('name')->get(['id', 'name']),
-            'specialTags' => Tag::query()->whereNotNull('system_key')->orderBy('name')->get(['system_key', 'name']),
+            'tags' => Tag::query()->where('module', 'people')->whereNull('system_key')->where('is_active', true)->orderBy('name')->get(['id', 'name', 'color']),
+            'specialTags' => Tag::query()->where('module', 'people')->whereNotNull('system_key')->orderBy('name')->get(['system_key', 'name', 'color']),
             'defaults' => ['gender' => Gender::NOT_SPECIFIED->value, 'studentStatus' => StudentStatus::ACTIVE->value, 'professionalStatus' => ProfessionalStatus::ACTIVE->value],
             'canRoles' => $canRoles,
             'canSave' => $user->can($person ? 'person.update' : 'person.create')

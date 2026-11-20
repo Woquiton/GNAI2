@@ -5,6 +5,7 @@ export interface SelectFieldOption {
     iconClass?: string;
     iconColor?: string;
     iconLabel?: string;
+    badgeColor?: string;
 }
 export interface SelectFieldGroup {
     label: string;

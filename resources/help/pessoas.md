@@ -37,7 +37,9 @@ Cadastros existentes já aparecem na central. Não é feita união automática d
 
 Crie uma etiqueta no módulo **Pessoas**, em **Cadastros → Etiquetas**, e selecione-a em **Etiquetas**, no mesmo campo das especiais, no formulário da pessoa. Ela serve para organização e não cria papéis nem concede acesso ao sistema. Etiquetas inativas já aplicadas permanecem no cadastro, mas não são oferecidas para novas aplicações.
 
-As etiquetas especiais **Aluno**, **Professor**, **Equipe** e **Responsáveis** vêm cadastradas com cor dourada. Na listagem de etiquetas, uma estrela dourada apresenta a dica **Etiqueta Especial** ao passar o ponteiro ou receber foco pelo teclado. Elas não podem ser renomeadas, desativadas ou excluídas. Elas refletem os cadastros da pessoa.
+As etiquetas especiais **Aluno**, **Professor**, **Equipe** e **Responsáveis** vêm cadastradas com cor dourada. Para mudar a cor, abra a etiqueta em **Cadastros → Etiquetas**, clique em **Editar**, escolha a cor e salve. Nome, módulo e situação são protegidos, e a etiqueta especial permanece disponível enquanto o papel existir no cadastro da pessoa.
+
+Na lista de **Pessoas**, o sistema exibe uma etiqueta com estrela para cada papel da pessoa. A etiqueta aparece tanto ao selecionar o papel no cadastro de **Pessoas** quanto ao cadastrar a pessoa em **Alunos**, **Professores**, **Equipe** ou como responsável pelo cadastro de um aluno. Na lista e no formulário, o fundo de cada etiqueta usa a cor cadastrada. As especiais também mostram uma estrela.
 
 ## Remover um papel
 

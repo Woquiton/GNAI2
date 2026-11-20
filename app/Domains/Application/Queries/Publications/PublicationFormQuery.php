@@ -62,6 +62,7 @@ final class PublicationFormQuery
             ->map(fn (Tag $tag): array => [
                 'value' => (string) $tag->getKey(),
                 'label' => (string) $tag->name,
+                'badgeColor' => $tag->color,
             ])
             ->values()
             ->all();

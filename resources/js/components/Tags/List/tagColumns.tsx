@@ -9,7 +9,9 @@ export const tagColumns: TableListColumn<TagRecord>[] = [
         label: 'Nome',
         width: '30%',
         fixed: 'start',
-        render: (tag) => <TagName name={tag.name} special={Boolean(tag.system_key)} />,
+        render: (tag) => (
+            <TagName name={tag.name} color={tag.color} special={Boolean(tag.system_key)} />
+        ),
     },
     {
         id: 'module',

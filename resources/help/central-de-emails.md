@@ -115,7 +115,7 @@ continua preservado. Não há salvamento automático durante a digitação.
 - Use **Arquivar**, **Mover para spam**, **Mover para a lixeira** ou o menu
   **Mover para pasta**.
 - Em **Aplicar marcador**, escolha uma etiqueta ativa do módulo **Inbox** ou
-  remova o marcador atual. A cor ao lado do nome é a definida no cadastro de etiquetas.
+  remova o marcador atual. Na lista de mensagens, o marcador aparece ao lado do assunto com a cor definida no cadastro de etiquetas.
 - Em **Mais**, altere a leitura e os favoritos. Marcar como lida ou não lida é
   uma organização da sua caixa, não uma confirmação de leitura do destinatário.
 

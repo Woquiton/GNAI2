@@ -1,14 +1,20 @@
 import Tooltip from '@/components/UI/Tooltip/Tooltip';
+import TableLabel from '@/components/UI/TableLabel/TableLabel';
+import { badgeColors } from '@/utils/badgeColors';
 import '@styles/components/Tags/TagName.css';
 
 export default function TagName({
     name,
+    color,
     special = false,
 }: {
     name: string;
+    color?: string;
     special?: boolean;
 }): React.JSX.Element {
-    return (
+    const badge = badgeColors(color);
+
+    const content = (
         <span className="tagName">
             {name}
             {special ? (
@@ -25,4 +31,5 @@ export default function TagName({
             ) : null}
         </span>
     );
+    return badge ? <TableLabel style={badge}>{content}</TableLabel> : content;
 }

@@ -30,7 +30,7 @@ final class PublicationPresenter
             'type' => $type->value,
             'type_label' => $type->label(),
             'tags' => $publication->tags
-                ->map(fn (Tag $tag): array => ['id' => $tag->id, 'name' => $tag->name])
+                ->map(fn (Tag $tag): array => ['id' => $tag->id, 'name' => $tag->name, 'color' => $tag->color])
                 ->values()
                 ->all(),
             'has_schedule' => (bool) $publication->has_schedule,

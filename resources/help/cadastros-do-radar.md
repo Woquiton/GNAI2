@@ -31,7 +31,7 @@ A exclusão não tem bloqueio. Se o recurso ainda descreve itens existentes, pre
 Organizam **Pessoas**, **Publicações** e os marcadores da **Inbox**. Cada etiqueta tem nome,
 módulo, cor e situação. Uma etiqueta de Publicações aparece no cadastro de
 publicações; uma etiqueta de Inbox aparece como marcador na lateral e no menu
-**Aplicar marcador** dos e-mails. Os módulos têm listas independentes.
+**Aplicar marcador** dos e-mails. Os módulos têm listas independentes. O nome da etiqueta aparece sobre a cor cadastrada na tabela e nos detalhes.
 
 Para cadastrar:
 
@@ -56,7 +56,7 @@ na lateral e pode ser consultada ou removida, mas não aplicada novamente. No ca
 de publicações, etiquetas inativas já vinculadas continuam disponíveis na edição.
 
 Uma etiqueta em uso não pode mudar de módulo. Nesse caso, crie outra etiqueta no
-novo módulo. Etiquetas vinculadas a pessoas devem ser desvinculadas antes da exclusão ou apenas desativadas. As especiais não podem ser alteradas ou excluídas. Nos demais módulos, a exclusão retira a etiqueta dos vínculos, sem apagar publicações,
+novo módulo. Etiquetas vinculadas a pessoas devem ser desvinculadas antes da exclusão ou apenas desativadas. Nas especiais, somente a cor pode ser editada. Nos demais módulos, a exclusão retira a etiqueta dos vínculos, sem apagar publicações,
 e-mails ou a organização restante da Inbox.
 
 ## Categorias de Barreiras
@@ -122,7 +122,7 @@ Bloqueios:
 
 ## Organizar etiquetas de pessoas
 
-O módulo **Pessoas** permite criar etiquetas convencionais para organizar o cadastro central. As etiquetas especiais **Aluno**, **Professor**, **Equipe** e **Responsáveis** vêm cadastradas e são protegidas. Para atribuí-las, preencha os dados específicos no [cadastro de pessoas](/ajuda/pessoas). Uma pessoa pode acumular vários papéis.
+O módulo **Pessoas** permite criar etiquetas convencionais para organizar o cadastro central. As etiquetas especiais **Aluno**, **Professor**, **Equipe** e **Responsáveis** vêm cadastradas. Para mudar a cor de uma especial, visualize a etiqueta, clique em **Editar**, escolha a **Cor** e clique em **Salvar**. Para atribuir uma especial, preencha os dados do papel no [cadastro de pessoas](/ajuda/pessoas). Uma pessoa pode acumular vários papéis.
 
 ## Filtrar pelo período de cadastro
 

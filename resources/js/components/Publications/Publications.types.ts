@@ -24,7 +24,7 @@ export interface PublicationRecord {
     summary: string | null;
     type: string;
     type_label: string;
-    tags: { id: number; name: string }[];
+    tags: { id: number; name: string; color: string }[];
     has_schedule: boolean;
     description: string | null;
     description_html?: string;
@@ -73,7 +73,7 @@ export interface PublicationFormOptions {
     types: SelectOption[];
     authors: SelectOption[];
     speakers: SelectOption[];
-    tags: SelectOption[];
+    tags: (SelectOption & { badgeColor: string })[];
     defaultAuthorId: number | null;
     publicBaseUrl: string;
 }

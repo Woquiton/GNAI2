@@ -23,7 +23,9 @@ final class PersonController
     public function index(ListPeopleData $filters, Request $request, ListPeopleQuery $query): Response
     {
         $people = $query->execute($filters);
-        $people->through(fn (Person $person): array => $this->presenter->listRow($person));
+        $tags = $query->tagOptions();
+        $roleColors = $tags->whereNotNull('system_key')->pluck('color', 'system_key')->all();
+        $people->through(fn (Person $person): array => $this->presenter->listRow($person, $roleColors));
 
         return Inertia::render('People/Index', [
             'people' => $people,
@@ -35,7 +37,7 @@ final class PersonController
                 'name' => $filters->name ?? '',
                 'tag_id' => $filters->tagId === null ? '' : (string) $filters->tagId,
             ],
-            'tags' => $query->tagOptions(),
+            'tags' => $tags,
             'can' => [
                 'create' => $request->user()->can('person.create'),
                 'edit' => $request->user()->can('person.update'),

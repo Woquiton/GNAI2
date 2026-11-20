@@ -53,8 +53,10 @@ export interface PersonRecord {
         show_on_website: boolean;
     } | null;
     guardians: { student_id: number; relationship: string }[];
-    tags: { id: number; name: string }[];
+    tags: PersonTag[];
 }
+type PersonTag = { id: number; name: string; color: string };
+
 export interface PersonFormProps {
     person: PersonRecord | null;
     genders: Record<string, string>;
@@ -64,8 +66,8 @@ export interface PersonFormProps {
     relationships: Record<string, string>;
     positions: { id: number; name: string }[];
     students: { id: number; name: string }[];
-    tags: { id: number; name: string }[];
-    specialTags: { system_key: PersonRole; name: string }[];
+    tags: PersonTag[];
+    specialTags: { system_key: PersonRole; name: string; color: string }[];
     defaults: { gender: string; studentStatus: string; professionalStatus: string };
     canRoles: Record<PersonRole, boolean>;
     canSave: boolean;
@@ -75,8 +77,8 @@ export interface PersonListRow {
     name: string;
     email: string | null;
     phone: string | null;
-    roles: string[];
-    tags: string[];
+    roles: { name: string; color: string | null }[];
+    tags: PersonTag[];
 }
 export type PersonFilters = {
     name: string;
@@ -89,7 +91,7 @@ export type PersonFilters = {
 
 export interface PeopleIndexProps {
     people: TableListPage & { data: PersonListRow[] };
-    tags: { id: number; name: string; system_key: PersonRole | null }[];
+    tags: (PersonTag & { system_key: PersonRole | null })[];
     filters: Partial<PersonFilters>;
     can: { create: boolean; edit: boolean };
 }

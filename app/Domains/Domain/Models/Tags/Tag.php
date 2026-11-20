@@ -86,7 +86,12 @@ final class Tag extends Model implements Auditable
 
     public function revise(UpdateTagDTO $data): void
     {
-        $this->ensureIsConventional();
+        if ($this->system_key !== null) {
+            $this->color = strtolower($data->color);
+
+            return;
+        }
+
         $this->ensureModuleChangeAllowed($data->module);
         $this->fill([
             'name' => self::normalizeName($data->name),
@@ -105,8 +110,9 @@ final class Tag extends Model implements Auditable
             }
         });
         static::updating(function (self $tag): void {
-            if ($tag->getRawOriginal('system_key') !== null) {
-                throw new InvalidTag('Etiquetas especiais são gerenciadas pelo sistema.');
+            if ($tag->getRawOriginal('system_key') !== null
+                && array_diff(array_keys($tag->getDirty()), ['color', $tag->getUpdatedAtColumn()]) !== []) {
+                throw new InvalidTag('Somente a cor de uma etiqueta especial pode ser editada.');
             }
         });
     }
@@ -114,7 +120,7 @@ final class Tag extends Model implements Auditable
     public function ensureIsConventional(): void
     {
         if ($this->system_key !== null) {
-            throw new InvalidTag('Etiquetas especiais não podem ser alteradas ou excluídas. Gerencie os papéis pelo cadastro de pessoas.');
+            throw new InvalidTag('Etiquetas especiais representam papéis. Gerencie esses vínculos pelo cadastro de pessoas. Somente a cor da etiqueta pode ser editada.');
         }
     }
 

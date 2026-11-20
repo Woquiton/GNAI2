@@ -9,15 +9,19 @@ use App\Domains\Domain\Models\People\Person;
 
 final class PersonPagePresenter
 {
-    public function listRow(Person $person): array
+    /** @param array<string, string> $roleColors */
+    public function listRow(Person $person, array $roleColors): array
     {
         return [
             'id' => $person->getKey(),
             'name' => $person->name,
             'email' => $person->email,
             'phone' => $person->phone,
-            'roles' => array_map(fn (PersonRole $role): string => $role->label(), $person->registeredRoles()),
-            'tags' => $person->tags->pluck('name')->all(),
+            'roles' => array_map(fn (PersonRole $role): array => [
+                'name' => $role->label(),
+                'color' => $roleColors[$role->value] ?? null,
+            ], $person->registeredRoles()),
+            'tags' => $this->conventionalTags($person),
         ];
     }
 
@@ -53,10 +57,17 @@ final class PersonPagePresenter
                 'student_id' => $guardian->student_id,
                 'relationship' => $guardian->relationship->value,
             ])->all(),
-            'tags' => $person->tags->map(fn ($tag): array => [
+            'tags' => $this->conventionalTags($person),
+        ];
+    }
+
+    private function conventionalTags(Person $person): array
+    {
+        return $person->tags->whereNull('system_key')
+            ->map(fn ($tag): array => [
                 'id' => $tag->getKey(),
                 'name' => $tag->name,
-            ])->all(),
-        ];
+                'color' => $tag->color,
+            ])->values()->all();
     }
 }

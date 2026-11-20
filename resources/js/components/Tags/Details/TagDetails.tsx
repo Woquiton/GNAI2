@@ -4,6 +4,7 @@ import DetailField from '@/components/UI/DetailField/DetailField';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
 import { TAG_TOUR_TARGETS } from '../tagTours';
+import TagName from '../TagName';
 import type { TagRecord } from '../Tags.types';
 
 /** Identificação e aplicações da etiqueta no módulo escolhido. */
@@ -18,7 +19,7 @@ export default function TagDetails({ tag }: { tag: TagRecord }): React.JSX.Eleme
             >
                 <DetailGrid>
                     <DetailField label="Nome da Etiqueta" wide>
-                        {tag.name}
+                        <TagName name={tag.name} color={tag.color} special={Boolean(tag.system_key)} />
                     </DetailField>
                     <DetailField label="Tipo">
                         {tag.system_key ? 'Especial, gerenciada pelo sistema' : 'Convencional'}

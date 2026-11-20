@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type SelectHTMLAttributes
 import { loadExternalScript } from '@/utils/loadExternalScript';
 import { loadExternalStylesheet } from '@/utils/loadExternalStylesheet';
 import { joinClassNames } from '@/utils/joinClassNames';
+import { badgeColors } from '@/utils/badgeColors';
 import { installSelectDropdownPosition } from './selectDropdownPosition';
 import type {
     SelectFieldCollection,
@@ -41,18 +42,35 @@ function formatIconOption(data: Select2OptionData): string {
 }
 
 /** Texto e ícone opcionais, tanto no menu quanto nos valores selecionados. */
-function formatTextIconOption(data: Select2OptionData): string {
+function formatTextIconOption(
+    data: Select2OptionData,
+    selected = false,
+    choice?: HTMLElement,
+): string {
     const metadata = data.element?.[0]?.dataset;
     const text = escapeHtml(metadata?.optionLabel ?? data.text ?? '');
     const icon = optionIcon(data);
-    if (!icon) return text;
-    const color = escapeHtml(metadata?.iconColor ?? 'inherit');
-    const label = escapeHtml(metadata?.iconLabel ?? '');
-    return (
-        `<span class="selectField__textIconOption">${text}` +
-        `<span role="img" aria-label="${label}" title="${label}" style="color:${color}">` +
-        `<i class="${escapeHtml(icon)}" aria-hidden="true"></i></span></span>`
+    const badge = selected ? badgeColors(metadata?.badgeColor) : undefined;
+    const badgeStyle = badge
+        ? ` class="selectField__colorBadge" style="background-color:${badge.backgroundColor};color:${badge.color}"`
+        : '';
+    if (badge && choice) {
+        choice.style.setProperty('--select-field-badge-bg', badge.backgroundColor);
+        choice.style.setProperty('--select-field-badge-text', badge.color);
+    }
+    if (!icon) return badge ? `<span${badgeStyle}>${text}</span>` : text;
+    const color = escapeHtml(
+        metadata?.iconColor ?? badgeColors(metadata?.badgeColor)?.backgroundColor ?? 'inherit',
     );
+    const label = escapeHtml(metadata?.iconLabel ?? '');
+    const iconAttributes = label
+        ? `role="img" aria-label="${label}" title="${label}"`
+        : 'aria-hidden="true"';
+    const content =
+        `<span class="selectField__textIconOption">${text}` +
+        `<span ${iconAttributes} style="color:${badge ? 'inherit' : color}">` +
+        `<i class="${escapeHtml(icon)}" aria-hidden="true"></i></span></span>`;
+    return badge ? `<span${badgeStyle}>${content}</span>` : content;
 }
 
 export default function SelectField({
@@ -176,8 +194,14 @@ export default function SelectField({
                     : {}),
                 ...(!iconOnly && iconsWithText
                     ? {
-                          formatResult: formatTextIconOption,
-                          formatSelection: formatTextIconOption,
+                          formatResult: (data: Select2OptionData) => formatTextIconOption(data),
+                          formatSelection: (data: Select2OptionData, container: HTMLElement[]) =>
+                              formatTextIconOption(
+                                  data,
+                                  true,
+                                  container[0]?.closest<HTMLElement>('.select2-search-choice') ??
+                                      undefined,
+                              ),
                       }
                     : {}),
                 ...(!iconOnly && !searchable ? { minimumResultsForSearch: -1 } : {}),
@@ -380,6 +404,7 @@ export default function SelectField({
                         data-icon={option.iconClass}
                         data-icon-color={option.iconColor}
                         data-icon-label={option.iconLabel}
+                        data-badge-color={option.badgeColor}
                         data-option-label={option.label}
                     >
                         {iconsWithText && option.iconLabel

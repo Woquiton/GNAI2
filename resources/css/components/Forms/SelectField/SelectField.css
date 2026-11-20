@@ -180,8 +180,8 @@
     padding: 5px 22px 5px 8px;
     border: 0;
     border-radius: 0.25em;
-    background: var(--ui-color-purple);
-    color: #fff;
+    background: var(--select-field-badge-bg, var(--ui-color-purple));
+    color: var(--select-field-badge-text, #fff);
     font-size: 12px;
     font-weight: 700;
     line-height: 1.2;
@@ -202,7 +202,7 @@
     width: auto;
     height: auto;
     background: none;
-    color: #fff;
+    color: var(--select-field-badge-text, #fff);
     font-size: 12px;
     line-height: 1;
     text-decoration: none;
@@ -260,6 +260,17 @@
     cursor: pointer;
     color: var(--ui-color-gnai-primary);
     font-weight: 600;
+}
+
+.selectField__colorBadge {
+    display: inline-block;
+    padding: 0.2em 0.55em;
+    border-radius: var(--ui-radius-sm);
+    font-weight: 700;
+}
+
+.select2-search-choice .selectField__colorBadge {
+    padding: 0;
 }
 
 .selectField__textIconOption {

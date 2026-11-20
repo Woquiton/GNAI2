@@ -1,4 +1,5 @@
 import FormSection from '@/components/Forms/FormSection/FormSection';
+import TagBadgeList from '@/components/Tags/TagBadgeList';
 import CardBox from '@/components/UI/CardBox/CardBox';
 import DetailGrid from '@/components/UI/DetailGrid/DetailGrid';
 import DetailField from '@/components/UI/DetailField/DetailField';
@@ -33,7 +34,7 @@ export default function PublicationDetails({
                     </DetailField>
                     <DetailField label="Tipo">{publication.type_label}</DetailField>
                     <DetailField label="Etiquetas">
-                        {publication.tags.map((tag) => tag.name).join(', ') || 'Não informado'}
+                        <TagBadgeList tags={publication.tags} emptyMessage="Não informado" />
                     </DetailField>
                     <DetailField label="Autor">
                         {publication.author_name || 'Não informado'}

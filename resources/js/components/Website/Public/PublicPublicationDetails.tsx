@@ -8,6 +8,7 @@ import SiteLink from '@/components/Website/SiteLayout/SiteLink';
 
 import ImageLightbox from '@/components/UI/ImageLightbox/ImageLightbox';
 import RichTextContent from '@/components/UI/RichTextContent/RichTextContent';
+import { badgeColors } from '@/utils/badgeColors';
 import '@styles/components/Website/Public/WebsitePublic.css';
 export default function PublicPublicationDetails({
     publication,
@@ -186,11 +187,12 @@ export default function PublicPublicationDetails({
                             <strong>Tags</strong>
                             {publication.tags.map((tag) => (
                                 <SiteLink
-                                    key={tag}
-                                    href={`${websiteRoutes.publications}?tag=${encodeURIComponent(tag)}`}
+                                    key={tag.id}
+                                    href={`${websiteRoutes.publications}?tag=${encodeURIComponent(tag.name)}`}
                                     className="websitePublic__tag"
+                                    style={badgeColors(tag.color)}
                                 >
-                                    {tag}
+                                    {tag.name}
                                 </SiteLink>
                             ))}
                         </div>

@@ -16,7 +16,7 @@ final class ListPeopleQuery
     public function tagOptions(): Collection
     {
         return Tag::query()->where('module', 'people')->orderBy('name')
-            ->get(['id', 'name', 'system_key']);
+            ->get(['id', 'name', 'system_key', 'color']);
     }
 
     public function execute(ListPeopleData $filters): LengthAwarePaginator

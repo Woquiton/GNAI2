@@ -15,10 +15,15 @@ export function personColumns(can: PeopleIndexProps['can']): TableListColumn<Per
                 person.roles.length || person.tags.length ? (
                     <div className="peopleList__tags">
                         {person.roles.map((role) => (
-                            <TagName key={`role:${role}`} name={role} special />
+                            <TagName
+                                key={`role:${role.name}`}
+                                name={role.name}
+                                color={role.color ?? undefined}
+                                special
+                            />
                         ))}
                         {person.tags.map((tag) => (
-                            <TagName key={`tag:${tag}`} name={tag} />
+                            <TagName key={`tag:${tag.id}`} name={tag.name} color={tag.color} />
                         ))}
                     </div>
                 ) : (

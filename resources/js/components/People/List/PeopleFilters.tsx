@@ -1,5 +1,4 @@
 import TableListCreatedFilters from '@/components/Tables/TableList/TableListCreatedFilters';
-import '@styles/components/Tags/TagSelect.css';
 import { TableListFilters } from '@/components/Tables/TableList/TableList';
 import { TextInputField, SelectInputField } from '@/components/Forms/FormFields/FormFields';
 import type { PeopleIndexProps, PersonFilters } from '../People.types';
@@ -67,13 +66,9 @@ export default function PeopleFilters({
                 options={tags.map((tag) => ({
                     value: String(tag.id),
                     label: tag.name,
-                    ...(tag.system_key
-                        ? {
-                              iconClass: 'fa fa-star',
-                              iconColor: 'var(--ui-color-special-tag)',
-                              iconLabel: 'Etiqueta Especial',
-                          }
-                        : {}),
+                    iconClass: tag.system_key ? 'fa fa-star' : undefined,
+                    badgeColor: tag.color,
+                    iconLabel: tag.system_key ? 'Etiqueta Especial' : undefined,
                 }))}
                 onChange={(value) => onUpdate('tag_id', value)}
             />

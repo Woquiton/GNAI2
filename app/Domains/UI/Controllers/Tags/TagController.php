@@ -77,7 +77,7 @@ final class TagController
             [
                 'tag' => $tag,
                 'can' => [
-                    'edit' => $tag->system_key === null && $request->user()->can('tag.edit'),
+                    'edit' => $request->user()->can('tag.edit'),
                     'destroy' => $tag->system_key === null && $request->user()->can('tag.destroy'),
                 ],
             ],
@@ -86,7 +86,6 @@ final class TagController
 
     public function edit(Tag $tag, Request $request): InertiaResponse
     {
-        $tag->ensureIsConventional();
         return Inertia::render(
             'Tags/Edit',
             [

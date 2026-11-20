@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import '@styles/components/UI/TableLabel/TableLabel.css';
 
 export type TableLabelTone =
@@ -7,11 +7,17 @@ export type TableLabelTone =
 /** Etiqueta curta de status e classificação em tabelas e visualizações. */
 export default function TableLabel({
     tone = 'success',
+    style,
     children,
 }: {
     /** Tons com estilo em TableLabel.css; aceita strings vindas de mapas existentes. */
     tone?: TableLabelTone | (string & {});
+    style?: CSSProperties;
     children: ReactNode;
 }): React.JSX.Element {
-    return <span className={`tableLabel tableLabel--${tone}`}>{children}</span>;
+    return (
+        <span className={`tableLabel tableLabel--${tone}`} style={style}>
+            {children}
+        </span>
+    );
 }

@@ -1,5 +1,6 @@
 import { formatTableListText, type TableListColumn } from '@/components/Tables/TableList/TableList';
 import TableLabel from '@/components/UI/TableLabel/TableLabel';
+import TagBadgeList from '@/components/Tags/TagBadgeList';
 import { scheduleStatusLabels } from '../Publications.constants';
 import type { PublicationRecord } from '../Publications.types';
 function scheduleDateTime(publication: PublicationRecord, edge: 'start' | 'end'): string {
@@ -79,7 +80,7 @@ export const publicationColumns: TableListColumn<PublicationRecord>[] = [
         label: 'Etiquetas',
         width: '14%',
         defaultVisible: false,
-        render: (publication) => publication.tags.map((tag) => tag.name).join(', ') || 'Nenhuma',
+        render: (publication) => <TagBadgeList tags={publication.tags} emptyMessage="Nenhuma" />,
     },
     {
         id: 'location',

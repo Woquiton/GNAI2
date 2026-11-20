@@ -11,3 +11,11 @@
     color: var(--ui-color-special-tag);
     border-radius: 0.2rem;
 }
+
+.tableLabel .tagName {
+    gap: 0.35em;
+}
+
+.tableLabel .tagName__specialIcon {
+    color: inherit;
+}

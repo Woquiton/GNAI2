@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
 import { Link } from '@inertiajs/react';
 
 /** Indica se o site está sendo renderizado dentro da prévia do construtor. */
@@ -20,12 +20,14 @@ function isInternal(href: string): boolean {
 export default function SiteLink({
     href,
     className,
+    style,
     children,
     ariaLabel,
     ariaCurrent,
 }: {
     href: string;
     className?: string;
+    style?: CSSProperties;
     children: ReactNode;
     ariaLabel?: string;
     ariaCurrent?: 'page';
@@ -37,6 +39,7 @@ export default function SiteLink({
             <a
                 href={href}
                 className={className}
+                style={style}
                 aria-label={ariaLabel}
                 aria-current={ariaCurrent}
                 onClick={(event) => event.preventDefault()}
@@ -51,6 +54,7 @@ export default function SiteLink({
             <Link
                 href={href}
                 className={className}
+                style={style}
                 aria-label={ariaLabel}
                 aria-current={ariaCurrent}
             >
@@ -65,6 +69,7 @@ export default function SiteLink({
         <a
             href={href}
             className={className}
+            style={style}
             aria-label={external && ariaLabel ? `${ariaLabel} (abre em nova aba)` : ariaLabel}
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener noreferrer' : undefined}

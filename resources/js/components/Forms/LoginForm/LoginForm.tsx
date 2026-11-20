@@ -1,28 +1,84 @@
 import { Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmission';
 import InputAction from '@/components/Forms/InputAction/InputAction';
 import TextInput from '@/components/Forms/TextInput/TextInput';
 import Button from '@/components/UI/Button/Button';
+import {
+    notifyConnectionFailure,
+    notifyOperationFailure,
+} from '@/components/UI/NotificationToast/operationFeedback';
 import '@styles/components/Forms/LoginForm/LoginForm.css';
+
+const loginUrl = '/autenticacao/entrar';
+const loginFailureText = 'Não foi possível entrar. Tente novamente.';
 
 export default function LoginForm(): React.JSX.Element {
     const form = useForm({ email: '', password: '' });
+    const { formRef, submit } = useFormSubmission(form);
+    const sessionRequest = useRef<AbortController | null>(null);
+    const [refreshingSession, setRefreshingSession] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const processing = refreshingSession || form.processing;
+
+    useEffect(() => {
+        return () => {
+            sessionRequest.current?.abort();
+            sessionRequest.current = null;
+        };
+    }, []);
+
+    async function login(): Promise<void> {
+        if (processing || sessionRequest.current) return;
+
+        const controller = new AbortController();
+        sessionRequest.current = controller;
+        const timeout = window.setTimeout(() => controller.abort(), 10000);
+        setRefreshingSession(true);
+        try {
+            // O Laravel emite um cookie XSRF válido mesmo se a aba ficou aberta até a sessão expirar.
+            const response = await fetch(loginUrl, {
+                method: 'HEAD',
+                cache: 'no-store',
+                signal: controller.signal,
+            });
+            if (controller.signal.aborted) return;
+            if (!response.ok) {
+                notifyOperationFailure(loginFailureText);
+                return;
+            }
+
+            submit({
+                url: loginUrl,
+                failureText: loginFailureText,
+                options: {
+                    onFinish: () => {
+                        form.reset('password');
+                        setPasswordVisible(false);
+                    },
+                },
+            });
+        } catch {
+            if (sessionRequest.current === controller) notifyConnectionFailure();
+        } finally {
+            window.clearTimeout(timeout);
+            if (sessionRequest.current === controller) {
+                sessionRequest.current = null;
+                setRefreshingSession(false);
+            }
+        }
+    }
+
     return (
         <form
+            ref={formRef}
             className="loginForm"
             noValidate
             aria-label="Acesse sua conta no Gnai"
-            aria-busy={form.processing}
+            aria-busy={processing}
             onSubmit={(event) => {
                 event.preventDefault();
-                if (!form.processing)
-                    form.post('/autenticacao/entrar', {
-                        onFinish: () => {
-                            form.reset('password');
-                            setPasswordVisible(false);
-                        },
-                    });
+                void login();
             }}
         >
             <div className="loginForm__group">
@@ -30,6 +86,7 @@ export default function LoginForm(): React.JSX.Element {
                     type="email"
                     name="email"
                     required
+                    readOnly={processing}
                     autoFocus
                     autoComplete="username"
                     placeholder="E-mail institucional"
@@ -51,6 +108,7 @@ export default function LoginForm(): React.JSX.Element {
                     type={passwordVisible ? 'text' : 'password'}
                     name="password"
                     required
+                    readOnly={processing}
                     autoComplete="current-password"
                     placeholder="Senha"
                     aria-label="Senha"
@@ -66,7 +124,7 @@ export default function LoginForm(): React.JSX.Element {
                             aria-controls="login-password"
                             aria-pressed={passwordVisible}
                             title={passwordVisible ? 'Ocultar senha' : 'Mostrar senha'}
-                            disabled={form.processing}
+                            disabled={processing}
                             onClick={() => setPasswordVisible((visible) => !visible)}
                         >
                             <i
@@ -87,8 +145,8 @@ export default function LoginForm(): React.JSX.Element {
                     type="submit"
                     tone="list-action"
                     block
-                    disabled={form.processing}
-                    label={form.processing ? 'Entrando...' : 'Entrar'}
+                    disabled={processing}
+                    label={processing ? 'Entrando...' : 'Entrar'}
                     showIcon={false}
                     className="loginForm__submitButton"
                 />

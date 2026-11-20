@@ -43,7 +43,9 @@ atividade, incluindo o tempo na tela de bloqueio. Movimentar-se nessa tela ou
 consultas automáticas do sistema não prolongam o acesso.
 
 Quando a sessão é encerrada, aparece **Sua sessão foi encerrada por inatividade.
-Entre novamente para continuar.** Faça login novamente. Professores que usam
+Entre novamente para continuar.** Faça login normalmente. Se a tela de login
+ficou aberta por muito tempo, clique em **Entrar** depois de preencher suas
+credenciais. O Gnai prepara a sessão automaticamente. Professores que usam
 apenas link de e-mail não passam pela tela de senha; ao encerrar a sessão, precisam
 solicitar outro link. Fechar e reabrir o navegador não garante acesso permanente.
 

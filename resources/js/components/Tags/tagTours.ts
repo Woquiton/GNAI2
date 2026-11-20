@@ -61,7 +61,7 @@ function tagFormSteps(mode: 'create' | 'edit'): GuidedTourStep[] {
             group,
             title: 'Cor',
             content:
-                'Abra a paleta pelo botão com a amostra da cor, ao lado do campo, ou digite uma cor no formato #RRGGBB. A cor identifica o marcador na lateral e nas mensagens da Inbox.',
+                'Abra a paleta pelo botão com a amostra da cor, ao lado do campo, ou digite uma cor no formato #RRGGBB.',
         },
         {
             id: 'tag-active',
@@ -104,6 +104,13 @@ export const tagEditTour: GuidedTourPageConfig = {
     steps: tagFormSteps('edit'),
 };
 
+export const specialTagEditTour: GuidedTourPageConfig = {
+    helpHref: HELP_HREF,
+    steps: tagFormSteps('edit').filter(
+        (step) => step.id === 'tag-color' || step.id === 'tag-form-actions',
+    ),
+};
+
 export const tagShowTour: GuidedTourPageConfig = {
     helpHref: HELP_HREF,
     steps: [
@@ -121,7 +128,7 @@ export const tagShowTour: GuidedTourPageConfig = {
             target: targets.detailsActions,
             title: 'Ações da etiqueta',
             content: [
-                'Voltar leva para a lista de etiquetas. Editar abre o formulário para mudar nome, cor e situação. O módulo só pode mudar se a etiqueta ainda não estiver em uso.',
+                'Voltar leva para a lista de etiquetas. Em Editar, você pode mudar a cor de uma etiqueta especial. As convencionais também permitem editar nome e situação. O módulo pode mudar enquanto a etiqueta estiver sem uso.',
                 'Excluir apaga a etiqueta depois de pedir confirmação. Se quiser só parar de usar, prefira desligar Etiqueta Ativa na edição. Alguns botões só aparecem para quem tem permissão.',
             ],
         },

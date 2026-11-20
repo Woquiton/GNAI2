@@ -124,6 +124,7 @@ export function PublicationTextFields({
                             label="Etiquetas"
                             placeholder="Selecione as etiquetas"
                             multiple
+                            iconsWithText
                             value={data.tag_ids}
                             options={options.tags}
                             aria-invalid={!!tagError}

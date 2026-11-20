@@ -144,7 +144,9 @@ final class WebsitePresenter
             ),
             'type' => $type->value,
             'type_label' => $type->label(),
-            'tags' => $publication->tags->where('is_active', true)->pluck('name')->values()->all(),
+            'tags' => $publication->tags->where('is_active', true)
+                ->map(fn ($tag): array => ['id' => $tag->id, 'name' => $tag->name, 'color' => $tag->color])
+                ->values()->all(),
             'published_at' => $date?->toIso8601String(),
             'published_at_label' => $date ? $date->copy()->locale('pt_BR')->translatedFormat('d \d\e F \d\e Y') : null,
             'cover_url' => $publication->cover_path ? asset('storage/'.$publication->cover_path) : null,
