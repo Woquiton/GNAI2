@@ -10,6 +10,11 @@ Administradores e profissionais da equipe entram no Gnai com o e-mail e a senha 
 
 ## Entrar no Gnai
 
+A tela de login apresenta o **Aviso de responsabilidade e proteção de dados** antes dos
+campos de acesso. Leia o aviso: o sistema pode conter dados pessoais e sensíveis, inclusive
+de crianças e adolescentes. Preserve o sigilo e utilize as informações exclusivamente para
+finalidades institucionais autorizadas, observando a legislação indicada no aviso.
+
 1. Abra o endereço do Gnai no navegador. Se você não estiver conectado, a tela **LOGIN** aparece.
 2. Preencha **E-mail institucional** e **Senha**. Para conferir o que digitou, use o botão de olho ao lado da senha (**Mostrar senha** / **Ocultar senha**).
 3. Clique em **Entrar**. Durante a verificação, o botão mostra **Entrando...**.
