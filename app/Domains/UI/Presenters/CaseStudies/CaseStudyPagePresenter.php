@@ -6,6 +6,7 @@ namespace App\Domains\UI\Presenters\CaseStudies;
 
 use App\Domains\Application\Data\CaseStudies\ListCaseStudiesData;
 use App\Domains\Application\Queries\CaseStudies\CaseStudyBarrierOptionsQuery;
+use App\Domains\Domain\Enums\StudentDocuments\StudentDocumentType;
 use App\Domains\Domain\Models\CaseStudies\CaseStudy;
 use App\Domains\Domain\Models\CaseStudies\CaseStudyBarrier;
 use App\Domains\Domain\Models\CaseStudies\CaseStudyContribution;
@@ -153,6 +154,11 @@ final class CaseStudyPagePresenter
         $user = $request->user();
         $completed = $caseStudy->status === CaseStudy::STATUS_COMPLETED;
         $canUpdate = $user?->can('case-study.update') ?? false;
+        $canCreatePaee = $caseStudy->student->status !== StudentStatus::INTAKE
+            && ($user?->can('paee.create') ?? false)
+            && ($completed || $caseStudy->student->documents()
+                ->where('type', StudentDocumentType::TECHNICAL_REPORT->value)
+                ->exists());
 
         return [
             'student' => $this->student($caseStudy->student),
@@ -214,7 +220,7 @@ final class CaseStudyPagePresenter
                 'contribute' => $caseStudy->student->status !== StudentStatus::INTAKE && $canUpdate,
                 // O backend recusa excluir um Estudo de Caso com PAEE vinculado.
                 'delete' => $caseStudy->paees->isEmpty() && ($user?->can('case-study.delete') ?? false),
-                'createPaee' => $caseStudy->student->status !== StudentStatus::INTAKE && $completed && ($user?->can('paee.create') ?? false),
+                'createPaee' => $canCreatePaee,
                 'pdf' => $user?->can('case-study.view') ?? false,
             ],
         ];

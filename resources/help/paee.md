@@ -27,11 +27,11 @@ A listagem, o cadastro, a edição e a visualização do PAEE têm um tutorial n
 - Um Estudo de Caso **Concluído** do aluno. O sistema também aceita o PAEE quando o aluno tem um documento do tipo **Laudo** anexado, mas o PAEE é sempre criado a partir de um Estudo de Caso.
 - Um semestre atual cadastrado em **Gestão do núcleo → Cadastros → Semestres**.
 
-> **Importante:** o botão **Criar PAEE** só aparece na visualização de um Estudo de Caso concluído. Sem Estudo de Caso concluído e sem laudo, o sistema mostra "O PAEE só pode ser criado a partir de um Estudo de Caso concluído ou de um Laudo anexado ao aluno."
+> **Importante:** o botão **Criar PAEE** aparece na visualização do Estudo de Caso quando ele está concluído ou quando há um documento do tipo **Laudo** anexado ao aluno, respeitando a permissão de criação. Alunos em **Em acolhimento** continuam bloqueados. Sem Estudo de Caso concluído e sem laudo, o sistema mostra "O PAEE só pode ser criado a partir de um Estudo de Caso concluído ou de um Laudo anexado ao aluno."
 
 ## Criar um PAEE
 
-1. Abra o Estudo de Caso concluído do aluno.
+1. Abra o Estudo de Caso do aluno. Ele pode estar **Em andamento** se houver um documento do tipo **Laudo** anexado ao aluno; caso contrário, precisa estar **Concluído**.
 2. Clique em **Criar PAEE** no rodapé. A tela **Novo PAEE** indica o aluno e a versão do Estudo de Caso de origem.
 3. Preencha as seções (campos na tabela abaixo).
 4. Clique em **Salvar**. O sistema mostra "PAEE criado com sucesso." e abre a visualização.
@@ -70,7 +70,7 @@ Ao registrar uma revisão, o PAEE passa ao status **Em revisão** e a **Próxima
 
 ## Criar uma nova versão do PAEE
 
-Abra o Estudo de Caso concluído e clique novamente em **Criar PAEE**. O novo PAEE recebe o próximo número de versão e o anterior deixa de ser o atual, continuando disponível no histórico. Se o aluno tiver um PEI atual ainda não finalizado, esse PEI passa a seguir a nova versão do PAEE.
+Abra o Estudo de Caso concluído, ou ainda em andamento com um laudo anexado ao aluno, e clique novamente em **Criar PAEE**. O novo PAEE recebe o próximo número de versão e o anterior deixa de ser o atual, continuando disponível no histórico. Se o aluno tiver um PEI atual ainda não finalizado, esse PEI passa a seguir a nova versão do PAEE.
 
 ## Gerar o PDF do PAEE
 
@@ -94,7 +94,7 @@ A coluna **Atual** das listagens indica qual versão está vigente. Abaixo dos c
 
 ## Dúvidas comuns
 
-- **Não aparece o botão Criar PAEE.** Confira se o Estudo de Caso está **Concluído** e se você tem permissão para criar PAEEs. A aba **PAEE** do aluno e a listagem de PAEEs não têm botão de cadastro.
+- **Não aparece o botão Criar PAEE.** Confira se o Estudo de Caso está **Concluído** ou se há um documento do tipo **Laudo** anexado ao aluno. Você precisa ter permissão para criar PAEEs e o aluno não pode estar **Em acolhimento**. A aba **PAEE** do aluno e a listagem de PAEEs não têm botão de cadastro.
 - **"O PAEE só pode ser criado a partir de um Estudo de Caso concluído ou de um Laudo anexado ao aluno."** Conclua o Estudo de Caso (veja [Concluir um Estudo de Caso](/ajuda/estudos-de-caso#concluir-um-estudo-de-caso)) ou anexe o laudo na aba **Documentos** do aluno.
 - **"O sistema não possui semestre atual cadastrado."** Cadastre ou marque o semestre atual em **Gestão do núcleo → Cadastros → Semestres**.
 - **A barreira desejada não aparece em Barreira Vinculada.** A lista mostra apenas as barreiras do Estudo de Caso que deu origem ao PAEE.

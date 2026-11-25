@@ -70,7 +70,7 @@ Só é possível editar enquanto o Estudo de Caso está **Em andamento**. Depois
 
 > **Importante:** a conclusão libera a criação do PAEE e impede novas edições do Estudo de Caso. Para concluir, é preciso ter ao menos uma barreira e ao menos uma estratégia registradas.
 
-Após a conclusão, a visualização passa a mostrar a data em **Concluído em** e o botão **Criar PAEE** (para quem pode criar PAEEs).
+Após a conclusão, a visualização passa a mostrar a data em **Concluído em** e o botão **Criar PAEE** (para quem pode criar PAEEs). Se o aluno tiver um documento do tipo **Laudo** anexado, esse botão também aparece enquanto o estudo está **Em andamento**. Alunos em **Em acolhimento** continuam bloqueados.
 
 ## Registrar uma contribuição
 

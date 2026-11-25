@@ -193,7 +193,7 @@ export const caseStudyShowTour: GuidedTourPageConfig = {
             title: 'Ações do Estudo de Caso',
             content: [
                 'PDF gera um arquivo com o Estudo de Caso. Voltar leva para o prontuário do aluno. Editar aparece enquanto ele está Em andamento.',
-                'Concluir pede confirmação e impede novas edições. Depois disso aparece Criar PAEE. Excluir pede confirmação e some quando já existe PAEE. Alguns botões só aparecem para quem tem permissão.',
+                'Concluir pede confirmação e impede novas edições. Criar PAEE aparece com o estudo concluído ou com um Laudo anexado ao aluno. Excluir pede confirmação e some quando já existe PAEE. Alguns botões só aparecem para quem tem permissão.',
             ],
         },
     ],
