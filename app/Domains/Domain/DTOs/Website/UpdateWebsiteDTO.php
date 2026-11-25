@@ -24,5 +24,9 @@ final readonly class UpdateWebsiteDTO
         public ?string $footerText = null,
         public array $sections = [],
         public int $logoHeight = 46,
+        public ?string $privacyControllerName = null,
+        public ?string $privacyOfficerName = null,
+        public ?string $privacyContactEmail = null,
+        public ?string $privacyContactUrl = null,
     ) {}
 }

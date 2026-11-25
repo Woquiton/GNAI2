@@ -18,6 +18,7 @@ A administração do site tem um tutorial na própria tela. Clique no botão com
 | Página | Conteúdo |
 | --- | --- |
 | Página inicial | As seções montadas no construtor, na ordem escolhida. |
+| Política de privacidade | Documento público com dados, finalidades, responsabilidades e direitos; a segunda barra permite abrir os documentos de uso responsável, cookies, direitos autorais e acessibilidade. |
 | Equipe | Profissionais ativos da equipe marcados com **Aparece no site** no cadastro do profissional. |
 | Publicações | Publicações visíveis no site, com busca por título ou resumo e filtros por tipo e etiqueta. Cada publicação tem a própria página, com até três publicações relacionadas do mesmo tipo. |
 
@@ -32,6 +33,20 @@ O conteúdo das publicações é cadastrado em [Publicações](/ajuda/publicacoe
 5. Use **Ver site** no rodapé para abrir o site publicado em nova aba.
 
 As alterações aparecem na prévia na hora, mas só vão para o site depois de clicar em **Salvar**.
+
+## Informar o responsável e o contato de privacidade
+
+1. Abra **Comunicação → Site → Personalização** e clique em **Identidade** na aba **Seções**.
+2. Na aba **Edição**, localize **Privacidade e responsável pelos dados**.
+3. Preencha **Instituição responsável pelos dados** com o nome oficial da escola, instituto ou entidade que decide sobre o tratamento.
+4. Informe **Encarregado ou setor de proteção de dados** e um **E-mail de proteção de dados** e/ou uma **Página institucional de proteção de dados** com canal de atendimento. O endereço da página deve começar com http:// ou https://.
+5. Clique em **Salvar**. Depois use **Consultar a política publicada (abre em nova aba)** para conferir os dados salvos na seção de contato.
+
+Esses dados ficam públicos na [Política de privacidade e uso responsável](/politica-de-privacidade), acessível nos rodapés. O e-mail de envio de mensagens e o contato geral do site não são usados automaticamente como canal do encarregado. Se os campos estiverem vazios, a página informa a pendência e orienta procurar a administração da instituição.
+
+O nome do responsável, o setor e o e-mail aceitam até 255 caracteres; a página institucional aceita até 500. Os campos podem ficar vazios durante a preparação, mas a instituição deve completar sua identificação e validar a política antes de adotá-la oficialmente. Ter uma instituição cadastrada no Gnai não define, por si só, seu papel legal.
+
+O construtor permite alterar esses dados de identificação e contato. Cada política tem seu próprio endereço público e pode ser aberta pela segunda barra de navegação. O texto das políticas permanece fora da edição livre; as alterações da página inicial não substituem nem removem a política.
 
 ## Alterar nome, logo, cor e contatos (Identidade)
 

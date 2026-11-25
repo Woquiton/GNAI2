@@ -5,9 +5,6 @@
     font-size: 14px;
     line-height: 20px;
     padding: 20px 30px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    position: static;
     text-align: left !important;
 }

@@ -17,6 +17,11 @@ finalidades institucionais autorizadas, observando a legislação indicada no av
 Clique em **Ciente e continuar** para continuar o login. Sem essa confirmação, o aviso permanece aberto
 e o acesso não é enviado. A tecla Esc e o clique fora do aviso não o fecham.
 
+O aviso oferece um link para a [Política de privacidade e uso responsável](/politica-de-privacidade),
+que abre em nova aba. A política também está nos rodapés da navegação e pode ser consultada
+sem entrar no sistema. **Ciente e continuar** confirma a leitura para prosseguir no acesso;
+não substitui a base legal para o tratamento dos dados nem representa consentimento genérico.
+
 1. Abra o endereço do Gnai no navegador. Se você não estiver conectado, a tela **LOGIN** aparece.
 2. Preencha **E-mail institucional** e **Senha**. Para conferir o que digitou, use o botão de olho ao lado da senha (**Mostrar senha** / **Ocultar senha**).
 3. Clique em **Entrar**, leia o aviso e clique em **Ciente e continuar**. Durante a verificação, o botão mostra **Entrando...**.

@@ -138,10 +138,7 @@
     margin-bottom: 0;
 }
 .accountLayout--split .authFooter__copyright {
-    position: absolute;
-    right: 0;
-    bottom: 22px;
-    left: 0;
+    position: static;
     margin: 0;
     text-align: center;
 }

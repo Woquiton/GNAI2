@@ -1,0 +1,67 @@
+.policyLinks {
+    margin-block-start: var(--ui-space-3);
+    font-family: var(--ui-font-body);
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.policyLinks ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: inherit;
+    gap: var(--ui-space-2) var(--ui-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.policyLinks a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.policyLinks a:hover {
+    text-decoration-thickness: 2px;
+}
+
+.authFooter .policyLinks,
+.about-footer .policyLinks {
+    justify-items: center;
+}
+
+.authFooter .policyLinks ul,
+.about-footer .policyLinks ul {
+    justify-content: center;
+}
+
+.siteLayout__footer .policyLinks {
+    padding-block-end: var(--ui-space-6);
+}
+
+.policyLinks--navigation {
+    margin: 0;
+    font-size: 0.9375rem;
+}
+
+.policyLinks--navigation ul {
+    gap: 0 var(--ui-space-6);
+}
+
+.policyLinks--navigation a {
+    display: block;
+    padding-block: var(--ui-space-4);
+    border-bottom: 3px solid transparent;
+    color: var(--ui-color-text);
+    text-decoration: none;
+}
+
+.policyLinks--navigation a[aria-current='page'] {
+    border-bottom-color: var(--ui-color-primary);
+    color: var(--ui-color-page-title);
+    font-weight: 700;
+}
+
+.policyLinks--navigation a:hover {
+    text-decoration: underline;
+}

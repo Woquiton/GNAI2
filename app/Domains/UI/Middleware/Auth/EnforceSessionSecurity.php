@@ -18,7 +18,10 @@ final class EnforceSessionSecurity
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || $request->routeIs('logout', 'teacher-access.confirm*')) {
+        if (
+            ! $request->user()
+            || $request->routeIs('logout', 'teacher-access.confirm*', 'privacy-policy', 'policies.*')
+        ) {
             return $next($request);
         }
 

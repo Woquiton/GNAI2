@@ -122,6 +122,10 @@ final class WebsitePresenter
             'youtube_url' => $social['youtube'] ?? null,
             'website_url' => $social['website'] ?? null,
             'footer_text' => $setting->footer_text,
+            'privacy_controller_name' => $setting->privacy['controller_name'] ?? null,
+            'privacy_officer_name' => $setting->privacy['officer_name'] ?? null,
+            'privacy_contact_email' => $setting->privacy['contact_email'] ?? null,
+            'privacy_contact_url' => $setting->privacy['contact_url'] ?? null,
         ];
     }
 

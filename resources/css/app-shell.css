@@ -3,6 +3,8 @@
 }
 
 .app-content-placeholder {
+    display: flex;
+    flex-direction: column;
     margin-left: var(--ui-sidebar-width);
     overflow: hidden;
     position: relative;
@@ -11,8 +13,8 @@
 
 .app-content-placeholder__inner {
     margin-top: var(--ui-topbar-height);
-    margin-bottom: 60px;
-    min-height: calc(100vh - var(--ui-topbar-height) - 60px);
+    flex: 1;
+    min-height: 0;
     padding: 20px 20px 15px;
 }
 

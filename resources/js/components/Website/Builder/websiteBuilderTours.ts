@@ -129,6 +129,7 @@ export const websiteBuilderEditTour: GuidedTourPageConfig = {
                 'Clique nele para mudar o nome do site, o slogan, a cor principal, o logo, os contatos e as redes sociais.',
                 'O nome é opcional. Deixe-o vazio quando a logo já tiver o nome do núcleo; a prévia mostra essa escolha no topo e no rodapé.',
                 'Use Altura da logo (px) para aumentar ou diminuir a imagem no topo e no rodapé e conferir o resultado na prévia antes de salvar.',
+                'Na seção Privacidade e responsável pelos dados, identifique a instituição, o encarregado e seu canal público. Esses dados são publicados na política; o texto das políticas não pode ser alterado pelo construtor.',
             ],
             onEnter: sectionsTabDemo,
         },

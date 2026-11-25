@@ -61,6 +61,11 @@ export default function DataProtectionNotice({
                     O uso indevido das informações poderá acarretar responsabilização individual,
                     nos termos da legislação aplicável.
                 </p>
+                <p>
+                    Consulte a{' '}<a href="/politica-de-privacidade" target="_blank" rel="noopener noreferrer">
+                        Política de privacidade e uso responsável (abre em nova aba)
+                    </a>. A ciência deste aviso não substitui uma base legal para tratar dados.
+                </p>
             </div>
         </Modal>
     );

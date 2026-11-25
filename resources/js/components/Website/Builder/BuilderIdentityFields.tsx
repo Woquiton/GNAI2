@@ -181,6 +181,39 @@ export default function BuilderIdentityFields({
                 </FormGrid>
             </FormSection>
             <FormSection
+                id="website-privacy"
+                title="Privacidade e responsável pelos dados"
+                variant="inline"
+                iconClass="fa fa-shield"
+                description="Identifique a instituição e o canal público de proteção de dados. Estes campos aparecem na política; o texto das políticas permanece protegido contra edição livre. O e-mail de envio de mensagens não é usado automaticamente."
+            >
+                <p className="websiteBuilder__note">
+                    A política deve identificar a instituição responsável e um canal público.
+                    Preencha somente informações institucionais autorizadas. Campos vazios
+                    aparecem como pendências na página pública.
+                </p>
+                <FormGrid>
+                    {text('privacy_controller_name', 'Instituição responsável pelos dados', {
+                        hint: 'Informe o nome oficial da escola, instituto ou entidade que decide sobre o tratamento. O cadastro de instituições, por si só, não atribui esse papel.',
+                    })}
+                    {text('privacy_officer_name', 'Encarregado ou setor de proteção de dados', {
+                        hint: 'Informe a identificação pública autorizada do encarregado ou do setor competente.',
+                    })}
+                    {text('privacy_contact_email', 'E-mail de proteção de dados', {
+                        type: 'email',
+                        hint: 'Use um endereço institucional que receba solicitações de titulares. Não informe credenciais ou um remetente técnico sem atendimento.',
+                    })}
+                    {text('privacy_contact_url', 'Página institucional de proteção de dados', {
+                        type: 'url',
+                        maxLength: 500,
+                        hint: 'Informe um endereço HTTP ou HTTPS com orientações e canal de atendimento do encarregado.',
+                    })}
+                </FormGrid>
+                <a href="/politica-de-privacidade#contato" target="_blank" rel="noopener noreferrer">
+                    Consultar a política publicada (abre em nova aba)
+                </a>
+            </FormSection>
+            <FormSection
                 id="website-social"
                 title="Redes sociais e rodapé"
                 variant="inline"

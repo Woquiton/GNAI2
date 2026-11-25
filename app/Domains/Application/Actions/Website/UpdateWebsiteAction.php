@@ -103,6 +103,10 @@ final readonly class UpdateWebsiteAction
                 youtubeUrl: $data->youtubeUrl,
                 websiteUrl: $data->websiteUrl,
                 footerText: $data->footerText,
+                privacyControllerName: $data->privacyControllerName,
+                privacyOfficerName: $data->privacyOfficerName,
+                privacyContactEmail: $data->privacyContactEmail,
+                privacyContactUrl: $data->privacyContactUrl,
                 sections: $sections,
             );
 

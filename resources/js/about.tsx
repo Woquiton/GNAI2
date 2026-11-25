@@ -1,3 +1,4 @@
+import PolicyLinks from '@/components/Navigation/PolicyLinks/PolicyLinks';
 import { createRoot } from 'react-dom/client';
 import AboutAccessibility from '@/components/About/AboutAccessibility';
 import {
@@ -14,3 +15,6 @@ installFocusModality();
 
 const root = document.getElementById('about-accessibility');
 if (root) createRoot(root).render(<AboutAccessibility />);
+
+const policyRoot = document.getElementById('about-policy-links');
+if (policyRoot) createRoot(policyRoot).render(<PolicyLinks />);

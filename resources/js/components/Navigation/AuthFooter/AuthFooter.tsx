@@ -1,3 +1,4 @@
+import PolicyLinks from '@/components/Navigation/PolicyLinks/PolicyLinks';
 import { Link } from '@inertiajs/react';
 import '@styles/components/Navigation/AuthFooter/AuthFooter.css';
 
@@ -19,6 +20,7 @@ export default function AuthFooter({
                 Gnai &copy; {new Date().getFullYear()} | Gestor de Núcleos de Acessibilidade e
                 Inclusão
             </p>
+            <PolicyLinks />
         </footer>
     );
 }

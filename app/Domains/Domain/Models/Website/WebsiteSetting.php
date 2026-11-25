@@ -44,6 +44,7 @@ final class WebsiteSetting extends Model implements Auditable
         'address',
         'social_links',
         'footer_text',
+        'privacy',
         'sections',
     ];
 
@@ -51,6 +52,7 @@ final class WebsiteSetting extends Model implements Auditable
         'logo_height' => 'integer',
         'social_links' => 'array',
         'sections' => 'array',
+        'privacy' => 'array',
     ];
 
     public static function auditType(): string
@@ -75,6 +77,7 @@ final class WebsiteSetting extends Model implements Auditable
             'contact_phone' => AuditedField::text('Telefone de contato'),
             'address' => AuditedField::text('Endereço'),
             'footer_text' => AuditedField::text('Texto do rodapé'),
+            'privacy' => AuditedField::text('Responsável e contato de privacidade'),
             'social_links' => AuditedField::text('Links sociais'),
             'sections' => AuditedField::text('Seções do site'),
         ];
@@ -120,6 +123,12 @@ final class WebsiteSetting extends Model implements Auditable
                 'website' => self::normalizeNullableText($data->websiteUrl),
             ],
             'footer_text' => self::normalizeNullableText($data->footerText),
+            'privacy' => [
+                'controller_name' => self::normalizeNullableText($data->privacyControllerName),
+                'officer_name' => self::normalizeNullableText($data->privacyOfficerName),
+                'contact_email' => self::normalizeNullableText($data->privacyContactEmail),
+                'contact_url' => self::normalizeNullableText($data->privacyContactUrl),
+            ],
             'sections' => $data->sections,
         ]);
     }

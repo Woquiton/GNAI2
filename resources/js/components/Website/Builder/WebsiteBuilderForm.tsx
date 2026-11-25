@@ -128,6 +128,10 @@ export default function WebsiteBuilderForm({
         youtube_url: settings.youtube_url ?? '',
         website_url: settings.website_url ?? '',
         footer_text: settings.footer_text ?? '',
+        privacy_controller_name: settings.privacy_controller_name ?? '',
+        privacy_officer_name: settings.privacy_officer_name ?? '',
+        privacy_contact_email: settings.privacy_contact_email ?? '',
+        privacy_contact_url: settings.privacy_contact_url ?? '',
         sections: initialSections.map(toBuilderSection),
     });
     const submission = useFormSubmission(form);

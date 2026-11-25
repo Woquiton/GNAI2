@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\UI\Controllers\Teachers\TeacherPortalController;
+use App\Domains\UI\Controllers\Website\PublicPolicyController;
 use App\Domains\UI\Controllers\Auth\TeacherProfileController;
 use App\Domains\UI\Controllers\Notifications\NotificationController;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,17 @@ Route::middleware('web')->group(function () {
 
         return view('pages.about-us');
     })->name('about-us');
+
+    Route::get('/politica-de-privacidade', PublicPolicyController::class)
+        ->defaults('policy', 'privacy')->name('privacy-policy');
+    Route::get('/uso-responsavel', PublicPolicyController::class)
+        ->defaults('policy', 'usage')->name('policies.usage');
+    Route::get('/politica-de-cookies', PublicPolicyController::class)
+        ->defaults('policy', 'cookies')->name('policies.cookies');
+    Route::get('/direitos-autorais', PublicPolicyController::class)
+        ->defaults('policy', 'copyright')->name('policies.copyright');
+    Route::get('/politica-de-acessibilidade', PublicPolicyController::class)
+        ->defaults('policy', 'accessibility')->name('policies.accessibility');
 
     Route::middleware('auth')->get('/acessibilidade', fn () => Inertia::render('Accessibility/Index'))
         ->name('accessibility.index');

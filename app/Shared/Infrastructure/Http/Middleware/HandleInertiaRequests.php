@@ -26,6 +26,13 @@ final class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
+        if ($request->routeIs('privacy-policy', 'policies.*')) {
+            // A política é pública também durante o bloqueio de sessão, sem dados da conta.
+            Inertia::encryptHistory(false);
+
+            return [...parent::share($request), 'auth' => ['user' => null]];
+        }
+
         Inertia::encryptHistory($request->user() !== null);
 
         return [

@@ -1,3 +1,4 @@
+import PolicyLinks from '@/components/Navigation/PolicyLinks/PolicyLinks';
 import { Head, usePage } from '@inertiajs/react';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import SiteAccessibility from '../SiteAccessibility/SiteAccessibility';
@@ -317,6 +318,9 @@ export default function SiteLayout({
                         <span>
                             Plataforma <SiteLink href="/sobre-nos">Gnai</SiteLink>
                         </span>
+                    </div>
+                    <div className="siteLayout__container">
+                        <PolicyLinks preview={preview} />
                     </div>
                 </footer>
                 {!preview ? (

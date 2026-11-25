@@ -285,6 +285,7 @@
         <div class="about-footer-logo">GNAI</div>
         <div class="about-footer-inst">Instituto Federal Baiano, Campus Guanambi</div>
         <div class="about-footer-year">ADS · 2026 · Todos os direitos reservados</div>
+        <div id="about-policy-links"></div>
     </footer>
     </div>
     <div id="about-accessibility"></div>

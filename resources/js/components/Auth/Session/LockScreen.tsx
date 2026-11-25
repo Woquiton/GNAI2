@@ -1,3 +1,4 @@
+import PolicyLinks from '@/components/Navigation/PolicyLinks/PolicyLinks';
 import { Head, router, useForm } from '@inertiajs/react';
 import AccountLayout from '@/components/Navigation/AccountLayout/AccountLayout';
 import FormLayout from '@/components/Forms/FormLayout/FormLayout';
@@ -79,6 +80,7 @@ export default function LockScreen({ lockedUser }: LockScreenProps): React.JSX.E
                     onClick={() => router.post('/autenticacao/sair')}
                 />
             </div>
+            <PolicyLinks />
         </AccountLayout>
     );
 }

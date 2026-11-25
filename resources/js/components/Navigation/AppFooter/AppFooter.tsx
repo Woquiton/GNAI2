@@ -1,3 +1,4 @@
+import PolicyLinks from '@/components/Navigation/PolicyLinks/PolicyLinks';
 import type { ReactNode } from 'react';
 import '@styles/components/Navigation/AppFooter/AppFooter.css';
 
@@ -12,6 +13,7 @@ export default function AppFooter({
     return (
         <footer id={id} className="appFooter footer">
             {children}
+            <PolicyLinks />
         </footer>
     );
 }

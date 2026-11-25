@@ -31,6 +31,10 @@ export type BuilderSettings = {
     youtube_url: string | null;
     website_url: string | null;
     footer_text: string | null;
+    privacy_controller_name: string | null;
+    privacy_officer_name: string | null;
+    privacy_contact_email: string | null;
+    privacy_contact_url: string | null;
 };
 
 export type BuilderFormData = {
@@ -48,6 +52,10 @@ export type BuilderFormData = {
     youtube_url: string;
     website_url: string;
     footer_text: string;
+    privacy_controller_name: string;
+    privacy_officer_name: string;
+    privacy_contact_email: string;
+    privacy_contact_url: string;
     sections: BuilderSection[];
 };
 
@@ -65,6 +73,10 @@ export const identityFields = [
     'youtube_url',
     'website_url',
     'footer_text',
+    'privacy_controller_name',
+    'privacy_officer_name',
+    'privacy_contact_email',
+    'privacy_contact_url',
 ] as const;
 
 /** Item fixo da lista que representa o topo e o rodapé do site (identidade). */

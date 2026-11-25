@@ -22,6 +22,7 @@ const pages = import.meta.glob<{ default: PageComponent }>('./pages/**/*.tsx');
 /** Páginas com estrutura própria (autenticação, site público e erros). */
 const STANDALONE_PREFIXES = ['Website/Public/'];
 const STANDALONE_PAGES = [
+    'Policies/Index',
     'Auth/Login',
     'Auth/LockScreen',
     'Auth/ForgotPassword',

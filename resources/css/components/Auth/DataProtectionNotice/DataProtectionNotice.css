@@ -72,3 +72,9 @@
         width: 100%;
     }
 }
+
+.dataProtectionNotice__content a {
+    color: var(--ui-color-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
