@@ -3,12 +3,8 @@
     line-height: 1.6;
 }
 
-.dataProtectionNotice h4 {
-    margin: 0 0 var(--ui-space-3);
-    color: inherit;
-    font-size: var(--ui-font-size-lg);
-    font-weight: 700;
-    line-height: 1.4;
+.dataProtectionNoticeDialog .modalLayer__close {
+    display: none;
 }
 
 .dataProtectionNotice p {

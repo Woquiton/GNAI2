@@ -10,14 +10,16 @@ Administradores e profissionais da equipe entram no Gnai com o e-mail e a senha 
 
 ## Entrar no Gnai
 
-A tela de login apresenta o **Aviso de responsabilidade e proteção de dados** antes dos
-campos de acesso. Leia o aviso: o sistema pode conter dados pessoais e sensíveis, inclusive
+Ao clicar em **Entrar**, a tela apresenta o **Aviso de responsabilidade e proteção de dados**.
+Leia o aviso: o sistema pode conter dados pessoais e sensíveis, inclusive
 de crianças e adolescentes. Preserve o sigilo e utilize as informações exclusivamente para
 finalidades institucionais autorizadas, observando a legislação indicada no aviso.
+Clique em **Ciente** para continuar o login. Sem essa confirmação, o aviso permanece aberto
+e o acesso não é enviado. A tecla Esc e o clique fora do aviso não o fecham.
 
 1. Abra o endereço do Gnai no navegador. Se você não estiver conectado, a tela **LOGIN** aparece.
 2. Preencha **E-mail institucional** e **Senha**. Para conferir o que digitou, use o botão de olho ao lado da senha (**Mostrar senha** / **Ocultar senha**).
-3. Clique em **Entrar**. Durante a verificação, o botão mostra **Entrando...**.
+3. Clique em **Entrar**, leia o aviso e clique em **Ciente**. Durante a verificação, o botão mostra **Entrando...**.
 
 Com tudo certo, você vai para o [Painel](/ajuda/painel) e recebe a mensagem "Login realizado com sucesso.". Professores sem vínculo com a equipe vão direto para o Portal do Professor.
 

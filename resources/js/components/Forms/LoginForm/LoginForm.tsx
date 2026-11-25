@@ -4,6 +4,7 @@ import { useFormSubmission } from '@/components/Forms/FormLayout/useFormSubmissi
 import InputAction from '@/components/Forms/InputAction/InputAction';
 import TextInput from '@/components/Forms/TextInput/TextInput';
 import Button from '@/components/UI/Button/Button';
+import DataProtectionNotice from '@/components/Auth/DataProtectionNotice/DataProtectionNotice';
 import {
     notifyConnectionFailure,
     notifyOperationFailure,
@@ -19,6 +20,7 @@ export default function LoginForm(): React.JSX.Element {
     const sessionRequest = useRef<AbortController | null>(null);
     const [refreshingSession, setRefreshingSession] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [noticeOpen, setNoticeOpen] = useState(false);
     const processing = refreshingSession || form.processing;
 
     useEffect(() => {
@@ -78,9 +80,16 @@ export default function LoginForm(): React.JSX.Element {
             aria-busy={processing}
             onSubmit={(event) => {
                 event.preventDefault();
-                void login();
+                if (!processing) setNoticeOpen(true);
             }}
         >
+            <DataProtectionNotice
+                open={noticeOpen}
+                onAcknowledge={() => {
+                    setNoticeOpen(false);
+                    void login();
+                }}
+            />
             <div className="loginForm__group">
                 <TextInput
                     type="email"
